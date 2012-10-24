@@ -1,0 +1,71 @@
+# vim: set ts=2 sw=2 et ai foldmethod=indent:
+#
+# See http://ci.openstack.org/zuul/zuul.html#configuration
+#
+
+pipelines:
+
+  # Pipeline doing prechecks such as syntax linting
+  # Being run on any patchset and will report verified +1/-1
+  - name: check
+    manager: IndependentPipelineManager
+    trigger:
+      - event: patchset-created
+      - event: comment-added
+        comment_filter: (?i)^\s*recheck\.?\s*$
+    success:
+      verified: 1
+    failure:
+      verified: -1
+
+  # Pipeline that only get run when someone trusted has reviewed the code
+  # (cr +2). Should be used to run tests and will report verified +2/-2.
+  - name: gate
+    manager: DependentPipelineManager
+    trigger:
+      - event: comment-added
+        approval:
+          - code-review: 2
+    success:
+      verified: 1
+    failure:
+      verified: -1
+
+  - name: postmerge
+    manager: IndependentPipelineManager
+    trigger:
+      - event: change-merged
+    success:
+      code-review: 0
+      verified: 0
+      force-message: True
+    failure:
+      code-review: 0
+      verified: 0
+      force-message: True
+
+# Fine tune some jobs
+jobs:
+  - name: ^.*merge$
+    failure-message: Change could not be automatically merged. Please rebase it and reupload.
+  - name: mediawiki-core-master-phpunit-all
+    branch: ^master$
+    success-message: Change looked fine once merged.
+    failure-message: ERROR! It seems this job introduced a regression although it might be caused by a previous commit.
+
+projects:
+  - name: mediawiki/core
+    check:
+      - mediawiki-core-merge:
+        - mediawiki-core-lint
+    gate:
+      - mediawiki-core-merge:
+        - mediawiki-core-lint:
+          - mediawiki-core-phpunit-databaseless:
+            - mediawiki-install-sqlite:
+              - mediawiki-core-phpunit-api
+              - mediawiki-core-phpunit-misc
+              - mediawiki-core-phpunit-parser
+    postmerge:
+      - mediawiki-core-lint
+      - mediawiki-core-master-phpunit-all
