@@ -1,0 +1,76 @@
+# This file holds the configuration for all MediaWiki core related jobs
+# regardless of them being lint, merge check, unit test or regression testing.
+
+# FIXME: use /var/lib/zuul/git/{gerrit-name}
+
+# Generic job used to lint projects
+- job-template:
+    name: '{name}-lint'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - ant:
+         targets: "php-lint"
+         buildfile: "../../jobs/_shared/build.xml"
+
+# Basic jobs used to merge the change against the latest
+# version in the repository.
+- job-template:
+    name: '{name}-merge'
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+# A job template to trigger phpunit groups against a repository.
+#
+# @param name Jenkins job prefix to use
+# @param phpunit-group suffix for an ant target 'phpunit-{phpunit-group}
+# @param gerrit-name Gerrit project name (ex: mediawiki/core)
+- job-template:
+    name: '{name}-phpunit-{phpunit-group}'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    publishers:
+     - xunit:
+        thresholdmode: 'percent'
+        thresholds:
+          - failed:
+              unstable: 0
+              unstablenew: 0
+              failure: 0
+              failurenew: 0
+          - skipped:
+              unstable: 0
+              unstablenew: 0
+              failure: 0
+              failurenew: 0
+        types:
+          - phpunit:
+              pattern: 'junit.log'
+    builders:
+     - ant:
+         targets: "phpunit-{phpunit-group}"
+         buildfile: "../../jobs/_shared/build.xml"
+
+- job-group:
+    name: mediawiki-jobs
+    jobs:
+      - '{name}-merge'
+      - '{name}-lint'
+      - '{name}-phpunit-{phpunit-group}'
+
+- project:
+    name: mediawiki-core
+    gerrit-name: mediawiki/core
+    phpunit-group:
+      - api
+      - databaseless
+      - misc
+      - parser
+    jobs:
+      - mediawiki-jobs
+

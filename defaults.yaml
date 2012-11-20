@@ -1,0 +1,35 @@
+- defaults:
+    name: global
+    description: |
+      <p><b>Job is managed by Jenkins job builder</b></p>
+
+    project-type: freestyle
+
+    wrappers:
+      - timeout:
+          timeout: 360
+          fail: true
+      - timestamps
+
+- defaults:
+    name: use-zuul
+#    defaults: global
+
+    description: |
+      <p><b>Job is managed by Jenkins job builder</b></p>
+      <p>This job is triggered by Zuul</p>
+
+    project-type: freestyle
+
+    scm:
+     - git:
+        url: '/var/lib/zuul/git/{gerrit-name}'
+        branches:
+         - '$ZUUL_BRANCH'
+        refspec: '$ZUUL_REF'
+
+    wrappers:
+      - timeout:
+          timeout: 360
+          fail: true
+      - timestamps
