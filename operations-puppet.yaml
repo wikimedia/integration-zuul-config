@@ -1,0 +1,16 @@
+- job-template:
+    name: 'operations-puppet-validate'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: "rake validate"
+
+- project:
+    name: 'operations-puppet'
+    gerrit-name: 'operations/puppet'
+
+    jobs:
+     - operations-puppet-validate
