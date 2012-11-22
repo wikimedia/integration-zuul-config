@@ -56,12 +56,29 @@
          targets: "phpunit-{phpunit-group}"
          buildfile: "../../jobs/_shared/build.xml"
 
+# A job template to install MediaWiki against a specific DB backend
+#
+# @param name name Jenkins job prefix to use
+# @param databasetype Suffix for an ant target 'installdb-{databasetype}'
+- job-template:
+    name: '{name}-install-{databasetype}'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - ant:
+         targets: "installdb-{databasetype}"
+         buildfile: "../../jobs/_shared/build.xml"
+
 - job-group:
     name: mediawiki-jobs
     jobs:
       - '{name}-merge'
       - '{name}-lint'
       - '{name}-phpunit-{phpunit-group}'
+      - '{name}-install-{databasetype}'
 
 - project:
     name: mediawiki-core
@@ -71,6 +88,8 @@
       - databaseless
       - misc
       - parser
+    databasetype:
+      - sqlite
     jobs:
       - mediawiki-jobs
 
