@@ -22,7 +22,7 @@ pipelines:
   # Pipeline that only get run when someone trusted has reviewed the code
   # (cr +2). Should be used to run tests and will report verified +2/-2.
   - name: gate
-    manager: DependentPipelineManager
+    manager: IndependentPipelineManager
     trigger:
       - event: comment-added
         approval:
