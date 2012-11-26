@@ -3,6 +3,14 @@
 
 # FIXME: use /var/lib/zuul/git/{gerrit-name}
 
+# Basic jobs used to merge the change against the latest
+# version in the repository.
+- job-template:
+    name: '{name}-merge'
+    defaults: use-zuul
+    triggers:
+     - zuul
+
 # Generic job used to lint projects
 - job-template:
     name: '{name}-lint'
@@ -13,14 +21,6 @@
      - ant:
          targets: "php-lint"
          buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
-
-# Basic jobs used to merge the change against the latest
-# version in the repository.
-- job-template:
-    name: '{name}-merge'
-    defaults: use-zuul
-    triggers:
-     - zuul
 
 # A job template to trigger phpunit groups against a repository.
 #
