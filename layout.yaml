@@ -30,8 +30,14 @@ pipelines:
 # Silented for production deployment
 #    success:
 #      verified: 1
+#      code-review: 1
+#      # Let Zuul merge the change \O/
+#      # Disabled until ready
+#      #submit: true
 #    failure:
 #      verified: -1
+#      # We really want to block submission when tests fails
+#      code-review: -2
 
   - name: postmerge
     manager: IndependentPipelineManager
