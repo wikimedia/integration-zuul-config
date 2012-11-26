@@ -1,0 +1,69 @@
+- job-template:
+    name: '{name}-{ext-name}-merge'
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+
+- job-template:
+    name: '{name}-{ext-name}-lint'
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - ant:
+         targets: "php-lint"
+         buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
+
+- job-template:
+    name: '{name}-{ext-name}-install'
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - get-mw-core
+     - mw-install-sqlite
+     - mw-configure-extensions
+     - mw-run-update-script
+
+# Run all extension tests
+- job-template:
+    name: '{name}-{ext-name}-testextensions'
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - get-mw-core
+     - mw-install-sqlite
+     - mw-configure-extensions
+     - mw-run-update-script
+     - mw-phpunit-ext:
+        extension: '{ext-name}'
+     - mw-phpunit-allexts
+    # TODO, find ways to additionaly run tests for core but
+    # without extensions tests
+    publishers:
+     - junit:
+        results: 'junit*.xml'
+
+- job-group:
+    name: mwext-check-jobs
+    jobs:
+     - '{name}-{ext-name}-merge'
+     - '{name}-{ext-name}-lint'
+     - '{name}-{ext-name}-install'
+     - '{name}-{ext-name}-testextensions'
+
+- project:
+    name: mwext
+    ext-name:
+     - DataValues
+     - Diff
+     - LabeledSectionTransclusion
+     - MobileFrontend
+     - TitleBlacklist
+     - Translate
+     - TranslationNotifications
+     - UniversalLanguageSelector
+     - Validator
+    jobs:
+     - mwext-check-jobs

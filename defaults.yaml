@@ -34,3 +34,28 @@
           fail: true
       - timestamps
       - ansicolor
+
+- defaults:
+    name: use-zuul-for-mw-ext
+#    defaults: global
+
+    description: |
+      <p><b>Job is managed by Jenkins job builder</b></p>
+      <p>This job is triggered by Zuul</p>
+
+    project-type: freestyle
+
+    scm:
+     - git:
+        url: '/var/lib/zuul/git/mediawiki/extensions/{ext-name}'
+        basedir: 'extensions/{ext-name}'
+        branches:
+         - '$ZUUL_BRANCH'
+        refspec: '$ZUUL_REF'
+
+    wrappers:
+      - timeout:
+          timeout: 360
+          fail: true
+      - timestamps
+      - ansicolor

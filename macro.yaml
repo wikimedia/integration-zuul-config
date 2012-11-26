@@ -27,3 +27,42 @@
             # Snapshot `master` in the job workspace
             git archive --remote=/var/lib/jenkins/git/mw-core-bare master \
                 | (cd "$WORKSPACE" && tar xf -)
+
+# Inject in LocalSettings.php some code to automatically load
+# installed extensions.
+- builder:
+    name: mw-configure-extensions
+    builders:
+        - shell: |
+            #!/bin/bash -xe
+            echo "require_once( '/var/lib/jenkins/tools/extensions-loader.php' );" \
+                >> "$WORKSPACE/LocalSettings.php"
+
+- builder:
+    name: mw-run-update-script
+    builders:
+        - shell: 'php "$WORKSPACE/maintenance/update.php" --quick'
+
+- builder:
+    name: mw-install-sqlite
+    builders:
+      - ant:
+          targets: "installdb-sqlite"
+          buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
+
+- builder:
+    name: mw-phpunit
+    builders:
+      - shell: 'php tests/phpunit/phpunit.php --log-junit junit-phpunit.xml'
+
+- builder:
+    name: mw-phpunit-ext
+    builders:
+      - shell: 'php tests/phpunit/phpunit.php --log-junit junit-phpunit-ext.xml -- extensions/{extension}'
+
+- builder:
+    name: mw-phpunit-allexts
+    builders:
+# --testsuite is not yet available on gallium :(
+#      - shell: 'php tests/phpunit/phpunit.php --log-junit junit-phpunit-allexts.xml --testsuite extensions'
+      - shell: 'php tests/phpunit/phpunit.php --log-junit junit-phpunit-allexts.xml -- extensions'
