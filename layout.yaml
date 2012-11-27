@@ -92,5 +92,15 @@ projects:
       - operations-puppet-validate
     gate:
       - operations-puppet-validate
-
     # No postmerge needed yet
+
+  - name: mediawiki/extensions/Translate
+    check-silent:
+      - mwext-Translate-merge:
+        - mwext-Translate-lint
+    gate:
+      - mwext-Translate-merge:
+        - mwext-Translate-lint:
+          - mwext-Translate-install:
+            - mwext-Translate-testextensions
+
