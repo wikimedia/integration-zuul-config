@@ -118,6 +118,16 @@ projects:
           - mwext-Diff-install:
             - mwext-Diff-testextensions
 
+  - name: mediawiki/extensions/LabeledSectionTransclusion
+    check-silent:
+      - mwext-LabeledSectionTransclusion-merge:
+        - mwext-LabeledSectionTransclusion-lint
+    gate:
+      - mwext-LabeledSectionTransclusion-merge:
+        - mwext-LabeledSectionTransclusion-lint:
+          - mwext-LabeledSectionTransclusion-install:
+            - mwext-LabeledSectionTransclusion-testextensions
+
   - name: mediawiki/extensions/MobileFrontend
     check-silent:
       - mwext-MobileFrontend-merge:
