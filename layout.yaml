@@ -96,6 +96,48 @@ projects:
       - operations-puppet-validate
     # No postmerge needed yet
 
+#### MediaWiki extensions #############################################
+
+  - name: mediawiki/extensions/DataValues
+    check-silent:
+      - mwext-DataValues-merge:
+        - mwext-DataValues-lint
+    gate:
+      - mwext-DataValues-merge:
+        - mwext-DataValues-lint:
+          - mwext-DataValues-install:
+            - mwext-DataValues-testextensions
+
+  - name: mediawiki/extensions/Diff
+    check-silent:
+      - mwext-Diff-merge:
+        - mwext-Diff-lint
+    gate:
+      - mwext-Diff-merge:
+        - mwext-Diff-lint:
+          - mwext-Diff-install:
+            - mwext-Diff-testextensions
+
+  - name: mediawiki/extensions/MobileFrontend
+    check-silent:
+      - mwext-MobileFrontend-merge:
+        - mwext-MobileFrontend-lint
+    gate:
+      - mwext-MobileFrontend-merge:
+        - mwext-MobileFrontend-lint:
+          - mwext-MobileFrontend-install:
+            - mwext-MobileFrontend-testextensions
+
+  - name: mediawiki/extensions/TitleBlacklist
+    check-silent:
+      - mwext-TitleBlacklist-merge:
+        - mwext-TitleBlacklist-lint
+    gate:
+      - mwext-TitleBlacklist-merge:
+        - mwext-TitleBlacklist-lint:
+          - mwext-TitleBlacklist-install:
+            - mwext-TitleBlacklist-testextensions
+
   - name: mediawiki/extensions/Translate
     check-silent:
       - mwext-Translate-merge:
@@ -105,4 +147,34 @@ projects:
         - mwext-Translate-lint:
           - mwext-Translate-install:
             - mwext-Translate-testextensions
+
+  - name: mediawiki/extensions/TranslationNotifications
+    check-silent:
+      - mwext-TranslationNotifications-merge:
+        - mwext-TranslationNotifications-lint
+    gate:
+      - mwext-TranslationNotifications-merge:
+        - mwext-TranslationNotifications-lint:
+          - mwext-TranslationNotifications-install:
+            - mwext-TranslationNotifications-testextensions
+
+  - name: mediawiki/extensions/UniversalLanguageSelector
+    check-silent:
+      - mwext-UniversalLanguageSelector-merge:
+        - mwext-UniversalLanguageSelector-lint
+    gate:
+      - mwext-UniversalLanguageSelector-merge:
+        - mwext-UniversalLanguageSelector-lint:
+          - mwext-UniversalLanguageSelector-install:
+            - mwext-UniversalLanguageSelector-testextensions
+
+  - name: mediawiki/extensions/Validator
+    check-silent:
+      - mwext-Validator-merge:
+        - mwext-Validator-lint
+    gate:
+      - mwext-Validator-merge:
+        - mwext-Validator-lint:
+          - mwext-Validator-install:
+            - mwext-Validator-testextensions
 
