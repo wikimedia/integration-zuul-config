@@ -23,7 +23,9 @@ pipelines:
       - event: comment-added
         comment_filter: (?i)^\s*recheck\.?\s*$
     success:
-      verified: 1
+      # Prevents people from being able to submit a change
+      # before unit tests have been run.
+      verified: 0
     failure:
       verified: -1
 
