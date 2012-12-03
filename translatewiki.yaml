@@ -1,0 +1,35 @@
+- job-template:
+    name: 'translatewiki-phplint'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - ant:
+        targets: 'php-lint'
+        buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
+
+# Run whatever test we find under the `puppet` subdirectory.
+- job-template:
+    name: 'translatewiki-puppet-validate'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - shell: |
+         find . -type f -name '*.pp' -print0 | xargs -t -n1 -0  puppet parser validate --verbose
+
+- job-group:
+    name: translatewiki-jobs
+    jobs:
+     - translatewiki-phplint
+     - translatewiki-puppet-validate
+
+- project:
+    name: 'translatewiki'
+    gerrit-name: 'translatewiki'
+    jobs:
+     - translatewiki-jobs
