@@ -105,3 +105,29 @@
     jobs:
       - mediawiki-jobs
 
+# For regression testing:
+
+- job-template:
+    name: 'mediawiki-core-regression-{branch}'
+
+    defaults: use-zuul
+    scm:
+     - git-mwcore-nosubmodules
+    triggers:
+     - zuul
+
+    builders:
+     - ant:
+        targets: 'phpunit-all'
+        buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
+
+- project:
+    name: mediawiki-core-regression
+    gerrit-name: mediawiki/core
+    branch:
+      - master
+      - REL1_19
+      - REL1_20
+    # Find a way to support WMF branches
+    jobs:
+     - 'mediawiki-core-regression-{branch}'
