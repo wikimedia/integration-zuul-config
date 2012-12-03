@@ -29,25 +29,34 @@ pipelines:
     failure:
       verified: -1
 
-  # Pipeline that only get run when someone trusted has reviewed the code
+  # Pipelines that only get run when someone trusted has reviewed the code
   # (cr +2). Should be used to run tests and will report verified +2/-2.
+  #
+  # Silent gate (does not report anything back to Gerrit):
+  - name: gate-silent
+    manager: IndependentPipelineManager
+    trigger:
+      - event: comment-added
+        approval:
+          - code-review: 2
+
+  # Actual gate (report/vote in Gerrit)
   - name: gate
     manager: IndependentPipelineManager
     trigger:
       - event: comment-added
         approval:
           - code-review: 2
-# Silented for production deployment
-#    success:
-#      verified: 1
-#      code-review: 1
-#      # Let Zuul merge the change \O/
-#      # Disabled until ready
-#      #submit: true
-#    failure:
-#      verified: -1
-#      # We really want to block submission when tests fails
-#      code-review: -2
+    success:
+      verified: 1
+      code-review: 1
+      # Let Zuul merge the change \O/
+      # Disabled until ready
+      #submit: true
+    failure:
+      verified: -1
+      # We really want to block submission when tests fails
+      code-review: -2
 
   - name: postmerge
     manager: IndependentPipelineManager
@@ -87,7 +96,7 @@ projects:
     check-silent:
       - mediawiki-core-merge:
         - mediawiki-core-lint
-    gate:
+    gate-silent:
       - mediawiki-core-merge:
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
@@ -105,7 +114,7 @@ projects:
   - name: operations/puppet
     check-silent:
       - operations-puppet-validate
-    gate:
+    gate-silent:
       - operations-puppet-validate
     # No postmerge needed yet
 
@@ -115,7 +124,7 @@ projects:
     check-silent:
       - mwext-DataValues-merge:
         - mwext-DataValues-lint
-    gate:
+    gate-silent:
       - mwext-DataValues-merge:
         - mwext-DataValues-lint:
           - mwext-DataValues-install:
@@ -125,7 +134,7 @@ projects:
     check-silent:
       - mwext-Diff-merge:
         - mwext-Diff-lint
-    gate:
+    gate-silent:
       - mwext-Diff-merge:
         - mwext-Diff-lint:
           - mwext-Diff-install:
@@ -135,7 +144,7 @@ projects:
     check:
       - mwext-LabeledSectionTransclusion-merge:
         - mwext-LabeledSectionTransclusion-lint
-    gate:
+    gate-silent:
       - mwext-LabeledSectionTransclusion-merge:
         - mwext-LabeledSectionTransclusion-lint:
           - mwext-LabeledSectionTransclusion-install:
@@ -145,7 +154,7 @@ projects:
     check-silent:
       - mwext-MobileFrontend-merge:
         - mwext-MobileFrontend-lint
-    gate:
+    gate-silent:
       - mwext-MobileFrontend-merge:
         - mwext-MobileFrontend-lint:
           - mwext-MobileFrontend-install:
@@ -155,7 +164,7 @@ projects:
     check-silent:
       - mwext-TitleBlacklist-merge:
         - mwext-TitleBlacklist-lint
-    gate:
+    gate-silent:
       - mwext-TitleBlacklist-merge:
         - mwext-TitleBlacklist-lint:
           - mwext-TitleBlacklist-install:
@@ -165,7 +174,7 @@ projects:
     check-silent:
       - mwext-Translate-merge:
         - mwext-Translate-lint
-    gate:
+    gate-silent:
       - mwext-Translate-merge:
         - mwext-Translate-lint:
           - mwext-Translate-install:
@@ -175,7 +184,7 @@ projects:
     check-silent:
       - mwext-TranslationNotifications-merge:
         - mwext-TranslationNotifications-lint
-    gate:
+    gate-silent:
       - mwext-TranslationNotifications-merge:
         - mwext-TranslationNotifications-lint:
           - mwext-TranslationNotifications-install:
@@ -185,7 +194,7 @@ projects:
     check-silent:
       - mwext-UniversalLanguageSelector-merge:
         - mwext-UniversalLanguageSelector-lint
-    gate:
+    gate-silent:
       - mwext-UniversalLanguageSelector-merge:
         - mwext-UniversalLanguageSelector-lint:
           - mwext-UniversalLanguageSelector-install:
@@ -195,7 +204,7 @@ projects:
     check-silent:
       - mwext-Validator-merge:
         - mwext-Validator-lint
-    gate:
+    gate-silent:
       - mwext-Validator-merge:
         - mwext-Validator-lint:
           - mwext-Validator-install:
