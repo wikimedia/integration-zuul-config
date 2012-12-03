@@ -111,6 +111,14 @@ projects:
       - mediawiki-core-regression-REL1_19
       - mediawiki-core-regression-REL1_20
 
+  - name: operations/mediawiki-config
+    check-silent:
+      - operations-mw-config-phplint:
+        - operations-mw-config-tests
+    gate-silent:
+      - operations-mw-config-phplint:
+        - operations-mw-config-tests
+
   - name: operations/puppet
     check-silent:
       - operations-puppet-validate
