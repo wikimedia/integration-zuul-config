@@ -1,0 +1,24 @@
+- job-template:
+    name: 'operations-mw-config-phplint'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - ant:
+        targets: 'php-lint'
+        buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
+
+- job-template:
+    name: 'operations-mw-config-tests'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: 'phpunit --log-junit logs/junit.xml'
+
+- project:
+    name: 'operations-mw-config'
+    gerrit-name: 'operations/mediawiki-config'
+    jobs:
+     - operations-mw-config-phplint
+     - operations-mw-config-tests
