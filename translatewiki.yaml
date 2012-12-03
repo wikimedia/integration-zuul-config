@@ -22,11 +22,24 @@
      - shell: |
          find . -type f -name '*.pp' -print0 | xargs -t -n1 -0  puppet parser validate --verbose
 
+# Run bash on each file under /bin without actually executing the script (-n)
+- job-template:
+    name: 'translatewiki-shelllint'
+
+    default: use-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - shell: |
+        find bin -type f -depth 1 -print0 | xargs -t -n1 -0 bash -n
+
 - job-group:
     name: translatewiki-jobs
     jobs:
      - translatewiki-phplint
      - translatewiki-puppet-validate
+     - translatewiki-shelllint
 
 - project:
     name: 'translatewiki'
