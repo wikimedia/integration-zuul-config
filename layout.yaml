@@ -72,6 +72,16 @@ jobs:
     success-message: Change looked fine once merged.
     failure-message: ERROR! It seems this job introduced a regression although it might be caused by a previous commit.
 
+  # MediaWiki Core regression tests (on merge and per branches):
+  - name: ^mediawiki-core-regression-.*
+    failure-message: ERROR! It seems this job introduced a regression although it might be caused by a previous commit.
+  - name: mediawiki-core-regression-master
+    branch: ^master$
+  - name: mediawiki-core-regression-REL1_19
+    branch: ^REL1_19$
+  - name: mediawiki-core-regression-REL1_19
+    branch: ^REL1_20$
+
 projects:
   - name: mediawiki/core
     check-silent:
@@ -88,6 +98,9 @@ projects:
     postmerge:
       - mediawiki-core-lint
       - mediawiki-core-master-phpunit-all
+      - mediawiki-core-regression-master
+      - mediawiki-core-regression-REL1_19
+      - mediawiki-core-regression-REL1_20
 
   - name: operations/puppet
     check-silent:
