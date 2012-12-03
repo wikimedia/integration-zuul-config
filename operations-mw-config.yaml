@@ -15,6 +15,11 @@
      - zuul
     builders:
      - shell: 'phpunit --log-junit logs/junit.xml'
+    publishers:
+     - xunit:
+        types:
+         - phpunit:
+            pattern: 'logs/junit.xml'
 
 - project:
     name: 'operations-mw-config'
