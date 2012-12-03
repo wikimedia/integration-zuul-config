@@ -148,6 +148,16 @@ projects:
           - mwext-DataValues-install:
             - mwext-DataValues-testextensions
 
+  - name: mediawiki/extensions/EtherEditor
+    check:
+      - mwext-EtherEditor-merge:
+        - mwext-EtherEditor-lint
+    gate:
+      - mwext-EtherEditor-merge:
+        - mwext-EtherEditor-lint:
+          - mwext-EtherEditor-install:
+            - mwext-EtherEditor-testextensions
+
   - name: mediawiki/extensions/Diff
     check:
       - mwext-Diff-merge:
