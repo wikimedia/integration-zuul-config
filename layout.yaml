@@ -255,3 +255,16 @@ projects:
           - mwext-Validator-install:
             - mwext-Validator-testextensions
 
+  - name: mediawiki/extensions/VisualEditor
+    check:
+      - mwext-VisualEditor-merge:
+        - mwext-VisualEditor-lint
+    gate:
+      - mwext-VisualEditor-merge:
+        - mwext-VisualEditor-lint:
+          - mwext-VisualEditor-install
+# No PHPUnit tests for now so simply disable triggering them
+# If you want to enable PHPUnit tests, delete the line above
+# and uncomment the two lines below:
+#          - mwext-VisualEditor-install:
+#            - mwext-VisualEditor-testextensions
