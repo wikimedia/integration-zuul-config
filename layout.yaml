@@ -95,6 +95,8 @@ jobs:
     voting: false
   - name: mwext-cldr-testextensions
     voting: false
+  - name: mwext-TranslationNotifications-testextensions
+    voting: false
 
 projects:
   - name: mediawiki/core
@@ -224,10 +226,10 @@ projects:
             - mwext-Translate-testextensions
 
   - name: mediawiki/extensions/TranslationNotifications
-    check-silent:
+    check:
       - mwext-TranslationNotifications-merge:
         - mwext-TranslationNotifications-lint
-    gate-silent:
+    gate:
       - mwext-TranslationNotifications-merge:
         - mwext-TranslationNotifications-lint:
           - mwext-TranslationNotifications-install:
