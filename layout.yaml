@@ -141,6 +141,16 @@ projects:
 
 #### MediaWiki extensions #############################################
 
+  - name: mediawiki/extensions/cldr
+    check:
+      - mwext-cldr-merge:
+        - mwext-cldr-lint
+    gate:
+      - mwext-cldr-merge:
+        - mwext-cldr-lint:
+          - mwext-cldr-install:
+            - mwext-cldr-testextensions
+
   - name: mediawiki/extensions/DataValues
     check:
       - mwext-DataValues-merge:
