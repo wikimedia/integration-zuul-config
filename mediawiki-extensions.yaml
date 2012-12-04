@@ -13,6 +13,10 @@
      - ant:
          targets: "php-lint"
          buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
+         # The extension has been fetched in a workspace subdirectory
+         # so make sure to lint the correct git working space
+         properties:
+             sourcedir: "$WORKSPACE/extensions/{ext-name}"
 
 - job-template:
     name: '{name}-{ext-name}-install'
