@@ -219,6 +219,22 @@ projects:
           - mwext-MobileFrontend-install:
             - mwext-MobileFrontend-testextensions
 
+  - name: mediawiki/extensions/SVGEdit
+    check:
+      - mwext-SVGEdit-merge:
+        - mwext-SVGEdit-jslint
+        - mwext-SVGEdit-lint
+    gate:
+      - mwext-SVGEdit-merge:
+        - mwext-SVGEdit-jslint
+        - mwext-SVGEdit-lint:
+          - mwext-SVGEdit-install
+# No PHPUnit tests for now so simply disable triggering them
+# If you want to enable PHPUnit tests, delete the line above
+# and uncomment the two lines below:
+#          - mwext-SVGEdit-install:
+#            - mwext-SVGEdit-testextensions
+
   - name: mediawiki/extensions/TitleBlacklist
     check:
       - mwext-TitleBlacklist-merge:
