@@ -18,6 +18,19 @@
          properties:
              sourcedir: "$WORKSPACE/extensions/{ext-name}"
 
+# Javascript linter is separated from the generic linter which let us finely
+# tune on which extension Zuul will lint JavaScript.  The reason is that some
+# extensions are not passing the tests yet.
+# We will probably end up merging -jslint jobs with the -lint jobs.
+- job-template:
+    name: '{name}-{ext-name}-jslint'
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+# TODO find a way to report using checkstyle format and add a 'xunit' publisher
+     - shell: "/var/lib/jenkins/bin/wmfgrunt --cwd \"$WORKSPACE/extensions/{ext-name}\" jshint"
+
 - job-template:
     name: '{name}-{ext-name}-install'
     defaults: use-zuul-for-mw-ext
@@ -54,6 +67,7 @@
     jobs:
      - '{name}-{ext-name}-merge'
      - '{name}-{ext-name}-lint'
+     - '{name}-{ext-name}-jslint'
      - '{name}-{ext-name}-install'
      - '{name}-{ext-name}-testextensions'
 
