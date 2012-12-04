@@ -76,6 +76,8 @@ pipelines:
 jobs:
   - name: ^.*merge$
     failure-message: Change could not be automatically merged. Please rebase it and reupload.
+  - name: ^.-jslint$
+    voting: false  # Until we are sure it works fine
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
     success-message: Change looked fine once merged.
@@ -148,9 +150,11 @@ projects:
   - name: mediawiki/extensions/cldr
     check:
       - mwext-cldr-merge:
+        - mwext-cldr-jslint
         - mwext-cldr-lint
     gate:
       - mwext-cldr-merge:
+        - mwext-cldr-jslint
         - mwext-cldr-lint:
           - mwext-cldr-install:
             - mwext-cldr-testextensions
@@ -158,9 +162,11 @@ projects:
   - name: mediawiki/extensions/DataValues
     check:
       - mwext-DataValues-merge:
+#        - mwext-DataValues-jslint
         - mwext-DataValues-lint
     gate:
       - mwext-DataValues-merge:
+#        - mwext-DataValues-jslint
         - mwext-DataValues-lint:
           - mwext-DataValues-install:
             - mwext-DataValues-testextensions
@@ -168,19 +174,23 @@ projects:
   - name: mediawiki/extensions/EtherEditor
     check:
       - mwext-EtherEditor-merge:
+#        - mwext-EtherEditor-jslint
         - mwext-EtherEditor-lint
     gate:
       - mwext-EtherEditor-merge:
         - mwext-EtherEditor-lint:
+#        - mwext-EtherEditor-jslint
           - mwext-EtherEditor-install:
             - mwext-EtherEditor-testextensions
 
   - name: mediawiki/extensions/Diff
     check:
       - mwext-Diff-merge:
+        - mwext-Diff-jslint
         - mwext-Diff-lint
     gate:
       - mwext-Diff-merge:
+        - mwext-Diff-jslint
         - mwext-Diff-lint:
           - mwext-Diff-install:
             - mwext-Diff-testextensions
@@ -188,9 +198,11 @@ projects:
   - name: mediawiki/extensions/LabeledSectionTransclusion
     check:
       - mwext-LabeledSectionTransclusion-merge:
+        - mwext-LabeledSectionTransclusion-jslint
         - mwext-LabeledSectionTransclusion-lint
     gate-silent:
       - mwext-LabeledSectionTransclusion-merge:
+        - mwext-LabeledSectionTransclusion-jslint
         - mwext-LabeledSectionTransclusion-lint:
           - mwext-LabeledSectionTransclusion-install:
             - mwext-LabeledSectionTransclusion-testextensions
@@ -199,8 +211,10 @@ projects:
     check:
       - mwext-MobileFrontend-merge:
         - mwext-MobileFrontend-lint
+        - mwext-MobileFrontend-jslint
     gate:
       - mwext-MobileFrontend-merge:
+        - mwext-MobileFrontend-jslint
         - mwext-MobileFrontend-lint:
           - mwext-MobileFrontend-install:
             - mwext-MobileFrontend-testextensions
@@ -208,9 +222,11 @@ projects:
   - name: mediawiki/extensions/TitleBlacklist
     check:
       - mwext-TitleBlacklist-merge:
+        - mwext-TitleBlacklist-jslint
         - mwext-TitleBlacklist-lint
     gate:
       - mwext-TitleBlacklist-merge:
+        - mwext-TitleBlacklist-jslint
         - mwext-TitleBlacklist-lint:
           - mwext-TitleBlacklist-install:
             - mwext-TitleBlacklist-testextensions
@@ -218,9 +234,11 @@ projects:
   - name: mediawiki/extensions/Translate
     check:
       - mwext-Translate-merge:
+#        - mwext-Translate-jslint
         - mwext-Translate-lint
     gate:
       - mwext-Translate-merge:
+#        - mwext-Translate-jslint
         - mwext-Translate-lint:
           - mwext-Translate-install:
             - mwext-Translate-testextensions
@@ -228,9 +246,11 @@ projects:
   - name: mediawiki/extensions/TranslationNotifications
     check:
       - mwext-TranslationNotifications-merge:
+        - mwext-TranslationNotifications-jslint
         - mwext-TranslationNotifications-lint
     gate:
       - mwext-TranslationNotifications-merge:
+        - mwext-TranslationNotifications-jslint
         - mwext-TranslationNotifications-lint:
           - mwext-TranslationNotifications-install:
             - mwext-TranslationNotifications-testextensions
@@ -238,9 +258,11 @@ projects:
   - name: mediawiki/extensions/UniversalLanguageSelector
     check:
       - mwext-UniversalLanguageSelector-merge:
+#        - mwext-UniversalLanguageSelector-jslint
         - mwext-UniversalLanguageSelector-lint
     gate:
       - mwext-UniversalLanguageSelector-merge:
+#        - mwext-UniversalLanguageSelector-jslint
         - mwext-UniversalLanguageSelector-lint:
           - mwext-UniversalLanguageSelector-install:
             - mwext-UniversalLanguageSelector-testextensions
@@ -248,9 +270,11 @@ projects:
   - name: mediawiki/extensions/Validator
     check:
       - mwext-Validator-merge:
+        - mwext-Validator-jslint
         - mwext-Validator-lint
     gate:
       - mwext-Validator-merge:
+        - mwext-Validator-jslint
         - mwext-Validator-lint:
           - mwext-Validator-install:
             - mwext-Validator-testextensions
@@ -258,9 +282,11 @@ projects:
   - name: mediawiki/extensions/VisualEditor
     check:
       - mwext-VisualEditor-merge:
+        - mwext-VisualEditor-jslint
         - mwext-VisualEditor-lint
     gate:
       - mwext-VisualEditor-merge:
+        - mwext-VisualEditor-jslint
         - mwext-VisualEditor-lint:
           - mwext-VisualEditor-install
 # No PHPUnit tests for now so simply disable triggering them
