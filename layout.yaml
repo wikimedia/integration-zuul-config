@@ -26,8 +26,13 @@ pipelines:
       # Prevents people from being able to submit a change
       # before unit tests have been run.
       verified: 0
+      # Give a hint that we have more or less looked at the code,
+      # also clear out a potential previous vote
+      code-review: 1
     failure:
       verified: -1
+      # Remove the flag that says we looked at it
+      code-review: 0
 
   # Pipelines that only get run when someone trusted has reviewed the code
   # (cr +2). Should be used to run tests and will report verified +2/-2.
