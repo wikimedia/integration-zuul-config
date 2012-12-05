@@ -203,6 +203,42 @@ projects:
           - mwext-Diff-install:
             - mwext-Diff-testextensions
 
+  - name: mediawiki/extensions/Echo
+    check:
+      - mwext-Echo-merge:
+        - mwext-Echo-jslint
+        - mwext-Echo-lint
+    gate:
+      - mwext-Echo-merge:
+        - mwext-Echo-jslint
+        - mwext-Echo-lint:
+          - mwext-Echo-install:
+            - mwext-Echo-testextensions
+
+  - name: mediawiki/extensions/EventLogging
+    check:
+      - mwext-EventLogging-merge:
+        - mwext-EventLogging-jslint
+        - mwext-EventLogging-lint
+    gate:
+      - mwext-EventLogging-merge:
+        - mwext-EventLogging-jslint
+        - mwext-EventLogging-lint:
+          - mwext-EventLogging-install:
+            - mwext-EventLogging-testextensions
+
+  - name: mediawiki/extensions/GeoData
+    check:
+      - mwext-GeoData-merge:
+        - mwext-GeoData-jslint
+        - mwext-GeoData-lint
+    gate:
+      - mwext-GeoData-merge:
+        - mwext-GeoData-jslint
+        - mwext-GeoData-lint:
+          - mwext-GeoData-install:
+            - mwext-GeoData-testextensions
+
   - name: mediawiki/extensions/LabeledSectionTransclusion
     check:
       - mwext-LabeledSectionTransclusion-merge:
@@ -227,6 +263,34 @@ projects:
           - mwext-MobileFrontend-install:
             - mwext-MobileFrontend-testextensions
 
+  - name: mediawiki/extensions/Renameuser
+    check:
+      - mwext-Renameuser-merge:
+        - mwext-Renameuser-lint
+        - mwext-Renameuser-jslint
+    gate:
+      - mwext-Renameuser-merge:
+        - mwext-Renameuser-jslint
+        - mwext-Renameuser-lint:
+          - mwext-Renameuser-install
+# No Unit tests yet :(
+#          - mwext-Renameuser-install:
+#            - mwext-Renameuser-testextensions
+
+  - name: mediawiki/extensions/Score
+    check:
+      - mwext-Score-merge:
+        - mwext-Score-lint
+        - mwext-Score-jslint
+    gate:
+      - mwext-Score-merge:
+        - mwext-Score-jslint
+        - mwext-Score-lint:
+          - mwext-Score-install
+# No Unit tests yet :(
+#          - mwext-Score-install:
+#            - mwext-Score-testextensions
+
   - name: mediawiki/extensions/SVGEdit
     check:
       - mwext-SVGEdit-merge:
@@ -242,6 +306,18 @@ projects:
 # and uncomment the two lines below:
 #          - mwext-SVGEdit-install:
 #            - mwext-SVGEdit-testextensions
+
+  - name: mediawiki/extensions/TimedMediaHandler
+    check:
+      - mwext-TimedMediaHandler-merge:
+        - mwext-TimedMediaHandler-jslint
+        - mwext-TimedMediaHandler-lint
+    gate:
+      - mwext-TimedMediaHandler-merge:
+        - mwext-TimedMediaHandler-jslint
+        - mwext-TimedMediaHandler-lint:
+          - mwext-TimedMediaHandler-install:
+            - mwext-TimedMediaHandler-testextensions
 
   - name: mediawiki/extensions/TitleBlacklist
     check:
