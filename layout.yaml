@@ -98,6 +98,10 @@ jobs:
   - name: mwext-GeoData-testextensions
     voting: false
 
+  # Eventlogging tests are being integrated
+  - name: mwext-EventLogging-testextensions
+    voting: false
+
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
     success-message: Change looked fine once merged.
@@ -236,10 +240,8 @@ projects:
       - mwext-EventLogging-merge:
         - mwext-EventLogging-jslint
         - mwext-EventLogging-lint:
-          - mwext-EventLogging-install
-# No PHPUnit tests yet :/
-#          - mwext-EventLogging-install:
-#            - mwext-EventLogging-testextensions
+          - mwext-EventLogging-install:
+            - mwext-EventLogging-testextensions
 
   - name: mediawiki/extensions/GeoData
     check:
