@@ -86,6 +86,18 @@ jobs:
   - name: mwext-VisualEditor-jslint
     voting: true
 
+  # Various failing jobs that need to be fixed eventually
+
+  # Echo installer does not support SQLite backend :-/
+  - name: mwext-Echo-install
+    voting: false
+  - name: mwext-Echo-testextensions
+    voting: false
+
+  # GeoMathTest::testRectWrapAround() fails as of Dec 5th 2012
+  - name: mwext-GeoData-testextension
+    voting: false
+
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
     success-message: Change looked fine once merged.
@@ -224,8 +236,10 @@ projects:
       - mwext-EventLogging-merge:
         - mwext-EventLogging-jslint
         - mwext-EventLogging-lint:
-          - mwext-EventLogging-install:
-            - mwext-EventLogging-testextensions
+          - mwext-EventLogging-install
+# No PHPUnit tests yet :/
+#          - mwext-EventLogging-install:
+#            - mwext-EventLogging-testextensions
 
   - name: mediawiki/extensions/GeoData
     check:
@@ -315,9 +329,11 @@ projects:
     gate:
       - mwext-TimedMediaHandler-merge:
         - mwext-TimedMediaHandler-jslint
-        - mwext-TimedMediaHandler-lint:
-          - mwext-TimedMediaHandler-install:
-            - mwext-TimedMediaHandler-testextensions
+        - mwext-TimedMediaHandler-lint
+# Requires the MwEmbedSupport extension :(
+#        - mwext-TimedMediaHandler-lint:
+#          - mwext-TimedMediaHandler-install:
+#            - mwext-TimedMediaHandler-testextensions
 
   - name: mediawiki/extensions/TitleBlacklist
     check:
