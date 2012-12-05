@@ -76,8 +76,16 @@ pipelines:
 jobs:
   - name: ^.*merge$
     failure-message: Change could not be automatically merged. Please rebase it and reupload.
+
+  # JSLint
+  #
+  # Disabled by default since most MediaWiki extensions do not pass tests yet:
   - name: ^.*-jslint$
     voting: false  # Until we are sure it works fine
+  # Explicitly enable voting for extensions we know are passing JSHint:
+  - name: mwext-VisualEditor-jslint
+    voting: true
+
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
     success-message: Change looked fine once merged.
