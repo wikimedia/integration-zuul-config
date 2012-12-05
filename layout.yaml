@@ -41,6 +41,10 @@ pipelines:
           - code-review: 2
 
   # Actual gate (report/vote in Gerrit)
+  #
+  # WARNING: do modify the gate-and-submit pipeline below whenever
+  #          changing the gate pipeline.
+  #
   - name: gate
     manager: IndependentPipelineManager
     trigger:
@@ -53,6 +57,28 @@ pipelines:
       # Let Zuul merge the change \O/
       # Disabled until ready
       #submit: true
+    failure:
+      verified: -1
+      # We really want to block submission when tests fails
+      code-review: -2
+
+  # Actual gate (report/vote in Gerrit)
+  # Will auto submit change on success!!!!!!!!
+  #
+  # WARNING: do modify the gate pipeline below whenever changing
+  #          the gate-and-submit pipeline.
+  #
+  - name: gate-and-submit
+    manager: IndependentPipelineManager
+    trigger:
+      - event: comment-added
+        approval:
+          - code-review: 2
+    success:
+      verified: 1
+      code-review: 1
+      # Let Zuul merge the change \O/
+      submit: true
     failure:
       verified: -1
       # We really want to block submission when tests fails
