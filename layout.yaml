@@ -315,6 +315,15 @@ projects:
           - mwext-MobileFrontend-install:
             - mwext-MobileFrontend-testextensions
 
+  # Parsoid is mostly JavaScript so we just run jsHint (and merge of course)
+  - name: mediawiki/extensions/Parsoid
+    check:
+      - mwext-Parsoid-merge:
+        - mwext-Parsoid-jslint
+    gate:
+      - mwext-Parsoid-merge:
+        - mwext-Parsoid-jslint
+
   - name: mediawiki/extensions/Renameuser
     check:
       - mwext-Renameuser-merge:
