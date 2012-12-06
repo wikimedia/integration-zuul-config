@@ -474,3 +474,15 @@ projects:
 # and uncomment the two lines below:
 #          - mwext-VisualEditor-install:
 #            - mwext-VisualEditor-testextensions
+
+  - name: mediawiki/extensions/Wikibase
+    check-silent:
+      - mwext-Wikibase-merge:
+        - mwext-Wikibase-jslint
+        - mwext-Wikibase-lint
+    gate-silent:
+      - mwext-Wikibase-merge:
+        - mwext-Wikibase-jslint
+        - mwext-Wikibase-lint:
+          - mwext-Wikibase-install:
+            - mwext-Wikibase-testextensions
