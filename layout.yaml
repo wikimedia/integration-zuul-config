@@ -15,7 +15,7 @@ pipelines:
         comment_filter: (?i)^\s*recheck\.?\s*$
 
   # Pipeline doing prechecks such as syntax linting
-  # Being run on any patchset and WILL REPORT verified +1/-1
+  # Being run on any patchset.
   - name: check
     manager: IndependentPipelineManager
     trigger:
@@ -32,6 +32,23 @@ pipelines:
     failure:
       verified: -1
       # Remove the flag that says we looked at it
+      code-review: 0
+
+  # Voting check for project that lack unit tests and only rely
+  # on lint check. Similiar to 'check' but additionally vote V+1
+  # This is mostly for operations/puppet which ask to get V+1 whenever
+  # change is linted since they dont have unit tests.
+  - name: check-voter
+    manager: IndependentPipelineManager
+    trigger:
+      - event: patchset-created
+      - event: comment-added
+        comment_filter: (?i)^\s*recheck\.?\s*$
+    success:
+      verified: 1
+      code-review: 1
+    failure:
+      verified: -1
       code-review: 0
 
   # Pipelines that only get run when someone trusted has reviewed the code
