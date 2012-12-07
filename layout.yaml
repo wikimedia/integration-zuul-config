@@ -337,6 +337,18 @@ projects:
           - mwext-MobileFrontend-install:
             - mwext-MobileFrontend-testextensions
 
+  - name: mediawiki/extensions/OpenStackManager
+    check:
+      - mwext-OpenStackManager-merge:
+        - mwext-OpenStackManager-lint
+        - mwext-OpenStackManager-jslint
+    gate:
+      - mwext-OpenStackManager-merge:
+        - mwext-OpenStackManager-jslint
+        - mwext-OpenStackManager-lint:
+          - mwext-OpenStackManager-install:
+            - mwext-OpenStackManager-testextensions
+
   # Parsoid is mostly JavaScript so we just run jsHint (and merge of course)
   - name: mediawiki/extensions/Parsoid
     check:
