@@ -1,0 +1,17 @@
+- job-template:
+    name: '{name}-perllint'
+
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: "perl -Mstrict -Mdiagnostics -cw wikibugs"
+
+- project:
+    name: 'wikimedia-bugzilla-wikibugs'
+    gerrit-name: 'wikimedia/bugzilla/wikibugs'
+
+    jobs:
+     - '{name}-perllint'
