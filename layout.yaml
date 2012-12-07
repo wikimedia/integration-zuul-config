@@ -351,6 +351,18 @@ projects:
 #          - mwext-OpenStackManager-install:
 #            - mwext-OpenStackManager-testextensions
 
+  - name: mediawiki/extensions/ParserFunctions
+    check:
+      - mwext-ParserFunctions-merge:
+        - mwext-ParserFunctions-jslint
+        - mwext-ParserFunctions-lint
+    gate:
+      - mwext-ParserFunctions-merge:
+        - mwext-ParserFunctions-jslint
+        - mwext-ParserFunctions-lint:
+          - mwext-ParserFunctions-install:
+            - mwext-ParserFunctions-testextensions
+
   # Parsoid is mostly JavaScript so we just run jsHint (and merge of course)
   - name: mediawiki/extensions/Parsoid
     check:
