@@ -29,6 +29,11 @@
             git archive --remote=/var/lib/jenkins/git/mw-core-bare master \
                 | (cd "$WORKSPACE" && tar xf -)
 
+- builder:
+    name: mw-get-extensions
+    builders:
+        - shell: "/var/lib/jenkins/tools/fetch-mw-ext {dependencies}"
+
 # Inject in LocalSettings.php some code to automatically load
 # installed extensions.
 - builder:

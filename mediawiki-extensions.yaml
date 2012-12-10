@@ -39,6 +39,8 @@
     builders:
      - get-mw-core
      - mw-install-sqlite
+     - mw-get-extensions:
+        dependencies: '{dependencies}'
      - mw-configure-extensions
      - mw-run-update-script
 
@@ -51,6 +53,8 @@
     builders:
      - get-mw-core
      - mw-install-sqlite
+     - mw-get-extensions:
+         dependencies: '{dependencies}'
      - mw-configure-extensions
      - mw-run-update-script
      - mw-phpunit-ext:
@@ -73,6 +77,10 @@
 
 - project:
     name: mwext
+
+    # By default we do not need any other extensions:
+    dependencies: ""
+
     ext-name:
      - cldr
      - DataValues
@@ -100,3 +108,13 @@
      - VisualEditor
     jobs:
      - mwext-check-jobs
+
+    # FIXME: this really need to be improved :(
+     - '{name}-{ext-name}-install':
+        name: mwext
+        ext-name: Wikibase
+        dependencies: 'Diff,DataValues,Validator'
+     - '{name}-{ext-name}-testextensions':
+        name: mwext
+        ext-name: Wikibase
+        dependencies: 'Diff,DataValues,Validator'
