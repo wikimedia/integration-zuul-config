@@ -1,3 +1,31 @@
+# Git comes with a whitespace checking system that will fail whenever the diff
+# contains trailing spaces.  We can use that to easily lint whitespaces in
+# submitted changes.
+
+# Lint whitespace in directory {dir}. Usefull when the Git repository has
+# been fetched out in some subdirtory of the Workspace. Example:
+#
+#  builder:
+#    - lint-whitespaces-in:
+#       dir: "$WORKSPACE/extensions/Foobar"
+#
+- builder:
+    name: lint-whitespaces-in
+    builders:
+        - shell: "git --work-tree=\"{dir}\" diff --color --check HEAD^..HEAD"
+
+# Lint whitespaces under $WORKSPACE. This is most probably the one you
+# want to use. Example:
+#
+# builder:
+#  - lint-whitespaces
+#
+- builder:
+    name: lint-whitespaces
+    builders:
+     - lint-whitespaces-in:
+        dir: '$WORKSPACE'
+
 # `get-mw-core` injects mediawiki/core@{requested branch} in $WORKSPACE
 # This should be used when testing extensions
 #

@@ -10,6 +10,8 @@
     triggers:
      - zuul
     builders:
+     - lint-whitespaces-in:
+        dir: '$WORKSPACE/extensions/{ext-name}'
      - ant:
          targets: "php-lint"
          buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
