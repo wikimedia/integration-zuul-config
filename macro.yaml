@@ -16,7 +16,8 @@
             #Clone/update a bare copy of mediawiki/core.git
             (
               # Attempt to clone to make sure the local copy exists
-              git clone --bare -- \
+              # TODO: use --mirror=fetch when using git v1.8+
+              git clone --mirror -- \
               https://gerrit.wikimedia.org/r/p/mediawiki/core.git \
               /var/lib/jenkins/git/mw-core-bare
             ) || (
