@@ -7,7 +7,26 @@
 
     builders:
      - shell: "/bin/sed -i 's%import \"../private%#import \"../private%' manifests/base.pp"
-     - shell: "rake validate"
+
+    # Run rake validate if and only if rakefile has NOT been altered
+    # by the submitted patchset.
+     - shell: |
+        #!/bin/bash -e
+
+        # Zuul merge changes in the branch which is then known is the
+        # job workspace as origin/branch. So we have to look up the sha1
+        # of the original branch by querying the Zuul maintained repo
+        ORIG_HEAD=`git --git-dir=/var/lib/zuul/git/operations/puppet/.git rev-parse "origin/$ZUUL_BRANCH"`
+        echo "Original HEAD origin/$ZUUL_BRANCH points to $ORIG_HEAD"
+
+        echo "Finding out whether the rakefile has been altered.."
+        (   # exit 0 if rakefile got changed
+            git diff --name-only "$ORIG_HEAD"..HEAD |grep rakefile>/dev/null
+        ) && (
+            echo "SKIPPING puppet validation: rakefile has been changed"
+        ) || (
+            rake --rakefile rakefile validate
+        )
 
 - project:
     name: 'operations-puppet'
