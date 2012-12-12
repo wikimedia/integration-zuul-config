@@ -146,6 +146,12 @@ jobs:
   - name: mwext-GeoData-testextensions
     voting: false
 
+  # LabeledSectionTransclusion has only parser tests which does not
+  # play well for now. https://gerrit.wikimedia.org/r/#/c/38114 should
+  # let PHPUnit load in the parser tests though. See bug 42506.
+  - name: mwext-LabeledSectionTransclusion-testextensions
+    voting: false
+
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
     success-message: Change looked fine once merged.
@@ -326,7 +332,7 @@ projects:
       - mwext-LabeledSectionTransclusion-merge:
         - mwext-LabeledSectionTransclusion-jslint
         - mwext-LabeledSectionTransclusion-lint
-    gate-silent:
+    gate:
       - mwext-LabeledSectionTransclusion-merge:
         - mwext-LabeledSectionTransclusion-jslint
         - mwext-LabeledSectionTransclusion-lint:
