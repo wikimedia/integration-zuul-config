@@ -28,9 +28,24 @@
             rake --rakefile rakefile validate
         )
 
+# Find out common typos in any files of ops/puppet
+- job-template:
+    name: 'operations-puppet-typos'
+    defaults: use-zuul
+
+    builders:
+     - shell: |
+        #!/bin/bash -e
+
+        echo "Looking for usage of 'pmpta' instead of 'pmtpa'..."
+        TYPO="pmpta"
+        (fgrep -R "$TYPO" *) && HAS_TYPO=1 || HAS_TYPO=0
+        exit $HAS_TYPO
+
 - project:
     name: 'operations-puppet'
     gerrit-name: 'operations/puppet'
 
     jobs:
+     - operations-puppet-typos
      - operations-puppet-validate
