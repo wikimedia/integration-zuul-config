@@ -14,3 +14,13 @@
         refspec: '$ZUUL_REF'
         disable-submodules: true
 
+- scm:
+    name: git-zuul-no-submodules
+    scm:
+    scm:
+     - git:
+        url: '/var/lib/zuul/git/{gerrit-name}'
+        branches:
+         - '$ZUUL_BRANCH'
+        refspec: '$ZUUL_REF'
+        disable-submodules: true

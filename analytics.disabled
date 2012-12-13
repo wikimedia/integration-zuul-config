@@ -1,0 +1,136 @@
+# Jobs for WMF Analytics team.
+#
+# This template has been used to bootstrap Analytics jobs in Jenkins on
+# Dec. 13th 2012.  It is no more used and kept for historical purposes, hence
+# the .disabled file extension.
+
+# Note that udp-filters and webstatscollector uses submodules. Since the
+# git repositories provided by Zuul are non-bare, Jenkins Git Plugin rewrite
+# the submodules url (see bug 42953) which leads out to an invalid submodule
+# being used.  We had to disable submodules for both repositories and update
+# the modules directly from the shell.
+
+- job-template:
+    name: 'analytics-libanon'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: |
+        (make clean || true)
+        rm -f configure Makefile
+        (make maintainer-clean || true)
+        # Single files deletes:
+        rm -f \
+            aclocal.m4 \
+            configure \
+            Makefile.in \
+            config.h \
+            config.h.in \
+            config.status \
+            libtool \
+            ltmain.sh \
+        ;
+        # Recursive deletes:
+        rm -rf \
+            m4 \
+            autom4te.cache \
+        ;
+        autoreconf
+        ./configure
+        make
+
+- project:
+    name: 'analytics-libanon'
+    gerrit-name: 'analytics/libanon'
+
+    jobs:
+     - analytics-libanon
+
+- job-template:
+    name: 'analytics-udp-filters'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    scm:
+     - git-zuul-no-submodules:
+        gerrit-name: '{gerrit-name}'
+
+    builders:
+     - shell: "git submodule sync"
+     - shell: "git submodule update --init"
+     - shell: |
+        echo "Looking around in jenkins";
+        stat `pwd`/../../libanon/workspace/src/.libs/
+        stat `pwd`/../../libcidr/workspace/src/
+        stat `pwd`/../../libcidr/workspace/include/
+        stat `pwd`/../../libanon/workspace/src/.libs/
+     - shell: "rm -f configure Makefile"
+     - shell: |
+        aclocal
+        autoreconf
+        autoconf
+        automake
+        ./configure
+     - shell: |
+        export LIBRARY_PATH=`pwd`/../../libanon/workspace/src/.libs/:`pwd`/../../libcidr/workspace/src/
+        export C_INCLUDE_PATH=`pwd`/../../libanon/workspace/src/:`pwd`/../../libcidr/workspace/include/
+        export LD_LIBRARY_PATH=`pwd`/../../libanon/workspace/src/.libs/:`pwd`/../../libcidr/workspace/src/
+        make
+        bash run.sh
+
+- project:
+    name: 'analytics-udp-filters'
+    gerrit-name: 'analytics/udp-filters'
+
+    jobs:
+     - 'analytics-udp-filters'
+
+- job-template:
+    name: 'analytics-webstatscollector'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    scm:
+     - git-zuul-no-submodules:
+        gerrit-name: '{gerrit-name}'
+
+    builders:
+     - shell: "git submodule sync"
+     - shell: "git submodule update --init"
+     - shell: |
+        libtoolize
+        autoreconf --verbose --install --force --make
+
+- project:
+    name: 'analytics-webstatscollector'
+    gerrit-name: 'analytics/webstatscollector'
+
+    jobs:
+     - 'analytics-webstatscollector'
+
+- job-template:
+    name: 'analytics-wikistats'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: |
+        cd squids
+        prove -v -Iperl/ t/;
+
+- project:
+    name: 'analytics-wikistats'
+    gerrit-name: 'analytics/wikistats'
+
+    jobs:
+     - 'analytics-wikistats'
+    # TODO add in a perl linting job
