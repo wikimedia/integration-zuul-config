@@ -1,9 +1,33 @@
 # vim: set ts=2 sw=2 et ai foldmethod=indent:
 #
+# This is the Zuul configuration file for the Wikimedia Foundation
+#
 # See http://ci.openstack.org/zuul/zuul.html#configuration
 #
 
+# Zuul configuration comes with three main sections:
+#
+# pipelines: filter Gerrit events and determine what is reported back in Gerrit
+#            once all jobs have been run.
+#
+# jobs: let you override the pipeline configuration on a per job basis. A nice
+#       way to handle exceptions to the usual workflow
+#
+# projects: Filter Gerrit event by project name then apply pipelines to filter
+#           the Gerrit events.  Under each pipeline are listed jobs to trigger.
+#           Jobs can be made dependant on each other.
+#
+# See upstream documentation at:
+#
+#   http://ci.openstack.org/zuul/zuul.html#layout-yaml
+
+
 pipelines:
+  # For some pipelines, we do not want to report anything back to Gerrit,
+  # this is useful when trying out a new set of filter or when adding a new
+  # repository in the workflow. Zuul still log the results in /var/log/zuul.log
+  # but simply ignore reporting back to Gerrit.  By convention such pipelines
+  # names are suffixed with '-silent'.
 
   # Pipeline doing prechecks such as syntax linting
   # Does NOT report back to Gerrit.
@@ -15,7 +39,7 @@ pipelines:
         comment_filter: (?i)^\s*recheck\.?\s*$
 
   # Pipeline doing prechecks such as syntax linting
-  # Being run on any patchset.
+  # DOES report back to Gerrit.
   - name: check
     manager: IndependentPipelineManager
     trigger:
@@ -148,6 +172,7 @@ pipelines:
       # We really want to block submission when tests fails
       code-review: -2
 
+  # Filter the merge events, useful to do regression testing.
   - name: postmerge
     manager: IndependentPipelineManager
     trigger:
@@ -221,6 +246,8 @@ jobs:
   - name: mwext-TranslationNotifications-testextensions
     voting: false
 
+# Register the Gerrit project name, apply them pipelines that in turn trigger
+# a set of jobs.
 projects:
   - name: mediawiki/core
     check:
