@@ -195,24 +195,27 @@ projects:
       - mediawiki-core-regression-REL1_20
 
   - name: analytics/libanon
-    gate-and-submit:
+    gate:
+     - analytics-libanon
+    postmerge:
      - analytics-libanon
 
-# FIXME: remove the 'check' once that works fine
   - name: analytics/udp-filters
-    check:
+    gate:
      - analytics-udp-filters
-    gate-and-submit:
+    postmerge:
      - analytics-udp-filters
 
   - name: analytics/webstatscollector
-    check:
+    gate:
      - analytics-webstatscollector
-    gate-and-submit:
+    postmerge:
      - analytics-webstatscollector
 
   - name: analytics/wikistats
-    gate-and-submit:
+    gate:
+     - analytics-wikistats
+    postmerge:
      - analytics-wikistats
 
   - name: operations/mediawiki-config
