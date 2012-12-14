@@ -33,12 +33,13 @@
 
 # Run all extension tests
 - job-template:
-    name: '{name}-{ext-name}-testextensions'
+    name: '{name}-{ext-name}-testextensions-{mwbranch}'
     defaults: use-zuul-for-mw-ext
     triggers:
      - zuul
     builders:
-     - get-mw-core
+     - get-mw-core:
+        branch: '{mwbranch}'
      - mw-install-sqlite
      - mw-get-extensions:
          dependencies: '{dependencies}'
@@ -59,7 +60,8 @@
      - '{name}-{ext-name}-merge'
      - '{name}-{ext-name}-lint'
      - '{name}-{ext-name}-jslint'
-     - '{name}-{ext-name}-testextensions'
+     - '{name}-{ext-name}-install'
+     - '{name}-{ext-name}-testextensions-{mwbranch}'
 
 - project:
     name: mwext
@@ -96,6 +98,12 @@
      - Validator
      - VisualEditor
      - WikimediaMaintenance
+
+    mwbranch:
+     - master
+     - REL1_20
+     - REL1_19
+
     jobs:
      - mwext-check-jobs
 

@@ -1,4 +1,4 @@
-# `get-mw-core` injects mediawiki/core@master in $WORKSPACE
+# `get-mw-core` injects mediawiki/core@{requested branch} in $WORKSPACE
 # This should be used when testing extensions
 #
 # The aim is to get the very latest MediaWiki core version into the extension
@@ -25,8 +25,8 @@
               git --git-dir=/var/lib/jenkins/git/mw-core-bare remote update
             )
 
-            # Snapshot `master` in the job workspace
-            git archive --remote=/var/lib/jenkins/git/mw-core-bare master \
+            # Snapshot `remotes/origin/{branch}` in the job workspace
+            git archive --remote=/var/lib/jenkins/git/mw-core-bare {branch} \
                 | (cd "$WORKSPACE" && tar xf -)
 
 - builder:
