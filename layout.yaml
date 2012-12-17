@@ -249,6 +249,16 @@ projects:
 
 #### MediaWiki extensions #############################################
 
+  - name: mediawiki/extensions/Babel
+    check:
+      - mwext-Babel-merge:
+        - mwext-Babel-jslint
+        - mwext-Babel-lint
+    gate:
+      - mwext-Babel-merge:
+        - mwext-Babel-jslint
+        - mwext-Babel-lint
+
   - name: mediawiki/extensions/cldr
     check:
       - mwext-cldr-merge:
@@ -259,6 +269,16 @@ projects:
         - mwext-cldr-jslint
         - mwext-cldr-lint:
           - mwext-cldr-testextensions
+
+  - name: mediawiki/extensions/CleanChanges
+    check:
+      - mwext-CleanChanges-merge:
+        - mwext-CleanChanges-jslint
+        - mwext-CleanChanges-lint
+    gate:
+      - mwext-CleanChanges-merge:
+        - mwext-CleanChanges-jslint
+        - mwext-CleanChanges-lint
 
   - name: mediawiki/extensions/DataValues
     check:
@@ -347,6 +367,16 @@ projects:
         - mwext-LiquidThreads-jslint
         - mwext-LiquidThreads-lint
 # No unit tests for now :(
+
+  - name: mediawiki/extensions/LocalisationUpdate
+    check:
+      - mwext-LocalisationUpdate-merge:
+        - mwext-LocalisationUpdate-jslint
+        - mwext-LocalisationUpdate-lint
+    gate:
+      - mwext-LocalisationUpdate-merge:
+        - mwext-LocalisationUpdate-jslint
+        - mwext-LocalisationUpdate-lint
 
   - name: mediawiki/extensions/MobileFrontend
     check:
