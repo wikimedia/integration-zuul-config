@@ -24,19 +24,18 @@ pipelines:
         comment_filter: (?i)^\s*recheck\.?\s*$
     success:
       # Prevents people from being able to submit a change
-      # before unit tests have been run.
-      verified: 0
-      # Give a hint that we have more or less looked at the code,
-      # also clear out a potential previous vote
-      code-review: 1
+      # before unit tests have been run since submit requires V+2.
+      verified: 1
+      # Remove potential CR-2 flag caused by unit tests failing previously
+      code-review: 0
     failure:
       verified: -1
-      # Remove the flag that says we looked at it
+      # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
 
   # Voting check for project that lack unit tests and only rely
-  # on lint check. Similiar to 'check' but additionally vote V+1
-  # This is mostly for operations/puppet which ask to get V+1 whenever
+  # on lint check. Similiar to 'check' but additionally vote V+2
+  # This is mostly for operations/puppet which ask to get V+2 whenever
   # change is linted since they dont have unit tests.
   - name: check-voter
     manager: IndependentPipelineManager
@@ -45,10 +44,12 @@ pipelines:
       - event: comment-added
         comment_filter: (?i)^\s*recheck\.?\s*$
     success:
-      verified: 1
-      code-review: 1
+      verified: 2
+      # Remove potential CR-2 flag caused by unit tests failing previously
+      code-review: 0
     failure:
       verified: -1
+      # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
 
   # Pipelines that only get run when someone trusted has reviewed the code
@@ -74,11 +75,9 @@ pipelines:
         approval:
           - code-review: 2
     success:
-      verified: 1
-      code-review: 1
-      # Let Zuul merge the change \O/
-      # Disabled until ready
-      #submit: true
+      verified: 2
+      # Remove potential CR-2 flag caused by unit tests failing previously
+      code-review: 0
     failure:
       verified: -1
       # We really want to block submission when tests fails
@@ -97,8 +96,9 @@ pipelines:
         approval:
           - code-review: 2
     success:
-      verified: 1
-      code-review: 1
+      verified: 2
+      # Remove potential CR-2 flag caused by unit tests failing previously
+      code-review: 0
       # Let Zuul merge the change \O/
       submit: true
     failure:
