@@ -139,8 +139,6 @@ jobs:
   # Various failing jobs that need to be fixed eventually
 
   # Echo installer does not support SQLite backend :-/
-  - name: mwext-Echo-install
-    voting: false
   - name: mwext-Echo-testextensions
     voting: false
 
@@ -260,8 +258,7 @@ projects:
       - mwext-cldr-merge:
         - mwext-cldr-jslint
         - mwext-cldr-lint:
-          - mwext-cldr-install:
-            - mwext-cldr-testextensions
+          - mwext-cldr-testextensions
 
   - name: mediawiki/extensions/DataValues
     check:
@@ -272,8 +269,7 @@ projects:
       - mwext-DataValues-merge:
 #        - mwext-DataValues-jslint
         - mwext-DataValues-lint:
-          - mwext-DataValues-install:
-            - mwext-DataValues-testextensions
+          - mwext-DataValues-testextensions
 
   - name: mediawiki/extensions/EtherEditor
     check:
@@ -284,8 +280,7 @@ projects:
       - mwext-EtherEditor-merge:
         - mwext-EtherEditor-lint:
 #        - mwext-EtherEditor-jslint
-          - mwext-EtherEditor-install:
-            - mwext-EtherEditor-testextensions
+          - mwext-EtherEditor-testextensions
 
   - name: mediawiki/extensions/Diff
     check:
@@ -296,8 +291,7 @@ projects:
       - mwext-Diff-merge:
         - mwext-Diff-jslint
         - mwext-Diff-lint:
-          - mwext-Diff-install:
-            - mwext-Diff-testextensions
+          - mwext-Diff-testextensions
 
   - name: mediawiki/extensions/Echo
     check:
@@ -308,8 +302,7 @@ projects:
       - mwext-Echo-merge:
         - mwext-Echo-jslint
         - mwext-Echo-lint:
-          - mwext-Echo-install:
-            - mwext-Echo-testextensions
+          - mwext-Echo-testextensions
 
   - name: mediawiki/extensions/EventLogging
     check:
@@ -320,8 +313,7 @@ projects:
       - mwext-EventLogging-merge:
         - mwext-EventLogging-jslint
         - mwext-EventLogging-lint:
-          - mwext-EventLogging-install:
-            - mwext-EventLogging-testextensions
+          - mwext-EventLogging-testextensions
 
   - name: mediawiki/extensions/GeoData
     check:
@@ -332,8 +324,7 @@ projects:
       - mwext-GeoData-merge:
         - mwext-GeoData-jslint
         - mwext-GeoData-lint:
-          - mwext-GeoData-install:
-            - mwext-GeoData-testextensions
+          - mwext-GeoData-testextensions
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     check:
@@ -344,8 +335,7 @@ projects:
       - mwext-LabeledSectionTransclusion-merge:
         - mwext-LabeledSectionTransclusion-jslint
         - mwext-LabeledSectionTransclusion-lint:
-          - mwext-LabeledSectionTransclusion-install:
-            - mwext-LabeledSectionTransclusion-testextensions
+          - mwext-LabeledSectionTransclusion-testextensions
 
   - name: mediawiki/extensions/LiquidThreads
     check:
@@ -367,8 +357,7 @@ projects:
       - mwext-MobileFrontend-merge:
         - mwext-MobileFrontend-jslint
         - mwext-MobileFrontend-lint:
-          - mwext-MobileFrontend-install:
-            - mwext-MobileFrontend-testextensions
+          - mwext-MobileFrontend-testextensions
 
   - name: mediawiki/extensions/OpenStackManager
     check:
@@ -378,11 +367,10 @@ projects:
     gate:
       - mwext-OpenStackManager-merge:
         - mwext-OpenStackManager-jslint
-        - mwext-OpenStackManager-lint:
-          - mwext-OpenStackManager-install
+        - mwext-OpenStackManager-lint
 # No unit tests for now :(
-#          - mwext-OpenStackManager-install:
-#            - mwext-OpenStackManager-testextensions
+#        - mwext-OpenStackManager-lint:
+#          - mwext-OpenStackManager-testextensions
 
   - name: mediawiki/extensions/ParserFunctions
     check:
@@ -393,8 +381,7 @@ projects:
       - mwext-ParserFunctions-merge:
         - mwext-ParserFunctions-jslint
         - mwext-ParserFunctions-lint:
-          - mwext-ParserFunctions-install:
-            - mwext-ParserFunctions-testextensions
+          - mwext-ParserFunctions-testextensions
 
   # Parsoid is mostly JavaScript so we just run jsHint (and merge of course)
   - name: mediawiki/extensions/Parsoid
@@ -413,11 +400,10 @@ projects:
     gate:
       - mwext-Renameuser-merge:
         - mwext-Renameuser-jslint
-        - mwext-Renameuser-lint:
-          - mwext-Renameuser-install
+        - mwext-Renameuser-lint
 # No Unit tests yet :(
-#          - mwext-Renameuser-install:
-#            - mwext-Renameuser-testextensions
+#        - mwext-Renameuser-lint:
+#          - mwext-Renameuser-testextensions
 
   - name: mediawiki/extensions/Score
     check:
@@ -427,11 +413,10 @@ projects:
     gate:
       - mwext-Score-merge:
         - mwext-Score-jslint
-        - mwext-Score-lint:
-          - mwext-Score-install
+        - mwext-Score-lint
 # No Unit tests yet :(
-#          - mwext-Score-install:
-#            - mwext-Score-testextensions
+#        - mwext-Score-lint:
+#          - mwext-Score-testextensions
 
   - name: mediawiki/extensions/SVGEdit
     check:
@@ -441,13 +426,12 @@ projects:
     gate:
       - mwext-SVGEdit-merge:
         - mwext-SVGEdit-jslint
-        - mwext-SVGEdit-lint:
-          - mwext-SVGEdit-install
+        - mwext-SVGEdit-lint
 # No PHPUnit tests for now so simply disable triggering them
 # If you want to enable PHPUnit tests, delete the line above
 # and uncomment the two lines below:
-#          - mwext-SVGEdit-install:
-#            - mwext-SVGEdit-testextensions
+#        - mwext-SVGEdit-lint:
+#          - mwext-SVGEdit-testextensions
 
   - name: mediawiki/extensions/TimedMediaHandler
     check:
@@ -460,8 +444,7 @@ projects:
         - mwext-TimedMediaHandler-lint
 # Requires the MwEmbedSupport extension :(
 #        - mwext-TimedMediaHandler-lint:
-#          - mwext-TimedMediaHandler-install:
-#            - mwext-TimedMediaHandler-testextensions
+#          - mwext-TimedMediaHandler-testextensions
 
   - name: mediawiki/extensions/TitleBlacklist
     check:
@@ -472,8 +455,7 @@ projects:
       - mwext-TitleBlacklist-merge:
         - mwext-TitleBlacklist-jslint
         - mwext-TitleBlacklist-lint:
-          - mwext-TitleBlacklist-install:
-            - mwext-TitleBlacklist-testextensions
+          - mwext-TitleBlacklist-testextensions
 
   - name: mediawiki/extensions/Translate
     check:
@@ -484,8 +466,7 @@ projects:
       - mwext-Translate-merge:
         - mwext-Translate-jslint
         - mwext-Translate-lint:
-          - mwext-Translate-install:
-            - mwext-Translate-testextensions
+          - mwext-Translate-testextensions
 
   - name: mediawiki/extensions/TranslationNotifications
     check:
@@ -496,8 +477,7 @@ projects:
       - mwext-TranslationNotifications-merge:
         - mwext-TranslationNotifications-jslint
         - mwext-TranslationNotifications-lint:
-          - mwext-TranslationNotifications-install:
-            - mwext-TranslationNotifications-testextensions
+          - mwext-TranslationNotifications-testextensions
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     check:
@@ -508,8 +488,7 @@ projects:
       - mwext-UniversalLanguageSelector-merge:
 #        - mwext-UniversalLanguageSelector-jslint
         - mwext-UniversalLanguageSelector-lint:
-          - mwext-UniversalLanguageSelector-install:
-            - mwext-UniversalLanguageSelector-testextensions
+          - mwext-UniversalLanguageSelector-testextensions
 
   - name: mediawiki/extensions/Validator
     check:
@@ -520,8 +499,7 @@ projects:
       - mwext-Validator-merge:
         - mwext-Validator-jslint
         - mwext-Validator-lint:
-          - mwext-Validator-install:
-            - mwext-Validator-testextensions
+          - mwext-Validator-testextensions
 
   - name: mediawiki/extensions/VisualEditor
     check:
@@ -533,14 +511,7 @@ projects:
         - mwext-VisualEditor-jslint
         - mwext-VisualEditor-lint
 # VE team does not need any install nor has any PHP Unit tests
-# so skip the installer entirely.
-#        - mwext-VisualEditor-lint:
-#          - mwext-VisualEditor-install
-# No PHPUnit tests for now so simply disable triggering them
-# If you want to enable PHPUnit tests, delete the line above
-# and uncomment the two lines below:
-#          - mwext-VisualEditor-install:
-#            - mwext-VisualEditor-testextensions
+# so skip the installer entirely and PHPUnit tests.
 
   - name: mediawiki/extensions/Wikibase
     check-silent:
@@ -551,5 +522,4 @@ projects:
       - mwext-Wikibase-merge:
         - mwext-Wikibase-jslint
         - mwext-Wikibase-lint:
-          - mwext-Wikibase-install:
-            - mwext-Wikibase-testextensions
+          - mwext-Wikibase-testextensions
