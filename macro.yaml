@@ -72,3 +72,20 @@
 # --testsuite is not yet available on gallium :(
 #      - shell: 'php tests/phpunit/phpunit.php --log-junit junit-phpunit-allexts.xml --testsuite extensions'
       - shell: 'php tests/phpunit/phpunit.php --log-junit junit-phpunit-allexts.xml -- extensions'
+
+# Python pep8 builder - copied from OpenStack project
+- builder:
+    name: pep8
+    builders:
+     - shell: "set -o pipefail ; pep8 . | tee pep8.txt ; set +o pipefail"
+
+# Python pep8 publisher - copied from OpenStack project
+- publishers:
+    name: pep8
+    publishers:
+     - violations:
+        pep8:
+            min: 0
+            max: 1
+            unstable: 1
+            pattern: '**/pep8.txt'
