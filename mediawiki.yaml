@@ -177,3 +177,16 @@
     jobs:
      - 'mediawiki-core-regression-{branch}'
      - '{name}-phpcs'
+
+- job:
+    name: mediawiki-core-docgen
+    gerrit-name: mediawiki/core
+
+    defaults: use-zuul
+    scm:
+     - git-mwcore-nosubmodules
+    triggers:
+     - zuul-post
+
+    builders:
+     - shell: "/var/lib/jenkins/tools/mwcore-docgen.sh"

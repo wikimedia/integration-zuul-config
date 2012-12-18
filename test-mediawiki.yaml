@@ -12,6 +12,14 @@
         echo "Showing up all variables using export:"
         export
 
+- job-template:
+    name: 'test-mediawiki-docgen'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: "/var/lib/jenkins/tools/mwcore-docgen.sh"
+
 - project:
     name: test-mediawiki
     gerrit-name: test/mediawiki
@@ -19,3 +27,4 @@
      - 'test-mediawiki-dumpenv'
      - '{name}-phpcs-HEAD'
      - '{name}-qunit'
+     - 'test-mediawiki-docgen'
