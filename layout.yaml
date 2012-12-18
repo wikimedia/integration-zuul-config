@@ -52,6 +52,48 @@ pipelines:
       # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
 
+  - name: test
+    manager: IndependentPipelineManager
+    trigger:
+      - event: patchset-created
+
+        # Make sure to use non greedy selectors (.*?) and to escape
+        # dots: \.
+
+        email_filter: .*?@wikimedia\.org$
+        email_filter: .*?@wikimedia\.de$
+
+        # WMF Contractors:
+        email_filter: ^anomie\.wikipedia@gmail\.com$
+        email_filter: ^amir\.aharoni@mail\.huji\.ac\.il$
+        email_filter: ^hashar@free\.fr$
+        email_filter: ^jeroendedauw@gmail\.com$
+        email_filter: ^maxsem\.wiki@gmail\.com$
+        email_filter: ^mtraceur@member\.fsf\.org$
+        email_filter: ^niklas\.laxstrom@gmail\.com$
+        email_filter: ^s\.mazeland@xs4all\.nl$
+
+        # WMDE:
+        email_filter: ^aude\.wiki@gmail\.com$
+
+        # Trusted long term users:
+        email_filter: ^dereckson@espace-win\.org$
+        email_filter: ^ialex\.wiki@gmail\.com$
+        email_filter: ^hartman\.wiki@gmail\.com$
+        email_filter: ^liangent@gmail\.com$
+        email_filter: ^mah@everybody\.org$
+        email_filter: ^raimond\.spekking@gmail\.com$
+        email_filter: ^robinp\.1273@gmail\.com$
+        email_filter: ^tim@tim-landscheidt\.de$
+        email_filter: ^umherirrender_de\.wp@web\.de$
+
+    success:
+      verified: 2
+      code-review: 0
+    failure:
+      verified: -1
+      code-review: -2
+
   # Pipelines that only get run when someone trusted has reviewed the code
   # (cr +2). Should be used to run tests and will report verified +2/-2.
   #
@@ -184,6 +226,14 @@ projects:
     check:
       - mediawiki-core-merge:
         - mediawiki-core-lint
+    test:
+      - mediawiki-core-merge:
+        - mediawiki-core-lint:
+          - mediawiki-core-phpunit-databaseless:
+            - mediawiki-core-install-sqlite:
+              - mediawiki-core-phpunit-api
+              - mediawiki-core-phpunit-misc
+              - mediawiki-core-phpunit-parser
     gate-and-submit:
       - mediawiki-core-merge:
         - mediawiki-core-lint:
