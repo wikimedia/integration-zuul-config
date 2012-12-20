@@ -50,11 +50,9 @@ pipelines:
       # Prevents people from being able to submit a change
       # before unit tests have been run since submit requires V+2.
       verified: 1
-      # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
     failure:
       verified: -1
-      # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
 
   # Voting check for project that lack unit tests and only rely
@@ -69,11 +67,9 @@ pipelines:
         comment_filter: (?i)^\s*recheck\.?\s*$
     success:
       verified: 2
-      # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
     failure:
       verified: -1
-      # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
 
   - name: test
@@ -119,7 +115,7 @@ pipelines:
       code-review: 0
     failure:
       verified: -1
-      code-review: -2
+      code-review: 0
 
   # Pipelines that only get run when someone trusted has reviewed the code
   # (cr +2). Should be used to run tests and will report verified +2/-2.
@@ -145,12 +141,10 @@ pipelines:
           - code-review: 2
     success:
       verified: 2
-      # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
     failure:
       verified: -1
-      # We really want to block submission when tests fails
-      code-review: -2
+      code-review: 0
 
   # Actual gate (report/vote in Gerrit)
   # Will auto submit change on success!!!!!!!!
@@ -169,14 +163,12 @@ pipelines:
       verified: 0
     success:
       verified: 2
-      # Remove potential CR-2 flag caused by unit tests failing previously
       code-review: 0
       # Let Zuul merge the change \O/
       submit: true
     failure:
       verified: -1
-      # We really want to block submission when tests fails
-      code-review: -2
+      code-review: 0
 
   # Filter the merge events, useful to do regression testing.
   - name: postmerge
