@@ -211,17 +211,17 @@ jobs:
   # Various failing jobs that need to be fixed eventually
 
   # Echo installer does not support SQLite backend :-/
-  - name: mwext-Echo-testextensions
+  - name: mwext-Echo-testextensions.*
     voting: false
 
   # GeoMathTest::testRectWrapAround() fails as of Dec 5th 2012
-  - name: mwext-GeoData-testextensions
+  - name: mwext-GeoData-testextensions.*
     voting: false
 
   # LabeledSectionTransclusion has only parser tests which does not
   # play well for now. https://gerrit.wikimedia.org/r/#/c/38114 should
   # let PHPUnit load in the parser tests though. See bug 42506.
-  - name: mwext-LabeledSectionTransclusion-testextensions
+  - name: mwext-LabeledSectionTransclusion-testextensions.*
     voting: false
 
   - name: mediawiki-core-master-phpunit-all
@@ -239,11 +239,11 @@ jobs:
   - name: mediawiki-core-regression-REL1_20
     branch: ^REL1_20$
   # Extensions for which tests are non functional or absents:
-  - name: mwext-EtherEditor-testextensions
+  - name: mwext-EtherEditor-testextensions.*
     voting: false
-  - name: mwext-cldr-testextensions
+  - name: mwext-cldr-testextensions.*
     voting: false
-  - name: mwext-TranslationNotifications-testextensions
+  - name: mwext-TranslationNotifications-testextensions.*
     voting: false
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
@@ -355,7 +355,7 @@ projects:
       - mwext-cldr-merge:
         - mwext-cldr-jslint
         - mwext-cldr-lint:
-          - mwext-cldr-testextensions
+          - mwext-cldr-testextensions-master
 
   - name: mediawiki/extensions/CleanChanges
     check:
@@ -376,7 +376,7 @@ projects:
       - mwext-DataValues-merge:
 #        - mwext-DataValues-jslint
         - mwext-DataValues-lint:
-          - mwext-DataValues-testextensions
+          - mwext-DataValues-testextensions-master
 
   - name: mediawiki/extensions/EtherEditor
     check:
@@ -387,7 +387,7 @@ projects:
       - mwext-EtherEditor-merge:
         - mwext-EtherEditor-lint:
 #        - mwext-EtherEditor-jslint
-          - mwext-EtherEditor-testextensions
+          - mwext-EtherEditor-testextensions-master
 
   - name: mediawiki/extensions/Diff
     check:
@@ -398,7 +398,7 @@ projects:
       - mwext-Diff-merge:
         - mwext-Diff-jslint
         - mwext-Diff-lint:
-          - mwext-Diff-testextensions
+          - mwext-Diff-testextensions-master
 
   - name: mediawiki/extensions/Echo
     check:
@@ -409,7 +409,7 @@ projects:
       - mwext-Echo-merge:
         - mwext-Echo-jslint
         - mwext-Echo-lint:
-          - mwext-Echo-testextensions
+          - mwext-Echo-testextensions-master
 
   - name: mediawiki/extensions/EventLogging
     check:
@@ -420,7 +420,7 @@ projects:
       - mwext-EventLogging-merge:
         - mwext-EventLogging-jslint
         - mwext-EventLogging-lint:
-          - mwext-EventLogging-testextensions
+          - mwext-EventLogging-testextensions-master
 
   - name: mediawiki/extensions/GeoData
     check:
@@ -431,7 +431,7 @@ projects:
       - mwext-GeoData-merge:
         - mwext-GeoData-jslint
         - mwext-GeoData-lint:
-          - mwext-GeoData-testextensions
+          - mwext-GeoData-testextensions-master
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     check:
@@ -442,7 +442,7 @@ projects:
       - mwext-LabeledSectionTransclusion-merge:
         - mwext-LabeledSectionTransclusion-jslint
         - mwext-LabeledSectionTransclusion-lint:
-          - mwext-LabeledSectionTransclusion-testextensions
+          - mwext-LabeledSectionTransclusion-testextensions-master
 
   - name: mediawiki/extensions/LiquidThreads
     check:
@@ -474,7 +474,7 @@ projects:
       - mwext-MobileFrontend-merge:
         - mwext-MobileFrontend-jslint
         - mwext-MobileFrontend-lint:
-          - mwext-MobileFrontend-testextensions
+          - mwext-MobileFrontend-testextensions-master
 
   - name: mediawiki/extensions/OpenStackManager
     check:
@@ -487,7 +487,7 @@ projects:
         - mwext-OpenStackManager-lint
 # No unit tests for now :(
 #        - mwext-OpenStackManager-lint:
-#          - mwext-OpenStackManager-testextensions
+#          - mwext-OpenStackManager-testextensions-master
 
   - name: mediawiki/extensions/ParserFunctions
     check:
@@ -498,7 +498,7 @@ projects:
       - mwext-ParserFunctions-merge:
         - mwext-ParserFunctions-jslint
         - mwext-ParserFunctions-lint:
-          - mwext-ParserFunctions-testextensions
+          - mwext-ParserFunctions-testextensions-master
 
   # Parsoid is mostly JavaScript so we just run jsHint (and merge of course)
   - name: mediawiki/extensions/Parsoid
@@ -520,7 +520,7 @@ projects:
         - mwext-Renameuser-lint
 # No Unit tests yet :(
 #        - mwext-Renameuser-lint:
-#          - mwext-Renameuser-testextensions
+#          - mwext-Renameuser-testextensions-master
 
   - name: mediawiki/extensions/Score
     check:
@@ -533,7 +533,7 @@ projects:
         - mwext-Score-lint
 # No Unit tests yet :(
 #        - mwext-Score-lint:
-#          - mwext-Score-testextensions
+#          - mwext-Score-testextensions-master
 
   - name: mediawiki/extensions/SVGEdit
     check:
@@ -548,7 +548,7 @@ projects:
 # If you want to enable PHPUnit tests, delete the line above
 # and uncomment the two lines below:
 #        - mwext-SVGEdit-lint:
-#          - mwext-SVGEdit-testextensions
+#          - mwext-SVGEdit-testextensions-master
 
   - name: mediawiki/extensions/TimedMediaHandler
     check:
@@ -561,7 +561,7 @@ projects:
         - mwext-TimedMediaHandler-lint
 # Requires the MwEmbedSupport extension :(
 #        - mwext-TimedMediaHandler-lint:
-#          - mwext-TimedMediaHandler-testextensions
+#          - mwext-TimedMediaHandler-testextensions-master
 
   - name: mediawiki/extensions/TitleBlacklist
     check:
@@ -572,7 +572,7 @@ projects:
       - mwext-TitleBlacklist-merge:
         - mwext-TitleBlacklist-jslint
         - mwext-TitleBlacklist-lint:
-          - mwext-TitleBlacklist-testextensions
+          - mwext-TitleBlacklist-testextensions-master
 
   - name: mediawiki/extensions/Translate
     check:
@@ -583,7 +583,7 @@ projects:
       - mwext-Translate-merge:
         - mwext-Translate-jslint
         - mwext-Translate-lint:
-          - mwext-Translate-testextensions
+          - mwext-Translate-testextensions-master
 
   - name: mediawiki/extensions/TranslationNotifications
     check:
@@ -594,7 +594,7 @@ projects:
       - mwext-TranslationNotifications-merge:
         - mwext-TranslationNotifications-jslint
         - mwext-TranslationNotifications-lint:
-          - mwext-TranslationNotifications-testextensions
+          - mwext-TranslationNotifications-testextensions-master
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     check:
@@ -605,7 +605,7 @@ projects:
       - mwext-UniversalLanguageSelector-merge:
 #        - mwext-UniversalLanguageSelector-jslint
         - mwext-UniversalLanguageSelector-lint:
-          - mwext-UniversalLanguageSelector-testextensions
+          - mwext-UniversalLanguageSelector-testextensions-master
 
   - name: mediawiki/extensions/Validator
     check:
@@ -616,7 +616,7 @@ projects:
       - mwext-Validator-merge:
         - mwext-Validator-jslint
         - mwext-Validator-lint:
-          - mwext-Validator-testextensions
+          - mwext-Validator-testextensions-master
 
   - name: mediawiki/extensions/VisualEditor
     check:
@@ -639,7 +639,7 @@ projects:
       - mwext-Wikibase-merge:
         - mwext-Wikibase-jslint
         - mwext-Wikibase-lint:
-          - mwext-Wikibase-testextensions
+          - mwext-Wikibase-testextensions-master
 
   - name: mediawiki/extensions/WikimediaMaintenance
     check:
@@ -652,4 +652,4 @@ projects:
         - mwext-WikimediaMaintenance-lint
 # No unit tests yet :/
 #        - mwext-WikimediaMaintenance-lint:
-#          - mwext-WikimediaMaintenance-testextensions
+#          - mwext-WikimediaMaintenance-testextensions-master
