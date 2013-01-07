@@ -33,6 +33,16 @@
 # TODO find a way to report using checkstyle format and add a 'xunit' publisher
      - shell: "/var/lib/jenkins/bin/wmfgrunt --cwd \"$WORKSPACE/extensions/{ext-name}\" jshint"
 
+- job-template:
+    name: '{name}-{ext-name}-pep8'
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - pep8
+    publishers:
+     - pep8
+
 # Run all extension tests
 - job-template:
     name: '{name}-{ext-name}-testextensions-{mwbranch}'
@@ -114,3 +124,7 @@
         name: mwext
         ext-name: Wikibase
         dependencies: 'Diff,DataValues,Validator'
+
+     - '{name}-{ext-name}-pep8':
+        name: mwext
+        ext-name: EventLogging
