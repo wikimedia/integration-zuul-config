@@ -199,6 +199,11 @@ jobs:
   - name: ^.*-pep8$
     voting: false
 
+  # Rejecting changes having trailing whitespaces cause too many false
+  # positives. So only report the whitespace issue for information.
+  - name: ^.*-whitespaces$
+    voting: false
+
   # Explicitly enable voting for extensions we know are passing JSHint:
   - name: mwext-Translate-jslint
     voting: true
