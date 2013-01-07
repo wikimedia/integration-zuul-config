@@ -26,11 +26,20 @@
     triggers:
      - zuul
     builders:
-     - lint-whitespaces
      - ant:
          targets: "php-lint"
          buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
      - shell: "/var/lib/jenkins/bin/wmfgrunt --cwd \"$WORKSPACE\" jshint"
+
+- job-template:
+    name: '{name}-whitespaces'
+    defaults: use-zuul
+    scm:
+     - git-mwcore-nosubmodules
+    triggers:
+     - zuul
+    builder:
+     - lint-whitespaces
 
 # A job template to trigger phpunit groups against a repository.
 #
@@ -91,6 +100,7 @@
     jobs:
       - '{name}-merge'
       - '{name}-lint'
+      - '{name}-whitespaces'
       - '{name}-phpunit-{phpunit-group}'
       - '{name}-install-{databasetype}'
 

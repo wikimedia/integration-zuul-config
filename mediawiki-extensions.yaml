@@ -10,8 +10,6 @@
     triggers:
      - zuul
     builders:
-     - lint-whitespaces-in:
-        dir: '$WORKSPACE/extensions/{ext-name}'
      - ant:
          targets: "php-lint"
          buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
@@ -19,6 +17,15 @@
          # so make sure to lint the correct git working space
          properties:
              sourcedir: "$WORKSPACE/extensions/{ext-name}"
+
+- job-template:
+    name: '{name}-{ext-name}-whitespaces'
+    default: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - lint-whitespaces-in:
+        dir: '$WORKSPACE/extensions/{ext-name}'
 
 # Javascript linter is separated from the generic linter which let us finely
 # tune on which extension Zuul will lint JavaScript.  The reason is that some
@@ -71,6 +78,7 @@
     jobs:
      - '{name}-{ext-name}-merge'
      - '{name}-{ext-name}-lint'
+     - '{name}-{ext-name}-whitespaces'
      - '{name}-{ext-name}-jslint'
      - '{name}-{ext-name}-install'
      - '{name}-{ext-name}-testextensions-{mwbranch}'
