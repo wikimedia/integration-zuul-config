@@ -211,17 +211,17 @@ jobs:
   # Various failing jobs that need to be fixed eventually
 
   # Echo installer does not support SQLite backend :-/
-  - name: mwext-Echo-testextensions.*
+  - name: ^mwext-Echo-testextensions.*
     voting: false
 
   # GeoMathTest::testRectWrapAround() fails as of Dec 5th 2012
-  - name: mwext-GeoData-testextensions.*
+  - name: ^mwext-GeoData-testextensions.*
     voting: false
 
   # LabeledSectionTransclusion has only parser tests which does not
   # play well for now. https://gerrit.wikimedia.org/r/#/c/38114 should
   # let PHPUnit load in the parser tests though. See bug 42506.
-  - name: mwext-LabeledSectionTransclusion-testextensions.*
+  - name: ^mwext-LabeledSectionTransclusion-testextensions.*
     voting: false
 
   - name: mediawiki-core-master-phpunit-all
@@ -238,12 +238,13 @@ jobs:
     branch: ^REL1_19$
   - name: mediawiki-core-regression-REL1_20
     branch: ^REL1_20$
+
   # Extensions for which tests are non functional or absents:
-  - name: mwext-EtherEditor-testextensions.*
+  - name: ^mwext-EtherEditor-testextensions.*
     voting: false
-  - name: mwext-cldr-testextensions.*
+  - name: ^mwext-cldr-testextensions.*
     voting: false
-  - name: mwext-TranslationNotifications-testextensions.*
+  - name: ^mwext-TranslationNotifications-testextensions.*
     voting: false
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
