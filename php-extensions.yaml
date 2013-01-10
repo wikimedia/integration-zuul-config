@@ -1,0 +1,19 @@
+- job-template:
+    name: 'php-luasandbox-build'
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - shell: |
+        phpize
+        ./configure
+        make
+        make test
+
+- project:
+    name: 'php-luasandbox'
+    gerrit-name: 'mediawiki/php/luasandbox'
+
+    jobs:
+     - php-luasandbox-build
