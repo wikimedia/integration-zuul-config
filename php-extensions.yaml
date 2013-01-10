@@ -1,15 +1,84 @@
+# FastStringSearch PHP extension
+- job-template:
+    name: 'php-FastStringSearch-build'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - php-extension
+- project:
+    name: 'php-FastStringSearch'
+    gerrit-name: 'mediawiki/php/FastStringSearch'
+    jobs:
+     - php-FastStringSearch-build
+
+# NativePreprocessor PHP extension
+- job-template:
+    name: 'php-NativePreprocessor-build'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - php-extension
+- project:
+    name: 'php-NativePreprocessor'
+    gerrit-name: 'mediawiki/php/NativePreprocessor'
+
+    jobs:
+     - php-NativePreprocessor-build
+
+# luasandbox PHP extension
 - job-template:
     name: 'php-luasandbox-build'
     defaults: use-zuul
     triggers:
      - zuul
-
     builders:
      - php-extension
-
 - project:
     name: 'php-luasandbox'
     gerrit-name: 'mediawiki/php/luasandbox'
-
     jobs:
      - php-luasandbox-build
+
+# wikidiff PHP extension
+- job-template:
+    name: 'php-wikidiff-build'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - php-extension
+- project:
+    name: 'php-wikidiff'
+    gerrit-name: 'mediawiki/php/wikidiff'
+    jobs:
+     - php-wikidiff-build
+
+# wikidiff2 PHP extension
+- job-template:
+    name: 'php-wikidiff2-build'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - php-extension
+- project:
+    name: 'php-wikidiff2'
+    gerrit-name: 'mediawiki/php/wikidiff2'
+    jobs:
+     - php-wikidiff2-build
+
+# wmerrors PHP extension
+- job-template:
+    name: 'php-wmerrors-build'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - php-extension
+- project:
+    name: 'php-wmerrors'
+    gerrit-name: 'mediawiki/php/wmerrors'
+    jobs:
+     - php-wmerrors-build
