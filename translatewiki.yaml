@@ -1,13 +1,3 @@
-- job-template:
-    name: 'translatewiki-phplint'
-
-    defaults: use-zuul
-    triggers:
-     - zuul
-
-    builders:
-     - php-lint
-
 # Run whatever test we find under the `puppet` subdirectory.
 - job-template:
     name: 'translatewiki-puppet-validate'
@@ -44,3 +34,4 @@
     gerrit-name: 'translatewiki'
     jobs:
      - translatewiki-jobs
+     - '{name}-phplint'

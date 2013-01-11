@@ -1,12 +1,4 @@
 - job-template:
-    name: 'operations-mw-config-phplint'
-    defaults: use-zuul
-    triggers:
-     - zuul
-    builders:
-     - php-lint
-
-- job-template:
     name: 'operations-mw-config-tests'
     defaults: use-zuul
     triggers:
@@ -23,5 +15,5 @@
     name: 'operations-mw-config'
     gerrit-name: 'operations/mediawiki-config'
     jobs:
-     - operations-mw-config-phplint
+     - '{name}-phplint'
      - operations-mw-config-tests
