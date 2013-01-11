@@ -58,6 +58,11 @@
                 | (cd "$WORKSPACE" && tar xf -)
 
 - builder:
+    name: jshint
+    builders:
+     - shell: "/var/lib/jenkins/bin/wmfgrunt --cwd \"$WORKSPACE\" jshint"
+
+- builder:
     name: mw-get-extensions
     builders:
         - shell: "/var/lib/jenkins/tools/fetch-mw-ext {dependencies}"
