@@ -42,9 +42,41 @@
                 | (cd "$WORKSPACE" && tar xf -)
 
 - builder:
+    name: jshint-in
+    # Use `cd` because jshint reads .jshintrc/.jshitignore from PWD
+    builders:
+     - shell: |
+        #!/bin/bash -e
+        cd "{dir}"
+        /var/lib/jenkins/bin/jshint . --checkstyle-reporter > "$WORKSPACE/checkstyle-jshint.xml"
+        echo 'Check the "Checkstyle Warnings" report for JSHint report.'
+
+- builder:
     name: jshint
     builders:
-     - shell: "/var/lib/jenkins/bin/wmfgrunt --cwd \"$WORKSPACE\" jshint"
+     - jshint-in:
+        dir: '$WORKSPACE'
+
+# Has to be named something other than 'checkstyle' or python will
+# go into infinite recursion when generating the jobs.
+# JSHint considers all errors to be "high" priority except those
+# suppressed via options in jshintrc (those become "normal").
+# So we need to make sure we don't count warnings that are intentionally
+# ignored by style or convention of the repository.
+- publisher:
+    name: checkstyle-xml
+    publishers:
+     - checkstyle:
+        pattern: 'checkstyle-*.xml'
+        canRunOnFailed: true
+        healthy: 0
+        unHealthy: 100
+        healthThreshold: 'high'
+        thresholds:
+            unstable:
+                totalHigh: 10
+            failed:
+                totalHigh: 1
 
 - builder:
     name: mw-get-extensions

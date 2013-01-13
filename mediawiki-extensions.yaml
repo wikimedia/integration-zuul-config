@@ -40,8 +40,9 @@
     triggers:
      - zuul
     builders:
-# TODO find a way to report using checkstyle format and add a 'xunit' publisher
-     - shell: "/var/lib/jenkins/bin/wmfgrunt --cwd \"$WORKSPACE\" jshint"
+     - jshint
+    publishers:
+     - checkstyle-xml
 
 - job-template:
     name: '{name}-{ext-name}-pep8'
