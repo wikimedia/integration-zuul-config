@@ -31,30 +31,14 @@
 #
 # The aim is to get the very latest MediaWiki core version into the extension
 # workspace without having to fully clone the repository. We cant use git
-# archive with Gerrit so we first clone a bare repo locally and use git archive
-# on it.
-# TODO: we could most probably use git clone with --reference options pointing
-# to the Zuul copy.
+# archive with Gerrit so we get the code from the local replicated clone.
 - builder:
     name: get-mw-core
     builders:
         - shell: |
             #!/bin/bash -xe
-
-            #Clone/update a bare copy of mediawiki/core.git
-            (
-              # Attempt to clone to make sure the local copy exists
-              # TODO: use --mirror=fetch when using git v1.8+
-              git clone --mirror -- \
-              https://gerrit.wikimedia.org/r/p/mediawiki/core.git \
-              /var/lib/jenkins/git/mw-core-bare
-            ) || (
-              # Exists! So simply update it
-              git --git-dir=/var/lib/jenkins/git/mw-core-bare remote update
-            )
-
             # Snapshot `remotes/origin/{branch}` in the job workspace
-            git archive --remote=/var/lib/jenkins/git/mw-core-bare {branch} \
+            git archive --remote=/var/lib/git/mediawiki/core.git {branch} \
                 | (cd "$WORKSPACE" && tar xf -)
 
 - builder:
