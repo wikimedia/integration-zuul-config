@@ -1,0 +1,19 @@
+# For test/mediawiki.git
+
+# Simply show up all the environnement variables
+- job-template:
+    name: 'test-mediawiki-dumpenv'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        #!/bin/bash -e
+        echo "Showing up all variables using export:"
+        export
+
+- project:
+    name: test-mediawiki
+    gerrit-name: test/mediawiki
+    jobs:
+     - 'test-mediawiki-dumpenv'
