@@ -33,12 +33,15 @@
 # We will probably end up merging -jslint jobs with the -lint jobs.
 - job-template:
     name: '{name}-{ext-name}-jslint'
-    defaults: use-zuul-for-mw-ext
+    defaults: use-zuul
+    scm:
+     - git-mwext-in-root:
+        ext-name: '{ext-name}'
     triggers:
      - zuul
     builders:
 # TODO find a way to report using checkstyle format and add a 'xunit' publisher
-     - shell: "/var/lib/jenkins/bin/wmfgrunt --cwd \"$WORKSPACE/extensions/{ext-name}\" jshint"
+     - shell: "/var/lib/jenkins/bin/wmfgrunt --cwd \"$WORKSPACE\" jshint"
 
 - job-template:
     name: '{name}-{ext-name}-pep8'
