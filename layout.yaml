@@ -193,6 +193,20 @@ pipelines:
 #      verified: 0
 #      force-message: True
 
+  # Pipeline reacting whenever some reference is updated
+  - name: post
+    manager: IndependentPipelineManager
+    trigger:
+     - event: ref-updated
+       ref: ^(?!(devnull|refs/.*)).*$
+
+  # Pipeline for tags (either a new one or a removal)
+  - name: publish
+     manager: IndependentPipelineManager
+     trigger:
+      - event: ref-updated
+        ref: ^refs/tags/.*$
+
 # Fine tune some jobs
 jobs:
   # JSLint
