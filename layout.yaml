@@ -617,6 +617,22 @@ projects:
         - mwext-Math-jslint
         - mwext-Math-lint
 
+  - name: mediawiki/extensions/Maps
+    check:
+      - mwext-Maps-merge:
+        - mwext-Maps-jslint
+        - mwext-Maps-lint
+    test:
+      - mwext-Maps-merge:
+        - mwext-Maps-jslint
+        - mwext-Maps-lint:
+          - mwext-Maps-testextensions-master
+    gate-and-submit:
+      - mwext-Maps-merge:
+        - mwext-Maps-jslint
+        - mwext-Maps-lint:
+          - mwext-Maps-testextensions-master
+
   - name: mediawiki/extensions/MobileFrontend
     check:
       - mwext-MobileFrontend-merge:
