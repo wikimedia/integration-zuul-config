@@ -115,6 +115,33 @@
         buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
 
 - builder:
+    name: phpcs
+    builders:
+     - shell: |
+        phpcs -v . \
+         --report-checkstyle=checkstyle-phpcs.xml \
+         --report-full
+
+- builder:
+    name: phpcs-HEAD
+    builders:
+     - shell: |
+        phpcs -v `git diff --name-only HEAD^` \
+         --report-checkstyle=checkstyle-phpcs.xml \
+         --report-full
+
+- publisher:
+    name: phpcs
+    publishers:
+     - violations:
+        checkstyle:
+            min: 0
+            max: 1
+            unstable: 1
+            pattern: '**/checkstyle-phpcs.xml'
+
+
+- builder:
     name: php-extension
     builders:
      - shell: |

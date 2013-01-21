@@ -9,3 +9,31 @@
 
     builders:
      - php-lint
+
+# PHP CodeSniffer on everything under the workspace
+- job-template:
+    name: '{name}-phpcs'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - phpcs
+
+    publishers:
+     - phpcs
+
+# PHP CodeSniffer on changed files
+- job-template:
+    name: '{name}-phpcs-HEAD'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - phpcs-HEAD
+
+    publishers:
+     - phpcs
