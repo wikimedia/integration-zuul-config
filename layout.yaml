@@ -302,9 +302,11 @@ projects:
     check:
       - mediawiki-core-merge:
         - mediawiki-core-whitespaces
+        - mediawiki-core-phpcs-HEAD
         - mediawiki-core-lint
     test:
       - mediawiki-core-merge:
+        - mediawiki-core-phpcs-HEAD
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
             - mediawiki-core-install-sqlite:
@@ -313,6 +315,7 @@ projects:
               - mediawiki-core-phpunit-parser
     gate-and-submit:
       - mediawiki-core-merge:
+        - mediawiki-core-phpcs-HEAD
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
             - mediawiki-core-install-sqlite:
@@ -325,6 +328,7 @@ projects:
       - mediawiki-core-regression-master
       - mediawiki-core-regression-REL1_19
       - mediawiki-core-regression-REL1_20
+      - mediawiki-core-regression-phpcs
 
   - name: analytics/libanon
     test:
