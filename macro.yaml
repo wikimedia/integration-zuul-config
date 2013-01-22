@@ -119,6 +119,7 @@
     builders:
      - shell: |
         phpcs -v . \
+         --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
          --report-checkstyle=checkstyle-phpcs.xml \
          --report-full
 
@@ -127,6 +128,7 @@
     builders:
      - shell: |
         phpcs -v `git diff --name-only HEAD^` \
+         --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
          --report-checkstyle=checkstyle-phpcs.xml \
          --report-full
 
