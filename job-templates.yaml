@@ -18,6 +18,11 @@
     triggers:
      - zuul
 
+    scm:
+     - git-zuul:
+        gerrit-name: '{gerrit-name}'
+        disable-submodules: true
+
     builders:
      - phpcs
 
@@ -31,6 +36,11 @@
     defaults: use-zuul
     triggers:
      - zuul
+
+    scm:
+     - git-zuul:
+        gerrit-name: '{gerrit-name}'
+        disable-submodules: true
 
     builders:
      - phpcs-HEAD
