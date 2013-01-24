@@ -14,13 +14,31 @@
         refspec: '$ZUUL_REF'
         disable-submodules: true
 
+# Fetch a ZUUL_REF from Zuul non bare repo for a project while
+# specifying whether we want to fetch submodules as well.
+#
+# @param gerrit-name The project name in Gerrit
+# @param disable-submodules (true/false) whether to NOT fetch submodules
 - scm:
-    name: git-zuul-no-submodules
-    scm:
+    name: git-zuul
     scm:
      - git:
         url: '/var/lib/zuul/git/{gerrit-name}'
         branches:
          - '$ZUUL_BRANCH'
         refspec: '$ZUUL_REF'
+        disable-submodules: '{disable-submodules}'
+
+- scm:
+    name: git-zuul-no-submodules
+    scm:
+     - git-zuul:
         disable-submodules: true
+        gerrit-name: '{gerrit-name}'
+
+- scm:
+    name: git-zuul-with-submodules
+    scm:
+     - git-zuul:
+        disable-submodules: false
+        gerrit-name: '{gerrit-name}'
