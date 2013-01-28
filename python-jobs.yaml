@@ -10,3 +10,13 @@
 
     publishers:
      - pep8
+
+- job-template:
+    name: '{name}-pyflakes'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - pyflakes
