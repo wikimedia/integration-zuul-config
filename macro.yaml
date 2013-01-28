@@ -114,22 +114,32 @@
         targets: 'php-lint'
         buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
 
+# run phpcs on any .php and .inc files in the workspace
 - builder:
     name: phpcs
     builders:
      - shell: |
         phpcs -v . \
          --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
+         --extensions=php,inc \
+         --ignore=languages/messages/Messages \
          --report-checkstyle=checkstyle-phpcs.xml \
          --report-full
 
+# run phpcs on files changed in HEAD. Ignores:
+#  - the mw/core language files
+#  - any .js files
 - builder:
     name: phpcs-HEAD
     builders:
      - shell: |
         # Run phpcs on anyfile that have not been deleted
-        phpcs -v `git diff --name-status HEAD^ | egrep -v '^D' | cut -f2` \
+        phpcs -v `git diff --name-status HEAD^ \
+             | egrep -v '^D' | cut -f2 \
+             | egrep -v '\.js$' \
+             ` \
          --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
+         --ignore=languages/messages/Messages \
          --report-checkstyle=checkstyle-phpcs.xml \
          --report-full
 
