@@ -1114,6 +1114,16 @@ projects:
 # VE team does not need any install nor has any PHP Unit tests
 # so skip the installer entirely and PHPUnit tests.
 
+  - name: mediawiki/extensions/WikiEditor
+    check:
+      - mwext-WikiEditor-merge:
+        - mwext-WikiEditor-jslint
+        - mwext-WikiEditor-lint
+    gate-and-submit:
+      - mwext-WikiEditor-merge:
+        - mwext-WikiEditor-jslint
+        - mwext-WikiEditor-lint
+
   - name: mediawiki/extensions/Wikibase
     check-silent:
       - mwext-Wikibase-merge:
