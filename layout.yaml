@@ -725,6 +725,16 @@ projects:
         - mwext-MobileFrontend-lint:
           - mwext-MobileFrontend-testextensions-master
 
+  - name: mediawiki/extensions/MoodBar
+    check:
+      - mwext-MoodBar-merge:
+        - mwext-MoodBar-lint
+        - mwext-MoodBar-jslint
+    gate-and-submit:
+      - mwext-MoodBar-merge:
+        - mwext-MoodBar-jslint
+        - mwext-MoodBar-lint
+
   - name: mediawiki/extensions/Offline
     check:
       - mwext-Offline-merge:
