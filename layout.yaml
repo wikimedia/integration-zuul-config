@@ -762,6 +762,22 @@ projects:
 #        - mwext-OpenStackManager-lint:
 #          - mwext-OpenStackManager-testextensions-master
 
+  - name: mediawiki/extensions/PageTriage
+    check:
+      - mwext-PageTriage-merge:
+        - mwext-PageTriage-jslint
+        - mwext-PageTriage-lint
+    test:
+      - mwext-PageTriage-merge:
+        - mwext-PageTriage-jslint
+        - mwext-PageTriage-lint:
+          - mwext-PageTriage-testextensions-master
+    gate-and-submit:
+      - mwext-PageTriage-merge:
+        - mwext-PageTriage-jslint
+        - mwext-PageTriage-lint:
+          - mwext-PageTriage-testextensions-master
+
   - name: mediawiki/extensions/ParserFunctions
     check:
       - mwext-ParserFunctions-merge:
