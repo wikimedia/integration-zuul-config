@@ -53,6 +53,19 @@
     publishers:
      - pep8
 
+- job-template:
+    name: '{name}-{ext-name}-phpcs-HEAD'
+    defaults: use-zuul
+    scm:
+     - git-mwext-in-root:
+        ext-name: '{ext-name}'
+    triggers:
+     - zuul
+    builders:
+     - phpcs-HEAD
+    publishers:
+     - phpcs
+
 # Run all extension tests
 - job-template:
     name: '{name}-{ext-name}-testextensions-{mwbranch}'
@@ -85,6 +98,7 @@
      - '{name}-{ext-name}-jslint'
      - '{name}-{ext-name}-install'
      - '{name}-{ext-name}-testextensions-{mwbranch}'
+     - '{name}-{ext-name}-phpcs-HEAD'
 
 - project:
     name: mwext
