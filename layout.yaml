@@ -532,6 +532,22 @@ projects:
         - mwext-DumpHTML-lint
         - mwext-DumpHTML-pep8
 
+  - name: mediawiki/extensions/E3Experiments
+    check:
+      - mwext-E3Experiments-merge:
+        - mwext-E3Experiments-jslint
+        - mwext-E3Experiments-lint
+    test:
+      - mwext-E3Experiments-merge:
+        - mwext-E3Experiments-jslint
+        - mwext-E3Experiments-lint:
+          - mwext-E3Experiments-testextensions-master
+    gate-and-submit:
+      - mwext-E3Experiments-merge:
+        - mwext-E3Experiments-jslint
+        - mwext-E3Experiments-lint:
+          - mwext-E3Experiments-testextensions-master
+
   - name: mediawiki/extensions/EtherEditor
     check:
       - mwext-EtherEditor-merge:
