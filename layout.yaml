@@ -461,6 +461,22 @@ projects:
         - mwext-CentralAuth-jslint
         - mwext-CentralAuth-lint
 
+  - name: mediawiki/extensions/CentralNotice
+    check:
+      - mwext-CentralNotice-merge:
+        - mwext-CentralNotice-jslint
+        - mwext-CentralNotice-lint
+    test:
+      - mwext-CentralNotice-merge:
+        - mwext-CentralNotice-jslint
+        - mwext-CentralNotice-lint:
+          - mwext-CentralNotice-testextensions-master
+    gate-and-submit:
+      - mwext-CentralNotice-merge:
+        - mwext-CentralNotice-jslint
+        - mwext-CentralNotice-lint:
+          - mwext-CentralNotice-testextensions-master
+
   - name: mediawiki/extensions/CleanChanges
     check:
       - mwext-CleanChanges-merge:
