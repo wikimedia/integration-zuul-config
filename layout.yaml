@@ -747,6 +747,22 @@ projects:
         - mwext-MoodBar-jslint
         - mwext-MoodBar-lint
 
+  - name: mediawiki/extensions/MultiMaps
+    check:
+      - mwext-MultiMaps-merge:
+        - mwext-MultiMaps-lint
+        - mwext-MultiMaps-jslint
+    test:
+      - mwext-MultiMaps-merge:
+        - mwext-MultiMaps-jslint
+        - mwext-MultiMaps-lint:
+          - mwext-MultiMaps-testextensions-master
+    gate-and-submit:
+      - mwext-MultiMaps-merge:
+        - mwext-MultiMaps-jslint
+        - mwext-MultiMaps-lint:
+          - mwext-MultiMaps-testextensions-master
+
   - name: mediawiki/extensions/Offline
     check:
       - mwext-Offline-merge:
