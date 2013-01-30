@@ -834,6 +834,16 @@ projects:
 #        - mwext-Score-lint:
 #          - mwext-Score-testextensions-master
 
+  - name: mediawiki/extensions/SecurePoll
+    check:
+      - mwext-SecurePoll-merge:
+        - mwext-SecurePoll-lint
+        - mwext-SecurePoll-jslint
+    gate-and-submit:
+      - mwext-SecurePoll-merge:
+        - mwext-SecurePoll-jslint
+        - mwext-SecurePoll-lint
+
 # semantic extensions
   - name: mediawiki/extensions/SemanticACL
     check:
