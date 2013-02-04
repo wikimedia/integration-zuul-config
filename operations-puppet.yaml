@@ -41,8 +41,7 @@
         #!/bin/bash -e
 
         echo "Looking for usage of 'pmpta' instead of 'pmtpa'..."
-        TYPO="pmpta"
-        (fgrep -R "$TYPO" *) && HAS_TYPO=1 || HAS_TYPO=0
+        (fgrep -R --file=typos --exclude=typos *) && HAS_TYPO=1 || HAS_TYPO=0
         exit $HAS_TYPO
 
 - project:
