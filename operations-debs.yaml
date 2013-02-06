@@ -1,3 +1,34 @@
+# Git macro that simply fetch under '/packaging/'
+# Useful to build debian packages.
+- scm:
+    name: git-deb-package
+    scm:
+     - git:
+        url: '/var/lib/zuul/git/{gerrit-name}'
+        basedir: 'packaging'
+        branches:
+         - '$ZUUL_BRANCH'
+        refspec: '$ZUUL_REF'
+
+- job-template:
+    name: '{name}-debbuild'
+    defaults: use-zuul
+
+    scm:
+     - git-deb-package:
+        gerrit-name: '{gerrit-name}'
+
+    builders:
+     - shell: 'cd packaging && uscan --verbose --rename --download-current-version'
+     - shell: 'cd packaging && dpkg-buildpackage -rfakeroot -us -uc'
+     - shell: 'lintian --info *.deb'
+
+- project:
+    name: 'operations-debs-python-voluptuous'
+    gerrit-name: 'operations/debs/python-voluptuous'
+    jobs:
+     - '{name}-debbuild'
+
 - project:
     name: 'operations-debs-adminbot'
     gerrit-name: 'operations/debs/adminbot'
