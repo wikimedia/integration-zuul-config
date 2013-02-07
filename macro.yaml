@@ -124,7 +124,7 @@
     name: phpcs
     builders:
      - shell: |
-        phpcs -v . \
+        phpcs -v -s . \
          --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
          --extensions=php,inc \
          --ignore=languages/messages/Messages \
@@ -139,7 +139,7 @@
     builders:
      - shell: |
         # Run phpcs on anyfile that have not been deleted
-        phpcs -v `git diff --name-status HEAD^ \
+        phpcs -v -s `git diff --name-status HEAD^ \
              | egrep -v '^D' | cut -f2 \
              | egrep -v '\.js$' \
              ` \
