@@ -290,6 +290,10 @@ jobs:
   - name: ^mwext-SemanticMediaWiki-testextensions.*
     voting: false
 
+  # (bug 44846) JSHint is always wrong in MediaWiki REL1_19
+  - name: mediawiki-core-jslint
+    branch: ^(?!REL1_19)$
+
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
     success-message: Change looked fine once merged.
