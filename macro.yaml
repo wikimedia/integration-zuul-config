@@ -138,11 +138,21 @@
     name: phpcs-HEAD
     builders:
      - shell: |
-        # Run phpcs on anyfile that have not been deleted
-        phpcs -v -s `git diff --name-status HEAD^ \
+        # Get a list of files changed in HEAD, skipping deleted files and css
+        # and js files which are interpreted by phpcs but we do not want it to
+        # handle.  Piped to 'echo -n' to ignore egrep exit code.
+        PHPCS_FILES=$(git diff --name-status HEAD^ \
              | egrep -v '^D' | cut -f2 \
-             | egrep -v '\.js$' \
-             ` \
+             | egrep -v '\.(css|js)$' \
+             || echo -n
+             )
+        # No file? No point in proceeding any further (bug 44567)
+        if [ -z "$PHPCS_FILES" ]; then
+            echo "Skipping phpcs: no file remaining to process"
+            exit 0
+        fi
+
+        phpcs -v -s $PHPCS_FILES \
          --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
          --ignore=languages/messages/Messages \
          --report-checkstyle=checkstyle-phpcs.xml \
