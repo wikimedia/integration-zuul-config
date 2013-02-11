@@ -321,10 +321,12 @@ projects:
       - mediawiki-core-merge:
         - mediawiki-core-whitespaces
         - mediawiki-core-phpcs-HEAD
+        - mediawiki-core-jslint
         - mediawiki-core-lint
     test:
       - mediawiki-core-merge:
         - mediawiki-core-phpcs-HEAD
+        - mediawiki-core-jslint
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
             - mediawiki-core-install-sqlite:
@@ -334,6 +336,7 @@ projects:
     gate-and-submit:
       - mediawiki-core-merge:
         - mediawiki-core-phpcs-HEAD
+        - mediawiki-core-jslint
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
             - mediawiki-core-install-sqlite:
@@ -341,6 +344,7 @@ projects:
               - mediawiki-core-phpunit-misc
               - mediawiki-core-phpunit-parser
     postmerge:
+      - mediawiki-core-jslint
       - mediawiki-core-lint
       - mediawiki-core-master-phpunit-all
       - mediawiki-core-regression-master
