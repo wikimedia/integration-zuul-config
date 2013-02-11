@@ -17,7 +17,7 @@
     triggers:
      - zuul
 
-# Generic job used to lint projects
+# Generic job to run a php linting
 - job-template:
     name: '{name}-lint'
     defaults: use-zuul
@@ -29,6 +29,16 @@
      - ant:
          targets: "php-lint"
          buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
+
+# Generic job to run JSHint
+- job-template:
+    name: '{name}-jslint'
+    defaults: use-zuul
+    scm:
+     - git-mwcore-nosubmodules
+    triggers:
+     - zuul
+    builders:
      - jshint
 
 - job-template:
@@ -100,6 +110,7 @@
     jobs:
       - '{name}-merge'
       - '{name}-lint'
+      - '{name}-jslint'
       - '{name}-whitespaces'
       - '{name}-phpunit-{phpunit-group}'
       - '{name}-install-{databasetype}'
