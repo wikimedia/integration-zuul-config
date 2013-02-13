@@ -249,6 +249,8 @@ jobs:
   # Explicitly enable voting for projects we know are passing JSHint:
   - name: mediawiki-core-jslint
     voting: true
+  # (bug 44846) JSHint is always wrong in MediaWiki REL1_19
+    branch: (?!REL1_19)
   - name: mwext-PHPExcel-jslint
     voting: true
   - name: mwext-Math-jslint
@@ -291,10 +293,6 @@ jobs:
   # Not yet working!
   - name: ^mwext-SemanticMediaWiki-testextensions.*
     voting: false
-
-  # (bug 44846) JSHint is always wrong in MediaWiki REL1_19
-  - name: mediawiki-core-jslint
-    branch: (?!REL1_19)
 
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
