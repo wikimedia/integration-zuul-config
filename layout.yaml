@@ -446,6 +446,52 @@ projects:
 
 #### MediaWiki extensions #############################################
 
+  - name: mediawiki/extensions/AdminLinks
+    check:
+      - mwext-AdminLinks-merge:
+        - mwext-AdminLinks-jslint
+        - mwext-AdminLinks-lint
+    gate-and-submit:
+      - mwext-AdminLinks-merge:
+        - mwext-AdminLinks-jslint
+        - mwext-AdminLinks-lint
+
+  - name: mediawiki/extensions/APC
+    check:
+      - mwext-APC-merge:
+        - mwext-APC-jslint
+        - mwext-APC-lint
+    gate-and-submit:
+      - mwext-APC-merge:
+        - mwext-APC-jslint
+        - mwext-APC-lint
+
+  - name: mediawiki/extensions/ApiSandbox
+    check:
+      - mwext-ApiSandbox-merge:
+        - mwext-ApiSandbox-jslint
+        - mwext-ApiSandbox-lint
+    gate-and-submit:
+      - mwext-ApiSandbox-merge:
+        - mwext-ApiSandbox-jslint
+        - mwext-ApiSandbox-lint
+
+  - name: mediawiki/extensions/Ask
+    check:
+      - mwext-Ask-merge:
+        - mwext-Ask-jslint
+        - mwext-Ask-lint
+    test:
+      - mwext-Ask-merge:
+        - mwext-Ask-jslint
+        - mwext-Ask-lint:
+          - mwext-Ask-testextensions-master
+    gate-and-submit:
+      - mwext-Ask-merge:
+        - mwext-Ask-jslint
+        - mwext-Ask-lint:
+          - mwext-Ask-testextensions-master
+
   - name: mediawiki/extensions/Babel
     check:
       - mwext-Babel-merge:
@@ -467,6 +513,16 @@ projects:
         - mwext-BlameMaps-jslint
         - mwext-BlameMaps-lint
         - mwext-BlameMaps-pep8
+
+  - name: mediawiki/extensions/CharInsert
+    check:
+      - mwext-CharInsert-merge:
+        - mwext-CharInsert-jslint
+        - mwext-CharInsert-lint
+    gate-and-submit:
+      - mwext-CharInsert-merge:
+        - mwext-CharInsert-jslint
+        - mwext-CharInsert-lint
 
   - name: mediawiki/extensions/cldr
     check:
@@ -527,6 +583,16 @@ projects:
         - mwext-ConfirmEdit-lint
         - mwext-ConfirmEdit-pep8
 
+  - name: mediawiki/extensions/ContributionScores
+    check:
+      - mwext-ContributionScores-merge:
+        - mwext-ContributionScores-jslint
+        - mwext-ContributionScores-lint
+    gate-and-submit:
+      - mwext-ContributionScores-merge:
+        - mwext-ContributionScores-jslint
+        - mwext-ContributionScores-lint
+
   - name: mediawiki/extensions/DataValues
     check:
       - mwext-DataValues-merge:
@@ -547,6 +613,16 @@ projects:
       - mwext-DonationInterface-merge:
         - mwext-DonationInterface-jslint
         - mwext-DonationInterface-lint
+
+  - name: mediawiki/extensions/DeleteBatch
+    check:
+      - mwext-DeleteBatch-merge:
+        - mwext-DeleteBatch-jslint
+        - mwext-DeleteBatch-lint
+    gate-and-submit:
+      - mwext-DeleteBatch-merge:
+        - mwext-DeleteBatch-jslint
+        - mwext-DeleteBatch-lint
 
   - name: mediawiki/extensions/DumpHTML
     check:
@@ -643,6 +719,32 @@ projects:
         - mwext-EventLogging-lint:
           - mwext-EventLogging-testextensions-master
 
+  - name: mediawiki/extensions/ExpandTemplates
+    check:
+      - mwext-ExpandTemplates-merge:
+        - mwext-ExpandTemplates-jslint
+        - mwext-ExpandTemplates-lint
+    gate-and-submit:
+      - mwext-ExpandTemplates-merge:
+        - mwext-ExpandTemplates-jslint
+        - mwext-ExpandTemplates-lint
+
+  - name: mediawiki/extensions/Gadgets
+    check:
+      - mwext-Gadgets-merge:
+        - mwext-Gadgets-jslint
+        - mwext-Gadgets-lint
+    test:
+      - mwext-Gadgets-merge:
+        - mwext-Gadgets-jslint
+        - mwext-Gadgets-lint:
+          - mwext-Gadgets-testextensions-master
+    gate-and-submit:
+      - mwext-Gadgets-merge:
+        - mwext-Gadgets-jslint
+        - mwext-Gadgets-lint:
+          - mwext-Gadgets-testextensions-master
+
   - name: mediawiki/extensions/GettingStarted
     check:
       - mwext-GettingStarted-merge:
@@ -664,6 +766,16 @@ projects:
         - mwext-GeoData-lint:
           - mwext-GeoData-testextensions-master
 
+  - name: mediawiki/extensions/GoogleAdSense
+    check:
+      - mwext-GoogleAdSense-merge:
+        - mwext-GoogleAdSense-jslint
+        - mwext-GoogleAdSense-lint
+    gate-and-submit:
+      - mwext-GoogleAdSense-merge:
+        - mwext-GoogleAdSense-jslint
+        - mwext-GoogleAdSense-lint
+
   - name: mediawiki/extensions/GoogleCustomWikiSearch
     check:
       - mwext-GoogleCustomWikiSearch-merge:
@@ -683,6 +795,26 @@ projects:
       - mwext-GuidedTour-merge:
         - mwext-GuidedTour-jslint
         - mwext-GuidedTour-lint
+
+  - name: mediawiki/extensions/I18nTags
+    check:
+      - mwext-I18nTags-merge:
+        - mwext-I18nTags-jslint
+        - mwext-I18nTags-lint
+    gate-and-submit:
+      - mwext-I18nTags-merge:
+        - mwext-I18nTags-jslint
+        - mwext-I18nTags-lint
+
+  - name: mediawiki/extensions/Interwiki
+    check:
+      - mwext-Interwiki-merge:
+        - mwext-Interwiki-jslint
+        - mwext-Interwiki-lint
+    gate-and-submit:
+      - mwext-Interwiki-merge:
+        - mwext-Interwiki-jslint
+        - mwext-Interwiki-lint
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     check:
@@ -779,6 +911,26 @@ projects:
         - mwext-MultiMaps-lint:
           - mwext-MultiMaps-testextensions-master
 
+  - name: mediawiki/extensions/NewUserMessage
+    check:
+      - mwext-NewUserMessage-merge:
+        - mwext-NewUserMessage-jslint
+        - mwext-NewUserMessage-lint
+    gate-and-submit:
+      - mwext-NewUserMessage-merge:
+        - mwext-NewUserMessage-jslint
+        - mwext-NewUserMessage-lint
+
+  - name: mediawiki/extensions/Nuke
+    check:
+      - mwext-Nuke-merge:
+        - mwext-Nuke-jslint
+        - mwext-Nuke-lint
+    gate-and-submit:
+      - mwext-Nuke-merge:
+        - mwext-Nuke-jslint
+        - mwext-Nuke-lint
+
   - name: mediawiki/extensions/Offline
     check:
       - mwext-Offline-merge:
@@ -833,6 +985,22 @@ projects:
         - mwext-ParserFunctions-lint:
           - mwext-ParserFunctions-testextensions-master
 
+  - name: mediawiki/extensions/ParserHooks
+    check:
+      - mwext-ParserHooks-merge:
+        - mwext-ParserHooks-jslint
+        - mwext-ParserHooks-lint
+    test:
+      - mwext-ParserHooks-merge:
+        - mwext-ParserHooks-jslint
+        - mwext-ParserHooks-lint:
+          - mwext-ParserHooks-testextensions-master
+    gate-and-submit:
+      - mwext-ParserHooks-merge:
+        - mwext-ParserHooks-jslint
+        - mwext-ParserHooks-lint:
+          - mwext-ParserHooks-testextensions-master
+
   # Parsoid is mostly JavaScript so we just run jsHint (and merge of course)
   - name: mediawiki/extensions/Parsoid
     check:
@@ -864,6 +1032,16 @@ projects:
 # No Unit tests yet :(
 #        - mwext-Renameuser-lint:
 #          - mwext-Renameuser-testextensions-master
+
+  - name: mediawiki/extensions/ReplaceText
+    check:
+      - mwext-ReplaceText-merge:
+        - mwext-ReplaceText-jslint
+        - mwext-ReplaceText-lint
+    gate-and-submit:
+      - mwext-ReplaceText-merge:
+        - mwext-ReplaceText-jslint
+        - mwext-ReplaceText-lint
 
   - name: mediawiki/extensions/Score
     check:
@@ -1141,6 +1319,16 @@ projects:
         - mwext-Scribunto-jslint
         - mwext-Scribunto-lint
 
+  - name: mediawiki/extensions/SpamBlacklist
+    check:
+      - mwext-SpamBlacklist-merge:
+        - mwext-SpamBlacklist-jslint
+        - mwext-SpamBlacklist-lint
+    gate-and-submit:
+      - mwext-SpamBlacklist-merge:
+        - mwext-SpamBlacklist-jslint
+        - mwext-SpamBlacklist-lint
+
   - name: mediawiki/extensions/SVGEdit
     check:
       - mwext-SVGEdit-merge:
@@ -1155,6 +1343,16 @@ projects:
 # and uncomment the two lines below:
 #        - mwext-SVGEdit-lint:
 #          - mwext-SVGEdit-testextensions-master
+
+  - name: mediawiki/extensions/SyntaxHighlight_GeSHi
+    check:
+      - mwext-SyntaxHighlight_GeSHi-merge:
+        - mwext-SyntaxHighlight_GeSHi-jslint
+        - mwext-SyntaxHighlight_GeSHi-lint
+    gate-and-submit:
+      - mwext-SyntaxHighlight_GeSHi-merge:
+        - mwext-SyntaxHighlight_GeSHi-jslint
+        - mwext-SyntaxHighlight_GeSHi-lint
 
   - name: mediawiki/extensions/TimedMediaHandler
     check:
@@ -1225,6 +1423,16 @@ projects:
         - mwext-UniversalLanguageSelector-lint:
           - mwext-UniversalLanguageSelector-testextensions-master
 
+  - name: mediawiki/extensions/UserOptionStats
+    check:
+      - mwext-UserOptionStats-merge:
+        - mwext-UserOptionStats-jslint
+        - mwext-UserOptionStats-lint
+    gate-and-submit:
+      - mwext-UserOptionStats-merge:
+        - mwext-UserOptionStats-jslint
+        - mwext-UserOptionStats-lint
+
   - name: mediawiki/extensions/Validator
     check:
       - mwext-Validator-merge:
@@ -1262,6 +1470,16 @@ projects:
         - mwext-VisualEditor-lint
 # VE team does not need any install nor has any PHP Unit tests
 # so skip the installer entirely and PHPUnit tests.
+
+  - name: mediawiki/extensions/WebChat
+    check:
+      - mwext-WebChat-merge:
+        - mwext-WebChat-jslint
+        - mwext-WebChat-lint
+    gate-and-submit:
+      - mwext-WebChat-merge:
+        - mwext-WebChat-jslint
+        - mwext-WebChat-lint
 
   - name: mediawiki/extensions/WikiEditor
     check:
