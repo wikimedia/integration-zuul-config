@@ -36,7 +36,7 @@ pipelines:
     trigger:
       - event: patchset-created
       - event: comment-added
-        comment_filter: (?i)^\s*recheck\.?\s*$
+        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
 
   # Pipeline doing prechecks such as syntax linting
   # DOES report back to Gerrit.
