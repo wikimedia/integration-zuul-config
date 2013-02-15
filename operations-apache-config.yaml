@@ -1,0 +1,34 @@
+- job-template:
+    name: 'operations-apache-config-lint'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     # Snapshot operations/mediawiki-config.git which contains
+     # the Apache document roots.
+     - shell: |
+        git archive \
+            --remote=/var/lib/git/operations/mediawiki-config.git \
+            --prefix=mediawiki-config/ \
+            master \
+            | ( cd "$WORKSPACE" && tar xf -)
+
+     - shell: |
+        #!/bin/bash -ex
+        /bin/sed -i s%/etc/apache2/wmf/%% *.conf
+        /bin/sed -i s%/usr/local/apache/common/%$WORKSPACE/mediawiki-config/% *.conf
+        /usr/sbin/apache2 -t \
+            -d "$WORKSPACE" \
+            -C 'Include /etc/apache2/mods-enabled/*.load' \
+            -C 'Include /etc/apache2/mods-enabled/*.conf' \
+            -C 'Include /etc/apache2/mods-available/expires.load' \
+            -f all.conf
+
+- project:
+    name: 'operations-apache-config'
+    gerrit-name: 'operations/apache-config'
+
+    jobs:
+     - operations-apache-config-lint
