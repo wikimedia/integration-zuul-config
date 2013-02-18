@@ -175,7 +175,7 @@
         # handle.  Piped to 'echo -n' to ignore egrep exit code.
         PHPCS_FILES=$(git diff --name-status HEAD^ \
              | egrep -v '^D' | cut -f2 \
-             | egrep -v '\.(css|js)$' \
+             | egrep '\.(php5?|inc|sample)$' \
              || echo -n
              )
         # No file? No point in proceeding any further (bug 44567)
