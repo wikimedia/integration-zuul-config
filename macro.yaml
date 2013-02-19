@@ -48,8 +48,13 @@
      - shell: |
         #!/bin/bash -e
         cd "{dir}"
-        /var/lib/jenkins/bin/jshint . --checkstyle-reporter > "$WORKSPACE/checkstyle-jshint.xml"
-        echo 'Check the "Checkstyle Warnings" report for JSHint report.'
+        /var/lib/jenkins/bin/jshint . \
+            --checkstyle-reporter > "$WORKSPACE/checkstyle-jshint.xml" \
+            && HAS_ERROR=0 || HAS_ERROR=1
+        echo
+        echo 'Check the "Checkstyle Warnings" link on the left for JSHint report.'
+        echo
+        exit $HAS_ERROR
 
 - builder:
     name: jshint
