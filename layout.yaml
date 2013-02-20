@@ -36,7 +36,7 @@ pipelines:
     trigger:
       - event: patchset-created
       - event: comment-added
-        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+        comment_filter: (?i)^\s*recheck\.?\s*$
 
   # Pipeline doing prechecks such as syntax linting
   # DOES report back to Gerrit.
@@ -45,7 +45,7 @@ pipelines:
     trigger:
       - event: patchset-created
       - event: comment-added
-        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+        comment_filter: (?i)^\s*recheck\.?\s*$
     success:
       # Prevents people from being able to submit a change
       # before unit tests have been run since submit requires V+2.
@@ -64,7 +64,7 @@ pipelines:
     trigger:
       - event: patchset-created
       - event: comment-added
-        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+        comment_filter: (?i)^\s*recheck\.?\s*$
     success:
       verified: 2
       code-review: 0
