@@ -294,6 +294,10 @@ jobs:
   - name: ^mwext-SemanticMediaWiki-testextensions.*
     voting: false
 
+  # Should pass since https://gerrit.wikimedia.org/r/#/c/50168/
+  - name: ^mwext-Wikibase-testextensions.*
+    voting: false
+
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
     success-message: Change looked fine once merged.
@@ -1504,7 +1508,12 @@ projects:
       - mwext-Wikibase-merge:
         - mwext-Wikibase-jslint
         - mwext-Wikibase-lint
-    gate-silent:
+    test:
+      - mwext-Wikibase-merge:
+        - mwext-Wikibase-jslint
+        - mwext-Wikibase-lint:
+          - mwext-Wikibase-testextensions-master
+    gate-and-submit:
       - mwext-Wikibase-merge:
         - mwext-Wikibase-jslint
         - mwext-Wikibase-lint:
