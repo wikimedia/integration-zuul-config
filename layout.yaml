@@ -314,10 +314,6 @@ jobs:
   - name: ^mwext-TranslationNotifications-testextensions.*
     voting: false
 
-  # We are hacking up Parsoid so ignore the result for now
-  - name: Parsoid-parserTests
-    voting: false
-
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
@@ -1038,6 +1034,7 @@ projects:
     gate-and-submit:
       - mwext-Parsoid-merge:
         - mwext-Parsoid-jslint
+        - Parsoid-parserTests
     postmerge:
       - Parsoid-regression
 
