@@ -220,6 +220,8 @@ jobs:
   # Disabled by default since most MediaWiki extensions do not pass tests yet:
   - name: ^.*-jslint$
     voting: false  # Until we are sure it works fine
+    failure-pattern: http://integration.mediawiki.org/ci/job/{job.name}/{build.number}/checkstyleResult/
+    success-pattern: http://integration.mediawiki.org/ci/job/{job.name}/{build.number}/checkstyleResult/
 
   # Python linter, most of our script fail the tests miserably
   - name: ^.*-pep8$
