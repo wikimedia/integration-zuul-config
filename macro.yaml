@@ -62,6 +62,38 @@
      - jshint-in:
         dir: '$WORKSPACE'
 
+- builder:
+    name: qunit
+    builders:
+     - shell: |
+        # Unique id for the code to be tested
+        TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
+        # Install MediaWiki
+        php $WORKSPACE/maintenance/install.php \
+        --confpath $WORKSPACE \
+        --dbtype sqlite \
+        --dbpath $WORKSPACE \
+        --dbname my_wiki \
+        --scriptpath /$TEST_ID \
+        --server http://localhost:9412 \
+        --pass testpass \
+        TestWiki \
+        WikiAdmin
+        # Custom settings
+        echo '$wgShowExceptionDetails = true; $wgEnableJavaScriptTest = true;' >> $WORKSPACE/LocalSettings.php
+        # The location is free or we free it now
+        test ! -e /srv/localhost/qunit/$TEST_ID || rm /srv/localhost/qunit/$TEST_ID;
+        # Set up symlink in the document root
+        ln -s $WORKSPACE /srv/localhost/qunit/$TEST_ID
+        # Run QUnit tests via PhantomJS
+        /var/lib/jenkins/bin/wmfgrunt qunit --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit"
+        gqec=$?
+        # Clean up
+        rm /srv/localhost/qunit/$TEST_ID
+        # Re-use exit code of grunt-qunit command
+        exit $gqec
+
+
 # Has to be named something other than 'checkstyle' or python will
 # go into infinite recursion when generating the jobs.
 # JSHint considers all errors to be "high" priority except those
