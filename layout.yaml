@@ -248,6 +248,10 @@ jobs:
   - name: ^.*-whitespaces$
     voting: false
 
+  # QUnit non-voting until we know other branches are passing as well:
+  - name: ^.*-qunit$
+    voting: false
+
   # Explicitly enable voting for projects we know are passing JSHint:
   - name: mediawiki-core-jslint
     voting: true
@@ -331,6 +335,7 @@ projects:
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
             - mediawiki-core-install-sqlite:
+              - mediawiki-core-qunit
               - mediawiki-core-phpunit-api
               - mediawiki-core-phpunit-misc
               - mediawiki-core-phpunit-parser
@@ -341,6 +346,7 @@ projects:
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
             - mediawiki-core-install-sqlite:
+              - mediawiki-core-qunit
               - mediawiki-core-phpunit-api
               - mediawiki-core-phpunit-misc
               - mediawiki-core-phpunit-parser
