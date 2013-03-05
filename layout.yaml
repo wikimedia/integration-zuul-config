@@ -843,6 +843,22 @@ projects:
         - mwext-Interwiki-jslint
         - mwext-Interwiki-lint
 
+  - name: mediawiki/extensions/JsonData
+    check:
+      - mwext-JsonData-merge:
+        - mwext-JsonData-jslint
+        - mwext-JsonData-lint
+    test:
+      - mwext-JsonData-merge:
+        - mwext-JsonData-jslint
+        - mwext-JsonData-lint:
+          - mwext-JsonData-testextensions-master
+    gate-and-submit:
+      - mwext-JsonData-merge:
+        - mwext-JsonData-jslint
+        - mwext-JsonData-lint:
+          - mwext-JsonData-testextensions-master
+
   - name: mediawiki/extensions/LabeledSectionTransclusion
     check:
       - mwext-LabeledSectionTransclusion-merge:
