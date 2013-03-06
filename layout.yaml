@@ -286,6 +286,12 @@ jobs:
   - name: ^mwext-LabeledSectionTransclusion-testextensions.*
     voting: false
 
+  # The JsonData phpunit tests are meant to be independant and
+  # do not play well with the MediaWiki phpunit wrapper for now :(
+  # See also: https://gerrit.wikimedia.org/r/#/c/52292/
+  - name: ^mwext-JsonData-testextensions.*
+    voting: false
+
   # Has an insert that introduce multiple values, that requires SQLite
   # version 3.7.11
   - name: ^mwext-PageTriage-testextensions-master
