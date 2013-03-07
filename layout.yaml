@@ -215,47 +215,52 @@ pipelines:
 
 # Fine tune some jobs
 jobs:
-  # JSLint
+
   #
-  # Disabled by default since most MediaWiki extensions do not pass tests yet:
+  # General
+  #
+
   - name: ^.*-jslint$
-    voting: false  # Until we are sure it works fine
+    # Non-voting by default (most projects do not pass yet)
+    voting: false
     failure-pattern: http://integration.mediawiki.org/ci/job/{job.name}/{build.number}/checkstyleResult/
     success-pattern: http://integration.mediawiki.org/ci/job/{job.name}/{build.number}/checkstyleResult/
 
-  # Python linter, most of our script fail the tests miserably
   - name: ^.*-pep8$
+    # Non-voting (most of our script fail the tests miserably)
     voting: false
 
-  # Pyflakes do not vote by default either
   - name: ^.*-pyflakes$
+    # do not vote by default
     voting: false
 
-  # PHP CodeSniffer, HIGHLY experimental
+  # PHP CodeSniffer (experimental)
   - name: ^.*-phpcs$
     voting: false
   - name: ^.*-phpcs-HEAD$
     voting: false
 
-  # Explicitly enable voting for jobs we know are passing pep8:
+  # Rejecting changes having trailing whitespaces cause too many false
+  # positives. So only report the whitespace issues, but don't let it vote.
+  - name: ^.*-whitespaces$
+    voting: false
+
+  # QUnit (experimental)
+  - name: ^.*-qunit$
+    voting: false
+
+  #
+  # Individual adjustments
+  #
+
   - name: mwext-EventLogging-pep8
     voting: true
   - name: sartoris-pep8
     voting: true
 
-  # Rejecting changes having trailing whitespaces cause too many false
-  # positives. So only report the whitespace issue for information.
-  - name: ^.*-whitespaces$
-    voting: false
-
-  # QUnit non-voting until we know other branches are passing as well:
-  - name: ^.*-qunit$
-    voting: false
-
-  # Explicitly enable voting for projects we know are passing JSHint:
   - name: mediawiki-core-jslint
     voting: true
-  # (bug 44846) JSHint is always wrong in MediaWiki REL1_19
+    # Doesn't work in MediaWiki REL1_19 (bug 44846)
     branch: (?!REL1_19)
   - name: mwext-PHPExcel-jslint
     voting: true
@@ -265,8 +270,6 @@ jobs:
     voting: true
   - name: mwext-VisualEditor-jslint
     voting: true
-
-  # Various failing jobs that need to be fixed eventually
 
   # CentralNotice does not support SQLite backend :-/
   - name: ^mwext-CentralNotice-testextensions-.*
@@ -306,7 +309,7 @@ jobs:
     success-message: Change looked fine once merged.
     failure-message: ERROR! It seems this job introduced a regression although it might be caused by a previous commit.
 
-  # MediaWiki Core regression tests (on merge and per branches):
+  # MediaWiki core regression tests (on merge and per branches):
   - name: ^mediawiki-core-regression-.*
     failure-message: ERROR! It seems this job introduced a regression although it might be caused by a previous commit.
   - name: mediawiki-core-regression-master
@@ -316,7 +319,7 @@ jobs:
   - name: mediawiki-core-regression-REL1_20
     branch: ^REL1_20$
 
-  # Extensions for which tests are non functional or absents:
+  # Extensions for which tests are non-functional or absent:
   - name: ^mwext-EtherEditor-testextensions.*
     voting: false
   - name: ^mwext-cldr-testextensions.*
@@ -467,7 +470,7 @@ projects:
     check-voter:
       - wikimedia-bugzilla-wikibugs-perllint
 
-#### MediaWiki extensions #############################################
+#### MediaWiki extensions ######################################
 
   - name: mediawiki/extensions/AdminLinks
     check:
