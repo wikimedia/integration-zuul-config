@@ -271,6 +271,12 @@ jobs:
   - name: mwext-VisualEditor-jslint
     voting: true
 
+  - name: mediawiki-core-qunit
+    voting: false
+    # Doesn't work in MediaWiki REL1_19
+    # (times out or doesn't start in the first place).
+    branch: (?!REL1_19)
+
   # CentralNotice does not support SQLite backend :-/
   - name: ^mwext-CentralNotice-testextensions-.*
     voting: false
