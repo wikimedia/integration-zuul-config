@@ -333,6 +333,10 @@ jobs:
   - name: ^mwext-TranslationNotifications-testextensions.*
     voting: false
 
+  # New parsoid test, not sure if it's working yet, but we want to run it to find out.
+  - name: ^parsoid-testCommit$
+    voting: false
+
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
@@ -1068,12 +1072,14 @@ projects:
       - mwext-Parsoid-merge:
         - mwext-Parsoid-jslint
         - Parsoid-parserTests
+        - parsoid-testCommit
     gate-and-submit:
       - mwext-Parsoid-merge:
         - mwext-Parsoid-jslint
         - Parsoid-parserTests
     postmerge:
       - Parsoid-regression
+      - parsoid-trackRegressions
 
   - name: mediawiki/extensions/PHPExcel
     check:
