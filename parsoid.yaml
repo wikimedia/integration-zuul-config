@@ -1,0 +1,97 @@
+- builder:
+    name: parsoid-parsertests-run
+    builders:
+        - shell: 'git checkout $ZUUL_COMMIT'
+        - shell: |
+            cd js/tests
+            NODE_PATH=$NODE_PATH:../../contrib/node_modules
+            node fetch-parserTests.txt.js
+            node parserTests --xml --no-color --wt2html --wt2wt --html2html --selser --changesin selser.changes.json > results.xml
+
+- builder:
+    name: parsoid-parsertests-run-wrapper
+    builders:
+        - trigger-builds:
+            - project: parsoid-parsertests-run
+              current-parameters: true
+              predefined-parameters:
+                ZUUL_COMMIT={triggeredCommit}
+              block: true
+
+        - copyartifact:
+            project: parsoid-parsertests-run
+            which-build: permalink
+            permalink: last
+            filter: '**/results.xml'
+            flatten: true
+
+- job-template:
+    name: parsoid-parsertests-run
+    defaults:
+        use-zuul
+    scm:
+        - git:
+            url: '/var/lib/zuul/git/mediawiki/extensions/Parsoid'
+            refspec: '$ZUUL_REF'
+            name: 'origin'
+            disable-submodules: true
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Parsoid/js/contrib.git'
+            branches:
+                - master
+            basedir: contrib
+    builders:
+        - parsoid-parsertests-run
+    publishers:
+        - archive:
+            artifacts: '**/results.xml'
+        - fingerprint:
+            files: '**/results.xml'
+
+- job-template:
+    name: parsoid-parsertests
+    triggers:
+        - zuul
+    builders:
+        # Run tests on prior commit (note the caret (^) character)
+        - parsoid-parsertests-run-wrapper:
+            triggeredCommit: "$ZUUL_COMMIT^"
+
+        - shell: 'mv results.xml oldresults.xml'
+
+        # Run tests on current commit
+        - parsoid-parsertests-run-wrapper:
+            triggeredCommit: "$ZUUL_COMMIT"
+
+        # Use junitdiff tool to diff the two results
+        - shell: 'node /var/lib/jenkins/tools/junitdiff/junitdiff oldresults.xml results.xml > diff.xml'
+
+    publishers:
+        - xunit:
+            types:
+                - junit:
+                    pattern: diff.xml
+
+- job-template:
+    name: parsoid-regressions
+    defaults:
+        use-zuul
+    builders:
+        - parsoid-parsertests-run
+    publishers:
+        - xunit:
+            types:
+                - junit:
+                    pattern: results.xml
+            thresholdmode: 'number'
+            thresholds:
+              - failed:
+                    failurenew: 1
+
+- project:
+    name: parsoid
+    gerrit-name: mediawiki/extensions/Parsoid
+    jobs:
+        - parsoid-parsertests
+        - parsoid-parsertests-run
+        - parsoid-regressions
