@@ -23,6 +23,21 @@
      - shell: 'cd packaging && dpkg-buildpackage -rfakeroot -us -uc'
      - shell: 'lintian --info *.deb'
 
+- job-template:
+    name: '{name}-antbuild'
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    scm:
+     - git-deb-package:
+        gerrit-name: '{gerrit-name}'
+
+    builders:
+     - ant:
+        targets: 'build'
+        buildfile: '$WORKSPACE/packaging/build.xml'
+
 - project:
     name: 'operations-debs-python-voluptuous'
     gerrit-name: 'operations/debs/python-voluptuous'
@@ -42,3 +57,9 @@
     jobs:
      - '{name}-pep8'
      - '{name}-pyflakes'
+
+- project:
+    name: 'lucene-search-2'
+    gerrit-name: 'operations/debs/lucene-search-2'
+    jobs:
+     - '{name}-antbuild'
