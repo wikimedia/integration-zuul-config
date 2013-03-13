@@ -148,6 +148,24 @@
         targets: 'phpunit-all'
         buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
 
+- job:
+    name: 'mediawiki-core-code-coverage'
+    defaults: global
+
+    builders:
+     - get-mw-core:
+        branch: 'master'
+     - mw-install-sqlite
+     - shell: |
+        php tests/phpunit/phpunit.php \
+            --exclude-group Dump,Broken,ParserFuzz,Stub \
+            --coverage-html /srv/org/mediawiki/integration/coverage/
+    triggers:
+     - timed: '0 3 * * *'
+    wrappers:
+     - ansicolor
+     - timestamps
+
 - project:
     name: mediawiki-core-regression
     gerrit-name: mediawiki/core
