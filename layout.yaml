@@ -324,8 +324,14 @@ jobs:
   - name: ^mwext-TranslationNotifications-testextensions.*
     voting: false
 
-  # New parsoid test, not sure if it's working yet, but we want to run it to find out.
+  # New parsoid tests, not sure if they're working yet, but we want to run it to find out.
   - name: ^parsoid-testCommit$
+    voting: false
+  - name: ^parsoid-server-sanity-check$
+    voting: false
+  - name: ^parsoid-parse-tool-check$
+    voting: false
+  - name: ^parsoid-roundtrip-test-check$
     voting: false
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
@@ -1146,6 +1152,9 @@ projects:
         - mwext-Parsoid-jslint
         - Parsoid-parserTests
         - parsoid-testCommit
+        - parsoid-server-sanity-check
+        - parsoid-parse-tool-check
+        - parsoid-roundtrip-test-check
     gate-and-submit:
       - mwext-Parsoid-merge:
         - mwext-Parsoid-jslint
