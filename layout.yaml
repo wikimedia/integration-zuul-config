@@ -1,36 +1,32 @@
 # vim: set ts=2 sw=2 et ai foldmethod=indent:
 #
-# This is the Zuul configuration file for the Wikimedia Foundation
+# This is the Zuul configuration file for the Wikimedia Foundation.
 #
-# See http://ci.openstack.org/zuul/zuul.html#configuration
+# Zuul configuration is organised in three main sections:
 #
-
-# Zuul configuration comes with three main sections:
+# - pipelines: Abstracts incoming Gerrit events and what to report back in Gerrit.
 #
-# pipelines: filter Gerrit events and determine what is reported back in Gerrit
-#            once all jobs have been run.
+# - jobs: Override the pipeline configuration on a per job basis.
+#    This is how we specificy behaviour for individual projects and jobs.
 #
-# jobs: let you override the pipeline configuration on a per job basis. A nice
-#       way to handle exceptions to the usual workflow
+# - projects: For each project we specify what jobs to run, in what order jobs
+#    should depend on each other and for which pipelines the jobs should run.
 #
-# projects: Filter Gerrit event by project name then apply pipelines to filter
-#           the Gerrit events.  Under each pipeline are listed jobs to trigger.
-#           Jobs can be made dependant on each other.
-#
-# See upstream documentation at:
-#
-#   http://ci.openstack.org/zuul/zuul.html#layout-yaml
+# See also upstream documentation:
+# - http://ci.openstack.org/zuul/zuul.html#layout-yaml
+# - http://ci.openstack.org/zuul/zuul.html#configuration
 
 
 pipelines:
-  # For some pipelines, we do not want to report anything back to Gerrit,
-  # this is useful when trying out a new set of filter or when adding a new
-  # repository in the workflow. Zuul still log the results in /var/log/zuul.log
-  # but simply ignore reporting back to Gerrit.  By convention such pipelines
-  # names are suffixed with '-silent'.
+  # Terminology:
+  # - silent: For some pipelines, we do not want to report anything back to
+  #    Gerrit, this is useful when trying out a new set of filter or when adding
+  #    a new repository in the workflow. Zuul still log the results to
+  #    /var/log/zuul.log but simply won't report back to Gerrit.
+  # - check: Basic testing run on any submission. Votes V+1
+  # - test: More elaborate testing run only after CR+2 or when submitte
+  #    by a whitelisted user. Votes V+2.
 
-  # Pipeline doing prechecks such as syntax linting
-  # Does NOT report back to Gerrit.
   - name: check-silent
     manager: IndependentPipelineManager
     trigger:
@@ -38,8 +34,6 @@ pipelines:
       - event: comment-added
         comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
 
-  # Pipeline doing prechecks such as syntax linting
-  # DOES report back to Gerrit.
   - name: check
     manager: IndependentPipelineManager
     trigger:
@@ -47,18 +41,14 @@ pipelines:
       - event: comment-added
         comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
     success:
-      # Prevents people from being able to submit a change
-      # before unit tests have been run since submit requires V+2.
+      # Only V+1 as these are not elaborate tests. This prevents a change from
+      # being merged (requires V+2) before elaborate tests, which vote V+2, have run.
       verified: 1
       code-review: 0
     failure:
       verified: -1
       code-review: 0
 
-  # Voting check for project that lack unit tests and only rely
-  # on lint check. Similiar to 'check' but additionally vote V+2
-  # This is mostly for operations/puppet which ask to get V+2 whenever
-  # change is linted since they dont have unit tests.
   - name: check-voter
     manager: IndependentPipelineManager
     trigger:
@@ -84,7 +74,7 @@ pipelines:
          - .*?@wikimedia\.org$
          - .*?@wikimedia\.de$
 
-        # WMF Contractors:
+        # WMF contractors:
          - ^anomie\.wikipedia@gmail\.com$
          - ^amir\.aharoni@mail\.huji\.ac\.il$
          - ^hashar@free\.fr$
@@ -140,8 +130,7 @@ pipelines:
 
   # Actual gate (report/vote in Gerrit)
   #
-  # WARNING: do modify the gate-and-submit pipeline below whenever
-  #          changing the gate pipeline.
+  # WARNING: Also update the "gate-and-submit" pipeline when changing this one.
   #
   - name: gate
     manager: IndependentPipelineManager
@@ -161,8 +150,7 @@ pipelines:
   # Actual gate (report/vote in Gerrit)
   # Will auto submit change on success!!!!!!!!
   #
-  # WARNING: do modify the gate pipeline below whenever changing
-  #          the gate-and-submit pipeline.
+  # WARNING: Also update the "gate" pipeline when changing this one.
   #
   - name: gate-and-submit
     manager: IndependentPipelineManager
