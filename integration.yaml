@@ -1,0 +1,17 @@
+- job-template:
+    name: 'integration-docroot-deploy'
+    defaults: global
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        #!/bin/bash -e
+        cd /srv/
+        git remote update
+        git checkout $ZUUL_COMMIT
+        echo "`date -R`> $ZUUL_COMMIT" >> /srv/jenkins-autodeploy
+
+- project:
+    name: 'integration-docroot'
+    jobs:
+     - 'integration-docroot-deploy'
