@@ -28,6 +28,22 @@
             rake --rakefile rakefile validate
         )
 
+# Documentation for our puppet repository
+- job-template:
+    name: 'operations-puppet-doc'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    workspace: '/srv/org/wikimedia/doc/puppetsource'
+    builders:
+     - shell: |
+        #!/bin/bash -e
+        /usr/bin/puppet doc \
+            --mode rdoc \
+            --outputdir /srv/org/wikimedia/doc/puppet \
+            --modulepath "$WORKSPACE/modules" \
+            --manifestdir "$WORKSPACE/manifests"
+
 # Find out common typos in any files of ops/puppet
 - job-template:
     name: 'operations-puppet-typos'
@@ -52,3 +68,4 @@
      - '{name}-pep8'
      - operations-puppet-typos
      - operations-puppet-validate
+     - operations-puppet-doc
