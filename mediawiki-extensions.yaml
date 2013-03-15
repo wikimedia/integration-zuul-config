@@ -90,6 +90,28 @@
      - junit:
         results: 'junit*.xml'
 
+- job-template:
+    name: 'mwext-VisualEditor-docgen'
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - get-mw-core:
+        branch: 'master'
+    # VisualEditor's custom documentation generator has a maintenance
+    # script which needs MediaWiki to be installed first.
+     - mw-install-sqlite
+     - shell: |
+        # Generate documentation
+        $WORKSPACE/extensions/VisualEditor/.docs/generate.sh
+        # Set destination and version directory therein
+        DEST_DIR="/srv/org/wikimedia/doc/VisualEditor"
+        DEST_VERSIONDIR=`echo "$GERRIT_BRANCH" | tr '/' '-'`
+        # Ensure the destination exists
+        mkdir -p $DEST_DIR
+        # Publish it (trailing slash is important!)
+        rsync --verbose --recursive --delete-after --force $WORKSPACE/extensions/VisualEditor/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
+
 - job-group:
     name: mwext-check-jobs
     jobs:
@@ -384,3 +406,6 @@
      - '{name}-{ext-name}-pep8':
         name: mwext
         ext-name: WikimediaMaintenance
+
+     - 'mwext-VisualEditor-docgen':
+        ext-name: VisualEditor
