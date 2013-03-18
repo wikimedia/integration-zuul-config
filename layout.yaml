@@ -292,6 +292,10 @@ jobs:
   - name: ^mwext-CentralNotice-testextensions-.*
     voting: false
 
+  # not working yet, might need some dependency
+  - name: ^mwext-ContributionTracking-testextensions-.*
+    voting: false
+
   # Echo installer does not support SQLite backend :-/
   - name: ^mwext-Echo-testextensions.*
     voting: false
@@ -706,13 +710,11 @@ projects:
     test:
       - mwext-Cite-merge:
         - mwext-Cite-jslint
-        - mwext-Cite-lint:
-          - mwext-Cite-testextensions-master
+        - mwext-Cite-lint
     gate-and-submit:
       - mwext-Cite-merge:
         - mwext-Cite-jslint
-        - mwext-Cite-lint:
-          - mwext-Cite-testextensions-master
+        - mwext-Cite-lint
 
   - name: mediawiki/extensions/cldr
     check:
@@ -1752,16 +1754,10 @@ projects:
       - mwext-Poem-merge:
         - mwext-Poem-jslint
         - mwext-Poem-lint
-    test:
-      - mwext-Poem-merge:
-        - mwext-Poem-jslint
-        - mwext-Poem-lint:
-          - mwext-Poem-testextensions-master
     gate-and-submit:
       - mwext-Poem-merge:
         - mwext-Poem-jslint
-        - mwext-Poem-lint:
-          - mwext-Poem-testextensions-master
+        - mwext-Poem-lint
 
   - name: mediawiki/extensions/PostEdit
     check:
@@ -2580,16 +2576,10 @@ projects:
       - mwext-wikihiero-merge:
         - mwext-wikihiero-jslint
         - mwext-wikihiero-lint
-    test:
-      - mwext-wikihiero-merge:
-        - mwext-wikihiero-jslint
-        - mwext-wikihiero-lint:
-          - mwext-wikihiero-testextensions-master
     gate-and-submit:
       - mwext-wikihiero-merge:
         - mwext-wikihiero-jslint
-        - mwext-wikihiero-lint:
-          - mwext-wikihiero-testextensions-master
+        - mwext-wikihiero-lint
 
   - name: mediawiki/extensions/WikimediaIncubator
     check:
