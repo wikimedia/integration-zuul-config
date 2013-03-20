@@ -27,13 +27,6 @@ pipelines:
   # - test: More elaborate testing run only after CR+2 or when submitte
   #    by a whitelisted user. Votes V+2.
 
-  - name: check-silent
-    manager: IndependentPipelineManager
-    trigger:
-      - event: patchset-created
-      - event: comment-added
-        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
-
   - name: check
     manager: IndependentPipelineManager
     trigger:
