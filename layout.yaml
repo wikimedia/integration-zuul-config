@@ -1552,6 +1552,16 @@ projects:
         - mwext-Narayam-jslint
         - mwext-Narayam-lint
 
+  - name: mediawiki/extensions/NavigationTiming
+    check:
+      - mwext-NavigationTiming-merge:
+        - mwext-NavigationTiming-jslint
+        - mwext-NavigationTiming-lint
+    gate-and-submit:
+      - mwext-NavigationTiming-merge:
+        - mwext-NavigationTiming-jslint
+        - mwext-NavigationTiming-lint
+
   - name: mediawiki/extensions/NewUserMessage
     check:
       - mwext-NewUserMessage-merge:
@@ -2254,6 +2264,32 @@ projects:
         - mwext-SubpageSortkey-jslint
         - mwext-SubpageSortkey-lint
 
+  - name: mediawiki/extensions/Sudo
+    check:
+      - mwext-Sudo-merge:
+        - mwext-Sudo-jslint
+        - mwext-Sudo-lint
+    gate-and-submit:
+      - mwext-Sudo-merge:
+        - mwext-Sudo-jslint
+        - mwext-Sudo-lint
+
+  - name: mediawiki/extensions/Survey
+    check:
+      - mwext-Survey-merge:
+        - mwext-Survey-jslint
+        - mwext-Survey-lint
+    test:
+      - mwext-Survey-merge:
+        - mwext-Survey-jslint
+        - mwext-Survey-lint:
+          - mwext-Survey-testextensions-master
+    gate-and-submit:
+      - mwext-Survey-merge:
+        - mwext-Survey-jslint
+        - mwext-Survey-lint:
+          - mwext-Survey-testextensions-master
+
   - name: mediawiki/extensions/SpamBlacklist
     check:
       - mwext-SpamBlacklist-merge:
@@ -2298,6 +2334,26 @@ projects:
       - mwext-SyntaxHighlight_GeSHi-merge:
         - mwext-SyntaxHighlight_GeSHi-jslint
         - mwext-SyntaxHighlight_GeSHi-lint
+
+  - name: mediawiki/extensions/TemplateData
+    check:
+      - mwext-TemplateData-merge:
+        - mwext-TemplateData-jslint
+        - mwext-TemplateData-lint
+    gate-and-submit:
+      - mwext-TemplateData-merge:
+        - mwext-TemplateData-jslint
+        - mwext-TemplateData-lint
+
+  - name: mediawiki/extensions/Thanks
+    check:
+      - mwext-Thanks-merge:
+        - mwext-Thanks-jslint
+        - mwext-Thanks-lint
+    gate-and-submit:
+      - mwext-Thanks-merge:
+        - mwext-Thanks-jslint
+        - mwext-Thanks-lint
 
   - name: mediawiki/extensions/TimedMediaHandler
     check:
