@@ -43,3 +43,35 @@
 
     triggers:
      - timed: '@hourly'
+
+# On merge of mediawiki-config.git, checkout on beta
+- job:
+    name: beta-mediawiki-config-update
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    node: deployment-bastion
+
+    scm:
+        # Hack, remove the git scm from `use-zuul`. There is
+        # no need to clone / fetch the repository.
+
+    builders:
+     # FIXME: this should probably be a shell script
+     - shell: |
+        # Shell out using sudo:
+        #  -u : to user  mwdeploy
+        #  -E : preserve environnement variables
+        #  -H : set HOME to mwdeploy default home
+        #  -s /bin/bash -c '': da hack
+        sudo -u mwdeploy -E -H -s /bin/bash -c '
+          set -ex ;
+          pwd ;
+          cd /home/wikipedia/common ;
+          pwd ;
+          git remote update ;
+          git reset --hard "$ZUUL_COMMIT" ;
+          git tag "jenkins_build_$BUILD_NUMBER" "$ZUUL_COMMIT" ;
+         '
