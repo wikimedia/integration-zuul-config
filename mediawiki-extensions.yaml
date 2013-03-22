@@ -27,10 +27,9 @@
      - lint-whitespaces-in:
         dir: '$WORKSPACE/extensions/{ext-name}'
 
-# Javascript linter is separated from the generic linter which let us finely
-# tune on which extension Zuul will lint JavaScript.  The reason is that some
-# extensions are not passing the tests yet.
-# We will probably end up merging -jslint jobs with the -lint jobs.
+# jshint is in a separate job from phplint because various extensions
+# don't pass jshint yet but do pass phplint. This way we can opt-in
+# on a project base.
 - job-template:
     name: '{name}-{ext-name}-jslint'
     defaults: use-zuul
@@ -43,6 +42,19 @@
      - jshint
     publishers:
      - checkstyle-xml
+
+- job-template:
+    name: '{name}-{ext-name}-qunit'
+
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+
+    builders:
+     - mw-setup-extension:
+        mwbranch: 'master'
+        dependencies: '{dependencies}'
+     - qunit
 
 - job-template:
     name: '{name}-{ext-name}-pep8'
@@ -74,13 +86,9 @@
     triggers:
      - zuul
     builders:
-     - get-mw-core:
-        branch: '{mwbranch}'
-     - mw-install-sqlite
-     - mw-get-extensions:
-         dependencies: '{dependencies}'
-     - mw-configure-extensions
-     - mw-run-update-script
+     - mw-setup-extension:
+        mwbranch: '{mwbranch}'
+        dependencies: '{dependencies}'
      - mw-phpunit-ext:
         extension: '{ext-name}'
      - mw-phpunit-allexts
@@ -123,6 +131,11 @@
         # Publish it (trailing slash is important!)
         rsync --recursive --delete-after --force $WORKSPACE/extensions/VisualEditor/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
 
+# These are jobs we create for all of the extensions
+# listed below. If a job should only be created
+# for a select number of extensions or if it needs
+# custom parameters, add it below under "Extra jobs for specific extensions"
+# at the bottom of this file.
 - job-group:
     name: mwext-check-jobs
     jobs:
@@ -349,7 +362,8 @@
     jobs:
      - mwext-check-jobs
 
-    # FIXME: this really need to be improved :(
+    # Extra jobs for specific extensions
+
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: Wikibase
@@ -422,6 +436,10 @@
      - '{name}-{ext-name}-pep8':
         name: mwext
         ext-name: WikimediaMaintenance
+
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: VisualEditor
 
      - 'mwext-VisualEditor-doc-test':
         ext-name: VisualEditor

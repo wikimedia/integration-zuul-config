@@ -43,6 +43,20 @@
     publishers:
      - checkstyle-xml
 
+# Generic job to run QUnit
+- job-template:
+    name: '{name}-qunit'
+
+    defaults: use-zuul
+    scm:
+     - git-mwcore-nosubmodules
+    triggers:
+     - zuul
+
+    builders:
+     - mw-install-sqlite
+     - qunit
+
 - job-template:
     name: '{name}-whitespaces'
     defaults: use-zuul

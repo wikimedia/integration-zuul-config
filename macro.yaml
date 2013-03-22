@@ -66,24 +66,17 @@
     name: qunit
     builders:
      - shell: |
-        # Unique id for the code to be tested
+        #!/bin/bash -x
+        # Create unique sub directory name
         TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
-        # Install MediaWiki
-        php $WORKSPACE/maintenance/install.php \
-        --confpath $WORKSPACE \
-        --dbtype sqlite \
-        --dbpath $WORKSPACE \
-        --dbname my_wiki \
-        --scriptpath /$TEST_ID \
-        --server http://localhost:9412 \
-        --pass testpass \
-        TestWiki \
-        WikiAdmin
-        # Custom settings
-        echo '$wgShowExceptionDetails = true; $wgEnableJavaScriptTest = true;' >> $WORKSPACE/LocalSettings.php
-        # The location is free or we free it now
+        # Configure MediaWiki
+        echo -e \
+         "\$wgServer = 'http://localhost:9412';\n"\
+         "\$wgScriptPath = '/${TEST_ID}';\n"\
+         "\$wgEnableJavaScriptTest = true;\n" >> $WORKSPACE/LocalSettings.php
+        # The location is free or we make it free
         test ! -e /srv/localhost/qunit/$TEST_ID || rm /srv/localhost/qunit/$TEST_ID;
-        # Set up symlink in the document root
+        # Publish our install in the QUnit server document root
         ln -s $WORKSPACE /srv/localhost/qunit/$TEST_ID
         # Run QUnit tests via PhantomJS
         /var/lib/jenkins/bin/wmfgrunt qunit --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit"
@@ -120,16 +113,6 @@
     builders:
         - shell: "/var/lib/jenkins/tools/fetch-mw-ext {dependencies}"
 
-# Inject in LocalSettings.php some code to automatically load
-# installed extensions.
-- builder:
-    name: mw-configure-extensions
-    builders:
-        - shell: |
-            #!/bin/bash -xe
-            echo "require_once( '/var/lib/jenkins/tools/extensions-loader.php' );" \
-                >> "$WORKSPACE/LocalSettings.php"
-
 - builder:
     name: mw-run-update-script
     builders:
@@ -141,6 +124,22 @@
       - ant:
           targets: "installdb-sqlite"
           buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
+
+- builder:
+    name: mw-setup-extension
+    builders:
+     - get-mw-core:
+          branch: '{mwbranch}'
+     - mw-install-sqlite
+     - mw-get-extensions:
+          dependencies: '{dependencies}'
+     - shell: |
+        #!/bin/bash -xe
+        # Inject in LocalSettings.php some code to automatically load
+        # installed extensions.
+        echo "require_once( '/var/lib/jenkins/tools/extensions-loader.php' );" \
+        >> "$WORKSPACE/LocalSettings.php"
+     - mw-run-update-script
 
 - builder:
     name: mw-phpunit
