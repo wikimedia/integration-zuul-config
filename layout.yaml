@@ -233,6 +233,11 @@ jobs:
   #
   # Individual adjustments
   #
+  - name: beta-mediawiki-config-update
+    branch: ^master$
+    success-message: 'Change has been deployed on the beta cluster'
+    failure-message: 'Failed deployment on the beta cluster :-/  Please contact a member of the beta project to fixup the working directory on the destination server.'
+
   - name: integration-docroot-deploy
     branch: ^master$
     success-message: 'Change has been deployed on the server and should be live.'
@@ -488,6 +493,8 @@ projects:
     gate-and-submit:
       - operations-mw-config-phplint:
         - operations-mw-config-tests
+    postmerge:
+      - beta-mediawiki-config-update
 
   - name: operations/puppet
     # Only lint on submission for now, that will be voting
