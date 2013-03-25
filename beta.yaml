@@ -66,6 +66,9 @@
         #  -E : preserve environnement variables
         #  -H : set HOME to mwdeploy default home
         #  -s /bin/bash -c '': da hack
+        #
+        # InitialiseSettings.php need to be touched to update the config
+        # cache on the Apaches instances.
         sudo -u mwdeploy -E -H -s /bin/bash -c '
           set -ex ;
           pwd ;
@@ -74,4 +77,5 @@
           git remote update ;
           git reset --hard "$ZUUL_COMMIT" ;
           git tag "jenkins_build_$BUILD_NUMBER" "$ZUUL_COMMIT" ;
+          touch /home/wikipedia/common/wmf-config/InitialiseSettings.php ;
          '
