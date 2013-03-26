@@ -159,7 +159,9 @@
      - shell: |
         php tests/phpunit/phpunit.php \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
-            --coverage-html /srv/org/mediawiki/integration/coverage/
+            --coverage-html /srv/org/wikimedia/integration/cover/mediawiki-core/master/php
+        echo "Code coverage report is available at:"
+        echo "https://integration.wikimedia.org/cover/mediawiki-core/master/php"
     triggers:
      - timed: '0 3 * * *'
     wrappers:
