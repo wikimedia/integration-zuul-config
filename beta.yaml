@@ -33,13 +33,46 @@
       - timestamps
       - ansicolor
 
-# Every hour, update the `enwiki` database using update.php.
 - job:
-    name: beta-updatedb-enwiki
+    name: beta-update-databases
     defaults: beta
 
+    project-type: matrix
+
+    axes:
+     - axis:
+        type: label-expression
+        name: label
+        values:
+         # deployment-bastion has the 'betacluster' label
+         - betacluster
+     - axis:
+        type: user-defined
+        name: wikidb
+        values:
+         - aawiki
+         - commonswiki
+         - dewiki
+         - dewikivoyage
+         - ee_prototypewiki
+         - enwiki
+         - enwikibooks
+         - enwikinews
+         - enwikiquote
+         - enwikisource
+         - enwikiversity
+         - enwikivoyage
+         - enwiktionary
+         - eowiki
+         - hewiki
+         - labswiki
+         - metawiki
+         - simplewiki
+         - sqwiki
+         - testwiki
+
     builders:
-     - shell: "sudo -u mwdeploy mwscript update.php --wiki=enwiki --quick"
+     - shell: "sudo -u mwdeploy mwscript update.php --wiki=$wikidb --quick"
 
     triggers:
      - timed: '@hourly'
