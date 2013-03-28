@@ -243,7 +243,7 @@ jobs:
     success-message: 'Change has been deployed on the server and should be live.'
     failure-message: 'FAILED to deploy change. Please contact a member of the continuous integration team to fixup the docroot on the destination server.'
 
-  - name: 'mwext-VisualEditor-docgen'
+  - name: 'mwext-VisualEditor-doc-publish'
     branch: ^master$
 
   - name: mwext-EventLogging-pep8
@@ -2578,6 +2578,7 @@ projects:
       - mwext-VisualEditor-merge:
         - mwext-VisualEditor-jslint
         - mwext-VisualEditor-lint
+        - mwext-VisualEditor-doc-test
     gate-and-submit:
       - mwext-VisualEditor-merge:
         - mwext-VisualEditor-jslint
@@ -2585,7 +2586,7 @@ projects:
       # VisualEditor does not have any PHP Unit tests
       # so skip the installer and PHPUnit tests.
     postmerge:
-      - mwext-VisualEditor-docgen
+      - mwext-VisualEditor-doc-publish
 
   - name: mediawiki/extensions/WebChat
     check:
