@@ -91,7 +91,18 @@
         results: 'junit*.xml'
 
 - job-template:
-    name: 'mwext-VisualEditor-docgen'
+    name: 'mwext-VisualEditor-doc-test'
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - get-mw-core:
+        branch: 'master'
+     - mw-install-sqlite
+     - shell: "$WORKSPACE/extensions/VisualEditor/.docs/generate.sh"
+
+- job-template:
+    name: 'mwext-VisualEditor-doc-publish'
     defaults: use-zuul-for-mw-ext
     triggers:
      - zuul
@@ -412,5 +423,8 @@
         name: mwext
         ext-name: WikimediaMaintenance
 
-     - 'mwext-VisualEditor-docgen':
+     - 'mwext-VisualEditor-doc-test':
+        ext-name: VisualEditor
+
+     - 'mwext-VisualEditor-doc-publish':
         ext-name: VisualEditor
