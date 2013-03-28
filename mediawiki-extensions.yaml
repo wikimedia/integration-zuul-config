@@ -98,15 +98,16 @@
      - junit:
         results: 'junit*.xml'
 
+# VisualEditor's docgen has a maintenance script, so install mediawiki first
 - job-template:
     name: 'mwext-VisualEditor-doc-test'
     defaults: use-zuul-for-mw-ext
     triggers:
      - zuul
     builders:
-     - get-mw-core:
-        branch: 'master'
-     - mw-install-sqlite
+     - mw-setup-extension:
+        mwbranch: '{mwbranch}'
+        dependencies: '{dependencies}'
      - shell: "$WORKSPACE/extensions/VisualEditor/.docs/generate.sh"
 
 - job-template:
@@ -115,14 +116,12 @@
     triggers:
      - zuul
     builders:
-     - get-mw-core:
-        branch: 'master'
-    # VisualEditor's custom documentation generator has a maintenance
-    # script which needs MediaWiki to be installed first.
-     - mw-install-sqlite
+     - mw-setup-extension:
+        mwbranch: '{mwbranch}'
+        dependencies: '{dependencies}'
      - shell: |
         # Generate documentation
-        $WORKSPACE/extensions/VisualEditor/.docs/generate.sh
+        $WORKSPACE/extensions/VisualEditor/.docs/generate.sh --ve-path="modules/"
         # Set destination and version directory therein
         DEST_DIR="/srv/org/wikimedia/doc/VisualEditor"
         DEST_VERSIONDIR=`echo "$GERRIT_BRANCH" | tr '/' '-'`
@@ -130,6 +129,7 @@
         mkdir -p $DEST_DIR
         # Publish it (trailing slash is important!)
         rsync --recursive --delete-after --force $WORKSPACE/extensions/VisualEditor/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
+        rsync --recursive --delete-after --force $WORKSPACE/extensions/VisualEditor/modules/ "$DEST_DIR/$DEST_VERSIONDIR/modules/"
 
 # These are jobs we create for all of the extensions
 # listed below. If a job should only be created
