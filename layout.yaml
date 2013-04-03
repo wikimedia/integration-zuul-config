@@ -358,6 +358,16 @@ jobs:
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
+  - name: integration/jenkins-job-builder-config
+    # FIXME: make this 'check' whenever we have integration tests
+    check-voter:
+      - integration-jjb-config-yamllint
+
+  - name: integration/zuul-config
+    # FIXME: make this 'check' whenever we have integration tests
+    check-voter:
+      - integration-zuul-config-yamllint
+
   - name: mediawiki/core
     check:
       - mediawiki-core-merge:
