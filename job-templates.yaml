@@ -51,6 +51,39 @@
      - phpcs
 
 - job-template:
+    name: '{name}-rubylint'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - ruby-lint:
+        interpreter: 'ruby'
+
+- job-template:
+    name: '{name}-ruby1.8lint'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - ruby-lint:
+        interpreter: 'ruby1.8'
+
+- job-template:
+    name: '{name}-ruby1.9.3lint'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - ruby-lint:
+        interpreter: 'ruby1.9.3'
+
+- job-template:
     name: '{name}-yamllint'
 
     defaults: use-zuul

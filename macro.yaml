@@ -246,6 +246,14 @@
         make
         make test
 
+# Run ruby syntax check against any file named '.rb' under the workspace.
+# The ruby interpreter is passed using 'interpreter'
+- builder:
+    name: ruby-lint
+    builders:
+     - shell: |
+        find "$WORKSPACE" -type f -name '*.rb' -print0 | xargs -t -n1 -0 {interpreter} -c
+
 - builder:
     name: yaml-lint
     builders:
