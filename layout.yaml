@@ -355,6 +355,10 @@ jobs:
   - name: ^parsoid-server-sanity-check$
     voting: false
 
+  # Lot of YAML files still fails the python linter.
+  - name: translatewiki-yamllint
+    voting: false
+
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
@@ -526,10 +530,12 @@ projects:
       - translatewiki-phplint
       - translatewiki-puppet-validate
       - translatewiki-shelllint
+      - translatewiki-yamllint
     gate-and-submit:
       - translatewiki-phplint
       - translatewiki-puppet-validate
       - translatewiki-shelllint
+      - translatewiki-yamllint
 
   - name: wikimedia/bugzilla/wikibugs
     # Only lint on submission for now, that will be voting
