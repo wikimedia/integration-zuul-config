@@ -15,3 +15,15 @@
     name: 'integration-docroot'
     jobs:
      - 'integration-docroot-deploy'
+
+- project:
+    name: 'integration-zuul-config'
+    gerrit-name: 'integration/zuul-config'
+    jobs:
+     - '{name}-yamllint'
+
+- project:
+    name: 'integration-jjb-config'
+    gerrit-name: 'integration/jenkins-job-builder-config'
+    jobs:
+     - '{name}-yamllint'

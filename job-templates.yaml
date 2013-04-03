@@ -49,3 +49,13 @@
     publishers:
      - checkstyle-xml
      - phpcs
+
+- job-template:
+    name: '{name}-yamllint'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - yaml-lint
