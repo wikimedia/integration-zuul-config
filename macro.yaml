@@ -79,7 +79,7 @@
         # Publish our install in the QUnit server document root
         ln -s $WORKSPACE /srv/localhost/qunit/$TEST_ID
         # Run QUnit tests via PhantomJS
-        /var/lib/jenkins/bin/wmfgrunt qunit --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit"
+        /var/lib/jenkins/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit"
         gqec=$?
         # Clean up
         rm /srv/localhost/qunit/$TEST_ID
