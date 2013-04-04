@@ -2597,7 +2597,14 @@ projects:
       - mwext-VisualEditor-merge:
         - mwext-VisualEditor-jslint
         - mwext-VisualEditor-lint
+    test:
+      - mwext-VisualEditor-merge:
+        - mwext-VisualEditor-jslint
+        - mwext-VisualEditor-lint
         - mwext-VisualEditor-doc-test
+        # TODO: Non-voting for now. When good,
+        # set voting:true and add to gate-and-submit.
+        - mwext-VisualEditor-qunit
     gate-and-submit:
       - mwext-VisualEditor-merge:
         - mwext-VisualEditor-jslint
