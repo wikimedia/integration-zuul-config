@@ -293,6 +293,9 @@ jobs:
     # (times out or doesn't start in the first place).
     branch: (?!REL1_19)
 
+  - name: mediawiki-core-jsduck
+    branch: ^(REL1_21|master)$
+
   # not working yet, might need some dependency
   - name: ^mwext-ContributionTracking-testextensions-.*
     voting: false
@@ -381,6 +384,7 @@ projects:
       - mediawiki-core-merge:
         - mediawiki-core-phpcs-HEAD
         - mediawiki-core-jslint
+        - mediawiki-core-jsduck
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
             - mediawiki-core-install-sqlite:
