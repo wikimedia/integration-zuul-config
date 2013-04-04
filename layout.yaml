@@ -296,6 +296,9 @@ jobs:
   - name: mediawiki-core-jsduck
     branch: ^(REL1_21|master)$
 
+  - name: mediawiki-core-jsduck-publish
+    branch: ^(REL1_21|master)$
+
   # not working yet, might need some dependency
   - name: ^mwext-ContributionTracking-testextensions-.*
     voting: false
@@ -379,6 +382,7 @@ projects:
         - mediawiki-core-whitespaces
         - mediawiki-core-phpcs-HEAD
         - mediawiki-core-jslint
+        - mediawiki-core-jsduck
         - mediawiki-core-lint
     test:
       - mediawiki-core-merge:
@@ -396,6 +400,7 @@ projects:
       - mediawiki-core-merge:
         - mediawiki-core-phpcs-HEAD
         - mediawiki-core-jslint
+        - mediawiki-core-jsduck
         - mediawiki-core-lint:
           - mediawiki-core-phpunit-databaseless:
             - mediawiki-core-install-sqlite:
@@ -406,6 +411,7 @@ projects:
     postmerge:
       - mediawiki-core-jslint
       - mediawiki-core-lint
+      - mediawiki-core-jsduck-publish
       - mediawiki-core-master-phpunit-all
       - mediawiki-core-regression-master
       - mediawiki-core-regression-REL1_19
