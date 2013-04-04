@@ -46,21 +46,40 @@
     # Use `cd` because jshint reads .jshintrc/.jshitignore from PWD
     builders:
      - shell: |
-        #!/bin/bash -e
+        #!/bin/bash
         cd "{dir}"
-        /var/lib/jenkins/bin/jshint . \
-            --checkstyle-reporter > "$WORKSPACE/checkstyle-jshint.xml" \
-            && HAS_ERROR=0 || HAS_ERROR=1
+        /var/lib/jenkins/bin/jshint . --checkstyle-reporter > "$WORKSPACE/checkstyle-jshint.xml"
+        code=$?
         echo
         echo 'Check the "Checkstyle Warnings" link on the left for JSHint report.'
         echo
-        exit $HAS_ERROR
+        exit $code
 
 - builder:
     name: jshint
     builders:
      - jshint-in:
         dir: '$WORKSPACE'
+
+- builder:
+    name: jsduck
+    builders:
+     - shell: |
+        #!/bin/bash
+        echo "Running JSDuck with {config}..."
+        warnings=`jsduck --config="{config}" 2>&1`
+        code=$?
+        # Re-colorize
+        BLACK=$(tput setaf 0); YELLOW=$(tput setaf 3); MEGANTA=$(tput setaf 5)
+        echo "$warnings" | perl -pe "s|^([^ ]+) ([^ ]+) (.*)$|$YELLOW\1 $MEGANTA\2 $BLACK\3|"
+        # JSDuck doesn't exit with an error code if there are warnings
+        if [[ "$code" == "0" && "$warnings" != "" ]]
+        then
+            echo
+            exit 1
+        fi
+        # Exit with exit code of jsduck command
+        exit $code
 
 - builder:
     name: qunit
@@ -86,6 +105,35 @@
         # Re-use exit code of grunt-qunit command
         exit $gqec
 
+# - src: (without trailing slash)
+# - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
+# - version: (usually branch name) - will be escaped
+- builder:
+    name: documentation-sync
+    builders:
+     - documentation-sync-subdir:
+        src: '{src}'
+        project: '{project}'
+        version: '{version}'
+        subdir: ''
+
+# Is there a way to make the jjb/yaml "{subdir}" param optional?
+# Then we could make it default to empy string instead of creating
+# a separate builder
+# - subdir: (must have trailing slash) - will not be escaped
+- builder:
+    name: documentation-sync-subdir
+    builders:
+     - shell: |
+        # Set destination and version directory therein
+        DEST_DIR="/srv/org/wikimedia/doc"
+        DEST_PROJECTDIR=`echo "{project}" | tr '/' '-'`
+        DEST_VERSIONDIR=`echo "{version}" | tr '/' '-'`
+        DEST_EXTRAPATH="{subdir}"
+        # Ensure the destination exists
+        mkdir -p "$DEST_DIR/$DEST_PROJECTDIR/$DEST_VERSIONDIR/$DEST_EXTRAPATH"
+        # Publish it (trailing slash is important!)
+        rsync --recursive --delete-after --force {src}/ "$DEST_DIR/$DEST_PROJECTDIR/$DEST_VERSIONDIR/$DEST_EXTRAPATH"
 
 # Has to be named something other than 'checkstyle' or python will
 # go into infinite recursion when generating the jobs.

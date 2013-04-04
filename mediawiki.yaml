@@ -58,6 +58,33 @@
      - qunit
 
 - job-template:
+    name: '{name}-jsduck'
+    defaults: use-zuul
+    scm:
+     - git-mwcore-nosubmodules
+    triggers:
+     - zuul
+    builders:
+     - jsduck:
+        config: '$WORKSPACE/maintenance/jsduck/config.json'
+
+- job-template:
+    name: '{name}-jsduck-publish'
+    defaults: use-zuul
+    scm:
+     - git-mwcore-nosubmodules
+    triggers:
+     - zuul
+    builders:
+     - jsduck:
+        config: '$WORKSPACE/maintenance/jsduck/config.json'
+     - documentation-sync-subdir:
+        src: '$WORKSPACE/docs/js'
+        project: 'mediawiki-core'
+        version: '$GERRIT_BRANCH'
+        subdir: 'js/'
+
+- job-template:
     name: '{name}-whitespaces'
     defaults: use-zuul
     scm:
@@ -128,6 +155,8 @@
       - '{name}-lint'
       - '{name}-jslint'
       - '{name}-qunit'
+      - '{name}-jsduck'
+      - '{name}-jsduck-publish'
       - '{name}-whitespaces'
       - '{name}-phpunit-{phpunit-group}'
       - '{name}-install-{databasetype}'
