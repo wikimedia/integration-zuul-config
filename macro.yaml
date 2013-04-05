@@ -294,6 +294,12 @@
         make
         make test
 
+- builder:
+    name: puppet-validate
+    builders:
+     - shell: |
+        find . -type f -name '*.pp' -print0 | xargs -0 puppet parser validate
+
 # Run ruby syntax check against any file named '.rb' under the workspace.
 # The ruby interpreter is passed using 'interpreter'
 - builder:

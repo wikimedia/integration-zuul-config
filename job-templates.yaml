@@ -51,6 +51,16 @@
      - phpcs
 
 - job-template:
+    name: '{name}-puppet-validate'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - puppet-validate
+
+- job-template:
     name: '{name}-rubylint'
     defaults: use-zuul
 
