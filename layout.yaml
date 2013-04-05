@@ -982,11 +982,16 @@ projects:
   - name: mediawiki/extensions/DataValues
     check:
       - mwext-DataValues-merge:
-#        - mwext-DataValues-jslint
+        - mwext-DataValues-jslint
         - mwext-DataValues-lint
+    test:
+      - mwext-DataValues-merge:
+        - mwext-DataValues-jslint
+        - mwext-DataValues-lint:
+          - mwext-DataValues-testextensions-master
     gate-and-submit:
       - mwext-DataValues-merge:
-#        - mwext-DataValues-jslint
+        - mwext-DataValues-jslint
         - mwext-DataValues-lint:
           - mwext-DataValues-testextensions-master
 
