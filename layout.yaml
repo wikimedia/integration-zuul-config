@@ -1207,6 +1207,22 @@ projects:
       - mwext-FormPreloadPostCache-merge:
         - mwext-FormPreloadPostCache-lint
 
+  - name: mediawiki/extensions/Foxway
+    check:
+      - mwext-Foxway-merge:
+        - mwext-Foxway-jslint
+        - mwext-Foxway-lint
+    test:
+      - mwext-Foxway-merge:
+        - mwext-Foxway-jslint
+        - mwext-Foxway-lint:
+          - mwext-Foxway-testextensions-master
+    gate-and-submit:
+      - mwext-Foxway-merge:
+        - mwext-Foxway-jslint
+        - mwext-Foxway-lint:
+          - mwext-Foxway-testextensions-master
+
   - name: mediawiki/extensions/FundraiserLandingPage
     check:
       - mwext-FundraiserLandingPage-merge:
