@@ -85,6 +85,16 @@
         subdir: 'js/'
 
 - job-template:
+    name: '{name}-doxygen-publish'
+    defaults: use-zuul
+    scm:
+     - git-mwcore-nosubmodules
+    triggers:
+     - zuul
+    builders:
+     - shell: "/var/lib/jenkins/tools/mwcore-docgen.sh"
+
+- job-template:
     name: '{name}-whitespaces'
     defaults: use-zuul
     scm:
@@ -157,6 +167,7 @@
       - '{name}-qunit'
       - '{name}-jsduck'
       - '{name}-jsduck-publish'
+      - '{name}-doxygen-publish'
       - '{name}-whitespaces'
       - '{name}-phpunit-{phpunit-group}'
       - '{name}-install-{databasetype}'
@@ -223,16 +234,3 @@
      - 'mediawiki-core-regression-{branch}'
      - '{name}-phpcs'
      - '{name}-phpcs-HEAD'
-
-- job:
-    name: mediawiki-core-doxygen-publish
-    gerrit-name: mediawiki/core
-
-    defaults: use-zuul
-    scm:
-     - git-mwcore-nosubmodules
-    triggers:
-     - zuul-post
-
-    builders:
-     - shell: "/var/lib/jenkins/tools/mwcore-docgen.sh"
