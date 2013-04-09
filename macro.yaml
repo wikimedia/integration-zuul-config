@@ -43,17 +43,13 @@
 
 - builder:
     name: jshint-in
-    # Use `cd` because jshint reads .jshintrc/.jshitignore from PWD
+    # Use `cd` because jshint reads .jshintrc and .jshintignore
+    # from current working directory.
     builders:
      - shell: |
-        #!/bin/bash
+        #!/bin/bash -xe
         cd "{dir}"
-        /var/lib/jenkins/bin/jshint . --checkstyle-reporter > "$WORKSPACE/checkstyle-jshint.xml"
-        code=$?
-        echo
-        echo 'Check the "Checkstyle Warnings" link on the left for JSHint report.'
-        echo
-        exit $code
+        /var/lib/jenkins/bin/jshint .
 
 - builder:
     name: jshint
