@@ -119,22 +119,7 @@
      - zuul
 
     publishers:
-     - xunit:
-        thresholdmode: 'percent'
-        thresholds:
-          - failed:
-              unstable: 0
-              unstablenew: 0
-              failure: 0
-              failurenew: 0
-          - skipped:
-              unstable: 0
-              unstablenew: 0
-              failure: 0
-              failurenew: 0
-        types:
-          - phpunit:
-              pattern: 'logs/junit.xml'
+     - phpunit-junit
     builders:
      - ant:
          targets: "phpunit-{phpunit-group}"
