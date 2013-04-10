@@ -13,6 +13,9 @@
          - '$ZUUL_BRANCH'
         refspec: '$ZUUL_REF'
         disable-submodules: true
+        # mw/core is a huge repo so dont reclone it
+        wipe-workspace: false
+        clean: true
 
 # Fetch a ZUUL_REF from Zuul non bare repo for a project while
 # specifying whether we want to fetch submodules as well.
