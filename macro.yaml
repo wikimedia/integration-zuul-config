@@ -241,6 +241,7 @@
         buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
 
 # run phpcs on any .php and .inc files in the workspace
+# Except for Messages* and *.i18n.php (such as in installer)
 - builder:
     name: phpcs
     builders:
@@ -248,7 +249,7 @@
         phpcs -v -s . \
          --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
          --extensions=php,inc \
-         --ignore=languages/messages/Messages \
+         --ignore=languages/messages/Messages*.php,*.i18n.php \
          --report-checkstyle=checkstyle-phpcs.xml \
          --report-full
 
