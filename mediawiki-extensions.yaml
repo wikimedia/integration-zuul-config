@@ -106,7 +106,9 @@
      - mw-setup-extension:
         mwbranch: '{mwbranch}'
         dependencies: '{dependencies}'
-     - shell: "$WORKSPACE/extensions/VisualEditor/.docs/generate.sh"
+     - shell: |
+        export TERM=xterm
+        $WORKSPACE/extensions/VisualEditor/.docs/generate.sh
 
 - job-template:
     name: 'mwext-VisualEditor-doc-publish'

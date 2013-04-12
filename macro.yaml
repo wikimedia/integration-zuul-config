@@ -66,6 +66,7 @@
         warnings=`jsduck --config="{config}" 2>&1`
         code=$?
         # Re-colorize
+        export TERM=xterm
         BLACK=$(tput setaf 0); YELLOW=$(tput setaf 3); MEGANTA=$(tput setaf 5)
         echo "$warnings" | perl -pe "s|^([^ ]+) ([^ ]+) (.*)$|$YELLOW\1 $MEGANTA\2 $BLACK\3|"
         # JSDuck doesn't exit with an error code if there are warnings
