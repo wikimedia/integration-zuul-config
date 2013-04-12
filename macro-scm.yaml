@@ -10,7 +10,7 @@
      - git:
         url: '/var/lib/zuul/git/mediawiki/core'
         branches:
-         - '$ZUUL_BRANCH'
+         - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
         disable-submodules: true
         # mw/core is a huge repo so dont reclone it
@@ -28,7 +28,7 @@
      - git:
         url: '/var/lib/zuul/git/{gerrit-name}'
         branches:
-         - '$ZUUL_BRANCH'
+         - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
         disable-submodules: '{disable-submodules}'
 
@@ -58,5 +58,5 @@
      - git:
         url: '/var/lib/zuul/git/mediawiki/extensions/{ext-name}'
         branches:
-         - '$ZUUL_BRANCH'
+         - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
