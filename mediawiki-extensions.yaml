@@ -5,18 +5,16 @@
      - zuul
 
 - job-template:
+    # TODO: Use global '{name}-phplint' template instead
     name: '{name}-{ext-name}-lint'
-    defaults: use-zuul-for-mw-ext
+    defaults: use-zuul
+    scm:
+     - git-mwext-in-root:
+        ext-name: '{ext-name}'
     triggers:
      - zuul
     builders:
-     - ant:
-         targets: "php-lint"
-         buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
-         # The extension has been fetched in a workspace subdirectory
-         # so make sure to lint the correct git working space
-         properties:
-             sourcedir: "$WORKSPACE/extensions/{ext-name}"
+     - phplint
 
 - job-template:
     name: '{name}-{ext-name}-whitespaces'
