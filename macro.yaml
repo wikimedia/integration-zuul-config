@@ -237,9 +237,15 @@
 - builder:
     name: phplint
     builders:
-     - ant:
-        targets: 'php-lint'
-        buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
+     - shell: |
+        #!/bin/bash
+        # Files changed in this revision, excluding deleted files and non-php files.
+        # -z disables the shell escape git does by default with --name-only separates with null-byte instead of new line.
+        files=$(git diff HEAD^..HEAD --name-only -z --no-renames --diff-filter=ACM | tr '\0' '\n' | grep -E '\.(php|php5|inc|phtml)"?$')
+        # Use null-byte as list separator
+        IFS=$'\n'
+        php -dextension=parsekit.so /var/lib/jenkins/bin/lint.php -v $files
+
 
 # run phpcs on any .php and .inc files in the workspace
 # Except for Messages* and *.i18n.php (such as in installer)
