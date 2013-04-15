@@ -94,6 +94,8 @@
         test ! -e /srv/localhost/qunit/$TEST_ID || rm /srv/localhost/qunit/$TEST_ID;
         # Publish our install in the QUnit server document root
         ln -s $WORKSPACE /srv/localhost/qunit/$TEST_ID
+        # Fetch headers for debug information (HTTP 500 Error, Database error, etc.)
+        curl --include "http://localhost:9412/$TEST_ID/index.php?title=Special:BlankPage" | head -n42
         # Run QUnit tests via PhantomJS
         /var/lib/jenkins/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit"
         gqec=$?
