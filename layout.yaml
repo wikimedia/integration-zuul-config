@@ -48,6 +48,21 @@ pipelines:
       verified: -1
       code-review: 0
 
+  # Use this for projects that don't have a 'test' pipeline. Because the normal 'check'
+  # pipeline does not execute for people for whom the test execution is done immediately.s
+  - name: check-only
+    manager: IndependentPipelineManager
+    trigger:
+      - event: patchset-created
+      - event: comment-added
+        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+    success:
+      verified: 1
+      code-review: 0
+    failure:
+      verified: -1
+      code-review: 0
+
   - name: check-voter
     manager: IndependentPipelineManager
     trigger:
@@ -493,7 +508,7 @@ projects:
       - operations-apache-config-lint
 
   - name: operations/debs/adminbot
-    check:
+    check-only:
       - operations-debs-adminbot-pep8
       - operations-debs-adminbot-pyflakes
     gate-and-submit:
@@ -501,7 +516,7 @@ projects:
       - operations-debs-adminbot-pyflakes
 
   - name: operations/debs/ircecho
-    check:
+    check-only:
       - operations-debs-ircecho-pep8
       - operations-debs-ircecho-pyflakes
     gate-and-submit:
@@ -550,7 +565,7 @@ projects:
       - operations-software-pep8
 
   - name: translatewiki
-    check:
+    check-only:
       - translatewiki-phplint
       - translatewiki-puppet-validate
       - translatewiki-shelllint
@@ -569,7 +584,7 @@ projects:
 #### MediaWiki extensions ######################################
 
   - name: mediawiki/extensions/AbuseFilter
-    check:
+    check-only:
       - mwext-AbuseFilter-merge:
         - mwext-AbuseFilter-jslint
         - mwext-AbuseFilter-lint
@@ -595,7 +610,7 @@ projects:
           - mwext-ActiveAbstract-testextensions-master
 
   - name: mediawiki/extensions/AdminLinks
-    check:
+    check-only:
       - mwext-AdminLinks-merge:
         - mwext-AdminLinks-jslint
         - mwext-AdminLinks-lint
@@ -605,7 +620,7 @@ projects:
         - mwext-AdminLinks-lint
 
   - name: mediawiki/extensions/Agora
-    check:
+    check-only:
       - mwext-Agora-merge:
         - mwext-Agora-jslint
         - mwext-Agora-lint
@@ -615,7 +630,7 @@ projects:
         - mwext-Agora-lint
 
   - name: mediawiki/extensions/AntiBot
-    check:
+    check-only:
       - mwext-AntiBot-merge:
         - mwext-AntiBot-jslint
         - mwext-AntiBot-lint
@@ -641,7 +656,7 @@ projects:
           - mwext-AntiSpoof-testextensions-master
 
   - name: mediawiki/extensions/APC
-    check:
+    check-only:
       - mwext-APC-merge:
         - mwext-APC-jslint
         - mwext-APC-lint
@@ -651,7 +666,7 @@ projects:
         - mwext-APC-lint
 
   - name: mediawiki/extensions/ArticleFeedbackv5
-    check:
+    check-only:
       - mwext-ArticleFeedbackv5-merge:
         - mwext-ArticleFeedbackv5-jslint
         - mwext-ArticleFeedbackv5-lint
@@ -661,7 +676,7 @@ projects:
         - mwext-ArticleFeedbackv5-lint
 
   - name: mediawiki/extensions/ApiSandbox
-    check:
+    check-only:
       - mwext-ApiSandbox-merge:
         - mwext-ApiSandbox-jslint
         - mwext-ApiSandbox-lint
@@ -687,7 +702,7 @@ projects:
           - mwext-Ask-testextensions-master
 
   - name: mediawiki/extensions/Babel
-    check:
+    check-only:
       - mwext-Babel-merge:
         - mwext-Babel-jslint
         - mwext-Babel-lint
@@ -697,7 +712,7 @@ projects:
         - mwext-Babel-lint
 
   - name: mediawiki/extensions/BlameMaps
-    check:
+    check-only:
       - mwext-BlameMaps-merge:
         - mwext-BlameMaps-jslint
         - mwext-BlameMaps-lint
@@ -709,7 +724,7 @@ projects:
         - mwext-BlameMaps-pep8
 
   - name: mediawiki/extensions/Calendar
-    check:
+    check-only:
       - mwext-Calendar-merge:
         - mwext-Calendar-jslint
         - mwext-Calendar-lint
@@ -719,7 +734,7 @@ projects:
         - mwext-Calendar-lint
 
   - name: mediawiki/extensions/CategoryTree
-    check:
+    check-only:
       - mwext-CategoryTree-merge:
         - mwext-CategoryTree-jslint
         - mwext-CategoryTree-lint
@@ -729,7 +744,7 @@ projects:
         - mwext-CategoryTree-lint
 
   - name: mediawiki/extensions/CharInsert
-    check:
+    check-only:
       - mwext-CharInsert-merge:
         - mwext-CharInsert-jslint
         - mwext-CharInsert-lint
@@ -739,7 +754,7 @@ projects:
         - mwext-CharInsert-lint
 
   - name: mediawiki/extensions/CheckUser
-    check:
+    check-only:
       - mwext-CheckUser-merge:
         - mwext-CheckUser-jslint
         - mwext-CheckUser-lint
@@ -749,7 +764,7 @@ projects:
         - mwext-CheckUser-lint
 
   - name: mediawiki/extensions/Cite
-    check:
+    check-only:
       - mwext-Cite-merge:
         - mwext-Cite-jslint
         - mwext-Cite-lint
@@ -759,7 +774,7 @@ projects:
         - mwext-Cite-lint
 
   - name: mediawiki/extensions/cldr
-    check:
+    check-only:
       - mwext-cldr-merge:
         - mwext-cldr-jslint
         - mwext-cldr-lint
@@ -770,7 +785,7 @@ projects:
           - mwext-cldr-testextensions-master
 
   - name: mediawiki/extensions/CentralAuth
-    check:
+    check-only:
       - mwext-CentralAuth-merge:
         - mwext-CentralAuth-jslint
         - mwext-CentralAuth-lint
@@ -796,7 +811,7 @@ projects:
           - mwext-CentralNotice-testextensions-master
 
   - name: mediawiki/extensions/CleanChanges
-    check:
+    check-only:
       - mwext-CleanChanges-merge:
         - mwext-CleanChanges-jslint
         - mwext-CleanChanges-lint
@@ -806,7 +821,7 @@ projects:
         - mwext-CleanChanges-lint
 
   - name: mediawiki/extensions/ClickTracking
-    check:
+    check-only:
       - mwext-ClickTracking-merge:
         - mwext-ClickTracking-jslint
         - mwext-ClickTracking-lint
@@ -816,7 +831,7 @@ projects:
         - mwext-ClickTracking-lint
 
   - name: mediawiki/extensions/ClientSide
-    check:
+    check-only:
       - mwext-ClientSide-merge:
         - mwext-ClientSide-jslint
         - mwext-ClientSide-lint
@@ -826,7 +841,7 @@ projects:
         - mwext-ClientSide-lint
 
   - name: mediawiki/extensions/CodeEditor
-    check:
+    check-only:
       - mwext-CodeEditor-merge:
         - mwext-CodeEditor-jslint
         - mwext-CodeEditor-lint
@@ -852,7 +867,7 @@ projects:
           - mwext-CodeReview-testextensions-master
 
   - name: mediawiki/extensions/Collection
-    check:
+    check-only:
       - mwext-Collection-merge:
         - mwext-Collection-jslint
         - mwext-Collection-lint
@@ -862,7 +877,7 @@ projects:
         - mwext-Collection-lint
 
   - name: mediawiki/extensions/ConfirmEdit
-    check:
+    check-only:
       - mwext-ConfirmEdit-merge:
         - mwext-ConfirmEdit-jslint
         - mwext-ConfirmEdit-lint
@@ -874,7 +889,7 @@ projects:
         - mwext-ConfirmEdit-pep8
 
   - name: mediawiki/extensions/ContributionScores
-    check:
+    check-only:
       - mwext-ContributionScores-merge:
         - mwext-ContributionScores-jslint
         - mwext-ContributionScores-lint
@@ -884,7 +899,7 @@ projects:
         - mwext-ContributionScores-lint
 
   - name: mediawiki/extensions/CommunityApplications
-    check:
+    check-only:
       - mwext-CommunityApplications-merge:
         - mwext-CommunityApplications-jslint
         - mwext-CommunityApplications-lint
@@ -894,7 +909,7 @@ projects:
         - mwext-CommunityApplications-lint
 
   - name: mediawiki/extensions/CommunityHiring
-    check:
+    check-only:
       - mwext-CommunityHiring-merge:
         - mwext-CommunityHiring-jslint
         - mwext-CommunityHiring-lint
@@ -904,7 +919,7 @@ projects:
         - mwext-CommunityHiring-lint
 
   - name: mediawiki/extensions/CommunityVoice
-    check:
+    check-only:
       - mwext-CommunityVoice-merge:
         - mwext-CommunityVoice-jslint
         - mwext-CommunityVoice-lint
@@ -914,7 +929,7 @@ projects:
         - mwext-CommunityVoice-lint
 
   - name: mediawiki/extensions/ContactPage
-    check:
+    check-only:
       - mwext-ContactPage-merge:
         - mwext-ContactPage-jslint
         - mwext-ContactPage-lint
@@ -924,7 +939,7 @@ projects:
         - mwext-ContactPage-lint
 
   - name: mediawiki/extensions/ContactPageFundraiser
-    check:
+    check-only:
       - mwext-ContactPageFundraiser-merge:
         - mwext-ContactPageFundraiser-jslint
         - mwext-ContactPageFundraiser-lint
@@ -934,7 +949,7 @@ projects:
         - mwext-ContactPageFundraiser-lint
 
   - name: mediawiki/extensions/ContributionReporting
-    check:
+    check-only:
       - mwext-ContributionReporting-merge:
         - mwext-ContributionReporting-jslint
         - mwext-ContributionReporting-lint
@@ -960,7 +975,7 @@ projects:
           - mwext-ContributionTracking-testextensions-master
 
   - name: mediawiki/extensions/CreditsSource
-    check:
+    check-only:
       - mwext-CreditsSource-merge:
         - mwext-CreditsSource-jslint
         - mwext-CreditsSource-lint
@@ -970,7 +985,7 @@ projects:
         - mwext-CreditsSource-lint
 
   - name: mediawiki/extensions/CustomData
-    check:
+    check-only:
       - mwext-CustomData-merge:
         - mwext-CustomData-jslint
         - mwext-CustomData-lint
@@ -980,7 +995,7 @@ projects:
         - mwext-CustomData-lint
 
   - name: mediawiki/extensions/CustomUserSignup
-    check:
+    check-only:
       - mwext-CustomUserSignup-merge:
         - mwext-CustomUserSignup-jslint
         - mwext-CustomUserSignup-lint
@@ -1006,7 +1021,7 @@ projects:
           - mwext-DataValues-testextensions-master
 
   - name: mediawiki/extensions/DonationInterface
-    check:
+    check-only:
       - mwext-DonationInterface-merge:
         - mwext-DonationInterface-jslint
         - mwext-DonationInterface-lint
@@ -1016,7 +1031,7 @@ projects:
         - mwext-DonationInterface-lint
 
   - name: mediawiki/extensions/DeleteBatch
-    check:
+    check-only:
       - mwext-DeleteBatch-merge:
         - mwext-DeleteBatch-jslint
         - mwext-DeleteBatch-lint
@@ -1042,7 +1057,7 @@ projects:
           - mwext-Diff-testextensions-master
 
   - name: mediawiki/extensions/DisableAccount
-    check:
+    check-only:
       - mwext-DisableAccount-merge:
         - mwext-DisableAccount-jslint
         - mwext-DisableAccount-lint
@@ -1052,7 +1067,7 @@ projects:
         - mwext-DisableAccount-lint
 
   - name: mediawiki/extensions/DismissableSiteNotice
-    check:
+    check-only:
       - mwext-DismissableSiteNotice-merge:
         - mwext-DismissableSiteNotice-jslint
         - mwext-DismissableSiteNotice-lint
@@ -1062,7 +1077,7 @@ projects:
         - mwext-DismissableSiteNotice-lint
 
   - name: mediawiki/extensions/DoubleWiki
-    check:
+    check-only:
       - mwext-DoubleWiki-merge:
         - mwext-DoubleWiki-jslint
         - mwext-DoubleWiki-lint
@@ -1072,7 +1087,7 @@ projects:
         - mwext-DoubleWiki-lint
 
   - name: mediawiki/extensions/DynamicSidebar
-    check:
+    check-only:
       - mwext-DynamicSidebar-merge:
         - mwext-DynamicSidebar-jslint
         - mwext-DynamicSidebar-lint
@@ -1082,7 +1097,7 @@ projects:
         - mwext-DynamicSidebar-lint
 
   - name: mediawiki/extensions/DumpHTML
-    check:
+    check-only:
       - mwext-DumpHTML-merge:
         - mwext-DumpHTML-jslint
         - mwext-DumpHTML-lint
@@ -1110,7 +1125,7 @@ projects:
           - mwext-E3Experiments-testextensions-master
 
   - name: mediawiki/extensions/Echo
-    check:
+    check-only:
       - mwext-Echo-merge:
         - mwext-Echo-jslint
         - mwext-Echo-lint
@@ -1121,7 +1136,7 @@ projects:
           - mwext-Echo-testextensions-master
 
   - name: mediawiki/extensions/EditPageTracking
-    check:
+    check-only:
       - mwext-EditPageTracking-merge:
         - mwext-EditPageTracking-jslint
         - mwext-EditPageTracking-lint
@@ -1147,7 +1162,7 @@ projects:
           - mwext-EducationProgram-testextensions-master
 
   - name: mediawiki/extensions/EmailCapture
-    check:
+    check-only:
       - mwext-EmailCapture-merge:
         - mwext-EmailCapture-jslint
         - mwext-EmailCapture-lint
@@ -1157,18 +1172,16 @@ projects:
         - mwext-EmailCapture-lint
 
   - name: mediawiki/extensions/EtherEditor
-    check:
+    check-only:
       - mwext-EtherEditor-merge:
-#        - mwext-EtherEditor-jslint
         - mwext-EtherEditor-lint
     gate-and-submit:
       - mwext-EtherEditor-merge:
         - mwext-EtherEditor-lint:
-#        - mwext-EtherEditor-jslint
           - mwext-EtherEditor-testextensions-master
 
   - name: mediawiki/extensions/EmailCapture
-    check:
+    check-only:
       - mwext-EmailCapture-merge:
         - mwext-EmailCapture-jslint
         - mwext-EmailCapture-lint
@@ -1178,7 +1191,7 @@ projects:
         - mwext-EmailCapture-lint
 
   - name: mediawiki/extensions/EventLogging
-    check:
+    check-only:
       - mwext-EventLogging-merge:
         - mwext-EventLogging-jslint
         - mwext-EventLogging-pep8
@@ -1191,7 +1204,7 @@ projects:
           - mwext-EventLogging-testextensions-master
 
   - name: mediawiki/extensions/ExpandTemplates
-    check:
+    check-only:
       - mwext-ExpandTemplates-merge:
         - mwext-ExpandTemplates-jslint
         - mwext-ExpandTemplates-lint
@@ -1201,7 +1214,7 @@ projects:
         - mwext-ExpandTemplates-lint
 
   - name: mediawiki/extensions/ExtensionDistributor
-    check:
+    check-only:
       - mwext-ExtensionDistributor-merge:
         - mwext-ExtensionDistributor-jslint
         - mwext-ExtensionDistributor-lint
@@ -1211,7 +1224,7 @@ projects:
         - mwext-ExtensionDistributor-lint
 
   - name: mediawiki/extensions/FeaturedFeeds
-    check:
+    check-only:
       - mwext-FeaturedFeeds-merge:
         - mwext-FeaturedFeeds-jslint
         - mwext-FeaturedFeeds-lint
@@ -1221,7 +1234,7 @@ projects:
         - mwext-FeaturedFeeds-lint
 
   - name: mediawiki/extensions/FormPreloadPostCache
-    check:
+    check-only:
       - mwext-FormPreloadPostCache-merge:
         - mwext-FormPreloadPostCache-lint
     gate-and-submit:
@@ -1245,7 +1258,7 @@ projects:
           - mwext-Foxway-testextensions-master
 
   - name: mediawiki/extensions/FundraiserLandingPage
-    check:
+    check-only:
       - mwext-FundraiserLandingPage-merge:
         - mwext-FundraiserLandingPage-jslint
         - mwext-FundraiserLandingPage-lint
@@ -1271,7 +1284,7 @@ projects:
           - mwext-Gadgets-testextensions-master
 
   - name: mediawiki/extensions/GettingStarted
-    check:
+    check-only:
       - mwext-GettingStarted-merge:
         - mwext-GettingStarted-jslint
         - mwext-GettingStarted-lint
@@ -1281,7 +1294,7 @@ projects:
         - mwext-GettingStarted-lint
 
   - name: mediawiki/extensions/GeoCrumbs
-    check:
+    check-only:
       - mwext-GeoCrumbs-merge:
         - mwext-GeoCrumbs-jslint
         - mwext-GeoCrumbs-lint
@@ -1291,7 +1304,7 @@ projects:
         - mwext-GeoCrumbs-lint
 
   - name: mediawiki/extensions/GeoData
-    check:
+    check-only:
       - mwext-GeoData-merge:
         - mwext-GeoData-jslint
         - mwext-GeoData-lint
@@ -1302,7 +1315,7 @@ projects:
           - mwext-GeoData-testextensions-master
 
   - name: mediawiki/extensions/GlobalBlocking
-    check:
+    check-only:
       - mwext-GlobalBlocking-merge:
         - mwext-GlobalBlocking-jslint
         - mwext-GlobalBlocking-lint
@@ -1312,7 +1325,7 @@ projects:
         - mwext-GlobalBlocking-lint
 
   - name: mediawiki/extensions/GlobalUsage
-    check:
+    check-only:
       - mwext-GlobalUsage-merge:
         - mwext-GlobalUsage-jslint
         - mwext-GlobalUsage-lint
@@ -1322,7 +1335,7 @@ projects:
         - mwext-GlobalUsage-lint
 
   - name: mediawiki/extensions/GoogleAdSense
-    check:
+    check-only:
       - mwext-GoogleAdSense-merge:
         - mwext-GoogleAdSense-jslint
         - mwext-GoogleAdSense-lint
@@ -1332,7 +1345,7 @@ projects:
         - mwext-GoogleAdSense-lint
 
   - name: mediawiki/extensions/GoogleCustomWikiSearch
-    check:
+    check-only:
       - mwext-GoogleCustomWikiSearch-merge:
         - mwext-GoogleCustomWikiSearch-jslint
         - mwext-GoogleCustomWikiSearch-lint
@@ -1342,7 +1355,7 @@ projects:
         - mwext-GoogleCustomWikiSearch-lint
 
   - name: mediawiki/extensions/GoogleNewsSitemap
-    check:
+    check-only:
       - mwext-GoogleNewsSitemap-merge:
         - mwext-GoogleNewsSitemap-jslint
         - mwext-GoogleNewsSitemap-lint
@@ -1352,7 +1365,7 @@ projects:
         - mwext-GoogleNewsSitemap-lint
 
   - name: mediawiki/extensions/GuidedTour
-    check:
+    check-only:
       - mwext-GuidedTour-merge:
         - mwext-GuidedTour-jslint
         - mwext-GuidedTour-lint
@@ -1362,7 +1375,7 @@ projects:
         - mwext-GuidedTour-lint
 
   - name: mediawiki/extensions/I18nTags
-    check:
+    check-only:
       - mwext-I18nTags-merge:
         - mwext-I18nTags-jslint
         - mwext-I18nTags-lint
@@ -1372,7 +1385,7 @@ projects:
         - mwext-I18nTags-lint
 
   - name: mediawiki/extensions/ImageMap
-    check:
+    check-only:
       - mwext-ImageMap-merge:
         - mwext-ImageMap-jslint
         - mwext-ImageMap-lint
@@ -1382,7 +1395,7 @@ projects:
         - mwext-ImageMap-lint
 
   - name: mediawiki/extensions/InputBox
-    check:
+    check-only:
       - mwext-InputBox-merge:
         - mwext-InputBox-jslint
         - mwext-InputBox-lint
@@ -1392,7 +1405,7 @@ projects:
         - mwext-InputBox-lint
 
   - name: mediawiki/extensions/Insider
-    check:
+    check-only:
       - mwext-Insider-merge:
         - mwext-Insider-jslint
         - mwext-Insider-lint
@@ -1402,7 +1415,7 @@ projects:
         - mwext-Insider-lint
 
   - name: mediawiki/extensions/Interwiki
-    check:
+    check-only:
       - mwext-Interwiki-merge:
         - mwext-Interwiki-jslint
         - mwext-Interwiki-lint
@@ -1412,7 +1425,7 @@ projects:
         - mwext-Interwiki-lint
 
   - name: mediawiki/extensions/intersection
-    check:
+    check-only:
       - mwext-intersection-merge:
         - mwext-intersection-jslint
         - mwext-intersection-lint
@@ -1438,7 +1451,7 @@ projects:
           - mwext-JsonData-testextensions-master
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
-    check:
+    check-only:
       - mwext-LabeledSectionTransclusion-merge:
         - mwext-LabeledSectionTransclusion-jslint
         - mwext-LabeledSectionTransclusion-lint
@@ -1449,7 +1462,7 @@ projects:
           - mwext-LabeledSectionTransclusion-testextensions-master
 
   - name: mediawiki/extensions/LandingCheck
-    check:
+    check-only:
       - mwext-LandingCheck-merge:
         - mwext-LandingCheck-jslint
         - mwext-LandingCheck-lint
@@ -1459,7 +1472,7 @@ projects:
         - mwext-LandingCheck-lint
 
   - name: mediawiki/extensions/LastModified
-    check:
+    check-only:
       - mwext-LastModified-merge:
         - mwext-LastModified-jslint
         - mwext-LastModified-lint
@@ -1469,7 +1482,7 @@ projects:
         - mwext-LastModified-lint
 
   - name: mediawiki/extensions/LdapAuthentication
-    check:
+    check-only:
       - mwext-LdapAuthentication-merge:
         - mwext-LdapAuthentication-jslint
         - mwext-LdapAuthentication-lint
@@ -1479,7 +1492,7 @@ projects:
         - mwext-LdapAuthentication-lint
 
   - name: mediawiki/extensions/LiquidThreads
-    check:
+    check-only:
       - mwext-LiquidThreads-merge:
         - mwext-LiquidThreads-jslint
         - mwext-LiquidThreads-lint
@@ -1487,10 +1500,9 @@ projects:
       - mwext-LiquidThreads-merge:
         - mwext-LiquidThreads-jslint
         - mwext-LiquidThreads-lint
-# No unit tests for now :(
-#
+
   - name: mediawiki/extensions/Listings
-    check:
+    check-only:
       - mwext-Listings-merge:
         - mwext-Listings-jslint
         - mwext-Listings-lint
@@ -1500,7 +1512,7 @@ projects:
         - mwext-Listings-lint
 
   - name: mediawiki/extensions/LocalisationUpdate
-    check:
+    check-only:
       - mwext-LocalisationUpdate-merge:
         - mwext-LocalisationUpdate-jslint
         - mwext-LocalisationUpdate-lint
@@ -1510,7 +1522,7 @@ projects:
         - mwext-LocalisationUpdate-lint
 
   - name: mediawiki/extensions/Math
-    check:
+    check-only:
       - mwext-Math-merge:
         - mwext-Math-jslint
         - mwext-Math-lint
@@ -1536,7 +1548,7 @@ projects:
           - mwext-Maps-testextensions-master
 
   - name: mediawiki/extensions/MapSources
-    check:
+    check-only:
       - mwext-MapSources-merge:
         - mwext-MapSources-jslint
         - mwext-MapSources-lint
@@ -1546,7 +1558,7 @@ projects:
         - mwext-MapSources-lint
 
   - name: mediawiki/extensions/MarkAsHelpful
-    check:
+    check-only:
       - mwext-MarkAsHelpful-merge:
         - mwext-MarkAsHelpful-jslint
         - mwext-MarkAsHelpful-lint
@@ -1556,7 +1568,7 @@ projects:
         - mwext-MarkAsHelpful-lint
 
   - name: mediawiki/extensions/MobileFrontend
-    check:
+    check-only:
       - mwext-MobileFrontend-merge:
         - mwext-MobileFrontend-lint
         - mwext-MobileFrontend-jslint
@@ -1569,7 +1581,7 @@ projects:
         - mwext-MobileFrontend-ruby1.9.3lint
 
   - name: mediawiki/extensions/MoodBar
-    check:
+    check-only:
       - mwext-MoodBar-merge:
         - mwext-MoodBar-lint
         - mwext-MoodBar-jslint
@@ -1595,7 +1607,7 @@ projects:
           - mwext-MultiMaps-testextensions-master
 
   - name: mediawiki/extensions/MwEmbedSupport
-    check:
+    check-only:
       - mwext-MwEmbedSupport-merge:
         - mwext-MwEmbedSupport-lint
         - mwext-MwEmbedSupport-jslint
@@ -1605,7 +1617,7 @@ projects:
         - mwext-MwEmbedSupport-lint
 
   - name: mediawiki/extensions/MWSearch
-    check:
+    check-only:
       - mwext-MWSearch-merge:
         - mwext-MWSearch-lint
         - mwext-MWSearch-jslint
@@ -1616,7 +1628,7 @@ projects:
 
   # TODO: add qunit
   - name: mediawiki/extensions/Narayam
-    check:
+    check-only:
       - mwext-Narayam-merge:
         - mwext-Narayam-jslint
         - mwext-Narayam-lint
@@ -1626,7 +1638,7 @@ projects:
         - mwext-Narayam-lint
 
   - name: mediawiki/extensions/NavigationTiming
-    check:
+    check-only:
       - mwext-NavigationTiming-merge:
         - mwext-NavigationTiming-jslint
         - mwext-NavigationTiming-lint
@@ -1636,7 +1648,7 @@ projects:
         - mwext-NavigationTiming-lint
 
   - name: mediawiki/extensions/NewUserMessage
-    check:
+    check-only:
       - mwext-NewUserMessage-merge:
         - mwext-NewUserMessage-jslint
         - mwext-NewUserMessage-lint
@@ -1646,7 +1658,7 @@ projects:
         - mwext-NewUserMessage-lint
 
   - name: mediawiki/extensions/Nuke
-    check:
+    check-only:
       - mwext-Nuke-merge:
         - mwext-Nuke-jslint
         - mwext-Nuke-lint
@@ -1656,7 +1668,7 @@ projects:
         - mwext-Nuke-lint
 
   - name: mediawiki/extensions/OATHAuth
-    check:
+    check-only:
       - mwext-OATHAuth-merge:
         - mwext-OATHAuth-jslint
         - mwext-OATHAuth-lint
@@ -1666,7 +1678,7 @@ projects:
         - mwext-OATHAuth-lint
 
   - name: mediawiki/extensions/OAI
-    check:
+    check-only:
       - mwext-OAI-merge:
         - mwext-OAI-lint
     gate-and-submit:
@@ -1674,7 +1686,7 @@ projects:
         - mwext-OAI-lint
 
   - name: mediawiki/extensions/Offline
-    check:
+    check-only:
       - mwext-Offline-merge:
         - mwext-Offline-jslint
         - mwext-Offline-lint
@@ -1686,7 +1698,7 @@ projects:
         - mwext-Offline-pep8
 
   - name: mediawiki/extensions/OpenID
-    check:
+    check-only:
       - mwext-OpenID-merge:
         - mwext-OpenID-jslint
         - mwext-OpenID-lint
@@ -1696,7 +1708,7 @@ projects:
         - mwext-OpenID-lint
 
   - name: mediawiki/extensions/OpenSearchXml
-    check:
+    check-only:
       - mwext-OpenSearchXml-merge:
         - mwext-OpenSearchXml-lint
     gate-and-submit:
@@ -1704,7 +1716,7 @@ projects:
         - mwext-OpenSearchXml-lint
 
   - name: mediawiki/extensions/OpenStackManager
-    check:
+    check-only:
       - mwext-OpenStackManager-merge:
         - mwext-OpenStackManager-jslint
         - mwext-OpenStackManager-lint
@@ -1714,9 +1726,6 @@ projects:
         - mwext-OpenStackManager-jslint
         - mwext-OpenStackManager-pep8
         - mwext-OpenStackManager-lint
-# No unit tests for now :(
-#        - mwext-OpenStackManager-lint:
-#          - mwext-OpenStackManager-testextensions-master
 
   - name: mediawiki/extensions/PagedTiffHandler
     check:
@@ -1735,7 +1744,7 @@ projects:
           - mwext-PagedTiffHandler-testextensions-master
 
   - name: mediawiki/extensions/PageImages
-    check:
+    check-only:
       - mwext-PageImages-merge:
         - mwext-PageImages-lint
         - mwext-PageImages-jslint
@@ -1761,7 +1770,7 @@ projects:
           - mwext-PageTriage-testextensions-master
 
   - name: mediawiki/extensions/ParserFunctions
-    check:
+    check-only:
       - mwext-ParserFunctions-merge:
         - mwext-ParserFunctions-jslint
         - mwext-ParserFunctions-lint
@@ -1787,7 +1796,6 @@ projects:
         - mwext-ParserHooks-lint:
           - mwext-ParserHooks-testextensions-master
 
-  # Parsoid is mostly JavaScript so we just run jsHint (and merge of course)
   - name: mediawiki/extensions/Parsoid
     check:
       - mwext-Parsoid-merge:
@@ -1807,7 +1815,7 @@ projects:
       - parsoid-regressions
 
   - name: mediawiki/extensions/PdfHandler
-    check:
+    check-only:
       - mwext-PdfHandler-merge:
         - mwext-PdfHandler-lint
         - mwext-PdfHandler-jslint
@@ -1817,7 +1825,7 @@ projects:
         - mwext-PdfHandler-jslint
 
   - name: mediawiki/extensions/PHPExcel
-    check:
+    check-only:
       - mwext-PHPExcel-merge:
         - mwext-PHPExcel-lint
         - mwext-PHPExcel-jslint
@@ -1827,7 +1835,7 @@ projects:
         - mwext-PHPExcel-jslint
 
   - name: mediawiki/extensions/Poem
-    check:
+    check-only:
       - mwext-Poem-merge:
         - mwext-Poem-jslint
         - mwext-Poem-lint
@@ -1837,7 +1845,7 @@ projects:
         - mwext-Poem-lint
 
   - name: mediawiki/extensions/PoolCounter
-    check:
+    check-only:
       - mwext-PoolCounter-merge:
         - mwext-PoolCounter-jslint
         - mwext-PoolCounter-lint
@@ -1847,7 +1855,7 @@ projects:
         - mwext-PoolCounter-lint
 
   - name: mediawiki/extensions/PostEdit
-    check:
+    check-only:
       - mwext-PostEdit-merge:
         - mwext-PostEdit-lint
         - mwext-PostEdit-jslint
@@ -1857,7 +1865,7 @@ projects:
         - mwext-PostEdit-jslint
 
   - name: mediawiki/extensions/ProofreadPage
-    check:
+    check-only:
       - mwext-ProofreadPage-merge:
         - mwext-ProofreadPage-lint
         - mwext-ProofreadPage-jslint
@@ -1867,7 +1875,7 @@ projects:
         - mwext-ProofreadPage-jslint
 
   - name: mediawiki/extensions/Quiz
-    check:
+    check-only:
       - mwext-Quiz-merge:
         - mwext-Quiz-lint
         - mwext-Quiz-jslint
@@ -1877,7 +1885,7 @@ projects:
         - mwext-Quiz-jslint
 
   - name: mediawiki/extensions/RandomRootPage
-    check:
+    check-only:
       - mwext-RandomRootPage-merge:
         - mwext-RandomRootPage-lint
         - mwext-RandomRootPage-jslint
@@ -1887,7 +1895,7 @@ projects:
         - mwext-RandomRootPage-jslint
 
   - name: mediawiki/extensions/ReaderFeedback
-    check:
+    check-only:
       - mwext-ReaderFeedback-merge:
         - mwext-ReaderFeedback-lint
         - mwext-ReaderFeedback-jslint
@@ -1897,27 +1905,23 @@ projects:
         - mwext-ReaderFeedback-jslint
 
   - name: mediawiki/extensions/RelatedArticles
-    check:
+    check-only:
       - mwext-RelatedArticles-merge:
-#        - mwext-RelatedArticles-jslint
         - mwext-RelatedArticles-lint
     gate-and-submit:
       - mwext-RelatedArticles-merge:
-#        - mwext-RelatedArticles-jslint
         - mwext-RelatedArticles-lint
 
   - name: mediawiki/extensions/RelatedSites
-    check:
+    check-only:
       - mwext-RelatedSites-merge:
-#        - mwext-RelatedSites-jslint
         - mwext-RelatedSites-lint
     gate-and-submit:
       - mwext-RelatedSites-merge:
-#        - mwext-RelatedSites-jslint
         - mwext-RelatedSites-lint
 
   - name: mediawiki/extensions/Renameuser
-    check:
+    check-only:
       - mwext-Renameuser-merge:
         - mwext-Renameuser-lint
         - mwext-Renameuser-jslint
@@ -1925,12 +1929,9 @@ projects:
       - mwext-Renameuser-merge:
         - mwext-Renameuser-jslint
         - mwext-Renameuser-lint
-# No Unit tests yet :(
-#        - mwext-Renameuser-lint:
-#          - mwext-Renameuser-testextensions-master
 
   - name: mediawiki/extensions/ReplaceText
-    check:
+    check-only:
       - mwext-ReplaceText-merge:
         - mwext-ReplaceText-jslint
         - mwext-ReplaceText-lint
@@ -1940,17 +1941,15 @@ projects:
         - mwext-ReplaceText-lint
 
   - name: mediawiki/extensions/RSS
-    check:
+    check-only:
       - mwext-RSS-merge:
-#        - mwext-RSS-jslint
         - mwext-RSS-lint
     gate-and-submit:
       - mwext-RSS-merge:
-#        - mwext-RSS-jslint
         - mwext-RSS-lint
 
   - name: mediawiki/extensions/Score
-    check:
+    check-only:
       - mwext-Score-merge:
         - mwext-Score-lint
         - mwext-Score-jslint
@@ -1958,22 +1957,17 @@ projects:
       - mwext-Score-merge:
         - mwext-Score-jslint
         - mwext-Score-lint
-# No Unit tests yet :(
-#        - mwext-Score-lint:
-#          - mwext-Score-testextensions-master
-#
+
   - name: mediawiki/extensions/SearchExtraNS
-    check:
+    check-only:
       - mwext-SearchExtraNS-merge:
-#        - mwext-SearchExtraNS-jslint
         - mwext-SearchExtraNS-lint
     gate-and-submit:
       - mwext-SearchExtraNS-merge:
-#        - mwext-SearchExtraNS-jslint
         - mwext-SearchExtraNS-lint
 
   - name: mediawiki/extensions/SecurePoll
-    check:
+    check-only:
       - mwext-SecurePoll-merge:
         - mwext-SecurePoll-lint
         - mwext-SecurePoll-jslint
@@ -1982,9 +1976,8 @@ projects:
         - mwext-SecurePoll-jslint
         - mwext-SecurePoll-lint
 
-# semantic extensions
   - name: mediawiki/extensions/SemanticACL
-    check:
+    check-only:
      - mwext-SemanticACL-merge:
        - mwext-SemanticACL-jslint
        - mwext-SemanticACL-lint
@@ -1994,7 +1987,7 @@ projects:
        - mwext-SemanticACL-lint
 
   - name: mediawiki/extensions/SemanticBundle
-    check:
+    check-only:
      - mwext-SemanticBundle-merge:
        - mwext-SemanticBundle-jslint
        - mwext-SemanticBundle-lint
@@ -2006,7 +1999,7 @@ projects:
        - mwext-SemanticBundle-pep8
 
   - name: mediawiki/extensions/SemanticCompoundQueries
-    check:
+    check-only:
      - mwext-SemanticCompoundQueries-merge:
        - mwext-SemanticCompoundQueries-jslint
        - mwext-SemanticCompoundQueries-lint
@@ -2016,7 +2009,7 @@ projects:
        - mwext-SemanticCompoundQueries-lint
 
   - name: mediawiki/extensions/SemanticDrilldown
-    check:
+    check-only:
      - mwext-SemanticDrilldown-merge:
        - mwext-SemanticDrilldown-jslint
        - mwext-SemanticDrilldown-lint
@@ -2026,7 +2019,7 @@ projects:
        - mwext-SemanticDrilldown-lint
 
   - name: mediawiki/extensions/SemanticExpressiveness
-    check:
+    check-only:
      - mwext-SemanticExpressiveness-merge:
        - mwext-SemanticExpressiveness-jslint
        - mwext-SemanticExpressiveness-lint
@@ -2036,7 +2029,7 @@ projects:
        - mwext-SemanticExpressiveness-lint
 
   - name: mediawiki/extensions/SemanticExtraSpecialProperties
-    check:
+    check-only:
      - mwext-SemanticExtraSpecialProperties-merge:
        - mwext-SemanticExtraSpecialProperties-jslint
        - mwext-SemanticExtraSpecialProperties-lint
@@ -2046,7 +2039,7 @@ projects:
        - mwext-SemanticExtraSpecialProperties-lint
 
   - name: mediawiki/extensions/SemanticForms
-    check:
+    check-only:
      - mwext-SemanticForms-merge:
        - mwext-SemanticForms-jslint
        - mwext-SemanticForms-lint
@@ -2056,7 +2049,7 @@ projects:
        - mwext-SemanticForms-lint
 
   - name: mediawiki/extensions/SemanticFormsInputs
-    check:
+    check-only:
      - mwext-SemanticFormsInputs-merge:
        - mwext-SemanticFormsInputs-jslint
        - mwext-SemanticFormsInputs-lint
@@ -2066,7 +2059,7 @@ projects:
        - mwext-SemanticFormsInputs-lint
 
   - name: mediawiki/extensions/SemanticGenealogy
-    check:
+    check-only:
      - mwext-SemanticGenealogy-merge:
        - mwext-SemanticGenealogy-jslint
        - mwext-SemanticGenealogy-lint
@@ -2076,7 +2069,7 @@ projects:
        - mwext-SemanticGenealogy-lint
 
   - name: mediawiki/extensions/SemanticGlossary
-    check:
+    check-only:
      - mwext-SemanticGlossary-merge:
        - mwext-SemanticGlossary-jslint
        - mwext-SemanticGlossary-lint
@@ -2086,7 +2079,7 @@ projects:
        - mwext-SemanticGlossary-lint
 
   - name: mediawiki/extensions/SemanticImageAnnotator
-    check:
+    check-only:
      - mwext-SemanticImageAnnotator-merge:
        - mwext-SemanticImageAnnotator-jslint
        - mwext-SemanticImageAnnotator-lint
@@ -2096,7 +2089,7 @@ projects:
        - mwext-SemanticImageAnnotator-lint
 
   - name: mediawiki/extensions/SemanticImageInput
-    check:
+    check-only:
      - mwext-SemanticImageInput-merge:
        - mwext-SemanticImageInput-jslint
        - mwext-SemanticImageInput-lint
@@ -2106,7 +2099,7 @@ projects:
        - mwext-SemanticImageInput-lint
 
   - name: mediawiki/extensions/SemanticInternalObjects
-    check:
+    check-only:
      - mwext-SemanticInternalObjects-merge:
        - mwext-SemanticInternalObjects-jslint
        - mwext-SemanticInternalObjects-lint
@@ -2116,7 +2109,7 @@ projects:
        - mwext-SemanticInternalObjects-lint
 
   - name: mediawiki/extensions/SemanticMaps
-    check:
+    check-only:
      - mwext-SemanticMaps-merge:
        - mwext-SemanticMaps-jslint
        - mwext-SemanticMaps-lint
@@ -2141,7 +2134,7 @@ projects:
        - mwext-SemanticMediaWiki-lint
 
   - name: mediawiki/extensions/SemanticPageMaker
-    check:
+    check-only:
      - mwext-SemanticPageMaker-merge:
        - mwext-SemanticPageMaker-jslint
        - mwext-SemanticPageMaker-lint
@@ -2151,7 +2144,7 @@ projects:
        - mwext-SemanticPageMaker-lint
 
   - name: mediawiki/extensions/SemanticPageSeries
-    check:
+    check-only:
      - mwext-SemanticPageSeries-merge:
        - mwext-SemanticPageSeries-jslint
        - mwext-SemanticPageSeries-lint
@@ -2161,7 +2154,7 @@ projects:
        - mwext-SemanticPageSeries-lint
 
   - name: mediawiki/extensions/SemanticResultFormats
-    check:
+    check-only:
      - mwext-SemanticResultFormats-merge:
        - mwext-SemanticResultFormats-jslint
        - mwext-SemanticResultFormats-lint
@@ -2171,7 +2164,7 @@ projects:
        - mwext-SemanticResultFormats-lint
 
   - name: mediawiki/extensions/SemanticSignup
-    check:
+    check-only:
      - mwext-SemanticSignup-merge:
        - mwext-SemanticSignup-jslint
        - mwext-SemanticSignup-lint
@@ -2181,7 +2174,7 @@ projects:
        - mwext-SemanticSignup-lint
 
   - name: mediawiki/extensions/SemanticTasks
-    check:
+    check-only:
      - mwext-SemanticTasks-merge:
        - mwext-SemanticTasks-jslint
        - mwext-SemanticTasks-lint
@@ -2191,7 +2184,7 @@ projects:
        - mwext-SemanticTasks-lint
 
   - name: mediawiki/extensions/SemanticTitle
-    check:
+    check-only:
      - mwext-SemanticTitle-merge:
        - mwext-SemanticTitle-jslint
        - mwext-SemanticTitle-lint
@@ -2201,7 +2194,7 @@ projects:
        - mwext-SemanticTitle-lint
 
   - name: mediawiki/extensions/SemanticUpdateOnPurge
-    check:
+    check-only:
      - mwext-SemanticUpdateOnPurge-merge:
        - mwext-SemanticUpdateOnPurge-jslint
        - mwext-SemanticUpdateOnPurge-lint
@@ -2211,7 +2204,7 @@ projects:
        - mwext-SemanticUpdateOnPurge-lint
 
   - name: mediawiki/extensions/SemanticWatchlist
-    check:
+    check-only:
      - mwext-SemanticWatchlist-merge:
        - mwext-SemanticWatchlist-jslint
        - mwext-SemanticWatchlist-lint
@@ -2236,7 +2229,7 @@ projects:
         - mwext-Scribunto-lint
 
   - name: mediawiki/extensions/ShortUrl
-    check:
+    check-only:
       - mwext-ShortUrl-merge:
         - mwext-ShortUrl-jslint
         - mwext-ShortUrl-lint
@@ -2246,37 +2239,31 @@ projects:
         - mwext-ShortUrl-lint
 
   - name: mediawiki/extensions/SimpleAntiSpam
-    check:
+    check-only:
       - mwext-SimpleAntiSpam-merge:
-#        - mwext-SimpleAntiSpam-jslint
         - mwext-SimpleAntiSpam-lint
     gate-and-submit:
       - mwext-SimpleAntiSpam-merge:
-#        - mwext-SimpleAntiSpam-jslint
         - mwext-SimpleAntiSpam-lint
 
   - name: mediawiki/extensions/SiteMatrix
-    check:
+    check-only:
       - mwext-SiteMatrix-merge:
-#        - mwext-SiteMatrix-jslint
         - mwext-SiteMatrix-lint
     gate-and-submit:
       - mwext-SiteMatrix-merge:
-#        - mwext-SiteMatrix-jslint
         - mwext-SiteMatrix-lint
 
   - name: mediawiki/extensions/SkinPerPage
-    check:
+    check-only:
       - mwext-SkinPerPage-merge:
-#        - mwext-SkinPerPage-jslint
         - mwext-SkinPerPage-lint
     gate-and-submit:
       - mwext-SkinPerPage-merge:
-#        - mwext-SkinPerPage-jslint
         - mwext-SkinPerPage-lint
 
   - name: mediawiki/extensions/skins
-    check:
+    check-only:
       - mwext-skins-merge:
         - mwext-skins-jslint
         - mwext-skins-lint
@@ -2286,7 +2273,7 @@ projects:
         - mwext-skins-lint
 
   - name: mediawiki/extensions/Solarium
-    check:
+    check-only:
       - mwext-Solarium-merge:
         - mwext-Solarium-jslint
         - mwext-Solarium-lint
@@ -2296,7 +2283,7 @@ projects:
         - mwext-Solarium-lint
 
   - name: mediawiki/extensions/SpamBlacklist
-    check:
+    check-only:
       - mwext-SpamBlacklist-merge:
         - mwext-SpamBlacklist-jslint
         - mwext-SpamBlacklist-lint
@@ -2306,7 +2293,7 @@ projects:
         - mwext-SpamBlacklist-lint
 
   - name: mediawiki/extensions/StrategyWiki
-    check:
+    check-only:
       - mwext-StrategyWiki-merge:
         - mwext-StrategyWiki-jslint
         - mwext-StrategyWiki-lint
@@ -2316,17 +2303,15 @@ projects:
         - mwext-StrategyWiki-lint
 
   - name: mediawiki/extensions/SubPageList3
-    check:
+    check-only:
       - mwext-SubPageList3-merge:
-#        - mwext-SubPageList3-jslint
         - mwext-SubPageList3-lint
     gate-and-submit:
       - mwext-SubPageList3-merge:
-#        - mwext-SubPageList3-jslint
         - mwext-SubPageList3-lint
 
   - name: mediawiki/extensions/SubpageSortkey
-    check:
+    check-only:
       - mwext-SubpageSortkey-merge:
         - mwext-SubpageSortkey-jslint
         - mwext-SubpageSortkey-lint
@@ -2336,7 +2321,7 @@ projects:
         - mwext-SubpageSortkey-lint
 
   - name: mediawiki/extensions/Sudo
-    check:
+    check-only:
       - mwext-Sudo-merge:
         - mwext-Sudo-jslint
         - mwext-Sudo-lint
@@ -2362,7 +2347,7 @@ projects:
           - mwext-Survey-testextensions-master
 
   - name: mediawiki/extensions/SpamBlacklist
-    check:
+    check-only:
       - mwext-SpamBlacklist-merge:
         - mwext-SpamBlacklist-jslint
         - mwext-SpamBlacklist-lint
@@ -2372,7 +2357,7 @@ projects:
         - mwext-SpamBlacklist-lint
 
   - name: mediawiki/extensions/SVGEdit
-    check:
+    check-only:
       - mwext-SVGEdit-merge:
         - mwext-SVGEdit-jslint
         - mwext-SVGEdit-lint
@@ -2380,14 +2365,9 @@ projects:
       - mwext-SVGEdit-merge:
         - mwext-SVGEdit-jslint
         - mwext-SVGEdit-lint
-# No PHPUnit tests for now so simply disable triggering them
-# If you want to enable PHPUnit tests, delete the line above
-# and uncomment the two lines below:
-#        - mwext-SVGEdit-lint:
-#          - mwext-SVGEdit-testextensions-master
 
   - name: mediawiki/extensions/TemplateSandbox
-    check:
+    check-only:
       - mwext-TemplateSandbox-merge:
         - mwext-TemplateSandbox-jslint
         - mwext-TemplateSandbox-lint
@@ -2397,7 +2377,7 @@ projects:
         - mwext-TemplateSandbox-lint
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
-    check:
+    check-only:
       - mwext-SyntaxHighlight_GeSHi-merge:
         - mwext-SyntaxHighlight_GeSHi-jslint
         - mwext-SyntaxHighlight_GeSHi-lint
@@ -2407,7 +2387,7 @@ projects:
         - mwext-SyntaxHighlight_GeSHi-lint
 
   - name: mediawiki/extensions/TemplateData
-    check:
+    check-only:
       - mwext-TemplateData-merge:
         - mwext-TemplateData-jslint
         - mwext-TemplateData-lint
@@ -2417,7 +2397,7 @@ projects:
         - mwext-TemplateData-lint
 
   - name: mediawiki/extensions/Thanks
-    check:
+    check-only:
       - mwext-Thanks-merge:
         - mwext-Thanks-jslint
         - mwext-Thanks-lint
@@ -2427,7 +2407,7 @@ projects:
         - mwext-Thanks-lint
 
   - name: mediawiki/extensions/TimedMediaHandler
-    check:
+    check-only:
       - mwext-TimedMediaHandler-merge:
         - mwext-TimedMediaHandler-jslint
         - mwext-TimedMediaHandler-lint
@@ -2440,7 +2420,7 @@ projects:
 #          - mwext-TimedMediaHandler-testextensions-master
 
   - name: mediawiki/extensions/TitleBlacklist
-    check:
+    check-only:
       - mwext-TitleBlacklist-merge:
         - mwext-TitleBlacklist-jslint
         - mwext-TitleBlacklist-lint
@@ -2451,7 +2431,7 @@ projects:
           - mwext-TitleBlacklist-testextensions-master
 
   - name: mediawiki/extensions/TitleKey
-    check:
+    check-only:
       - mwext-TitleKey-merge:
         - mwext-TitleKey-jslint
         - mwext-TitleKey-lint
@@ -2461,7 +2441,7 @@ projects:
         - mwext-TitleKey-lint
 
   - name: mediawiki/extensions/TocTree
-    check:
+    check-only:
       - mwext-TocTree-merge:
         - mwext-TocTree-jslint
         - mwext-TocTree-lint
@@ -2471,17 +2451,15 @@ projects:
         - mwext-TocTree-lint
 
   - name: mediawiki/extensions/TorBlock
-    check:
+    check-only:
       - mwext-TorBlock-merge:
-#        - mwext-TorBlock-jslint
         - mwext-TorBlock-lint
     gate-and-submit:
       - mwext-TorBlock-merge:
-#        - mwext-TorBlock-jslint
         - mwext-TorBlock-lint
 
   - name: mediawiki/extensions/Translate
-    check:
+    check-only:
       - mwext-Translate-merge:
         - mwext-Translate-jslint
         - mwext-Translate-phpcs-HEAD
@@ -2499,7 +2477,7 @@ projects:
           - mwext-Translate-testextensions-master
 
   - name: mediawiki/extensions/TranslationNotifications
-    check:
+    check-only:
       - mwext-TranslationNotifications-merge:
         - mwext-TranslationNotifications-jslint
         - mwext-TranslationNotifications-lint
@@ -2515,38 +2493,32 @@ projects:
           - mwext-TranslationNotifications-testextensions-master
 
   - name: mediawiki/extensions/TrustedXFF
-    check:
+    check-only:
       - mwext-TrustedXFF-merge:
-#        - mwext-TrustedXFF-jslint
         - mwext-TrustedXFF-lint
     gate-and-submit:
       - mwext-TrustedXFF-merge:
-#        - mwext-TrustedXFF-jslint
         - mwext-TrustedXFF-lint
 
   - name: mediawiki/extensions/UnicodeConverter
-    check:
+    check-only:
       - mwext-UnicodeConverter-merge:
-#        - mwext-UnicodeConverter-jslint
         - mwext-UnicodeConverter-lint
     gate-and-submit:
       - mwext-UnicodeConverter-merge:
-#        - mwext-UnicodeConverter-jslint
         - mwext-UnicodeConverter-lint
 
   - name: mediawiki/extensions/UniversalLanguageSelector
-    check:
+    check-only:
       - mwext-UniversalLanguageSelector-merge:
-#        - mwext-UniversalLanguageSelector-jslint
         - mwext-UniversalLanguageSelector-lint
     gate-and-submit:
       - mwext-UniversalLanguageSelector-merge:
-#        - mwext-UniversalLanguageSelector-jslint
         - mwext-UniversalLanguageSelector-lint:
           - mwext-UniversalLanguageSelector-testextensions-master
 
   - name: mediawiki/extensions/UploadBlacklist
-    check:
+    check-only:
       - mwext-UploadBlacklist-merge:
         - mwext-UploadBlacklist-jslint
         - mwext-UploadBlacklist-lint
@@ -2560,13 +2532,17 @@ projects:
       - mwext-UploadWizard-merge:
         - mwext-UploadWizard-jslint
         - mwext-UploadWizard-lint
+    test:
+      - mwext-UploadWizard-merge:
+        - mwext-UploadWizard-jslint
+        - mwext-UploadWizard-lint
     gate-and-submit:
       - mwext-UploadWizard-merge:
         - mwext-UploadWizard-jslint
         - mwext-UploadWizard-lint
 
   - name: mediawiki/extensions/UserDailyContribs
-    check:
+    check-only:
       - mwext-UserDailyContribs-merge:
         - mwext-UserDailyContribs-jslint
         - mwext-UserDailyContribs-lint
@@ -2576,7 +2552,7 @@ projects:
         - mwext-UserDailyContribs-lint
 
   - name: mediawiki/extensions/UserMerge
-    check:
+    check-only:
       - mwext-UserMerge-merge:
         - mwext-UserMerge-jslint
         - mwext-UserMerge-lint
@@ -2586,7 +2562,7 @@ projects:
         - mwext-UserMerge-lint
 
   - name: mediawiki/extensions/UserOptionStats
-    check:
+    check-only:
       - mwext-UserOptionStats-merge:
         - mwext-UserOptionStats-jslint
         - mwext-UserOptionStats-lint
@@ -2596,7 +2572,7 @@ projects:
         - mwext-UserOptionStats-lint
 
   - name: mediawiki/extensions/UserThrottle
-    check:
+    check-only:
       - mwext-UserThrottle-merge:
         - mwext-UserThrottle-jslint
         - mwext-UserThrottle-lint
@@ -2606,7 +2582,7 @@ projects:
         - mwext-UserThrottle-lint
 
   - name: mediawiki/extensions/Validator
-    check:
+    check-only:
       - mwext-Validator-merge:
         - mwext-Validator-jslint
         - mwext-Validator-lint
@@ -2622,7 +2598,7 @@ projects:
           - mwext-Validator-testextensions-master
 
   - name: mediawiki/extensions/Vector
-    check:
+    check-only:
       - mwext-Vector-merge:
         - mwext-Vector-jslint
         - mwext-Vector-lint
@@ -2632,7 +2608,7 @@ projects:
         - mwext-Vector-lint
 
   - name: mediawiki/extensions/VipsScaler
-    check:
+    check-only:
       - mwext-VipsScaler-merge:
         - mwext-VipsScaler-jslint
         - mwext-VipsScaler-lint
@@ -2662,7 +2638,7 @@ projects:
       - mwext-VisualEditor-doc-publish
 
   - name: mediawiki/extensions/WebChat
-    check:
+    check-only:
       - mwext-WebChat-merge:
         - mwext-WebChat-jslint
         - mwext-WebChat-lint
@@ -2672,7 +2648,7 @@ projects:
         - mwext-WebChat-lint
 
   - name: mediawiki/extensions/WebFonts
-    check:
+    check-only:
       - mwext-WebFonts-merge:
         - mwext-WebFonts-jslint
         - mwext-WebFonts-lint
@@ -2682,7 +2658,7 @@ projects:
         - mwext-WebFonts-lint
 
   - name: mediawiki/extensions/WikiEditor
-    check:
+    check-only:
       - mwext-WikiEditor-merge:
         - mwext-WikiEditor-jslint
         - mwext-WikiEditor-lint
@@ -2692,7 +2668,7 @@ projects:
         - mwext-WikiEditor-lint
 
   - name: mediawiki/extensions/Wikibase
-    check:
+    check-only:
       - mwext-Wikibase-merge:
         - mwext-Wikibase-jslint
         - mwext-Wikibase-lint
@@ -2703,7 +2679,7 @@ projects:
           - mwext-Wikibase-testextensions-master
 
   - name: mediawiki/extensions/WikiLove
-    check:
+    check-only:
       - mwext-WikiLove-merge:
         - mwext-WikiLove-jslint
         - mwext-WikiLove-lint
@@ -2713,7 +2689,7 @@ projects:
         - mwext-WikiLove-lint
 
   - name: mediawiki/extensions/wikihiero
-    check:
+    check-only:
       - mwext-wikihiero-merge:
         - mwext-wikihiero-jslint
         - mwext-wikihiero-lint
@@ -2723,7 +2699,7 @@ projects:
         - mwext-wikihiero-lint
 
   - name: mediawiki/extensions/WikimediaIncubator
-    check:
+    check-only:
       - mwext-WikimediaIncubator-merge:
         - mwext-WikimediaIncubator-jslint
         - mwext-WikimediaIncubator-lint
@@ -2733,7 +2709,7 @@ projects:
         - mwext-WikimediaIncubator-lint
 
   - name: mediawiki/extensions/WikimediaMaintenance
-    check:
+    check-only:
       - mwext-WikimediaMaintenance-merge:
         - mwext-WikimediaMaintenance-jslint
         - mwext-WikimediaMaintenance-lint
@@ -2741,12 +2717,9 @@ projects:
       - mwext-WikimediaMaintenance-merge:
         - mwext-WikimediaMaintenance-jslint
         - mwext-WikimediaMaintenance-lint
-# No unit tests yet :/
-#        - mwext-WikimediaMaintenance-lint:
-#          - mwext-WikimediaMaintenance-testextensions-master
 
   - name: mediawiki/extensions/WikimediaMessages
-    check:
+    check-only:
       - mwext-WikimediaMessages-merge:
         - mwext-WikimediaMessages-lint
     gate-and-submit:
@@ -2754,7 +2727,7 @@ projects:
         - mwext-WikimediaMessages-lint
 
   - name: mediawiki/extensions/WikimediaShopLink
-    check:
+    check-only:
       - mwext-WikimediaShopLink-merge:
         - mwext-WikimediaShopLink-jslint
         - mwext-WikimediaShopLink-lint
@@ -2764,7 +2737,7 @@ projects:
         - mwext-WikimediaShopLink-lint
 
   - name: mediawiki/extensions/ZeroRatedMobileAccess
-    check:
+    check-only:
       - mwext-ZeroRatedMobileAccess-merge:
         - mwext-ZeroRatedMobileAccess-lint
     gate-and-submit:
@@ -2774,42 +2747,42 @@ projects:
 #### PHP Extensions ###################################################
 
   - name: mediawiki/php/FastStringSearch
-    # no check pipeline since that runs code :-)
+    # no check pipeline since -build runs code :-)
     test:
       - php-FastStringSearch-build
     gate-and-submit:
       - php-FastStringSearch-build
 
   - name: mediawiki/php/luasandbox
-    # no check pipeline since that runs code :-)
+    # no check pipeline since -build runs code :-)
     test:
       - php-luasandbox-build
     gate-and-submit:
       - php-luasandbox-build
 
   - name: mediawiki/php/NativePreprocessor
-    # no check pipeline since that runs code :-)
+    # no check pipeline since -build runs code :-)
     test:
       - php-NativePreprocessor-build
     gate-and-submit:
       - php-NativePreprocessor-build
 
   - name: mediawiki/php/wikidiff
-    # no check pipeline since that runs code :-)
+    # no check pipeline since -build runs code :-)
     test:
       - php-wikidiff-build
     gate-and-submit:
       - php-wikidiff-build
 
   - name: mediawiki/php/wikidiff2
-    # no check pipeline since that runs code :-)
+    # no check pipeline since -build runs code :-)
     test:
       - php-wikidiff2-build
     gate-and-submit:
       - php-wikidiff2-build
 
   - name: mediawiki/php/wmerrors
-    # no check pipeline since that runs code :-)
+    # no check pipeline since -build runs code :-)
     test:
       - php-wmerrors-build
     gate-and-submit:
@@ -2820,16 +2793,19 @@ projects:
       - qa-browsertests-ruby1.9.3lint
 
   - name: sartoris
-    check:
+    check-only:
       - sartoris-pep8
       - sartoris-pyflakes
     gate-and-submit:
       - sartoris-pep8
       - sartoris-pyflakes
 
-### Test repository
   - name: test/mediawiki
-    check:
+    check-only:
+      - test-mediawiki-dumpenv
+      - test-mediawiki-phpcs-HEAD
+      - test-mediawiki-qunit
+    test:
       - test-mediawiki-dumpenv
       - test-mediawiki-phpcs-HEAD
       - test-mediawiki-qunit
