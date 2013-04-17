@@ -297,6 +297,8 @@ jobs:
     voting: true
   - name: mwext-Calendar-jslint
     voting: true
+  - name: mwext-Echo-jslint
+    voting: true
   - name: mwext-GlobalBlocking-jslint
     voting: true
   - name: mwext-Math-jslint
@@ -309,6 +311,8 @@ jobs:
     voting: true
   - name: mwext-Translate-jslint
     voting: true
+  #- name: mwext-TranslationNotifications-jslint
+  #  voting: true
   - name: mwext-VisualEditor-jslint
     voting: true
 
@@ -2524,9 +2528,11 @@ projects:
     check-only:
       - mwext-UniversalLanguageSelector-merge:
         - mwext-UniversalLanguageSelector-lint
+        - mwext-UniversalLanguageSelector-jslint
     gate-and-submit:
       - mwext-UniversalLanguageSelector-merge:
-        - mwext-UniversalLanguageSelector-lint:
+        - mwext-UniversalLanguageSelector-lint
+        - mwext-UniversalLanguageSelector-jslint:
           - mwext-UniversalLanguageSelector-testextensions-master
 
   - name: mediawiki/extensions/UploadBlacklist
