@@ -2399,14 +2399,14 @@ projects:
         - mwext-SyntaxHighlight_GeSHi-lint
 
   - name: mediawiki/extensions/TemplateData
-    check-only:
-      - mwext-TemplateData-merge:
-        - mwext-TemplateData-jslint
-        - mwext-TemplateData-lint
+    check:
+      - mwext-TemplateData-lint
+    test:
+      - mwext-TemplateData-lint
+        - mwext-TemplateData-testextensions-master
     gate-and-submit:
-      - mwext-TemplateData-merge:
-        - mwext-TemplateData-jslint
-        - mwext-TemplateData-lint
+      - mwext-TemplateData-lint
+        - mwext-TemplateData-testextensions-master
 
   - name: mediawiki/extensions/Thanks
     check-only:
