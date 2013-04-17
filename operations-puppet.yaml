@@ -16,7 +16,7 @@
         # Zuul merge changes in the branch which is then known is the
         # job workspace as origin/branch. So we have to look up the sha1
         # of the original branch by querying the Zuul maintained repo
-        ORIG_HEAD=`git --git-dir=/var/lib/zuul/git/operations/puppet/.git rev-parse "origin/$ZUUL_BRANCH"`
+        ORIG_HEAD=`git --git-dir=/srv/ssd/zuul/git/operations/puppet/.git rev-parse "origin/$ZUUL_BRANCH"`
         echo "Original HEAD origin/$ZUUL_BRANCH points to $ORIG_HEAD"
 
         echo "Finding out whether the rakefile has been altered.."
