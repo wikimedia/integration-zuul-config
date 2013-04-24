@@ -454,3 +454,19 @@
     gerrit-name: mediawiki/extensions/MobileFrontend
     jobs:
      - '{name}-ruby1.9.3lint'
+
+- job-template:
+    name: 'mwext-PoolCounter-build'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        cd daemon
+        make
+
+- project:
+    name: 'mwext-PoolCounter'
+    gerrit-name: mediawiki/extensions/PoolCounter
+    jobs:
+     - 'mwext-PoolCounter-build'
