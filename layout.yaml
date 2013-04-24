@@ -274,7 +274,9 @@ jobs:
   - name: sartoris-pep8
     voting: true
 
-  - name: mw-tools-fluoride-.*
+  - name: mw-tools-fluoride-pep8
+    voting: true
+  - name: mw-tools-fluoride-pyflakes
     voting: true
   - name: mw-tools-release-pep8
     voting: true
@@ -579,10 +581,10 @@ projects:
   - name: mediawiki/tools/fluoride
     check-voter:
      - mw-tools-fluoride-pep8
-     - mw-tools-fluoride-phplint
+     - mw-tools-fluoride-pyflakes
     gate-and-submit:
      - mw-tools-fluoride-pep8
-     - mw-tools-fluoride-phplint
+     - mw-tools-fluoride-pyflakes
 
   - name: mediawiki/tools/release
     check-voter:
