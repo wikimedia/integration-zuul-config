@@ -1956,14 +1956,20 @@ projects:
         - mwext-Poem-lint
 
   - name: mediawiki/extensions/PoolCounter
-    check-only:
+    check:
       - mwext-PoolCounter-merge:
         - mwext-PoolCounter-jslint
         - mwext-PoolCounter-lint
+    test:
+      - mwext-PoolCounter-merge:
+        - mwext-PoolCounter-jslint
+        - mwext-PoolCounter-lint
+        - mwext-PoolCounter-build
     gate-and-submit:
       - mwext-PoolCounter-merge:
         - mwext-PoolCounter-jslint
         - mwext-PoolCounter-lint
+        - mwext-PoolCounter-build
 
   - name: mediawiki/extensions/PostEdit
     check-only:
