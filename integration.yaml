@@ -23,6 +23,20 @@
         # FIXME change path whenever we have zuul packaged.
         /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml
 
+- job-template:
+    name: 'integration-zuul-layoutdiff'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        set +e
+        # FIXME change path whenever we have zuul packaged.
+        /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml 2>current.txt
+        git checkout HEAD^
+        /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml 2>before.txt
+        diff -u before.txt current.txt
+
 - project:
     name: 'integration-docroot'
     jobs:
@@ -32,6 +46,7 @@
     name: 'integration-zuul-config'
     gerrit-name: 'integration/zuul-config'
     jobs:
+     - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation'
      - '{name}-yamllint'
 
