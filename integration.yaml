@@ -11,6 +11,18 @@
         git checkout $ZUUL_COMMIT
         echo "`date -R`> $ZUUL_COMMIT" >> /srv/jenkins-autodeploy
 
+# Pass zuul-config.git:layout.yaml to zuul-server layout validation
+# Requires zuul to be installed on the Jenkins host.
+- job-template:
+    name: 'integration-zuul-layoutvalidation'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        # FIXME change path whenever we have zuul packaged.
+        /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml
+
 - project:
     name: 'integration-docroot'
     jobs:
@@ -20,6 +32,7 @@
     name: 'integration-zuul-config'
     gerrit-name: 'integration/zuul-config'
     jobs:
+     - 'integration-zuul-layoutvalidation'
      - '{name}-yamllint'
 
 - project:
