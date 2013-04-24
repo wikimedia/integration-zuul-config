@@ -266,6 +266,9 @@ jobs:
     success-message: 'Change has been deployed on the server and should be live.'
     failure-message: 'FAILED to deploy change. Please contact a member of the continuous integration team to fixup the docroot on the destination server.'
 
+  - name: 'integration-zuul-layoutdiff'
+    voting: false
+
   - name: 'mwext-VisualEditor-doc-publish'
     branch: ^master$
 
@@ -411,9 +414,11 @@ projects:
     check-voter:
       - integration-zuul-config-yamllint
       - integration-zuul-layoutvalidation
+      - integration-zuul-layoutdiff
     gate-and-submit:
       - integration-zuul-config-yamllint
       - integration-zuul-layoutvalidation
+      - integration-zuul-layoutdiff
 
   - name: mediawiki/core
     check:
