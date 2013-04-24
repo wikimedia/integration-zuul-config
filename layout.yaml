@@ -273,6 +273,9 @@ jobs:
     voting: true
   - name: sartoris-pep8
     voting: true
+
+  - name: mw-tools-fluoride-.*
+    voting: true
   - name: mw-tools-release-pep8
     voting: true
   - name: operations-debs-ircecho-pep8
@@ -572,6 +575,14 @@ projects:
     gate-and-submit:
      - mw-tools-codeutils-pep8
      - mw-tools-codeutils-phplint
+
+  - name: mediawiki/tools/fluoride
+    check-voter:
+     - mw-tools-fluoride-pep8
+     - mw-tools-fluoride-phplint
+    gate-and-submit:
+     - mw-tools-fluoride-pep8
+     - mw-tools-fluoride-phplint
 
   - name: mediawiki/tools/release
     check-voter:
