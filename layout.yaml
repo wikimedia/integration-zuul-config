@@ -230,6 +230,11 @@ jobs:
   # General
   #
 
+  - name: ^.*-erblint-HEAD$
+    voting: false
+    files:
+     - '^.*\.erb$'
+
   - name: ^.*-jslint$
     # Non-voting by default (most projects do not pass yet)
     voting: false
@@ -670,6 +675,7 @@ projects:
   - name: operations/puppet
     # Only lint on submission for now, that will be voting
     check-voter:
+      - operations-puppet-erblint-HEAD
       - operations-puppet-pep8
       - operations-puppet-typos
       - operations-puppet-validate
