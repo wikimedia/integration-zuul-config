@@ -340,6 +340,9 @@ jobs:
   - name: mediawiki-core-jsduck-publish
     branch: ^(REL1_21|master)$
 
+  - name: ^mwext-Math-testextensions-.*
+    voting: false
+
   # not working yet, might need some dependency
   - name: ^mwext-ContributionTracking-testextensions-.*
     voting: false
@@ -1640,14 +1643,20 @@ projects:
         - mwext-LocalisationUpdate-lint
 
   - name: mediawiki/extensions/Math
-    check-only:
+    check:
       - mwext-Math-merge:
         - mwext-Math-jslint
         - mwext-Math-lint
+    test:
+      - mwext-Math-merge:
+        - mwext-Math-jslint
+        - mwext-Math-lint:
+          - mwext-Math-testextensions-master
     gate-and-submit:
       - mwext-Math-merge:
         - mwext-Math-jslint
-        - mwext-Math-lint
+        - mwext-Math-lint:
+          - mwext-Math-testextensions-master
 
   - name: mediawiki/extensions/Maps
     check:
