@@ -2,6 +2,13 @@
 # contains trailing spaces.  We can use that to easily lint whitespaces in
 # submitted changes.
 
+- builder:
+    name: erblint-HEAD
+    builders:
+     - shell: |
+        /var/lib/jenkins/bin/git-changed-in-head erb \
+        | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
+
 # Lint whitespace in directory {dir}. Usefull when the Git repository has
 # been fetched out in some subdirtory of the Workspace. Example:
 #
