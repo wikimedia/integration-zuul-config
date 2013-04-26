@@ -403,12 +403,9 @@ jobs:
   - name: ^operations-debs-python-voluptuous-debbuild.*
     voting: false
 
-  # New Parsoid tests (not yet merged in jenkins-job-builder-config)
-  # Still being developed, non-voting for now.
-  - name: ^parsoid-parse-tool-check$
-    voting: false
-  - name: ^parsoid-roundtrip-test-check$
-    voting: false
+  # Parsoid is jslint-clean!  Let's keep it that way!
+  - name: ^mwext-Parsoid-jslint$
+    voting: true
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
@@ -1931,13 +1928,15 @@ projects:
     test:
       - mwext-Parsoid-merge:
         - mwext-Parsoid-jslint
-        - parsoid-parserTests
+        - parsoid-parsertests
         - parsoid-parse-tool-check
         - parsoid-roundtrip-test-check
+        - parsoid-parsertests-run-harder
     gate-and-submit:
       - mwext-Parsoid-merge:
         - mwext-Parsoid-jslint
-        - parsoid-parserTests
+        - parsoid-parsertests
+        - parsoid-parsertests-run-harder
     postmerge:
       - parsoid-regressions
 
