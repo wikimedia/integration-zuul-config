@@ -194,6 +194,36 @@
             node roundtrip-test.js --prefix fr "Chope"
             node roundtrip-test.js --xml "Parkour"
 
+- job-template:
+    name: parsoid-parsertests-run-harder
+    wrappers:
+        - timeout:
+            timeout: 600
+            fail: true
+    defaults:
+        use-zuul
+    triggers:
+        - zuul
+    scm:
+        - git:
+            url: '/srv/ssd/zuul/git/mediawiki/extensions/Parsoid'
+            refspec: '$ZUUL_REF'
+            name: 'origin'
+            disable-submodules: true
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Parsoid/js/contrib.git'
+            branches:
+                - master
+            basedir: contrib
+    builders:
+        - shell: |
+            # If any of these commands fail, something is wrong
+            set -e
+            cd js/tests
+            NODE_PATH=$NODE_PATH:../../contrib/node_modules
+            node fetch-parserTests.txt.js
+            node parserTests --wt2html --wt2wt --html2wt --html2html --selser --changesin selser.changes.json --no-color --quiet --blacklist
+
 - project:
     name: parsoid
     gerrit-name: mediawiki/extensions/Parsoid
@@ -204,3 +234,4 @@
         - parsoid-server-sanity-check
         - parsoid-parse-tool-check
         - parsoid-roundtrip-test-check
+        - parsoid-parsertests-run-harder
