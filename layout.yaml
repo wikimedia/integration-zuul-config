@@ -1786,6 +1786,22 @@ projects:
         - mwext-NewUserMessage-jslint
         - mwext-NewUserMessage-lint
 
+  - name: mediawiki/extensions/Nonlinear
+    check:
+      - mwext-Nonlinear-merge:
+        - mwext-Nonlinear-jslint
+        - mwext-Nonlinear-lint
+    test:
+      - mwext-Nonlinear-merge:
+        - mwext-Nonlinear-jslint
+        - mwext-Nonlinear-lint:
+          - mwext-Nonlinear-testextensions-master
+    gate-and-submit:
+      - mwext-Nonlinear-merge:
+        - mwext-Nonlinear-jslint
+        - mwext-Nonlinear-lint:
+          - mwext-Nonlinear-testextensions-master
+
   - name: mediawiki/extensions/Nuke
     check-only:
       - mwext-Nuke-merge:
