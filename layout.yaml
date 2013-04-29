@@ -265,8 +265,18 @@ jobs:
   # PHP CodeSniffer (experimental)
   - name: ^.*-phpcs$
     voting: false
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
   - name: ^.*-phpcs-HEAD$
     voting: false
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+  - name: ^.*-phplint$
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+  - name: ^mediawiki-core-lint$
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
 
   # Rejecting changes having trailing whitespaces cause too many false
   # positives. So only report the whitespace issues, but don't let it vote.
