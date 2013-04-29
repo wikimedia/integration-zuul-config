@@ -376,6 +376,10 @@ jobs:
 
   - name: ^mwext-Wikibase-testextensions-.*
     voting: false
+  - name: ^mwext-Wikibase-client-tests$
+    voting: false
+  - name: ^mwext-Wikibase-server-tests$
+    voting: false
 
   - name: mediawiki-core-master-phpunit-all
     branch: ^master$
@@ -2801,11 +2805,15 @@ projects:
         - mwext-Wikibase-jslint
         - mwext-Wikibase-lint:
           - mwext-Wikibase-testextensions-master
+          - mwext-Wikibase-client-tests
+          - mwext-Wikibase-server-tests
     gate-silent:
       - mwext-Wikibase-merge:
         - mwext-Wikibase-jslint
         - mwext-Wikibase-lint:
           - mwext-Wikibase-testextensions-master
+          - mwext-Wikibase-client-tests
+          - mwext-Wikibase-server-tests
 
   - name: mediawiki/extensions/WikiLove
     check-only:
