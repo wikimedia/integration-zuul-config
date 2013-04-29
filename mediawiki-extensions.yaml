@@ -94,6 +94,26 @@
      - junit:
         results: 'junit*.xml'
 
+# Job specific to Wikibase, let us switch between client
+# and server configurations.
+- job-template:
+    name: 'mwext-Wikibase-{kind}-tests'
+    defaults: use-zuul-for-mw-ext
+    ext-name: 'Wikibase'
+    triggers:
+     - zuul
+    builders:
+     - mw-setup-extension:
+        mwbranch: 'master'
+        dependencies: '{dependencies}'
+     - mw-phpunit-ext:
+        extension: '{ext-name}'
+     - mw-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'junit*.xml'
+
+
 # VisualEditor's docgen has a maintenance script, so install mediawiki first
 - job-template:
     name: 'mwext-VisualEditor-doc-test'
@@ -370,6 +390,15 @@
         name: mwext
         ext-name: Wikibase
         dependencies: 'Ask,Diff,DataValues,Validator'
+     - 'mwext-Wikibase-{kind}-tests':
+        ext-name: Wikibase
+        dependencies: 'Ask,Diff,DataValues,Validator'
+        kind: 'client'
+     - 'mwext-Wikibase-{kind}-tests':
+        ext-name: Wikibase
+        dependencies: 'Ask,Diff,DataValues,Validator'
+        kind: 'server'
+
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: Ask
