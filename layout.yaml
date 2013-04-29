@@ -253,10 +253,14 @@ jobs:
   - name: ^.*-pep8$
     # Non-voting (most of our script fail the tests miserably)
     voting: false
+    files:
+     - '^.*\.py$'
 
   - name: ^.*-pyflakes$
     # do not vote by default
     voting: false
+    files:
+     - '^.*\.py$'
 
   # PHP CodeSniffer (experimental)
   - name: ^.*-phpcs$
