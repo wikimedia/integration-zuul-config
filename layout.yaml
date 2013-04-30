@@ -381,11 +381,6 @@ jobs:
   - name: ^mwext-Wikibase-server-tests$
     voting: false
 
-  - name: mediawiki-core-master-phpunit-all
-    branch: ^master$
-    success-message: Change looked fine once merged.
-    failure-message: ERROR! It seems this job introduced a regression although it might be caused by a previous commit.
-
   # MediaWiki core regression tests (on merge and per branches):
   - name: ^mediawiki-core-regression-.*
     failure-message: ERROR! It seems this job introduced a regression although it might be caused by a previous commit.
@@ -466,7 +461,6 @@ projects:
       - mediawiki-core-jslint
       - mediawiki-core-lint
       - mediawiki-core-jsduck-publish
-      - mediawiki-core-master-phpunit-all
       - mediawiki-core-regression-master
       - mediawiki-core-regression-REL1_19
       - mediawiki-core-regression-REL1_20
