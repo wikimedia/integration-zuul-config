@@ -70,20 +70,10 @@
      - shell: |
         #!/bin/bash
         echo "Running JSDuck with {config}..."
-        warnings=`jsduck --config="{config}" 2>&1`
-        code=$?
-        # Re-colorize
-        export TERM=xterm
-        BLACK=$(tput setaf 0); YELLOW=$(tput setaf 3); MEGANTA=$(tput setaf 5)
-        echo "$warnings" | perl -pe "s|^([^ ]+) ([^ ]+) (.*)$|$YELLOW\1 $MEGANTA\2 $BLACK\3|"
-        # JSDuck doesn't exit with an error code if there are warnings
-        if [[ "$code" == "0" && "$warnings" != "" ]]
-        then
-            echo
-            exit 1
-        fi
+        jsduck --config="{config}" --color --warnings-exit-nonzero
+        ec=$?
         # Exit with exit code of jsduck command
-        exit $code
+        exit $ec
 
 - builder:
     name: qunit
