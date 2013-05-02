@@ -67,10 +67,24 @@
 - builder:
     name: jsduck
     builders:
+    # Zuul uses Python str.format(obj) for {config} substitutions
+    # Escape as {foo} as {{key}} to avoid triggering a KeyError in Zuul parser
      - shell: |
         #!/bin/bash
         echo "Running JSDuck with {config}..."
-        jsduck --config="{config}" --color --warnings-exit-nonzero
+        # Get version
+        # - ZUUL_REF: refs/zuul/master/Z74178670e7c5495199f8a92e92cf609c
+        # - GERRIT_BRANCH: master
+        if [[ "$ZUUL_REF" =~ ^refs/tags/(.*) ]]
+        then
+            version="${{BASH_REMATCH[1]}}"
+        elif [[ -n "$GERRIT_BRANCH" ]]
+        then
+            version="$GERRIT_BRANCH"
+        else
+            version="unknown"
+        fi
+        jsduck --config="{config}" --footer="Generated for branch ${{version}} on {{DATE}} by {{JSDUCK}} {{VERSION}}." --color --warnings-exit-nonzero
         ec=$?
         # Exit with exit code of jsduck command
         exit $ec
