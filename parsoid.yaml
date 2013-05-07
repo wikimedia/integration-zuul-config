@@ -159,8 +159,10 @@
             set -e
             cd js/tests
             NODE_PATH=$NODE_PATH:../../contrib/node_modules
-            echo "[[Link]]s" | node parse.js --wt2wt | grep "\\[\\[Link\\]\\]s"
-            echo "[[Category:{{echo|blah}}]]" | node parse --wt2wt | grep "\\[\\[Category:{{echo|blah}}\\]\\]"
+            echo "Foo" | node parse.js --wt2html
+            echo "Foo" | node parse.js --wt2wt
+            echo "Foo" | node parse.js --html2wt
+            echo "Foo" | node parse.js --html2html
 
 - job-template:
     name: parsoid-roundtrip-test-check
