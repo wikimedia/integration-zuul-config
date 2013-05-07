@@ -198,11 +198,15 @@
         php maintenance/install.php \
         --confpath $WORKSPACE \
         --dbtype=sqlite \
+        --dbname=my_wiki \
         --dbpath=$sqlitedir \
         --showexceptions=true \
         --pass testpass \
         sqlitetest \
         WikiAdmin
+        # Installer will create sqlite db as 644 by jenkins:jenkins
+        # Make writable for Apache (bug 47639)
+        chmod +w "$sqlitedir/my_wiki.sqlite"
 
 - builder:
     name: mw-setup-extension
