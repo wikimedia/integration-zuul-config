@@ -179,9 +179,30 @@
 - builder:
     name: mw-install-sqlite
     builders:
-      - ant:
-          targets: "installdb-sqlite"
-          buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
+     - shell: |
+        #!/bin/bash -xe
+        # Creating basic build directory tree
+        mkdir -p api data charts coverage dist logs php-code-browser
+        # Determine sqlite directory
+        if [ -d "/var/lib/jenkins/tmpfs" ]
+        then
+            sqlitedir="/var/lib/jenkins/tmpfs/$JOB_NAME"
+            mkdir -p $sqlitedir
+        else
+            sqlitedir="$WORKSPACE/data"
+        fi
+        # Ensure LocalSettings.php and my_wiki.sqlite don't exists
+        rm -f LocalSettings.php
+        rm -f "$sqlitedir/my_wiki.sqlite"
+        # Run MediaWiki installer
+        php maintenance/install.php \
+        --confpath $WORKSPACE \
+        --dbtype=sqlite \
+        --dbpath=$sqlitedir \
+        --showexceptions=true \
+        --pass testpass \
+        sqlitetest \
+        WikiAdmin
 
 - builder:
     name: mw-setup-extension
