@@ -35,7 +35,7 @@
         /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml 2>current.txt
         git checkout HEAD^
         /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml 2>before.txt
-        diff -u before.txt current.txt
+        colordiff -u before.txt current.txt
 
 - project:
     name: 'integration-docroot'
