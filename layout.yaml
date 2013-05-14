@@ -430,6 +430,38 @@ jobs:
   - name: mwext-Parsoid-jslint
     voting: true
 
+project-templates:
+
+  # Template for MediaWiki extensions.
+  # Does run the unit tests on 'test' and 'gate-and-submit'
+  - name: extension-unittests
+    check:
+     - 'mwext-{extname}-merge':
+       - 'mwext-{extname}-jslint'
+       - 'mwext-{extname}-lint'
+    test:
+     - 'mwext-{extname}-merge':
+       - 'mwext-{extname}-jslint'
+       - 'mwext-{extname}-lint':
+         - 'mwext-{extname}-testextensions-master'
+    gate-and-submit:
+     - 'mwext-{extname}-merge':
+       - 'mwext-{extname}-jslint'
+       - 'mwext-{extname}-lint':
+         - 'mwext-{extname}-testextensions-master'
+
+  # Template for MediaWiki extensions.
+  # No unit tests but vote on linting.
+  - name: extension-checks
+    check-only:
+     - 'mwext-{extname}-merge':
+       - 'mwext-{extname}-jslint'
+       - 'mwext-{extname}-lint'
+    gate-and-submit:
+     - 'mwext-{extname}-merge':
+       - 'mwext-{extname}-jslint'
+       - 'mwext-{extname}-lint'
+
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
@@ -734,132 +766,59 @@ projects:
 #### MediaWiki extensions ######################################
 
   - name: mediawiki/extensions/AbuseFilter
-    check-only:
-      - mwext-AbuseFilter-merge:
-        - mwext-AbuseFilter-jslint
-        - mwext-AbuseFilter-lint
-    gate-and-submit:
-      - mwext-AbuseFilter-merge:
-        - mwext-AbuseFilter-jslint
-        - mwext-AbuseFilter-lint
+    template:
+      - name: extension-checks
+        extname: AbuseFilter
 
   - name: mediawiki/extensions/ActiveAbstract
-    check:
-      - mwext-ActiveAbstract-merge:
-        - mwext-ActiveAbstract-jslint
-        - mwext-ActiveAbstract-lint
-    test:
-      - mwext-ActiveAbstract-merge:
-        - mwext-ActiveAbstract-jslint
-        - mwext-ActiveAbstract-lint:
-          - mwext-ActiveAbstract-testextensions-master
-    gate-and-submit:
-      - mwext-ActiveAbstract-merge:
-        - mwext-ActiveAbstract-jslint
-        - mwext-ActiveAbstract-lint:
-          - mwext-ActiveAbstract-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: ActiveAbstract
 
   - name: mediawiki/extensions/AdminLinks
-    check-only:
-      - mwext-AdminLinks-merge:
-        - mwext-AdminLinks-jslint
-        - mwext-AdminLinks-lint
-    gate-and-submit:
-      - mwext-AdminLinks-merge:
-        - mwext-AdminLinks-jslint
-        - mwext-AdminLinks-lint
+    template:
+      - name: extension-checks
+        extname: AdminLinks
 
   - name: mediawiki/extensions/Agora
-    check-only:
-      - mwext-Agora-merge:
-        - mwext-Agora-jslint
-        - mwext-Agora-lint
-    gate-and-submit:
-      - mwext-Agora-merge:
-        - mwext-Agora-jslint
-        - mwext-Agora-lint
+    template:
+      - name: extension-checks
+        extname: Agora
 
   - name: mediawiki/extensions/AntiBot
-    check-only:
-      - mwext-AntiBot-merge:
-        - mwext-AntiBot-jslint
-        - mwext-AntiBot-lint
-    gate-and-submit:
-      - mwext-AntiBot-merge:
-        - mwext-AntiBot-jslint
-        - mwext-AntiBot-lint
+    template:
+      - name: extension-checks
+        extname: AntiBot
 
   - name: mediawiki/extensions/AntiSpoof
-    check:
-      - mwext-AntiSpoof-merge:
-        - mwext-AntiSpoof-jslint
-        - mwext-AntiSpoof-lint
-    test:
-      - mwext-AntiSpoof-merge:
-        - mwext-AntiSpoof-jslint
-        - mwext-AntiSpoof-lint:
-          - mwext-AntiSpoof-testextensions-master
-    gate-and-submit:
-      - mwext-AntiSpoof-merge:
-        - mwext-AntiSpoof-jslint
-        - mwext-AntiSpoof-lint:
-          - mwext-AntiSpoof-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: AntiSpoof
 
   - name: mediawiki/extensions/APC
-    check-only:
-      - mwext-APC-merge:
-        - mwext-APC-jslint
-        - mwext-APC-lint
-    gate-and-submit:
-      - mwext-APC-merge:
-        - mwext-APC-jslint
-        - mwext-APC-lint
+    template:
+      - name: extension-checks
+        extname: APC
 
   - name: mediawiki/extensions/ArticleFeedbackv5
-    check-only:
-      - mwext-ArticleFeedbackv5-merge:
-        - mwext-ArticleFeedbackv5-jslint
-        - mwext-ArticleFeedbackv5-lint
-    gate-and-submit:
-      - mwext-ArticleFeedbackv5-merge:
-        - mwext-ArticleFeedbackv5-jslint
-        - mwext-ArticleFeedbackv5-lint
+    template:
+      - name: extension-checks
+        extname: ArticleFeedbackv5
 
   - name: mediawiki/extensions/ApiSandbox
-    check-only:
-      - mwext-ApiSandbox-merge:
-        - mwext-ApiSandbox-jslint
-        - mwext-ApiSandbox-lint
-    gate-and-submit:
-      - mwext-ApiSandbox-merge:
-        - mwext-ApiSandbox-jslint
-        - mwext-ApiSandbox-lint
+    template:
+      - name: extension-checks
+        extname: ApiSandbox
 
   - name: mediawiki/extensions/Ask
-    check:
-      - mwext-Ask-merge:
-        - mwext-Ask-jslint
-        - mwext-Ask-lint
-    test:
-      - mwext-Ask-merge:
-        - mwext-Ask-jslint
-        - mwext-Ask-lint:
-          - mwext-Ask-testextensions-master
-    gate-and-submit:
-      - mwext-Ask-merge:
-        - mwext-Ask-jslint
-        - mwext-Ask-lint:
-          - mwext-Ask-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Ask
 
   - name: mediawiki/extensions/Babel
-    check-only:
-      - mwext-Babel-merge:
-        - mwext-Babel-jslint
-        - mwext-Babel-lint
-    gate-and-submit:
-      - mwext-Babel-merge:
-        - mwext-Babel-jslint
-        - mwext-Babel-lint
+    template:
+      - name: extension-checks
+        extname: Babel
 
   - name: mediawiki/extensions/BlameMaps
     check-only:
@@ -874,55 +833,31 @@ projects:
         - mwext-BlameMaps-pep8
 
   - name: mediawiki/extensions/Calendar
-    check-only:
-      - mwext-Calendar-merge:
-        - mwext-Calendar-jslint
-        - mwext-Calendar-lint
-    gate-and-submit:
-      - mwext-Calendar-merge:
-        - mwext-Calendar-jslint
-        - mwext-Calendar-lint
+    template:
+      - name: extension-checks
+        extname: Calendar
 
   - name: mediawiki/extensions/CategoryTree
-    check-only:
-      - mwext-CategoryTree-merge:
-        - mwext-CategoryTree-jslint
-        - mwext-CategoryTree-lint
-    gate-and-submit:
-      - mwext-CategoryTree-merge:
-        - mwext-CategoryTree-jslint
-        - mwext-CategoryTree-lint
+    template:
+      - name: extension-checks
+        extname: CategoryTree
 
   - name: mediawiki/extensions/CharInsert
-    check-only:
-      - mwext-CharInsert-merge:
-        - mwext-CharInsert-jslint
-        - mwext-CharInsert-lint
-    gate-and-submit:
-      - mwext-CharInsert-merge:
-        - mwext-CharInsert-jslint
-        - mwext-CharInsert-lint
+    template:
+      - name: extension-checks
+        extname: CharInsert
 
   - name: mediawiki/extensions/CheckUser
-    check-only:
-      - mwext-CheckUser-merge:
-        - mwext-CheckUser-jslint
-        - mwext-CheckUser-lint
-    gate-and-submit:
-      - mwext-CheckUser-merge:
-        - mwext-CheckUser-jslint
-        - mwext-CheckUser-lint
+    template:
+      - name: extension-checks
+        extname: CheckUser
 
   - name: mediawiki/extensions/Cite
-    check-only:
-      - mwext-Cite-merge:
-        - mwext-Cite-jslint
-        - mwext-Cite-lint
-    gate-and-submit:
-      - mwext-Cite-merge:
-        - mwext-Cite-jslint
-        - mwext-Cite-lint
+    template:
+      - name: extension-checks
+        extname: Cite
 
+  # FIXME use a template
   - name: mediawiki/extensions/cldr
     check-only:
       - mwext-cldr-merge:
@@ -935,97 +870,46 @@ projects:
           - mwext-cldr-testextensions-master
 
   - name: mediawiki/extensions/CentralAuth
-    check-only:
-      - mwext-CentralAuth-merge:
-        - mwext-CentralAuth-jslint
-        - mwext-CentralAuth-lint
-    gate-and-submit:
-      - mwext-CentralAuth-merge:
-        - mwext-CentralAuth-jslint
-        - mwext-CentralAuth-lint
+    template:
+      - name: extension-checks
+        extname: CentralAuth
 
   - name: mediawiki/extensions/CentralNotice
-    check:
-      - mwext-CentralNotice-merge:
-        - mwext-CentralNotice-jslint
-        - mwext-CentralNotice-lint
-    test:
-      - mwext-CentralNotice-merge:
-        - mwext-CentralNotice-jslint
-        - mwext-CentralNotice-lint:
-          - mwext-CentralNotice-testextensions-master
-    gate-and-submit:
-      - mwext-CentralNotice-merge:
-        - mwext-CentralNotice-jslint
-        - mwext-CentralNotice-lint:
-          - mwext-CentralNotice-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: CentralNotice
 
   - name: mediawiki/extensions/CleanChanges
-    check-only:
-      - mwext-CleanChanges-merge:
-        - mwext-CleanChanges-jslint
-        - mwext-CleanChanges-lint
-    gate-and-submit:
-      - mwext-CleanChanges-merge:
-        - mwext-CleanChanges-jslint
-        - mwext-CleanChanges-lint
+    template:
+      - name: extension-checks
+        extname: CleanChanges
 
   - name: mediawiki/extensions/ClickTracking
-    check-only:
-      - mwext-ClickTracking-merge:
-        - mwext-ClickTracking-jslint
-        - mwext-ClickTracking-lint
-    gate-and-submit:
-      - mwext-ClickTracking-merge:
-        - mwext-ClickTracking-jslint
-        - mwext-ClickTracking-lint
+    template:
+      - name: extension-checks
+        extname: ClickTracking
 
   - name: mediawiki/extensions/ClientSide
-    check-only:
-      - mwext-ClientSide-merge:
-        - mwext-ClientSide-jslint
-        - mwext-ClientSide-lint
-    gate-and-submit:
-      - mwext-ClientSide-merge:
-        - mwext-ClientSide-jslint
-        - mwext-ClientSide-lint
+    template:
+      - name: extension-checks
+        extname: ClientSide
 
   - name: mediawiki/extensions/CodeEditor
-    check-only:
-      - mwext-CodeEditor-merge:
-        - mwext-CodeEditor-jslint
-        - mwext-CodeEditor-lint
-    gate-and-submit:
-      - mwext-CodeEditor-merge:
-        - mwext-CodeEditor-jslint
-        - mwext-CodeEditor-lint
+    template:
+      - name: extension-checks
+        extname: CodeEditor
 
   - name: mediawiki/extensions/CodeReview
-    check:
-      - mwext-CodeReview-merge:
-        - mwext-CodeReview-jslint
-        - mwext-CodeReview-lint
-    test:
-      - mwext-CodeReview-merge:
-        - mwext-CodeReview-jslint
-        - mwext-CodeReview-lint:
-          - mwext-CodeReview-testextensions-master
-    gate-and-submit:
-      - mwext-CodeReview-merge:
-        - mwext-CodeReview-jslint
-        - mwext-CodeReview-lint:
-          - mwext-CodeReview-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: CodeReview
 
   - name: mediawiki/extensions/Collection
-    check-only:
-      - mwext-Collection-merge:
-        - mwext-Collection-jslint
-        - mwext-Collection-lint
-    gate-and-submit:
-      - mwext-Collection-merge:
-        - mwext-Collection-jslint
-        - mwext-Collection-lint
+    template:
+      - name: extension-checks
+        extname: Collection
 
+  # FIXME: it has pep8
   - name: mediawiki/extensions/ConfirmEdit
     check-only:
       - mwext-ConfirmEdit-merge:
@@ -1039,212 +923,99 @@ projects:
         - mwext-ConfirmEdit-pep8
 
   - name: mediawiki/extensions/ContributionScores
-    check-only:
-      - mwext-ContributionScores-merge:
-        - mwext-ContributionScores-jslint
-        - mwext-ContributionScores-lint
-    gate-and-submit:
-      - mwext-ContributionScores-merge:
-        - mwext-ContributionScores-jslint
-        - mwext-ContributionScores-lint
+    template:
+      - name: extension-checks
+        extname: ContributionScores
 
   - name: mediawiki/extensions/CommunityApplications
-    check-only:
-      - mwext-CommunityApplications-merge:
-        - mwext-CommunityApplications-jslint
-        - mwext-CommunityApplications-lint
-    gate-and-submit:
-      - mwext-CommunityApplications-merge:
-        - mwext-CommunityApplications-jslint
-        - mwext-CommunityApplications-lint
+    template:
+      - name: extension-checks
+        extname: CommunityApplications
 
   - name: mediawiki/extensions/CommunityHiring
-    check-only:
-      - mwext-CommunityHiring-merge:
-        - mwext-CommunityHiring-jslint
-        - mwext-CommunityHiring-lint
-    gate-and-submit:
-      - mwext-CommunityHiring-merge:
-        - mwext-CommunityHiring-jslint
-        - mwext-CommunityHiring-lint
+    template:
+      - name: extension-checks
+        extname: CommunityHiring
 
   - name: mediawiki/extensions/CommunityVoice
-    check-only:
-      - mwext-CommunityVoice-merge:
-        - mwext-CommunityVoice-jslint
-        - mwext-CommunityVoice-lint
-    gate-and-submit:
-      - mwext-CommunityVoice-merge:
-        - mwext-CommunityVoice-jslint
-        - mwext-CommunityVoice-lint
+    template:
+      - name: extension-checks
+        extname: CommunityVoice
 
   - name: mediawiki/extensions/ContactPage
-    check-only:
-      - mwext-ContactPage-merge:
-        - mwext-ContactPage-jslint
-        - mwext-ContactPage-lint
-    gate-and-submit:
-      - mwext-ContactPage-merge:
-        - mwext-ContactPage-jslint
-        - mwext-ContactPage-lint
+    template:
+      - name: extension-checks
+        extname: ContactPage
 
   - name: mediawiki/extensions/ContactPageFundraiser
-    check-only:
-      - mwext-ContactPageFundraiser-merge:
-        - mwext-ContactPageFundraiser-jslint
-        - mwext-ContactPageFundraiser-lint
-    gate-and-submit:
-      - mwext-ContactPageFundraiser-merge:
-        - mwext-ContactPageFundraiser-jslint
-        - mwext-ContactPageFundraiser-lint
+    template:
+      - name: extension-checks
+        extname: ContactPageFundraiser
 
   - name: mediawiki/extensions/ContributionReporting
-    check-only:
-      - mwext-ContributionReporting-merge:
-        - mwext-ContributionReporting-jslint
-        - mwext-ContributionReporting-lint
-    gate-and-submit:
-      - mwext-ContributionReporting-merge:
-        - mwext-ContributionReporting-jslint
-        - mwext-ContributionReporting-lint
+    template:
+      - name: extension-checks
+        extname: ContributionReporting
 
   - name: mediawiki/extensions/ContributionTracking
-    check:
-      - mwext-ContributionTracking-merge:
-        - mwext-ContributionTracking-jslint
-        - mwext-ContributionTracking-lint
-    test:
-      - mwext-ContributionTracking-merge:
-        - mwext-ContributionTracking-jslint
-        - mwext-ContributionTracking-lint:
-          - mwext-ContributionTracking-testextensions-master
-    gate-and-submit:
-      - mwext-ContributionTracking-merge:
-        - mwext-ContributionTracking-jslint
-        - mwext-ContributionTracking-lint:
-          - mwext-ContributionTracking-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: ContributionTracking
 
   - name: mediawiki/extensions/CreditsSource
-    check-only:
-      - mwext-CreditsSource-merge:
-        - mwext-CreditsSource-jslint
-        - mwext-CreditsSource-lint
-    gate-and-submit:
-      - mwext-CreditsSource-merge:
-        - mwext-CreditsSource-jslint
-        - mwext-CreditsSource-lint
+    template:
+      - name: extension-checks
+        extname: CreditsSource
 
   - name: mediawiki/extensions/CustomData
-    check-only:
-      - mwext-CustomData-merge:
-        - mwext-CustomData-jslint
-        - mwext-CustomData-lint
-    gate-and-submit:
-      - mwext-CustomData-merge:
-        - mwext-CustomData-jslint
-        - mwext-CustomData-lint
+    template:
+      - name: extension-checks
+        extname: CustomData
 
   - name: mediawiki/extensions/CustomUserSignup
-    check-only:
-      - mwext-CustomUserSignup-merge:
-        - mwext-CustomUserSignup-jslint
-        - mwext-CustomUserSignup-lint
-    gate-and-submit:
-      - mwext-CustomUserSignup-merge:
-        - mwext-CustomUserSignup-jslint
-        - mwext-CustomUserSignup-lint
+    template:
+      - name: extension-checks
+        extname: CustomUserSignup
 
   - name: mediawiki/extensions/DataValues
-    check:
-      - mwext-DataValues-merge:
-        - mwext-DataValues-jslint
-        - mwext-DataValues-lint
-    test:
-      - mwext-DataValues-merge:
-        - mwext-DataValues-jslint
-        - mwext-DataValues-lint:
-          - mwext-DataValues-testextensions-master
-    gate-and-submit:
-      - mwext-DataValues-merge:
-        - mwext-DataValues-jslint
-        - mwext-DataValues-lint:
-          - mwext-DataValues-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: DataValues
 
   - name: mediawiki/extensions/DonationInterface
-    check-only:
-      - mwext-DonationInterface-merge:
-        - mwext-DonationInterface-jslint
-        - mwext-DonationInterface-lint
-    gate-and-submit:
-      - mwext-DonationInterface-merge:
-        - mwext-DonationInterface-jslint
-        - mwext-DonationInterface-lint
+    template:
+      - name: extension-checks
+        extname: DonationInterface
 
   - name: mediawiki/extensions/DeleteBatch
-    check-only:
-      - mwext-DeleteBatch-merge:
-        - mwext-DeleteBatch-jslint
-        - mwext-DeleteBatch-lint
-    gate-and-submit:
-      - mwext-DeleteBatch-merge:
-        - mwext-DeleteBatch-jslint
-        - mwext-DeleteBatch-lint
+    template:
+      - name: extension-checks
+        extname: DeleteBatch
 
   - name: mediawiki/extensions/Diff
-    check:
-      - mwext-Diff-merge:
-        - mwext-Diff-jslint
-        - mwext-Diff-lint
-    test:
-      - mwext-Diff-merge:
-        - mwext-Diff-jslint
-        - mwext-Diff-lint:
-          - mwext-Diff-testextensions-master
-    gate-and-submit:
-      - mwext-Diff-merge:
-        - mwext-Diff-jslint
-        - mwext-Diff-lint:
-          - mwext-Diff-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Diff
 
   - name: mediawiki/extensions/DisableAccount
-    check-only:
-      - mwext-DisableAccount-merge:
-        - mwext-DisableAccount-jslint
-        - mwext-DisableAccount-lint
-    gate-and-submit:
-      - mwext-DisableAccount-merge:
-        - mwext-DisableAccount-jslint
-        - mwext-DisableAccount-lint
+    template:
+      - name: extension-checks
+        extname: DisableAccount
 
   - name: mediawiki/extensions/DismissableSiteNotice
-    check-only:
-      - mwext-DismissableSiteNotice-merge:
-        - mwext-DismissableSiteNotice-jslint
-        - mwext-DismissableSiteNotice-lint
-    gate-and-submit:
-      - mwext-DismissableSiteNotice-merge:
-        - mwext-DismissableSiteNotice-jslint
-        - mwext-DismissableSiteNotice-lint
+    template:
+      - name: extension-checks
+        extname: DismissableSiteNotice
 
   - name: mediawiki/extensions/DoubleWiki
-    check-only:
-      - mwext-DoubleWiki-merge:
-        - mwext-DoubleWiki-jslint
-        - mwext-DoubleWiki-lint
-    gate-and-submit:
-      - mwext-DoubleWiki-merge:
-        - mwext-DoubleWiki-jslint
-        - mwext-DoubleWiki-lint
+    template:
+      - name: extension-checks
+        extname: DoubleWiki
 
   - name: mediawiki/extensions/DynamicSidebar
-    check-only:
-      - mwext-DynamicSidebar-merge:
-        - mwext-DynamicSidebar-jslint
-        - mwext-DynamicSidebar-lint
-    gate-and-submit:
-      - mwext-DynamicSidebar-merge:
-        - mwext-DynamicSidebar-jslint
-        - mwext-DynamicSidebar-lint
+    template:
+      - name: extension-checks
+        extname: DynamicSidebar
 
   - name: mediawiki/extensions/DumpHTML
     check-only:
@@ -1259,20 +1030,9 @@ projects:
         - mwext-DumpHTML-pep8
 
   - name: mediawiki/extensions/E3Experiments
-    check:
-      - mwext-E3Experiments-merge:
-        - mwext-E3Experiments-jslint
-        - mwext-E3Experiments-lint
-    test:
-      - mwext-E3Experiments-merge:
-        - mwext-E3Experiments-jslint
-        - mwext-E3Experiments-lint:
-          - mwext-E3Experiments-testextensions-master
-    gate-and-submit:
-      - mwext-E3Experiments-merge:
-        - mwext-E3Experiments-jslint
-        - mwext-E3Experiments-lint:
-          - mwext-E3Experiments-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: E3Experiments
 
   - name: mediawiki/extensions/Echo
     check-only:
@@ -1286,49 +1046,24 @@ projects:
           - mwext-Echo-testextensions-master
 
   - name: mediawiki/extensions/EditPageTracking
-    check-only:
-      - mwext-EditPageTracking-merge:
-        - mwext-EditPageTracking-jslint
-        - mwext-EditPageTracking-lint
-    gate-and-submit:
-      - mwext-EditPageTracking-merge:
-        - mwext-EditPageTracking-jslint
-        - mwext-EditPageTracking-lint
+    template:
+      - name: extension-checks
+        extname: EditPageTracking
 
   - name: mediawiki/extensions/EducationProgram
-    check:
-      - mwext-EducationProgram-merge:
-        - mwext-EducationProgram-jslint
-        - mwext-EducationProgram-lint
-    test:
-      - mwext-EducationProgram-merge:
-        - mwext-EducationProgram-jslint
-        - mwext-EducationProgram-lint:
-          - mwext-EducationProgram-testextensions-master
-    gate-and-submit:
-      - mwext-EducationProgram-merge:
-        - mwext-EducationProgram-jslint
-        - mwext-EducationProgram-lint:
-          - mwext-EducationProgram-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: EducationProgram
 
   - name: mediawiki/extensions/EmailCapture
-    check-only:
-      - mwext-EmailCapture-merge:
-        - mwext-EmailCapture-jslint
-        - mwext-EmailCapture-lint
-    gate-and-submit:
-      - mwext-EmailCapture-merge:
-        - mwext-EmailCapture-jslint
-        - mwext-EmailCapture-lint
+    template:
+      - name: extension-checks
+        extname: EmailCapture
 
   - name: mediawiki/extensions/EtherEditor
-    check-only:
-      - mwext-EtherEditor-merge:
-        - mwext-EtherEditor-lint
-    gate-and-submit:
-      - mwext-EtherEditor-merge:
-        - mwext-EtherEditor-lint:
-          - mwext-EtherEditor-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: EtherEditor
 
   - name: mediawiki/extensions/EventLogging
     check-only:
@@ -1344,374 +1079,174 @@ projects:
           - mwext-EventLogging-testextensions-master
 
   - name: mediawiki/extensions/ExpandTemplates
-    check-only:
-      - mwext-ExpandTemplates-merge:
-        - mwext-ExpandTemplates-jslint
-        - mwext-ExpandTemplates-lint
-    gate-and-submit:
-      - mwext-ExpandTemplates-merge:
-        - mwext-ExpandTemplates-jslint
-        - mwext-ExpandTemplates-lint
+    template:
+      - name: extension-checks
+        extname: ExpandTemplates
 
   - name: mediawiki/extensions/ExtensionDistributor
-    check-only:
-      - mwext-ExtensionDistributor-merge:
-        - mwext-ExtensionDistributor-jslint
-        - mwext-ExtensionDistributor-lint
-    gate-and-submit:
-      - mwext-ExtensionDistributor-merge:
-        - mwext-ExtensionDistributor-jslint
-        - mwext-ExtensionDistributor-lint
+    template:
+      - name: extension-checks
+        extname: ExtensionDistributor
 
   - name: mediawiki/extensions/FeaturedFeeds
-    check-only:
-      - mwext-FeaturedFeeds-merge:
-        - mwext-FeaturedFeeds-jslint
-        - mwext-FeaturedFeeds-lint
-    gate-and-submit:
-      - mwext-FeaturedFeeds-merge:
-        - mwext-FeaturedFeeds-jslint
-        - mwext-FeaturedFeeds-lint
+    template:
+      - name: extension-checks
+        extname: FeaturedFeeds
 
   - name: mediawiki/extensions/FormPreloadPostCache
-    check-only:
-      - mwext-FormPreloadPostCache-merge:
-        - mwext-FormPreloadPostCache-lint
-    gate-and-submit:
-      - mwext-FormPreloadPostCache-merge:
-        - mwext-FormPreloadPostCache-lint
+    template:
+      - name: extension-checks
+        extname: FormPreloadPostCache
 
   - name: mediawiki/extensions/Foxway
-    check:
-      - mwext-Foxway-merge:
-        - mwext-Foxway-jslint
-        - mwext-Foxway-lint
-    test:
-      - mwext-Foxway-merge:
-        - mwext-Foxway-jslint
-        - mwext-Foxway-lint:
-          - mwext-Foxway-testextensions-master
-    gate-and-submit:
-      - mwext-Foxway-merge:
-        - mwext-Foxway-jslint
-        - mwext-Foxway-lint:
-          - mwext-Foxway-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Foxway
 
   - name: mediawiki/extensions/FundraiserLandingPage
-    check-only:
-      - mwext-FundraiserLandingPage-merge:
-        - mwext-FundraiserLandingPage-jslint
-        - mwext-FundraiserLandingPage-lint
-    gate-and-submit:
-      - mwext-FundraiserLandingPage-merge:
-        - mwext-FundraiserLandingPage-jslint
-        - mwext-FundraiserLandingPage-lint
+    template:
+      - name: extension-checks
+        extname: FundraiserLandingPage
 
   - name: mediawiki/extensions/Gadgets
-    check:
-      - mwext-Gadgets-merge:
-        - mwext-Gadgets-jslint
-        - mwext-Gadgets-lint
-    test:
-      - mwext-Gadgets-merge:
-        - mwext-Gadgets-jslint
-        - mwext-Gadgets-lint:
-          - mwext-Gadgets-testextensions-master
-    gate-and-submit:
-      - mwext-Gadgets-merge:
-        - mwext-Gadgets-jslint
-        - mwext-Gadgets-lint:
-          - mwext-Gadgets-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Gadgets
 
   - name: mediawiki/extensions/GettingStarted
-    check-only:
-      - mwext-GettingStarted-merge:
-        - mwext-GettingStarted-jslint
-        - mwext-GettingStarted-lint
-    gate-and-submit:
-      - mwext-GettingStarted-merge:
-        - mwext-GettingStarted-jslint
-        - mwext-GettingStarted-lint
+    template:
+      - name: extension-checks
+        extname: GettingStarted
 
   - name: mediawiki/extensions/GeoCrumbs
-    check-only:
-      - mwext-GeoCrumbs-merge:
-        - mwext-GeoCrumbs-jslint
-        - mwext-GeoCrumbs-lint
-    gate-and-submit:
-      - mwext-GeoCrumbs-merge:
-        - mwext-GeoCrumbs-jslint
-        - mwext-GeoCrumbs-lint
+    template:
+      - name: extension-checks
+        extname: GeoCrumbs
 
   - name: mediawiki/extensions/GeoData
-    check-only:
-      - mwext-GeoData-merge:
-        - mwext-GeoData-jslint
-        - mwext-GeoData-lint
-    gate-and-submit:
-      - mwext-GeoData-merge:
-        - mwext-GeoData-jslint
-        - mwext-GeoData-lint:
-          - mwext-GeoData-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: GeoData
 
   - name: mediawiki/extensions/GlobalBlocking
-    check-only:
-      - mwext-GlobalBlocking-merge:
-        - mwext-GlobalBlocking-jslint
-        - mwext-GlobalBlocking-lint
-    gate-and-submit:
-      - mwext-GlobalBlocking-merge:
-        - mwext-GlobalBlocking-jslint
-        - mwext-GlobalBlocking-lint
+    template:
+      - name: extension-checks
+        extname: GlobalBlocking
 
   - name: mediawiki/extensions/GlobalUsage
-    check-only:
-      - mwext-GlobalUsage-merge:
-        - mwext-GlobalUsage-jslint
-        - mwext-GlobalUsage-lint
-    gate-and-submit:
-      - mwext-GlobalUsage-merge:
-        - mwext-GlobalUsage-jslint
-        - mwext-GlobalUsage-lint
+    template:
+      - name: extension-checks
+        extname: GlobalUsage
 
   - name: mediawiki/extensions/GoogleAdSense
-    check-only:
-      - mwext-GoogleAdSense-merge:
-        - mwext-GoogleAdSense-jslint
-        - mwext-GoogleAdSense-lint
-    gate-and-submit:
-      - mwext-GoogleAdSense-merge:
-        - mwext-GoogleAdSense-jslint
-        - mwext-GoogleAdSense-lint
+    template:
+      - name: extension-checks
+        extname: GoogleAdSense
 
   - name: mediawiki/extensions/GoogleCustomWikiSearch
-    check-only:
-      - mwext-GoogleCustomWikiSearch-merge:
-        - mwext-GoogleCustomWikiSearch-jslint
-        - mwext-GoogleCustomWikiSearch-lint
-    gate-and-submit:
-      - mwext-GoogleCustomWikiSearch-merge:
-        - mwext-GoogleCustomWikiSearch-jslint
-        - mwext-GoogleCustomWikiSearch-lint
+    template:
+      - name: extension-checks
+        extname: GoogleCustomWikiSearch
 
   - name: mediawiki/extensions/GoogleNewsSitemap
-    check-only:
-      - mwext-GoogleNewsSitemap-merge:
-        - mwext-GoogleNewsSitemap-jslint
-        - mwext-GoogleNewsSitemap-lint
-    gate-and-submit:
-      - mwext-GoogleNewsSitemap-merge:
-        - mwext-GoogleNewsSitemap-jslint
-        - mwext-GoogleNewsSitemap-lint
+    template:
+      - name: extension-checks
+        extname: GoogleNewsSitemap
 
   - name: mediawiki/extensions/GuidedTour
-    check-only:
-      - mwext-GuidedTour-merge:
-        - mwext-GuidedTour-jslint
-        - mwext-GuidedTour-lint
-    gate-and-submit:
-      - mwext-GuidedTour-merge:
-        - mwext-GuidedTour-jslint
-        - mwext-GuidedTour-lint
+    template:
+      - name: extension-checks
+        extname: GuidedTour
 
   - name: mediawiki/extensions/I18nTags
-    check-only:
-      - mwext-I18nTags-merge:
-        - mwext-I18nTags-jslint
-        - mwext-I18nTags-lint
-    gate-and-submit:
-      - mwext-I18nTags-merge:
-        - mwext-I18nTags-jslint
-        - mwext-I18nTags-lint
+    template:
+      - name: extension-checks
+        extname: I18nTags
 
   - name: mediawiki/extensions/ImageMap
-    check-only:
-      - mwext-ImageMap-merge:
-        - mwext-ImageMap-jslint
-        - mwext-ImageMap-lint
-    gate-and-submit:
-      - mwext-ImageMap-merge:
-        - mwext-ImageMap-jslint
-        - mwext-ImageMap-lint
+    template:
+      - name: extension-checks
+        extname: ImageMap
 
   - name: mediawiki/extensions/InputBox
-    check-only:
-      - mwext-InputBox-merge:
-        - mwext-InputBox-jslint
-        - mwext-InputBox-lint
-    gate-and-submit:
-      - mwext-InputBox-merge:
-        - mwext-InputBox-jslint
-        - mwext-InputBox-lint
+    template:
+      - name: extension-checks
+        extname: InputBox
 
   - name: mediawiki/extensions/Insider
-    check-only:
-      - mwext-Insider-merge:
-        - mwext-Insider-jslint
-        - mwext-Insider-lint
-    gate-and-submit:
-      - mwext-Insider-merge:
-        - mwext-Insider-jslint
-        - mwext-Insider-lint
+    template:
+      - name: extension-checks
+        extname: Insider
 
   - name: mediawiki/extensions/Interwiki
-    check-only:
-      - mwext-Interwiki-merge:
-        - mwext-Interwiki-jslint
-        - mwext-Interwiki-lint
-    gate-and-submit:
-      - mwext-Interwiki-merge:
-        - mwext-Interwiki-jslint
-        - mwext-Interwiki-lint
+    template:
+      - name: extension-checks
+        extname: Interwiki
 
   - name: mediawiki/extensions/intersection
-    check-only:
-      - mwext-intersection-merge:
-        - mwext-intersection-jslint
-        - mwext-intersection-lint
-    gate-and-submit:
-      - mwext-intersection-merge:
-        - mwext-intersection-jslint
-        - mwext-intersection-lint
+    template:
+      - name: extension-checks
+        extname: intersection
 
   - name: mediawiki/extensions/JsonData
-    check:
-      - mwext-JsonData-merge:
-        - mwext-JsonData-jslint
-        - mwext-JsonData-lint
-    test:
-      - mwext-JsonData-merge:
-        - mwext-JsonData-jslint
-        - mwext-JsonData-lint:
-          - mwext-JsonData-testextensions-master
-    gate-and-submit:
-      - mwext-JsonData-merge:
-        - mwext-JsonData-jslint
-        - mwext-JsonData-lint:
-          - mwext-JsonData-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: JsonData
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
-    check-only:
-      - mwext-LabeledSectionTransclusion-merge:
-        - mwext-LabeledSectionTransclusion-jslint
-        - mwext-LabeledSectionTransclusion-lint
-    gate-and-submit:
-      - mwext-LabeledSectionTransclusion-merge:
-        - mwext-LabeledSectionTransclusion-jslint
-        - mwext-LabeledSectionTransclusion-lint:
-          - mwext-LabeledSectionTransclusion-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: LabeledSectionTransclusion
 
   - name: mediawiki/extensions/LandingCheck
-    check-only:
-      - mwext-LandingCheck-merge:
-        - mwext-LandingCheck-jslint
-        - mwext-LandingCheck-lint
-    gate-and-submit:
-      - mwext-LandingCheck-merge:
-        - mwext-LandingCheck-jslint
-        - mwext-LandingCheck-lint
+    template:
+      - name: extension-checks
+        extname: LandingCheck
 
   - name: mediawiki/extensions/LastModified
-    check-only:
-      - mwext-LastModified-merge:
-        - mwext-LastModified-jslint
-        - mwext-LastModified-lint
-    gate-and-submit:
-      - mwext-LastModified-merge:
-        - mwext-LastModified-jslint
-        - mwext-LastModified-lint
+    template:
+      - name: extension-checks
+        extname: LastModified
 
   - name: mediawiki/extensions/LdapAuthentication
-    check-only:
-      - mwext-LdapAuthentication-merge:
-        - mwext-LdapAuthentication-jslint
-        - mwext-LdapAuthentication-lint
-    gate-and-submit:
-      - mwext-LdapAuthentication-merge:
-        - mwext-LdapAuthentication-jslint
-        - mwext-LdapAuthentication-lint
+    template:
+      - name: extension-checks
+        extname: LdapAuthentication
 
   - name: mediawiki/extensions/LiquidThreads
-    check-only:
-      - mwext-LiquidThreads-merge:
-        - mwext-LiquidThreads-jslint
-        - mwext-LiquidThreads-lint
-    gate-and-submit:
-      - mwext-LiquidThreads-merge:
-        - mwext-LiquidThreads-jslint
-        - mwext-LiquidThreads-lint
+    template:
+      - name: extension-checks
+        extname: LiquidThreads
 
   - name: mediawiki/extensions/Listings
-    check-only:
-      - mwext-Listings-merge:
-        - mwext-Listings-jslint
-        - mwext-Listings-lint
-    gate-and-submit:
-      - mwext-Listings-merge:
-        - mwext-Listings-jslint
-        - mwext-Listings-lint
+    template:
+      - name: extension-checks
+        extname: Listings
 
   - name: mediawiki/extensions/LocalisationUpdate
-    check-only:
-      - mwext-LocalisationUpdate-merge:
-        - mwext-LocalisationUpdate-jslint
-        - mwext-LocalisationUpdate-lint
-    gate-and-submit:
-      - mwext-LocalisationUpdate-merge:
-        - mwext-LocalisationUpdate-jslint
-        - mwext-LocalisationUpdate-lint
+    template:
+      - name: extension-checks
+        extname: LocalisationUpdate
 
   - name: mediawiki/extensions/Math
-    check:
-      - mwext-Math-merge:
-        - mwext-Math-jslint
-        - mwext-Math-lint
-    test:
-      - mwext-Math-merge:
-        - mwext-Math-jslint
-        - mwext-Math-lint:
-          - mwext-Math-testextensions-master
-    gate-and-submit:
-      - mwext-Math-merge:
-        - mwext-Math-jslint
-        - mwext-Math-lint:
-          - mwext-Math-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Math
 
   - name: mediawiki/extensions/Maps
-    check:
-      - mwext-Maps-merge:
-        - mwext-Maps-jslint
-        - mwext-Maps-lint
-    test:
-      - mwext-Maps-merge:
-        - mwext-Maps-jslint
-        - mwext-Maps-lint:
-          - mwext-Maps-testextensions-master
-    gate-and-submit:
-      - mwext-Maps-merge:
-        - mwext-Maps-jslint
-        - mwext-Maps-lint:
-          - mwext-Maps-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Maps
 
   - name: mediawiki/extensions/MapSources
-    check-only:
-      - mwext-MapSources-merge:
-        - mwext-MapSources-jslint
-        - mwext-MapSources-lint
-    gate-and-submit:
-      - mwext-MapSources-merge:
-        - mwext-MapSources-jslint
-        - mwext-MapSources-lint
+    template:
+      - name: extension-checks
+        extname: MapSources
 
   - name: mediawiki/extensions/MarkAsHelpful
-    check-only:
-      - mwext-MarkAsHelpful-merge:
-        - mwext-MarkAsHelpful-jslint
-        - mwext-MarkAsHelpful-lint
-    gate-and-submit:
-      - mwext-MarkAsHelpful-merge:
-        - mwext-MarkAsHelpful-jslint
-        - mwext-MarkAsHelpful-lint
+    template:
+      - name: extension-checks
+        extname: MarkAsHelpful
 
   - name: mediawiki/extensions/MobileFrontend
     check-only:
@@ -1727,125 +1262,60 @@ projects:
         - mwext-MobileFrontend-ruby1.9.3lint
 
   - name: mediawiki/extensions/MoodBar
-    check-only:
-      - mwext-MoodBar-merge:
-        - mwext-MoodBar-jslint
-        - mwext-MoodBar-lint
-    gate-and-submit:
-      - mwext-MoodBar-merge:
-        - mwext-MoodBar-jslint
-        - mwext-MoodBar-lint
+    template:
+      - name: extension-checks
+        extname: MoodBar
 
   - name: mediawiki/extensions/MultiMaps
-    check:
-      - mwext-MultiMaps-merge:
-        - mwext-MultiMaps-jslint
-        - mwext-MultiMaps-lint
-    test:
-      - mwext-MultiMaps-merge:
-        - mwext-MultiMaps-jslint
-        - mwext-MultiMaps-lint:
-          - mwext-MultiMaps-testextensions-master
-    gate-and-submit:
-      - mwext-MultiMaps-merge:
-        - mwext-MultiMaps-jslint
-        - mwext-MultiMaps-lint:
-          - mwext-MultiMaps-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: MultiMaps
 
   - name: mediawiki/extensions/MwEmbedSupport
-    check-only:
-      - mwext-MwEmbedSupport-merge:
-        - mwext-MwEmbedSupport-jslint
-        - mwext-MwEmbedSupport-lint
-    gate-and-submit:
-      - mwext-MwEmbedSupport-merge:
-        - mwext-MwEmbedSupport-jslint
-        - mwext-MwEmbedSupport-lint
+    template:
+      - name: extension-checks
+        extname: MwEmbedSupport
 
   - name: mediawiki/extensions/MWSearch
-    check-only:
-      - mwext-MWSearch-merge:
-        - mwext-MWSearch-jslint
-        - mwext-MWSearch-lint
-    gate-and-submit:
-      - mwext-MWSearch-merge:
-        - mwext-MWSearch-jslint
-        - mwext-MWSearch-lint
+    template:
+      - name: extension-checks
+        extname: MWSearch
 
   # TODO: add qunit
   - name: mediawiki/extensions/Narayam
-    check-only:
-      - mwext-Narayam-merge:
-        - mwext-Narayam-jslint
-        - mwext-Narayam-lint
-    gate-and-submit:
-      - mwext-Narayam-merge:
-        - mwext-Narayam-jslint
-        - mwext-Narayam-lint
+    template:
+      - name: extension-checks
+        extname: Narayam
 
   - name: mediawiki/extensions/NavigationTiming
-    check-only:
-      - mwext-NavigationTiming-merge:
-        - mwext-NavigationTiming-jslint
-        - mwext-NavigationTiming-lint
-    gate-and-submit:
-      - mwext-NavigationTiming-merge:
-        - mwext-NavigationTiming-jslint
-        - mwext-NavigationTiming-lint
+    template:
+      - name: extension-checks
+        extname: NavigationTiming
 
   - name: mediawiki/extensions/NewUserMessage
-    check-only:
-      - mwext-NewUserMessage-merge:
-        - mwext-NewUserMessage-jslint
-        - mwext-NewUserMessage-lint
-    gate-and-submit:
-      - mwext-NewUserMessage-merge:
-        - mwext-NewUserMessage-jslint
-        - mwext-NewUserMessage-lint
+    template:
+      - name: extension-checks
+        extname: NewUserMessage
 
   - name: mediawiki/extensions/Nonlinear
-    check:
-      - mwext-Nonlinear-merge:
-        - mwext-Nonlinear-jslint
-        - mwext-Nonlinear-lint
-    test:
-      - mwext-Nonlinear-merge:
-        - mwext-Nonlinear-jslint
-        - mwext-Nonlinear-lint:
-          - mwext-Nonlinear-testextensions-master
-    gate-and-submit:
-      - mwext-Nonlinear-merge:
-        - mwext-Nonlinear-jslint
-        - mwext-Nonlinear-lint:
-          - mwext-Nonlinear-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Nonlinear
 
   - name: mediawiki/extensions/Nuke
-    check-only:
-      - mwext-Nuke-merge:
-        - mwext-Nuke-jslint
-        - mwext-Nuke-lint
-    gate-and-submit:
-      - mwext-Nuke-merge:
-        - mwext-Nuke-jslint
-        - mwext-Nuke-lint
+    template:
+      - name: extension-checks
+        extname: Nuke
 
   - name: mediawiki/extensions/OATHAuth
-    check-only:
-      - mwext-OATHAuth-merge:
-        - mwext-OATHAuth-jslint
-        - mwext-OATHAuth-lint
-    gate-and-submit:
-      - mwext-OATHAuth-merge:
-        - mwext-OATHAuth-jslint
-        - mwext-OATHAuth-lint
+    template:
+      - name: extension-checks
+        extname: OATHAuth
 
   - name: mediawiki/extensions/OAI
-    check-only:
-      - mwext-OAI-merge:
-        - mwext-OAI-lint
-    gate-and-submit:
-      - mwext-OAI-merge:
-        - mwext-OAI-lint
+    template:
+      - name: extension-checks
+        extname: OAI
 
   - name: mediawiki/extensions/Offline
     check-only:
@@ -1860,22 +1330,14 @@ projects:
         - mwext-Offline-pep8
 
   - name: mediawiki/extensions/OpenID
-    check-only:
-      - mwext-OpenID-merge:
-        - mwext-OpenID-jslint
-        - mwext-OpenID-lint
-    gate-and-submit:
-      - mwext-OpenID-merge:
-        - mwext-OpenID-jslint
-        - mwext-OpenID-lint
+    template:
+      - name: extension-checks
+        extname: OpenID
 
   - name: mediawiki/extensions/OpenSearchXml
-    check-only:
-      - mwext-OpenSearchXml-merge:
-        - mwext-OpenSearchXml-lint
-    gate-and-submit:
-      - mwext-OpenSearchXml-merge:
-        - mwext-OpenSearchXml-lint
+    template:
+      - name: extension-checks
+        extname: OpenSearchXml
 
   - name: mediawiki/extensions/OpenStackManager
     check-only:
@@ -1890,73 +1352,29 @@ projects:
         - mwext-OpenStackManager-lint
 
   - name: mediawiki/extensions/PagedTiffHandler
-    check:
-      - mwext-PagedTiffHandler-merge:
-        - mwext-PagedTiffHandler-jslint
-        - mwext-PagedTiffHandler-lint
-    test:
-      - mwext-PagedTiffHandler-merge:
-        - mwext-PagedTiffHandler-jslint
-        - mwext-PagedTiffHandler-lint:
-          - mwext-PagedTiffHandler-testextensions-master
-    gate-and-submit:
-      - mwext-PagedTiffHandler-merge:
-        - mwext-PagedTiffHandler-jslint
-        - mwext-PagedTiffHandler-lint:
-          - mwext-PagedTiffHandler-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: PagedTiffHandler
 
   - name: mediawiki/extensions/PageImages
-    check-only:
-      - mwext-PageImages-merge:
-        - mwext-PageImages-jslint
-        - mwext-PageImages-lint
-    gate-and-submit:
-      - mwext-PageImages-merge:
-        - mwext-PageImages-jslint
-        - mwext-PageImages-lint
+    template:
+      - name: extension-checks
+        extname: PageImages
 
   - name: mediawiki/extensions/PageTriage
-    check:
-      - mwext-PageTriage-merge:
-        - mwext-PageTriage-jslint
-        - mwext-PageTriage-lint
-    test:
-      - mwext-PageTriage-merge:
-        - mwext-PageTriage-jslint
-        - mwext-PageTriage-lint:
-          - mwext-PageTriage-testextensions-master
-    gate-and-submit:
-      - mwext-PageTriage-merge:
-        - mwext-PageTriage-jslint
-        - mwext-PageTriage-lint:
-          - mwext-PageTriage-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: PageTriage
 
   - name: mediawiki/extensions/ParserFunctions
-    check-only:
-      - mwext-ParserFunctions-merge:
-        - mwext-ParserFunctions-jslint
-        - mwext-ParserFunctions-lint
-    gate-and-submit:
-      - mwext-ParserFunctions-merge:
-        - mwext-ParserFunctions-jslint
-        - mwext-ParserFunctions-lint:
-          - mwext-ParserFunctions-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: ParserFunctions
 
   - name: mediawiki/extensions/ParserHooks
-    check:
-      - mwext-ParserHooks-merge:
-        - mwext-ParserHooks-jslint
-        - mwext-ParserHooks-lint
-    test:
-      - mwext-ParserHooks-merge:
-        - mwext-ParserHooks-jslint
-        - mwext-ParserHooks-lint:
-          - mwext-ParserHooks-testextensions-master
-    gate-and-submit:
-      - mwext-ParserHooks-merge:
-        - mwext-ParserHooks-jslint
-        - mwext-ParserHooks-lint:
-          - mwext-ParserHooks-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: ParserHooks
 
   - name: mediawiki/extensions/Parsoid
     check:
@@ -1981,34 +1399,19 @@ projects:
       - parsoid-regressions
 
   - name: mediawiki/extensions/PdfHandler
-    check-only:
-      - mwext-PdfHandler-merge:
-        - mwext-PdfHandler-jslint
-        - mwext-PdfHandler-lint
-    gate-and-submit:
-      - mwext-PdfHandler-merge:
-        - mwext-PdfHandler-jslint
-        - mwext-PdfHandler-lint
+    template:
+      - name: extension-checks
+        extname: PdfHandler
 
   - name: mediawiki/extensions/PHPExcel
-    check-only:
-      - mwext-PHPExcel-merge:
-        - mwext-PHPExcel-jslint
-        - mwext-PHPExcel-lint
-    gate-and-submit:
-      - mwext-PHPExcel-merge:
-        - mwext-PHPExcel-jslint
-        - mwext-PHPExcel-lint
+    template:
+      - name: extension-checks
+        extname: PHPExcel
 
   - name: mediawiki/extensions/Poem
-    check-only:
-      - mwext-Poem-merge:
-        - mwext-Poem-jslint
-        - mwext-Poem-lint
-    gate-and-submit:
-      - mwext-Poem-merge:
-        - mwext-Poem-jslint
-        - mwext-Poem-lint
+    template:
+      - name: extension-checks
+        extname: Poem
 
   - name: mediawiki/extensions/PoolCounter
     check:
@@ -2027,136 +1430,74 @@ projects:
         - mwext-PoolCounter-build
 
   - name: mediawiki/extensions/PostEdit
-    check-only:
-      - mwext-PostEdit-merge:
-        - mwext-PostEdit-jslint
-        - mwext-PostEdit-lint
-    gate-and-submit:
-      - mwext-PostEdit-merge:
-        - mwext-PostEdit-jslint
-        - mwext-PostEdit-lint
+    template:
+      - name: extension-checks
+        extname: PostEdit
 
   - name: mediawiki/extensions/ProofreadPage
-    check-only:
-      - mwext-ProofreadPage-merge:
-        - mwext-ProofreadPage-jslint
-        - mwext-ProofreadPage-lint
-    gate-and-submit:
-      - mwext-ProofreadPage-merge:
-        - mwext-ProofreadPage-jslint
-        - mwext-ProofreadPage-lint
+    template:
+      - name: extension-checks
+        extname: ProofreadPage
 
   - name: mediawiki/extensions/Quiz
-    check-only:
-      - mwext-Quiz-merge:
-        - mwext-Quiz-jslint
-        - mwext-Quiz-lint
-    gate-and-submit:
-      - mwext-Quiz-merge:
-        - mwext-Quiz-jslint
-        - mwext-Quiz-lint
+    template:
+      - name: extension-checks
+        extname: Quiz
 
   - name: mediawiki/extensions/RandomRootPage
-    check-only:
-      - mwext-RandomRootPage-merge:
-        - mwext-RandomRootPage-jslint
-        - mwext-RandomRootPage-lint
-    gate-and-submit:
-      - mwext-RandomRootPage-merge:
-        - mwext-RandomRootPage-jslint
-        - mwext-RandomRootPage-lint
+    template:
+      - name: extension-checks
+        extname: RandomRootPage
 
   - name: mediawiki/extensions/ReaderFeedback
-    check-only:
-      - mwext-ReaderFeedback-merge:
-        - mwext-ReaderFeedback-jslint
-        - mwext-ReaderFeedback-lint
-    gate-and-submit:
-      - mwext-ReaderFeedback-merge:
-        - mwext-ReaderFeedback-jslint
-        - mwext-ReaderFeedback-lint
+    template:
+      - name: extension-checks
+        extname: ReaderFeedback
 
   - name: mediawiki/extensions/RelatedArticles
-    check-only:
-      - mwext-RelatedArticles-merge:
-        - mwext-RelatedArticles-lint
-    gate-and-submit:
-      - mwext-RelatedArticles-merge:
-        - mwext-RelatedArticles-lint
+    template:
+      - name: extension-checks
+        extname: RelatedArticles
 
   - name: mediawiki/extensions/RelatedSites
-    check-only:
-      - mwext-RelatedSites-merge:
-        - mwext-RelatedSites-lint
-    gate-and-submit:
-      - mwext-RelatedSites-merge:
-        - mwext-RelatedSites-lint
+    template:
+      - name: extension-checks
+        extname: RelatedSites
 
   - name: mediawiki/extensions/Renameuser
-    check-only:
-      - mwext-Renameuser-merge:
-        - mwext-Renameuser-jslint
-        - mwext-Renameuser-lint
-    gate-and-submit:
-      - mwext-Renameuser-merge:
-        - mwext-Renameuser-jslint
-        - mwext-Renameuser-lint
+    template:
+      - name: extension-checks
+        extname: Renameuser
 
   - name: mediawiki/extensions/ReplaceText
-    check-only:
-      - mwext-ReplaceText-merge:
-        - mwext-ReplaceText-jslint
-        - mwext-ReplaceText-lint
-    gate-and-submit:
-      - mwext-ReplaceText-merge:
-        - mwext-ReplaceText-jslint
-        - mwext-ReplaceText-lint
+    template:
+      - name: extension-checks
+        extname: ReplaceText
 
   - name: mediawiki/extensions/RSS
-    check-only:
-      - mwext-RSS-merge:
-        - mwext-RSS-lint
-    gate-and-submit:
-      - mwext-RSS-merge:
-        - mwext-RSS-lint
+    template:
+      - name: extension-checks
+        extname: RSS
 
   - name: mediawiki/extensions/Score
-    check-only:
-      - mwext-Score-merge:
-        - mwext-Score-jslint
-        - mwext-Score-lint
-    gate-and-submit:
-      - mwext-Score-merge:
-        - mwext-Score-jslint
-        - mwext-Score-lint
+    template:
+      - name: extension-checks
+        extname: Score
 
   - name: mediawiki/extensions/SearchExtraNS
-    check-only:
-      - mwext-SearchExtraNS-merge:
-        - mwext-SearchExtraNS-lint
-    gate-and-submit:
-      - mwext-SearchExtraNS-merge:
-        - mwext-SearchExtraNS-lint
+    template:
+      - name: extension-checks
+        extname: SearchExtraNS
 
   - name: mediawiki/extensions/SecurePoll
-    check-only:
-      - mwext-SecurePoll-merge:
-        - mwext-SecurePoll-jslint
-        - mwext-SecurePoll-lint
-    gate-and-submit:
-      - mwext-SecurePoll-merge:
-        - mwext-SecurePoll-jslint
-        - mwext-SecurePoll-lint
+    template:
+      - name: extension-checks
+        extname: SecurePoll
 
   - name: mediawiki/extensions/SemanticACL
-    check-only:
-     - mwext-SemanticACL-merge:
-       - mwext-SemanticACL-jslint
-       - mwext-SemanticACL-lint
-    gate-and-submit:
-     - mwext-SemanticACL-merge:
-       - mwext-SemanticACL-jslint
-       - mwext-SemanticACL-lint
+    template:
+      - name: extension-checks
+        extname: SemanticACL
 
   - name: mediawiki/extensions/SemanticBundle
     check-only:
@@ -2171,372 +1512,184 @@ projects:
        - mwext-SemanticBundle-pep8
 
   - name: mediawiki/extensions/SemanticCompoundQueries
-    check-only:
-     - mwext-SemanticCompoundQueries-merge:
-       - mwext-SemanticCompoundQueries-jslint
-       - mwext-SemanticCompoundQueries-lint
-    gate-and-submit:
-     - mwext-SemanticCompoundQueries-merge:
-       - mwext-SemanticCompoundQueries-jslint
-       - mwext-SemanticCompoundQueries-lint
+    template:
+      - name: extension-checks
+        extname: SemanticCompoundQueries
 
   - name: mediawiki/extensions/SemanticDrilldown
-    check-only:
-     - mwext-SemanticDrilldown-merge:
-       - mwext-SemanticDrilldown-jslint
-       - mwext-SemanticDrilldown-lint
-    gate-and-submit:
-     - mwext-SemanticDrilldown-merge:
-       - mwext-SemanticDrilldown-jslint
-       - mwext-SemanticDrilldown-lint
+    template:
+      - name: extension-checks
+        extname: SemanticDrilldown
 
   - name: mediawiki/extensions/SemanticExpressiveness
-    check-only:
-     - mwext-SemanticExpressiveness-merge:
-       - mwext-SemanticExpressiveness-jslint
-       - mwext-SemanticExpressiveness-lint
-    gate-and-submit:
-     - mwext-SemanticExpressiveness-merge:
-       - mwext-SemanticExpressiveness-jslint
-       - mwext-SemanticExpressiveness-lint
+    template:
+      - name: extension-checks
+        extname: SemanticExpressiveness
 
   - name: mediawiki/extensions/SemanticExtraSpecialProperties
-    check-only:
-     - mwext-SemanticExtraSpecialProperties-merge:
-       - mwext-SemanticExtraSpecialProperties-jslint
-       - mwext-SemanticExtraSpecialProperties-lint
-    gate-and-submit:
-     - mwext-SemanticExtraSpecialProperties-merge:
-       - mwext-SemanticExtraSpecialProperties-jslint
-       - mwext-SemanticExtraSpecialProperties-lint
+    template:
+      - name: extension-checks
+        extname: SemanticExtraSpecialProperties
 
   - name: mediawiki/extensions/SemanticForms
-    check-only:
-     - mwext-SemanticForms-merge:
-       - mwext-SemanticForms-jslint
-       - mwext-SemanticForms-lint
-    gate-and-submit:
-     - mwext-SemanticForms-merge:
-       - mwext-SemanticForms-jslint
-       - mwext-SemanticForms-lint
+    template:
+      - name: extension-checks
+        extname: SemanticForms
 
   - name: mediawiki/extensions/SemanticFormsInputs
-    check-only:
-     - mwext-SemanticFormsInputs-merge:
-       - mwext-SemanticFormsInputs-jslint
-       - mwext-SemanticFormsInputs-lint
-    gate-and-submit:
-     - mwext-SemanticFormsInputs-merge:
-       - mwext-SemanticFormsInputs-jslint
-       - mwext-SemanticFormsInputs-lint
+    template:
+      - name: extension-checks
+        extname: SemanticFormsInputs
 
   - name: mediawiki/extensions/SemanticGenealogy
-    check-only:
-     - mwext-SemanticGenealogy-merge:
-       - mwext-SemanticGenealogy-jslint
-       - mwext-SemanticGenealogy-lint
-    gate-and-submit:
-     - mwext-SemanticGenealogy-merge:
-       - mwext-SemanticGenealogy-jslint
-       - mwext-SemanticGenealogy-lint
+    template:
+      - name: extension-checks
+        extname: SemanticGenealogy
 
   - name: mediawiki/extensions/SemanticGlossary
-    check-only:
-     - mwext-SemanticGlossary-merge:
-       - mwext-SemanticGlossary-jslint
-       - mwext-SemanticGlossary-lint
-    gate-and-submit:
-     - mwext-SemanticGlossary-merge:
-       - mwext-SemanticGlossary-jslint
-       - mwext-SemanticGlossary-lint
+    template:
+      - name: extension-checks
+        extname: SemanticGlossary
 
   - name: mediawiki/extensions/SemanticImageAnnotator
-    check-only:
-     - mwext-SemanticImageAnnotator-merge:
-       - mwext-SemanticImageAnnotator-jslint
-       - mwext-SemanticImageAnnotator-lint
-    gate-and-submit:
-     - mwext-SemanticImageAnnotator-merge:
-       - mwext-SemanticImageAnnotator-jslint
-       - mwext-SemanticImageAnnotator-lint
+    template:
+      - name: extension-checks
+        extname: SemanticImageAnnotator
 
   - name: mediawiki/extensions/SemanticImageInput
-    check-only:
-     - mwext-SemanticImageInput-merge:
-       - mwext-SemanticImageInput-jslint
-       - mwext-SemanticImageInput-lint
-    gate-and-submit:
-     - mwext-SemanticImageInput-merge:
-       - mwext-SemanticImageInput-jslint
-       - mwext-SemanticImageInput-lint
+    template:
+      - name: extension-checks
+        extname: SemanticImageInput
 
   - name: mediawiki/extensions/SemanticInternalObjects
-    check-only:
-     - mwext-SemanticInternalObjects-merge:
-       - mwext-SemanticInternalObjects-jslint
-       - mwext-SemanticInternalObjects-lint
-    gate-and-submit:
-     - mwext-SemanticInternalObjects-merge:
-       - mwext-SemanticInternalObjects-jslint
-       - mwext-SemanticInternalObjects-lint
+    template:
+      - name: extension-checks
+        extname: SemanticInternalObjects
 
   - name: mediawiki/extensions/SemanticMaps
-    check-only:
-     - mwext-SemanticMaps-merge:
-       - mwext-SemanticMaps-jslint
-       - mwext-SemanticMaps-lint
-    gate-and-submit:
-     - mwext-SemanticMaps-merge:
-       - mwext-SemanticMaps-jslint
-       - mwext-SemanticMaps-lint
+    template:
+      - name: extension-checks
+        extname: SemanticMaps
 
   - name: mediawiki/extensions/SemanticMediaWiki
-    check:
-     - mwext-SemanticMediaWiki-merge:
-       - mwext-SemanticMediaWiki-jslint
-       - mwext-SemanticMediaWiki-lint
-    test:
-     - mwext-SemanticMediaWiki-merge:
-       - mwext-SemanticMediaWiki-jslint
-       - mwext-SemanticMediaWiki-lint:
-         - mwext-SemanticMediaWiki-testextensions-master
-    gate-and-submit:
-     - mwext-SemanticMediaWiki-merge:
-       - mwext-SemanticMediaWiki-jslint
-       - mwext-SemanticMediaWiki-lint
+    template:
+      - name: extension-unittests
+        extname: SemanticMediaWiki
 
   - name: mediawiki/extensions/SemanticPageMaker
-    check-only:
-     - mwext-SemanticPageMaker-merge:
-       - mwext-SemanticPageMaker-jslint
-       - mwext-SemanticPageMaker-lint
-    gate-and-submit:
-     - mwext-SemanticPageMaker-merge:
-       - mwext-SemanticPageMaker-jslint
-       - mwext-SemanticPageMaker-lint
+    template:
+      - name: extension-checks
+        extname: SemanticPageMaker
 
   - name: mediawiki/extensions/SemanticPageSeries
-    check-only:
-     - mwext-SemanticPageSeries-merge:
-       - mwext-SemanticPageSeries-jslint
-       - mwext-SemanticPageSeries-lint
-    gate-and-submit:
-     - mwext-SemanticPageSeries-merge:
-       - mwext-SemanticPageSeries-jslint
-       - mwext-SemanticPageSeries-lint
+    template:
+      - name: extension-checks
+        extname: SemanticPageSeries
 
   - name: mediawiki/extensions/SemanticResultFormats
-    check-only:
-     - mwext-SemanticResultFormats-merge:
-       - mwext-SemanticResultFormats-jslint
-       - mwext-SemanticResultFormats-lint
-    gate-and-submit:
-     - mwext-SemanticResultFormats-merge:
-       - mwext-SemanticResultFormats-jslint
-       - mwext-SemanticResultFormats-lint
+    template:
+      - name: extension-checks
+        extname: SemanticResultFormats
 
   - name: mediawiki/extensions/SemanticSignup
-    check-only:
-     - mwext-SemanticSignup-merge:
-       - mwext-SemanticSignup-jslint
-       - mwext-SemanticSignup-lint
-    gate-and-submit:
-     - mwext-SemanticSignup-merge:
-       - mwext-SemanticSignup-jslint
-       - mwext-SemanticSignup-lint
+    template:
+      - name: extension-checks
+        extname: SemanticSignup
 
   - name: mediawiki/extensions/SemanticTasks
-    check-only:
-     - mwext-SemanticTasks-merge:
-       - mwext-SemanticTasks-jslint
-       - mwext-SemanticTasks-lint
-    gate-and-submit:
-     - mwext-SemanticTasks-merge:
-       - mwext-SemanticTasks-jslint
-       - mwext-SemanticTasks-lint
+    template:
+      - name: extension-checks
+        extname: SemanticTasks
 
   - name: mediawiki/extensions/SemanticTitle
-    check-only:
-     - mwext-SemanticTitle-merge:
-       - mwext-SemanticTitle-jslint
-       - mwext-SemanticTitle-lint
-    gate-and-submit:
-     - mwext-SemanticTitle-merge:
-       - mwext-SemanticTitle-jslint
-       - mwext-SemanticTitle-lint
+    template:
+      - name: extension-checks
+        extname: SemanticTitle
 
   - name: mediawiki/extensions/SemanticUpdateOnPurge
-    check-only:
-     - mwext-SemanticUpdateOnPurge-merge:
-       - mwext-SemanticUpdateOnPurge-jslint
-       - mwext-SemanticUpdateOnPurge-lint
-    gate-and-submit:
-     - mwext-SemanticUpdateOnPurge-merge:
-       - mwext-SemanticUpdateOnPurge-jslint
-       - mwext-SemanticUpdateOnPurge-lint
+    template:
+      - name: extension-checks
+        extname: SemanticUpdateOnPurge
 
   - name: mediawiki/extensions/SemanticWatchlist
-    check-only:
-     - mwext-SemanticWatchlist-merge:
-       - mwext-SemanticWatchlist-jslint
-       - mwext-SemanticWatchlist-lint
-    gate-and-submit:
-     - mwext-SemanticWatchlist-merge:
-       - mwext-SemanticWatchlist-jslint
-       - mwext-SemanticWatchlist-lint
+    template:
+      - name: extension-checks
+        extname: SemanticWatchlist
 
   - name: mediawiki/extensions/Scribunto
-    check:
-      - mwext-Scribunto-merge:
-        - mwext-Scribunto-jslint
-        - mwext-Scribunto-lint
-    test:
-      - mwext-Scribunto-merge:
-        - mwext-Scribunto-jslint
-        - mwext-Scribunto-lint:
-          - mwext-Scribunto-testextensions-master
-    gate-and-submit:
-      - mwext-Scribunto-merge:
-        - mwext-Scribunto-jslint
-        - mwext-Scribunto-lint
+    template:
+      - name: extension-unittests
+        extname: Scribunto
 
   - name: mediawiki/extensions/ShortUrl
-    check-only:
-      - mwext-ShortUrl-merge:
-        - mwext-ShortUrl-jslint
-        - mwext-ShortUrl-lint
-    gate-and-submit:
-      - mwext-ShortUrl-merge:
-        - mwext-ShortUrl-jslint
-        - mwext-ShortUrl-lint
+    template:
+      - name: extension-checks
+        extname: ShortUrl
 
   - name: mediawiki/extensions/SimpleAntiSpam
-    check-only:
-      - mwext-SimpleAntiSpam-merge:
-        - mwext-SimpleAntiSpam-lint
-    gate-and-submit:
-      - mwext-SimpleAntiSpam-merge:
-        - mwext-SimpleAntiSpam-lint
+    template:
+      - name: extension-checks
+        extname: SimpleAntiSpam
 
   - name: mediawiki/extensions/SiteMatrix
-    check-only:
-      - mwext-SiteMatrix-merge:
-        - mwext-SiteMatrix-lint
-    gate-and-submit:
-      - mwext-SiteMatrix-merge:
-        - mwext-SiteMatrix-lint
+    template:
+      - name: extension-checks
+        extname: SiteMatrix
 
   - name: mediawiki/extensions/SkinPerPage
-    check-only:
-      - mwext-SkinPerPage-merge:
-        - mwext-SkinPerPage-lint
-    gate-and-submit:
-      - mwext-SkinPerPage-merge:
-        - mwext-SkinPerPage-lint
+    template:
+      - name: extension-checks
+        extname: SkinPerPage
 
   - name: mediawiki/extensions/skins
-    check-only:
-      - mwext-skins-merge:
-        - mwext-skins-jslint
-        - mwext-skins-lint
-    gate-and-submit:
-      - mwext-skins-merge:
-        - mwext-skins-jslint
-        - mwext-skins-lint
+    template:
+      - name: extension-checks
+        extname: skins
 
   - name: mediawiki/extensions/Solarium
-    check-only:
-      - mwext-Solarium-merge:
-        - mwext-Solarium-jslint
-        - mwext-Solarium-lint
-    gate-and-submit:
-      - mwext-Solarium-merge:
-        - mwext-Solarium-jslint
-        - mwext-Solarium-lint
+    template:
+      - name: extension-checks
+        extname: Solarium
 
   - name: mediawiki/extensions/SpamBlacklist
-    check-only:
-      - mwext-SpamBlacklist-merge:
-        - mwext-SpamBlacklist-jslint
-        - mwext-SpamBlacklist-lint
-    gate-and-submit:
-      - mwext-SpamBlacklist-merge:
-        - mwext-SpamBlacklist-jslint
-        - mwext-SpamBlacklist-lint
+    template:
+      - name: extension-checks
+        extname: SpamBlacklist
 
   - name: mediawiki/extensions/StrategyWiki
-    check-only:
-      - mwext-StrategyWiki-merge:
-        - mwext-StrategyWiki-jslint
-        - mwext-StrategyWiki-lint
-    gate-and-submit:
-      - mwext-StrategyWiki-merge:
-        - mwext-StrategyWiki-jslint
-        - mwext-StrategyWiki-lint
+    template:
+      - name: extension-checks
+        extname: StrategyWiki
 
   - name: mediawiki/extensions/SubPageList3
-    check-only:
-      - mwext-SubPageList3-merge:
-        - mwext-SubPageList3-lint
-    gate-and-submit:
-      - mwext-SubPageList3-merge:
-        - mwext-SubPageList3-lint
+    template:
+      - name: extension-checks
+        extname: SubPageList3
 
   - name: mediawiki/extensions/SubpageSortkey
-    check-only:
-      - mwext-SubpageSortkey-merge:
-        - mwext-SubpageSortkey-jslint
-        - mwext-SubpageSortkey-lint
-    gate-and-submit:
-      - mwext-SubpageSortkey-merge:
-        - mwext-SubpageSortkey-jslint
-        - mwext-SubpageSortkey-lint
+    template:
+      - name: extension-checks
+        extname: SubpageSortkey
 
   - name: mediawiki/extensions/Sudo
-    check-only:
-      - mwext-Sudo-merge:
-        - mwext-Sudo-jslint
-        - mwext-Sudo-lint
-    gate-and-submit:
-      - mwext-Sudo-merge:
-        - mwext-Sudo-jslint
-        - mwext-Sudo-lint
+    template:
+      - name: extension-checks
+        extname: Sudo
 
   - name: mediawiki/extensions/Survey
-    check:
-      - mwext-Survey-merge:
-        - mwext-Survey-jslint
-        - mwext-Survey-lint
-    test:
-      - mwext-Survey-merge:
-        - mwext-Survey-jslint
-        - mwext-Survey-lint:
-          - mwext-Survey-testextensions-master
-    gate-and-submit:
-      - mwext-Survey-merge:
-        - mwext-Survey-jslint
-        - mwext-Survey-lint:
-          - mwext-Survey-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Survey
 
   - name: mediawiki/extensions/SVGEdit
-    check-only:
-      - mwext-SVGEdit-merge:
-        - mwext-SVGEdit-jslint
-        - mwext-SVGEdit-lint
-    gate-and-submit:
-      - mwext-SVGEdit-merge:
-        - mwext-SVGEdit-jslint
-        - mwext-SVGEdit-lint
+    template:
+      - name: extension-checks
+        extname: SVGEdit
 
   - name: mediawiki/extensions/TemplateSandbox
-    check-only:
-      - mwext-TemplateSandbox-merge:
-        - mwext-TemplateSandbox-jslint
-        - mwext-TemplateSandbox-lint
-    gate-and-submit:
-      - mwext-TemplateSandbox-merge:
-        - mwext-TemplateSandbox-jslint
-        - mwext-TemplateSandbox-lint
+    template:
+      - name: extension-checks
+        extname: TemplateSandbox
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
     check-only:
@@ -2564,14 +1717,9 @@ projects:
         - mwext-TemplateData-testextensions-master
 
   - name: mediawiki/extensions/Thanks
-    check-only:
-      - mwext-Thanks-merge:
-        - mwext-Thanks-jslint
-        - mwext-Thanks-lint
-    gate-and-submit:
-      - mwext-Thanks-merge:
-        - mwext-Thanks-jslint
-        - mwext-Thanks-lint
+    template:
+      - name: extension-checks
+        extname: Thanks
 
   - name: mediawiki/extensions/TimedMediaHandler
     check-only:
@@ -2582,48 +1730,29 @@ projects:
       - mwext-TimedMediaHandler-merge:
         - mwext-TimedMediaHandler-jslint
         - mwext-TimedMediaHandler-lint
-# Requires the MwEmbedSupport extension :(
+# FIXME Requires the MwEmbedSupport extension :(
 #        - mwext-TimedMediaHandler-lint:
 #          - mwext-TimedMediaHandler-testextensions-master
 
   - name: mediawiki/extensions/TitleBlacklist
-    check-only:
-      - mwext-TitleBlacklist-merge:
-        - mwext-TitleBlacklist-jslint
-        - mwext-TitleBlacklist-lint
-    gate-and-submit:
-      - mwext-TitleBlacklist-merge:
-        - mwext-TitleBlacklist-jslint
-        - mwext-TitleBlacklist-lint:
-          - mwext-TitleBlacklist-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: TitleBlacklist
 
   - name: mediawiki/extensions/TitleKey
-    check-only:
-      - mwext-TitleKey-merge:
-        - mwext-TitleKey-jslint
-        - mwext-TitleKey-lint
-    gate-and-submit:
-      - mwext-TitleKey-merge:
-        - mwext-TitleKey-jslint
-        - mwext-TitleKey-lint
+    template:
+      - name: extension-checks
+        extname: TitleKey
 
   - name: mediawiki/extensions/TocTree
-    check-only:
-      - mwext-TocTree-merge:
-        - mwext-TocTree-jslint
-        - mwext-TocTree-lint
-    gate-and-submit:
-      - mwext-TocTree-merge:
-        - mwext-TocTree-jslint
-        - mwext-TocTree-lint
+    template:
+      - name: extension-checks
+        extname: TocTree
 
   - name: mediawiki/extensions/TorBlock
-    check-only:
-      - mwext-TorBlock-merge:
-        - mwext-TorBlock-lint
-    gate-and-submit:
-      - mwext-TorBlock-merge:
-        - mwext-TorBlock-lint
+    template:
+      - name: extension-checks
+        extname: TorBlock
 
   - name: mediawiki/extensions/Translate
     check-only:
@@ -2664,12 +1793,9 @@ projects:
           - mwext-TranslationNotifications-testextensions-master
 
   - name: mediawiki/extensions/TrustedXFF
-    check-only:
-      - mwext-TrustedXFF-merge:
-        - mwext-TrustedXFF-lint
-    gate-and-submit:
-      - mwext-TrustedXFF-merge:
-        - mwext-TrustedXFF-lint
+    template:
+      - name: extension-checks
+        extname: TrustedXFF
 
   - name: mediawiki/extensions/TwnMainPage
     check-only:
@@ -2684,12 +1810,9 @@ projects:
         - mwext-TwnMainPage-lint
 
   - name: mediawiki/extensions/UnicodeConverter
-    check-only:
-      - mwext-UnicodeConverter-merge:
-        - mwext-UnicodeConverter-lint
-    gate-and-submit:
-      - mwext-UnicodeConverter-merge:
-        - mwext-UnicodeConverter-lint
+    template:
+      - name: extension-checks
+        extname: UnicodeConverter
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     check-only:
@@ -2705,14 +1828,9 @@ projects:
           - mwext-UniversalLanguageSelector-testextensions-master
 
   - name: mediawiki/extensions/UploadBlacklist
-    check-only:
-      - mwext-UploadBlacklist-merge:
-        - mwext-UploadBlacklist-jslint
-        - mwext-UploadBlacklist-lint
-    gate-and-submit:
-      - mwext-UploadBlacklist-merge:
-        - mwext-UploadBlacklist-jslint
-        - mwext-UploadBlacklist-lint
+    template:
+      - name: extension-checks
+        extname: UploadBlacklist
 
   - name: mediawiki/extensions/UploadWizard
     check:
@@ -2732,60 +1850,29 @@ projects:
         - mwext-UploadWizard-lint
 
   - name: mediawiki/extensions/UserDailyContribs
-    check-only:
-      - mwext-UserDailyContribs-merge:
-        - mwext-UserDailyContribs-jslint
-        - mwext-UserDailyContribs-lint
-    gate-and-submit:
-      - mwext-UserDailyContribs-merge:
-        - mwext-UserDailyContribs-jslint
-        - mwext-UserDailyContribs-lint
+    template:
+      - name: extension-checks
+        extname: UserDailyContribs
 
   - name: mediawiki/extensions/UserMerge
-    check-only:
-      - mwext-UserMerge-merge:
-        - mwext-UserMerge-jslint
-        - mwext-UserMerge-lint
-    gate-and-submit:
-      - mwext-UserMerge-merge:
-        - mwext-UserMerge-jslint
-        - mwext-UserMerge-lint
+    template:
+      - name: extension-checks
+        extname: UserMerge
 
   - name: mediawiki/extensions/UserOptionStats
-    check-only:
-      - mwext-UserOptionStats-merge:
-        - mwext-UserOptionStats-jslint
-        - mwext-UserOptionStats-lint
-    gate-and-submit:
-      - mwext-UserOptionStats-merge:
-        - mwext-UserOptionStats-jslint
-        - mwext-UserOptionStats-lint
+    template:
+      - name: extension-checks
+        extname: UserOptionStats
 
   - name: mediawiki/extensions/UserThrottle
-    check-only:
-      - mwext-UserThrottle-merge:
-        - mwext-UserThrottle-jslint
-        - mwext-UserThrottle-lint
-    gate-and-submit:
-      - mwext-UserThrottle-merge:
-        - mwext-UserThrottle-jslint
-        - mwext-UserThrottle-lint
+    template:
+      - name: extension-checks
+        extname: UserThrottle
 
   - name: mediawiki/extensions/Validator
-    check-only:
-      - mwext-Validator-merge:
-        - mwext-Validator-jslint
-        - mwext-Validator-lint
-    test:
-      - mwext-Validator-merge:
-        - mwext-Validator-jslint
-        - mwext-Validator-lint:
-          - mwext-Validator-testextensions-master
-    gate-and-submit:
-      - mwext-Validator-merge:
-        - mwext-Validator-jslint
-        - mwext-Validator-lint:
-          - mwext-Validator-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Validator
 
   - name: mediawiki/extensions/Vector
     check-only:
@@ -2800,14 +1887,9 @@ projects:
         - mwext-Vector-lint
 
   - name: mediawiki/extensions/VipsScaler
-    check-only:
-      - mwext-VipsScaler-merge:
-        - mwext-VipsScaler-jslint
-        - mwext-VipsScaler-lint
-    gate-and-submit:
-      - mwext-VipsScaler-merge:
-        - mwext-VipsScaler-jslint
-        - mwext-VipsScaler-lint
+    template:
+      - name: extension-checks
+        extname: VipsScaler
 
   - name: mediawiki/extensions/VisualEditor
     check:
@@ -2833,14 +1915,9 @@ projects:
       - mwext-VisualEditor-doc-publish
 
   - name: mediawiki/extensions/WebChat
-    check-only:
-      - mwext-WebChat-merge:
-        - mwext-WebChat-jslint
-        - mwext-WebChat-lint
-    gate-and-submit:
-      - mwext-WebChat-merge:
-        - mwext-WebChat-jslint
-        - mwext-WebChat-lint
+    template:
+      - name: extension-checks
+        extname: WebChat
 
   - name: mediawiki/extensions/WebFonts
     check-only:
@@ -2886,70 +1963,39 @@ projects:
           - mwext-Wikibase-repo-tests
 
   - name: mediawiki/extensions/WikiLove
-    check-only:
-      - mwext-WikiLove-merge:
-        - mwext-WikiLove-jslint
-        - mwext-WikiLove-lint
-    gate-silent:
-      - mwext-WikiLove-merge:
-        - mwext-WikiLove-jslint
-        - mwext-WikiLove-lint
+    template:
+      - name: extension-checks
+        extname: WikiLove
 
   - name: mediawiki/extensions/wikihiero
-    check-only:
-      - mwext-wikihiero-merge:
-        - mwext-wikihiero-jslint
-        - mwext-wikihiero-lint
-    gate-and-submit:
-      - mwext-wikihiero-merge:
-        - mwext-wikihiero-jslint
-        - mwext-wikihiero-lint
+    template:
+      - name: extension-checks
+        extname: wikihiero
 
   - name: mediawiki/extensions/WikimediaIncubator
-    check-only:
-      - mwext-WikimediaIncubator-merge:
-        - mwext-WikimediaIncubator-jslint
-        - mwext-WikimediaIncubator-lint
-    gate-silent:
-      - mwext-WikimediaIncubator-merge:
-        - mwext-WikimediaIncubator-jslint
-        - mwext-WikimediaIncubator-lint
+    template:
+      - name: extension-checks
+        extname: WikimediaIncubator
 
   - name: mediawiki/extensions/WikimediaMaintenance
-    check-only:
-      - mwext-WikimediaMaintenance-merge:
-        - mwext-WikimediaMaintenance-jslint
-        - mwext-WikimediaMaintenance-lint
-    gate-and-submit:
-      - mwext-WikimediaMaintenance-merge:
-        - mwext-WikimediaMaintenance-jslint
-        - mwext-WikimediaMaintenance-lint
+    template:
+      - name: extension-checks
+        extname: WikimediaMaintenance
 
   - name: mediawiki/extensions/WikimediaMessages
-    check-only:
-      - mwext-WikimediaMessages-merge:
-        - mwext-WikimediaMessages-lint
-    gate-and-submit:
-      - mwext-WikimediaMessages-merge:
-        - mwext-WikimediaMessages-lint
+    template:
+      - name: extension-checks
+        extname: WikimediaMessages
 
   - name: mediawiki/extensions/WikimediaShopLink
-    check-only:
-      - mwext-WikimediaShopLink-merge:
-        - mwext-WikimediaShopLink-jslint
-        - mwext-WikimediaShopLink-lint
-    gate-silent:
-      - mwext-WikimediaShopLink-merge:
-        - mwext-WikimediaShopLink-jslint
-        - mwext-WikimediaShopLink-lint
+    template:
+      - name: extension-checks
+        extname: WikimediaShopLink
 
   - name: mediawiki/extensions/ZeroRatedMobileAccess
-    check-only:
-      - mwext-ZeroRatedMobileAccess-merge:
-        - mwext-ZeroRatedMobileAccess-lint
-    gate-and-submit:
-      - mwext-ZeroRatedMobileAccess-merge:
-        - mwext-ZeroRatedMobileAccess-lint
+    template:
+      - name: extension-checks
+        extname: ZeroRatedMobileAccess
 
 #### PHP Extensions ###################################################
 
