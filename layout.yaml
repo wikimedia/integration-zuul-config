@@ -486,7 +486,6 @@ projects:
       - mediawiki-core-regression-REL1_19
       - mediawiki-core-regression-REL1_20
       - mediawiki-core-regression-REL1_21
-      # phpcs is just running on modified files, it is too slow otherwise
       - mediawiki-core-regression-phpcs-HEAD
       - mediawiki-core-doxygen-publish
 
@@ -2545,11 +2544,14 @@ projects:
 
   - name: mediawiki/extensions/TemplateData
     check:
+      - mwext-TemplateData-phpcs-HEAD
       - mwext-TemplateData-lint
     test:
+      - mwext-TemplateData-phpcs-HEAD
       - mwext-TemplateData-lint:
         - mwext-TemplateData-testextensions-master
     gate-and-submit:
+      - mwext-TemplateData-phpcs-HEAD
       - mwext-TemplateData-lint:
         - mwext-TemplateData-testextensions-master
 
