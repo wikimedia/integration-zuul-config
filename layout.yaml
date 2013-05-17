@@ -237,6 +237,11 @@ jobs:
     files:
      - '^.*\.erb$'
 
+  # puppet manifests
+  - name: ^.*-pplint-HEAD$
+    files:
+     - '^.*\.pp$'
+
   - name: ^.*-jslint$
     # Non-voting by default (most projects do not pass yet)
     voting: false
@@ -463,6 +468,16 @@ project-templates:
      - 'mwext-{extname}-merge':
        - 'mwext-{extname}-jslint'
        - 'mwext-{extname}-lint'
+
+  - name: puppet
+    # FIXME add merge probably
+    # voting since we usually do not have any unit tests
+    check-voter:
+      - 'operations-puppet-{module}-erblint-HEAD'
+      - 'operations-puppet-{module}-pplint-HEAD'
+    gate-and-submit:
+      - 'operations-puppet-{module}-erblint-HEAD'
+      - 'operations-puppet-{module}-pplint-HEAD'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
@@ -737,6 +752,16 @@ projects:
       - operations-puppet-validate
     postmerge:
       - operations-puppet-doc
+
+  - name: operations/puppet/cdh4
+    template:
+      - name: puppet
+        module: cdh4
+
+  - name: operations/puppet/kafka
+    template:
+      - name: puppet
+        module: kafka
 
   - name: operations/software
     check-voter:
