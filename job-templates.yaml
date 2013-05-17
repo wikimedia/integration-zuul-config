@@ -9,6 +9,14 @@
      - erblint-HEAD
 
 - job-template:
+    name: '{name}-pplint-HEAD'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - pplint-HEAD
+
+- job-template:
     name: '{name}-phplint'
     defaults: use-zuul
     triggers:

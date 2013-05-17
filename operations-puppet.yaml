@@ -70,3 +70,24 @@
      - operations-puppet-typos
      - operations-puppet-validate
      - operations-puppet-doc
+
+# puppet modules
+#
+# To add a new puppet module, simply copy paste an existing one
+# and tweak the `name` and `gerrit-name` parameters.
+- project:
+    name: 'operations-puppet-cdh4'
+    gerrit-name: 'operations/puppet/cdh4'
+
+    jobs:
+     - '{name}-erblint-HEAD'
+     - '{name}-pplint-HEAD'
+
+- project:
+    name: 'operations-puppet-kafka'
+    gerrit-name: 'operations/puppet/kafka'
+    node: 'gallium'
+
+    jobs:
+     - '{name}-erblint-HEAD'
+     - '{name}-pplint-HEAD'

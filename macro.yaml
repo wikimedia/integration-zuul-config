@@ -9,6 +9,13 @@
         /var/lib/jenkins/bin/git-changed-in-head erb \
         | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
 
+- builder:
+    name: pplint-HEAD
+    builders:
+     - shell: |
+        /var/lib/jenkins/bin/git-changed-in-head erb \
+        | xargs -n1 -I {} -t puppet parser validate
+
 # Lint whitespace in directory {dir}. Usefull when the Git repository has
 # been fetched out in some subdirtory of the Workspace. Example:
 #
