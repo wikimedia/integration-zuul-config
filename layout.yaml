@@ -1062,15 +1062,9 @@ projects:
         extname: E3Experiments
 
   - name: mediawiki/extensions/Echo
-    check-only:
-      - mwext-Echo-merge:
-        - mwext-Echo-jslint
-        - mwext-Echo-lint
-    gate-and-submit:
-      - mwext-Echo-merge:
-        - mwext-Echo-jslint
-        - mwext-Echo-lint:
-          - mwext-Echo-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: Echo
 
   - name: mediawiki/extensions/EditPageTracking
     template:
