@@ -475,11 +475,13 @@ project-templates:
     # FIXME add merge probably
     # voting since we usually do not have any unit tests
     check-voter:
-      - 'operations-puppet-{module}-erblint-HEAD'
-      - 'operations-puppet-{module}-pplint-HEAD'
+      - 'operations-puppet-{module}-merge':
+        - 'operations-puppet-{module}-erblint-HEAD'
+        - 'operations-puppet-{module}-pplint-HEAD'
     gate-and-submit:
-      - 'operations-puppet-{module}-erblint-HEAD'
-      - 'operations-puppet-{module}-pplint-HEAD'
+      - 'operations-puppet-{module}-merge':
+        - 'operations-puppet-{module}-erblint-HEAD'
+        - 'operations-puppet-{module}-pplint-HEAD'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
