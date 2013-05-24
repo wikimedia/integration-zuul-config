@@ -282,18 +282,9 @@
 - builder:
     name: phplint
     builders:
-     # For some reason php5-parsekit segfaults when an error is encountered
-     # - shell: |
-     #    #!/bin/bash
-     #    # Files changed in this revision, excluding deleted files and non-php files.
-     #    # -z disables the shell escape git does by default with --name-only separates with null-byte instead of new line.
-     #    files=$(git diff HEAD^..HEAD --name-only -z --no-renames --diff-filter=ACM | tr '\0' '\n' | grep -E '\.(php|php5|inc|phtml)$')
-     #    # Use null-byte as list separator
-     #    IFS=$'\n'
-     #    php -dextension=parsekit.so /var/lib/jenkins/bin/lint.php -v $files
-     - ant:
-        targets: 'php-lint'
-        buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
+     - shell: |
+        /var/lib/jenkins/bin/git-changed-in-head php php5 inc phtml \
+        | xargs -n1 -t php -l
 
 # run phpcs on any .php and .inc files in the workspace
 # Except for Messages* and *.i18n.php (such as in installer)
