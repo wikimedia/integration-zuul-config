@@ -323,9 +323,6 @@ jobs:
   - name: operations-debs-ircecho-pyflakes
     voting: true
 
-  - name: mwext-VisualEditor-whitespaces
-    voting: true
-
   - name: mediawiki-core-jslint
     voting: true
     # Doesn't work in MediaWiki REL1_19 (bug 44846)
@@ -1922,13 +1919,11 @@ projects:
   - name: mediawiki/extensions/VisualEditor
     check:
       - mwext-VisualEditor-merge:
-        - mwext-VisualEditor-whitespaces
         - mwext-VisualEditor-jslint
         - mwext-VisualEditor-phpcs-HEAD
         - mwext-VisualEditor-lint
     test:
       - mwext-VisualEditor-merge:
-        - mwext-VisualEditor-whitespaces
         - mwext-VisualEditor-jslint
         - mwext-VisualEditor-phpcs-HEAD
         - mwext-VisualEditor-lint
@@ -1936,7 +1931,6 @@ projects:
         - mwext-VisualEditor-qunit
     gate-and-submit:
       - mwext-VisualEditor-merge:
-        - mwext-VisualEditor-whitespaces
         - mwext-VisualEditor-jslint
         - mwext-VisualEditor-phpcs-HEAD
         - mwext-VisualEditor-lint
