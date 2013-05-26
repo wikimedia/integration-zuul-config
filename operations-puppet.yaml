@@ -28,6 +28,24 @@
             rake --rakefile rakefile validate
         )
 
+# Run pep8 per file so that individual puppet dirs
+#  can specify their own .pep8 rules
+- job-template:
+    name: 'operations-puppet-pep8'
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+      - shell: |
+         set -o pipefail
+         "$JENKINS_HOME"/tools/puppet_pep8.py . | tee pep8.txt
+         set +o pipefail
+
+    publishers:
+     - pep8
+
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
@@ -66,10 +84,10 @@
 
     jobs:
      - '{name}-erblint-HEAD'
-     - '{name}-pep8'
      - operations-puppet-typos
      - operations-puppet-validate
      - operations-puppet-doc
+     - operations-puppet-pep8
 
 # puppet modules
 #
