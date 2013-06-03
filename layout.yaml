@@ -489,6 +489,14 @@ project-templates:
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
+  - name: integration/jenkins
+    check-voter:
+      - integration-jjb-pep8
+      - integration-jjb-pyflakes
+    gate-and-submit:
+      - integration-jjb-pep8
+      - integration-jjb-pyflakes
+
   - name: integration/jenkins-job-builder-config
     # FIXME: make this 'check' whenever we have integration tests
     check-voter:
