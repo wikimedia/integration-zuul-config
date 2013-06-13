@@ -298,6 +298,11 @@ jobs:
   #
   # Individual adjustments
   #
+
+  # being tested out
+  - name: apps-android-commons-build
+    voting: false
+
   - name: beta-mediawiki-config-update
     branch: ^master$
     success-message: 'Change has been deployed on the beta cluster'
@@ -648,6 +653,12 @@ projects:
      - analytics-wikistats
     postmerge:
      - analytics-wikistats
+
+  - name: apps/android/commons
+    test:
+      - apps-android-commons-build
+    gate-and-submit:
+      - apps-android-commons-build
 
   - name: labs/incubator
     check-voter:
