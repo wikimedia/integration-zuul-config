@@ -366,6 +366,9 @@
      - WebChat
      - WebFonts
      - Wikibase
+     - WikibaseDatabase
+     - WikibaseDataModel
+     - WikibaseQueryEngine
      - WikiEditor
      - wikihiero
      - WikiLexicalData
@@ -391,15 +394,23 @@
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: Wikibase
-        dependencies: 'Ask,Diff,DataValues,Validator'
+        dependencies: 'Ask,Diff,DataValues,WikibaseDataModel,Validator'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Diff,DataValues,Validator'
+        dependencies: 'Ask,Diff,DataValues,WikibaseDataModel,Validator'
         kind: 'client'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Diff,DataValues,Validator'
+        dependencies: 'Ask,Diff,DataValues,WikibaseDataModel,Validator'
         kind: 'repo'
+     - '{name}-{ext-name}-testextensions-{mwbranch}':
+        ext-name: WikibaseDataModel
+        dependencies: 'Diff,DataValues'
+     - '{name}-{ext-name}-testextensions-{mwbranch}':
+        ext-name: WikibaseDatabase
+     - '{name}-{ext-name}-testextensions-{mwbranch}':
+        ext-name: WikibaseQueryEngine
+        dependencies: 'DataValues,Ask,WikibaseDataModel'
 
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
