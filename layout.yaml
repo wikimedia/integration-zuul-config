@@ -673,6 +673,12 @@ projects:
       - labs-nagios-builder-pep8
 
   - name: integration/docroot
+    check-voter:
+     - integration-docroot-phplint
+    test:
+     - integration-docroot-phplint
+    gate-and-submit:
+     - integration-docroot-phplint
     postmerge:
      - integration-docroot-deploy
 
