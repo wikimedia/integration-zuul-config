@@ -233,6 +233,11 @@ jobs:
   # General
   #
 
+  # Warning: the files regex are using python re.match() wich match at the
+  # begining of the filename. '.js$' will only match '.js' not 'foo.js'.
+  #
+  # See: http://docs.python.org/2/library/re.html#search-vs-match
+
   - name: ^.*-erblint-HEAD$
     voting: false
     files:
@@ -247,15 +252,16 @@ jobs:
     # Non-voting by default (most projects do not pass yet)
     voting: false
     files:
-     - '^.*\.js$'
+     # Triggers on changes made to .jshintrc* , *.js and *.json
+     - '^(\.jshint|.*\.(js|json)$)'
 
   - name: ^.*-jsduck$
     files:
-     - '^.*\.js$'
+     - '^.*\.(js|json)$'
 
   - name: ^.*-jsduck-publish$
     files:
-     - '^.*\.js$'
+     - '^.*\.(js|json)$'
 
   - name: ^.*-pep8$
     # Non-voting (most of our script fail the tests miserably)
