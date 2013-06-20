@@ -105,15 +105,19 @@
         TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
         # Configure MediaWiki
         echo -e \
+         "ini_set( 'display_errors', 1 );\n"\
+         "error_reporting( -1 );\n"\
          "\$wgServer = 'http://localhost:9412';\n"\
          "\$wgScriptPath = '/${TEST_ID}';\n"\
+         "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
          "\$wgEnableJavaScriptTest = true;\n" >> $WORKSPACE/LocalSettings.php
         # The location is free or we make it free
         test ! -e /srv/localhost/qunit/$TEST_ID || rm /srv/localhost/qunit/$TEST_ID;
         # Publish our install in the QUnit server document root
         ln -s $WORKSPACE /srv/localhost/qunit/$TEST_ID
-        # Fetch headers for debug information (HTTP 500 Error, Database error, etc.)
+        # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
         curl --include "http://localhost:9412/$TEST_ID/index.php?title=Special:BlankPage" | head -n42
+        curl --include "http://localhost:9412/$TEST_ID/load.php?debug=true&modules=startup&only=scripts" | head -n42
         # Run QUnit tests via PhantomJS
         /var/lib/jenkins/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit"
         gqec=$?
