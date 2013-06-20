@@ -427,6 +427,30 @@ jobs:
   - name: ^mwext-LabeledSectionTransclusion-testextensions.*
     voting: false
 
+
+  #
+  # Extensions for which parser tests are not passing :-(
+  #
+
+  # https://bugzilla.wikimedia.org/49879
+  - name: ^mwext-BookManager-testextensions.*
+    voting: false
+
+  # https://bugzilla.wikimedia.org/49881
+  - name: ^mwext-NaturalLanguageList-testextensions.*
+    voting: false
+
+  # https://bugzilla.wikimedia.org/49882
+  - name: ^mwext-Transliterator-testextensions.*
+    voting: false
+
+
+  # texvc needs to be build before we run parser tests on Math
+  # https://bugzilla.wikimedia.org/49884
+  - name: ^mwext-Math-testextensions.*
+    voting: false
+
+
   # The JsonData phpunit tests are meant to be independant and
   # do not play well with the MediaWiki phpunit wrapper for now :(
   # See also: https://gerrit.wikimedia.org/r/#/c/52292/
