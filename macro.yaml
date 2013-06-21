@@ -308,14 +308,7 @@
     name: phpcs-HEAD
     builders:
      - shell: |
-        # Get a list of files changed in HEAD, skipping deleted files and css
-        # and js files which are interpreted by phpcs but we do not want it to
-        # handle.  Piped to 'echo -n' to ignore egrep exit code.
-        PHPCS_FILES=$(git diff --name-status HEAD^ \
-             | egrep -v '^D' | cut -f2 \
-             | egrep '\.(php5?|inc|sample)$' \
-             || echo -n
-             )
+        PHPCS_FILES=$(/var/lib/jenkins/bin/git-changed-in-head php php5 inc sample)
         # No file? No point in proceeding any further (bug 44567)
         if [ -z "$PHPCS_FILES" ]; then
             echo "Skipping phpcs: no file remaining to process"
