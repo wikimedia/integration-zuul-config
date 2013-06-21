@@ -202,15 +202,10 @@ pipelines:
     manager: IndependentPipelineManager
     trigger:
       - event: change-merged
-# Silented for production deployment
-#    success:
-#      code-review: 0
-#      verified: 0
-#      force-message: True
-#    failure:
-#      code-review: 0
-#      verified: 0
-#      force-message: True
+    success:
+      force-message: True
+    failure:
+      force-message: True
 
   # Pipeline reacting whenever some reference is updated
   - name: post
