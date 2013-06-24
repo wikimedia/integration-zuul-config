@@ -544,12 +544,9 @@ project-templates:
 # a set of jobs.
 projects:
   - name: integration/jenkins
-    check-voter:
-      - integration-jenkins-pep8
-      - integration-jenkins-pyflakes
-    gate-and-submit:
-      - integration-jenkins-pep8
-      - integration-jenkins-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'integration-jenkins'
 
   - name: integration/jenkins-job-builder-config
     # FIXME: make this 'check' whenever we have integration tests
@@ -611,52 +608,34 @@ projects:
       - mediawiki-core-doxygen-publish
 
   - name: analytics/asana-stats
-    check-voter:
-     - analytics-asana-stats-pep8
-     - analytics-asana-stats-pyflakes
-    gate-and-submit:
-     - analytics-asana-stats-pep8
-     - analytics-asana-stats-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'analytics-asana-stats'
 
   - name: analytics/check-stats
-    check-voter:
-     - analytics-check-stats-pep8
-     - analytics-check-stats-pyflakes
-    gate-and-submit:
-     - analytics-check-stats-pep8
-     - analytics-check-stats-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'analytics-check-stats'
 
   - name: analytics/editor-geocoding
-    check-voter:
-     - analytics-editor-geocoding-pep8
-     - analytics-editor-geocoding-pyflakes
-    gate-and-submit:
-     - analytics-editor-geocoding-pep8
-     - analytics-editor-geocoding-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'analytics-editor-geocoding'
 
   - name: analytics/gerrit-stats
-    check-voter:
-     - analytics-gerrit-stats-pep8
-     - analytics-gerrit-stats-pyflakes
-    gate-and-submit:
-     - analytics-gerrit-stats-pep8
-     - analytics-gerrit-stats-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'analytics-gerrit-stats'
 
   - name: analytics/glass
-    check-voter:
-     - analytics-glass-pep8
-     - analytics-glass-pyflakes
-    gate-and-submit:
-     - analytics-glass-pep8
-     - analytics-glass-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'analytics-glass'
 
   - name: analytics/reportcard
-    check-voter:
-     - analytics-reportcard-pep8
-     - analytics-reportcard-pyflakes
-    gate-and-submit:
-     - analytics-reportcard-pep8
-     - analytics-reportcard-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'analytics-reportcard'
 
   - name: analytics/libanon
     test:
@@ -754,20 +733,14 @@ projects:
      - mw-tools-dippybird-phplint
 
   - name: mediawiki/tools/fluoride
-    check-voter:
-     - mw-tools-fluoride-pep8
-     - mw-tools-fluoride-pyflakes
-    gate-and-submit:
-     - mw-tools-fluoride-pep8
-     - mw-tools-fluoride-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'mw-tools-fluoride'
 
   - name: mediawiki/tools/release
-    check-voter:
-     - mw-tools-release-pep8
-     - mw-tools-release-pyflakes
-    gate-and-submit:
-     - mw-tools-release-pep8
-     - mw-tools-release-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'mw-tools-release'
 
   - name: mediawiki/vagrant
     check-voter:
@@ -784,20 +757,14 @@ projects:
       - operations-apache-config-lint
 
   - name: operations/debs/adminbot
-    check-only:
-      - operations-debs-adminbot-pep8
-      - operations-debs-adminbot-pyflakes
-    gate-and-submit:
-      - operations-debs-adminbot-pep8
-      - operations-debs-adminbot-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'operations-debs-adminbot'
 
   - name: operations/debs/ircecho
-    check-only:
-      - operations-debs-ircecho-pep8
-      - operations-debs-ircecho-pyflakes
-    gate-and-submit:
-      - operations-debs-ircecho-pep8
-      - operations-debs-ircecho-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'operations-debs-ircecho'
 
   - name: operations/debs/lucene-search-2
     test:
@@ -2232,12 +2199,9 @@ projects:
       - qa-browsertests-ruby1.9.3lint
 
   - name: sartoris
-    check-only:
-      - sartoris-pep8
-      - sartoris-pyflakes
-    gate-and-submit:
-      - sartoris-pep8
-      - sartoris-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'sartoris'
 
   - name: test/mediawiki
     check-only:
