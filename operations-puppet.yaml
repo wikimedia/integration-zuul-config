@@ -32,12 +32,14 @@
 #  can specify their own .pep8 rules
 - job-template:
     name: 'operations-puppet-pep8'
+    node: hasSlaveScripts
     defaults: use-zuul
 
     triggers:
      - zuul
 
     builders:
+      # Requires Jenkins slave scripts
       - shell: |
          set -o pipefail
          "$JENKINS_HOME"/tools/puppet_pep8.py . | tee pep8.txt
