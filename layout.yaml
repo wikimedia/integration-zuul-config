@@ -738,9 +738,15 @@ projects:
         prefix: 'mw-tools-fluoride'
 
   - name: mediawiki/tools/release
-    template:
-      - name: 'python-lint'
-        prefix: 'mw-tools-release'
+    # bug 50112 : we should use the python-lint template + the phplint
+    check-voter:
+      - mw-tools-release-phplint
+      - mw-tools-release-pep8
+      - mw-tools-release-pyflakes
+    gate-and-submit:
+      - mw-tools-release-phplint
+      - mw-tools-release-pep8
+      - mw-tools-release-pyflakes
 
   - name: mediawiki/vagrant
     check-voter:
