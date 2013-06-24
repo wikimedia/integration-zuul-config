@@ -22,17 +22,11 @@
      - shell: |
         find bin -maxdepth 1 -type f -print0 | xargs -t -n1 -0 bash -n
 
-- job-group:
-    name: translatewiki-jobs
-    jobs:
-     - translatewiki-phplint
-     - translatewiki-puppet-validate
-     - translatewiki-shelllint
-
 - project:
     name: 'translatewiki'
     gerrit-name: 'translatewiki'
     jobs:
-     - translatewiki-jobs
+     - translatewiki-puppet-validate
+     - translatewiki-shelllint
      - '{name}-phplint'
      - '{name}-yamllint'
