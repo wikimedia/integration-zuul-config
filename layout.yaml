@@ -1184,11 +1184,17 @@ projects:
         extname: EtherEditor
 
   - name: mediawiki/extensions/EventLogging
-    check-only:
+    check:
       - mwext-EventLogging-merge:
         - mwext-EventLogging-jslint
         - mwext-EventLogging-pep8
         - mwext-EventLogging-lint
+    test:
+      - mwext-EventLogging-merge:
+        - mwext-EventLogging-jslint
+        - mwext-EventLogging-pep8
+        - mwext-EventLogging-lint:
+          - mwext-EventLogging-testextensions-master
     gate-and-submit:
       - mwext-EventLogging-merge:
         - mwext-EventLogging-jslint
