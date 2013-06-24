@@ -522,6 +522,14 @@ project-templates:
        - 'mwext-{extname}-jslint'
        - 'mwext-{extname}-lint'
 
+  - name: python-lint
+    check-voter:
+      - '{prefix}-pep8'
+      - '{prefix}-pyflakes'
+    gate-and-submit:
+      - '{prefix}-pep8'
+      - '{prefix}-pyflakes'
+
   - name: puppet
     # FIXME add merge probably
     # voting since we usually do not have any unit tests
