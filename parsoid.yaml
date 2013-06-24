@@ -5,7 +5,6 @@
         - shell: |
             cd js/tests
             NODE_PATH=$NODE_PATH:../../contrib/node_modules
-            node fetch-parserTests.txt.js
             node parserTests --xml --no-color --wt2html --wt2wt --html2html --selser --changesin selser.changes.json > results.xml
 
 - builder:
@@ -222,7 +221,6 @@
             set -e
             cd js/tests
             NODE_PATH=$NODE_PATH:../../contrib/node_modules
-            node fetch-parserTests.txt.js
             node parserTests --wt2html --wt2wt --html2wt --html2html --selser --changesin selser.changes.json --no-color --quiet --blacklist
 
 - project:
