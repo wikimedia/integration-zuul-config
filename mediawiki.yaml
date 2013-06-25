@@ -19,6 +19,7 @@
 
 - job-template:
     name: '{name}-lint'
+    node: hasSlaveScripts
     defaults: use-zuul
     scm:
      - git-mwcore-nosubmodules
@@ -108,7 +109,7 @@
 # @param gerrit-name Gerrit project name (ex: mediawiki/core)
 - job-template:
     name: '{name}-phpunit-{phpunit-group}'
-
+    node: master  # FIXME move to slave 'gallium'
     defaults: use-zuul
     scm:
      - git-mwcore-nosubmodules
@@ -128,7 +129,7 @@
 # @param databasetype Suffix for an ant target 'installdb-{databasetype}'
 - job-template:
     name: '{name}-install-{databasetype}'
-
+    node: master  # FIXME move to slave 'gallium'
     defaults: use-zuul
     scm:
      - git-mwcore-nosubmodules
@@ -172,7 +173,7 @@
 
 - job-template:
     name: 'mediawiki-core-regression-{branch}'
-
+    node: master  # FIXME move to slave 'gallium'
     defaults: use-zuul
     scm:
      - git-mwcore-nosubmodules

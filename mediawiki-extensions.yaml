@@ -7,6 +7,7 @@
 - job-template:
     # TODO: Use global '{name}-phplint' template instead
     name: '{name}-{ext-name}-lint'
+    node: hasSlaveScripts
     defaults: use-zuul
     scm:
      - git-mwext-in-root:
@@ -64,6 +65,7 @@
 
 - job-template:
     name: '{name}-{ext-name}-phpcs-HEAD'
+    node: hasSlaveScripts
     defaults: use-zuul
     scm:
      - git-mwext-in-root:
@@ -78,6 +80,8 @@
 # Run all extension tests
 - job-template:
     name: '{name}-{ext-name}-testextensions-{mwbranch}'
+    # FIXME should be gallium slave that needs slave user to have write access to the /var/lib/jenkins/tmpfs
+    node: master
     defaults: use-zuul-for-mw-ext
     triggers:
      - zuul
@@ -96,6 +100,8 @@
 # and server configurations.
 - job-template:
     name: 'mwext-Wikibase-{kind}-tests'
+    # FIXME should be gallium slave that needs slave user to have write access to the /var/lib/jenkins/tmpfs
+    node: master
     defaults: use-zuul-for-mw-ext
     ext-name: 'Wikibase'
     triggers:
