@@ -1,5 +1,6 @@
 - job-template:
     name: 'operations-puppet-validate'
+    node: gallium  # relies on /srv/ssd/zuul/git/operations/puppet
     defaults: use-zuul
 
     triggers:
@@ -51,6 +52,7 @@
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
+    node: master  # FIXME move to node 'gallium'
     defaults: use-zuul
     triggers:
      - zuul
