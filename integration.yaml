@@ -1,5 +1,6 @@
 - job-template:
     name: 'integration-docroot-deploy'
+    node: master  # FIXME move to slave 'gallium'
     defaults: global
     triggers:
      - zuul
@@ -15,6 +16,7 @@
 # Requires zuul to be installed on the Jenkins host.
 - job-template:
     name: 'integration-zuul-layoutvalidation'
+    node: gallium  # it is running Zuul
     defaults: use-zuul
     triggers:
      - zuul
@@ -25,6 +27,7 @@
 
 - job-template:
     name: 'integration-zuul-layoutdiff'
+    node: gallium  # it is running Zuul
     defaults: use-zuul
     triggers:
      - zuul
