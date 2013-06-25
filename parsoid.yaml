@@ -26,6 +26,7 @@
 
 - job-template:
     name: parsoid-parsertests-run
+    node: master  # FIXME move to slave 'gallium'
     defaults:
         use-zuul
     triggers:
@@ -51,6 +52,7 @@
 
 - job-template:
     name: parsoid-parsertests
+    node: master  # FIXME move to slave 'gallium'
     triggers:
         - zuul
     builders:
@@ -79,6 +81,7 @@
 
 - job-template:
     name: parsoid-regressions
+    node: master  # FIXME move to slave 'gallium'
     defaults:
         use-zuul
     triggers:
@@ -133,6 +136,7 @@
 
 - job-template:
     name: parsoid-parse-tool-check
+    node: master  # FIXME move to slave 'gallium'
     wrappers:
         - timeout:
             timeout: 5
@@ -165,6 +169,7 @@
 
 - job-template:
     name: parsoid-roundtrip-test-check
+    node: master  # FIXME move to slave 'gallium'
     wrappers:
         - timeout:
             timeout: 5
@@ -196,6 +201,7 @@
 
 - job-template:
     name: parsoid-parsertests-run-harder
+    node: master  # FIXME move to slave 'gallium'
     wrappers:
         - timeout:
             timeout: 10
