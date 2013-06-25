@@ -65,6 +65,7 @@
 
 - job-template:
     name: '{name}-jsduck-publish'
+    node: master  # FIXME move to slave 'gallium'
     defaults: use-zuul
     scm:
      - git-mwcore-nosubmodules
@@ -81,6 +82,7 @@
 
 - job-template:
     name: '{name}-doxygen-publish'
+    node: master  # FIXME move to slave 'gallium'
     defaults: use-zuul
     scm:
      - git-mwcore-nosubmodules
@@ -184,8 +186,8 @@
 
 - job:
     name: 'mediawiki-core-code-coverage'
+    node: master  # FIXME move to slave 'gallium'
     defaults: global
-
     builders:
      - wipe-workspace
      - get-mw-core:
