@@ -1270,12 +1270,18 @@ projects:
     check-only:
      - mwext-GuidedTour-merge:
        - mwext-GuidedTour-jslint
+       - mwext-GuidedTour-lint
+    test:
+     - mwext-GuidedTour-merge:
+       - mwext-GuidedTour-jslint
        - mwext-GuidedTour-lint:
+         - mwext-GuidedTour-testextensions-master
          - mwext-GuidedTour-qunit
     gate-and-submit:
      - mwext-GuidedTour-merge:
        - mwext-GuidedTour-jslint
        - mwext-GuidedTour-lint:
+         - mwext-GuidedTour-testextensions-master
          - mwext-GuidedTour-qunit
 
   - name: mediawiki/extensions/I18nTags
