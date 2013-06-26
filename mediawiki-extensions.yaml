@@ -81,6 +81,9 @@
 - job-template:
     name: '{name}-{ext-name}-testextensions-{mwbranch}'
     # FIXME should be gallium slave that needs slave user to have write access to the /var/lib/jenkins/tmpfs
+    # Puppet change https://gerrit.wikimedia.org/r/70427 creates a tmpfs for
+    # jenkins-slave user under the home dir, so we can refer to it using
+    # "$HOME/tmpfs"
     node: master
     defaults: use-zuul-for-mw-ext
     triggers:
