@@ -23,7 +23,7 @@
     builders:
      - shell: |
         # FIXME change path whenever we have zuul packaged.
-        /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml
+        /usr/local/bin/zuul-server -c /etc/zuul/public.conf -t -l "$WORKSPACE"/layout.yaml
 
 - job-template:
     name: 'integration-zuul-layoutdiff'
@@ -35,9 +35,9 @@
      - shell: |
         set +e
         # FIXME change path whenever we have zuul packaged.
-        /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml 2>current.txt
+        /usr/local/bin/zuul-server -c /etc/zuul/public.conf -t -l "$WORKSPACE"/layout.yaml 2>current.txt
         git checkout HEAD^
-        /usr/local/bin/zuul-server -t -l "$WORKSPACE"/layout.yaml 2>before.txt
+        /usr/local/bin/zuul-server -c /etc/zuul/public.conf -t -l "$WORKSPACE"/layout.yaml 2>before.txt
         colordiff -u before.txt current.txt
 
 - project:
