@@ -4,7 +4,7 @@
         - shell: 'git checkout $ZUUL_COMMIT'
         - shell: |
             cd js/tests
-            NODE_PATH=$NODE_PATH:../../contrib/node_modules
+            export NODE_PATH=$NODE_PATH:../../contrib/node_modules
             node parserTests --xml --no-color --wt2html --wt2wt --html2html --selser --changesin selser.changes.json > results.xml
 
 - builder:
@@ -26,7 +26,7 @@
 
 - job-template:
     name: parsoid-parsertests-run
-    node: master  # FIXME move to slave 'gallium'
+    node: hasSlaveScripts
     defaults:
         use-zuul
     triggers:
@@ -52,7 +52,7 @@
 
 - job-template:
     name: parsoid-parsertests
-    node: master  # FIXME move to slave 'gallium'
+    node: hasSlaveScripts
     triggers:
         - zuul
     builders:
@@ -81,7 +81,7 @@
 
 - job-template:
     name: parsoid-regressions
-    node: master  # FIXME move to slave 'gallium'
+    node: hasSlaveScripts
     defaults:
         use-zuul
     triggers:
@@ -120,9 +120,9 @@
 #            # If any of these commands fail, something is wrong
 #            set -e
 #            cd js/api
-#            NODE_PATH=$NODE_PATH:../../contrib/node_modules
+#            export NODE_PATH=$NODE_PATH:../../contrib/node_modules
 #            # Build a unique string so we can kill the process later
-#            UNIQUESTRING="parsoidserver-$ZUUL_UUID$ZUUL_COMMIT"
+#            export UNIQUESTRING="parsoidserver-$ZUUL_UUID$ZUUL_COMMIT"
 #            daemon --inherit --name=$UNIQUESTRING node server.js
 #            # Wait for the server to start up
 #            sleep 5
@@ -136,7 +136,7 @@
 
 - job-template:
     name: parsoid-parse-tool-check
-    node: master  # FIXME move to slave 'gallium'
+    node: hasSlaveScripts
     wrappers:
         - timeout:
             timeout: 5
@@ -161,7 +161,7 @@
             # If any of these commands fail, something is wrong
             set -e
             cd js/tests
-            NODE_PATH=$NODE_PATH:../../contrib/node_modules
+            export NODE_PATH=$NODE_PATH:../../contrib/node_modules
             echo "Foo" | node parse.js --wt2html
             echo "Foo" | node parse.js --wt2wt
             echo "Foo" | node parse.js --html2wt
@@ -169,7 +169,7 @@
 
 - job-template:
     name: parsoid-roundtrip-test-check
-    node: master  # FIXME move to slave 'gallium'
+    node: hasSlaveScripts
     wrappers:
         - timeout:
             timeout: 5
@@ -194,14 +194,14 @@
             # If any of these commands fail, something is wrong
             set -e
             cd js/tests
-            NODE_PATH=$NODE_PATH:../../contrib/node_modules
+            export NODE_PATH=$NODE_PATH:../../contrib/node_modules
             node roundtrip-test.js "Barack Obama"
             node roundtrip-test.js --prefix fr "Chope"
             node roundtrip-test.js --xml "Parkour"
 
 - job-template:
     name: parsoid-parsertests-run-harder
-    node: master  # FIXME move to slave 'gallium'
+    node: hasSlaveScripts
     wrappers:
         - timeout:
             timeout: 10
@@ -226,7 +226,7 @@
             # If any of these commands fail, something is wrong
             set -e
             cd js/tests
-            NODE_PATH=$NODE_PATH:../../contrib/node_modules
+            export NODE_PATH=$NODE_PATH:../../contrib/node_modules
             node parserTests --wt2html --wt2wt --html2wt --html2html --selser --changesin selser.changes.json --no-color --quiet --blacklist
 
 - project:
