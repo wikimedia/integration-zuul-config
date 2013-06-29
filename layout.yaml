@@ -1423,10 +1423,16 @@ projects:
         extname: MarkAsHelpful
 
   - name: mediawiki/extensions/MobileFrontend
-    check-only:
+    check:
       - mwext-MobileFrontend-merge:
         - mwext-MobileFrontend-lint
         - mwext-MobileFrontend-jslint
+        - mwext-MobileFrontend-ruby1.9.3lint
+    test:
+      - mwext-MobileFrontend-merge:
+        - mwext-MobileFrontend-jslint
+        - mwext-MobileFrontend-lint:
+          - mwext-MobileFrontend-testextensions-master
         - mwext-MobileFrontend-ruby1.9.3lint
     gate-and-submit:
       - mwext-MobileFrontend-merge:
