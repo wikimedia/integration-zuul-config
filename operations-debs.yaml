@@ -11,6 +11,74 @@
         refspec: '$ZUUL_REF'
         basedir: 'source'
 
+- builder:
+    name: debian-glue-generate-git-snapshot
+    builders:
+      - shell: /usr/bin/generate-git-snapshot
+
+- builder:
+    name: debian-glue-build-and-provide-package
+    builders:
+      - shell: |
+          export REPOSITORY=/mnt/repository
+          /usr/bin/build-and-provide-package
+
+- builder:
+    name: debian-glue-generate-reprepro-codename
+    builders:
+      - shell: /usr/bin/generate-reprepro-codename
+
+- builder:
+    name: debian-glue-increase-version-number
+    builders:
+      - shell: /usr/bin/increase-version-number
+
+- builder:
+    name: debian-glue-lintian
+    builders:
+      - shell: |
+          # We might consider adding --warnings
+          set -o pipefail
+          /usr/bin/lintian-junit-report --filename lintian.txt *.changes | tee lintian.xml
+          set +o pipefail
+
+- builder:
+    name: debian-glue-piuparts
+    builders:
+      - shell: |
+          sudo piuparts_wrapper $PWD/*.deb || true
+          piuparts_tap piuparts.txt > piuparts.tap
+
+- job-template:
+    name: '{name}-debian-glue'
+    defaults: use-remote-zuul
+    node: integration-debian-builder
+    triggers:
+     - zuul
+
+    # Clone into ./source
+    scm:
+     - git:
+        url: 'git://integration.wikimedia.org/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        basedir: 'source'
+
+    builders:
+      - debian-glue-generate-git-snapshot
+      - debian-glue-build-and-provide-package
+      - debian-glue-lintian
+      - debian-glue-piuparts
+
+    publishers:
+      - junit:
+          results: 'lintian.xml'
+      - tap:
+          results: piuparts.tap
+      - archive:
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian.txt,piuparts.*'
+
 - job-template:
     name: '{name}-debbuild'
     node: hasContintPackages
@@ -62,3 +130,21 @@
     name: 'lucene-search-2'
     jobs:
      - '{name}-antbuild'
+
+- project:
+    name: operations-debs-buck
+    gerrit-name: operations/debs/buck
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: operations-debs-pybal
+    gerrit-name: operations/debs/pybal
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: gerrit
+    gerrit-name: gerrit
+    jobs:
+     - '{name}-debian-glue'
