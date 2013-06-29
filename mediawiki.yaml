@@ -75,6 +75,8 @@
     builders:
      - jsduck:
         config: '$WORKSPACE/maintenance/jsduck/config.json'
+     - shell: |
+        rsync --recursive --delete-after --force $WORKSPACE/resources/ "$WORKSPACE/docs/js/modules/"
      - documentation-sync-subdir:
         src: '$WORKSPACE/docs/js'
         project: 'mediawiki-core'
