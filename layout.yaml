@@ -1120,9 +1120,15 @@ projects:
         extname: DataValues
 
   - name: mediawiki/extensions/DonationInterface
-    template:
-      - name: extension-checks
-        extname: DonationInterface
+    check-only:
+      - mwext-DonationInterface-merge:
+        - mwext-DonationInterface-jslint
+        - mwext-DonationInterface-lint
+    gate-and-submit:
+      - mwext-DonationInterface-merge:
+        - mwext-DonationInterface-jslint
+        - mwext-DonationInterface-lint
+        - mwext-DonationInterface-runtests
 
   - name: mediawiki/extensions/DeleteBatch
     template:
