@@ -1,3 +1,10 @@
+# Jobs for integration/*
+
+# Job that update the file hierarchy maintained by CI.
+#
+# As of July 2013 the two main entry points are:
+# - integration.wikimedia.org
+# - doc.wikimedia.org
 - job-template:
     name: 'integration-docroot-deploy'
     node: gallium
@@ -25,6 +32,9 @@
         # FIXME change path whenever we have zuul packaged.
         /usr/local/bin/zuul-server -c /etc/zuul/public.conf -t -l "$WORKSPACE"/layout.yaml
 
+# Job for Zuul configuration validation
+# Make sure the Zuul config is passed and show a different with the previous
+# config.
 - job-template:
     name: 'integration-zuul-layoutdiff'
     node: gallium  # it is running Zuul
