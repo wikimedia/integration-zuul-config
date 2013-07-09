@@ -342,6 +342,7 @@
      - SemanticTitle
      - SemanticUpdateOnPurge
      - SemanticWatchlist
+     - Serialization
      - ShortUrl
      - SimpleAntiSpam
      - SiteMatrix
@@ -417,14 +418,14 @@
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: Wikibase
-        dependencies: 'Ask,Diff,DataValues,WikibaseDataModel,Validator'
+        dependencies: 'Ask,Serialization,Diff,DataValues,WikibaseDataModel,Validator'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Diff,DataValues,WikibaseDataModel,Validator'
+        dependencies: 'Ask,Serialization,Diff,DataValues,WikibaseDataModel,Validator'
         kind: 'client'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Diff,DataValues,WikibaseDataModel,Validator'
+        dependencies: 'Ask,Serialization,Diff,DataValues,WikibaseDataModel,Validator'
         kind: 'repo'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseDataModel
@@ -433,15 +434,15 @@
         ext-name: WikibaseDatabase
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseQueryEngine
-        dependencies: 'Diff,DataValues,Ask,WikibaseDataModel,WikibaseDatabase'
+        dependencies: 'Diff,DataValues,Ask,Serialization,WikibaseDataModel,WikibaseDatabase'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseQuery
-        dependencies: 'Diff,DataValues,Ask,WikibaseDataModel,WikibaseDatabase,WikibaseQueryEngine'
+        dependencies: 'Diff,DataValues,Ask,Serialization,WikibaseDataModel,WikibaseDatabase,WikibaseQueryEngine'
 
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: Ask
-        dependencies: 'DataValues'
+        dependencies: 'Serialization,DataValues'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: EducationProgram
@@ -474,6 +475,9 @@
         name: mwext
         ext-name: Validator
         dependencies: 'DataValues'
+     - '{name}-{ext-name}-testextensions-{mwbranch}':
+        name: mwext
+        ext-name: Serialization
 
      - '{name}-{ext-name}-pep8':
         name: mwext
