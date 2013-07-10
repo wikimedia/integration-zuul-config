@@ -1950,6 +1950,16 @@ projects:
 #        - mwext-TimedMediaHandler-lint:
 #          - mwext-TimedMediaHandler-testextensions-master
 
+  - name: mediawiki/extensions/timeline
+    check-only:
+     - mwext-timeline-merge:
+       - mwext-timeline-lint
+       - mwext-timeline-perllint
+    gate-and-submit:
+     - mwext-timeline-merge:
+       - mwext-timeline-lint
+       - mwext-timeline-perllint
+
   - name: mediawiki/extensions/TitleBlacklist
     template:
       - name: extension-unittests
