@@ -1,5 +1,8 @@
+# Specific perllint jobs since wikibugs perl script is not having
+# a .pl file extension which is used by '{name}-perllint' to find
+# perl scripts.
 - job-template:
-    name: '{name}-perllint'
+    name: 'wikimedia-bugzilla-wikibugs-perllint'
 
     defaults: use-zuul
 
@@ -14,4 +17,4 @@
     gerrit-name: 'wikimedia/bugzilla/wikibugs'
 
     jobs:
-     - '{name}-perllint'
+        - 'wikimedia-bugzilla-wikibugs-perllint'

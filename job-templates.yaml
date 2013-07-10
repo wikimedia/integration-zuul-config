@@ -19,6 +19,15 @@
      - pplint-HEAD
 
 - job-template:
+    name: '{name}-perllint'
+    node: hasSlaveScripts
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - perllint
+
+- job-template:
     name: '{name}-phplint'
     node: hasSlaveScripts
     defaults: use-zuul

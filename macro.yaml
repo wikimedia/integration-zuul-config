@@ -277,6 +277,23 @@
             pattern: '**/pep8.txt'
 
 - builder:
+      name: perllint
+      builders:
+       - shell: |
+          # File used to track down whether a perl file is failing syntax check
+          rm -f PHPLINT_FAILED
+
+          find . \
+            \( -name '*.pm' -or -name '*.pl' \) \
+            \( -exec perl -Mstrict -Mdiagnostics -cw {} \; \
+            -or -exec touch PHPLINT_FAILED  \; \)
+
+          # Set exit code to fail the build
+          if [ -e PHPLINT_FAILED ]; then
+              exit 1
+          fi;
+
+- builder:
     name: pyflakes
     builders:
      - shell: "pyflakes"
