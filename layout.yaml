@@ -1118,10 +1118,15 @@ projects:
         extname: DataValues
 
   - name: mediawiki/extensions/DonationInterface
-    check-only:
+    check:
       - mwext-DonationInterface-merge:
         - mwext-DonationInterface-jslint
         - mwext-DonationInterface-lint
+    test:
+      - mwext-DonationInterface-merge:
+        - mwext-DonationInterface-jslint
+        - mwext-DonationInterface-lint
+        - mwext-DonationInterface-runtests
     gate-and-submit:
       - mwext-DonationInterface-merge:
         - mwext-DonationInterface-jslint
