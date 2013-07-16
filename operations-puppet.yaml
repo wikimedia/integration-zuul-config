@@ -27,6 +27,18 @@
             rake --rakefile rakefile validate color=true
         )
 
+# Run rspec
+- job-template:
+    name: 'operations-puppet-spec'
+    node: hasSlaveScripts
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: "rake spec"
+
 # Trigger integration tests hold in 'tests' sub directories as manifests.
 # See the shell wrapper in integration/jenkins.git
 - job-template:
@@ -100,6 +112,7 @@
      - '{name}-erblint-HEAD'
      - operations-puppet-typos
      - operations-puppet-validate
+     - operations-puppet-spec
      - operations-puppet-test
      - operations-puppet-doc
      - operations-puppet-pep8
