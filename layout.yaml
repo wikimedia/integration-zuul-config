@@ -497,31 +497,26 @@ project-templates:
   # Does run the unit tests on 'test' and 'gate-and-submit'
   - name: extension-unittests
     check:
-     - 'mwext-{extname}-merge':
-       - 'mwext-{extname}-jslint'
-       - 'mwext-{extname}-lint'
+     - 'mwext-{extname}-jslint'
+     - 'mwext-{extname}-lint'
     test:
-     - 'mwext-{extname}-merge':
-       - 'mwext-{extname}-jslint'
-       - 'mwext-{extname}-lint':
-         - 'mwext-{extname}-testextensions-master'
+     - 'mwext-{extname}-jslint'
+     - 'mwext-{extname}-lint':
+       - 'mwext-{extname}-testextensions-master'
     gate-and-submit:
-     - 'mwext-{extname}-merge':
-       - 'mwext-{extname}-jslint'
-       - 'mwext-{extname}-lint':
-         - 'mwext-{extname}-testextensions-master'
+     - 'mwext-{extname}-jslint'
+     - 'mwext-{extname}-lint':
+       - 'mwext-{extname}-testextensions-master'
 
   # Template for MediaWiki extensions.
   # No unit tests but vote on linting.
   - name: extension-checks
     check-only:
-     - 'mwext-{extname}-merge':
-       - 'mwext-{extname}-jslint'
-       - 'mwext-{extname}-lint'
+     - 'mwext-{extname}-jslint'
+     - 'mwext-{extname}-lint'
     gate-and-submit:
-     - 'mwext-{extname}-merge':
-       - 'mwext-{extname}-jslint'
-       - 'mwext-{extname}-lint'
+     - 'mwext-{extname}-jslint'
+     - 'mwext-{extname}-lint'
 
   - name: python-lint
     check-voter:
@@ -923,15 +918,13 @@ projects:
 
   - name: mediawiki/extensions/BlameMaps
     check-only:
-      - mwext-BlameMaps-merge:
-        - mwext-BlameMaps-jslint
-        - mwext-BlameMaps-lint
-        - mwext-BlameMaps-pep8
+      - mwext-BlameMaps-jslint
+      - mwext-BlameMaps-lint
+      - mwext-BlameMaps-pep8
     gate-and-submit:
-      - mwext-BlameMaps-merge:
-        - mwext-BlameMaps-jslint
-        - mwext-BlameMaps-lint
-        - mwext-BlameMaps-pep8
+      - mwext-BlameMaps-jslint
+      - mwext-BlameMaps-lint
+      - mwext-BlameMaps-pep8
 
   - name: mediawiki/extensions/BookManager
     template:
@@ -976,14 +969,12 @@ projects:
   # FIXME use a template
   - name: mediawiki/extensions/cldr
     check-only:
-      - mwext-cldr-merge:
-        - mwext-cldr-jslint
-        - mwext-cldr-lint
+      - mwext-cldr-jslint
+      - mwext-cldr-lint
     gate-and-submit:
-      - mwext-cldr-merge:
-        - mwext-cldr-jslint
-        - mwext-cldr-lint:
-          - mwext-cldr-testextensions-master
+      - mwext-cldr-jslint
+      - mwext-cldr-lint:
+        - mwext-cldr-testextensions-master
 
   - name: mediawiki/extensions/CentralAuth
     template:
@@ -1038,15 +1029,13 @@ projects:
   # FIXME: it has pep8
   - name: mediawiki/extensions/ConfirmEdit
     check-only:
-      - mwext-ConfirmEdit-merge:
-        - mwext-ConfirmEdit-jslint
-        - mwext-ConfirmEdit-lint
-        - mwext-ConfirmEdit-pep8
+      - mwext-ConfirmEdit-jslint
+      - mwext-ConfirmEdit-lint
+      - mwext-ConfirmEdit-pep8
     gate-and-submit:
-      - mwext-ConfirmEdit-merge:
-        - mwext-ConfirmEdit-jslint
-        - mwext-ConfirmEdit-lint
-        - mwext-ConfirmEdit-pep8
+      - mwext-ConfirmEdit-jslint
+      - mwext-ConfirmEdit-lint
+      - mwext-ConfirmEdit-pep8
 
   - name: mediawiki/extensions/ContributionScores
     template:
@@ -1115,19 +1104,16 @@ projects:
 
   - name: mediawiki/extensions/DonationInterface
     check:
-      - mwext-DonationInterface-merge:
-        - mwext-DonationInterface-jslint
-        - mwext-DonationInterface-lint
+      - mwext-DonationInterface-jslint
+      - mwext-DonationInterface-lint
     test:
-      - mwext-DonationInterface-merge:
-        - mwext-DonationInterface-jslint
-        - mwext-DonationInterface-lint
-        - mwext-DonationInterface-runtests
+      - mwext-DonationInterface-jslint
+      - mwext-DonationInterface-lint
+      - mwext-DonationInterface-runtests
     gate-and-submit:
-      - mwext-DonationInterface-merge:
-        - mwext-DonationInterface-jslint
-        - mwext-DonationInterface-lint
-        - mwext-DonationInterface-runtests
+      - mwext-DonationInterface-jslint
+      - mwext-DonationInterface-lint
+      - mwext-DonationInterface-runtests
 
   - name: mediawiki/extensions/DeleteBatch
     template:
@@ -1171,15 +1157,13 @@ projects:
 
   - name: mediawiki/extensions/DumpHTML
     check-only:
-      - mwext-DumpHTML-merge:
-        - mwext-DumpHTML-jslint
-        - mwext-DumpHTML-lint
-        - mwext-DumpHTML-pep8
+      - mwext-DumpHTML-jslint
+      - mwext-DumpHTML-lint
+      - mwext-DumpHTML-pep8
     gate-and-submit:
-      - mwext-DumpHTML-merge:
-        - mwext-DumpHTML-jslint
-        - mwext-DumpHTML-lint
-        - mwext-DumpHTML-pep8
+      - mwext-DumpHTML-jslint
+      - mwext-DumpHTML-lint
+      - mwext-DumpHTML-pep8
 
   - name: mediawiki/extensions/E3Experiments
     template:
@@ -1218,24 +1202,21 @@ projects:
 
   - name: mediawiki/extensions/EventLogging
     check:
-      - mwext-EventLogging-merge:
-        - mwext-EventLogging-jslint
-        - mwext-EventLogging-pep8
-        - mwext-EventLogging-lint
+      - mwext-EventLogging-jslint
+      - mwext-EventLogging-pep8
+      - mwext-EventLogging-lint
     test:
-      - mwext-EventLogging-merge:
-        - mwext-EventLogging-jslint
-        - mwext-EventLogging-pep8
-        - mwext-EventLogging-lint:
-          - mwext-EventLogging-testextensions-master
-          - mwext-EventLogging-qunit
+      - mwext-EventLogging-jslint
+      - mwext-EventLogging-pep8
+      - mwext-EventLogging-lint:
+        - mwext-EventLogging-testextensions-master
+        - mwext-EventLogging-qunit
     gate-and-submit:
-      - mwext-EventLogging-merge:
-        - mwext-EventLogging-jslint
-        - mwext-EventLogging-pep8
-        - mwext-EventLogging-lint:
-          - mwext-EventLogging-testextensions-master
-          - mwext-EventLogging-qunit
+      - mwext-EventLogging-jslint
+      - mwext-EventLogging-pep8
+      - mwext-EventLogging-lint:
+        - mwext-EventLogging-testextensions-master
+        - mwext-EventLogging-qunit
 
   - name: mediawiki/extensions/ExpandTemplates
     template:
@@ -1319,21 +1300,18 @@ projects:
 
   - name: mediawiki/extensions/GuidedTour
     check:
-     - mwext-GuidedTour-merge:
-       - mwext-GuidedTour-jslint
-       - mwext-GuidedTour-lint
+     - mwext-GuidedTour-jslint
+     - mwext-GuidedTour-lint
     test:
-     - mwext-GuidedTour-merge:
-       - mwext-GuidedTour-jslint
-       - mwext-GuidedTour-lint:
-         - mwext-GuidedTour-testextensions-master
-         - mwext-GuidedTour-qunit
+     - mwext-GuidedTour-jslint
+     - mwext-GuidedTour-lint:
+       - mwext-GuidedTour-testextensions-master
+       - mwext-GuidedTour-qunit
     gate-and-submit:
-     - mwext-GuidedTour-merge:
-       - mwext-GuidedTour-jslint
-       - mwext-GuidedTour-lint:
-         - mwext-GuidedTour-testextensions-master
-         - mwext-GuidedTour-qunit
+     - mwext-GuidedTour-jslint
+     - mwext-GuidedTour-lint:
+       - mwext-GuidedTour-testextensions-master
+       - mwext-GuidedTour-qunit
 
   - name: mediawiki/extensions/I18nTags
     template:
@@ -1439,24 +1417,21 @@ projects:
 
   - name: mediawiki/extensions/MobileFrontend
     check:
-      - mwext-MobileFrontend-merge:
-        - mwext-MobileFrontend-lint
-        - mwext-MobileFrontend-jslint
-        - mwext-MobileFrontend-ruby1.9.3lint
+      - mwext-MobileFrontend-lint
+      - mwext-MobileFrontend-jslint
+      - mwext-MobileFrontend-ruby1.9.3lint
     test:
-      - mwext-MobileFrontend-merge:
-        - mwext-MobileFrontend-jslint
-        - mwext-MobileFrontend-lint:
-          - mwext-MobileFrontend-testextensions-master
-        - mwext-MobileFrontend-ruby1.9.3lint
-        - mwext-MobileFrontend-qunit
+      - mwext-MobileFrontend-jslint
+      - mwext-MobileFrontend-lint:
+        - mwext-MobileFrontend-testextensions-master
+      - mwext-MobileFrontend-ruby1.9.3lint
+      - mwext-MobileFrontend-qunit
     gate-and-submit:
-      - mwext-MobileFrontend-merge:
-        - mwext-MobileFrontend-jslint
-        - mwext-MobileFrontend-lint:
-          - mwext-MobileFrontend-testextensions-master
-        - mwext-MobileFrontend-ruby1.9.3lint
-        - mwext-MobileFrontend-qunit
+      - mwext-MobileFrontend-jslint
+      - mwext-MobileFrontend-lint:
+        - mwext-MobileFrontend-testextensions-master
+      - mwext-MobileFrontend-ruby1.9.3lint
+      - mwext-MobileFrontend-qunit
 
   - name: mediawiki/extensions/MoodBar
     template:
@@ -1531,15 +1506,13 @@ projects:
 
   - name: mediawiki/extensions/Offline
     check-only:
-      - mwext-Offline-merge:
-        - mwext-Offline-jslint
-        - mwext-Offline-lint
-        - mwext-Offline-pep8
+      - mwext-Offline-jslint
+      - mwext-Offline-lint
+      - mwext-Offline-pep8
     gate-and-submit:
-      - mwext-Offline-merge:
-        - mwext-Offline-jslint
-        - mwext-Offline-lint
-        - mwext-Offline-pep8
+      - mwext-Offline-jslint
+      - mwext-Offline-lint
+      - mwext-Offline-pep8
 
   - name: mediawiki/extensions/OpenID
     template:
@@ -1553,15 +1526,13 @@ projects:
 
   - name: mediawiki/extensions/OpenStackManager
     check-only:
-      - mwext-OpenStackManager-merge:
-        - mwext-OpenStackManager-jslint
-        - mwext-OpenStackManager-lint
-        - mwext-OpenStackManager-pep8
+      - mwext-OpenStackManager-jslint
+      - mwext-OpenStackManager-lint
+      - mwext-OpenStackManager-pep8
     gate-and-submit:
-      - mwext-OpenStackManager-merge:
-        - mwext-OpenStackManager-jslint
-        - mwext-OpenStackManager-pep8
-        - mwext-OpenStackManager-lint
+      - mwext-OpenStackManager-jslint
+      - mwext-OpenStackManager-pep8
+      - mwext-OpenStackManager-lint
 
   - name: mediawiki/extensions/PagedTiffHandler
     template:
@@ -1590,27 +1561,24 @@ projects:
 
   - name: mediawiki/extensions/Parsoid
     check:
-      - mwext-Parsoid-merge:
-        - mwext-Parsoid-jslint
-        - mwext-Parsoid-phpcs-HEAD
+      - mwext-Parsoid-jslint
+      - mwext-Parsoid-phpcs-HEAD
     test:
-      - mwext-Parsoid-merge:
-        - mwext-Parsoid-jslint
-        - mwext-Parsoid-phpcs-HEAD
-        # SSS: parsoid-parsertests-run-hader is now self-documenting wrt
-        # test failures.  So, no need to run this more complex test script.
-        # - parsoid-parsertests
-        - parsoid-parse-tool-check
-        - parsoid-roundtrip-test-check
-        - parsoid-parsertests-run-harder
+      - mwext-Parsoid-jslint
+      - mwext-Parsoid-phpcs-HEAD
+      # SSS: parsoid-parsertests-run-hader is now self-documenting wrt
+      # test failures.  So, no need to run this more complex test script.
+      # - parsoid-parsertests
+      - parsoid-parse-tool-check
+      - parsoid-roundtrip-test-check
+      - parsoid-parsertests-run-harder
     gate-and-submit:
-      - mwext-Parsoid-merge:
-        - mwext-Parsoid-jslint
-        - mwext-Parsoid-phpcs-HEAD
-        # SSS: parsoid-parsertests-run-hader is now self-documenting wrt
-        # test failures.  So, no need to run this more complex test script.
-        # - parsoid-parsertests
-        - parsoid-parsertests-run-harder
+      - mwext-Parsoid-jslint
+      - mwext-Parsoid-phpcs-HEAD
+      # SSS: parsoid-parsertests-run-hader is now self-documenting wrt
+      # test failures.  So, no need to run this more complex test script.
+      # - parsoid-parsertests
+      - parsoid-parsertests-run-harder
     postmerge:
       - parsoid-regressions
 
@@ -1631,19 +1599,16 @@ projects:
 
   - name: mediawiki/extensions/PoolCounter
     check:
-      - mwext-PoolCounter-merge:
-        - mwext-PoolCounter-jslint
-        - mwext-PoolCounter-lint
+      - mwext-PoolCounter-jslint
+      - mwext-PoolCounter-lint
     test:
-      - mwext-PoolCounter-merge:
-        - mwext-PoolCounter-jslint
-        - mwext-PoolCounter-lint
-        - mwext-PoolCounter-build
+      - mwext-PoolCounter-jslint
+      - mwext-PoolCounter-lint
+      - mwext-PoolCounter-build
     gate-and-submit:
-      - mwext-PoolCounter-merge:
-        - mwext-PoolCounter-jslint
-        - mwext-PoolCounter-lint
-        - mwext-PoolCounter-build
+      - mwext-PoolCounter-jslint
+      - mwext-PoolCounter-lint
+      - mwext-PoolCounter-build
 
   - name: mediawiki/extensions/PostEdit
     template:
@@ -1722,15 +1687,13 @@ projects:
 
   - name: mediawiki/extensions/SemanticBundle
     check-only:
-     - mwext-SemanticBundle-merge:
-       - mwext-SemanticBundle-jslint
-       - mwext-SemanticBundle-lint
-       - mwext-SemanticBundle-pep8
+     - mwext-SemanticBundle-jslint
+     - mwext-SemanticBundle-lint
+     - mwext-SemanticBundle-pep8
     gate-and-submit:
-     - mwext-SemanticBundle-merge:
-       - mwext-SemanticBundle-jslint
-       - mwext-SemanticBundle-lint
-       - mwext-SemanticBundle-pep8
+     - mwext-SemanticBundle-jslint
+     - mwext-SemanticBundle-lint
+     - mwext-SemanticBundle-pep8
 
   - name: mediawiki/extensions/SemanticCompoundQueries
     template:
@@ -1924,15 +1887,13 @@ projects:
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
     check-only:
-      - mwext-SyntaxHighlight_GeSHi-merge:
-        - mwext-SyntaxHighlight_GeSHi-jslint
-        - mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
-        - mwext-SyntaxHighlight_GeSHi-lint
+      - mwext-SyntaxHighlight_GeSHi-jslint
+      - mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
+      - mwext-SyntaxHighlight_GeSHi-lint
     gate-and-submit:
-      - mwext-SyntaxHighlight_GeSHi-merge:
-        - mwext-SyntaxHighlight_GeSHi-jslint
-        - mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
-        - mwext-SyntaxHighlight_GeSHi-lint
+      - mwext-SyntaxHighlight_GeSHi-jslint
+      - mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
+      - mwext-SyntaxHighlight_GeSHi-lint
 
   - name: mediawiki/extensions/TemplateData
     check:
@@ -1954,26 +1915,22 @@ projects:
 
   - name: mediawiki/extensions/TimedMediaHandler
     check-only:
-      - mwext-TimedMediaHandler-merge:
-        - mwext-TimedMediaHandler-jslint
-        - mwext-TimedMediaHandler-lint
+      - mwext-TimedMediaHandler-jslint
+      - mwext-TimedMediaHandler-lint
     gate-and-submit:
-      - mwext-TimedMediaHandler-merge:
-        - mwext-TimedMediaHandler-jslint
-        - mwext-TimedMediaHandler-lint
+      - mwext-TimedMediaHandler-jslint
+      - mwext-TimedMediaHandler-lint
 # FIXME Requires the MwEmbedSupport extension :(
-#        - mwext-TimedMediaHandler-lint:
-#          - mwext-TimedMediaHandler-testextensions-master
+#      - mwext-TimedMediaHandler-lint:
+#        - mwext-TimedMediaHandler-testextensions-master
 
   - name: mediawiki/extensions/timeline
     check-only:
-     - mwext-timeline-merge:
-       - mwext-timeline-lint
-       - mwext-timeline-perllint
+     - mwext-timeline-lint
+     - mwext-timeline-perllint
     gate-and-submit:
-     - mwext-timeline-merge:
-       - mwext-timeline-lint
-       - mwext-timeline-perllint
+     - mwext-timeline-lint
+     - mwext-timeline-perllint
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
@@ -1997,41 +1954,35 @@ projects:
 
   - name: mediawiki/extensions/Translate
     check-only:
-      - mwext-Translate-merge:
-        - mwext-Translate-jslint
-        - mwext-Translate-phpcs-HEAD
-        - mwext-Translate-lint
+      - mwext-Translate-jslint
+      - mwext-Translate-phpcs-HEAD
+      - mwext-Translate-lint
     test:
-      - mwext-Translate-merge:
-        - mwext-Translate-jslint
-        - mwext-Translate-phpcs-HEAD
-        - mwext-Translate-lint:
-          - mwext-Translate-testextensions-master
+      - mwext-Translate-jslint
+      - mwext-Translate-phpcs-HEAD
+      - mwext-Translate-lint:
+        - mwext-Translate-testextensions-master
     gate-and-submit:
-      - mwext-Translate-merge:
-        - mwext-Translate-jslint
-        - mwext-Translate-phpcs-HEAD
-        - mwext-Translate-lint:
-          - mwext-Translate-testextensions-master
+      - mwext-Translate-jslint
+      - mwext-Translate-phpcs-HEAD
+      - mwext-Translate-lint:
+        - mwext-Translate-testextensions-master
 
   - name: mediawiki/extensions/TranslationNotifications
     check-only:
-      - mwext-TranslationNotifications-merge:
-        - mwext-TranslationNotifications-jslint
-        - mwext-TranslationNotifications-phpcs-HEAD
-        - mwext-TranslationNotifications-lint
+      - mwext-TranslationNotifications-jslint
+      - mwext-TranslationNotifications-phpcs-HEAD
+      - mwext-TranslationNotifications-lint
     test:
-      - mwext-TranslationNotifications-merge:
-        - mwext-TranslationNotifications-jslint
-        - mwext-TranslationNotifications-phpcs-HEAD
-        - mwext-TranslationNotifications-lint:
-          - mwext-TranslationNotifications-testextensions-master
+      - mwext-TranslationNotifications-jslint
+      - mwext-TranslationNotifications-phpcs-HEAD
+      - mwext-TranslationNotifications-lint:
+        - mwext-TranslationNotifications-testextensions-master
     gate-and-submit:
-      - mwext-TranslationNotifications-merge:
-        - mwext-TranslationNotifications-jslint
-        - mwext-TranslationNotifications-phpcs-HEAD
-        - mwext-TranslationNotifications-lint:
-          - mwext-TranslationNotifications-testextensions-master
+      - mwext-TranslationNotifications-jslint
+      - mwext-TranslationNotifications-phpcs-HEAD
+      - mwext-TranslationNotifications-lint:
+        - mwext-TranslationNotifications-testextensions-master
 
   - name: mediawiki/extensions/Transliterator
     template:
@@ -2045,15 +1996,13 @@ projects:
 
   - name: mediawiki/extensions/TwnMainPage
     check-only:
-      - mwext-TwnMainPage-merge:
-        - mwext-TwnMainPage-jslint
-        - mwext-TwnMainPage-phpcs-HEAD
-        - mwext-TwnMainPage-lint
+      - mwext-TwnMainPage-jslint
+      - mwext-TwnMainPage-phpcs-HEAD
+      - mwext-TwnMainPage-lint
     gate-and-submit:
-      - mwext-TwnMainPage-merge:
-        - mwext-TwnMainPage-jslint
-        - mwext-TwnMainPage-phpcs-HEAD
-        - mwext-TwnMainPage-lint
+      - mwext-TwnMainPage-jslint
+      - mwext-TwnMainPage-phpcs-HEAD
+      - mwext-TwnMainPage-lint
 
   - name: mediawiki/extensions/UnicodeConverter
     template:
@@ -2062,16 +2011,14 @@ projects:
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     check-only:
-      - mwext-UniversalLanguageSelector-merge:
-        - mwext-UniversalLanguageSelector-lint
-        - mwext-UniversalLanguageSelector-phpcs-HEAD
-        - mwext-UniversalLanguageSelector-jslint
+      - mwext-UniversalLanguageSelector-lint
+      - mwext-UniversalLanguageSelector-phpcs-HEAD
+      - mwext-UniversalLanguageSelector-jslint
     gate-and-submit:
-      - mwext-UniversalLanguageSelector-merge:
-        - mwext-UniversalLanguageSelector-jslint
-        - mwext-UniversalLanguageSelector-phpcs-HEAD
-        - mwext-UniversalLanguageSelector-lint:
-          - mwext-UniversalLanguageSelector-testextensions-master
+      - mwext-UniversalLanguageSelector-jslint
+      - mwext-UniversalLanguageSelector-phpcs-HEAD
+      - mwext-UniversalLanguageSelector-lint:
+        - mwext-UniversalLanguageSelector-testextensions-master
 
   - name: mediawiki/extensions/UploadBlacklist
     template:
@@ -2080,20 +2027,17 @@ projects:
 
   - name: mediawiki/extensions/UploadWizard
     check:
-      - mwext-UploadWizard-merge:
-        - mwext-UploadWizard-jslint
-        - mwext-UploadWizard-phpcs-HEAD
-        - mwext-UploadWizard-lint
+      - mwext-UploadWizard-jslint
+      - mwext-UploadWizard-phpcs-HEAD
+      - mwext-UploadWizard-lint
     test:
-      - mwext-UploadWizard-merge:
-        - mwext-UploadWizard-jslint
-        - mwext-UploadWizard-phpcs-HEAD
-        - mwext-UploadWizard-lint
+      - mwext-UploadWizard-jslint
+      - mwext-UploadWizard-phpcs-HEAD
+      - mwext-UploadWizard-lint
     gate-and-submit:
-      - mwext-UploadWizard-merge:
-        - mwext-UploadWizard-jslint
-        - mwext-UploadWizard-phpcs-HEAD
-        - mwext-UploadWizard-lint
+      - mwext-UploadWizard-jslint
+      - mwext-UploadWizard-phpcs-HEAD
+      - mwext-UploadWizard-lint
 
   - name: mediawiki/extensions/UserDailyContribs
     template:
@@ -2127,15 +2071,13 @@ projects:
 
   - name: mediawiki/extensions/Vector
     check-only:
-      - mwext-Vector-merge:
-        - mwext-Vector-jslint
-        - mwext-Vector-phpcs-HEAD
-        - mwext-Vector-lint
+      - mwext-Vector-jslint
+      - mwext-Vector-phpcs-HEAD
+      - mwext-Vector-lint
     gate-and-submit:
-      - mwext-Vector-merge:
-        - mwext-Vector-jslint
-        - mwext-Vector-phpcs-HEAD
-        - mwext-Vector-lint
+      - mwext-Vector-jslint
+      - mwext-Vector-phpcs-HEAD
+      - mwext-Vector-lint
 
   - name: mediawiki/extensions/VipsScaler
     template:
@@ -2144,24 +2086,21 @@ projects:
 
   - name: mediawiki/extensions/VisualEditor
     check:
-      - mwext-VisualEditor-merge:
-        - mwext-VisualEditor-jslint
-        - mwext-VisualEditor-phpcs-HEAD
-        - mwext-VisualEditor-lint
+      - mwext-VisualEditor-jslint
+      - mwext-VisualEditor-phpcs-HEAD
+      - mwext-VisualEditor-lint
     test:
-      - mwext-VisualEditor-merge:
-        - mwext-VisualEditor-jslint
-        - mwext-VisualEditor-phpcs-HEAD
-        - mwext-VisualEditor-lint
-        - mwext-VisualEditor-doc-test
-        - mwext-VisualEditor-qunit
+      - mwext-VisualEditor-jslint
+      - mwext-VisualEditor-phpcs-HEAD
+      - mwext-VisualEditor-lint
+      - mwext-VisualEditor-doc-test
+      - mwext-VisualEditor-qunit
     gate-and-submit:
-      - mwext-VisualEditor-merge:
-        - mwext-VisualEditor-jslint
-        - mwext-VisualEditor-phpcs-HEAD
-        - mwext-VisualEditor-lint
-        - mwext-VisualEditor-doc-test
-        - mwext-VisualEditor-qunit
+      - mwext-VisualEditor-jslint
+      - mwext-VisualEditor-phpcs-HEAD
+      - mwext-VisualEditor-lint
+      - mwext-VisualEditor-doc-test
+      - mwext-VisualEditor-qunit
     postmerge:
       - mwext-VisualEditor-doc-publish
 
@@ -2172,46 +2111,39 @@ projects:
 
   - name: mediawiki/extensions/WebFonts
     check-only:
-      - mwext-WebFonts-merge:
-        - mwext-WebFonts-jslint
-        - mwext-WebFonts-phpcs-HEAD
-        - mwext-WebFonts-lint
+      - mwext-WebFonts-jslint
+      - mwext-WebFonts-phpcs-HEAD
+      - mwext-WebFonts-lint
     gate-and-submit:
-      - mwext-WebFonts-merge:
-        - mwext-WebFonts-jslint
-        - mwext-WebFonts-phpcs-HEAD
-        - mwext-WebFonts-lint
+      - mwext-WebFonts-jslint
+      - mwext-WebFonts-phpcs-HEAD
+      - mwext-WebFonts-lint
 
   - name: mediawiki/extensions/WikiEditor
     check-only:
-      - mwext-WikiEditor-merge:
-        - mwext-WikiEditor-jslint
-        - mwext-WikiEditor-phpcs-HEAD
-        - mwext-WikiEditor-lint
+      - mwext-WikiEditor-jslint
+      - mwext-WikiEditor-phpcs-HEAD
+      - mwext-WikiEditor-lint
     gate-and-submit:
-      - mwext-WikiEditor-merge:
-        - mwext-WikiEditor-jslint
-        - mwext-WikiEditor-phpcs-HEAD
-        - mwext-WikiEditor-lint
+      - mwext-WikiEditor-jslint
+      - mwext-WikiEditor-phpcs-HEAD
+      - mwext-WikiEditor-lint
 
   - name: mediawiki/extensions/Wikibase
     check:
-      - mwext-Wikibase-merge:
-        - mwext-Wikibase-jslint
-        - mwext-Wikibase-lint
+      - mwext-Wikibase-jslint
+      - mwext-Wikibase-lint
     test:
-      - mwext-Wikibase-merge:
-        - mwext-Wikibase-jslint
-        - mwext-Wikibase-lint:
-          - mwext-Wikibase-testextensions-master
-          - mwext-Wikibase-client-tests
-          - mwext-Wikibase-repo-tests
+      - mwext-Wikibase-jslint
+      - mwext-Wikibase-lint:
+        - mwext-Wikibase-testextensions-master
+        - mwext-Wikibase-client-tests
+        - mwext-Wikibase-repo-tests
     gate-and-submit:
-      - mwext-Wikibase-merge:
-        - mwext-Wikibase-jslint
-        - mwext-Wikibase-lint:
-#          - mwext-Wikibase-client-tests
-          - mwext-Wikibase-repo-tests
+      - mwext-Wikibase-jslint
+      - mwext-Wikibase-lint:
+#        - mwext-Wikibase-client-tests
+        - mwext-Wikibase-repo-tests
 
   - name: mediawiki/extensions/WikibaseDatabase
     template:
