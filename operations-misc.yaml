@@ -12,3 +12,22 @@
     name: 'operations-dumps'
     jobs:
      - python-jobs
+
+- job-template:
+    name: 'operations-dns-lint'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         # Prepare the zone files
+         mkdir -p "$WORKSPACE"/chroot/zones
+         authdns-gen-zones "$WORKSPACE"/templates "$WORKSPACE"/chroot/zones
+
+         # lint them
+         gdnsd -d "$WORKSPACE"
+
+- project:
+    name: 'operations-dns'
+    jobs:
+     - 'operations-dns-lint'
