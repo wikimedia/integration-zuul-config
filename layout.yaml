@@ -253,6 +253,9 @@ jobs:
     files:
       - '^.*\.(pl|pm)$'
 
+  - name: operations-dns-lint
+    voting: false
+
   - name: operations-puppet-pep8
     voting: true
     files:
@@ -768,6 +771,10 @@ projects:
      - lucene-search-2-antbuild
     gate-and-submit:
      - lucene-search-2-antbuild
+
+  - name: operations/dns
+    check-voter:
+      - operations-dns-lint
 
   - name: operations/dumps
     check-voter:
