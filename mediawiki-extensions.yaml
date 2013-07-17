@@ -221,6 +221,7 @@
      - CreditsSource
      - CustomData
      - CustomUserSignup
+     - DataTypes
      - DataValues
      - DeleteBatch
      - Diff
@@ -420,14 +421,14 @@
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: Wikibase
-        dependencies: 'Ask,Serialization,Diff,DataValues,WikibaseDataModel,Validator'
+        dependencies: 'Ask,Serialization,Diff,DataValues,DataTypes,WikibaseDataModel,Validator'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Serialization,Diff,DataValues,WikibaseDataModel,Validator'
+        dependencies: 'Ask,Serialization,Diff,DataValues,DataTypes,WikibaseDataModel,Validator'
         kind: 'client'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Serialization,Diff,DataValues,WikibaseDataModel,Validator'
+        dependencies: 'Ask,Serialization,Diff,DataValues,DataTypes,WikibaseDataModel,Validator'
         kind: 'repo'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseDataModel
@@ -436,10 +437,10 @@
         ext-name: WikibaseDatabase
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseQueryEngine
-        dependencies: 'Diff,DataValues,Ask,Serialization,WikibaseDataModel,WikibaseDatabase'
+        dependencies: 'Diff,DataValues,DataTypes,Ask,Serialization,WikibaseDataModel,WikibaseDatabase'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseQuery
-        dependencies: 'Diff,DataValues,Ask,Serialization,WikibaseDataModel,WikibaseDatabase,WikibaseQueryEngine,Wikibase'
+        dependencies: 'Diff,DataValues,DataTypes,Ask,Serialization,WikibaseDataModel,WikibaseDatabase,WikibaseQueryEngine,Wikibase'
 
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
@@ -484,6 +485,10 @@
         name: mwext
         ext-name: ParserHooks
         dependencies: 'DataValues,Validator'
+     - '{name}-{ext-name}-testextensions-{mwbranch}':
+        name: mwext
+        ext-name: DataTypes
+        dependencies: 'DataValues'
 
      - '{name}-{ext-name}-pep8':
         name: mwext
