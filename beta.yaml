@@ -160,3 +160,18 @@
           git tag "jenkins_build_$BUILD_NUMBER" "$ZUUL_COMMIT" ;
           touch /home/wikipedia/common/wmf-config/InitialiseSettings.php ;
          '
+
+# Job updating MediaWiki core+extensions code and refreshing the message
+#
+# This is the poor man auto updating script. We should probably split the
+# script in different part and have the jobs trigger each other.
+- job:
+    name: beta-code-update
+    defaults: beta
+
+    builders:
+     - shell: "sudo -u mwdeploy VERBOSE=YES /usr/local/bin/wmf-beta-autoupdate"
+
+    triggers:
+     # Every six minutes:
+     - timed: '*/6 * * * *'
