@@ -28,6 +28,8 @@ pipelines:
   #    by a whitelisted user. Votes V+2.
 
   - name: check
+    description: >
+      Harmless jobs being run for untrusted users. Will vote Verified +1/-1.
     manager: IndependentPipelineManager
     trigger:
       - event: patchset-created
@@ -51,6 +53,7 @@ pipelines:
   # Use this for projects that don't have a 'test' pipeline. Because the normal 'check'
   # pipeline does not execute for people for whom the test execution is done immediately.s
   - name: check-only
+    description: Harmless jobs not restricted. Will vote Verified +1/-1.
     manager: IndependentPipelineManager
     trigger:
       - event: patchset-created
@@ -64,6 +67,9 @@ pipelines:
       code-review: 0
 
   - name: check-voter
+    description: >
+      Linting check that validate a change by voting +2. Used when there is no
+      unit tests.
     manager: IndependentPipelineManager
     trigger:
       - event: patchset-created
@@ -77,6 +83,9 @@ pipelines:
       code-review: 0
 
   - name: test
+    description: >
+      Jobs restricted to trusted users. Will vote Verified +2/-1, letting one
+      submit the change.
     manager: IndependentPipelineManager
     trigger:
       - event: patchset-created
@@ -155,7 +164,7 @@ pipelines:
   #
   - name: gate-and-submit
     description: >
-      Patchsets entering this get will be merged by Jenkins if all the jobs
+      Patchsets entering this will be merged by Jenkins if all the jobs
       pass.
     manager: IndependentPipelineManager
     trigger:
@@ -176,12 +185,14 @@ pipelines:
 
   # Filter the merge events, useful to do regression testing.
   - name: postmerge
+    description: Jobs triggered after a change has been merged.
     manager: IndependentPipelineManager
     trigger:
       - event: change-merged
 
   # Pipeline reacting whenever some reference is updated
   - name: post
+    description: Whenever a reference is updated.
     manager: IndependentPipelineManager
     trigger:
      - event: ref-updated
@@ -189,6 +200,7 @@ pipelines:
 
   # Pipeline for tags (either a new one or a removal)
   - name: publish
+    description: Handle tags modifications.
     manager: IndependentPipelineManager
     trigger:
      - event: ref-updated
