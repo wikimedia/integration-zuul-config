@@ -154,6 +154,9 @@ pipelines:
   # WARNING: Also update the "gate" pipeline when changing this one.
   #
   - name: gate-and-submit
+    description: >
+      Patchsets entering this get will be merged by Jenkins if all the jobs
+      pass.
     manager: IndependentPipelineManager
     trigger:
       - event: comment-added
