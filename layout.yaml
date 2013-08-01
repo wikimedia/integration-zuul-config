@@ -148,23 +148,6 @@ pipelines:
       verified: -1
       code-review: 0
 
-  # gate reports/votes in Gerrit
-  #
-  # WARNING: Also update the "gate-and-submit" pipeline when changing this one.
-  #
-  - name: gate
-    manager: IndependentPipelineManager
-    trigger:
-      - event: comment-added
-        approval:
-          - code-review: 2
-    success:
-      verified: 2
-      code-review: 0
-    failure:
-      verified: -1
-      code-review: 0
-
   # Actual gate (report/vote in Gerrit)
   # Will auto submit change on success!!!!!!!!
   #
@@ -638,7 +621,7 @@ projects:
   - name: analytics/libanon
     test:
      - analytics-libanon
-    gate:
+    gate-and-submit:
      - analytics-libanon
     postmerge:
      - analytics-libanon
@@ -646,7 +629,7 @@ projects:
   - name: analytics/udp-filters
     test:
      - analytics-udp-filters
-    gate:
+    gate-and-submit:
      - analytics-udp-filters
     postmerge:
      - analytics-udp-filters
@@ -654,7 +637,7 @@ projects:
   - name: analytics/webstatscollector
     test:
      - analytics-webstatscollector
-    gate:
+    gate-and-submit:
      - analytics-webstatscollector
     postmerge:
      - analytics-webstatscollector
@@ -662,7 +645,7 @@ projects:
   - name: analytics/wikistats
     test:
      - analytics-wikistats
-    gate:
+    gate-and-submit:
      - analytics-wikistats
     postmerge:
      - analytics-wikistats
