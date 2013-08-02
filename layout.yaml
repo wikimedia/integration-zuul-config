@@ -342,6 +342,9 @@ jobs:
   - name: operations-debs-ircecho-pyflakes
     voting: true
 
+  - name: labs-tools-grrrit-jslint
+    voting: true
+
   - name: mediawiki-core-jslint
     voting: true
     # Doesn't work in MediaWiki REL1_19 (bug 44846)
@@ -691,6 +694,14 @@ projects:
     template:
       - name: 'python-lint'
         prefix: 'labs-nagios-builder'
+
+  - name: labs/tools/grrrit
+    check-voter:
+     - labs-tools-grrrit-jslint
+     - labs-tools-grrrit-yamllint
+    gate-and-submit:
+     - labs-tools-grrrit-jslint
+     - labs-tools-grrrit-yamllint
 
   - name: integration/docroot
     check-voter:
