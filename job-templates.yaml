@@ -9,6 +9,20 @@
     builders:
      - erblint-HEAD
 
+# Generic job to run JSHint
+- job-template:
+    name: '{name}-jslint'
+    node: hasSlaveScripts
+    defaults: use-zuul
+    triggers:
+     - zuul
+    scm:
+     - git-zuul:
+        gerrit-name: '{gerrit-name}'
+        disable-submodules: true
+    builders:
+     - jshint
+
 - job-template:
     name: '{name}-pplint-HEAD'
     node: hasSlaveScripts
