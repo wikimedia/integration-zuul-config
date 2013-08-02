@@ -86,6 +86,17 @@
         use-zuul
     triggers:
         - zuul
+    scm:
+        - git:
+            url: '/srv/ssd/zuul/git/mediawiki/extensions/Parsoid'
+            refspec: '$ZUUL_REF'
+            name: 'origin'
+            disable-submodules: true
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Parsoid/js/contrib.git'
+            branches:
+                - master
+            basedir: contrib
     builders:
         - parsoid-parsertests-run
     publishers:
