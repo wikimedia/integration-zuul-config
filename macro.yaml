@@ -338,6 +338,27 @@
          --report-checkstyle=checkstyle-phpcs.xml \
          --report-full
 
+- builder:
+    name: phpcs-strict
+    builders:
+     - shell: /var/lib/jenkins/bin/run-phpcs-mw.sh
+
+- builder:
+    name: phpcs-strict-HEAD
+    builders:
+     - shell: /var/lib/jenkins/bin/run-phpcs-mw.sh HEAD
+
+- builder:
+    name: phpcs-lenient
+    builders:
+     - shell: /var/lib/jenkins/bin/run-phpcs-mw.sh nowarnings
+
+- builder:
+    name: phpcs-lenient-HEAD
+    builders:
+     - shell: /var/lib/jenkins/bin/run-phpcs-mw.sh nowarnings HEAD
+
+
 - publisher:
     name: phpcs
     publishers:

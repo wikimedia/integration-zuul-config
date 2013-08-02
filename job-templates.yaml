@@ -77,6 +77,82 @@
      - phpcs
 
 - job-template:
+    name: '{name}-phpcs-strict'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    scm:
+     - git-zuul:
+        gerrit-name: '{gerrit-name}'
+        disable-submodules: true
+
+    builders:
+     - phpcs-strict
+
+    publishers:
+     - checkstyle-xml
+     - phpcs
+
+- job-template:
+    name: '{name}-phpcs-strict-HEAD'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    scm:
+     - git-zuul:
+        gerrit-name: '{gerrit-name}'
+        disable-submodules: true
+
+    builders:
+     - phpcs-strict-HEAD
+
+    publishers:
+     - checkstyle-xml
+     - phpcs
+
+- job-template:
+    name: '{name}-phpcs-lenient'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    scm:
+     - git-zuul:
+        gerrit-name: '{gerrit-name}'
+        disable-submodules: true
+
+    builders:
+     - phpcs-lenient
+
+    publishers:
+     - checkstyle-xml
+     - phpcs
+
+- job-template:
+    name: '{name}-phpcs-lenient-HEAD'
+
+    defaults: use-zuul
+    triggers:
+     - zuul
+
+    scm:
+     - git-zuul:
+        gerrit-name: '{gerrit-name}'
+        disable-submodules: true
+
+    builders:
+     - phpcs-lenient-HEAD
+
+    publishers:
+     - checkstyle-xml
+     - phpcs
+
+- job-template:
     name: '{name}-puppet-validate'
     defaults: use-zuul
 
