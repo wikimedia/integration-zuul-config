@@ -51,6 +51,41 @@
             files: '**/results.xml'
 
 - job-template:
+    name: parsoid-php-parsertests
+    node: hasSlaveScripts
+    wrappers:
+        - timeout:
+            timeout: 10
+            fail: true
+    defaults:
+        use-zuul
+    triggers:
+        - zuul
+    scm:
+        - git:
+            url: '/srv/ssd/zuul/git/mediawiki/extensions/Parsoid'
+            refspec: '$ZUUL_REF'
+            name: 'origin'
+            disable-submodules: true
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Parsoid/js/contrib.git'
+            branches:
+                - master
+            basedir: contrib
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git'
+            branches:
+                - master
+            basedir: core
+    builders:
+        # run our parserTests.txt file using core's php parser to ensure
+        # that non-parsoid only tests are actually correct wrt the PHP parser.
+        - shell: |
+            # If any of these commands fail, something is wrong
+            set -e
+            php core/tests/parserTests.php --color=no --file=js/tests/parserTests.txt --quiet
+
+- job-template:
     name: parsoid-parsertests
     node: hasSlaveScripts
     triggers:
@@ -252,3 +287,4 @@
         - parsoid-parse-tool-check
         - parsoid-roundtrip-test-check
         - parsoid-parsertests-run-harder
+        - parsoid-php-parsertests
