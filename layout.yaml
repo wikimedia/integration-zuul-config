@@ -318,6 +318,10 @@ jobs:
   - name: 'integration-zuul-layoutdiff'
     voting: false
 
+  # Nonvoting until we can be sure it works
+  - name: 'integration-jjb-config-test'
+    voting: false
+
   - name: 'mwext-VisualEditor-doc-publish'
     branch: ^master$
 
@@ -566,8 +570,10 @@ projects:
     # FIXME: make this 'check' whenever we have integration tests
     check-voter:
       - integration-jjb-config-yamllint
+      - integration-jjb-config-test
     gate-and-submit:
       - integration-jjb-config-yamllint
+      - integration-jjb-config-test
 
   - name: integration/zuul-config
     # FIXME: make this 'check' whenever we have integration tests
