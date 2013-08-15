@@ -50,6 +50,30 @@
         /usr/local/bin/zuul-server -c /etc/zuul/public.conf -t -l "$WORKSPACE"/layout.yaml 2>before.txt
         colordiff -u before.txt current.txt
 
+# Job to check JJB config
+- job-template:
+    name: 'integration-jjb-config-test'
+    defaults: use-zuul
+    triggers:
+     - zuul
+    scm:
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder.git'
+            branches:
+                - master
+        - git:
+            url: '/srv/ssd/zuul/git/integration/jenkins-job-builder-config'
+            refspec: '$ZUUL_REF'
+            name: 'origin'
+            disable-submodules: true
+            basedir: config
+    builders:
+     - shell: |
+        set +e
+        http_proxy=nowhere python setup.py develop --user
+        mkdir output/
+        ~/.local/bin/jenkins-jobs test config/ -o output/
+
 - project:
     name: 'integration-docroot'
     jobs:
@@ -68,6 +92,7 @@
     name: 'integration-jjb-config'
     jobs:
      - '{name}-yamllint'
+     - 'integration-jjb-config-test'
 
 - project:
     name: 'integration-jenkins'
