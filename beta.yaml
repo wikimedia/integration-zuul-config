@@ -161,6 +161,8 @@
           git tag "jenkins_build_$BUILD_NUMBER" "$ZUUL_COMMIT" ;
           touch /home/wikipedia/common/wmf-config/InitialiseSettings.php ;
          '
+        # Refresh the databases lists
+        sudo -u mwdeploy /home/wikipedia/common/multiversion/refreshWikiversionsCDB
 
 # Job updating MediaWiki core+extensions code and refreshing the message
 #
