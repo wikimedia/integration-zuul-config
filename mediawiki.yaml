@@ -7,16 +7,6 @@
 # use a specific git macro to prevents Jenkins from updating all the
 # submodules we do not care about. See bug 42455.
 
-# Basic jobs used to merge the change against the latest
-# version in the repository.
-- job-template:
-    name: '{name}-merge'
-    defaults: use-zuul
-    scm:
-     - git-mwcore-nosubmodules
-    triggers:
-     - zuul
-
 - job-template:
     name: '{name}-lint'
     node: hasSlaveScripts
@@ -133,7 +123,6 @@
 - job-group:
     name: mediawiki-jobs
     jobs:
-      - '{name}-merge'
       - '{name}-lint'
       - '{name}-jslint'
       - '{name}-qunit'
