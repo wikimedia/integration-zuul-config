@@ -520,6 +520,9 @@ jobs:
   - name: parsoid-php-parsertests
     voting: false
 
+  - name: wikimedia-fundraising-tools-yamllint
+    voting: false
+
 project-templates:
 
   # Template for MediaWiki extensions.
@@ -891,6 +894,18 @@ projects:
     # Only lint on submission for now, that will be voting
     check-voter:
       - wikimedia-bugzilla-wikibugs-perllint
+
+  - name: wikimedia/fundraising/tools
+    check-voter:
+      - wikimedia-fundraising-tools-jslint
+      - wikimedia-fundraising-tools-pep8
+      - wikimedia-fundraising-tools-pyflakes
+      - wikimedia-fundraising-tools-yamllint
+    gate-and-submit:
+      - wikimedia-fundraising-tools-jslint
+      - wikimedia-fundraising-tools-pep8
+      - wikimedia-fundraising-tools-pyflakes
+      - wikimedia-fundraising-tools-yamllint
 
 #### MediaWiki extensions ######################################
 
