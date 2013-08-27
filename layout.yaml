@@ -229,13 +229,13 @@ jobs:
      - '^.*\.pp$'
 
   # Experiment for bug 48420
-  - name: mwext-Translate-phpcs-lenient
+  - name: ^.*phpcs-lenient(-HEAD)?$
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
     voting: false
-  - name: mwext-Translate-phpcs-lenient-HEAD
-    voting: false
-  - name: mwext-Translate-phpcs-strict
-    voting: false
-  - name: mwext-Translate-phpcs-strict-HEAD
+  - name: ^.*phpcs-strict(-HEAD)?$
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
     voting: false
 
   - name: ^.*-jslint$
@@ -284,7 +284,7 @@ jobs:
      - '^.*\.py$'
 
   # PHP CodeSniffer (experimental)
-  - name: ^.*-phpcs$
+  - name: ^.*-phpcs(-HEAD)?$
     voting: false
     files:
      - '^.*\.(php|php5|phtml|inc)$'
@@ -592,12 +592,14 @@ projects:
   - name: mediawiki/core
     check:
       - mediawiki-core-whitespaces
-      - mediawiki-core-phpcs-HEAD
+      - mediawiki-core-phpcs-lenient-HEAD
+      - mediawiki-core-phpcs-strict-HEAD
       - mediawiki-core-jslint
       - mediawiki-core-jsduck
       - mediawiki-core-lint
     test:
-      - mediawiki-core-phpcs-HEAD
+      - mediawiki-core-phpcs-lenient-HEAD
+      - mediawiki-core-phpcs-strict-HEAD
       - mediawiki-core-jslint
       - mediawiki-core-jsduck
       - mediawiki-core-lint:
@@ -608,7 +610,8 @@ projects:
             - mediawiki-core-phpunit-misc
             - mediawiki-core-phpunit-parser
     gate-and-submit:
-      - mediawiki-core-phpcs-HEAD
+      - mediawiki-core-phpcs-lenient-HEAD
+      - mediawiki-core-phpcs-strict-HEAD
       - mediawiki-core-jslint
       - mediawiki-core-jsduck
       - mediawiki-core-lint:
