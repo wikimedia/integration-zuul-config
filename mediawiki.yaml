@@ -1,8 +1,6 @@
 # This file holds the configuration for all MediaWiki core related jobs
 # regardless of them being lint, merge check, unit test or regression testing.
 
-# FIXME: use /srv/ssd/zuul/git/{gerrit-name}
-
 # Note that mediawiki/core branches may have a lot of submodules, we thus
 # use a specific git macro to prevents Jenkins from updating all the
 # submodules we do not care about. See bug 42455.
@@ -87,7 +85,6 @@
 #
 # @param name Jenkins job prefix to use
 # @param phpunit-group suffix for an ant target 'phpunit-{phpunit-group}
-# @param gerrit-name Gerrit project name (ex: mediawiki/core)
 - job-template:
     name: '{name}-phpunit-{phpunit-group}'
     defaults: use-zuul
@@ -139,7 +136,6 @@
 
 - project:
     name: mediawiki-core
-    gerrit-name: mediawiki/core
     phpunit-group:
       - api
       - databaseless
@@ -190,7 +186,6 @@
 
 - project:
     name: mediawiki-core-regression
-    gerrit-name: mediawiki/core
     branch:
       - master
       - REL1_19
