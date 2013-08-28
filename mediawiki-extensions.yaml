@@ -3,9 +3,6 @@
     name: '{name}-{ext-name}-lint'
     node: hasSlaveScripts
     defaults: use-zuul
-    scm:
-     - git-mwext-in-root:
-        ext-name: '{ext-name}'
     triggers:
      - zuul
     builders:
@@ -26,9 +23,6 @@
 - job-template:
     name: '{name}-{ext-name}-jslint'
     defaults: use-zuul
-    scm:
-     - git-mwext-in-root:
-        ext-name: '{ext-name}'
     triggers:
      - zuul
     builders:
@@ -61,9 +55,6 @@
     name: '{name}-{ext-name}-phpcs-HEAD'
     node: hasSlaveScripts
     defaults: use-zuul
-    scm:
-     - git-mwext-in-root:
-        ext-name: '{ext-name}'
     triggers:
      - zuul
     builders:

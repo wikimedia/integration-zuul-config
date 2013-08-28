@@ -42,18 +42,3 @@
     scm:
      - git-zuul:
         disable-submodules: false
-
-# Fetch an extension at the root of the workspace
-#
-# Example usage:
-# scm:
-#  - git-mwext-in-root:
-#    ext-name: '{ext-name}'
-- scm:
-    name: git-mwext-in-root
-    scm:
-     - git:
-        url: '/srv/ssd/zuul/git/mediawiki/extensions/{ext-name}'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
