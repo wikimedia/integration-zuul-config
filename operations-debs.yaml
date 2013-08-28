@@ -4,7 +4,7 @@
     name: git-deb-package
     scm:
      - git:
-        url: '/srv/ssd/zuul/git/{gerrit-name}'
+        url: '/srv/ssd/zuul/git/$ZUUL_PROJECT'
         basedir: 'packaging'
         branches:
          - '$ZUUL_COMMIT'
@@ -16,8 +16,7 @@
     defaults: use-zuul
 
     scm:
-     - git-deb-package:
-        gerrit-name: '{gerrit-name}'
+     - git-deb-package
 
     builders:
      - shell: 'cd packaging && uscan --verbose --rename --download-current-version'
@@ -31,8 +30,7 @@
      - zuul
 
     scm:
-     - git-deb-package:
-        gerrit-name: '{gerrit-name}'
+     - git-deb-package
 
     builders:
      - ant:
