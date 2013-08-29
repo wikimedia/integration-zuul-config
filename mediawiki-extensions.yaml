@@ -42,16 +42,6 @@
      - qunit
 
 - job-template:
-    name: '{name}-{ext-name}-pep8'
-    defaults: use-zuul-for-mw-ext
-    triggers:
-     - zuul
-    builders:
-     - pep8
-    publishers:
-     - pep8
-
-- job-template:
     name: '{name}-{ext-name}-phpcs-HEAD'
     node: hasSlaveScripts
     defaults: use-zuul
@@ -481,42 +471,6 @@
         ext-name: DataTypes
         dependencies: 'DataValues'
 
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: BlameMaps
-
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: ConfirmEdit
-
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: DumpHTML
-
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: EventLogging
-
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: Offline
-
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: OpenStackManager
-
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: SemanticBundle
-
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: SemanticResultFormats
-
-     - '{name}-{ext-name}-pep8':
-        name: mwext
-        ext-name: WikimediaMaintenance
-
      # qunit jobs for MediaWiki extensions
 
      - '{name}-{ext-name}-qunit':
@@ -579,3 +533,48 @@
      - '{name}-phpcs-lenient-HEAD'
      - '{name}-phpcs-strict'
      - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-BlameMaps'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-ConfirmEdit'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-DumpHTML'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-EventLogging'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-Offline'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-OpenStackManager'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-SemanticBundle'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-SemanticResultFormats'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-WikimediaMaintenance'
+    jobs:
+     - python-jobs
