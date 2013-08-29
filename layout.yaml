@@ -260,7 +260,7 @@ jobs:
     # Non-voting (most of our script fail the tests miserably)
     voting: false
     files:
-     - '^.*\.py$'
+     - '^(.*\.py|tox.ini|.pep8)$'
 
   - name: ^.*-perllint$
     files:
@@ -271,8 +271,6 @@ jobs:
 
   - name: operations-puppet-pep8
     voting: true
-    files:
-     - '^.*\.py$'
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
 
   - name: operations-software-pep8
@@ -284,7 +282,7 @@ jobs:
     # do not vote by default
     voting: false
     files:
-     - '^.*\.py$'
+     - '^(.*\.py|tox.ini)$'
 
   # PHP CodeSniffer (experimental)
   - name: ^.*-phpcs(-HEAD)?$
