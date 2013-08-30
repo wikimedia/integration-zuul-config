@@ -333,6 +333,10 @@ jobs:
   - name: sartoris-pyflakes
     voting: true
 
+  # FIXME: work in progress
+  - name: sartoris-sphinx-doc
+    voting: false
+
   - name: mw-tools-fluoride-pep8
     voting: true
   - name: mw-tools-fluoride-pyflakes
@@ -546,6 +550,16 @@ project-templates:
     gate-and-submit:
      - 'mwext-{extname}-jslint'
      - 'mwext-{extname}-lint'
+
+  - name: python
+    check-voter:
+      - '{prefix}-pep8'
+      - '{prefix}-pyflakes'
+      - '{prefix}-sphinx-doc'
+    gate-and-submit:
+      - '{prefix}-pep8'
+      - '{prefix}-pyflakes'
+      - '{prefix}-sphinx-doc'
 
   - name: python-lint
     check-voter:
@@ -2384,6 +2398,6 @@ projects:
 
   - name: sartoris
     template:
-      - name: 'python-lint'
+      - name: 'python'
         prefix: 'sartoris'
 
