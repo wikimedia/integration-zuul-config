@@ -36,6 +36,41 @@
       - timestamps
       - ansicolor
 
+# Same as use-zuul but fetch the Zuul changes using two repositories:
+#
+# a) http://integration.wikimedia.org/zuul/git/*
+# Zuul maintained non-bare repository (ie does not ends with '.git')
+#
+# b) /srv/ssd/gerrit/*.git
+# Gerrit replication destination which is local and a bare repository (it ends
+# with '.git'). That requests less network access and speed up the process by
+# having git doing hardlink since the replicated repository and the workspace
+# are on the same device (mounted on /srv/ssd).
+- defaults:
+    name: use-remote-zuul
+    # defaults: global
+
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      <p>This job is triggered by Zuul</p>
+
+    project-type: freestyle
+
+    scm:
+     - git:
+        url: 'http://integration.wikimedia.org/zuul/git/$ZUUL_PROJECT'
+        reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+
+    wrappers:
+      - timeout:
+          timeout: 360
+          fail: true
+      - timestamps
+      - ansicolor
+
 - defaults:
     name: use-zuul-for-mw-ext
     # defaults: global
