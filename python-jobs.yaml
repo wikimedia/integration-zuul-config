@@ -1,4 +1,17 @@
 - job-template:
+    name: '{name}-sphinx-doc'
+    node: hasContintPackages
+    defaults: use-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: "python setup.py build_sphinx"
+
+    # FIXME: should publish somewhere
+
+- job-template:
     name: '{name}-pep8'
     node: hasContintPackages
     defaults: use-zuul
@@ -26,5 +39,6 @@
 - job-group:
     name: python-jobs
     jobs:
+     - '{name}-sphinx-doc'
      - '{name}-pep8'
      - '{name}-pyflakes'
