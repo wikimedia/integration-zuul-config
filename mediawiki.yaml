@@ -8,7 +8,7 @@
 - job-template:
     name: '{name}-lint'
     node: hasSlaveScripts
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
@@ -20,7 +20,7 @@
 - job-template:
     name: '{name}-qunit'
     node: hasSlaveScripts
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
@@ -32,7 +32,7 @@
 
 - job-template:
     name: '{name}-jsduck'
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
@@ -44,7 +44,7 @@
 - job-template:
     name: '{name}-jsduck-publish'
     node: gallium
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
@@ -63,7 +63,7 @@
 - job-template:
     name: '{name}-doxygen-publish'
     node: gallium
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
@@ -73,7 +73,7 @@
 
 - job-template:
     name: '{name}-whitespaces'
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
@@ -87,7 +87,7 @@
 # @param phpunit-group suffix for an ant target 'phpunit-{phpunit-group}
 - job-template:
     name: '{name}-phpunit-{phpunit-group}'
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
@@ -106,7 +106,7 @@
 # @param databasetype Suffix for an ant target 'installdb-{databasetype}'
 - job-template:
     name: '{name}-install-{databasetype}'
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
@@ -152,7 +152,7 @@
 - job-template:
     name: 'mediawiki-core-regression-{branch}'
     node: hasSlaveScripts
-    defaults: use-zuul
+    defaults: use-remote-zuul
     scm:
      - git-mwcore-nosubmodules
     triggers:
