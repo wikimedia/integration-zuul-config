@@ -13,7 +13,7 @@
 - job-template:
     name: '{name}-debbuild'
     node: gallium  # requires packages-builder
-    defaults: use-zuul
+    defaults: use-remote-zuul
 
     scm:
      - git-deb-package
@@ -25,7 +25,7 @@
 
 - job-template:
     name: '{name}-antbuild'
-    defaults: use-zuul
+    defaults: use-remote-zuul
     triggers:
      - zuul
 

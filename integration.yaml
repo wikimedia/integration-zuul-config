@@ -53,7 +53,8 @@
 # Job to check JJB config
 - job-template:
     name: 'integration-jjb-config-test'
-    defaults: use-zuul
+    node: gallium  # FIXME: just to be safe in case we are missing python dependencies
+    defaults: use-remote-zuul
     triggers:
      - zuul
     scm:
