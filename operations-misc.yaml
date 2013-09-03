@@ -15,17 +15,15 @@
 
 - job-template:
     name: 'operations-dns-lint'
+    node: hasContintPackages
     defaults: use-zuul
     triggers:
      - zuul
     builders:
      - shell: |
-         # Prepare the zone files
-         mkdir -p "$WORKSPACE"/chroot/zones
-         authdns-gen-zones "$WORKSPACE"/templates "$WORKSPACE"/chroot/zones
-
-         # lint them
-         gdnsd -d "$WORKSPACE"
+         mkdir -p "$WORKSPACE"/build
+         # Lint script provided via puppet authdns::lint class
+         /usr/local/bin/authdns-lint "$WORKSPACE" "$WORKSPACE"/build
 
 - project:
     name: 'operations-dns'
