@@ -2152,14 +2152,20 @@ projects:
         extname: TrustedXFF
 
   - name: mediawiki/extensions/TwnMainPage
-    check-only:
+    check:
       - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-phpcs-HEAD
       - mwext-TwnMainPage-lint
+    test:
+      - mwext-TwnMainPage-jslint
+      - mwext-TwnMainPage-phpcs-HEAD
+      - mwext-TwnMainPage-lint:
+        - mwext-TwnMainPage-testextensions-master
     gate-and-submit:
       - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-phpcs-HEAD
-      - mwext-TwnMainPage-lint
+      - mwext-TwnMainPage-lint:
+        - mwext-TwnMainPage-testextensions-master
 
   - name: mediawiki/extensions/UnicodeConverter
     template:
