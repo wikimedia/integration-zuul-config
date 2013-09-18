@@ -1,6 +1,7 @@
 - job-template:
     name: 'operations-apache-config-lint'
-    defaults: use-zuul
+    node: gallium  # job rely on /var/lib/git still
+    defaults: use-zuul  # bound to gallium
 
     triggers:
      - zuul
