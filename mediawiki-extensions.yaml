@@ -8,15 +8,6 @@
     builders:
      - phplint
 
-- job-template:
-    name: '{name}-{ext-name}-whitespaces'
-    defaults: use-zuul-for-mw-ext
-    triggers:
-     - zuul
-    builders:
-     - lint-whitespaces-in:
-        dir: '$WORKSPACE/extensions/{ext-name}'
-
 # jshint is in a separate job from phplint because various extensions
 # don't pass jshint yet but do pass phplint. This way we can opt-in
 # on a project base.
@@ -134,7 +125,6 @@
     name: mwext-check-jobs
     jobs:
      - '{name}-{ext-name}-lint'
-     - '{name}-{ext-name}-whitespaces'
      - '{name}-{ext-name}-jslint'
      - '{name}-{ext-name}-install'
      - '{name}-{ext-name}-testextensions-{mwbranch}'
