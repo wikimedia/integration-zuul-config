@@ -1,7 +1,7 @@
 - job-template:
     name: 'operations-puppet-validate'
     node: gallium  # relies on /srv/ssd/zuul/git/operations/puppet
-    defaults: use-zuul
+    defaults: use-zuul  # bound to gallium
 
     triggers:
      - zuul
@@ -32,7 +32,7 @@
 - job-template:
     name: 'operations-puppet-test'
     node: hasSlaveScripts
-    defaults: use-zuul
+    defaults: use-remote-zuul
 
     triggers:
      - zuul
@@ -45,7 +45,7 @@
 - job-template:
     name: 'operations-puppet-pep8'
     node: hasSlaveScripts
-    defaults: use-zuul
+    defaults: use-remote-zuul
 
     triggers:
      - zuul
@@ -63,8 +63,8 @@
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
-    node: gallium
-    defaults: use-zuul
+    node: gallium  # webhost where doc is published
+    defaults: use-zuul  # bound to gallium
     triggers:
      - zuul
     workspace: '/srv/org/wikimedia/doc/puppetsource'
@@ -80,7 +80,7 @@
 # Find out common typos in any files of ops/puppet
 - job-template:
     name: 'operations-puppet-typos'
-    defaults: use-zuul
+    defaults: use-remote-zuul
 
     triggers:
      - zuul
