@@ -4,16 +4,17 @@
     name: git-deb-package
     scm:
      - git:
-        url: '/srv/ssd/zuul/git/$ZUUL_PROJECT'
-        basedir: 'packaging'
+        url: 'git://integration.wikimedia.org/$ZUUL_PROJECT'
+        reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
+        basedir: 'packaging'
 
 - job-template:
     name: '{name}-debbuild'
-    node: gallium  # requires packages-builder
-    defaults: use-zuul
+    node: hasContintPackages
+    defaults: use-remote-zuul
 
     scm:
      - git-deb-package
@@ -25,7 +26,7 @@
 
 - job-template:
     name: '{name}-antbuild'
-    defaults: use-zuul
+    defaults: use-remote-zuul
     triggers:
      - zuul
 
