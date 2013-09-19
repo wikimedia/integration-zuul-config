@@ -227,10 +227,6 @@ jobs:
   # based on jenkins-debian-glue
   - name: ^.*-source$
     voting: false
-  - name: ^.*-binaries$
-    voting: false
-  - name: ^.*-piuparts$
-    voting: false
 
   - name: ^.*-erblint-HEAD$
     files:
@@ -551,9 +547,7 @@ project-templates:
   # Package building using jenkins-debian-glue
   - name: debian-glue
     test:
-     - '{project}-source':
-       - '{project}-binaries':
-         - '{project}-piuparts'
+     - '{project}-source'
 
   # Template for MediaWiki extensions.
   # Does run the unit tests on 'test' and 'gate-and-submit'
