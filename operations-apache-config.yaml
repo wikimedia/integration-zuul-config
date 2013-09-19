@@ -1,7 +1,6 @@
 - job-template:
     name: 'operations-apache-config-lint'
-    node: gallium  # job rely on /var/lib/git still
-    defaults: use-zuul  # bound to gallium
+    defaults: use-remote-zuul  # bound to gallium
 
     triggers:
      - zuul
@@ -11,7 +10,7 @@
      # the Apache document roots.
      - shell: |
         git archive \
-            --remote=/var/lib/git/operations/mediawiki-config.git \
+            --remote=/srv/ssd/gerrit/operations/mediawiki-config.git \
             --prefix=mediawiki-config/ \
             master \
             | ( cd "$WORKSPACE" && tar xf -)
