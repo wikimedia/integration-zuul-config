@@ -35,8 +35,8 @@
 
 - job-template:
     name: '{name}-{ext-name}-phpcs-HEAD'
-    node: hasSlaveScripts
-    defaults: use-zuul
+    node: (hasSlaveScripts && hasPhpcs)
+    defaults: use-remote-zuul
     triggers:
      - zuul
     builders:
