@@ -17,32 +17,6 @@
         wipe-workspace: false
         clean: true
 
-# Fetch a ZUUL_REF from Zuul non bare repo for a project while
-# specifying whether we want to fetch submodules as well.
-#
-# @param disable-submodules (true/false) whether to NOT fetch submodules
-- scm:
-    name: git-zuul
-    scm:
-     - git:
-        url: '/srv/ssd/zuul/git/$ZUUL_PROJECT'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        disable-submodules: '{disable-submodules}'
-
-- scm:
-    name: git-zuul-no-submodules
-    scm:
-     - git-zuul:
-        disable-submodules: true
-
-- scm:
-    name: git-zuul-with-submodules
-    scm:
-     - git-zuul:
-        disable-submodules: false
-
 - scm:
     name: git-remote-zuul
     scm:
