@@ -1,4 +1,4 @@
-# Git macro that simply fetch under '/packaging/'
+# Git macro that simply fetch under '/source/'
 # Useful to build debian packages.
 - scm:
     name: git-deb-package
@@ -9,7 +9,7 @@
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
-        basedir: 'packaging'
+        basedir: 'source'
 
 - job-template:
     name: '{name}-debbuild'
@@ -20,8 +20,8 @@
      - git-deb-package
 
     builders:
-     - shell: 'cd packaging && uscan --verbose --rename --download-current-version'
-     - shell: 'cd packaging && dpkg-buildpackage -rfakeroot -us -uc'
+     - shell: 'cd source && uscan --verbose --rename --download-current-version'
+     - shell: 'cd source && dpkg-buildpackage -rfakeroot -us -uc'
      - shell: 'lintian --info *.deb'
 
 - job-template:
@@ -36,7 +36,7 @@
     builders:
      - ant:
         targets: 'build'
-        buildfile: '$WORKSPACE/packaging/build.xml'
+        buildfile: '$WORKSPACE/source/build.xml'
 
 - project:
     name: 'operations-debs-python-voluptuous'
