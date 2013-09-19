@@ -17,6 +17,26 @@
         wipe-workspace: false
         clean: true
 
+# MediaWiki core has branches that contains lot of extensions. Whenever
+# we test master (which has no submodule) and then a wmf branch (which
+# have submodules) we end up refetching all the extensions which is really
+# slow.
+# This git macro hardcode mediawiki/core to never update the submodules.
+# It also simply clean the workspace instead of wiping it, to save up time
+- scm:
+    name: git-mwcore
+    scm:
+     - git:
+        url: 'git://integration.wikimedia.org/mediawiki/core'
+        reference-repo: '/srv/ssd/zuul/git/mediawiki/core'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        disable-submodules: true
+        # mw/core is a huge repo so dont reclone it
+        wipe-workspace: false
+        clean: true
+
 - scm:
     name: git-remote-zuul
     scm:

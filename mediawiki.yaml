@@ -73,9 +73,10 @@
 
 - job-template:
     name: '{name}-whitespaces'
-    defaults: use-zuul
+    node: hasSlaveScripts
+    defaults: use-remote-zuul
     scm:
-     - git-mwcore-nosubmodules
+     - git-mwcore
     triggers:
      - zuul
     builder:
@@ -87,9 +88,10 @@
 # @param phpunit-group suffix for an ant target 'phpunit-{phpunit-group}
 - job-template:
     name: '{name}-phpunit-{phpunit-group}'
-    defaults: use-zuul
+    node: (hasSlaveScripts && hasPhpUnit)
+    defaults: use-remote-zuul
     scm:
-     - git-mwcore-nosubmodules
+     - git-mwcore
     triggers:
      - zuul
 
