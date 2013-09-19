@@ -542,6 +542,10 @@ jobs:
   - name: wikimedia-fundraising-tools-yamllint
     voting: false
 
+  # Still a work in progress:
+  - name: pywikibot-core-tests
+    voting: false
+
 project-templates:
 
   # Package building using jenkins-debian-glue
@@ -2439,9 +2443,17 @@ projects:
         prefix: 'pywikibot-compat'
 
   - name: pywikibot/core
-    template:
-      - name: 'python-lint'
-        prefix: 'pywikibot-core'
+    check:
+      - 'pywikibot-core-pep8'
+      - 'pywikibot-core-pyflakes'
+    test:
+      - 'pywikibot-core-pep8'
+      - 'pywikibot-core-pyflakes'
+      - 'pywikibot-core-tests'
+    gate-and-submit:
+      - 'pywikibot-core-pep8'
+      - 'pywikibot-core-pyflakes'
+      - 'pywikibot-core-tests'
 
   - name: pywikibot/i18n
     template:
