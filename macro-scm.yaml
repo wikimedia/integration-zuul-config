@@ -52,3 +52,14 @@
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
+
+- scm:
+    name: git-remote-zuul-no-submodules
+    scm:
+     - git:
+        url: 'git://integration.wikimedia.org/$ZUUL_PROJECT'
+        reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        disable-submodules: true
