@@ -223,6 +223,15 @@ jobs:
   #
   # See: http://docs.python.org/2/library/re.html#search-vs-match
 
+  # Experimental building of Debian packages
+  # based on jenkins-debian-glue
+  - name: ^.*-source$
+    voting: false
+  - name: ^.*-binaries$
+    voting: false
+  - name: ^.*-piuparts$
+    voting: false
+
   - name: ^.*-erblint-HEAD$
     files:
      - '^.*\.erb$'
@@ -535,6 +544,13 @@ jobs:
 
 project-templates:
 
+  # Package building using jenkins-debian-glue
+  - name: debian-glue
+    test:
+     - '{project}-source':
+       - '{project}-binaries':
+         - '{project}-piuparts'
+
   # Template for MediaWiki extensions.
   # Does run the unit tests on 'test' and 'gate-and-submit'
   - name: extension-unittests
@@ -826,6 +842,11 @@ projects:
     template:
       - name: 'python-lint'
         prefix: 'operations-debs-adminbot'
+
+  - name: operations/debs/pybal
+    template:
+      - name: 'debian-glue'
+        project: 'operations-debs-pybal'
 
   - name: operations/debs/ircecho
     template:
