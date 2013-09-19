@@ -47,7 +47,7 @@
 # Run all extension tests
 - job-template:
     name: '{name}-{ext-name}-testextensions-{mwbranch}'
-    node: hasSlaveScripts
+    node: (hasSlaveScripts && hasPhpUnit)
     defaults: use-zuul-for-mw-ext
     triggers:
      - zuul
