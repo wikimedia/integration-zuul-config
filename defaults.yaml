@@ -78,11 +78,12 @@
 
     scm:
      - git:
-        url: '/srv/ssd/zuul/git/mediawiki/extensions/{ext-name}'
-        basedir: 'extensions/{ext-name}'
+        url: 'git://integration.wikimedia.org/$ZUUL_PROJECT'
+        reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
+        basedir: '$ZUUL_PROJECT'
 
     wrappers:
       - timeout:
