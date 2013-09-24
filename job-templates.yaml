@@ -3,7 +3,7 @@
 - job-template:
     name: '{name}-erblint-HEAD'
     node: hasSlaveScripts
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
     builders:
@@ -13,7 +13,7 @@
 - job-template:
     name: '{name}-jslint'
     node: hasSlaveScripts
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
     scm:
@@ -24,7 +24,7 @@
 - job-template:
     name: '{name}-pplint-HEAD'
     node: hasSlaveScripts
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
     builders:
@@ -33,7 +33,7 @@
 - job-template:
     name: '{name}-perllint'
     node: hasSlaveScripts
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
     builders:
@@ -42,7 +42,7 @@
 - job-template:
     name: '{name}-phplint'
     node: hasSlaveScripts
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
     builders:
@@ -52,7 +52,7 @@
 - job-template:
     name: '{name}-phpcs'
     node: (hasSlaveScripts && hasPhpcs)
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
 
@@ -70,7 +70,7 @@
 - job-template:
     name: '{name}-phpcs-HEAD'
     node: (hasSlaveScripts && hasPhpcs)
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
 
@@ -87,7 +87,7 @@
 - job-template:
     name: '{name}-phpcs-strict'
     node: (hasSlaveScripts && hasPhpcs)
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
 
@@ -104,7 +104,7 @@
 - job-template:
     name: '{name}-phpcs-strict-HEAD'
     node: (hasSlaveScripts && hasPhpcs)
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
 
@@ -121,7 +121,7 @@
 - job-template:
     name: '{name}-phpcs-lenient'
     node: (hasSlaveScripts && hasPhpcs)
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
 
@@ -138,7 +138,7 @@
 - job-template:
     name: '{name}-phpcs-lenient-HEAD'
     node: (hasSlaveScripts && hasPhpcs)
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
 
@@ -154,7 +154,7 @@
 
 - job-template:
     name: '{name}-puppet-validate'
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
 
     triggers:
      - zuul
@@ -164,7 +164,7 @@
 
 - job-template:
     name: '{name}-rubylint'
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
 
     triggers:
      - zuul
@@ -175,7 +175,7 @@
 
 - job-template:
     name: '{name}-ruby1.8lint'
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
 
     triggers:
      - zuul
@@ -186,7 +186,7 @@
 
 - job-template:
     name: '{name}-ruby1.9.3lint'
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
 
     triggers:
      - zuul
@@ -199,7 +199,7 @@
     name: '{name}-yamllint'
     node: hasSlaveScripts
 
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
 
