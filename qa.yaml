@@ -1,6 +1,65 @@
+# Pre setup the browsertests dependencies and craft a tarball
+# for easy reuse. Meant to be run on post merge commit.
+- job-template:
+    name: 'qa-browsertests-build'
+    node: integration-selenium-driver
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     # See bug 54384 for some background
+     - shell: |
+         mkdir vendor
+
+         # Fetch bundle from rubygems repo
+         gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+
+         # Prepare some paths lookup
+         export GEM_PATH="`pwd`/vendor"
+         ./vendor/bin/bundle --version
+         ./vendor/bin/bundle install --path vendor
+
+         # Later on one can exec tests with:
+         # GEM_PATH=`pwd`/bundle:`pwd`vendor ./bundle/bin/bundle  exec cucumber
+
+     - shell: |
+         # Take a tarball
+         GIT_COMMIT_SHORT=`git rev-parse --short HEAD`
+         TAR_FILE="qa-browsertests-$BUILD_NUMBER-g$GIT_COMMIT_SHORT.tar.gz"
+         tar -czf "$TAR_FILE" vendor .bundle
+
+    publishers:
+     - archive:
+         artifacts: '*.tar.gz'
+
+# Should be a multi configuration job
+- job-template:
+    name: 'qa-browsertests-run'
+    node: integration-selenium-driver
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - copyartifact:
+         project: qa-browsertests-build
+         which-build: last-successful
+         stable: true
+         filter: '*.tar.gz'
+
+     - shell: |
+         # Uncompress browsertests
+         tar -xzf *.tar.gz
+
+         # Publish some variables to env
+         export BROWSER_LABEL="phantomjs"
+         export GEM_PATH=`pwd`/vendor
+         ./vendor/bin/bundle  exec cucumber --color
+
 - project:
     name: 'qa-browsertests'
 
     jobs:
      - '{name}-ruby1.9.3lint'
      - '{name}-yamllint'
+     - 'qa-browsertests-build'
+     - 'qa-browsertests-run'
