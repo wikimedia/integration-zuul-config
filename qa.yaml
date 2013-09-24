@@ -53,7 +53,20 @@
          # Publish some variables to env
          export BROWSER_LABEL="phantomjs"
          export GEM_PATH=`pwd`/vendor
-         ./vendor/bin/bundle  exec cucumber --color
+         mkdir -p logs/
+         ./vendor/bin/bundle  exec cucumber --color \
+            --format pretty \
+            --format junit --out junit \
+            --format html --out report.html
+
+    publishers:
+     - xunit:
+         types:
+          - junit:
+              pattern: 'junit/*.xml'
+     - archive:
+         artifacts: 'report.html'
+
 
 - project:
     name: 'qa-browsertests'
