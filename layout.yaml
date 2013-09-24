@@ -546,6 +546,10 @@ jobs:
   - name: pywikibot-core-tests
     voting: false
 
+  # Work in progress (bug 54384)
+  - name: qa-browsertests-build
+    voting: false
+
 project-templates:
 
   # Package building using jenkins-debian-glue
@@ -2461,8 +2465,11 @@ projects:
         prefix: 'pywikibot-i18n'
 
   - name: qa/browsertests
-    check-voter:
+    check:
       - qa-browsertests-ruby1.9.3lint
+    test:
+      - qa-browsertests-ruby1.9.3lint
+      - qa-browsertests-build
 
   - name: sartoris
     template:
