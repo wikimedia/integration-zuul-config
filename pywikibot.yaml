@@ -32,6 +32,22 @@
         # hack to make sure we do not download dependencies from pip
         http_proxy=nowhere https_proxy=nowhere python setup.py test
 
+- job-template:
+    name: 'pywikibot-core-pyflakes'
+    node: hasContintPackages
+    defaults: use-remote-zuul
+
+    triggers:
+     - zuul
+
+    scm:
+     - git-remote-zuul-no-submodules
+
+    builders:
+    # Zuul uses Python str.format(obj) for {config} substitutions
+    # Escape as {foo} as {{key}} to avoid triggering a KeyError in Zuul parser
+     - shell: pyflakes pywikibot scripts tests
+
 - project:
     name: pywikibot-compat
 
@@ -44,6 +60,8 @@
     jobs:
      - python-jobs
      - pywikibot-core-tests
+     # Override pyflakes jobs that comes from `python-jobs`
+     - pywikibot-core-pyflakes
 
 - project:
     name: pywikibot-i18n
