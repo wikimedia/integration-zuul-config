@@ -52,8 +52,16 @@
         - shell: |
             #!/bin/bash -xe
             # Snapshot `remotes/origin/{branch}` in the job workspace
-            git archive --remote=/srv/ssd/gerrit/mediawiki/core.git {branch} \
-                | (cd "$WORKSPACE" && tar xf -)
+            GIT_LOCAL="/srv/ssd/gerrit/mediawiki/core.git"
+            if [ -d "$GIT_LOCAL" ]; then
+                # Fetch from local Gerrit replication
+                git archive --remote="$GIT_LOCAL" {branch} \
+                    | (cd "$WORKSPACE" && tar xf -)
+            else
+                # Fallback to git.wikimedia.org
+                curl 'https://git.wikimedia.org/zip/?r=mediawiki/core.git&format=gz' \
+                    | (cd "$WORKSPACE" && tar xzf -)
+            fi
 
 - builder:
     name: jshint-in
