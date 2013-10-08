@@ -244,12 +244,17 @@ jobs:
 
   # Experiment for bug 48420
   - name: ^.*phpcs-lenient(-HEAD)?$
+    voting: true
     files:
      - '^.*\.(php|php5|phtml|inc)$'
-    voting: false
   - name: ^.*phpcs-strict(-HEAD)?$
+    voting: true
     files:
      - '^.*\.(php|php5|phtml|inc)$'
+
+  - name: mediawiki-core-phpcs-strict-HEAD
+    voting: false
+  - name: mediawiki-core-phpcs-lenient-HEAD
     voting: false
 
   - name: ^.*-jslint$
