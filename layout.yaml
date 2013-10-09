@@ -1145,14 +1145,13 @@ projects:
       - name: extension-unittests
         extname: Cite
 
-  # FIXME use a template
   - name: mediawiki/extensions/cldr
     check-only:
+      - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-cldr-jslint
       - mwext-cldr-lint
-      - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-cldr-phpcs-strict # Experiment, bug 48420
     gate-and-submit:
+      - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-cldr-jslint
       - mwext-cldr-lint:
         - mwext-cldr-testextensions-master
@@ -1542,9 +1541,14 @@ projects:
         extname: Insider
 
   - name: mediawiki/extensions/Interwiki
-    template:
-      - name: extension-checks
-        extname: Interwiki
+    check-only:
+      - mwext-Interwiki-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-Interwiki-jslint
+      - mwext-Interwiki-lint
+    gate-and-submit:
+      - mwext-Interwiki-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-Interwiki-jslint
+      - mwext-Interwiki-lint
 
   - name: mediawiki/extensions/intersection
     template:
@@ -2186,39 +2190,33 @@ projects:
 
   - name: mediawiki/extensions/Translate
     check:
-      - mwext-Translate-jslint
-      - mwext-Translate-phpcs-HEAD
       - mwext-Translate-phpcs-strict-HEAD  # Experiment, bug 48420
+      - mwext-Translate-jslint
       - mwext-Translate-lint
     test:
-      - mwext-Translate-jslint
-      - mwext-Translate-phpcs-HEAD
       - mwext-Translate-phpcs-strict-HEAD  # Experiment, bug 48420
+      - mwext-Translate-jslint
       - mwext-Translate-lint:
         - mwext-Translate-testextensions-master
     gate-and-submit:
+      - mwext-Translate-phpcs-strict # Experiment for bug 48420
       - mwext-Translate-jslint
-      - mwext-Translate-phpcs-HEAD
-      # Experiment for bug 48420
-      - mwext-Translate-phpcs-strict
       - mwext-Translate-lint:
         - mwext-Translate-testextensions-master
 
   - name: mediawiki/extensions/TranslationNotifications
     check:
-      - mwext-TranslationNotifications-jslint
-      - mwext-TranslationNotifications-phpcs-HEAD
-      - mwext-TranslationNotifications-lint
-      - mwext-TranslationNotifications-phpcs-strict # Experiment, bug 48420
       - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
-    test:
       - mwext-TranslationNotifications-jslint
-      - mwext-TranslationNotifications-phpcs-HEAD
+      - mwext-TranslationNotifications-lint
+    test:
+      - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-TranslationNotifications-jslint
       - mwext-TranslationNotifications-lint:
         - mwext-TranslationNotifications-testextensions-master
     gate-and-submit:
+      - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-TranslationNotifications-jslint
-      - mwext-TranslationNotifications-phpcs-HEAD
       - mwext-TranslationNotifications-lint:
         - mwext-TranslationNotifications-testextensions-master
 
@@ -2235,18 +2233,16 @@ projects:
   - name: mediawiki/extensions/TwnMainPage
     check:
       - mwext-TwnMainPage-jslint
-      - mwext-TwnMainPage-phpcs-HEAD
       - mwext-TwnMainPage-lint
-      - mwext-TwnMainPage-phpcs-strict # Experiment, bug 48420
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
     test:
       - mwext-TwnMainPage-jslint
-      - mwext-TwnMainPage-phpcs-HEAD
+      - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-TwnMainPage-lint:
         - mwext-TwnMainPage-testextensions-master
     gate-and-submit:
       - mwext-TwnMainPage-jslint
-      - mwext-TwnMainPage-phpcs-HEAD
+      - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-TwnMainPage-lint:
         - mwext-TwnMainPage-testextensions-master
 
@@ -2256,16 +2252,20 @@ projects:
         extname: UnicodeConverter
 
   - name: mediawiki/extensions/UniversalLanguageSelector
-    check-only:
+    check:
       - mwext-UniversalLanguageSelector-lint
-      - mwext-UniversalLanguageSelector-phpcs-HEAD
+      - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-UniversalLanguageSelector-jslint
       - mwext-UniversalLanguageSelector-ruby1.9.3lint
-      - mwext-UniversalLanguageSelector-phpcs-strict # Experiment, bug 48420
+    test:
       - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
-    gate-and-submit:
       - mwext-UniversalLanguageSelector-jslint
-      - mwext-UniversalLanguageSelector-phpcs-HEAD
+      - mwext-UniversalLanguageSelector-lint:
+        - mwext-UniversalLanguageSelector-testextensions-master
+      - mwext-UniversalLanguageSelector-ruby1.9.3lint
+    gate-and-submit:
+      - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-UniversalLanguageSelector-jslint
       - mwext-UniversalLanguageSelector-lint:
         - mwext-UniversalLanguageSelector-testextensions-master
       - mwext-UniversalLanguageSelector-ruby1.9.3lint
