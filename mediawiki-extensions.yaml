@@ -62,6 +62,16 @@
      - junit:
         results: 'junit*.xml'
 
+- job-template:
+    name: 'mwext-PoolCounter-build'
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        cd daemon
+        make
+
 # Job specific to Wikibase, let us switch between client
 # and server configurations.
 - job-template:
@@ -493,10 +503,30 @@
         ext-name: VisualEditor
 
 - project:
+    name: 'mwext-BlameMaps'
+    jobs:
+     - python-jobs
+
+- project:
     name: 'mwext-cldr'
     jobs:
      - '{name}-phpcs-strict'
      - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-ConfirmEdit'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-DumpHTML'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-EventLogging'
+    jobs:
+     - python-jobs
 
 - project:
     name: 'mwext-MobileFrontend'
@@ -504,26 +534,29 @@
      - '{name}-ruby1.9.3lint'
 
 - project:
-    name: 'mwext-UniversalLanguageSelector'
+    name: 'mwext-Offline'
     jobs:
-     - '{name}-ruby1.9.3lint'
-     - '{name}-phpcs-strict'
-     - '{name}-phpcs-strict-HEAD'
+     - python-jobs
 
-- job-template:
-    name: 'mwext-PoolCounter-build'
-    defaults: use-remote-zuul
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        cd daemon
-        make
+- project:
+    name: 'mwext-OpenStackManager'
+    jobs:
+     - python-jobs
 
 - project:
     name: 'mwext-PoolCounter'
     jobs:
      - 'mwext-PoolCounter-build'
+
+- project:
+    name: 'mwext-SemanticBundle'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-SemanticResultFormats'
+    jobs:
+     - python-jobs
 
 - project:
     name: 'mwext-timeline'
@@ -551,44 +584,11 @@
      - '{name}-phpcs-strict-HEAD'
 
 - project:
-    name: 'mwext-BlameMaps'
+    name: 'mwext-UniversalLanguageSelector'
     jobs:
-     - python-jobs
-
-- project:
-    name: 'mwext-ConfirmEdit'
-    jobs:
-     - python-jobs
-
-- project:
-    name: 'mwext-DumpHTML'
-    jobs:
-     - python-jobs
-
-- project:
-    name: 'mwext-EventLogging'
-    jobs:
-     - python-jobs
-
-- project:
-    name: 'mwext-Offline'
-    jobs:
-     - python-jobs
-
-- project:
-    name: 'mwext-OpenStackManager'
-    jobs:
-     - python-jobs
-
-- project:
-    name: 'mwext-SemanticBundle'
-    jobs:
-     - python-jobs
-
-- project:
-    name: 'mwext-SemanticResultFormats'
-    jobs:
-     - python-jobs
+     - '{name}-ruby1.9.3lint'
+     - '{name}-phpcs-strict'
+     - '{name}-phpcs-strict-HEAD'
 
 - project:
     name: 'mwext-WikimediaMaintenance'
