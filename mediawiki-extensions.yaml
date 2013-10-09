@@ -493,6 +493,12 @@
         ext-name: VisualEditor
 
 - project:
+    name: 'mwext-cldr'
+    jobs:
+     - '{name}-phpcs-strict'
+     - '{name}-phpcs-strict-HEAD'
+
+- project:
     name: 'mwext-MobileFrontend'
     jobs:
      - '{name}-ruby1.9.3lint'
@@ -501,6 +507,8 @@
     name: 'mwext-UniversalLanguageSelector'
     jobs:
      - '{name}-ruby1.9.3lint'
+     - '{name}-phpcs-strict'
+     - '{name}-phpcs-strict-HEAD'
 
 - job-template:
     name: 'mwext-PoolCounter-build'
@@ -527,6 +535,18 @@
     jobs:
      - '{name}-phpcs-lenient'
      - '{name}-phpcs-lenient-HEAD'
+     - '{name}-phpcs-strict'
+     - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-TranslationNotifications'
+    jobs:
+     - '{name}-phpcs-strict'
+     - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-TwnMainPage'
+    jobs:
      - '{name}-phpcs-strict'
      - '{name}-phpcs-strict-HEAD'
 
