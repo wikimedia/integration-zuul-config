@@ -313,6 +313,7 @@
     builders:
      - shell: |
         phpcs -v -s . \
+         --encoding=utf-8 \
          --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
          --extensions=php,inc \
          --ignore=languages/messages/Messages*.php,*.i18n.php \
@@ -334,6 +335,7 @@
         fi
 
         phpcs -v -s $PHPCS_FILES \
+         --encoding=utf-8 \
          --standard=/var/lib/jenkins/tools/mwcodesniffer/MediaWiki \
          --ignore=languages/messages/Messages,*.i18n.php \
          --report-checkstyle=checkstyle-phpcs.xml \
