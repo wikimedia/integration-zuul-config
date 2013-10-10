@@ -287,6 +287,9 @@ jobs:
     voting: true
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
 
+  - name: operations-puppet-rspec
+    voting: false
+
   - name: operations-software-pep8
     voting: true
     files:
@@ -904,7 +907,16 @@ projects:
 
   - name: operations/puppet
     # Only lint on submission for now, that will be voting
-    check-voter:
+    check:
+      - operations-puppet-erblint-HEAD
+      - operations-puppet-pep8
+      - operations-puppet-typos
+      - operations-puppet-validate
+    # Same for trusted user
+    test:
+      # rspec unit testing!
+      - operations-puppet-rspec
+      # Same as `check` pipeline:
       - operations-puppet-erblint-HEAD
       - operations-puppet-pep8
       - operations-puppet-typos
