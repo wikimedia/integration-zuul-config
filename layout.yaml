@@ -2368,14 +2368,20 @@ projects:
     test:
       - mwext-Wikibase-jslint
       - mwext-Wikibase-lint:
-        - mwext-Wikibase-testextensions-master
+      # testextensions is a bit too slow. We want to give feedback in Gerrit as
+      # quick as possible.  The test is run on gate-and-submit below anyway.
+#        - mwext-Wikibase-testextensions-master
         - mwext-Wikibase-client-tests
         - mwext-Wikibase-repo-tests
+        - mwext-Wikibase-repoapi-tests
     gate-and-submit:
       - mwext-Wikibase-jslint
       - mwext-Wikibase-lint:
-#        - mwext-Wikibase-client-tests
+        # Same as test but with the slow testextensions job.
+        - mwext-Wikibase-testextensions-master
+        - mwext-Wikibase-client-tests
         - mwext-Wikibase-repo-tests
+        - mwext-Wikibase-repoapi-tests
 
   - name: mediawiki/extensions/WikibaseDatabase
     template:
