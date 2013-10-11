@@ -120,6 +120,33 @@
      # FIXME no more supports "databasetype"
      - mw-install-sqlite
 
+- job-template:
+    name: 'mediawiki-core-release'
+
+    triggers:
+     - zuul-post
+
+    # Fetch latest version of the release script
+    scm:
+     - git:
+        url: '/srv/ssd/gerrit/mediawiki/tools/release'
+        wipe-workspace: true
+
+    builders:
+     - shell: |
+        VERSION=`echo "$ZUUL_REF"|sed 's%^refs/tags/%%'`
+        echo "From tag $ZUUL_REF, extracted version $VERSION"
+        python make-release/make-release.py \
+            --yes \
+            --conf 'make-release/make-release.yaml' \
+            --git-root '/srv/ssd/gerrit/mediawiki' \
+            --dont-sign \
+            "$VERSION"
+
+    publishers:
+     - archive:
+         artifacts: 'build/*.gz'
+
 - job-group:
     name: mediawiki-jobs
     jobs:
@@ -149,6 +176,7 @@
     jobs:
       - mediawiki-jobs
       - '{name}-phpcs-HEAD'
+      - mediawiki-core-release
 
 # For regression testing:
 
