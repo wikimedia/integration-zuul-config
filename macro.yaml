@@ -230,15 +230,22 @@
           dependencies: '{dependencies}'
      - shell: |
         #!/bin/bash -xe
-        # Inject in LocalSettings.php some code to automatically load
-        # installed extensions.
+        # Inject in LocalSettings.php some code...
+
+        # .. MW_INSTALL_PATH points to WORKSPACE
+        # WATCHOUT: curly braces need to be escaped, JJB pass string to format()
+        echo "if( ! getenv( 'MW_INSTALL_PATH' ) ) {{ putenv( 'MW_INSTALL_PATH='. getenv( 'WORKSPACE' ) ); }}" \
+        >> "$WORKSPACE/LocalSettings.php"
 
         # XXX: be careful, need to escape $ !!!
         #
         echo -e "\$wgWikimediaJenkinsCI = true;\n" \
         >> "$WORKSPACE/LocalSettings.php"
+
+        # .. automatically load installed extensions.
         echo "require_once( '/var/lib/jenkins/tools/extensions-loader.php' );" \
         >> "$WORKSPACE/LocalSettings.php"
+
      - mw-run-update-script
 
 - builder:
