@@ -459,6 +459,10 @@ jobs:
     # (times out or doesn't start in the first place).
     branch: (?!REL1_19)
 
+  # Experimental
+  - name: ^mwext-Wikibase-qunit$
+    voting: false
+
   - name: mediawiki-core-jsduck
     branch: ^(REL1_21|master)$
 
@@ -2388,6 +2392,7 @@ projects:
         - mwext-Wikibase-client-tests
         - mwext-Wikibase-repo-tests
         - mwext-Wikibase-repoapi-tests
+        - mwext-Wikibase-qunit
     gate-and-submit:
       - mwext-Wikibase-jslint
       - mwext-Wikibase-lint:
@@ -2396,6 +2401,7 @@ projects:
         - mwext-Wikibase-client-tests
         - mwext-Wikibase-repo-tests
         - mwext-Wikibase-repoapi-tests
+        - mwext-Wikibase-qunit
 
   - name: mediawiki/extensions/WikibaseDatabase
     template:
