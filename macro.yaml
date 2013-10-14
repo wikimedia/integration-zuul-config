@@ -232,6 +232,11 @@
         #!/bin/bash -xe
         # Inject in LocalSettings.php some code to automatically load
         # installed extensions.
+
+        # XXX: be careful, need to escape $ !!!
+        #
+        echo -e "\$wgWikimediaJenkinsCI = true;\n" \
+        >> "$WORKSPACE/LocalSettings.php"
         echo "require_once( '/var/lib/jenkins/tools/extensions-loader.php' );" \
         >> "$WORKSPACE/LocalSettings.php"
      - mw-run-update-script
