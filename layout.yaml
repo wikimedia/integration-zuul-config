@@ -634,9 +634,14 @@ projects:
   - name: gerrit
 
   - name: integration/jenkins
-    template:
-      - name: 'python-lint'
-        prefix: 'integration-jenkins'
+    check-voter:
+      - 'integration-jenkins-pep8'
+      - 'integration-jenkins-phplint'
+      - 'integration-jenkins-pyflakes'
+    gate-and-submit:
+      - 'integration-jenkins-pep8'
+      - 'integration-jenkins-phplint'
+      - 'integration-jenkins-pyflakes'
 
   - name: integration/jenkins-job-builder-config
     # FIXME: make this 'check' whenever we have integration tests
