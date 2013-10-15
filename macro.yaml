@@ -416,3 +416,9 @@
     name: yaml-lint
     builders:
      - shell: '/var/lib/jenkins/tools/yamllint.py "$WORKSPACE"'
+
+- publisher:
+    name: archive-logs-dir
+    publishers:
+     - archive:
+        artifacts: 'logs/*'
