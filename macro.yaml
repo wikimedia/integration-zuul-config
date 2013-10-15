@@ -188,6 +188,7 @@
     builders:
         - shell: 'php "$WORKSPACE/maintenance/update.php" --quick'
 
+# DEPRECATED, should migrate everything to mw-install-sqlite-2
 - builder:
     name: mw-install-sqlite
     builders:
@@ -219,6 +220,13 @@
         # Installer will create sqlite db as 644 by jenkins:jenkins
         # Make writable for Apache (bug 47639)
         chmod +w "$sqlitedir/my_wiki.sqlite"
+
+# Shell script backed macro intended to migrate out of inlined shell produced
+# by the above macro mw-install-sqlite
+- builder:
+    name: mw-install-sqlite-2
+    builders:
+     - shell: "/srv/slave-scripts/bin/mw-install-sqlite.sh"
 
 - builder:
     name: mw-setup-extension
