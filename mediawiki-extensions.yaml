@@ -59,9 +59,9 @@
     # TODO, find ways to additionaly run tests for core but
     # without extensions tests
     publishers:
-     - archive-logs-dir
+     - archive-log-dir
      - junit:
-        results: 'logs/junit*.xml'
+        results: 'log/junit*.xml'
 
 - job-template:
     name: 'mwext-PoolCounter-build'
@@ -124,9 +124,9 @@
         dependencies: '{dependencies}'
      - mw-run-phpunit-allexts
     publishers:
-     - archive-logs-dir
+     - archive-log-dir
      - junit:
-        results: 'logs/junit*.xml'
+        results: 'log/junit*.xml'
 
 # These are jobs we create for all of the extensions
 # listed below. If a job should only be created
