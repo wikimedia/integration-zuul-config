@@ -188,43 +188,9 @@
     builders:
         - shell: 'php "$WORKSPACE/maintenance/update.php" --quick'
 
-# DEPRECATED, should migrate everything to mw-install-sqlite-2
+# Shell script backed macro installing MediaWiki with a SQLite backend
 - builder:
     name: mw-install-sqlite
-    builders:
-     - shell: |
-        #!/bin/bash -xe
-        # Creating basic build directory tree
-        mkdir -p api data charts coverage dist logs php-code-browser
-        # Determine sqlite directory
-        if [ -d "$HOME/tmpfs" ]
-        then
-            sqlitedir="$HOME/tmpfs/$JOB_NAME"
-            mkdir -p $sqlitedir
-        else
-            sqlitedir="$WORKSPACE/data"
-        fi
-        # Ensure LocalSettings.php and my_wiki.sqlite don't exists
-        rm -f LocalSettings.php
-        rm -f "$sqlitedir/my_wiki.sqlite"
-        # Run MediaWiki installer
-        php maintenance/install.php \
-        --confpath $WORKSPACE \
-        --dbtype=sqlite \
-        --dbname=my_wiki \
-        --dbpath=$sqlitedir \
-        --showexceptions=true \
-        --pass testpass \
-        sqlitetest \
-        WikiAdmin
-        # Installer will create sqlite db as 644 by jenkins:jenkins
-        # Make writable for Apache (bug 47639)
-        chmod +w "$sqlitedir/my_wiki.sqlite"
-
-# Shell script backed macro intended to migrate out of inlined shell produced
-# by the above macro mw-install-sqlite
-- builder:
-    name: mw-install-sqlite-2
     builders:
      - shell: "/srv/slave-scripts/bin/mw-install-sqlite.sh"
 
@@ -233,7 +199,7 @@
     builders:
      - get-mw-core:
           branch: '{mwbranch}'
-     - mw-install-sqlite-2
+     - mw-install-sqlite
      - mw-get-extensions:
           dependencies: '{dependencies}'
      - shell: |

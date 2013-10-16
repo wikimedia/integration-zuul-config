@@ -27,7 +27,7 @@
      - zuul
 
     builders:
-     - mw-install-sqlite-2
+     - mw-install-sqlite
      - qunit
 
 - job-template:
@@ -116,7 +116,7 @@
 
     builders:
      # FIXME no more supports "databasetype"
-     - mw-install-sqlite-2
+     - mw-install-sqlite
 
 - job-group:
     name: mediawiki-jobs
@@ -174,7 +174,7 @@
      - wipe-workspace
      - get-mw-core:
         branch: 'master'
-     - mw-install-sqlite-2
+     - mw-install-sqlite
      - shell: |
         php tests/phpunit/phpunit.php \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
