@@ -106,12 +106,26 @@
         TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
         # Configure MediaWiki
         echo -e \
-         "ini_set( 'display_errors', 1 );\n"\
-         "error_reporting( -1 );\n"\
-         "\$wgServer = 'http://localhost:9412';\n"\
+         "<?php\n\$wgServer = 'http://localhost:9412';\n"\
          "\$wgScriptPath = '/${TEST_ID}';\n"\
          "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
          "\$wgEnableJavaScriptTest = true;\n" >> $WORKSPACE/LocalSettings.php
+
+        # HACK HACK
+        # mediawiki/conf.d/00_set_debug_log.php cant initialize the
+        # mw-debug-www.log file since it lacks jenkins-slave permissions.
+        mkdir -p "$WORKSPACE"/log
+        touch "$WORKSPACE"/log/mw-debug-www.log
+        # Make it world writable
+        chmod a+w "$WORKSPACE"/log/mw-debug-www.log
+
+        # Make sure to compress MediaWiki log dir after phpunit has ran
+        function compress_log_dir() {
+            echo "Compressing logs under $LOG_DIR"
+            gzip --verbose --best "$WORKSPACE"/log/*.log || :
+        }
+        trap compress_log_dir EXIT
+
         # The location is free or we make it free
         test ! -e /srv/localhost/qunit/$TEST_ID || rm /srv/localhost/qunit/$TEST_ID;
         # Publish our install in the QUnit server document root
@@ -207,24 +221,7 @@
      - mw-install-sqlite
      - mw-get-extensions:
           dependencies: '{dependencies}'
-     - shell: |
-        #!/bin/bash -xe
-        # Inject in LocalSettings.php some code...
-
-        # .. MW_INSTALL_PATH points to WORKSPACE
-        # WATCHOUT: curly braces need to be escaped, JJB pass string to format()
-        echo "if( ! getenv( 'MW_INSTALL_PATH' ) ) {{ putenv( 'MW_INSTALL_PATH='. getenv( 'WORKSPACE' ) ); }}" \
-        >> "$WORKSPACE/LocalSettings.php"
-
-        # XXX: be careful, need to escape $ !!!
-        #
-        echo -e "\$wgWikimediaJenkinsCI = true;\n" \
-        >> "$WORKSPACE/LocalSettings.php"
-
-        # .. automatically load installed extensions.
-        echo "require_once( '/var/lib/jenkins/tools/extensions-loader.php' );" \
-        >> "$WORKSPACE/LocalSettings.php"
-
+     - mw-apply-settings
      - mw-run-update-script
 
 - builder:
