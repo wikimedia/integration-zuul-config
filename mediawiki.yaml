@@ -160,11 +160,12 @@
      - zuul
 
     builders:
-     - ant:
-        targets: 'phpunit-all'
-        buildfile: '/var/lib/jenkins/jobs/_shared/build.xml'
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: "/srv/slave-scripts/bin/mw-run-phpunit.sh"
     publishers:
-     - phpunit-junit
+     - phpunit-junit-2
+     - archive-log-dir
 
 - job:
     name: 'mediawiki-core-code-coverage'
