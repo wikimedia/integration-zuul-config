@@ -122,7 +122,7 @@
         # Make sure to compress MediaWiki log dir after phpunit has ran
         function compress_log_dir() {
             echo "Compressing logs under $LOG_DIR"
-            gzip --verbose --best "$WORKSPACE"/log/*.log || :
+            gzip --verbose --force --best "$WORKSPACE"/log/*.log || :
         }
         trap compress_log_dir EXIT
 
