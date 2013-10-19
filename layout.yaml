@@ -233,11 +233,7 @@ jobs:
 
   # Experimental building of Debian packages
   # based on jenkins-debian-glue
-  - name: ^.*-source$
-    voting: false
-  - name: ^.*-binaries$
-    voting: false
-  - name: ^.*-piuparts$
+  - name: ^.*-debian-glue$
     voting: false
 
   - name: ^.*-erblint-HEAD$
@@ -572,13 +568,6 @@ jobs:
 
 project-templates:
 
-  # Package building using jenkins-debian-glue
-  - name: debian-glue
-    test:
-     - '{project}-source':
-       - '{project}-binaries':
-         - '{project}-piuparts'
-
   # Template for MediaWiki extensions.
   # Does run the unit tests on 'test' and 'gate-and-submit'
   - name: extension-unittests
@@ -877,9 +866,8 @@ projects:
         prefix: 'operations-debs-adminbot'
 
   - name: operations/debs/pybal
-    template:
-      - name: 'debian-glue'
-        project: 'operations-debs-pybal'
+    test:
+     - 'operations-debs-pybal-debian-glue'
 
   - name: operations/debs/ircecho
     template:
