@@ -49,6 +49,10 @@
           sudo piuparts_wrapper $PWD/*.deb || true
           piuparts_tap piuparts.txt > piuparts.tap
 
+#
+# JOB TEMPLATES
+#
+
 - job-template:
     name: '{name}-debian-glue'
     defaults: use-remote-zuul
@@ -106,25 +110,15 @@
         targets: 'build'
         buildfile: '$WORKSPACE/source/build.xml'
 
-- project:
-    name: 'operations-debs-python-voluptuous'
-    jobs:
-     - '{name}-debbuild'
+#
+# PROJECTS
+#
 
 - project:
-    name: 'operations-debs-adminbot'
+    name: gerrit
+    gerrit-name: gerrit
     jobs:
-     - python-jobs
-
-- project:
-    name: 'operations-debs-ircecho'
-    jobs:
-     - python-jobs
-
-- project:
-    name: 'operations-debs-wikistats'
-    jobs:
-     - '{name}-phplint'
+     - '{name}-debian-glue'
 
 - project:
     name: 'lucene-search-2'
@@ -138,13 +132,27 @@
      - '{name}-debian-glue'
 
 - project:
+    name: 'operations-debs-adminbot'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'operations-debs-ircecho'
+    jobs:
+     - python-jobs
+
+- project:
     name: operations-debs-pybal
     gerrit-name: operations/debs/pybal
     jobs:
      - '{name}-debian-glue'
 
 - project:
-    name: gerrit
-    gerrit-name: gerrit
+    name: 'operations-debs-python-voluptuous'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debbuild'
+
+- project:
+    name: 'operations-debs-wikistats'
+    jobs:
+     - '{name}-phplint'
