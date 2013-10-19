@@ -865,20 +865,40 @@ projects:
       - name: 'python-lint'
         prefix: 'operations-debs-adminbot'
 
-  - name: operations/debs/pybal
+  - name: operations/debs/gerrit
     test:
-     - 'operations-debs-pybal-debian-glue'
+     - operations-debs-gerrit-debian-glue
 
   - name: operations/debs/ircecho
     template:
       - name: 'python-lint'
         prefix: 'operations-debs-ircecho'
 
+  - name: operations/debs/kafka
+    test:
+     - operations-debs-kafka-debian-glue
+
+  - name: operations/debs/latexml
+    test:
+     - operations-debs-latexml-debian-glue
+
+  - name: operations/debs/pybal
+    test:
+     - operations-debs-pybal-debian-glue
+
+  - name: operations/debs/varnish
+    test:
+     - operations-debs-varnish-debian-glue
+
   - name: operations/debs/wikistats
-    check-voter:
+    check:
       - operations-debs-wikistats-phplint
+    test:
+     - operations-debs-wikistats-phplint
+     - operations-debs-wikistats-debian-glue
     gate-and-submit:
-      - operations-debs-wikistats-phplint
+     - operations-debs-wikistats-phplint
+     - operations-debs-wikistats-debian-glue
 
   - name: operations/debs/lucene-search-2
     test:
