@@ -45,10 +45,8 @@ pipelines:
       # Only V+1 as these are not elaborate tests. This prevents a change from
       # being merged (requires V+2) before elaborate tests, which vote V+2, have run.
       verified: 1
-      code-review: 0
     failure:
       verified: -1
-      code-review: 0
 
   # Use this for projects that don't have a 'test' pipeline. Because the normal 'check'
   # pipeline does not execute for people for whom the test execution is done immediately.s
@@ -61,10 +59,8 @@ pipelines:
         comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
     success:
       verified: 1
-      code-review: 0
     failure:
       verified: -1
-      code-review: 0
 
   - name: check-voter
     description: >
@@ -77,10 +73,8 @@ pipelines:
         comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
     success:
       verified: 2
-      code-review: 0
     failure:
       verified: -1
-      code-review: 0
 
   - name: test
     description: >
@@ -165,10 +159,8 @@ pipelines:
 
     success:
       verified: 2
-      code-review: 0
     failure:
       verified: -1
-      code-review: 0
 
   # Actual gate (report/vote in Gerrit)
   # Will auto submit change on success!!!!!!!!
@@ -189,12 +181,10 @@ pipelines:
       verified: 0
     success:
       verified: 2
-      code-review: 0
       # Let Zuul merge the change \O/
       submit: true
     failure:
       verified: -1
-      code-review: 0
 
   # Filter the merge events, useful to do regression testing.
   - name: postmerge
