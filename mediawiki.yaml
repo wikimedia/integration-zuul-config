@@ -96,12 +96,13 @@
     triggers:
      - zuul
 
-    publishers:
-     - phpunit-junit
     builders:
-     - ant:
-         targets: "phpunit-{phpunit-group}"
-         buildfile: "/var/lib/jenkins/jobs/_shared/build.xml"
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: "/srv/slave-scripts/bin/mw-run-phpunit.sh {phpunit-group}"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
 
 # A job template to install MediaWiki against a specific DB backend
 #
