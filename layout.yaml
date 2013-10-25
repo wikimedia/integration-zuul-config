@@ -2391,18 +2391,21 @@ projects:
       - mwext-VisualEditor-jslint
       - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-lint
+      - mwext-VisualEditor-ruby1.9.3lint
     test:
       - mwext-VisualEditor-jslint
       - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-lint
       - mwext-VisualEditor-doc-test
       - mwext-VisualEditor-qunit
+      - mwext-VisualEditor-ruby1.9.3lint
     gate-and-submit:
       - mwext-VisualEditor-jslint
       - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-lint
       - mwext-VisualEditor-doc-test
       - mwext-VisualEditor-qunit
+      - mwext-VisualEditor-ruby1.9.3lint
     postmerge:
       - mwext-VisualEditor-doc-publish
 
@@ -2434,9 +2437,11 @@ projects:
   - name: mediawiki/extensions/Wikibase
     check:
       - mwext-Wikibase-jslint
+      - mwext-Wikibase-ruby1.9.3lint
       - mwext-Wikibase-lint
     test:
       - mwext-Wikibase-jslint
+      - mwext-Wikibase-ruby1.9.3lint
       - mwext-Wikibase-lint:
       # testextensions is a bit too slow. We want to give feedback in Gerrit as
       # quick as possible.  The test is run on gate-and-submit below anyway.
@@ -2447,6 +2452,7 @@ projects:
         - mwext-Wikibase-qunit
     gate-and-submit:
       - mwext-Wikibase-jslint
+      - mwext-Wikibase-ruby1.9.3lint
       - mwext-Wikibase-lint:
         # Same as test but with the slow testextensions job.
         - mwext-Wikibase-testextensions-master
