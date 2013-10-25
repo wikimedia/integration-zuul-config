@@ -1192,9 +1192,14 @@ projects:
         extname: CentralNotice
 
   - name: mediawiki/extensions/CirrusSearch
-    template:
-      - name: extension-checks
-        extname: CirrusSearch
+    check-only:
+     - mwext-CirrusSearch-jslint
+     - mwext-CirrusSearch-lint
+     - mwext-CirrusSearch-ruby1.9.3lint
+    gate-and-submit:
+     - mwext-CirrusSearch-jslint
+     - mwext-CirrusSearch-lint
+     - mwext-CirrusSearch-ruby1.9.3lint
 
   - name: mediawiki/extensions/CleanChanges
     template:
@@ -1461,9 +1466,20 @@ projects:
         extname: FeaturedFeeds
 
   - name: mediawiki/extensions/Flow
-    template:
-      - name: extension-unittests
-        extname: Flow
+    check:
+     - mwext-Flow-jslint
+     - mwext-Flow-lint
+     - mwext-Flow-ruby1.9.3lint
+    test:
+     - mwext-Flow-jslint
+     - mwext-Flow-lint:
+       - mwext-Flow-testextensions-master
+     - mwext-Flow-ruby1.9.3lint
+    gate-and-submit:
+     - mwext-Flow-jslint
+     - mwext-Flow-lint:
+       - mwext-Flow-testextensions-master
+     - mwext-Flow-ruby1.9.3lint
 
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
@@ -2223,16 +2239,19 @@ projects:
       - mwext-Translate-phpcs-strict-HEAD  # Experiment, bug 48420
       - mwext-Translate-jslint
       - mwext-Translate-lint
+      - mwext-Translate-ruby1.9.3lint
     test:
       - mwext-Translate-phpcs-strict-HEAD  # Experiment, bug 48420
       - mwext-Translate-jslint
       - mwext-Translate-lint:
         - mwext-Translate-testextensions-master
+      - mwext-Translate-ruby1.9.3lint
     gate-and-submit:
       - mwext-Translate-phpcs-strict # Experiment for bug 48420
       - mwext-Translate-jslint
       - mwext-Translate-lint:
         - mwext-Translate-testextensions-master
+      - mwext-Translate-ruby1.9.3lint
 
   - name: mediawiki/extensions/TranslationNotifications
     check:
@@ -2265,16 +2284,19 @@ projects:
       - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-lint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-TwnMainPage-ruby1.9.3lint
     test:
       - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-TwnMainPage-lint:
         - mwext-TwnMainPage-testextensions-master
+      - mwext-TwnMainPage-ruby1.9.3lint
     gate-and-submit:
       - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-TwnMainPage-lint:
         - mwext-TwnMainPage-testextensions-master
+      - mwext-TwnMainPage-ruby1.9.3lint
 
   - name: mediawiki/extensions/UnicodeConverter
     template:
