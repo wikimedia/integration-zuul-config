@@ -122,7 +122,7 @@
             triggeredCommit: "$ZUUL_COMMIT"
 
         # Use junitdiff tool to diff the two results
-        - shell: 'node /var/lib/jenkins/tools/junitdiff/junitdiff oldresults.xml results.xml > diff.xml'
+        - shell: 'node /srv/slave-scripts/tools/junitdiff/junitdiff oldresults.xml results.xml > diff.xml'
 
     publishers:
         - xunit:
