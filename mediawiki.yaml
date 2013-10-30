@@ -206,8 +206,10 @@
      - get-mw-core:
         branch: 'master'
      - mw-install-sqlite
+     # FIXME should use the mw-run-phpunit.sh wrapper
      - shell: |
         nice -n 19 php tests/phpunit/phpunit.php \
+            --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
             --coverage-html /srv/org/wikimedia/integration/cover/mediawiki-core/master/php
         echo "Code coverage report is available at:"
