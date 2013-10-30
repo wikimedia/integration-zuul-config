@@ -1,6 +1,10 @@
 - job-template:
     name: 'operations-mw-config-tests'
-    node: (hasContintPackages && hasPhpUnit)
+# Repo has a reference to a git://github.com url which does not
+# work on 10.0.0.0/8 slaves :(
+#
+#    node: (hasContintPackages && hasPhpUnit)
+    node: gallium
     defaults: use-remote-zuul
     triggers:
      - zuul
