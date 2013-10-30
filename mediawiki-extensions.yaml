@@ -115,7 +115,7 @@
 # and server configurations.
 - job-template:
     name: 'mwext-Wikibase-{kind}-tests'
-    node: hasSlaveScripts
+    node: (hasSlaveScripts && hasPhpUnit)
     defaults: use-zuul-for-mw-ext
     ext-name: 'Wikibase'
     triggers:

@@ -182,7 +182,7 @@
 
 - job-template:
     name: 'mediawiki-core-regression-{branch}'
-    node: hasSlaveScripts
+    node: (hasSlaveScripts && hasPhpUnit)
     defaults: use-zuul
     scm:
      - git-mwcore-nosubmodules
