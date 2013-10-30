@@ -19,17 +19,15 @@
 
 pipelines:
   # Terminology:
-  # - silent: For some pipelines, we do not want to report anything back to
-  #    Gerrit, this is useful when trying out a new set of filter or when adding
-  #    a new repository in the workflow. Zuul still log the results to
-  #    /var/log/zuul.log but simply won't report back to Gerrit.
-  # - check: Basic testing run on any submission. Votes V+1
-  # - test: More elaborate testing run only after CR+2 or when submitte
+  # - check: Basic jobs run for all users. Votes V+1
+  # - test: More elaborate execution run only after CR+2 or when submitted
   #    by a whitelisted user. Votes V+2.
 
+
+  # Use this in combination with a 'test' pipeline.
   - name: check
     description: >
-      Harmless jobs being run for untrusted users. Will vote Verified +1/-1.
+      Basic jobs being run for all users. Will vote Verified +1/-1.
     manager: IndependentPipelineManager
     trigger:
       - event: patchset-created
@@ -48,10 +46,11 @@ pipelines:
     failure:
       verified: -1
 
-  # Use this for projects that don't have a 'test' pipeline. Because the normal 'check'
-  # pipeline does not execute for people for whom the test execution is done immediately.s
+  # Use this instead of 'check' for projects not having a separate 'test' pipeline. Those need to
+  # be marked as 'check-only' instead of 'check', because 'check' has a reversed email filter to
+  # compensate the 'test' pipeline.
   - name: check-only
-    description: Harmless jobs not restricted. Will vote Verified +1/-1.
+    description: Basic jobs being run for all users. Will vote +1.
     manager: IndependentPipelineManager
     trigger:
       - event: patchset-created
@@ -64,8 +63,7 @@ pipelines:
 
   - name: check-voter
     description: >
-      Linting check that validate a change by voting +2. Used when there is no
-      unit tests.
+      Basic jobs for projects without a test pipeline. Will vote +2.
     manager: IndependentPipelineManager
     trigger:
       - event: patchset-created
@@ -76,10 +74,10 @@ pipelines:
     failure:
       verified: -1
 
+  # Use this in combination with a check pipeline.
   - name: test
     description: >
-      Jobs restricted to trusted users. Will vote Verified +2/-1, letting one
-      submit the change.
+      Jobs restricted to trusted users. Will vote +2.
     manager: IndependentPipelineManager
     trigger:
       - event: patchset-created
@@ -165,20 +163,18 @@ pipelines:
       verified: -1
 
   # Actual gate (report/vote in Gerrit)
-  # Will auto submit change on success!!!!!!!!
+  # Will auto-submit change on success!
   #
   # WARNING: Also update the "gate" pipeline when changing this one.
   #
   - name: gate-and-submit
     description: >
-      Patchsets entering this will be merged by Jenkins if all the jobs
-      pass.
+      Patchsets that have been reviewed. Will be merged by Jenkins if tests pass.
     manager: IndependentPipelineManager
     trigger:
       - event: comment-added
         approval:
           - code-review: 2
-    # Let users know we will submit
     start:
       verified: 0
     success:
@@ -188,14 +184,13 @@ pipelines:
     failure:
       verified: -1
 
-  # Filter the merge events, useful to do regression testing.
   - name: postmerge
     description: Jobs triggered after a change has been merged.
     manager: IndependentPipelineManager
     trigger:
       - event: change-merged
 
-  # Pipeline reacting whenever some reference is updated
+  # Pipeline reacting whenever a reference is updated
   - name: post
     description: Whenever a reference is updated.
     manager: IndependentPipelineManager
@@ -205,7 +200,7 @@ pipelines:
 
   # Pipeline for tags (either a new one or a removal)
   - name: publish
-    description: Handle tags modifications.
+    description: Whenever tags are published.
     manager: IndependentPipelineManager
     trigger:
      - event: ref-updated
