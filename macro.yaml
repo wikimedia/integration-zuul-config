@@ -100,6 +100,19 @@
 - builder:
     name: qunit
     builders:
+     - qunit-querystring:
+        querystring: ''
+
+- builder:
+    name: qunit-mobile
+    builders:
+     - qunit-querystring:
+        querystring: '&useformat=mobile'
+
+# - querystring: (with leading questionmark)
+- builder:
+    name: qunit-querystring
+    builders:
      - shell: |
         #!/bin/bash -x
         # Create unique sub directory name
@@ -107,7 +120,7 @@
         # Configure MediaWiki
         echo -e \
          "<?php\n\$wgServer = 'http://localhost:9412';\n"\
-         "\$wgScriptPath = '/${TEST_ID}';\n"\
+         "\$wgScriptPath = '/${{TEST_ID}}';\n"\
          "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
          "\$wgEnableJavaScriptTest = true;\n" >> $WORKSPACE/LocalSettings.php
 
@@ -120,10 +133,10 @@
         chmod a+w "$WORKSPACE"/log/mw-debug-www.log
 
         # Make sure to compress MediaWiki log dir after phpunit has ran
-        function compress_log_dir() {
+        function compress_log_dir() {{
             echo "Compressing logs under $LOG_DIR"
             gzip --verbose --force --best "$WORKSPACE"/log/*.log || :
-        }
+        }}
         trap compress_log_dir EXIT
 
         # The location is free or we make it free
@@ -134,7 +147,7 @@
         curl --include "http://localhost:9412/$TEST_ID/index.php?title=Special:BlankPage" | head -n42
         curl --include "http://localhost:9412/$TEST_ID/load.php?debug=true&modules=startup&only=scripts" | head -n42
         # Run QUnit tests via PhantomJS
-        /srv/slave-scripts/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit"
+        /srv/slave-scripts/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit{querystring}"
         gqec=$?
         # Clean up
         rm /srv/localhost/qunit/$TEST_ID
