@@ -453,10 +453,10 @@ jobs:
     voting: false
 
   - name: mediawiki-core-jsduck
-    branch: ^(REL1_21|master)$
+    branch: ^(REL1_21|REL1_22|master)$
 
   - name: mediawiki-core-jsduck-publish
-    branch: ^(REL1_21|master)$
+    branch: ^(REL1_21|REL1_22|master)$
 
   # not working yet, might need some dependency
   - name: ^mwext-ContributionTracking-testextensions-.*
@@ -522,6 +522,8 @@ jobs:
     branch: ^REL1_20$
   - name: mediawiki-core-regression-REL1_21
     branch: ^REL1_21
+  - name: mediawiki-core-regression-REL1_22
+    branch: ^REL1_22
 
   # Extensions for which tests are non-functional or absent:
   - name: ^mwext-EtherEditor-testextensions.*
@@ -680,6 +682,7 @@ projects:
       - mediawiki-core-regression-REL1_19
       - mediawiki-core-regression-REL1_20
       - mediawiki-core-regression-REL1_21
+      - mediawiki-core-regression-REL1_22
       - mediawiki-core-regression-phpcs-HEAD
       - mediawiki-core-doxygen-publish
     publish:
