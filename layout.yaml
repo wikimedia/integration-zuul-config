@@ -450,6 +450,9 @@ jobs:
     branch: (?!REL1_19)
 
   # Experimental
+  - name: ^mwext-MobileFrontend-qunit-mobile$
+    voting: false
+
   - name: ^mwext-Wikibase-qunit$
     voting: false
 
@@ -1691,12 +1694,14 @@ projects:
         - mwext-MobileFrontend-testextensions-master
       - mwext-MobileFrontend-ruby1.9.3lint
       - mwext-MobileFrontend-qunit
+      - mwext-MobileFrontend-qunit-mobile
     gate-and-submit:
       - mwext-MobileFrontend-jslint
       - mwext-MobileFrontend-lint:
         - mwext-MobileFrontend-testextensions-master
       - mwext-MobileFrontend-ruby1.9.3lint
       - mwext-MobileFrontend-qunit
+      - mwext-MobileFrontend-qunit-mobile
 
   - name: mediawiki/extensions/MoodBar
     template:
