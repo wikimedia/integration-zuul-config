@@ -116,7 +116,9 @@
      - shell: |
         #!/bin/bash -x
         # Create unique sub directory name
-        TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
+        #TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
+        # String of jenkins-$JOB_NAME-$BUILD_NUMBER.
+        TEST_ID="$BUILD_TAG"
         # Configure MediaWiki
         echo -e \
          "<?php\n\$wgServer = 'http://localhost:9412';\n"\
