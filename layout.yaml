@@ -30,21 +30,24 @@ pipelines:
       Basic jobs being run for all users. Will vote Verified +1/-1.
     manager: IndependentPipelineManager
     trigger:
-      - event: patchset-created
-        # Don't run the check pipeline if the user is allowd to run the test pipeline (bug 43391).
-        # TODO: Figure out a way to turn this into a list instead of a single-line regex.
-        # TODO: Figure out a way to not have to repeat this from pipeline 'test'.
-        # This email_filter and the one for 'test' can be removed once we have fixed bug 45499.
-        email_filter:
-         - ^(?!(.*?@wikimedia\.org|.*?@wikimedia\.de|anomie\.wikipedia@gmail\.com|amir\.aharoni@mail\.huji\.ac\.il|hashar@free\.fr|jeroendedauw@gmail\.com|maxsem\.wiki@gmail\.com|mtraceur@member\.fsf\.org|niklas\.laxstrom@gmail\.com|santhosh\.thottingal@gmail\.com|s\.mazeland@xs4all\.nl|stefan\.petrea@gmail\.com|stefan@garage-coding\.com|roan\.kattouw@gmail\.com|krinklemail@gmail\.com|trevorparscal@gmail\.com|inez@wikia-inc\.com|orbit@framezero\.com|david@sheetmusic\.org\.uk|aude\.wiki@gmail\.com|bawolff\+wn@gmail\.com|bryan\.tongminh@gmail\.com|dereckson@espace-win\.org|hartman\.wiki@gmail\.com|hoo@online\.de|codereview@emsenhuber\.ch|daniel@nadir-seen-fire\.com|jamesin\.hongkong\.1@gmail\.com|krenair@gmail\.com|liangent@gmail\.com|mah@everybody\.org|matma\.rex@gmail\.com|raimond\.spekking@gmail\.com|robinp\.1273@gmail\.com|tim@tim-landscheidt\.de|tylerromeo@gmail\.com|umherirrender_de\.wp@web\.de|yuriastrakhan@gmail\.com|yaron57@gmail\.com|markus@semantic-mediawiki\.org|s7eph4n@gmail\.org|wiki@physikerwelt\.de|addshorewiki@gmail\.com|pragun06@gmail\.com|nilesh@nileshc\.com|benestar\.wikimedia@googlemail\.com|mlazowik@gmail\.com|pleasestand@live\.com|legoktm\.wikipedia@gmail\.com|moriel@gmail\.com|d_entous@yahoo\.com|kartik\.mistry@gmail\.com|drenfro@vistaprint\.com|matanya\.moses@gmail\.com|matanya@foss\.co\.il|andrew\.green\.df@gmail\.com|thomaspt@hotmail\.fr|tomasz@twkozlowski\.net|yuvipanda@gmail\.com)).*$
-      - event: comment-added
-        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+      gerrit:
+        - event: patchset-created
+          # Don't run the check pipeline if the user is allowd to run the test pipeline (bug 43391).
+          # TODO: Figure out a way to turn this into a list instead of a single-line regex.
+          # TODO: Figure out a way to not have to repeat this from pipeline 'test'.
+          # This email_filter and the one for 'test' can be removed once we have fixed bug 45499.
+          email_filter:
+           - ^(?!(.*?@wikimedia\.org|.*?@wikimedia\.de|anomie\.wikipedia@gmail\.com|amir\.aharoni@mail\.huji\.ac\.il|hashar@free\.fr|jeroendedauw@gmail\.com|maxsem\.wiki@gmail\.com|mtraceur@member\.fsf\.org|niklas\.laxstrom@gmail\.com|santhosh\.thottingal@gmail\.com|s\.mazeland@xs4all\.nl|stefan\.petrea@gmail\.com|stefan@garage-coding\.com|roan\.kattouw@gmail\.com|krinklemail@gmail\.com|trevorparscal@gmail\.com|inez@wikia-inc\.com|orbit@framezero\.com|david@sheetmusic\.org\.uk|aude\.wiki@gmail\.com|bawolff\+wn@gmail\.com|bryan\.tongminh@gmail\.com|dereckson@espace-win\.org|hartman\.wiki@gmail\.com|hoo@online\.de|codereview@emsenhuber\.ch|daniel@nadir-seen-fire\.com|jamesin\.hongkong\.1@gmail\.com|krenair@gmail\.com|liangent@gmail\.com|mah@everybody\.org|matma\.rex@gmail\.com|raimond\.spekking@gmail\.com|robinp\.1273@gmail\.com|tim@tim-landscheidt\.de|tylerromeo@gmail\.com|umherirrender_de\.wp@web\.de|yuriastrakhan@gmail\.com|yaron57@gmail\.com|markus@semantic-mediawiki\.org|s7eph4n@gmail\.org|wiki@physikerwelt\.de|addshorewiki@gmail\.com|pragun06@gmail\.com|nilesh@nileshc\.com|benestar\.wikimedia@googlemail\.com|mlazowik@gmail\.com|pleasestand@live\.com|legoktm\.wikipedia@gmail\.com|moriel@gmail\.com|d_entous@yahoo\.com|kartik\.mistry@gmail\.com|drenfro@vistaprint\.com|matanya\.moses@gmail\.com|matanya@foss\.co\.il|andrew\.green\.df@gmail\.com|thomaspt@hotmail\.fr|tomasz@twkozlowski\.net|yuvipanda@gmail\.com)).*$
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
     success:
       # Only V+1 as these are not elaborate tests. This prevents a change from
       # being merged (requires V+2) before elaborate tests, which vote V+2, have run.
-      verified: 1
+      gerrit:
+        verified: 1
     failure:
-      verified: -1
+      gerrit:
+        verified: -1
 
   # Use this instead of 'check' for projects not having a separate 'test' pipeline. Those need to
   # be marked as 'check-only' instead of 'check', because 'check' has a reversed email filter to
@@ -53,26 +56,32 @@ pipelines:
     description: Basic jobs being run for all users. Will vote +1.
     manager: IndependentPipelineManager
     trigger:
-      - event: patchset-created
-      - event: comment-added
-        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+      gerrit:
+        - event: patchset-created
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
     success:
-      verified: 1
+      gerrit:
+        verified: 1
     failure:
-      verified: -1
+      gerrit:
+        verified: -1
 
   - name: check-voter
     description: >
       Basic jobs for projects without a test pipeline. Will vote +2.
     manager: IndependentPipelineManager
     trigger:
-      - event: patchset-created
-      - event: comment-added
-        comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+      gerrit:
+        - event: patchset-created
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
     success:
-      verified: 2
+      gerrit:
+        verified: 2
     failure:
-      verified: -1
+      gerrit:
+        verified: -1
 
   # Use this in combination with a check pipeline.
   - name: test
@@ -80,90 +89,93 @@ pipelines:
       Jobs restricted to trusted users. Will vote +2.
     manager: IndependentPipelineManager
     trigger:
-      - event: patchset-created
+      gerrit:
+        - event: patchset-created
 
-        # BEWARE:
-        # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
-        # - Also update the email_filter of the 'check' pipeline.
+          # BEWARE:
+          # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
+          # - Also update the email_filter of the 'check' pipeline.
 
-        email_filter:
-         - .*?@wikimedia\.org$
-         - .*?@wikimedia\.de$
+          email_filter:
+           - .*?@wikimedia\.org$
+           - .*?@wikimedia\.de$
 
-        # WMF staff & contractors:
-         - ^amir\.aharoni@mail\.huji\.ac\.il$
-         - ^andrew\.green\.df@gmail\.com$
-         - ^anomie\.wikipedia@gmail\.com$
-         - ^bawolff\+wn@gmail\.com$
-         - ^david@sheetmusic\.org\.uk$ # David Chan
-         - ^hashar@free\.fr$
-         - ^jeroendedauw@gmail\.com$
-         - ^kartik\.mistry@gmail\.com$
-         - ^krinklemail@gmail\.com$ # Timo Tijhof
-         - ^legoktm\.wikipedia@gmail\.com$  # Kunal Mehta
-         - ^maxsem\.wiki@gmail\.com$
-         - ^moriel@gmail\.com  # Moriel Schottlender
-         - ^mtraceur@member\.fsf\.org$
-         - ^niklas\.laxstrom@gmail\.com$
-         - ^roan\.kattouw@gmail\.com$
-         - ^s\.mazeland@xs4all\.nl$
-         - ^santhosh\.thottingal@gmail\.com$
-         - ^stefan@garage-coding\.com$
-         - ^stefan\.petrea@gmail\.com$
-         - ^trevorparscal@gmail\.com$
-         - ^yuriastrakhan@gmail\.com$
-         - ^yuvipanda@gmail\.com$
+          # WMF staff & contractors:
+           - ^amir\.aharoni@mail\.huji\.ac\.il$
+           - ^andrew\.green\.df@gmail\.com$
+           - ^anomie\.wikipedia@gmail\.com$
+           - ^bawolff\+wn@gmail\.com$
+           - ^david@sheetmusic\.org\.uk$ # David Chan
+           - ^hashar@free\.fr$
+           - ^jeroendedauw@gmail\.com$
+           - ^kartik\.mistry@gmail\.com$
+           - ^krinklemail@gmail\.com$ # Timo Tijhof
+           - ^legoktm\.wikipedia@gmail\.com$  # Kunal Mehta
+           - ^maxsem\.wiki@gmail\.com$
+           - ^moriel@gmail\.com  # Moriel Schottlender
+           - ^mtraceur@member\.fsf\.org$
+           - ^niklas\.laxstrom@gmail\.com$
+           - ^roan\.kattouw@gmail\.com$
+           - ^s\.mazeland@xs4all\.nl$
+           - ^santhosh\.thottingal@gmail\.com$
+           - ^stefan@garage-coding\.com$
+           - ^stefan\.petrea@gmail\.com$
+           - ^trevorparscal@gmail\.com$
+           - ^yuriastrakhan@gmail\.com$
+           - ^yuvipanda@gmail\.com$
 
-        # VisualEditor (Wikia)
-         - ^inez@wikia-inc\.com$
-         - ^orbit@framezero\.com$ # Christian Williams
+          # VisualEditor (Wikia)
+           - ^inez@wikia-inc\.com$
+           - ^orbit@framezero\.com$ # Christian Williams
 
-        # WMDE:
-         - ^addshorewiki@gmail\.com$
-         - ^aude\.wiki@gmail\.com$
-         - ^hoo@online\.de$
-         - ^nilesh@nileshc\.com$
-         - ^pragun06@gmail\.com$
+          # WMDE:
+           - ^addshorewiki@gmail\.com$
+           - ^aude\.wiki@gmail\.com$
+           - ^hoo@online\.de$
+           - ^nilesh@nileshc\.com$
+           - ^pragun06@gmail\.com$
 
-        # VistaPrint
-        # They are heavily using MediaWiki internally and open sourced
-        # some of their extensions.  Might wildcard them as well, for
-        # now just whitelist Daniel Renfro.
-         - ^drenfro@vistaprint\.com$  # AlephNull
+          # VistaPrint
+          # They are heavily using MediaWiki internally and open sourced
+          # some of their extensions.  Might wildcard them as well, for
+          # now just whitelist Daniel Renfro.
+           - ^drenfro@vistaprint\.com$  # AlephNull
 
-        # Trusted long term users:
-         - ^benestar\.wikimedia@googlemail\.com$
-         - ^bryan\.tongminh@gmail\.com$
-         - ^codereview@emsenhuber\.ch$
-         - ^d_entous@yahoo\.com$
-         - ^daniel@nadir-seen-fire\.com$
-         - ^dereckson@espace-win\.org$
-         - ^hartman\.wiki@gmail\.com$
-         - ^jamesin\.hongkong\.1@gmail\.com$  # Mwjames
-         - ^krenair@gmail\.com$
-         - ^liangent@gmail\.com$
-         - ^mah@everybody\.org$
-         - ^markus@semantic-mediawiki\.org$
-         - ^matanya\.moses@gmail\.com$
-         - ^matanya@foss\.co\.il$
-         - ^matma\.rex@gmail\.com$
-         - ^mlazowik@gmail\.com$
-         - ^pleasestand@live\.com$
-         - ^raimond\.spekking@gmail\.com$
-         - ^robinp\.1273@gmail\.com$
-         - ^s7eph4n@gmail\.org$ # Foxtrott
-         - ^thomaspt@hotmail\.fr$
-         - ^tomasz@twkozlowski\.net$
-         - ^tim@tim-landscheidt\.de$
-         - ^tylerromeo@gmail\.com$
-         - ^umherirrender_de\.wp@web\.de$
-         - ^wiki@physikerwelt\.de$
-         - ^yaron57@gmail\.com$
+          # Trusted long term users:
+           - ^benestar\.wikimedia@googlemail\.com$
+           - ^bryan\.tongminh@gmail\.com$
+           - ^codereview@emsenhuber\.ch$
+           - ^d_entous@yahoo\.com$
+           - ^daniel@nadir-seen-fire\.com$
+           - ^dereckson@espace-win\.org$
+           - ^hartman\.wiki@gmail\.com$
+           - ^jamesin\.hongkong\.1@gmail\.com$  # Mwjames
+           - ^krenair@gmail\.com$
+           - ^liangent@gmail\.com$
+           - ^mah@everybody\.org$
+           - ^markus@semantic-mediawiki\.org$
+           - ^matanya\.moses@gmail\.com$
+           - ^matanya@foss\.co\.il$
+           - ^matma\.rex@gmail\.com$
+           - ^mlazowik@gmail\.com$
+           - ^pleasestand@live\.com$
+           - ^raimond\.spekking@gmail\.com$
+           - ^robinp\.1273@gmail\.com$
+           - ^s7eph4n@gmail\.org$ # Foxtrott
+           - ^thomaspt@hotmail\.fr$
+           - ^tomasz@twkozlowski\.net$
+           - ^tim@tim-landscheidt\.de$
+           - ^tylerromeo@gmail\.com$
+           - ^umherirrender_de\.wp@web\.de$
+           - ^wiki@physikerwelt\.de$
+           - ^yaron57@gmail\.com$
 
     success:
-      verified: 2
+      gerrit:
+        verified: 2
     failure:
-      verified: -1
+      gerrit:
+        verified: -1
 
   # Actual gate (report/vote in Gerrit)
   # Will auto-submit change on success!
@@ -175,39 +187,46 @@ pipelines:
       Patchsets that have been reviewed. Will be merged by Jenkins if tests pass.
     manager: IndependentPipelineManager
     trigger:
-      - event: comment-added
-        approval:
-          - code-review: 2
+      gerrit:
+        - event: comment-added
+          approval:
+            - code-review: 2
     start:
-      verified: 0
+      gerrit:
+        verified: 0
     success:
-      verified: 2
-      # Let Zuul merge the change \O/
-      submit: true
+      gerrit:
+        verified: 2
+        # Let Zuul merge the change \O/
+        submit: true
     failure:
-      verified: -1
+      gerrit:
+        verified: -1
 
   - name: postmerge
     description: Jobs triggered after a change has been merged.
     manager: IndependentPipelineManager
     trigger:
-      - event: change-merged
+      gerrit:
+        - event: change-merged
 
   # Pipeline reacting whenever a reference is updated
   - name: post
     description: Whenever a reference is updated.
     manager: IndependentPipelineManager
     trigger:
-     - event: ref-updated
-       ref: ^(?!(devnull|refs/.*)).*$
+      gerrit:
+       - event: ref-updated
+         ref: ^(?!(devnull|refs/.*)).*$
 
   # Pipeline for tags (either a new one or a removal)
   - name: publish
     description: Whenever tags are published.
     manager: IndependentPipelineManager
     trigger:
-     - event: ref-updated
-       ref: ^refs/tags/.*$
+      gerrit:
+       - event: ref-updated
+         ref: ^refs/tags/.*$
 
 # Fine tune some jobs
 jobs:
