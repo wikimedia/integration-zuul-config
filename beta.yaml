@@ -176,6 +176,9 @@
     builders:
       - shell: "sudo -u mwdeploy /usr/local/bin/wmf-beta-autoupdate.py --verbose"
 
+    logrotate:
+        daysToKeep: 15
+
     triggers:
      # Every six minutes:
      - timed: '*/6 * * * *'
