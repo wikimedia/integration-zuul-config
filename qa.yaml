@@ -1,13 +1,8 @@
-# Pre setup the browsertests dependencies and craft a tarball
-# for easy reuse. Meant to be run on post merge commit.
-- job-template:
-    name: 'qa-browsertests-build'
-    node: integration-selenium-driver
-    defaults: use-remote-zuul
-    triggers:
-     - zuul
-    builders:
+# Macro to install qa/browsertests and create a tarball out of it
+- builder:
+    name: qa-browsertests-build
      # See bug 54384 for some background
+    builders:
      - shell: |
          mkdir vendor
 
@@ -22,8 +17,19 @@
          # Later on one can exec tests with:
          # GEM_PATH=`pwd`/bundle:`pwd`vendor ./bundle/bin/bundle  exec cucumber
 
+# Pre setup the browsertests dependencies and craft a tarball
+# for easy reuse. Meant to be run on post merge commit.
+- job-template:
+    name: 'qa-browsertests-postmerge'
+    node: integration-selenium-driver
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+
+    builders:
+     - qa-browsertests-build
      - shell: |
-         # Take a tarball
+         # Make a tarball for archiving
          GIT_COMMIT_SHORT=`git rev-parse --short HEAD`
          TAR_FILE="qa-browsertests-$BUILD_NUMBER-g$GIT_COMMIT_SHORT.tar.gz"
          tar -czf "$TAR_FILE" vendor .bundle
@@ -31,6 +37,16 @@
     publishers:
      - archive:
          artifacts: '*.tar.gz'
+
+- job-template:
+    name: 'qa-browsertests-build'
+    node: integration-selenium-driver
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - qa-browsertests-build
+
 
 # Should be a multi configuration job
 - job-template:
@@ -41,7 +57,7 @@
      - zuul
     builders:
      - copyartifact:
-         project: qa-browsertests-build
+         project: qa-browsertests-postmerge
          which-build: last-successful
          stable: true
          filter: '*.tar.gz'
@@ -75,4 +91,5 @@
      - '{name}-ruby1.9.3lint'
      - '{name}-yamllint'
      - 'qa-browsertests-build'
+     - 'qa-browsertests-postmerge'
      - 'qa-browsertests-run'
