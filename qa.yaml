@@ -49,6 +49,9 @@
 
 
 # Should be a multi configuration job
+#
+# The job is not used because it takes too long and the tests fails under
+# phantomjs anyway.
 - job-template:
     name: 'qa-browsertests-run'
     node: integration-selenium-driver
@@ -56,16 +59,8 @@
     triggers:
      - zuul
     builders:
-     - copyartifact:
-         project: qa-browsertests-postmerge
-         which-build: last-successful
-         stable: true
-         filter: '*.tar.gz'
-
+     - qa-browsertests-build
      - shell: |
-         # Uncompress browsertests
-         tar -xzf *.tar.gz
-
          # Publish some variables to env
          export BROWSER_LABEL="phantomjs"
          export GEM_PATH=`pwd`/vendor
