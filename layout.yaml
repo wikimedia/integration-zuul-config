@@ -457,6 +457,9 @@ jobs:
     branch: (?!REL1_19)
 
   # Experimental
+  - name: ^mwext-DataValues-qunit$
+    voting: false
+
   - name: ^mwext-Wikibase-qunit$
     voting: false
 
@@ -1330,9 +1333,19 @@ projects:
         extname: CustomUserSignup
 
   - name: mediawiki/extensions/DataValues
-    template:
-      - name: extension-unittests
-        extname: DataValues
+    check:
+     - mwext-DataValues-jslint
+     - mwext-DataValues-lint
+    test:
+     - mwext-DataValues-jslint
+     - mwext-DataValues-lint:
+       - mwext-DataValues-testextensions-master
+       - mwext-DataValues-qunit
+    gate-and-submit:
+     - mwext-DataValues-jslint
+     - mwext-DataValues-lint:
+       - mwext-DataValues-testextensions-master
+       - mwext-DataValues-qunit
 
   - name: mediawiki/extensions/DataTypes
     template:
