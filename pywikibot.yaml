@@ -2,7 +2,9 @@
 #   python setup.py test
 - job-template:
     name: 'pywikibot-core-tests'
-    node: hasContintPackages
+    # Needs an internet access to run tests against wikis
+    #node: hasContintPackages
+    node: gallium
     defaults: use-remote-zuul
 
     triggers:
