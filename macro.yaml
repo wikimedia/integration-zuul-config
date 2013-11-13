@@ -319,7 +319,7 @@
     name: phpcs
     builders:
      - shell: |
-        phpcs -v -s . \
+        /srv/deployment/integration/phpcs/vendor/bin/phpcs -v -s . \
          --encoding=utf-8 \
          --standard=/srv/slave-scripts/tools/mwcodesniffer/MediaWiki \
          --extensions=php,inc \
@@ -341,7 +341,7 @@
             exit 0
         fi
 
-        phpcs -v -s $PHPCS_FILES \
+        /srv/deployment/integration/phpcs/vendor/bin/phpcs -v -s $PHPCS_FILES \
          --encoding=utf-8 \
          --standard=/srv/slave-scripts/tools/mwcodesniffer/MediaWiki \
          --ignore=languages/messages/Messages,*.i18n.php \
