@@ -179,7 +179,6 @@
      - ApprovedRevs
      - Arrays
      - ArticleFeedbackv5
-     - Ask
      - Babel
      - BetaFeatures
      - BlameMaps
@@ -347,7 +346,6 @@
      - SemanticTitle
      - SemanticUpdateOnPurge
      - SemanticWatchlist
-     - Serialization
      - ShortUrl
      - SimpleAntiSpam
      - SiteMatrix
@@ -394,7 +392,6 @@
      - WebChat
      - WebFonts
      - Wikibase
-     - WikibaseDatabase
      - WikibaseDataModel
      - WikibaseQuery
      - WikibaseQueryEngine
@@ -423,10 +420,6 @@
 
     # Extra jobs for specific extensions
 
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: Ask
-        dependencies: 'Serialization,DataValues'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: DataTypes
@@ -465,9 +458,6 @@
         dependencies: 'DataValues,Validator,SemanticMediaWiki'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
-        ext-name: Serialization
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
         ext-name: Thanks
         dependencies: 'Echo'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
@@ -485,27 +475,25 @@
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: Wikibase
-        dependencies: 'Ask,Serialization,Diff,DataValues,DataTypes,WikibaseDataModel,Validator'
+        dependencies: 'Diff,DataValues,DataTypes,WikibaseDataModel'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Serialization,Diff,DataValues,DataTypes,WikibaseDataModel,Validator'
+        dependencies: 'Diff,DataValues,DataTypes,WikibaseDataModel'
         kind: 'client'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Serialization,Diff,DataValues,DataTypes,WikibaseDataModel,Validator'
+        dependencies: 'Diff,DataValues,DataTypes,WikibaseDataModel'
         kind: 'repo'
      - 'mwext-Wikibase-{kind}-tests':
         ext-name: Wikibase
-        dependencies: 'Ask,Serialization,Diff,DataValues,DataTypes,WikibaseDataModel,Validator'
+        dependencies: 'Diff,DataValues,DataTypes,WikibaseDataModel'
         kind: 'repoapi'
      - '{name}-{ext-name}-qunit':
         ext-name: Wikibase
-        dependencies: 'Ask,Serialization,Diff,DataValues,DataTypes,WikibaseDataModel,Validator'
+        dependencies: 'Diff,DataValues,DataTypes,WikibaseDataModel'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseDataModel
         dependencies: 'Diff,DataValues'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        ext-name: WikibaseDatabase
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseQueryEngine
         dependencies: 'Diff,DataValues,DataTypes,Ask,Serialization,WikibaseDataModel,WikibaseDatabase'
