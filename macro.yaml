@@ -252,9 +252,8 @@
         # mediawiki/conf.d/00_set_debug_log.php cant initialize the
         # mw-debug-www.log file since it lacks jenkins-slave permissions.
         mkdir -p "$WORKSPACE"/log
-        touch "$WORKSPACE"/log/mw-debug-www.log
         # Make it world writable
-        chmod a+w "$WORKSPACE"/log/mw-debug-www.log
+        chmod 777 "$WORKSPACE"/log
 
         # Make sure to compress MediaWiki log dir after phpunit has ran
         function compress_log_dir() {{
