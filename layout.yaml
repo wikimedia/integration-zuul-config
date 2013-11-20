@@ -469,13 +469,6 @@ jobs:
   - name: mediawiki-core-jsduck-publish
     branch: ^(REL1_21|REL1_22|master)$
 
-  # mediawiki/extensions/Collection has a OCG branch used for a PDF sprint. We
-  # want to track it separately.
-  - name: ^mwext-Collection-testextensions-master$
-    branch: ^(?!OCG)$
-  - name: ^mwext-Collection-testextensions-OCG$
-    branch: ^(OCG)$
-
   # not working yet, might need some dependency
   - name: ^mwext-ContributionTracking-testextensions-.*
     voting: false
@@ -1247,19 +1240,9 @@ projects:
         extname: CodeReview
 
   - name: mediawiki/extensions/Collection
-    check:
-     - 'mwext-Collection-jslint'
-     - 'mwext-Collection-lint'
-    test:
-     - 'mwext-Collection-jslint'
-     - 'mwext-Collection-lint':
-       - 'mwext-Collection-testextensions-master'
-       - 'mwext-Collection-testextensions-OCG'
-    gate-and-submit:
-     - 'mwext-Collection-jslint'
-     - 'mwext-Collection-lint':
-       - 'mwext-Collection-testextensions-master'
-       - 'mwext-Collection-testextensions-OCG'
+    template:
+      - name: extension-unittests
+        extname: Collection
 
   - name: mediawiki/extensions/CommonsMetadata
     template:
