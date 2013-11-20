@@ -73,6 +73,23 @@
         dir: '$WORKSPACE'
 
 - builder:
+    name: npmtest-in
+    builders:
+     - shell: |
+        #!/bin/bash -xe
+        cd "{dir}"
+        [[ -n '{node-modules}' ]] && git clone 'https://gerrit.wikimedia.org/r/p/{node-modules}' node_modules
+        npm test
+
+# - node-modules: Gerrit project name for an appropriate node_modules subdir (may be empty)
+- builder:
+    name: npmtest
+    builders:
+     - npmtest-in:
+        dir: '$WORKSPACE'
+        node-modules: '{node-modules}'
+
+- builder:
     name: jsduck
     builders:
     # Zuul uses Python str.format(obj) for {config} substitutions

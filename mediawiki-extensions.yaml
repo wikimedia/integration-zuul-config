@@ -11,6 +11,16 @@
      - jshint
 
 - job-template:
+    name: '{name}-{ext-name}-npmtest'
+    node: hasNpm
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - npmtest:
+        node-modules: '{node-modules}'
+
+- job-template:
     # TODO: Use global '{name}-phplint' template instead
     name: '{name}-{ext-name}-lint'
     node: hasSlaveScripts
@@ -543,6 +553,27 @@
     name: 'mwext-CirrusSearch'
     jobs:
      - '{name}-ruby1.9.3lint'
+
+- project:
+    name: mwext-Collection-OfflineContentGenerator
+    jobs:
+        - '{name}-jslint'
+        - '{name}-npmtest':
+           node-modules: mediawiki/extensions/Collection/OfflineContentGenerator/node_modules
+
+- project:
+    name: mwext-Collection-OfflineContentGenerator-bundler
+    jobs:
+        - '{name}-jslint'
+        - '{name}-npmtest':
+           node-modules: mediawiki/extensions/Collection/OfflineContentGenerator/node_modules
+
+- project:
+    name: mwext-Collection-OfflineContentGenerator-latex_renderer
+    jobs:
+        - '{name}-jslint'
+        - '{name}-npmtest':
+           node-modules: mediawiki/extensions/Collection/OfflineContentGenerator/node_modules
 
 - project:
     name: 'mwext-ConfirmEdit'

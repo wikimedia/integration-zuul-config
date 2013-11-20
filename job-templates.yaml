@@ -22,6 +22,18 @@
      - jshint
 
 - job-template:
+    name: '{name}-npmtest'
+    node: hasNpm
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    scm:
+     - git-remote-zuul
+    builders:
+     - npmtest:
+        node-modules: '{node-modules}'
+
+- job-template:
     name: '{name}-pplint-HEAD'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
