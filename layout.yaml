@@ -1248,6 +1248,16 @@ projects:
       - name: extension-unittests
         extname: Collection
 
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator
+    check:
+      - mwext-Collection-OfflineContentGenerator-jslint
+    test:
+      - mwext-Collection-OfflineContentGenerator-jslint:
+        - mwext-Collection-OfflineContentGenerator-npmtest
+    gate-and-submit:
+      - mwext-Collection-OfflineContentGenerator-jslint:
+        - mwext-Collection-OfflineContentGenerator-npmtest
+
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     check:
       - mwext-Collection-OfflineContentGenerator-bundler-jslint
@@ -1267,16 +1277,6 @@ projects:
     gate-and-submit:
       - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint:
         - mwext-Collection-OfflineContentGenerator-latex_renderer-npmtest
-
-  - name: mediawiki/extensions/Collection/OfflineContentGenerator/node_modules
-    check:
-      - mwext-Collection-OfflineContentGenerator-node_modules-jslint
-    test:
-      - mwext-Collection-OfflineContentGenerator-node_modules-jslint:
-        - mwext-Collection-OfflineContentGenerator-node_modules-npmtest
-    gate-and-submit:
-      - mwext-Collection-OfflineContentGenerator-node_modules-jslint:
-        - mwext-Collection-OfflineContentGenerator-node_modules-npmtest
 
   - name: mediawiki/extensions/CommonsMetadata
     template:
