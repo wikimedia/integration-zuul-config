@@ -1244,6 +1244,36 @@ projects:
       - name: extension-unittests
         extname: Collection
 
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
+    check:
+      - mwext-Collection-OfflineContentGenerator-bundler-jslint
+    test:
+      - mwext-Collection-OfflineContentGenerator-bundler-jslint:
+        - mwext-Collection-OfflineContentGenerator-bundler-npmtest
+    gate-and-submit:
+      - mwext-Collection-OfflineContentGenerator-bundler-jslint:
+        - mwext-Collection-OfflineContentGenerator-bundler-npmtest
+
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
+    check:
+      - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint
+    test:
+      - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint:
+        - mwext-Collection-OfflineContentGenerator-latex_renderer-npmtest
+    gate-and-submit:
+      - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint:
+        - mwext-Collection-OfflineContentGenerator-latex_renderer-npmtest
+
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator/node_modules
+    check:
+      - mwext-Collection-OfflineContentGenerator-node_modules-jslint
+    test:
+      - mwext-Collection-OfflineContentGenerator-node_modules-jslint:
+        - mwext-Collection-OfflineContentGenerator-node_modules-npmtest
+    gate-and-submit:
+      - mwext-Collection-OfflineContentGenerator-node_modules-jslint:
+        - mwext-Collection-OfflineContentGenerator-node_modules-npmtest
+
   - name: mediawiki/extensions/CommonsMetadata
     template:
       - name: extension-checks
