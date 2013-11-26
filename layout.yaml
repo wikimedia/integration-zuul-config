@@ -447,6 +447,9 @@ jobs:
     voting: true
   - name: mwext-UniversalLanguageSelector-jslint
     voting: true
+  # bug 52120 browsertests for ULS
+  - name: mwext-browsertests-UniversalLanguageSelector-phantomjs
+    voting: false
   - name: mwext-Vector-jslint
     voting: true
   - name: mwext-VisualEditor-jslint
@@ -2398,6 +2401,7 @@ projects:
       - mwext-UniversalLanguageSelector-lint:
         - mwext-UniversalLanguageSelector-testextensions-master
       - mwext-UniversalLanguageSelector-ruby1.9.3lint
+      - mwext-browsertests-UniversalLanguageSelector-phantomjs  # Experiment, bug 52120
     gate-and-submit:
       - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-UniversalLanguageSelector-jslint
