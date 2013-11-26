@@ -165,6 +165,18 @@
      - phpcs
 
 - job-template:
+    name: '{name}-phpunit'
+    node: hasPhpUnit
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - phpunit-junit
+    publishers:
+     - phpunit-junit
+     - archive-log-dir
+
+- job-template:
     name: '{name}-puppet-validate'
     defaults: use-remote-zuul-no-submodules
 
