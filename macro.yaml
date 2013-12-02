@@ -6,14 +6,14 @@
     name: erblint-HEAD
     builders:
      - shell: |
-        /srv/slave-scripts/bin/git-changed-in-head erb \
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head erb \
         | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
 
 - builder:
     name: pplint-HEAD
     builders:
      - shell: |
-        /srv/slave-scripts/bin/git-changed-in-head pp \
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head pp \
         | xargs -n1 -t puppet parser validate
 
 # Lint whitespace in directory {dir}. Usefull when the Git repository has
@@ -59,8 +59,8 @@
      - shell: |
         #!/bin/bash -xe
         cd "{dir}"
-        /srv/slave-scripts/bin/jshint --version
-        /srv/slave-scripts/bin/jshint .
+        /srv/deployment/integration/slave-scripts/bin/jshint --version
+        /srv/deployment/integration/slave-scripts/bin/jshint .
 
 - builder:
     name: jshint
@@ -162,7 +162,7 @@
         curl --include "http://localhost:9412/$TEST_ID/index.php?title=Special:BlankPage" | head -n42
         curl --include "http://localhost:9412/$TEST_ID/load.php?debug=true&modules=startup&only=scripts" | head -n42
         # Run QUnit tests via PhantomJS
-        /srv/slave-scripts/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit{querystring}"
+        /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit{querystring}"
         gqec=$?
         # Clean up
         rm /srv/localhost/qunit/$TEST_ID
@@ -223,12 +223,12 @@
 - builder:
     name: mw-apply-settings
     builders:
-     - shell: "/srv/slave-scripts/bin/mw-apply-settings.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh"
 
 - builder:
     name: mw-get-extensions
     builders:
-        - shell: "/srv/slave-scripts/tools/fetch-mw-ext {dependencies}"
+        - shell: "/srv/deployment/integration/slave-scripts/tools/fetch-mw-ext {dependencies}"
 
 - builder:
     name: mw-run-update-script
@@ -239,7 +239,7 @@
 - builder:
     name: mw-install-sqlite
     builders:
-     - shell: "/srv/slave-scripts/bin/mw-install-sqlite.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh"
 
 - builder:
     name: mw-setup-extension
@@ -260,7 +260,7 @@
 - builder:
     name: mw-run-phpunit-allexts
     builders:
-      - shell: '/srv/slave-scripts/bin/mw-run-phpunit-allexts.sh'
+      - shell: '/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit-allexts.sh'
 
 # Generic phpunit builder, output junit log
 # Should be used with publisher 'phpunit-junit'
@@ -330,7 +330,7 @@
     name: phplint
     builders:
      - shell: |
-        /srv/slave-scripts/bin/git-changed-in-head php php5 inc phtml \
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc phtml \
         | xargs -n1 -t php -l
 
 # run phpcs on any .php and .inc files in the workspace
@@ -341,7 +341,7 @@
      - shell: |
         /srv/deployment/integration/phpcs/vendor/bin/phpcs -v -s . \
          --encoding=utf-8 \
-         --standard=/srv/slave-scripts/tools/mwcodesniffer/MediaWiki \
+         --standard=/srv/deployment/integration/slave-scripts/tools/mwcodesniffer/MediaWiki \
          --extensions=php,inc \
          --ignore=languages/messages/Messages*.php,*.i18n.php \
          --report-checkstyle=checkstyle-phpcs.xml \
@@ -354,7 +354,7 @@
     name: phpcs-HEAD
     builders:
      - shell: |
-        PHPCS_FILES=$(/srv/slave-scripts/bin/git-changed-in-head php php5 inc sample)
+        PHPCS_FILES=$(/srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc sample)
         # No file? No point in proceeding any further (bug 44567)
         if [ -z "$PHPCS_FILES" ]; then
             echo "Skipping phpcs: no file remaining to process"
@@ -363,7 +363,7 @@
 
         /srv/deployment/integration/phpcs/vendor/bin/phpcs -v -s $PHPCS_FILES \
          --encoding=utf-8 \
-         --standard=/srv/slave-scripts/tools/mwcodesniffer/MediaWiki \
+         --standard=/srv/deployment/integration/slave-scripts/tools/mwcodesniffer/MediaWiki \
          --ignore=languages/messages/Messages,*.i18n.php \
          --report-checkstyle=checkstyle-phpcs.xml \
          --report-full
@@ -371,22 +371,22 @@
 - builder:
     name: phpcs-strict
     builders:
-     - shell: /srv/slave-scripts/bin/run-phpcs-mw.sh
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh
 
 - builder:
     name: phpcs-strict-HEAD
     builders:
-     - shell: /srv/slave-scripts/bin/run-phpcs-mw.sh HEAD
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh HEAD
 
 - builder:
     name: phpcs-lenient
     builders:
-     - shell: /srv/slave-scripts/bin/run-phpcs-mw.sh nowarnings
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh nowarnings
 
 - builder:
     name: phpcs-lenient-HEAD
     builders:
-     - shell: /srv/slave-scripts/bin/run-phpcs-mw.sh nowarnings HEAD
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh nowarnings HEAD
 
 - publisher:
     name: phpcs
@@ -435,7 +435,7 @@
 - builder:
     name: yaml-lint
     builders:
-     - shell: '/srv/slave-scripts/tools/yamllint.py "$WORKSPACE"'
+     - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
 
 - publisher:
     name: archive-log-dir

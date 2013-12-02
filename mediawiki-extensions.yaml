@@ -53,12 +53,12 @@
         curl --location --include "http://localhost:9413/$TEST_ID/" |head -n42
 
         cd extensions/{ext-name}/tests/browser
-            /srv/slave-scripts/tools/bundler/bundle install --path vendor
+            /srv/deployment/integration/slave-scripts/tools/bundler/bundle install --path vendor
             export BROWSER_LABEL="phantomjs"
             export MEDIAWIKI_URL="http://localhost:9413/$TEST_ID/index.php?title="
             export MEDIAWIKI_USER=WikiAdmin
             export MEDIAWIKI_PASSWORD=testpass
-            /srv/slave-scripts/tools/bundler/bundle exec cucumber --color \
+            /srv/deployment/integration/slave-scripts/tools/bundler/bundle exec cucumber --color \
                 -p ciwmf \
                 -t ~@phantomjs-bug \
                 --format pretty \

@@ -70,7 +70,7 @@
     triggers:
      - zuul
     builders:
-     - shell: "/srv/slave-scripts/tools/mwcore-docgen.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh"
 
 - job-template:
     name: '{name}-whitespaces'
@@ -99,7 +99,7 @@
     builders:
      - mw-install-sqlite
      - mw-apply-settings
-     - shell: "/srv/slave-scripts/bin/mw-run-phpunit.sh {phpunit-group}"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh {phpunit-group}"
     publishers:
      - phpunit-junit-2
      - archive-log-dir
@@ -199,7 +199,7 @@
     builders:
      - mw-install-sqlite
      - mw-apply-settings
-     - shell: "/srv/slave-scripts/bin/mw-run-phpunit.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - archive-log-dir

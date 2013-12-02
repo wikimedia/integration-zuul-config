@@ -50,7 +50,7 @@
      - zuul
 
     builders:
-     - shell: "/srv/slave-scripts/bin/puppet-test-runner.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/puppet-test-runner.sh"
 
 # Run pep8 per file so that individual puppet dirs
 #  can specify their own .pep8 rules
@@ -66,7 +66,7 @@
       # Requires Jenkins slave scripts
       - shell: |
          set -o pipefail
-         /srv/slave-scripts/tools/puppet_pep8.py . | tee pep8.txt
+         /srv/deployment/integration/slave-scripts/tools/puppet_pep8.py . | tee pep8.txt
          set +o pipefail
 
     publishers:
