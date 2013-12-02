@@ -428,6 +428,8 @@ jobs:
     voting: true
   - name: mwext-MobileFrontend-jslint
     voting: true
+  - name: mwext-MultimediaViewer-jslint
+    voting: true
   - name: mwext-NewestPages-jslint
     voting: true
   - name: mwext-NewUserNotif-jslint
@@ -1801,9 +1803,12 @@ projects:
         extname: MultiMaps
 
   - name: mediawiki/extensions/MultimediaViewer
-    template:
-      - name: extension-checks
-        extname: MultimediaViewer
+    check-only:
+      - mwext-MultimediaViewer-lint
+      - mwext-MultimediaViewer-jslint
+    gate-and-submit:
+      - mwext-MultimediaViewer-lint
+      - mwext-MultimediaViewer-jslint
 
   - name: mediawiki/extensions/MwEmbedSupport
     template:
