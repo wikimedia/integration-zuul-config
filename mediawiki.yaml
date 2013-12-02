@@ -143,7 +143,14 @@
             --dont-sign \
             "$VERSION"
 
+        mkdir -p "$WORKSPACE"/log
+        phpunit \
+          --configuration make-release/phpunit.xml \
+          --log-junit log/junit-phpunit.xml \
+          make-release/testReleaseTarball.php "$VERSION"
+
     publishers:
+     - phpunit-junit
      - archive:
          artifacts: 'build/*.gz'
 
