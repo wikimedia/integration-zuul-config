@@ -53,8 +53,7 @@
 
 - builder:
     name: jshint-in
-    # Use `cd` because jshint reads .jshintrc and .jshintignore
-    # from current working directory.
+    # Use `cd` because jshint reads .jshintrc and .jshintignore from cwd.
     builders:
      - shell: |
         #!/bin/bash -xe
@@ -66,6 +65,20 @@
     name: jshint
     builders:
      - jshint-in:
+        dir: '$WORKSPACE'
+
+- builder:
+    name: csslint-in
+    builders:
+     - shell: |
+        #!/bin/bash -xe
+        cd "{dir}"
+        /srv/deployment/integration/slave-scripts/bin/wmfgrunt --cwd="$PWD" --verbose csslint
+
+- builder:
+    name: csslint
+    builders:
+     - csslint-in:
         dir: '$WORKSPACE'
 
 - builder:

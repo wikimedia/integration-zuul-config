@@ -10,6 +10,15 @@
     builders:
      - jshint
 
+- job-template:
+    name: '{name}-{ext-name}-csslint'
+    node: hasSlaveScripts
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - csslint
+
 # Template to run browsertests for an extension
 # Parameters: dependencies
 #
@@ -579,6 +588,9 @@
         ext-name: MultimediaViewer
      - '{name}-{ext-name}-qunit':
         name: mwext
+        ext-name: VisualEditor
+
+     - '{name}-{ext-name}-csslint':
         ext-name: VisualEditor
 
      - 'mwext-VisualEditor-doc-test':
