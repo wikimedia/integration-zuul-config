@@ -120,6 +120,9 @@
     triggers:
      - timed: '@hourly'
 
+    logrotate:
+        daysToKeep: 15
+
 # Job to deploy the Wikimedia MediaWiki configuration files
 #
 # The configuration files are hosted in operations/mediawiki-config.git which
@@ -164,6 +167,9 @@
          '
         # Refresh the databases lists
         sudo -u mwdeploy /home/wikipedia/common/multiversion/refreshWikiversionsCDB
+
+    logrotate:
+        daysToKeep: 15
 
 # Job updating MediaWiki core+extensions code and refreshing the message
 #
