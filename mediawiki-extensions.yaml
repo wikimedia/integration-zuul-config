@@ -71,8 +71,8 @@
                 -p ciwmf \
                 -t ~@phantomjs-bug \
                 --format pretty \
-                --format junit --out "$WORKSPACE/junit" \
-                --format html --out "$WORKSPACE/report.html"
+                --format junit --out "$WORKSPACE/log" \
+                --format html --out "$WORKSPACE/log/report.html"
         EXIT_CODE=$?
         echo "Cucumber exit code: $EXIT_CODE"
 
@@ -85,9 +85,9 @@
      - xunit:
          types:
           - junit:
-              pattern: 'junit/*.xml'
+              pattern: 'log/*.xml'
      - archive:
-         artifacts: '*.log, report.html'
+         artifacts: 'log/*.log, log/report.html'
 
 - job-template:
     name: '{name}-{ext-name}-npmtest'
