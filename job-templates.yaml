@@ -74,7 +74,7 @@
 # PHP CodeSniffer on everything under the workspace
 - job-template:
     name: '{name}-phpcs'
-    node: (hasSlaveScripts && hasPhpcs)
+    node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
@@ -92,7 +92,7 @@
 # PHP CodeSniffer on changed files
 - job-template:
     name: '{name}-phpcs-HEAD'
-    node: (hasSlaveScripts && hasPhpcs)
+    node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
@@ -109,7 +109,7 @@
 
 - job-template:
     name: '{name}-phpcs-strict'
-    node: (hasSlaveScripts && hasPhpcs)
+    node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
@@ -126,7 +126,7 @@
 
 - job-template:
     name: '{name}-phpcs-strict-HEAD'
-    node: (hasSlaveScripts && hasPhpcs)
+    node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
@@ -143,7 +143,7 @@
 
 - job-template:
     name: '{name}-phpcs-lenient'
-    node: (hasSlaveScripts && hasPhpcs)
+    node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
@@ -160,7 +160,7 @@
 
 - job-template:
     name: '{name}-phpcs-lenient-HEAD'
-    node: (hasSlaveScripts && hasPhpcs)
+    node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
     triggers:
      - zuul
@@ -177,7 +177,7 @@
 
 - job-template:
     name: '{name}-phpunit'
-    node: hasPhpUnit
+    node: hasSlaveScripts
     defaults: use-remote-zuul
     triggers:
      - zuul

@@ -89,7 +89,7 @@
 # @param phpunit-group suffix for an ant target 'phpunit-{phpunit-group}
 - job-template:
     name: '{name}-phpunit-{phpunit-group}'
-    node: (hasSlaveScripts && hasPhpUnit)
+    node: hasSlaveScripts
     defaults: use-remote-zuul
     scm:
      - git-mwcore
@@ -189,7 +189,7 @@
 
 - job-template:
     name: 'mediawiki-core-regression-{branch}'
-    node: (hasSlaveScripts && hasPhpUnit)
+    node: hasSlaveScripts
     defaults: use-zuul
     scm:
      - git-mwcore
