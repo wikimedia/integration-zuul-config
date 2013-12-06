@@ -57,7 +57,8 @@
 - job-template:
     name: 'operations-puppet-pep8'
     node: hasSlaveScripts
-    defaults: use-remote-zuul
+    # Dont process other puppet submodules
+    defaults: use-remote-zuul-no-submodules
 
     triggers:
      - zuul
