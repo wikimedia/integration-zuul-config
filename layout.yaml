@@ -2281,16 +2281,19 @@ projects:
 
   - name: mediawiki/extensions/TemplateData
     check:
-      - mwext-TemplateData-phpcs-HEAD
       - mwext-TemplateData-lint
+      - mwext-TemplateData-jslint
+      - mwext-TemplateData-phpcs-HEAD
     test:
-      - mwext-TemplateData-phpcs-HEAD
       - mwext-TemplateData-lint:
         - mwext-TemplateData-testextensions-master
+      - mwext-TemplateData-jslint
+      - mwext-TemplateData-phpcs-HEAD
     gate-and-submit:
-      - mwext-TemplateData-phpcs-HEAD
       - mwext-TemplateData-lint:
         - mwext-TemplateData-testextensions-master
+      - mwext-TemplateData-jslint
+      - mwext-TemplateData-phpcs-HEAD
 
   - name: mediawiki/extensions/Thanks
     template:
