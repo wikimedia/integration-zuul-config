@@ -67,6 +67,60 @@
      - jshint-in:
         dir: '$WORKSPACE'
 
+# Wrapper around cucumber
+# FIXME should be some shell scripts instead
+# Parameter:
+# {tests-path}  where browser tests are located
+- builder:
+    name: browsertests
+    builders:
+
+     - shell: |
+        #!/bin/bash -x
+
+        # Let apache write in sqlite file
+        mkdir -p data
+        chmod a+w data/
+        chmod a+w data/*.sqlite
+
+        TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT/$BUILD_NUMBER" | tr '/' '-'`
+
+        # Post configure MediaWiki
+        echo "
+          <?php
+          # Injected by Jenkins
+          \$wgServer = 'http://localhost:9413/';
+          \$wgScriptPath = '/$TEST_ID';
+          \$wgScript = \$wgStylePath = \$wgLogo = false;
+          \$wgUsePathInfo = false;
+          " >> $WORKSPACE/LocalSettings.php
+
+        # On labs:
+        DOCROOT="/mnt/localhost-browsertests"
+
+        # Publish WORKSPACE in Apache
+        ln -s "$WORKSPACE" "$DOCROOT/$TEST_ID"
+        curl --location --include "http://localhost:9413/$TEST_ID/" |head -n42
+
+        cd {tests-path}
+            /srv/deployment/integration/slave-scripts/tools/bundler/bundle install --path vendor
+            export BROWSER_LABEL="phantomjs"
+            export MEDIAWIKI_URL="http://localhost:9413/$TEST_ID/index.php?title="
+            export MEDIAWIKI_USER=WikiAdmin
+            export MEDIAWIKI_PASSWORD=testpass
+            /srv/deployment/integration/slave-scripts/tools/bundler/bundle exec cucumber --color \
+                -p ciwmf \
+                --format pretty \
+                --format junit --out "$WORKSPACE/log" \
+                --format html --out "$WORKSPACE/log/report.html"
+        EXIT_CODE=$?
+        echo "Cucumber exit code: $EXIT_CODE"
+
+        # symlink cleanup
+        rm "$DOCROOT/$TEST_ID"
+
+        exit $EXIT_CODE
+
 - builder:
     name: csslint-in
     builders:
