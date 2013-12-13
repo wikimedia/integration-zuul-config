@@ -18,8 +18,6 @@
     concurrent: true
     triggers:
      - zuul
-    scm:
-     - git-remote-zuul-no-submodules
     builders:
      - jshint
 
@@ -30,8 +28,6 @@
     concurrent: true
     triggers:
      - zuul
-    scm:
-     - git-remote-zuul-no-submodules
     builders:
      - csslint
 
@@ -51,8 +47,6 @@
     concurrent: true
     triggers:
      - zuul
-    scm:
-     - git-remote-zuul
     builders:
      - npmtest:
         node-modules: '{node-modules}'
@@ -95,13 +89,8 @@
     concurrent: true
     triggers:
      - zuul
-
-    scm:
-     - git-remote-zuul-no-submodules
-
     builders:
      - phpcs
-
     publishers:
      - checkstyle-xml
      - phpcs
@@ -114,13 +103,8 @@
     concurrent: true
     triggers:
      - zuul
-
-    scm:
-     - git-remote-zuul-no-submodules
-
     builders:
      - phpcs-HEAD
-
     publishers:
      - checkstyle-xml
      - phpcs
@@ -132,13 +116,8 @@
     concurrent: true
     triggers:
      - zuul
-
-    scm:
-     - git-remote-zuul-no-submodules
-
     builders:
      - phpcs-strict
-
     publishers:
      - checkstyle-xml
      - phpcs
@@ -150,13 +129,8 @@
     concurrent: true
     triggers:
      - zuul
-
-    scm:
-     - git-remote-zuul-no-submodules
-
     builders:
      - phpcs-strict-HEAD
-
     publishers:
      - checkstyle-xml
      - phpcs
@@ -168,13 +142,8 @@
     concurrent: true
     triggers:
      - zuul
-
-    scm:
-     - git-remote-zuul-no-submodules
-
     builders:
      - phpcs-lenient
-
     publishers:
      - checkstyle-xml
      - phpcs
@@ -186,13 +155,8 @@
     concurrent: true
     triggers:
      - zuul
-
-    scm:
-     - git-remote-zuul-no-submodules
-
     builders:
      - phpcs-lenient-HEAD
-
     publishers:
      - checkstyle-xml
      - phpcs
@@ -213,10 +177,8 @@
     name: '{name}-puppet-validate'
     defaults: use-remote-zuul-no-submodules
     concurrent: true
-
     triggers:
      - zuul
-
     builders:
      - puppet-validate
 
@@ -224,10 +186,8 @@
     name: '{name}-rubylint'
     defaults: use-remote-zuul-no-submodules
     concurrent: true
-
     triggers:
      - zuul
-
     builders:
      - ruby-lint:
         interpreter: 'ruby'
@@ -236,10 +196,8 @@
     name: '{name}-ruby1.8lint'
     defaults: use-remote-zuul-no-submodules
     concurrent: true
-
     triggers:
      - zuul
-
     builders:
      - ruby-lint:
         interpreter: 'ruby1.8'
@@ -248,10 +206,8 @@
     name: '{name}-ruby1.9.3lint'
     defaults: use-remote-zuul-no-submodules
     concurrent: true
-
     triggers:
      - zuul
-
     builders:
      - ruby-lint:
         interpreter: 'ruby1.9.3'
@@ -261,9 +217,7 @@
     defaults: use-remote-zuul-no-submodules
     node: hasSlaveScripts
     concurrent: true
-
     triggers:
      - zuul
-
     builders:
      - yaml-lint
