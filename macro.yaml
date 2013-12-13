@@ -81,6 +81,27 @@
      - csslint-in:
         dir: '$WORKSPACE'
 
+# This build step is for projects that have their dev environment configured
+# around npm. This will fetch any npm dependencies into a local node_modules
+# directory in the workspace, and run associated 'scripts' commands as
+# specified in the package.json file (install and test).
+#
+- builder:
+    name: npm
+    builders:
+    - shell: |
+        node --version
+        npm --version
+        npm install
+        npm test
+
+# This build step only uses the npm bin to execute the 'scripts.test' command in package.json.
+# It does not download any modules from the npm repository.
+#
+# However it does require trust/CR2 because it allows arbitrary execution through package.json.
+#
+# - node-modules: Gerrit project name for an appropriate node_modules subdir (may be empty,
+#    in which case it will assume it is in the current repository already).
 - builder:
     name: npmtest-in
     builders:
@@ -90,7 +111,6 @@
         [[ -n '{node-modules}' ]] && git clone 'https://gerrit.wikimedia.org/r/p/{node-modules}' node_modules
         npm test
 
-# - node-modules: Gerrit project name for an appropriate node_modules subdir (may be empty)
 - builder:
     name: npmtest
     builders:
