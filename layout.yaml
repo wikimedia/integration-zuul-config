@@ -351,6 +351,10 @@ jobs:
   - name: sartoris-pyflakes
     voting: true
 
+  # Being integrated..
+  - name: ^parsoidsvc.*$
+    voting: false
+
   # FIXME: work in progress
   - name: sartoris-sphinx-doc
     voting: false
@@ -1953,6 +1957,23 @@ projects:
       - name: extension-checks
         extname: ParserHooks
 
+  - name: mediawiki/services/parsoid
+    check:
+      - parsoidsvc-jslint
+    test:
+      - parsoidsvc-jslint
+      - parsoidsvc-parse-tool-check
+      - parsoidsvc-roundtrip-test-check
+      - parsoidsvc-roundtrip-test-check
+      - parsoidsvc-parsertests-run-harder
+      - parsoidsvc-php-parsertests
+    gate-and-submit:
+      - parsoidsvc-jslint
+      - parsoidsvc-parsertests-run-harder
+      - parsoidsvc-php-parsertests
+
+   # SSS: Till we migrate all our WIP and unreviewed patches over
+   # to the new repository, let us keep this in place.
   - name: mediawiki/extensions/Parsoid
     check:
       - mwext-Parsoid-jslint
@@ -1960,9 +1981,6 @@ projects:
     test:
       - mwext-Parsoid-jslint
       - mwext-Parsoid-phpcs-HEAD
-      # SSS: parsoid-parsertests-run-hader is now self-documenting wrt
-      # test failures.  So, no need to run this more complex test script.
-      # - parsoid-parsertests
       - parsoid-parse-tool-check
       - parsoid-roundtrip-test-check
       - parsoid-parsertests-run-harder
@@ -1970,9 +1988,6 @@ projects:
     gate-and-submit:
       - mwext-Parsoid-jslint
       - mwext-Parsoid-phpcs-HEAD
-      # SSS: parsoid-parsertests-run-hader is now self-documenting wrt
-      # test failures.  So, no need to run this more complex test script.
-      # - parsoid-parsertests
       - parsoid-parsertests-run-harder
       - parsoid-php-parsertests
     ## CSA: parsoid-regressions keeps breaking.  we hates it.
