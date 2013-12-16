@@ -1,8 +1,8 @@
 # Run whatever test we find under the `puppet` subdirectory.
 - job-template:
     name: 'translatewiki-puppet-validate'
-
     defaults: use-remote-zuul
+    concurrent: true
     triggers:
      - zuul
 
@@ -13,8 +13,8 @@
 # Run bash on each file under /bin without actually executing the script (-n)
 - job-template:
     name: 'translatewiki-shelllint'
-
     defaults: use-remote-zuul
+    concurrent: true
     triggers:
      - zuul
 
