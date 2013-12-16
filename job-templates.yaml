@@ -4,6 +4,7 @@
     name: '{name}-erblint-HEAD'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
     builders:
@@ -14,6 +15,7 @@
     name: '{name}-jslint'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
     scm:
@@ -25,6 +27,7 @@
     name: '{name}-csslint'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
     scm:
@@ -36,6 +39,7 @@
     name: '{name}-npmtest'
     node: hasNpm
     defaults: use-remote-zuul
+    concurrent: true
     triggers:
      - zuul
     scm:
@@ -48,6 +52,7 @@
     name: '{name}-pplint-HEAD'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
     builders:
@@ -57,6 +62,7 @@
     name: '{name}-perllint'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
     builders:
@@ -66,6 +72,7 @@
     name: '{name}-phplint'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
     builders:
@@ -76,6 +83,7 @@
     name: '{name}-phpcs'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
 
@@ -94,6 +102,7 @@
     name: '{name}-phpcs-HEAD'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
 
@@ -111,6 +120,7 @@
     name: '{name}-phpcs-strict'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
 
@@ -128,6 +138,7 @@
     name: '{name}-phpcs-strict-HEAD'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
 
@@ -145,6 +156,7 @@
     name: '{name}-phpcs-lenient'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
 
@@ -162,6 +174,7 @@
     name: '{name}-phpcs-lenient-HEAD'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
     triggers:
      - zuul
 
@@ -190,6 +203,7 @@
 - job-template:
     name: '{name}-puppet-validate'
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
 
     triggers:
      - zuul
@@ -200,6 +214,7 @@
 - job-template:
     name: '{name}-rubylint'
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
 
     triggers:
      - zuul
@@ -211,6 +226,7 @@
 - job-template:
     name: '{name}-ruby1.8lint'
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
 
     triggers:
      - zuul
@@ -222,6 +238,7 @@
 - job-template:
     name: '{name}-ruby1.9.3lint'
     defaults: use-remote-zuul-no-submodules
+    concurrent: true
 
     triggers:
      - zuul
@@ -232,9 +249,10 @@
 
 - job-template:
     name: '{name}-yamllint'
-    node: hasSlaveScripts
-
     defaults: use-remote-zuul-no-submodules
+    node: hasSlaveScripts
+    concurrent: true
+
     triggers:
      - zuul
 
