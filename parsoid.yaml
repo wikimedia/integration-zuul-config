@@ -80,27 +80,8 @@
                 - master
             basedir: core
     builders:
-        # run our parserTests.txt file using core's php parser to ensure
-        # that non-parsoid only tests are actually correct wrt the PHP parser.
+        - mw-install-sqlite
         - shell: |
-           #!/bin/bash -xe
-           sqlitedir="$WORKSPACE/data"
-           mkdir -p $sqlitedir
-           # Ensure LocalSettings.php and my_wiki.sqlite don't exist
-           rm -f core/LocalSettings.php
-           rm -f "$sqlitedir/my_wiki.sqlite"
-           # Run MediaWiki installer to create LocalSettings.php
-           # (see mw-install-sqlite builder in macro.yaml)
-           php core/maintenance/install.php \
-            --confpath $WORKSPACE/core \
-            --dbtype=sqlite \
-            --dbname=my_wiki \
-            --dbpath=$sqlitedir \
-            --showexceptions=true \
-            --pass testpass \
-            sqlitetest \
-            WikiAdmin
-           chmod +w "$sqlitedir/my_wiki.sqlite"
            # now run parserTests
            php core/tests/parserTests.php --color=no --quiet \
             --file=js/tests/parserTests.txt
