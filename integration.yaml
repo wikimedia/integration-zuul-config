@@ -9,6 +9,7 @@
     name: 'integration-docroot-deploy'
     node: gallium
     defaults: global
+    concurrent: false  # updates website
     triggers:
      - zuul
     builders:
@@ -25,6 +26,7 @@
     name: 'integration-zuul-layoutvalidation'
     node: gallium  # it is running Zuul
     defaults: use-remote-zuul
+    concurrent: true
     triggers:
      - zuul
     builders:
@@ -39,6 +41,7 @@
     name: 'integration-zuul-layoutdiff'
     node: gallium  # it is running Zuul
     defaults: use-remote-zuul
+    concurrent: true
     triggers:
      - zuul
     builders:
@@ -54,6 +57,7 @@
 - job-template:
     name: 'integration-jjb-config-test'
     defaults: use-remote-zuul  # TODO does not really use it
+    concurrent: false  # shared directory :(
     triggers:
      - zuul
     scm:
