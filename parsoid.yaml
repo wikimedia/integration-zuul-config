@@ -74,16 +74,13 @@
             branches:
                 - master
             basedir: contrib
-        - git:
-            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git'
-            branches:
-                - master
-            basedir: core
     builders:
+        - get-mw-core:
+            branch: 'master'
         - mw-install-sqlite
         - shell: |
            # now run parserTests
-           php core/tests/parserTests.php --color=no --quiet \
+           php tests/parserTests.php --color=no --quiet \
             --file=js/tests/parserTests.txt
 
 - job-template:
