@@ -218,12 +218,18 @@
      - mw-install-sqlite
      # FIXME should use the mw-run-phpunit.sh wrapper
      - shell: |
+        mkdir -p log
+        rm -f log/clover.xml
         nice -n 19 php tests/phpunit/phpunit.php \
             --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
+            --coverage-clover log/clover.xml'
             --coverage-html /srv/org/wikimedia/integration/cover/mediawiki-core/master/php
         echo "Code coverage report is available at:"
         echo "https://integration.wikimedia.org/cover/mediawiki-core/master/php"
+    publishers:
+     - cloverphp:
+         xml-location: 'log/clover.xml'
     triggers:
      - timed: '0 3 * * *'
     wrappers:
