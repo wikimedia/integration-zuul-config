@@ -35,6 +35,7 @@
 - job-template:
     name: '{name}-jsduck'
     defaults: use-zuul
+    concurrent: true
     scm:
      - git-mwcore
     triggers:
@@ -47,6 +48,7 @@
     name: '{name}-jsduck-publish'
     node: gallium
     defaults: use-zuul
+    concurrent: false  # avoid race condition
     scm:
      - git-mwcore
     triggers:
@@ -77,6 +79,7 @@
     name: '{name}-whitespaces'
     node: hasSlaveScripts
     defaults: use-remote-zuul
+    concurrent: true
     scm:
      - git-mwcore
     triggers:
