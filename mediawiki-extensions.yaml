@@ -31,6 +31,27 @@
     builders:
      - npm
 
+- job-template:
+    name: '{name}-{ext-name}-phplint'
+    node: hasSlaveScripts
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - phplint
+
+# Compatibility: Use '{name}-{ext-name}-phplint' instead
+- job-template:
+    name: '{name}-{ext-name}-lint'
+    node: hasSlaveScripts
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - phplint
+
 # Template to run browsertests for an extension
 # Parameters: dependencies
 #
@@ -109,17 +130,6 @@
     builders:
      - npmtest:
         node-modules: '{node-modules}'
-
-- job-template:
-    # TODO: Use global '{name}-phplint' template instead
-    name: '{name}-{ext-name}-lint'
-    node: hasSlaveScripts
-    defaults: use-remote-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - phplint
 
 - job-template:
     name: '{name}-{ext-name}-phpcs-HEAD'
