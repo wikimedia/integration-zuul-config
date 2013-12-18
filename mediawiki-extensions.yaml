@@ -21,6 +21,16 @@
     builders:
      - csslint
 
+- job-template:
+    name: '{name}-{ext-name}-npm'
+    node: hasNpm
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - npm
+
 # Template to run browsertests for an extension
 # Parameters: dependencies
 #
@@ -595,6 +605,9 @@
         ext-name: VisualEditor
 
      - '{name}-{ext-name}-csslint':
+        ext-name: VisualEditor
+
+     - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
 
      - 'mwext-VisualEditor-doc-test':
