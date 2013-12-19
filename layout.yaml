@@ -472,6 +472,8 @@ jobs:
     voting: true
   - name: oojs-ui-jslint
     voting: true
+  - name: VisualEditor-jslint
+    voting: true
   - name: wikimedia-wikimania-scholarships-jslint
     voting: true
 
@@ -2734,3 +2736,14 @@ projects:
       - oojs-ui-npm
     gate-and-submit:
       - oojs-ui-npm
+
+  - name: VisualEditor/VisualEditor
+    check:
+      - VisualEditor-jslint
+      - VisualEditor-ruby1.9.3lint
+    test:
+      - VisualEditor-npm
+      - VisualEditor-ruby1.9.3lint
+    gate-and-submit:
+      - VisualEditor-npm
+      - VisualEditor-ruby1.9.3lint
