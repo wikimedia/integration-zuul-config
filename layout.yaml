@@ -1986,10 +1986,14 @@ projects:
       - parsoidsvc-php-parsertests
 
   - name: mediawiki/services/parsoid/deploy
-    check:
-      - parsoidsvc-parse-tool-check2
     test:
-      - parsoidsvc-parse-tool-check2
+      - parsoidsvc-parse-tool-check
+      - parsoidsvc-roundtrip-test-check
+      - parsoidsvc-roundtrip-test-check
+    gate-and-submit:
+      - parsoidsvc-parse-tool-check
+      - parsoidsvc-roundtrip-test-check
+      - parsoidsvc-roundtrip-test-check
 
    # SSS: Till we migrate all our WIP and unreviewed patches over
    # to the new repository, let us keep this in place.
