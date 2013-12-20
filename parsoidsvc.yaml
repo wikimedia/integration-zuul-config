@@ -1,3 +1,12 @@
+# Builder macro that uses multigit.sh to fetch parsoid and parsoid/deploy
+# applying triggered change patch to the proper repository
+- builder:
+    name: git-parsoid-and-deploy-repos
+    builders:
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/multigit.sh \
+          mediawiki/services/parsoid mediawiki/services/parsoid/deploy
+
 - job-template:
     name: parsoidsvc-php-parsertests
     node: hasSlaveScripts
@@ -8,8 +17,6 @@
             fail: true
         - timestamps
         - ansicolor
-    defaults:
-        use-remote-zuul
     triggers:
         - zuul
     scm:
@@ -38,27 +45,14 @@
             fail: true
         - timestamps
         - ansicolor
-    defaults:
-        use-remote-zuul
     triggers:
         - zuul
-    scm:
-        - git:
-            url: 'http://integration.wikimedia.org/zuul/git/$ZUUL_PROJECT'
-            reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
-            refspec: '$ZUUL_REF'
-            name: 'origin'
-            disable-submodules: true
-        - git:
-            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy.git'
-            branches:
-                - master
-            basedir: deploy
     builders:
+        - git-parsoid-and-deploy-repos
         - shell: |
             # If any of these commands fail, something is wrong
             set -e
-            cd tests
+            cd parsoid/tests
             export NODE_PATH="$NODE_PATH:$WORKSPACE/deploy/node_modules"
             echo "Foo" | node parse.js --wt2html
             echo "Foo" | node parse.js --wt2wt
@@ -75,27 +69,14 @@
             fail: true
         - timestamps
         - ansicolor
-    defaults:
-        use-remote-zuul
     triggers:
         - zuul
-    scm:
-        - git:
-            url: 'http://integration.wikimedia.org/zuul/git/$ZUUL_PROJECT'
-            reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
-            refspec: '$ZUUL_REF'
-            name: 'origin'
-            disable-submodules: true
-        - git:
-            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy.git'
-            branches:
-                - master
-            basedir: deploy
     builders:
+        - git-parsoid-and-deploy-repos
         - shell: |
             # If any of these commands fail, something is wrong
             set -e
-            cd tests
+            cd parsoid/tests
             export NODE_PATH="$NODE_PATH:$WORKSPACE/deploy/node_modules"
             node roundtrip-test.js "Barack Obama"
             node roundtrip-test.js --prefix frwiki "Chope"
@@ -111,27 +92,14 @@
             fail: true
         - timestamps
         - ansicolor
-    defaults:
-        use-remote-zuul
     triggers:
         - zuul
-    scm:
-        - git:
-            url: 'http://integration.wikimedia.org/zuul/git/$ZUUL_PROJECT'
-            reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
-            refspec: '$ZUUL_REF'
-            name: 'origin'
-            disable-submodules: true
-        - git:
-            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid/deploy.git'
-            branches:
-                - master
-            basedir: deploy
     builders:
+        - git-parsoid-and-deploy-repos
         - shell: |
             # If any of these commands fail, something is wrong
             set -e
-            cd tests
+            cd parsoid/tests
             export NODE_PATH=$NODE_PATH:$WORKSPACE/deploy/node_modules
             node parserTests --wt2html --wt2wt --html2wt --html2html --selser --no-color --quiet --blacklist
 
