@@ -19,6 +19,23 @@
             | ( cd "$WORKSPACE" && tar xf -)
 
      - shell: |
+        echo "Regenerating redirects.conf should not have changed"
+        ./refreshDomainRedirects
+
+        set +e
+        git diff --color=always --exit-code
+        HAS_CHANGE=$?
+        set -e
+
+        if [ $HAS_CHANGE -ne 0 ]; then
+            echo "Generated redirects.conf does not match the one proposed"
+            exit 1
+        else
+            echo "Generated redirects.conf match the one proposed"
+            echo "Continuing.."
+        fi
+
+     - shell: |
         #!/bin/bash -ex
         /bin/sed -i s%/etc/apache2/wmf/%% *.conf
         /bin/sed -i s%/usr/local/apache/common/%$WORKSPACE/mediawiki-config/% *.conf
