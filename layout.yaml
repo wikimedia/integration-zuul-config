@@ -1258,13 +1258,19 @@ projects:
         extname: CentralNotice
 
   - name: mediawiki/extensions/CirrusSearch
-    check-only:
+    check:
      - mwext-CirrusSearch-jslint
      - mwext-CirrusSearch-lint
      - mwext-CirrusSearch-ruby1.9.3lint
+    test:
+     - mwext-CirrusSearch-jslint
+     - mwext-CirrusSearch-lint:
+       - mwext-CirrusSearch-testextensions-master
+     - mwext-CirrusSearch-ruby1.9.3lint
     gate-and-submit:
      - mwext-CirrusSearch-jslint
-     - mwext-CirrusSearch-lint
+     - mwext-CirrusSearch-lint:
+       - mwext-CirrusSearch-testextensions-master
      - mwext-CirrusSearch-ruby1.9.3lint
 
   - name: mediawiki/extensions/CleanChanges
