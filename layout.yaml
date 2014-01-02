@@ -330,6 +330,12 @@ jobs:
     success-message: 'Change has been deployed on the beta cluster'
     failure-message: 'Failed deployment on the beta cluster :-/  Please contact a member of the beta project to fixup the working directory on the destination server.'
 
+  - name: beta-parsoid-update
+    branch: ^master$
+    success-message: 'Change has been deployed on the beta cluster'
+    failure-message: 'Failed deployment on the beta cluster :-/  Please contact a member of the beta project to investigate.'
+
+
   - name: integration-docroot-deploy
     branch: ^master$
     success-message: 'Change has been deployed on the server and should be now live on https://integration.wikimedia.org/. Build '
@@ -1995,6 +2001,8 @@ projects:
       - parsoidsvc-jslint
       - parsoidsvc-parsertests-run-harder
       - parsoidsvc-php-parsertests
+    postmerge:
+      - beta-parsoid-update
 
   - name: mediawiki/services/parsoid/deploy
     test:
