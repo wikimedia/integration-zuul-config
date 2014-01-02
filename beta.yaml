@@ -190,3 +190,25 @@
     triggers:
      # Every six minutes:
      - timed: '*/6 * * * *'
+
+- job:
+    name: beta-parsoid-update
+    defaults: beta
+    node: deployment-parsoid2
+    triggers:
+     - zuul
+
+    builders:
+     - git-parsoid-and-deploy-repos
+     - shell: |
+         PARSOID_TARGET=/srv/deployment/parsoid
+         mkdir -p "$PARSOID_TARGET"
+         # sync workspace and deployment target
+         RSYNC_OPTS="--update --times --recursive --links --delete-after --delay-updates --exclude=.git"
+         rsync $RSYNC_OPTS $WORKSPACE/parsoid "$PARSOID_TARGET"
+         rsync $RSYNC_OPTS $WORKSPACE/deploy "$PARSOID_TARGET"
+         # Configuration file is managed by puppet
+         ln -s /srv/deployment/parsoid/localsettings.js "$PARSOID_TARGET"/parsoid/api/localsettings.js
+
+     - shell: |
+         sudo /etc/init.d/parsoid restart
