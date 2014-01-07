@@ -628,10 +628,6 @@ jobs:
   - name: mwext-UploadWizard-pyflakes
     voting: true
 
-  # Let's keep parsoid-php-parsertests non-voting until we know that it works.
-  - name: parsoid-php-parsertests
-    voting: false
-
   - name: wikimedia-fundraising-tools-yamllint
     voting: false
 
@@ -2055,6 +2051,7 @@ projects:
 
    # SSS: Till we migrate all our WIP and unreviewed patches over
    # to the new repository, let us keep this in place.
+   # FIXME use a template
   - name: mediawiki/extensions/Parsoid
     check:
       - mwext-Parsoid-jslint
@@ -2062,18 +2059,9 @@ projects:
     test:
       - mwext-Parsoid-jslint
       - mwext-Parsoid-phpcs-HEAD
-      - parsoid-parse-tool-check
-      - parsoid-roundtrip-test-check
-      - parsoid-parsertests-run-harder
-      - parsoid-php-parsertests
     gate-and-submit:
       - mwext-Parsoid-jslint
       - mwext-Parsoid-phpcs-HEAD
-      - parsoid-parsertests-run-harder
-      - parsoid-php-parsertests
-    ## CSA: parsoid-regressions keeps breaking.  we hates it.
-    #postmerge:
-    #  - parsoid-regressions
 
   - name: mediawiki/extensions/PdfHandler
     template:
