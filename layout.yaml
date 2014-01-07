@@ -1401,6 +1401,20 @@ projects:
       - mwext-ConfirmEdit-pep8
       - mwext-ConfirmEdit-pyflakes
 
+  - name: mediawiki/extensions/ContentTranslation
+    check-only:
+      - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-ContentTranslation-jslint
+      - mwext-ContentTranslation-lint
+      - mwext-ContentTranslation-ruby1.9.3lint
+      - mwext-ContentTranslation-yamllint
+    gate-and-submit:
+      - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-ContentTranslation-jslint
+      - mwext-ContentTranslation-lint
+      - mwext-ContentTranslation-ruby1.9.3lint
+      - mwext-ContentTranslation-yamllint
+
   - name: mediawiki/extensions/ContributionScores
     template:
       - name: extension-checks
