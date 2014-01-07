@@ -39,7 +39,7 @@
 
 # Same as use-zuul but fetch the Zuul changes using two repositories:
 #
-# a) git://integration.wikimedia.org/*
+# a) git://zuul.eqiad.wmnet/*
 # Zuul maintained non-bare repository (ie does not ends with '.git')
 #
 # b) /srv/ssd/gerrit/*.git
@@ -101,7 +101,7 @@
 
     scm:
      - git:
-        url: 'git://integration.wikimedia.org/$ZUUL_PROJECT'
+        url: 'git://zuul.eqiad.wmnet/$ZUUL_PROJECT'
         reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
         branches:
          - '$ZUUL_COMMIT'
