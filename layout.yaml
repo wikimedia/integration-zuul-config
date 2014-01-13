@@ -233,6 +233,14 @@ pipelines:
     trigger:
       gerrit:
         - event: change-merged
+    # To make sure report back in Gerrit we have to use --force-message since
+    # postmerge changes are run for closed changes.
+    success:
+      gerrit:
+        message: 'SUCCESS'
+    failure:
+      gerrit:
+        message: 'FAILURE'
 
   # Pipeline reacting whenever a reference is updated
   - name: post
