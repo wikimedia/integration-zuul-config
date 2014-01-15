@@ -40,11 +40,13 @@ pipelines:
             - ^(?!(.*?@wikimedia\.org|.*?@wikimedia\.de|anomie\.wikipedia@gmail\.com|amir\.aharoni@mail\.huji\.ac\.il|hashar@free\.fr|jeroendedauw@gmail\.com|maxsem\.wiki@gmail\.com|mtraceur@member\.fsf\.org|niklas\.laxstrom@gmail\.com|santhosh\.thottingal@gmail\.com|s\.mazeland@xs4all\.nl|stefan\.petrea@gmail\.com|stefan@garage-coding\.com|roan\.kattouw@gmail\.com|krinklemail@gmail\.com|trevorparscal@gmail\.com|inez@wikia-inc\.com|orbit@framezero\.com|david@sheetmusic\.org\.uk|glaser@hallowelt\.biz|aude\.wiki@gmail\.com|bawolff\+wn@gmail\.com|bryan\.tongminh@gmail\.com|dereckson@espace-win\.org|hartman\.wiki@gmail\.com|hoo@online\.de|codereview@emsenhuber\.ch|daniel@nadir-seen-fire\.com|jamesin\.hongkong\.1@gmail\.com|krenair@gmail\.com|liangent@gmail\.com|mah@everybody\.org|matma\.rex@gmail\.com|raimond\.spekking@gmail\.com|robinp\.1273@gmail\.com|tim@tim-landscheidt\.de|tylerromeo@gmail\.com|umherirrender_de\.wp@web\.de|yuriastrakhan@gmail\.com|yaron57@gmail\.com|markus@semantic-mediawiki\.org|s7eph4n@gmail\.org|wiki@physikerwelt\.de|addshorewiki@gmail\.com|pragun06@gmail\.com|nilesh@nileshc\.com|benestar\.wikimedia@googlemail\.com|mlazowik@gmail\.com|pleasestand@live\.com|legoktm\.wikipedia@gmail\.com|moriel@gmail\.com|d_entous@yahoo\.com|kartik\.mistry@gmail\.com|drenfro@vistaprint\.com|matanya\.moses@gmail\.com|matanya@foss\.co\.il|andrew\.green\.df@gmail\.com|thomaspt@hotmail\.fr|tomasz@twkozlowski\.net|yuvipanda@gmail\.com|aarcos\.wiki@gmail\.com|saper@saper\.info|christian@quelltextlich\.at|maria\.pacana@gmail\.com|bebirchall@gmail\.com|l10n-bot@translatewiki\.net)).*$
         - event: comment-added
           comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+    success-message: 'Build succeeded.'
     success:
       # Only V+1 as these are not elaborate tests. This prevents a change from
       # being merged (requires V+2) before elaborate tests, which vote V+2, have run.
       gerrit:
         verified: 1
+    failure-message: 'Build failed.'
     failure:
       gerrit:
         verified: -1
@@ -62,9 +64,11 @@ pipelines:
            - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
           comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+    success-message: 'Build succeeded.'
     success:
       gerrit:
         verified: 1
+    failure-message: 'Build failed.'
     failure:
       gerrit:
         verified: -1
@@ -78,9 +82,11 @@ pipelines:
         - event: patchset-created
         - event: comment-added
           comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+    success-message: 'Build succeeded.'
     success:
       gerrit:
         verified: 2
+    failure-message: 'Build failed.'
     failure:
       gerrit:
         verified: -1
@@ -180,9 +186,11 @@ pipelines:
            - ^maria\.pacana@gmail\.com$
            - ^bebirchall@gmail\.com$
 
+    success-message: 'Build succeeded.'
     success:
       gerrit:
         verified: 2
+    failure-message: 'Build failed.'
     failure:
       gerrit:
         verified: -1
@@ -206,11 +214,13 @@ pipelines:
     start:
       gerrit:
         verified: 0
+    success-message: 'Build succeeded.'
     success:
       gerrit:
         verified: 2
         # Let Zuul merge the change \O/
         submit: true
+    failure-message: 'Build failed.'
     failure:
       gerrit:
         verified: -1
