@@ -182,13 +182,13 @@
         echo "Running JSDuck with {config}..."
         # Get version
         # - ZUUL_REF: refs/zuul/master/Z74178670e7c5495199f8a92e92cf609c
-        # - GERRIT_BRANCH: master
+        # - ZUUL_BRANCH: master
         if [[ "$ZUUL_REF" =~ ^refs/tags/(.*) ]]
         then
             version="${{BASH_REMATCH[1]}}"
-        elif [[ -n "$GERRIT_BRANCH" ]]
+        elif [[ -n "$ZUUL_BRANCH" ]]
         then
-            version="$GERRIT_BRANCH"
+            version="$ZUUL_BRANCH"
         else
             version="unknown"
         fi
