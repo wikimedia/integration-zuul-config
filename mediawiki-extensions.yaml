@@ -197,6 +197,16 @@
         export TERM=xterm
         $WORKSPACE/extensions/VisualEditor/.docs/generate.sh
 
+- job-template:
+    name: 'mwext-VisualEditor-sync-gerrit'  # bug 49846
+    node: gallium  # needs 'jenkins' user which has the 'jenkins-bot' SSH credentials
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - shell: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve.sh
+     - shell: sudo -u jenkins /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh
+
 # Job specific to Wikibase, let us switch between client
 # and server configurations.
 - job-template:
@@ -748,6 +758,7 @@
     name: 'mwext-VisualEditor'
     jobs:
      - '{name}-ruby1.9.3lint'
+     - 'mwext-VisualEditor-sync-gerrit'
 
 - project:
     name: 'mwext-Wikibase'
