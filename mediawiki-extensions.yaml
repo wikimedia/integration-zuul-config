@@ -169,15 +169,15 @@
     builders:
      - shell: |
         # Generate documentation
-        $WORKSPACE/extensions/VisualEditor/bin/generateDocs.sh
+        $WORKSPACE/bin/generateDocs.sh
         # Set destination and version directory therein
         DEST_DIR="/srv/org/wikimedia/doc/VisualEditor"
         DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
         # Ensure the destination exists
         mkdir -p $DEST_DIR
         # Publish it (trailing slash is important!)
-        rsync --recursive --delete-after --force $WORKSPACE/extensions/VisualEditor/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
-        rsync --recursive --delete-after --force $WORKSPACE/extensions/VisualEditor/lib/ "$DEST_DIR/$DEST_VERSIONDIR/lib/"
+        rsync --recursive --delete-after --force $WORKSPACE/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
+        rsync --recursive --delete-after --force $WORKSPACE/lib/ "$DEST_DIR/$DEST_VERSIONDIR/lib/"
 
 # VisualEditor's docgen has a maintenance script, so install mediawiki first
 - job-template:
@@ -189,7 +189,7 @@
     builders:
      - shell: |
         export TERM=xterm
-        $WORKSPACE/extensions/VisualEditor/bin/generateDocs.sh
+        $WORKSPACE/bin/generateDocs.sh
 
 - job-template:
     name: 'mwext-VisualEditor-sync-gerrit'  # bug 49846
