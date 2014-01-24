@@ -750,6 +750,14 @@ jobs:
   - name: qa-browsertests-build
     voting: false
 
+  - name: mediawiki-vagrant-erblint-HEAD
+    voting: false
+  - name: mediawiki-vagrant-puppetlint-lenient
+    voting: false
+  - name: mediawiki-vagrant-puppetlint-strict
+    voting: false
+
+
 project-templates:
 
   # Template for MediaWiki extensions.
@@ -1096,7 +1104,13 @@ projects:
   - name: mediawiki/vagrant
     check-voter:
       - mediawiki-vagrant-puppet-validate
+      - mediawiki-vagrant-erblint-HEAD
+      - mediawiki-vagrant-puppetlint-lenient
+      - mediawiki-vagrant-puppetlint-strict
     gate-and-submit:
+      - mediawiki-vagrant-erblint-HEAD
+      - mediawiki-vagrant-puppetlint-lenient
+      - mediawiki-vagrant-puppetlint-strict
       - mediawiki-vagrant-puppet-validate
 
   - name: operations/apache-config
