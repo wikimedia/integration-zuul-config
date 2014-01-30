@@ -2771,6 +2771,19 @@ projects:
       - name: extension-checks
         extname: WikimediaShopLink
 
+  - name: mediawiki/extensions/Workflow
+    check:
+      - mwext-Workflow-jslint
+      - mwext-Workflow-lint
+      - mwext-Workflow-yamllint
+    test: &mwext-Workflow-all-test-jobs
+      - mwext-Workflow-jslint
+      - mwext-Workflow-lint:
+        - mwext-Workflow-testextensions-master
+      - mwext-Workflow-yamllint
+    gate-and-submit:
+      *mwext-Workflow-all-test-jobs
+
   - name: mediawiki/extensions/ZeroRatedMobileAccess
     template:
       - name: extension-checks
