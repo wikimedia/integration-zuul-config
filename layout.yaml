@@ -271,6 +271,10 @@ jobs:
   - name: ^.*-debian-glue$
     voting: false
 
+  # Experiment dependencies between repositories
+  - name: experiment-gating-dependencies
+    voting: false
+
   # being tested by anomie
   # FIXME should be made voting by default
   - name: ^.*-npmtest$
@@ -2115,6 +2119,7 @@ projects:
       - parsoidsvc-jslint
       - parsoidsvc-parsertests-run-harder
       - parsoidsvc-php-parsertests
+      - experiment-gating-dependencies
     postmerge:
       - beta-parsoid-update
 
@@ -2127,6 +2132,7 @@ projects:
       - parsoidsvc-parsertests-run-harder
       - parsoidsvc-parse-tool-check
       - parsoidsvc-roundtrip-test-check
+      - experiment-gating-dependencies
     postmerge:
       - beta-parsoid-update
 
@@ -2717,6 +2723,7 @@ projects:
       - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-doc-test
       - mwext-VisualEditor-qunit
+      - experiment-gating-dependencies
     postmerge:
       - mwext-VisualEditor-doc-publish
       - mwext-VisualEditor-sync-gerrit
