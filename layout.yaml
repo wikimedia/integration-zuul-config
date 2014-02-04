@@ -279,6 +279,11 @@ jobs:
   - name: ^.*-debian-glue$
     voting: false
 
+  # Work in progress https://gerrit.wikimedia.org/r/110666
+  - name: parsoidsvc-debian-glue
+    voting: false
+    files: 'debian/.*'
+
   # Experiment dependencies between repositories
   - name: experiment-gating-dependencies
     voting: false
@@ -2147,6 +2152,7 @@ projects:
       - parsoidsvc-parsertests-run-harder
       - parsoidsvc-parse-tool-check
       - parsoidsvc-roundtrip-test-check
+      - parsoidsvc-debian-glue
     gate-and-submit:
       - parsoidsvc-parsertests-run-harder
       - parsoidsvc-parse-tool-check
