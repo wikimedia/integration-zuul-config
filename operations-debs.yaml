@@ -40,7 +40,10 @@
       - shell: |
           # We might consider adding --warnings
           set -o pipefail
-          /usr/bin/lintian-junit-report --filename lintian.txt *.changes | tee lintian.xml
+          # Source package:
+          /usr/bin/lintian-junit-report --filename lintian-binary.txt *.dsc | tee lintian-binary.xml
+          # Binary package:
+          /usr/bin/lintian-junit-report --filename lintian-source.txt *.changes | tee lintian-source.xml
           set +o pipefail
 
 - builder:
@@ -78,11 +81,11 @@
 
     publishers:
       - junit:
-          results: 'lintian.xml'
+          results: 'lintian-*.xml'
       - tap:
           results: piuparts.tap
       - archive:
-          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian.txt,lintian.xml,piuparts.txt,piuparts.tap'
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
 
 - job-template:
     name: '{name}-debbuild'
