@@ -17,6 +17,18 @@
     builders:
      - phplint
 
+- job-template:
+    name: 'mediawiki-core-jslint'
+    node: hasSlaveScripts
+    defaults: use-zuul
+    concurrent: true
+    scm:
+     - git-mwcore
+    triggers:
+     - zuul
+    builders:
+     - jshint
+
 # Generic job to run QUnit
 - job-template:
     name: '{name}-qunit'
@@ -162,7 +174,7 @@
     name: mediawiki-jobs
     jobs:
       - '{name}-lint'
-      - '{name}-jslint'
+      - 'mediawiki-core-jslint'
       - '{name}-qunit'
       - '{name}-jsduck'
       - '{name}-jsduck-publish'
