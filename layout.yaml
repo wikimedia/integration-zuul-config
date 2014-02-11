@@ -477,6 +477,12 @@ jobs:
     files:
      - '^(.*\.py|tox.ini|.pep8)$'
 
+  - name: ^.*-pyflakes$
+    # do not vote by default
+    voting: false
+    files:
+     - '^(.*\.py|tox.ini)$'
+
   - name: ^.*-perllint$
     files:
       - '^.*\.(pl|pm)$'
@@ -494,12 +500,6 @@ jobs:
     voting: true
     files:
      - '^.*\.py$'
-
-  - name: ^.*-pyflakes$
-    # do not vote by default
-    voting: false
-    files:
-     - '^(.*\.py|tox.ini)$'
 
   # PHP CodeSniffer (experimental)
   - name: ^.*-phpcs(-HEAD)?$
