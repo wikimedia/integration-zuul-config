@@ -639,15 +639,28 @@
      - 'mwext-VisualEditor-doc-publish':
         ext-name: VisualEditor
 
+# browser tests for MediaWiki extensions
+#
+# One can find a list of all repositories on the mediawiki-selenium ruby gems
+# page at https://github.com/wikimedia/mediawiki-selenium#links
+#
+# Some are commented out, pending testing / proper implementation.
+#
 - project:
     name: mwext-browsertests
     dependencies: ''
     ext-name:
+     #- CirrusSearch
+     #- ContentTranslation
      - Flow
      - MobileFrontend
+     #- MultimediaViewer
      - Translatewiki
+     #- Translate
+     #- TwnMainPage
      - UniversalLanguageSelector
      - VisualEditor
+     #- Wikibase
     jobs:
      - '{name}-{ext-name}-phantomjs'
 
