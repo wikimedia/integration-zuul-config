@@ -102,8 +102,12 @@
         ln -s "$WORKSPACE" "$DOCROOT/$TEST_ID"
         curl --location --include "http://localhost:9413/$TEST_ID/" |head -n42
 
+        # Shared cache of gems to avoid hitting rubygems all the time
+        # See https://github.com/bundler/bundler/issues/2856
+        export GEM_HOME="$WORKSPACE/../gems"
+
         cd {tests-path}
-            /srv/deployment/integration/slave-scripts/tools/bundler/bundle install --path vendor
+            /srv/deployment/integration/slave-scripts/tools/bundler/bundle install --path "$GEM_HOME"
             export BROWSER_LABEL="phantomjs"
             export MEDIAWIKI_URL="http://localhost:9413/$TEST_ID/index.php?title="
             export API_URL="http://localhost:9413/$TEST_ID/api.php"
