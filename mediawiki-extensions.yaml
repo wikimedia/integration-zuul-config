@@ -56,7 +56,7 @@
 # Parameters: dependencies
 #
 - job-template:
-    name: '{name}-{ext-name}-phantomjs'
+    name: '{name}-{ext-name}-{browser}'
     node: integration-selenium-driver # has the browsertest vhost
     defaults: use-zuul-for-mw-ext
     triggers:
@@ -70,6 +70,7 @@
 
      - browsertests:
          tests-path: 'extensions/{ext-name}/tests/browser'
+         browser: '{browser}'
 
     publishers:
      - xunit:
@@ -649,6 +650,10 @@
 - project:
     name: mwext-browsertests
     dependencies: ''
+    browser:
+     - firefox
+     - phantomjs
+     #- chromium  # Unsupported by Watir yet (bug 61262)
     ext-name:
      #- CirrusSearch
      #- ContentTranslation
@@ -662,7 +667,7 @@
      - VisualEditor
      #- Wikibase
     jobs:
-     - '{name}-{ext-name}-phantomjs'
+     - '{name}-{ext-name}-{browser}'
 
 - project:
     name: 'mwext-BlameMaps'

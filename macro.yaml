@@ -69,8 +69,10 @@
 
 # Wrapper around cucumber
 # FIXME should be some shell scripts instead
-# Parameter:
+#
+# Parameters:
 # {tests-path}  where browser tests are located
+# {browser} Type of browser to use (phantomjs, firefox)
 - builder:
     name: browsertests
     builders:
@@ -108,7 +110,8 @@
 
         cd {tests-path}
             /srv/deployment/integration/slave-scripts/tools/bundler/bundle install --path "$GEM_HOME"
-            export BROWSER_LABEL="phantomjs"
+            export BROWSER_LABEL="{browser}"
+            export HEADLESS=true  # does not harm phantomjs
             export MEDIAWIKI_URL="http://localhost:9413/$TEST_ID/index.php?title="
             export API_URL="http://localhost:9413/$TEST_ID/api.php"
             export MEDIAWIKI_USER=WikiAdmin
