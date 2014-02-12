@@ -204,9 +204,19 @@
         else
             version="unknown"
         fi
-        jsduck --config="{config}" --footer="Generated for branch ${{version}} on {{DATE}} by {{JSDUCK}} {{VERSION}}." --color --warnings-exit-nonzero
+        set -o pipefail
+        jsduck --config="{config}" --footer="Generated for branch ${{version}} on {{DATE}} by {{JSDUCK}} {{VERSION}}." --warnings-exit-nonzero 2>&1 | tee jsduck.log
         ec=$?
-        # Exit with exit code of jsduck command
+        if [[ $ec -eq 0 ]]
+        then
+            grep "^Warning:" jsduck.log > /dev/null
+            gr=$?
+            if [[ $gr -eq 0 ]]
+            then
+                ec=1
+            fi
+        fi
+        # Exit with exit code of jsduck command, or whether we found errors
         exit $ec
 
 - builder:
