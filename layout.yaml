@@ -289,6 +289,10 @@ jobs:
     voting: false
     files: 'debian/.*'
 
+  # Parsoid tests overhaul experimentation
+  - name: ^parsoidsvc-(deploy|source)-.*
+    voting: false
+
   # Experiment dependencies between repositories
   - name: experiment-gating-dependencies
     voting: false
@@ -2170,6 +2174,11 @@ projects:
       - parsoidsvc-roundtrip-test-check
       - parsoidsvc-parsertests-run-harder
       - parsoidsvc-php-parsertests
+      # non voting:
+      - parsoidsvc-source-parse-tool-check
+      - parsoidsvc-source-parsertests-run-harder
+      - parsoidsvc-source-roundtrip-test-check
+
     gate-and-submit:
       - parsoidsvc-jslint
       - parsoidsvc-parsertests-run-harder
@@ -2184,6 +2193,10 @@ projects:
       - parsoidsvc-parse-tool-check
       - parsoidsvc-roundtrip-test-check
       - parsoidsvc-debian-glue
+      # non voting:
+      - parsoidsvc-deploy-parse-tool-check
+      - parsoidsvc-deploy-parsertests-run-harder
+      - parsoidsvc-deploy-roundtrip-test-check
     gate-and-submit:
       - parsoidsvc-parsertests-run-harder
       - parsoidsvc-parse-tool-check
