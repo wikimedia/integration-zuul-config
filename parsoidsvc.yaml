@@ -36,9 +36,46 @@
            php tests/parserTests.php --color=no --quiet \
             --file=tests/parserTests.txt
 
+# Parsoid comes with two repositories:
+# mediawiki/services/parsoid : the actual source code
+# mediawiki/services/parsoid/deploy : node modules + parsoid code under /src/
+#
+# We share the job-templates describing tests commands to run, the
+# parsoid-set-env macro would contains environment variable pointing to the
+# Parsoid `tests` directory and set the NODE_PATH
+#
+# Once used, subsequent shell commands should load the env variables by using:
+#   . parsoid.env
+#
+# Note we run `npm install` so we better have npm installed (ie on labs)
+- builder:
+    name: parsoid-set-env
+    builders:
+     - shell: |
+        rm -f parsoid.env
+
+        case "{repository}" in
+        "source")
+            PARSOID_TEST_PATH="./tests"
+            echo "Running npm install"
+            npm install
+            ;;
+        "deploy")
+            PARSOID_TEST_PATH="./src/tests"
+            # All modules should already be in the deploy repo, no npm install
+            ;;
+        *)
+            echo "JJB {{repository}} parameter '{repository}' is not recognized."
+            exit 1
+            ;;
+        esac
+        echo "PARSOID_TEST_PATH=$PARSOID_TEST_PATH" >> parsoid.env
+        echo "NODE_PATH=$NODE_PATH:$WORKSPACE/node_modules" >> parsoid.env
+
 - job-template:
-    name: parsoidsvc-parse-tool-check
-    node: hasSlaveScripts
+    name: parsoidsvc-{repository}-parse-tool-check
+    node: hasNpm
+    defaults: use-remote-zuul
     concurrent: true
     wrappers:
         - timeout:
@@ -49,20 +86,22 @@
     triggers:
         - zuul
     builders:
-        - git-parsoid-and-deploy-repos
+        - parsoid-set-env:
+            repository: '{repository}'
         - shell: |
             # If any of these commands fail, something is wrong
             set -e
-            cd parsoid/tests
-            export NODE_PATH="$NODE_PATH:$WORKSPACE/deploy/node_modules"
+            . parsoid.env
+            cd "$PARSOID_TEST_PATH"
             echo "Foo" | node parse.js --wt2html
             echo "Foo" | node parse.js --wt2wt
             echo "Foo" | node parse.js --html2wt
             echo "Foo" | node parse.js --html2html
 
 - job-template:
-    name: parsoidsvc-roundtrip-test-check
-    node: hasSlaveScripts
+    name: parsoidsvc-{repository}-roundtrip-test-check
+    node: hasNpm
+    defaults: use-remote-zuul
     concurrent: true
     wrappers:
         - timeout:
@@ -73,19 +112,21 @@
     triggers:
         - zuul
     builders:
-        - git-parsoid-and-deploy-repos
+        - parsoid-set-env:
+            repository: '{repository}'
         - shell: |
             # If any of these commands fail, something is wrong
             set -e
-            cd parsoid/tests
-            export NODE_PATH="$NODE_PATH:$WORKSPACE/deploy/node_modules"
+            . parsoid.env
+            cd "$PARSOID_TEST_PATH"
             node roundtrip-test.js "Barack Obama"
             node roundtrip-test.js --prefix frwiki "Chope"
             node roundtrip-test.js --xml "Parkour"
 
 - job-template:
-    name: parsoidsvc-parsertests-run-harder
-    node: hasSlaveScripts
+    name: parsoidsvc-{repository}-parsertests-run-harder
+    node: hasNpm
+    defaults: use-remote-zuul
     concurrent: true
     wrappers:
         - timeout:
@@ -96,20 +137,25 @@
     triggers:
         - zuul
     builders:
-        - git-parsoid-and-deploy-repos
+        - parsoid-set-env:
+            repository: '{repository}'
         - shell: |
             # If any of these commands fail, something is wrong
             set -e
-            cd parsoid/tests
-            export NODE_PATH=$NODE_PATH:$WORKSPACE/deploy/node_modules
+            . parsoid.env
+            cd "$PARSOID_TEST_PATH"
             node parserTests --wt2html --wt2wt --html2wt --html2html --selser --no-color --quiet --blacklist
 
 - project:
     name: parsoidsvc
+    # job templates are shared by both repositories
+    repository:
+     - source  # mediawiki/services/parsoid
+     - deploy  # mediawiki/services/parsoid/deploy
     jobs:
         - '{name}-jslint'
         - '{name}-debian-glue'
-        - parsoidsvc-parse-tool-check
-        - parsoidsvc-roundtrip-test-check
-        - parsoidsvc-parsertests-run-harder
+        - 'parsoidsvc-{repository}-parse-tool-check'
+        - 'parsoidsvc-{repository}-roundtrip-test-check'
+        - 'parsoidsvc-{repository}-parsertests-run-harder'
         - parsoidsvc-php-parsertests
