@@ -14,13 +14,10 @@
 
           curl -s -o use-node https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/node/use-node
           NODE_VERSION=0.11.8 . ./use-node
+          rm $HOME/bin/phantomjs
           npm install phantomjs
-
-          mkdir -p $HOME/bin
-          if [ ! -h $HOME/bin/phantomjs ]
-            then
-              ln -Fs $WORKSPACE/node_modules/phantomjs/lib/phantom/bin/phantomjs $HOME/bin/phantomjs
-          fi
+          ln -fs $WORKSPACE/node_modules/phantomjs/lib/phantom/bin/phantomjs $HOME/bin/phantomjs
+          phantomjs -v
 
           # env
           export MEDIAWIKI_USER=Selenium_user
