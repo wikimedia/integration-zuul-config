@@ -1,0 +1,45 @@
+- job:
+    name: VisualEditor-test2.wikipedia.org-linux-chrome
+    disabled: false
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/VisualEditor
+          branches:
+            - master
+
+    triggers:
+      - timed: "0 3,18 * * *"
+
+    builders:
+      - shell: |
+
+          export MEDIAWIKI_USER=Selenium_user
+          export MEDIAWIKI_PASSWORD_VARIABLE=MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+
+          export BROWSER=chrome
+          export PLATFORM=Linux
+          export VERSION=32
+          export MEDIAWIKI_URL=http://test2.wikipedia.org/wiki/
+
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.0 \
+            source ./use-ruby
+
+          gem install bundler --no-ri --no-rdoc
+          cd modules/ve-mw/test/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @test2.wikipedia.org || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+    publishers:
+      - email:
+          recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
