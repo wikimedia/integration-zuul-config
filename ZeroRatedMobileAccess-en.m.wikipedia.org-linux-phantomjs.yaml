@@ -1,0 +1,57 @@
+- job:
+    name: ZeroRatedMobileAccess-en.m.wikipedia.org-linux-phantomjs
+    disabled: false
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/ZeroRatedMobileAccess
+          branches:
+            - master
+
+    triggers:
+      - timed: "0 3,18 * * *"
+
+    builders:
+      - shell: |
+          # get commit from gerrit
+          git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/ZeroRatedMobileAccess refs/changes/09/106709/8 && git checkout FETCH_HEAD
+
+          # install phantomjs
+          curl -s -o use-node https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/node/use-node
+          NODE_VERSION=0.11.8 . ./use-node
+          rm $HOME/bin/phantomjs
+          npm install phantomjs
+          ln -fs $WORKSPACE/node_modules/phantomjs/lib/phantom/bin/phantomjs $HOME/bin/phantomjs
+          phantomjs -v
+
+          # set up environment variables
+          export BROWSER=phantomjs
+          export MEDIAWIKI_URL=http://en.m.wikipedia.org/wiki/
+
+          # install ruby
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.0 \
+            source ./use-ruby
+
+          # install ruby dependencies
+          gem install bundler --no-ri --no-rdoc
+          cd tests/browser/
+          bundle install
+
+          # run tests
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @en.m.wikipedia.org || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+    publishers:
+      - junit:
+          results: tests/browser/reports/junit/*.xml
+      - email:
+          recipients: cmcmahon@wikimedia.org zfilipin@wikimedia.org
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
