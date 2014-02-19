@@ -1,0 +1,33 @@
+- job:
+    name: UploadWizard-commons.wikimedia.beta.wmflabs.org
+    disabled: false
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/UploadWizard
+
+    triggers:
+      - timed: "H */6 * * *"
+      - pollscm: "* * * * *"
+
+    builders:
+      - shell: |
+          set -e
+          export MEDIAWIKI_PASSWORD_VARIABLE=MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+          virtualenv --distribute DEV
+          DEV/bin/pip install -rtests/api/requirements.txt
+          DEV/bin/python tests/api/upload-wizard_tests.py --username "Selenium_user" --api_url "http://commons.wikimedia.beta.wmflabs.org/w/api.php"
+          DEV/bin/python tests/api/upload-wizard_tests.py --gen_new_image --username "Selenium_user" --api_url "http://commons.wikimedia.beta.wmflabs.org/w/api.php"
+
+    publishers:
+      - email:
+          recipients: aarcos.wiki@gmail.com cmcmahon@wikimedia.org gtisza@wikimedia.org zfilipin@wikimedia.org
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
