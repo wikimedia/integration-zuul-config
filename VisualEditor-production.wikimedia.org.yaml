@@ -1,0 +1,31 @@
+- job:
+    name: VisualEditor-production.wikimedia.org
+    disabled: false
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/VisualEditor
+
+    triggers:
+      - timed: "@weekly"
+
+    builders:
+      - shell: |
+          export BROWSER_LABEL=firefox
+          gem install bundler --no-ri --no-rdoc
+          cd modules/ve-mw/test/browser
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit features/verify_production_wikis.feature
+
+    publishers:
+      - email:
+          recipients: jhall@wikimedia.org jforrester@wikimedia.org
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
