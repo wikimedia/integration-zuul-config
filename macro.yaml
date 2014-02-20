@@ -205,7 +205,7 @@
             version="unknown"
         fi
         set -o pipefail
-        jsduck --config="{config}" --footer="Generated for branch ${{version}} on {{DATE}} by {{JSDUCK}} {{VERSION}}." --warnings-exit-nonzero 2>&1 | tee jsduck.log
+        jsduck --config="{config}" --footer="Generated for branch ${{version}} on {{DATE}} by {{JSDUCK}} {{VERSION}}." --processes 0 --warnings-exit-nonzero 2>&1 | tee jsduck.log
         ec=$?
         if [[ $ec -eq 0 ]]
         then
