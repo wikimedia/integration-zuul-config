@@ -279,6 +279,10 @@ jobs:
   #
   # See: http://docs.python.org/2/library/re.html#search-vs-match
 
+  # Experiment for analytics/kraken repository
+  - name: analytics-kraken
+    voting: false
+
   # Experimental building of Debian packages
   # based on jenkins-debian-glue
   - name: ^.*-debian-glue$
@@ -876,6 +880,10 @@ projects:
     template:
       - name: 'python-lint'
         prefix: 'analytics-glass'
+
+  - name: analytics/kraken
+    test:
+      - analytics-kraken
 
   - name: analytics/reportcard
     template:
