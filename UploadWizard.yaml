@@ -1,0 +1,57 @@
+- job-template:
+    name: 'UploadWizard-{name}'
+    mediawiki_password_variable: '{mediawiki_password_variable}'
+    mediawiki_url: '{mediawiki_url}'
+    pollscm: '{pollscm}'
+
+    disabled: false
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/UploadWizard
+          branches:
+            - master
+
+    triggers:
+      - timed: "H */6 * * *"
+      - pollscm: "{pollscm}"
+
+    builders:
+      - shell: |
+          set -e
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+          virtualenv --distribute DEV
+          DEV/bin/pip install -rtests/api/requirements.txt
+          DEV/bin/python tests/api/upload-wizard_tests.py --username "Selenium_user" --api_url "http://{mediawiki_url}/w/api.php"
+          DEV/bin/python tests/api/upload-wizard_tests.py --gen_new_image --username "Selenium_user" --api_url "http://{mediawiki_url}/w/api.php"
+
+    publishers:
+      - email:
+          recipients: aarcos.wiki@gmail.com cmcmahon@wikimedia.org gtisza@wikimedia.org zfilipin@wikimedia.org
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
+
+- project:
+    name: commons.wikimedia.beta.wmflabs.org
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: commons.wikimedia.beta.wmflabs.org
+    pollscm: '* * * * *'
+
+    jobs:
+      - 'UploadWizard-{name}'
+
+- project:
+    name: commons.wikimedia.org
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+    mediawiki_url: commons.wikimedia.org
+    pollscm: '0 5 31 2 *'
+
+    jobs:
+      - 'UploadWizard-{name}'
