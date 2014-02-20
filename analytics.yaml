@@ -30,6 +30,27 @@
     jobs:
      - python-jobs
 
+- job-template:
+    name: 'analytics-kraken'
+    project-type: maven
+    triggers:
+     - zuul
+    scm:
+     - git-remote-zuul
+    wrappers:
+     - timeout:
+         timeout: 60  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    maven:
+      goals: clean package
+
+- project:
+    name: 'analytics-kraken'
+    jobs:
+     - 'analytics-kraken'
+
 - project:
     name: 'analytics-reportcard'
 
