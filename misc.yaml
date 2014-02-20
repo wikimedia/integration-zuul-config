@@ -1,9 +1,20 @@
+- job-template:
+    name: 'VisualEditor-jsduck'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck:
+        config: '$WORKSPACE/.docs/config.json'
+
 - project:
     name: 'VisualEditor'
     jobs:
      - '{name}-jslint'
      - '{name}-npm'
      - '{name}-ruby1.9.3lint'
+     - 'VisualEditor-jsduck'
 
 - project:
     name: 'oojs-core'
