@@ -1,5 +1,8 @@
-- job:
-    name: VisualEditor-en.wikipedia.beta.wmflabs.org-linux-firefox
+- job-template:
+    name: 'VisualEditor-{name}'
+    browser: '{browser}'
+    version: '{version}'
+
     disabled: false
 
     scm:
@@ -17,9 +20,9 @@
           export MEDIAWIKI_USER=Selenium_user
           export MEDIAWIKI_PASSWORD_VARIABLE=MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
 
-          export BROWSER=firefox
+          export BROWSER={browser}
           export PLATFORM=Linux
-          export VERSION=27
+          export VERSION={version}
           export MEDIAWIKI_URL=http://en.wikipedia.beta.wmflabs.org/wiki/
 
           curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
@@ -45,3 +48,19 @@
           notify-fixers: false
           message-type: summary-scm
           matrix-notifier: only-configurations
+
+- project:
+    name: en.wikipedia.beta.wmflabs.org-linux-chrome
+    browser: chrome
+    version: 32
+
+    jobs:
+      - 'VisualEditor-{name}'
+
+- project:
+    name: en.wikipedia.beta.wmflabs.org-linux-firefox
+    browser: firefox
+    version: 27
+
+    jobs:
+      - 'VisualEditor-{name}'
