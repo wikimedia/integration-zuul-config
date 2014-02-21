@@ -1,5 +1,5 @@
 - job-template:
-    name: 'VisualEditor-{name}'
+    name: '{name}'
     repository: '{repository}'
     browser: '{browser}'
     version: '{version}'
@@ -54,7 +54,7 @@
           matrix-notifier: only-configurations
 
 - project:
-    name: en.wikipedia.beta.wmflabs.org-linux-chrome
+    name: VisualEditor-en.wikipedia.beta.wmflabs.org-linux-chrome
     repository: VisualEditor
     browser: chrome
     version: 32
@@ -64,10 +64,10 @@
     recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
 
     jobs:
-      - 'VisualEditor-{name}'
+      - '{name}'
 
 - project:
-    name: en.wikipedia.beta.wmflabs.org-linux-firefox
+    name: VisualEditor-en.wikipedia.beta.wmflabs.org-linux-firefox
     repository: VisualEditor
     browser: firefox
     version: 27
@@ -77,10 +77,10 @@
     recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
 
     jobs:
-      - 'VisualEditor-{name}'
+      - '{name}'
 
 - project:
-    name: test2.wikipedia.org-linux-chrome
+    name: VisualEditor-test2.wikipedia.org-linux-chrome
     repository: VisualEditor
     browser: chrome
     version: 32
@@ -90,10 +90,10 @@
     recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
 
     jobs:
-      - 'VisualEditor-{name}'
+      - '{name}'
 
 - project:
-    name: test2.wikipedia.org-linux-firefox
+    name: VisualEditor-test2.wikipedia.org-linux-firefox
     repository: VisualEditor
     browser: firefox
     version: 27
@@ -103,4 +103,17 @@
     recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
 
     jobs:
-      - 'VisualEditor-{name}'
+      - '{name}'
+
+- project:
+    name: WikiLove-en.wikipedia.beta.wmflabs.org-linux-firefox
+    repository: WikiLove
+    browser: firefox
+    version: 27
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    folder: tests
+    recipients: cmcmahon@wikimedia.org zfilipin@wikimedia.org
+
+    jobs:
+      - '{name}'
