@@ -1,15 +1,18 @@
 - job-template:
     name: 'VisualEditor-{name}'
+    repository: '{repository}'
     browser: '{browser}'
     version: '{version}'
     mediawiki_password_variable: '{mediawiki_password_variable}'
     mediawiki_url: '{mediawiki_url}'
+    folder: '{folder}'
+    recipients: '{recipients}'
 
     disabled: false
 
     scm:
       - git:
-          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/VisualEditor
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
           branches:
             - master
 
@@ -18,7 +21,6 @@
 
     builders:
       - shell: |
-
           export MEDIAWIKI_USER=Selenium_user
           export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
 
@@ -32,15 +34,15 @@
             source ./use-ruby
 
           gem install bundler --no-ri --no-rdoc
-          cd modules/ve-mw/test/browser/
+          cd {folder}/browser/
           bundle install
           bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
     publishers:
       - junit:
-          results: modules/ve-mw/test/browser/reports/junit/*.xml
+          results: '{folder}/browser/reports/junit/*.xml'
       - email:
-          recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
+          recipients: '{recipients}'
       - ircbot:
           strategy: all
           notify-start: false
@@ -53,40 +55,52 @@
 
 - project:
     name: en.wikipedia.beta.wmflabs.org-linux-chrome
+    repository: VisualEditor
     browser: chrome
     version: 32
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
     mediawiki_url: en.wikipedia.beta.wmflabs.org
+    folder: modules/ve-mw/test
+    recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
 
     jobs:
       - 'VisualEditor-{name}'
 
 - project:
     name: en.wikipedia.beta.wmflabs.org-linux-firefox
+    repository: VisualEditor
     browser: firefox
     version: 27
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
     mediawiki_url: en.wikipedia.beta.wmflabs.org
+    folder: modules/ve-mw/test
+    recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
 
     jobs:
       - 'VisualEditor-{name}'
 
 - project:
     name: test2.wikipedia.org-linux-chrome
+    repository: VisualEditor
     browser: chrome
     version: 32
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
     mediawiki_url: test2.wikipedia.org
+    folder: modules/ve-mw/test
+    recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
 
     jobs:
       - 'VisualEditor-{name}'
 
 - project:
     name: test2.wikipedia.org-linux-firefox
+    repository: VisualEditor
     browser: firefox
     version: 27
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
     mediawiki_url: test2.wikipedia.org
+    folder: modules/ve-mw/test
+    recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org jhall@wikimedia.org zfilipin@wikimedia.org
 
     jobs:
       - 'VisualEditor-{name}'
