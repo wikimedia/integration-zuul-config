@@ -1,0 +1,54 @@
+- job-template:
+    name: '{name}'
+    repository: '{repository}'
+    browser: '{browser}'
+    version: '{version}'
+    mediawiki_password_variable: '{mediawiki_password_variable}'
+    mediawiki_url: '{mediawiki_url}'
+    folder: '{folder}'
+    recipients: '{recipients}'
+
+    disabled: false
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
+          branches:
+            - master
+
+    triggers:
+      - timed: "0 3,18 * * *"
+
+    builders:
+      - shell: |
+          export MEDIAWIKI_USER=Selenium_user
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          export BROWSER={browser}
+          export PLATFORM=Linux
+          export VERSION={version}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.0 \
+            source ./use-ruby
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+    publishers:
+      - junit:
+          results: '{folder}/browser/reports/junit/*.xml'
+      - email:
+          recipients: '{recipients}'
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
