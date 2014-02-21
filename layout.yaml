@@ -1034,9 +1034,12 @@ projects:
       - mw-tools-release-pyflakes
 
   - name: mediawiki/tools/scap
-    template:
-      - name: 'python-lint'
-        prefix: 'mw-tools-scap'
+    test:
+     - mw-tools-scap-tox-flake8
+     - mw-tools-scap-tox-py27
+    gate-and-submit:
+     - mw-tools-scap-tox-flake8
+     - mw-tools-scap-tox-py27
 
   - name: mediawiki/vagrant
     check-voter:
