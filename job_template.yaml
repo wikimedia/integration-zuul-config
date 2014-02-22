@@ -19,14 +19,37 @@
           bundle install
           bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
+- builder:
+    name: browsertests
+    builders:
+      - shell: |
+          export MEDIAWIKI_USER={mediawiki_user}
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          export BROWSER={browser}
+          export PLATFORM='{platform}'
+          export VERSION={version}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.0 \
+            source ./use-ruby
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} {additional_tags} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
 - defaults:
     name: global
 
     disabled: false
 
     scm:
-      - extensions:
-          repository: '{repository}'
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
+          branches:
+            - master
 
     builders:
       - default:
@@ -58,13 +81,25 @@
     triggers:
       - timed: 'H 3,18 * * *'
 
-- scm:
-    name: extensions
+- job-template:
+    name: '{name}'
+
+- job-template:
+    name: 'browsertests-{name}'
+
     scm:
       - git:
-          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
+          url: https://gerrit.wikimedia.org/r/qa/browsertests
           branches:
             - master
 
-- job-template:
-    name: '{name}'
+    builders:
+      - browsertests:
+          additional_tags: '{additional_tags}'
+          browser: '{browser}'
+          folder: '{folder}'
+          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_url: '{mediawiki_url}'
+          mediawiki_user: '{mediawiki_user}'
+          platform: '{platform}'
+          version: '{version}'
