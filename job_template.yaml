@@ -19,6 +19,23 @@
           bundle install
           bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
+- publisher:
+    name: default
+    publishers:
+      - junit:
+          results: '{folder}/browser/reports/junit/*.xml'
+      - email:
+          recipients: '{recipients}'
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
+
 - job-template:
     name: '{name}'
     folder: '{folder}'
@@ -47,16 +64,6 @@
           version: '{version}'
 
     publishers:
-      - junit:
-          results: '{folder}/browser/reports/junit/*.xml'
-      - email:
+      - default:
+          folder: '{folder}'
           recipients: '{recipients}'
-      - ircbot:
-          strategy: all
-          notify-start: false
-          notify-committers: false
-          notify-culprits: false
-          notify-upstream: false
-          notify-fixers: false
-          message-type: summary-scm
-          matrix-notifier: only-configurations
