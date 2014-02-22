@@ -21,39 +21,8 @@
 
 - defaults:
     name: global
+
     disabled: false
-    triggers:
-      - timed: 'H 3,18 * * *'
-
-- publisher:
-    name: default
-    publishers:
-      - junit:
-          results: '{folder}/browser/reports/junit/*.xml'
-      - email:
-          recipients: '{recipients}'
-      - ircbot:
-          strategy: all
-          notify-start: false
-          notify-committers: false
-          notify-culprits: false
-          notify-upstream: false
-          notify-fixers: false
-          message-type: summary-scm
-          matrix-notifier: only-configurations
-
-- scm:
-    name: extensions
-    scm:
-      - git:
-          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
-          branches:
-            - master
-
-- job-template:
-    name: '{name}'
-    folder: '{folder}'
-    recipients: '{recipients}'
 
     scm:
       - extensions:
@@ -70,6 +39,32 @@
           version: '{version}'
 
     publishers:
-      - default:
-          folder: '{folder}'
+      - junit:
+          results: '{folder}/browser/reports/junit/*.xml'
+
+      - email:
           recipients: '{recipients}'
+
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
+
+    triggers:
+      - timed: 'H 3,18 * * *'
+
+- scm:
+    name: extensions
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
+          branches:
+            - master
+
+- job-template:
+    name: '{name}'
