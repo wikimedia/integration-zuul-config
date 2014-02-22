@@ -1,26 +1,5 @@
-- job-template:
-    name: '{name}'
-    browser: '{browser}'
-    folder: '{folder}'
-    mediawiki_password_variable: '{mediawiki_password_variable}'
-    mediawiki_url: '{mediawiki_url}'
-    mediawiki_user: '{mediawiki_user}'
-    platform: '{platform}'
-    recipients: '{recipients}'
-    repository: '{repository}'
-    version: '{version}'
-
-    disabled: false
-
-    scm:
-      - git:
-          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
-          branches:
-            - master
-
-    triggers:
-      - timed: 'H 3,18 * * *'
-
+- builder:
+    name: default
     builders:
       - shell: |
           export MEDIAWIKI_USER={mediawiki_user}
@@ -39,6 +18,33 @@
           cd {folder}/browser/
           bundle install
           bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+- job-template:
+    name: '{name}'
+    folder: '{folder}'
+    recipients: '{recipients}'
+    repository: '{repository}'
+
+    disabled: false
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
+          branches:
+            - master
+
+    triggers:
+      - timed: 'H 3,18 * * *'
+
+    builders:
+      - default:
+          browser: '{browser}'
+          folder: '{folder}'
+          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_url: '{mediawiki_url}'
+          mediawiki_user: '{mediawiki_user}'
+          platform: '{platform}'
+          version: '{version}'
 
     publishers:
       - junit:
