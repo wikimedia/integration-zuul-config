@@ -36,19 +36,24 @@
           message-type: summary-scm
           matrix-notifier: only-configurations
 
-- job-template:
-    name: '{name}'
-    folder: '{folder}'
-    recipients: '{recipients}'
-    repository: '{repository}'
-
-    disabled: false
-
+- scm:
+    name: extensions
     scm:
       - git:
           url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
           branches:
             - master
+
+- job-template:
+    name: '{name}'
+    folder: '{folder}'
+    recipients: '{recipients}'
+
+    disabled: false
+
+    scm:
+      - extensions:
+          repository: '{repository}'
 
     triggers:
       - timed: 'H 3,18 * * *'
