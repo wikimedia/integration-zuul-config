@@ -634,6 +634,10 @@ jobs:
   - name: ^mwext-FlaggedRevs-testextensions.*
     voting: false
 
+  # bug 61875
+  - name: ^mwext-TimedMediaHandler-testextensions-.*
+    voting: false
+
   # mwext-SideBarMenu-testextensions-master
   - name: ^mwext-SideBarMenu-testextensions-.*
     voting: false
@@ -2587,15 +2591,9 @@ projects:
         extname: Thanks
 
   - name: mediawiki/extensions/TimedMediaHandler
-    check-only:
-      - mwext-TimedMediaHandler-jslint
-      - mwext-TimedMediaHandler-lint
-    gate-and-submit:
-      - mwext-TimedMediaHandler-jslint
-      - mwext-TimedMediaHandler-lint
-# FIXME Requires the MwEmbedSupport extension :(
-#      - mwext-TimedMediaHandler-lint:
-#        - mwext-TimedMediaHandler-testextensions-master
+    template:
+      - name: extension-unittests
+        extname: TimedMediaHandler
 
   - name: mediawiki/extensions/timeline
     check-only:
