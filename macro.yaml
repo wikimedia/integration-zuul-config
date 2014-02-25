@@ -88,15 +88,18 @@
         # Same for log dir
         chmod a+w log/
 
+        # Crazy hack to match production expectations
+        ln -s . w
+
         TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT/$BUILD_NUMBER" | tr '/' '-'`
 
         # Post configure MediaWiki
         echo -n "<?php
-          # Injected by Jenkins
-          \$wgServer = 'http://localhost:9413/';
-          \$wgScriptPath = '/$TEST_ID';
+          # Injected by Jenkins Job Builder macro 'browsertests'
+          \$wgServer = 'http://localhost:9413';
+          \$wgScriptPath = '/$TEST_ID/w';
+          \$wgArticlePath = '/$TEST_ID/wiki/\$1';
           \$wgScript = \$wgStylePath = \$wgLogo = false;
-          \$wgUsePathInfo = false;
           " >> $WORKSPACE/LocalSettings.php
 
         # On labs:
@@ -114,8 +117,8 @@
             /srv/deployment/integration/slave-scripts/tools/bundler/bundle install --path "$GEM_HOME"
             export BROWSER_LABEL="{browser}"
             export HEADLESS=true  # does not harm phantomjs
-            export MEDIAWIKI_URL="http://localhost:9413/$TEST_ID/index.php?title="
-            export API_URL="http://localhost:9413/$TEST_ID/api.php"
+            export MEDIAWIKI_URL="http://localhost:9413/$TEST_ID/wiki/"
+            export API_URL="http://localhost:9413/$TEST_ID/w/api.php"
             export MEDIAWIKI_USER=WikiAdmin
             export MEDIAWIKI_PASSWORD=testpass
             export SCREENSHOT_FAILURES=true
