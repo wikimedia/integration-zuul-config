@@ -1014,14 +1014,21 @@ projects:
 
   - name: mediawiki/tools/release
     # bug 50112 : we should use the python-lint template + the phplint
-    check-voter:
+    check:
       - mw-tools-release-phplint
       - mw-tools-release-pep8
       - mw-tools-release-pyflakes
+    test:
+      - mw-tools-release-phplint
+      - mw-tools-release-pep8
+      - mw-tools-release-pyflakes
+      - mw-tools-release-tox-doc
     gate-and-submit:
       - mw-tools-release-phplint
       - mw-tools-release-pep8
       - mw-tools-release-pyflakes
+      - mw-tools-release-tox-doc
+    # TODO postmerge to publish doc somewhere
 
   - name: mediawiki/tools/scap
     test:
