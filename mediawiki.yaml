@@ -233,7 +233,20 @@
      # FIXME should use the mw-run-phpunit.sh wrapper
      - shell: |
         mkdir -p log
-        rm -f log/clover.xml
+        rm -f log/clover.xml log/clover.bz2
+
+        # Since clover file are huge, compress them before archiving
+        # We need to keep the original though for the cloverphp plugin
+        function compress_clover_log() {
+            if [ -s "log/clover.xml" ]; then
+                echo "Compressing log/clover.xml with bz2..."
+                bzip2 --verbose --best --keep log/clover.xml
+                echo "Compression completed."
+            fi
+        }
+        trap compress_clover_log EXIT
+
+        echo "foo" > log/clover.xml
         nice -n 19 php tests/phpunit/phpunit.php \
             --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
@@ -242,6 +255,8 @@
         echo "Code coverage report is available at:"
         echo "https://integration.wikimedia.org/cover/mediawiki-core/master/php"
     publishers:
+     - archive:
+         artifacts: 'log/clover.xml.bz2'
      - cloverphp:
          xml-location: 'log/clover.xml'
     triggers:
