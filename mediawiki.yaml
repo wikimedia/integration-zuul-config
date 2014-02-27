@@ -161,7 +161,7 @@
             "$VERSION"
 
         mkdir -p "$WORKSPACE"/log
-        phpunit \
+        php /srv/deployment/integration/phpunit/vendor/bin/phpunit \
           --configuration make-release/phpunit.xml \
           --log-junit log/junit-phpunit.xml \
           make-release/testReleaseTarball.php "$VERSION"
