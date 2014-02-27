@@ -29,6 +29,17 @@
     builders:
      - jshint
 
+- job-template:
+    name: 'mediawiki-core-npm'
+    node: hasNpm
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - npm-in:
+        dir: '$WORKSPACE/tests/frontend'
+
 # Generic job to run QUnit
 - job-template:
     name: '{name}-qunit'
@@ -179,7 +190,7 @@
       - 'mediawiki-core-jslint'
       - '{name}-qunit'
       - '{name}-jsduck'
-      - '{name}-npm'
+      - 'mediawiki-core-npm'
       - '{name}-jsduck-publish'
       - '{name}-doxygen-publish'
       - '{name}-whitespaces'
