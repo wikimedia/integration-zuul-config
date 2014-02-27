@@ -77,7 +77,7 @@
 - job-template:
     name: parsoidsvc-{repository}-parse-tool-check
     node: hasNpm
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: true
     wrappers:
         - timeout:
@@ -103,7 +103,7 @@
 - job-template:
     name: parsoidsvc-{repository}-roundtrip-test-check
     node: hasNpm
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: true
     wrappers:
         - timeout:
@@ -128,7 +128,7 @@
 - job-template:
     name: parsoidsvc-{repository}-parsertests-run-harder
     node: hasNpm
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: true
     wrappers:
         - timeout:

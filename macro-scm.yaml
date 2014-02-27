@@ -30,10 +30,33 @@
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
         disable-submodules: true
-        # mw/core is a huge repo so dont reclone it
         wipe-workspace: false
         clean: true
 
+- scm:
+    name: git-localonly-zuul
+    scm:
+     - git:
+        url: '/srv/ssd/zuul/git/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: false
+        clean: true
+        # XXX: Why only this one recursive?
+        recursive-submodules: true
+
+# Same as git-localonly-zuul but fetches the Zuul changes using two repositories:
+#
+# a) git://zuul.eqiad.wmnet/*
+# Zuul maintained non-bare repository (ie does not ends with '.git')
+#
+# b) /srv/ssd/gerrit/*.git
+#
+# The latter is a local Gerrit replication destination (bare repository, ends
+# with '.git'). This saves network access and speed up the process by allowing
+# git to do a hardlink (the replicated repositories and the job workspace
+# are on the same device mounted as /srv/ssd).
 - scm:
     name: git-remote-zuul
     scm:
@@ -43,6 +66,21 @@
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
+        wipe-workspace: false
+        clean: true
+
+# This one doesn't rely on a local /srv/ssd/gerrit replication dest,
+# this is to be used for slaves hosted in labs (e.g. hasNpm nodes).
+- scm:
+    name: git-remoteonly-zuul
+    scm:
+     - git:
+        url: 'git://zuul.eqiad.wmnet/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: false
+        clean: true
 
 - scm:
     name: git-remote-zuul-no-submodules
@@ -53,4 +91,6 @@
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
+        wipe-workspace: false
+        clean: true
         disable-submodules: true

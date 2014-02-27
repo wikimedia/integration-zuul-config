@@ -22,12 +22,7 @@
     project-type: freestyle
 
     scm:
-     - git:
-        url: '/srv/ssd/zuul/git/$ZUUL_PROJECT'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        recursive-submodules: true
+     - git-localonly-zuul
 
     wrappers:
       - timeout:
@@ -36,16 +31,6 @@
       - timestamps
       - ansicolor
 
-# Same as use-zuul but fetch the Zuul changes using two repositories:
-#
-# a) git://zuul.eqiad.wmnet/*
-# Zuul maintained non-bare repository (ie does not ends with '.git')
-#
-# b) /srv/ssd/gerrit/*.git
-# Gerrit replication destination which is local and a bare repository (it ends
-# with '.git'). That requests less network access and speed up the process by
-# having git doing hardlink since the replicated repository and the workspace
-# are on the same device (mounted on /srv/ssd).
 - defaults:
     name: use-remote-zuul
 
@@ -57,6 +42,25 @@
 
     scm:
      - git-remote-zuul
+
+    wrappers:
+      - timeout:
+          timeout: 360
+          fail: true
+      - timestamps
+      - ansicolor
+
+- defaults:
+    name: use-remoteonly-zuul
+
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      <p>This job is triggered by Zuul</p>
+
+    project-type: freestyle
+
+    scm:
+     - git-remoteonly-zuul
 
     wrappers:
       - timeout:
