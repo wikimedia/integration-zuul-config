@@ -13,6 +13,22 @@
      - archive-log-dir
 
 - job-template:
+    name: '{name}-tox-doc-publish'
+    node: hasTox
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: doc
+    publishers:
+     - archive-log-dir
+     - copy-to-master:
+         includes:
+           - 'html/**,**/html/**'
+         destination: '/srv/org/wikimedia/doc/{name}'
+
+- job-template:
     name: '{name}-sphinx-doc'
     node: hasContintPackages
     defaults: use-remote-zuul
