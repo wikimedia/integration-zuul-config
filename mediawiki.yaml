@@ -155,6 +155,7 @@
         echo "From tag $ZUUL_REF, extracted version $VERSION"
         python make-release/make-release.py \
             --yes \
+            --git-root https://gerrit.wikimedia.org/r/p/mediawiki \
             --conf 'make-release/make-release.yaml' \
             --dont-sign \
             "$VERSION"
