@@ -252,7 +252,12 @@
             --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
             --coverage-clover log/clover.xml \
-            --coverage-html /srv/org/wikimedia/integration/cover/mediawiki-core/master/php
+            --coverage-html /srv/org/wikimedia/integration/cover/mediawiki-core/master/php \
+            || :
+        # PHP segfault (bug 43972) so ignore any error with '|| :' or the
+        # Jenkins plugin will never generate the coverage report for us
+        # https://issues.jenkins-ci.org/browse/JENKINS-21046
+
         echo "Code coverage report is available at:"
         echo "https://integration.wikimedia.org/cover/mediawiki-core/master/php"
     publishers:
