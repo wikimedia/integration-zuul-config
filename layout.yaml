@@ -1028,7 +1028,8 @@ projects:
       - mw-tools-releng-tox-doc
     gate-and-submit:
       - mw-tools-releng-tox-doc
-    # TODO add a postmerge job to publish doc somehwere
+    postmerge:
+      - mw-tools-releng-tox-doc-publish
 
   - name: mediawiki/tools/scap
     test:
@@ -1039,6 +1040,8 @@ projects:
      - mw-tools-scap-tox-doc
      - mw-tools-scap-tox-flake8
      - mw-tools-scap-tox-py27
+    postmerge:
+     - mw-tools-scap-tox-doc-publish
 
   - name: mediawiki/vagrant
     check-voter:
