@@ -359,6 +359,10 @@ jobs:
      # Triggers on changes made to .jshintrc, .jshintignore, .jscsrc, *.js and *.json
      - '^(\.js.*|.*\.(js|json)$)'
 
+  - name: ^mediawiki-core-npm$
+    files:
+     - '^(\.js.*|.*\.(js|json)$)'
+
   # Some projects which are most probably not passing jshint yet:
   #
   # Tracking bug is 60619
@@ -845,8 +849,8 @@ projects:
     test:
       - mediawiki-core-phpcs-lenient-HEAD
       - mediawiki-core-phpcs-strict-HEAD
-      - mediawiki-core-jslint
       - mediawiki-core-jsduck
+      - mediawiki-core-npm
       - mediawiki-core-lint:
         - mediawiki-core-phpunit-hhvm
         - mediawiki-core-phpunit-databaseless:
@@ -858,8 +862,8 @@ projects:
     gate-and-submit:
 #      - mediawiki-core-phpcs-lenient-HEAD
 #      - mediawiki-core-phpcs-strict-HEAD
-      - mediawiki-core-jslint
       - mediawiki-core-jsduck
+      - mediawiki-core-npm
       - mediawiki-core-lint:
         - mediawiki-core-phpunit-databaseless:
           - mediawiki-core-install-sqlite:
