@@ -14,7 +14,6 @@
 
 - defaults:
     name: use-zuul
-    # defaults: global
 
     description: |
       <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
@@ -49,12 +48,10 @@
 # are on the same device (mounted on /srv/ssd).
 - defaults:
     name: use-remote-zuul
-    # defaults: global
 
     description: |
       <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
       <p>This job is triggered by Zuul</p>
-      <p>Git submodules are processed</p>
 
     project-type: freestyle
 
@@ -70,7 +67,6 @@
 
 - defaults:
     name: use-remote-zuul-no-submodules
-    # defaults: global
 
     description: |
       <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
@@ -91,7 +87,6 @@
 
 - defaults:
     name: use-zuul-for-mw-ext
-    # defaults: global
 
     description: |
       <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
@@ -99,6 +94,8 @@
 
     project-type: freestyle
 
+    # Based on scm 'git-remote-zuul'
+    # Changed to have a different 'basedir'
     scm:
      - git:
         url: 'git://zuul.eqiad.wmnet/$ZUUL_PROJECT'
