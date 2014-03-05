@@ -12,7 +12,7 @@
 
 ## Environment variables
 
-- Jenkins > Manage Jenkins > Configure System > Global properties > Environment variables > List of key-value pairs >  name
+- Jenkins > Manage Jenkins > Configure System > Global properties > Environment variables > List of key-value pairs > name
   - MEDIAWIKI_PASSWORD_BTTESTING_WMFLABS_ORG
   - MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
   - MEDIAWIKI_PASSWORD_SELENIUM_TRANSLATE_SANDBOX_TRANSLATEWIKI_NET
@@ -21,6 +21,9 @@
   - MEDIAWIKI_PASSWORD_ULS_WMFLABS_ORG
   - SAUCE_ONDEMAND_ACCESS_KEY
   - SAUCE_ONDEMAND_USERNAME
+
+## Extended E-mail Notification
+- Jenkins > Manage Jenkins > Configure System > Extended E-mail Notification > Default Content Type: HTML (text/html)
 
 ## IRC Notification
 
