@@ -65,8 +65,9 @@
       - junit:
           results: '{folder}/browser/reports/junit/*.xml'
 
-      - email:
+      - email-ext:
           recipients: '{recipients}'
+          body: '${{SCRIPT, template="wikimedia.template"}}'
 
       - ircbot:
           strategy: all
