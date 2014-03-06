@@ -132,6 +132,32 @@
      - phpunit-junit-2
      - archive-log-dir
 
+- job-template:
+    name: mediawiki-core-phpunit-hhvm
+    node: hasHhvm && hasPhpUnit
+    defaults: use-remote-zuul
+    concurrent: true
+    scm:
+     - git-mwcore
+    triggers:
+     - zuul
+    builders:
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit-hhvm.sh"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+    wrappers:
+     # Failsafe to avoid blocking builds in production since this is still very
+     # experimental.
+     # TODO remove wrappers and use the default whenever hhvm is ready.
+     - timeout:
+         timeout: 8
+         fail: true
+     - timestamps
+     - ansicolor
+
 # A job template to install MediaWiki against a specific DB backend
 #
 # @param name name Jenkins job prefix to use
@@ -214,6 +240,7 @@
       - mediawiki-jobs
       - '{name}-phpcs-HEAD'
       - mediawiki-core-release
+      - mediawiki-core-phpunit-hhvm
 
 # For regression testing:
 
