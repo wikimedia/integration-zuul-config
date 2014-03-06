@@ -334,6 +334,8 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
+  - name: mediawiki-core-phpunit-hhvm
+    voting: false
   - name: mediawiki-core-phpcs-strict-HEAD
     voting: false
   - name: mediawiki-core-phpcs-lenient-HEAD
@@ -819,6 +821,7 @@ projects:
       - mediawiki-core-jslint
       - mediawiki-core-jsduck
       - mediawiki-core-lint:
+        - mediawiki-core-phpunit-hhvm
         - mediawiki-core-phpunit-databaseless:
           - mediawiki-core-install-sqlite:
             - mediawiki-core-qunit
