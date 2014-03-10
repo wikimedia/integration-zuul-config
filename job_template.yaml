@@ -10,7 +10,7 @@
 
     scm:
       - git:
-          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/{repository}
+          url: https://gerrit.wikimedia.org/r/{repository}
           branches:
             - master
 
@@ -280,12 +280,6 @@
 
 - job-template:
     name: 'browsertests-{name}'
-
-    scm:
-      - git:
-          url: https://gerrit.wikimedia.org/r/qa/browsertests
-          branches:
-            - master
 
     builders:
       - browsertests:
