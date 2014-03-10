@@ -128,26 +128,6 @@
     name: '{name}'
 
 - job-template:
-    name: 'browsertests-{name}'
-
-    scm:
-      - git:
-          url: https://gerrit.wikimedia.org/r/qa/browsertests
-          branches:
-            - master
-
-    builders:
-      - browsertests:
-          additional_tags: '{additional_tags}'
-          browser: '{browser}'
-          folder: '{folder}'
-          mediawiki_password_variable: '{mediawiki_password_variable}'
-          mediawiki_url: '{mediawiki_url}'
-          mediawiki_user: '{mediawiki_user}'
-          platform: '{platform}'
-          version: '{version}'
-
-- job-template:
     name: 'ContentTranslation-{name}'
 
     builders:
@@ -166,6 +146,26 @@
 
     builders:
       - UniversalLanguageSelector:
+          browser: '{browser}'
+          folder: '{folder}'
+          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_url: '{mediawiki_url}'
+          mediawiki_user: '{mediawiki_user}'
+          platform: '{platform}'
+          version: '{version}'
+
+- job-template:
+    name: 'browsertests-{name}'
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/qa/browsertests
+          branches:
+            - master
+
+    builders:
+      - browsertests:
+          additional_tags: '{additional_tags}'
           browser: '{browser}'
           folder: '{folder}'
           mediawiki_password_variable: '{mediawiki_password_variable}'
