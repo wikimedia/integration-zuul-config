@@ -62,6 +62,19 @@
           bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 - builder:
+    name: VisualEditor
+    builders:
+      - shell: |
+          export BROWSER={browser}
+          export PLATFORM='{platform}'
+          export VERSION={version}
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit features/verify_production_wikis.feature || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+- builder:
     name: ZeroRatedMobileAccess
     builders:
       - shell: |
@@ -179,6 +192,19 @@
           mediawiki_password_variable: '{mediawiki_password_variable}'
           mediawiki_url: '{mediawiki_url}'
           mediawiki_user: '{mediawiki_user}'
+          platform: '{platform}'
+          version: '{version}'
+
+- job-template:
+    name: 'VisualEditor-{name}'
+
+    triggers:
+      - timed: "@weekly"
+
+    builders:
+      - VisualEditor:
+          browser: '{browser}'
+          folder: '{folder}'
           platform: '{platform}'
           version: '{version}'
 
