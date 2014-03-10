@@ -41,6 +41,27 @@
           bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 - builder:
+    name: UniversalLanguageSelector
+    builders:
+      - shell: |
+          export MEDIAWIKI_USER={mediawiki_user}
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          export BROWSER={browser}
+          export PLATFORM='{platform}'
+          export VERSION={version}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/MediaWiki/core/index.php/
+
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.1 \
+            source ./use-ruby
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+- builder:
     name: browsertests
     builders:
       - shell: |
@@ -131,6 +152,20 @@
 
     builders:
       - ContentTranslation:
+          browser: '{browser}'
+          folder: '{folder}'
+          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_url: '{mediawiki_url}'
+          mediawiki_user: '{mediawiki_user}'
+          platform: '{platform}'
+          version: '{version}'
+
+
+- job-template:
+    name: 'UniversalLanguageSelector-{name}'
+
+    builders:
+      - UniversalLanguageSelector:
           browser: '{browser}'
           folder: '{folder}'
           mediawiki_password_variable: '{mediawiki_password_variable}'
