@@ -1,128 +1,7 @@
-- builder:
-    name: default
-    builders:
-      - shell: |
-          export MEDIAWIKI_USER={mediawiki_user}
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+# default
 
-          export BROWSER={browser}
-          export PLATFORM='{platform}'
-          export VERSION={version}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
-
-          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
-          RUBY_VERSION=2.1.1 \
-            source ./use-ruby
-
-          gem install bundler --no-ri --no-rdoc
-          cd {folder}/browser/
-          bundle install
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-- builder:
-    name: ContentTranslation
-    builders:
-      - shell: |
-          export MEDIAWIKI_USER={mediawiki_user}
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
-
-          export BROWSER={browser}
-          export PLATFORM='{platform}'
-          export VERSION={version}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/index.php/
-
-          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
-          RUBY_VERSION=2.1.1 \
-            source ./use-ruby
-
-          gem install bundler --no-ri --no-rdoc
-          cd {folder}/browser/
-          bundle install
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-- builder:
-    name: UniversalLanguageSelector
-    builders:
-      - shell: |
-          export MEDIAWIKI_USER={mediawiki_user}
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
-
-          export BROWSER={browser}
-          export PLATFORM='{platform}'
-          export VERSION={version}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/MediaWiki/core/index.php/
-
-          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
-          RUBY_VERSION=2.1.1 \
-            source ./use-ruby
-
-          gem install bundler --no-ri --no-rdoc
-          cd {folder}/browser/
-          bundle install
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-- builder:
-    name: VisualEditor
-    builders:
-      - shell: |
-          export BROWSER={browser}
-          export PLATFORM='{platform}'
-          export VERSION={version}
-
-          gem install bundler --no-ri --no-rdoc
-          cd {folder}/browser/
-          bundle install
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit features/verify_production_wikis.feature || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-- builder:
-    name: ZeroRatedMobileAccess
-    builders:
-      - shell: |
-          # install phantomjs
-          curl -s -o use-node https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/node/use-node
-          NODE_VERSION=0.11.8 . ./use-node
-          rm -f $HOME/bin/phantomjs
-          npm install phantomjs
-          ln -fs $WORKSPACE/node_modules/phantomjs/lib/phantom/bin/phantomjs $HOME/bin/phantomjs
-          phantomjs -v
-
-          # set up environment variables
-          export BROWSER={browser}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
-
-          # install ruby
-          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
-          RUBY_VERSION=2.1.1 \
-            source ./use-ruby
-
-          # install ruby dependencies
-          gem install bundler --no-ri --no-rdoc
-          cd tests/browser/
-          bundle install
-
-          # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-- builder:
-    name: browsertests
-    builders:
-      - shell: |
-          export MEDIAWIKI_USER={mediawiki_user}
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
-
-          export BROWSER={browser}
-          export PLATFORM='{platform}'
-          export VERSION={version}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
-
-          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
-          RUBY_VERSION=2.1.1 \
-            source ./use-ruby
-
-          gem install bundler --no-ri --no-rdoc
-          cd {folder}/browser/
-          bundle install
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} {additional_tags} || (echo -e "\nJob has failed (exit code: $?)."; false)
+- job-template:
+    name: '{name}'
 
 - defaults:
     name: global
@@ -166,8 +45,28 @@
     triggers:
       - timed: 'H 3,18 * * *'
 
-- job-template:
-    name: '{name}'
+- builder:
+    name: default
+    builders:
+      - shell: |
+          export MEDIAWIKI_USER={mediawiki_user}
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          export BROWSER={browser}
+          export PLATFORM='{platform}'
+          export VERSION={version}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.1 \
+            source ./use-ruby
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+# ContentTranslation
 
 - job-template:
     name: 'ContentTranslation-{name}'
@@ -182,6 +81,29 @@
           platform: '{platform}'
           version: '{version}'
 
+- builder:
+    name: ContentTranslation
+    builders:
+      - shell: |
+          export MEDIAWIKI_USER={mediawiki_user}
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          export BROWSER={browser}
+          export PLATFORM='{platform}'
+          export VERSION={version}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/index.php/
+
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.1 \
+            source ./use-ruby
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+# UniversalLanguageSelector
+
 - job-template:
     name: 'UniversalLanguageSelector-{name}'
 
@@ -195,6 +117,29 @@
           platform: '{platform}'
           version: '{version}'
 
+- builder:
+    name: UniversalLanguageSelector
+    builders:
+      - shell: |
+          export MEDIAWIKI_USER={mediawiki_user}
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          export BROWSER={browser}
+          export PLATFORM='{platform}'
+          export VERSION={version}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/MediaWiki/core/index.php/
+
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.1 \
+            source ./use-ruby
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+# UploadWizard
+
 - job-template:
     name: 'UploadWizard-api-{name}'
     mediawiki_password_variable: '{mediawiki_password_variable}'
@@ -206,13 +151,10 @@
       - pollscm: "{pollscm}"
 
     builders:
-      - shell: |
-          set -e
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
-          virtualenv --distribute DEV
-          DEV/bin/pip install -rtests/api/requirements.txt
-          DEV/bin/python tests/api/upload-wizard_tests.py --username "Selenium_user" --api_url "http://{mediawiki_url}/w/api.php"
-          DEV/bin/python tests/api/upload-wizard_tests.py --gen_new_image --username "Selenium_user" --api_url "http://{mediawiki_url}/w/api.php"
+      - UploadWizard-api:
+          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_url: '{mediawiki_url}'
+          mediawiki_user: '{mediawiki_user}'
 
     publishers:
       - email:
@@ -227,6 +169,32 @@
           message-type: summary-scm
           matrix-notifier: only-configurations
 
+- builder:
+    name: UploadWizard-api
+    builders:
+      - shell: |
+          set -e
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+          virtualenv --distribute DEV
+          DEV/bin/pip install -rtests/api/requirements.txt
+          DEV/bin/python tests/api/upload-wizard_tests.py --username "{mediawiki_user}" --api_url "http://{mediawiki_url}/w/api.php"
+          DEV/bin/python tests/api/upload-wizard_tests.py --gen_new_image --username "{mediawiki_user}" --api_url "http://{mediawiki_url}/w/api.php"
+
+# VisualEditor
+
+- builder:
+    name: VisualEditor
+    builders:
+      - shell: |
+          export BROWSER={browser}
+          export PLATFORM='{platform}'
+          export VERSION={version}
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit features/verify_production_wikis.feature || (echo -e "\nJob has failed (exit code: $?)."; false)
+
 - job-template:
     name: 'VisualEditor-{name}'
 
@@ -240,6 +208,8 @@
           platform: '{platform}'
           version: '{version}'
 
+# ZeroRatedMobileAccess
+
 - job-template:
     name: 'ZeroRatedMobileAccess-{name}'
 
@@ -248,6 +218,37 @@
           browser: '{browser}'
           folder: '{folder}'
           mediawiki_url: '{mediawiki_url}'
+
+- builder:
+    name: ZeroRatedMobileAccess
+    builders:
+      - shell: |
+          # install phantomjs
+          curl -s -o use-node https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/node/use-node
+          NODE_VERSION=0.11.8 . ./use-node
+          rm -f $HOME/bin/phantomjs
+          npm install phantomjs
+          ln -fs $WORKSPACE/node_modules/phantomjs/lib/phantom/bin/phantomjs $HOME/bin/phantomjs
+          phantomjs -v
+
+          # set up environment variables
+          export BROWSER={browser}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+
+          # install ruby
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.1 \
+            source ./use-ruby
+
+          # install ruby dependencies
+          gem install bundler --no-ri --no-rdoc
+          cd tests/browser/
+          bundle install
+
+          # run tests
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+# browsertests
 
 - job-template:
     name: 'browsertests-{name}'
@@ -268,3 +269,24 @@
           mediawiki_user: '{mediawiki_user}'
           platform: '{platform}'
           version: '{version}'
+
+- builder:
+    name: browsertests
+    builders:
+      - shell: |
+          export MEDIAWIKI_USER={mediawiki_user}
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          export BROWSER={browser}
+          export PLATFORM='{platform}'
+          export VERSION={version}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.1 \
+            source ./use-ruby
+
+          gem install bundler --no-ri --no-rdoc
+          cd {folder}/browser/
+          bundle install
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} {additional_tags} || (echo -e "\nJob has failed (exit code: $?)."; false)
