@@ -196,6 +196,38 @@
           version: '{version}'
 
 - job-template:
+    name: 'UploadWizard-api-{name}'
+    mediawiki_password_variable: '{mediawiki_password_variable}'
+    mediawiki_url: '{mediawiki_url}'
+    pollscm: '{pollscm}'
+
+    triggers:
+      - timed: "H */6 * * *"
+      - pollscm: "{pollscm}"
+
+    builders:
+      - shell: |
+          set -e
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+          virtualenv --distribute DEV
+          DEV/bin/pip install -rtests/api/requirements.txt
+          DEV/bin/python tests/api/upload-wizard_tests.py --username "Selenium_user" --api_url "http://{mediawiki_url}/w/api.php"
+          DEV/bin/python tests/api/upload-wizard_tests.py --gen_new_image --username "Selenium_user" --api_url "http://{mediawiki_url}/w/api.php"
+
+    publishers:
+      - email:
+          recipients: aarcos.wiki@gmail.com cmcmahon@wikimedia.org gdubuc@wikimedia.org gtisza@wikimedia.org mholmquist@wikimedia.org
+      - ircbot:
+          strategy: all
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary-scm
+          matrix-notifier: only-configurations
+
+- job-template:
     name: 'VisualEditor-{name}'
 
     triggers:

@@ -362,6 +362,28 @@
 
 # UploadWizard-commons.wikimedia.beta.wmflabs.org-linux-chrome
 
+## API
+
+- project:
+    name: commons.wikimedia.beta.wmflabs.org
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: commons.wikimedia.beta.wmflabs.org
+    pollscm: '* * * * *'
+    repository: UploadWizard
+
+    jobs:
+      - 'UploadWizard-api-{name}'
+
+- project:
+    name: commons.wikimedia.org
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+    mediawiki_url: commons.wikimedia.org
+    pollscm: '0 5 31 2 *'
+    repository: UploadWizard
+
+    jobs:
+      - 'UploadWizard-api-{name}'
+
 ## commons.wikimedia.beta.wmflabs.org
 
 - project:
