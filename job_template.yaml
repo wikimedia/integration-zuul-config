@@ -62,6 +62,35 @@
           bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 - builder:
+    name: ZeroRatedMobileAccess
+    builders:
+      - shell: |
+          # install phantomjs
+          curl -s -o use-node https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/node/use-node
+          NODE_VERSION=0.11.8 . ./use-node
+          rm -f $HOME/bin/phantomjs
+          npm install phantomjs
+          ln -fs $WORKSPACE/node_modules/phantomjs/lib/phantom/bin/phantomjs $HOME/bin/phantomjs
+          phantomjs -v
+
+          # set up environment variables
+          export BROWSER={browser}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+
+          # install ruby
+          curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
+          RUBY_VERSION=2.1.1 \
+            source ./use-ruby
+
+          # install ruby dependencies
+          gem install bundler --no-ri --no-rdoc
+          cd tests/browser/
+          bundle install
+
+          # run tests
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+- builder:
     name: browsertests
     builders:
       - shell: |
@@ -140,7 +169,6 @@
           platform: '{platform}'
           version: '{version}'
 
-
 - job-template:
     name: 'UniversalLanguageSelector-{name}'
 
@@ -153,6 +181,15 @@
           mediawiki_user: '{mediawiki_user}'
           platform: '{platform}'
           version: '{version}'
+
+- job-template:
+    name: 'ZeroRatedMobileAccess-{name}'
+
+    builders:
+      - ZeroRatedMobileAccess:
+          browser: '{browser}'
+          folder: '{folder}'
+          mediawiki_url: '{mediawiki_url}'
 
 - job-template:
     name: 'browsertests-{name}'
