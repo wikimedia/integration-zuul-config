@@ -58,12 +58,15 @@
 
 - project:
     name: pywikibot-core
+    toxenv:
+     - flake8
 
     jobs:
      - python-jobs
      - pywikibot-core-tests
      # Override pyflakes jobs that comes from `python-jobs`
      - pywikibot-core-pyflakes
+     - '{name}-tox-{toxenv}'
 
 - project:
     name: pywikibot-i18n
