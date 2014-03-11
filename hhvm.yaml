@@ -1,0 +1,30 @@
+# vim: set et ts=2 sw=2:
+
+# Build hhvm from master daily
+- job:
+    name: hhvm-daily-build
+    node: hhvm-build
+
+    triggers:
+      - timed: '@daily'
+
+    scm:
+      - git:
+          url: 'https://github.com/facebook/hhvm'
+          branches:
+            - 'master'
+          wipe-workspace: true
+
+    wrappers:
+      - timeout:
+          timeout: 90  # minutes
+          fail: true
+      - timestamps
+      - ansicolor
+
+    builders:
+      - shell: |
+          cmake .
+          make -j4
+          cp "$WORKSPACE/hphp/hhvm/hhvm" /var/www/hhvm
+          cp "$WORKSPACE/hphp/hhvm/hhvm" "/var/www/hhvm-$GIT_COMMIT"
