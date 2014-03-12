@@ -283,7 +283,7 @@
 
     builders:
       - browsertests:
-          additional_tags: '{additional_tags}'
+          browser_version: '{browser_version}'
           browser: '{browser}'
           folder: '{folder}'
           mediawiki_password_variable: '{mediawiki_password_variable}'
@@ -315,4 +315,4 @@
           bundle install
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} {additional_tags} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @{browser}{browser_version} || (echo -e "\nJob has failed (exit code: $?)."; false)
