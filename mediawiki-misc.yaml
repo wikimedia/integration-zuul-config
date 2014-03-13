@@ -1,4 +1,15 @@
 - job-template:
+    name: 'mediawiki-ruby-api-gembuild'
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: "gem build mediawiki_api.gemspec"
+    publishers:
+     - archive:
+         artifacts: '*.gem'
+
+- job-template:
     name: 'mediawiki-selenium-gembuild'
     defaults: use-remote-zuul
     triggers:
@@ -8,6 +19,12 @@
     publishers:
      - archive:
          artifacts: '*.gem'
+
+- project:
+    name: 'mediawiki-ruby-api'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+     - 'mediawiki-ruby-api-gembuild'
 
 - project:
     name: 'mediawiki-selenium'
