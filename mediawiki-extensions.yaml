@@ -154,6 +154,34 @@
         results: 'log/junit*.xml'
 
 - job-template:
+    name: 'mwext-GuidedTour-doc-test'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck:
+        config: '$WORKSPACE/.docs/config.json'
+
+- job-template:
+    name: 'mwext-GuidedTour-doc-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        # Generate documentation
+        $WORKSPACE/.docs/generate.sh
+        # Set destination and version directory therein
+        DEST_DIR="/srv/org/wikimedia/doc/GuidedTour"
+        DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
+        # Ensure the destination exists
+        mkdir -p $DEST_DIR
+        # Publish it (trailing slash is important!)
+        rsync --recursive --delete-after --force $WORKSPACE/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
+
+- job-template:
     name: 'mwext-PoolCounter-build'
     defaults: use-remote-zuul
     triggers:
@@ -654,6 +682,9 @@
         ext-name: VisualEditor
 
        # Documentation jobs for extensions
+     - 'mwext-GuidedTour-doc-test':
+     - 'mwext-GuidedTour-doc-publish':
+
      - 'mwext-MultimediaViewer-doc-test':
      - 'mwext-MultimediaViewer-doc-publish':
 
