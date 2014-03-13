@@ -170,9 +170,9 @@
     triggers:
      - zuul
     builders:
+     - jsduck:
+        config: '$WORKSPACE/.docs/config.json'
      - shell: |
-        # Generate documentation
-        $WORKSPACE/.docs/generate.sh
         # Set destination and version directory therein
         DEST_DIR="/srv/org/wikimedia/doc/GuidedTour"
         DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
