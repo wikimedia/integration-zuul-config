@@ -572,6 +572,9 @@ jobs:
   # Nonvoting until we can be sure it works
   - name: 'integration-jjb-config-test'
 
+  - name: 'mwext-GuidedTour-doc-publish'
+    branch: ^master$
+
   - name: 'mwext-MultimediaViewer-doc-publish'
     branch: ^master$
 
@@ -1914,11 +1917,15 @@ projects:
      - mwext-GuidedTour-lint:
        - mwext-GuidedTour-testextensions-master
        - mwext-GuidedTour-qunit
+     - mwext-GuidedTour-doc-test
     gate-and-submit:
      - mwext-GuidedTour-jslint
      - mwext-GuidedTour-lint:
        - mwext-GuidedTour-testextensions-master
        - mwext-GuidedTour-qunit
+     - mwext-GuidedTour-doc-test
+    postmerge:
+     - mwext-GuidedTour-doc-publish
 
   - name: mediawiki/extensions/GWToolset
     template:
