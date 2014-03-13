@@ -2,18 +2,19 @@
 
 # Build hhvm from master daily
 - job:
-    name: hhvm-daily-build
+    name: hhvm-hourly-build
     node: hhvm-build
 
     triggers:
-      - timed: '@daily'
+      - timed: '@hourly'
 
     scm:
       - git:
           url: 'https://github.com/facebook/hhvm'
           branches:
             - 'master'
-          wipe-workspace: true
+          wipe-workspace: false
+          clean: true
 
     wrappers:
       - timeout:
@@ -26,5 +27,5 @@
       - shell: |
           cmake .
           make -j4
-          cp "$WORKSPACE/hphp/hhvm/hhvm" /var/www/hhvm
-          cp "$WORKSPACE/hphp/hhvm/hhvm" "/var/www/hhvm-$GIT_COMMIT"
+          cp "$WORKSPACE/hphp/hhvm/hhvm" /data/project/hhvm-builds/hhvm
+          cp "$WORKSPACE/hphp/hhvm/hhvm" "/data/project/hhvm-builds/hhvm-$GIT_COMMIT"
