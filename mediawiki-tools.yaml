@@ -19,10 +19,13 @@
 
 - project:
     name: 'mw-tools-release'
+    toxenv:
+     - flake8
+     - py27
 
     jobs:
+     - '{name}-tox-{toxenv}'
      - '{name}-phplint'
-     - python-jobs
 
 - project:
     name: 'mw-tools-releng'
