@@ -56,6 +56,7 @@
 # Job to check JJB config
 - job-template:
     name: 'integration-jjb-config-test'
+    node: hasTox  # bound to labs instances
     defaults: use-remote-zuul  # TODO does not really use it
     concurrent: false  # shared directory :(
     triggers:
@@ -73,10 +74,8 @@
             basedir: config
     builders:
      - shell: |
-        set +e
-        http_proxy=nowhere python setup.py develop --user
-        mkdir output/
-        ~/.local/bin/jenkins-jobs test config/ -o output/
+        mkdir "$WORKSPACE/output/"
+        tox -e venv -- jenkins-jobs test "$WORKSPACE/config/" -o "$WORKSPACE/output/"
 
 - project:
     name: 'integration-docroot'
