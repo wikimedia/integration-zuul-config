@@ -77,6 +77,61 @@
         mkdir "$WORKSPACE/output/"
         tox -e venv -- jenkins-jobs test "$WORKSPACE/config/" -o "$WORKSPACE/output/"
 
+- job-template:
+    name: 'integration-jjb-config-diff'
+    node: hasTox
+    concurrent: true
+    triggers:
+     - zuul
+    scm:
+      # We need our copy of Jenkins job builder which closely follow upstream HEAD
+      - git:
+          url: 'https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder.git'
+          wipe-workspace: false
+          clean: true
+          branches:
+           - master
+      - git:
+          url: 'git://zuul.eqiad.wmnet/integration/jenkins-job-builder-config'
+          branches:
+           - '$ZUUL_COMMIT'
+          refspec: '$ZUUL_REF'
+          basedir: 'config-proposed'
+          wipe-workspace: false
+          clean: true
+      - git:
+          url: 'https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder-config.git'
+          branches:
+           - '$ZUUL_BRANCH'
+          # Only retrieve the branch we are interested in
+          refspec: '+refs/heads/$ZUUL_BRANCH:refs/remotes/origin/$ZUUL_BRANCH'
+          basedir: 'config-$ZUUL_BRANCH'
+          wipe-workspace: false
+          clean: true
+    builders:
+     - shell: |
+        echo "Cleaning out previous output directories"
+        rm -fR "output-$ZUUL_BRANCH" output-proposed
+        mkdir -p "output-$ZUUL_BRANCH" output-proposed
+
+        # enforce tox color output:
+        export PY_COLORS=1
+
+        echo "Generating reference config from branch '$ZUUL_BRANCH'..."
+        tox -e venv -- jenkins-jobs test "$WORKSPACE/config-$ZUUL_BRANCH" -o "$WORKSPACE/output-$ZUUL_BRANCH"
+        echo "Generating config using proposed patchset..."
+        tox -e venv -- jenkins-jobs test "$WORKSPACE/config-proposed" -o "$WORKSPACE/output-proposed"
+        echo "--------------------------------------------"
+        echo "File changed:"
+        echo "--------------------------------------------"
+        colordiff --brief output-$ZUUL_BRANCH output-proposed || :
+        echo "--------------------------------------------"
+        echo "Full diff:"
+        echo "--------------------------------------------"
+        colordiff --new-file -u output-$ZUUL_BRANCH output-proposed || :
+        echo "Done."
+        echo "Carefully review the diff above before deploying the jobs and merging the patch"
+
 - project:
     name: 'integration-docroot'
     jobs:
@@ -96,6 +151,7 @@
     jobs:
      - '{name}-yamllint'
      - 'integration-jjb-config-test'
+     - 'integration-jjb-config-diff'
 
 - project:
     name: 'integration-jenkins'
