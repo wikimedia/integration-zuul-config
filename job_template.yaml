@@ -323,7 +323,6 @@
 
     builders:
       - browsertests:
-          browser_version: '{browser_version}'
           browser: '{browser}'
           folder: '{folder}'
           mediawiki_password_variable: '{mediawiki_password_variable}'
@@ -344,6 +343,13 @@
           export PLATFORM='{platform}'
           export VERSION={version}
 
+          if [ $BROWSER == "internet_explorer" ]
+          then
+            BROWSER_TAG=${{BROWSER}}_$VERSION
+          else
+            BROWSER_TAG=$BROWSER
+          fi
+
           # install ruby
           curl -s -o use-ruby https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/ruby/use-ruby
           RUBY_VERSION=2.1.1 \
@@ -355,4 +361,4 @@
           bundle install
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @{browser}{browser_version} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @$BROWSER_TAG || (echo -e "\nJob has failed (exit code: $?)."; false)
