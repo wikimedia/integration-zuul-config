@@ -51,7 +51,7 @@
          echo "Making sure the Math extension is up to date"
          sudo -u mwdeploy -s /bin/bash -c '
             set -ex ;
-            cd /home/wikipedia/common/php-master/extensions ;
+            cd /data/project/apache/common-local/php-master/extensions ;
             git submodule Math ;
             git submodule update --init Math ;
             git submodule Math ;
@@ -158,15 +158,15 @@
         sudo -u mwdeploy -E -H -s /bin/bash -c '
           set -ex ;
           pwd ;
-          cd /home/wikipedia/common ;
+          cd /data/project/apache/common-local ;
           pwd ;
           git remote update ;
           git reset --hard "$ZUUL_COMMIT" ;
           git tag "jenkins_build_$BUILD_NUMBER" "$ZUUL_COMMIT" ;
-          touch /home/wikipedia/common/wmf-config/InitialiseSettings.php ;
+          touch /data/project/apache/common-local/wmf-config/InitialiseSettings.php ;
          '
         # Refresh the databases lists
-        sudo -u mwdeploy /home/wikipedia/common/multiversion/refreshWikiversionsCDB
+        sudo -u mwdeploy /data/project/apache/common-local/multiversion/refreshWikiversionsCDB
 
     logrotate:
         daysToKeep: 15
