@@ -24,8 +24,6 @@
       <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
     project-type: freestyle
 
-    node: deployment-bastion
-
     wrappers:
       - timeout:
           timeout: 360
@@ -42,6 +40,7 @@
 - job:
     name: beta-recompile-math-texvc
     defaults: beta
+    node: deployment-bastion
 
     triggers:
      - zuul
@@ -72,6 +71,7 @@
 - job:
     name: beta-update-databases
     defaults: beta
+    node: deployment-bastion
 
     project-type: matrix
 
@@ -134,11 +134,10 @@
 - job:
     name: beta-mediawiki-config-update
     defaults: use-zuul  # FIXME should use 'beta' probably
+    node: deployment-bastion
 
     triggers:
      - zuul
-
-    node: deployment-bastion
 
     scm:
         # Hack, remove the git scm from `use-zuul`. There is
@@ -178,6 +177,7 @@
 - job:
     name: beta-code-update
     defaults: beta
+    node: deployment-bastion
 
     builders:
       # The beta autoupdate script uses npm and need the home to be set to
