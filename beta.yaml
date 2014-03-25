@@ -37,10 +37,10 @@
 #
 # Should be triggered on post merge.
 #
-- job:
-    name: beta-recompile-math-texvc
+- job-template:
+    name: beta-recompile-math-texvc-{datacenter}
     defaults: beta
-    node: deployment-bastion
+    node: deployment-bastion-{datacenter}
 
     triggers:
      - zuul
@@ -239,3 +239,11 @@
 
      - shell: |
          sudo /etc/init.d/parsoid restart
+
+- project:
+    name: beta
+    datacenter:
+     - eqiad
+     - pmtpa
+    jobs:
+     - beta-recompile-math-texvc-{datacenter}
