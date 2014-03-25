@@ -549,7 +549,7 @@ jobs:
   - name: apps-android-commons-build
     voting: false
 
-  - name: beta-recompile-math-texvc
+  - name: ^beta-recompile-math-texvc.*
     branch: ^master$
 
   - name: beta-mediawiki-config-update
@@ -2038,7 +2038,8 @@ projects:
       - name: extension-unittests
         extname: Math
     postmerge:
-      - beta-recompile-math-texvc
+      - beta-recompile-math-texvc-eqiad
+      - beta-recompile-math-texvc-pmtpa
 
   - name: mediawiki/extensions/MathSearch
     template:
