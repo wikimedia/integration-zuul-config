@@ -557,8 +557,13 @@ jobs:
 
   - name: beta-parsoid-update
     branch: ^master$
-    success-message: 'Change has been deployed on the beta cluster'
+    success-message: 'Change has been deployed on the PMTPA beta cluster'
     failure-message: 'Failed deployment on the beta cluster :-/  Please contact a member of the beta project to investigate.'
+
+  - name: beta-parsoid-update-eqiad
+    branch: ^master$
+    success-message: 'Change has been deployed on the EQIAD beta cluster'
+    failure-message: 'Failed deployment on the EQIAD beta cluster :-/  Please contact a member of the beta project to investigate.'
 
 
   - name: integration-docroot-deploy
@@ -2265,6 +2270,7 @@ projects:
       - experiment-gating-dependencies
     postmerge:
       - beta-parsoid-update
+      - beta-parsoid-update-eqiad
 
   - name: mediawiki/services/parsoid/deploy
     test:
@@ -2283,6 +2289,7 @@ projects:
       - experiment-gating-dependencies
     postmerge:
       - beta-parsoid-update
+      - beta-parsoid-update-eqiad
 
    # SSS: Till we migrate all our WIP and unreviewed patches over
    # to the new repository, let us keep this in place.
