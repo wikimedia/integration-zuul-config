@@ -860,24 +860,24 @@ projects:
       - mediawiki-core-npm
       - mediawiki-core-lint:
         - mediawiki-core-phpunit-hhvm
-        - mediawiki-core-phpunit-databaseless:
-          - mediawiki-core-install-sqlite:
-            - mediawiki-core-qunit
-            - mediawiki-core-phpunit-api
-            - mediawiki-core-phpunit-misc
-            - mediawiki-core-phpunit-parser
+        - mediawiki-core-phpunit-databaseless
+        - mediawiki-core-install-sqlite:
+          - mediawiki-core-qunit
+          - mediawiki-core-phpunit-api
+          - mediawiki-core-phpunit-misc
+          - mediawiki-core-phpunit-parser
     gate-and-submit:
 #      - mediawiki-core-phpcs-lenient-HEAD
 #      - mediawiki-core-phpcs-strict-HEAD
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-lint:
-        - mediawiki-core-phpunit-databaseless:
-          - mediawiki-core-install-sqlite:
-            - mediawiki-core-qunit
-            - mediawiki-core-phpunit-api
-            - mediawiki-core-phpunit-misc
-            - mediawiki-core-phpunit-parser
+        - mediawiki-core-phpunit-databaseless
+        - mediawiki-core-install-sqlite:
+          - mediawiki-core-qunit
+          - mediawiki-core-phpunit-api
+          - mediawiki-core-phpunit-misc
+          - mediawiki-core-phpunit-parser
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-regression-master
