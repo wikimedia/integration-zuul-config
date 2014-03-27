@@ -560,10 +560,15 @@ jobs:
   - name: ^beta-recompile-math-texvc.*
     branch: ^master$
 
-  - name: beta-mediawiki-config-update
+  - name: beta-mediawiki-config-update-eqiad
     branch: ^master$
-    success-message: 'Change has been deployed on the beta cluster'
-    failure-message: 'Failed deployment on the beta cluster :-/  Please contact a member of the beta project to fixup the working directory on the destination server.'
+    success-message: 'Change has been deployed on the EQIAD beta cluster'
+    failure-message: 'Failed deployment on the EQIAD beta cluster :-/  Please contact a member of the beta project to fixup the working directory on the destination server.'
+
+  - name: beta-mediawiki-config-update-pmtpa
+    branch: ^master$
+    success-message: 'Change has been deployed on the PMTPA beta cluster'
+    failure-message: 'Failed deployment on the PMTPA beta cluster :-/  Please contact a member of the beta project to fixup the working directory on the destination server.'
 
   - name: beta-parsoid-update
     branch: ^master$
@@ -1191,7 +1196,8 @@ projects:
       - operations-mw-config-phplint
       - operations-mw-config-tests
     postmerge:
-      - beta-mediawiki-config-update
+      - beta-mediawiki-config-update-eqiad
+      - beta-mediawiki-config-update-pmtpa
 
   - name: operations/puppet
     # Only lint on submission for now, that will be voting
