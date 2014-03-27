@@ -172,10 +172,10 @@
 #
 # This is the poor man auto updating script. We should probably split the
 # script in different part and have the jobs trigger each other.
-- job:
-    name: beta-code-update
+- job-template:
+    name: beta-code-update-{datacenter}
     defaults: beta
-    node: deployment-bastion
+    node: deployment-bastion-{datacenter}
 
     builders:
       # The beta autoupdate script uses npm and need the home to be set to
@@ -244,6 +244,7 @@
      - eqiad
      - pmtpa
     jobs:
+     - beta-code-update-{datacenter}
      - beta-mediawiki-config-update-{datacenter}
      - beta-recompile-math-texvc-{datacenter}
      - beta-update-databases-{datacenter}
