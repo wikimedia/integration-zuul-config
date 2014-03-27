@@ -129,10 +129,10 @@
 #
 # We simply update the repository on the beta host and do a git reset hard.
 #
-- job:
-    name: beta-mediawiki-config-update
+- job-template:
+    name: beta-mediawiki-config-update-{datacenter}
     defaults: use-zuul  # FIXME should use 'beta' probably
-    node: deployment-bastion
+    node: deployment-bastion-{datacenter}
 
     triggers:
      - zuul
@@ -244,5 +244,6 @@
      - eqiad
      - pmtpa
     jobs:
+     - beta-mediawiki-config-update-{datacenter}
      - beta-recompile-math-texvc-{datacenter}
      - beta-update-databases-{datacenter}
