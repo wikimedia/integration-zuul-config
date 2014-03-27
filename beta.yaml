@@ -189,37 +189,10 @@
      # Every six minutes:
      - timed: '*/6 * * * *'
 
-- job:
-    name: beta-parsoid-update
+- job-template:
+    name: beta-parsoid-update-{datacenter}
     defaults: beta
-    node: deployment-parsoid2
-    triggers:
-     - zuul
-
-    builders:
-     - git-parsoid-and-deploy-repos
-     - shell: |
-         PARSOID_TARGET=/srv/deployment/parsoid
-         mkdir -p "$PARSOID_TARGET"
-         # sync workspace and deployment target
-         RSYNC_OPTS="--update --times --recursive --links --delete-after --delay-updates --exclude=.git"
-         rsync $RSYNC_OPTS $WORKSPACE/parsoid "$PARSOID_TARGET"
-         rsync $RSYNC_OPTS $WORKSPACE/deploy "$PARSOID_TARGET"
-         # Configuration file is managed by puppet
-         ln -s /srv/deployment/parsoid/localsettings.js "$PARSOID_TARGET"/parsoid/api/localsettings.js
-
-     - shell: |
-         sudo /etc/init.d/parsoid restart
-
-# Copy pasted to above. Run the same commands but on deployment-parsoid04 which
-# is in eqiad
-#
-# FIXME after eqiad migration update node: in beta-parsoid-update and get rid
-# of this temporary job beta-parsoid-update-eqiad
-- job:
-    name: beta-parsoid-update-eqiad
-    defaults: beta
-    node: deployment-parsoid04
+    node: deployment-parsoid-{datacenter}
     triggers:
      - zuul
 
@@ -246,5 +219,6 @@
     jobs:
      - beta-code-update-{datacenter}
      - beta-mediawiki-config-update-{datacenter}
+     - beta-parsoid-update-{datacenter}
      - beta-recompile-math-texvc-{datacenter}
      - beta-update-databases-{datacenter}
