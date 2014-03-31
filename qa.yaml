@@ -21,7 +21,7 @@
 # for easy reuse. Meant to be run on post merge commit.
 - job-template:
     name: 'qa-browsertests-postmerge'
-    node: integration-selenium-driver
+    node: hasBrowserTests
     defaults: use-remote-zuul
     triggers:
      - zuul
@@ -40,7 +40,7 @@
 
 - job-template:
     name: 'qa-browsertests-build'
-    node: integration-selenium-driver
+    node: hasBrowserTests
     defaults: use-remote-zuul
     triggers:
      - zuul
@@ -54,7 +54,7 @@
 # phantomjs anyway.
 - job-template:
     name: 'qa-browsertests-run'
-    node: integration-selenium-driver
+    node: hasBrowserTests
     defaults: use-remote-zuul
     triggers:
      - zuul
