@@ -559,16 +559,6 @@ jobs:
     success-message: 'Change has been deployed on the EQIAD beta cluster'
     failure-message: 'Failed deployment on the EQIAD beta cluster :-/  Please contact a member of the beta project to fixup the working directory on the destination server.'
 
-  - name: beta-mediawiki-config-update-pmtpa
-    branch: ^master$
-    success-message: 'Change has been deployed on the PMTPA beta cluster'
-    failure-message: 'Failed deployment on the PMTPA beta cluster :-/  Please contact a member of the beta project to fixup the working directory on the destination server.'
-
-  - name: beta-parsoid-update-pmtpa
-    branch: ^master$
-    success-message: 'Change has been deployed on the PMTPA beta cluster'
-    failure-message: 'Failed deployment on the beta cluster :-/  Please contact a member of the beta project to investigate.'
-
   - name: beta-parsoid-update-eqiad
     branch: ^master$
     success-message: 'Change has been deployed on the EQIAD beta cluster'
@@ -1195,7 +1185,6 @@ projects:
       - operations-mw-config-tests
     postmerge:
       - beta-mediawiki-config-update-eqiad
-      - beta-mediawiki-config-update-pmtpa
 
   - name: operations/puppet
     # Only lint on submission for now, that will be voting
@@ -2051,7 +2040,6 @@ projects:
         extname: Math
     postmerge:
       - beta-recompile-math-texvc-eqiad
-      - beta-recompile-math-texvc-pmtpa
 
   - name: mediawiki/extensions/MathSearch
     template:
@@ -2286,7 +2274,6 @@ projects:
       - parsoidsvc-php-parsertests
       - experiment-gating-dependencies
     postmerge:
-      - beta-parsoid-update-pmtpa
       - beta-parsoid-update-eqiad
 
   - name: mediawiki/services/parsoid/deploy
@@ -2305,7 +2292,6 @@ projects:
       - parsoidsvc-roundtrip-test-check
       - experiment-gating-dependencies
     postmerge:
-      - beta-parsoid-update-pmtpa
       - beta-parsoid-update-eqiad
 
    # SSS: Till we migrate all our WIP and unreviewed patches over
