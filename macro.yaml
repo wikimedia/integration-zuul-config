@@ -10,6 +10,25 @@
         | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
 
 - builder:
+    name: puppet-lint
+    builders:
+     - shell: |
+         rm -f puppet-lint.log
+         puppet-lint --version
+         set -o pipefail
+         puppet-lint \
+            --log-format '%{path}:%{linenumber} %{KIND} %{message} (%{check})' \
+            --fail-on-warnings \
+            . | tee puppet-lint.log
+         set +o pipefail
+
+- publisher:
+    name: puppet-lint
+    publishers:
+     - archive:
+         artifacts: puppet-lint.log
+
+- builder:
     name: pplint-HEAD
     builders:
      - shell: |
