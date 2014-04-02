@@ -514,7 +514,9 @@ jobs:
   - name: operations-apache-config-lint
     branch: ^master$
 
-  - name: operations-puppet-puppetlint
+  - name: operations-puppet-puppetlint-lenient
+    voting: false
+  - name: operations-puppet-puppetlint-strict
     voting: false
 
   - name: operations-puppet-pep8
@@ -1193,7 +1195,8 @@ projects:
     # Only lint on submission for now, that will be voting
     check:
       - operations-puppet-erblint-HEAD
-      - operations-puppet-puppetlint
+      - operations-puppet-puppetlint-lenient
+      - operations-puppet-puppetlint-strict
       - operations-puppet-pep8
       - operations-puppet-typos
       - operations-puppet-validate
@@ -1203,7 +1206,8 @@ projects:
       - operations-puppet-spec
       # Same as `check` pipeline:
       - operations-puppet-erblint-HEAD
-      - operations-puppet-puppetlint
+      - operations-puppet-puppetlint-lenient
+      - operations-puppet-puppetlint-strict
       - operations-puppet-pep8
       - operations-puppet-typos
       - operations-puppet-validate
