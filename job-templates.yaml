@@ -54,14 +54,26 @@
         node-modules: '{node-modules}'
 
 - job-template:
-    name: '{name}-puppetlint'
+    name: '{name}-puppetlint-lenient'
     node: contintLabsSlave
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
      - zuul
     builders:
+     - puppet-lint-lenient
+    publishers:
      - puppet-lint
+
+- job-template:
+    name: '{name}-puppetlint-strict'
+    node: contintLabsSlave
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - puppet-lint-strict
     publishers:
      - puppet-lint
 

@@ -10,7 +10,7 @@
         | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
 
 - builder:
-    name: puppet-lint
+    name: puppet-lint-strict
     builders:
      - shell: |
          rm -f puppet-lint.log
@@ -19,6 +19,19 @@
          puppet-lint \
             --log-format '%{path}:%{linenumber} %{KIND} %{message} (%{check})' \
             --fail-on-warnings \
+            . | tee puppet-lint.log
+         set +o pipefail
+
+- builder:
+    name: puppet-lint-lenient
+    builders:
+     - shell: |
+         rm -f puppet-lint.log
+         puppet-lint --version
+         set -o pipefail
+         puppet-lint \
+            --error-level error \
+            --log-format '%{path}:%{linenumber} %{KIND} %{message} (%{check})' \
             . | tee puppet-lint.log
          set +o pipefail
 
