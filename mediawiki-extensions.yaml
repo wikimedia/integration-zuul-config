@@ -790,8 +790,12 @@
 
 - project:
     name: 'mwext-EventLogging'
+    toxenv:
+     - flake8
+     - py27
     jobs:
      - python-jobs
+     - '{name}-tox-{toxenv}'
 
 - project:
     name: 'mwext-Flow'
