@@ -1828,20 +1828,19 @@ projects:
   - name: mediawiki/extensions/EventLogging
     check:
       - mwext-EventLogging-jslint
-      - mwext-EventLogging-pep8
-      - mwext-EventLogging-pyflakes
+      - mwext-EventLogging-tox-flake8
       - mwext-EventLogging-lint
     test:
       - mwext-EventLogging-jslint
-      - mwext-EventLogging-pep8
-      - mwext-EventLogging-pyflakes
+      - mwext-EventLogging-tox-flake8
+      - mwext-EventLogging-tox-py27
       - mwext-EventLogging-lint:
         - mwext-EventLogging-testextensions-master
         - mwext-EventLogging-qunit
     gate-and-submit:
       - mwext-EventLogging-jslint
-      - mwext-EventLogging-pep8
-      - mwext-EventLogging-pyflakes
+      - mwext-EventLogging-tox-flake8
+      - mwext-EventLogging-tox-py27
       - mwext-EventLogging-lint:
         - mwext-EventLogging-testextensions-master
         - mwext-EventLogging-qunit
