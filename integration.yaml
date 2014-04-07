@@ -56,7 +56,7 @@
 # Job to check JJB config
 - job-template:
     name: 'integration-jjb-config-test'
-    node: hasTox  # bound to labs instances
+    node: contintLabsSlave
     defaults: use-remote-zuul  # TODO does not really use it
     concurrent: false  # shared directory :(
     triggers:
@@ -79,7 +79,7 @@
 
 - job-template:
     name: 'integration-jjb-config-diff'
-    node: hasTox
+    node: contintLabsSlave
     concurrent: true
     triggers:
      - zuul

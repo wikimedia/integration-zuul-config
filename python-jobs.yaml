@@ -2,7 +2,7 @@
 # Parameter: {toxenv}
 - job-template:
     name: '{name}-tox-{toxenv}'
-    node: hasTox
+    node: contintLabsSlave
     defaults: use-remote-zuul
     triggers:
      - zuul
@@ -14,7 +14,7 @@
 
 - job-template:
     name: '{name}-tox-doc-publish'
-    node: hasTox
+    node: contintLabsSlave
     defaults: use-remote-zuul
     triggers:
      - zuul
