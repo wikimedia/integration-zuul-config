@@ -2,8 +2,11 @@
 
 - project:
     name: 'apps-android-wikipedia'
+    toxenv:
+      - flake8
     jobs:
       - '{name}-jslint'
+      - '{name}-tox-{toxenv}'
 
 # Build the mighty Commons application for Android Platforms
 # Yuvi rocks (bug 20281).
