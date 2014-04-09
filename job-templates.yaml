@@ -247,3 +247,22 @@
      - zuul
     builders:
      - yaml-lint
+
+# Java checktyle for maven projects
+- job-template:
+    name: '{name}-maven-checkstyle'
+    project-type: maven
+    tirggers:
+      - zuul
+    scm:
+      - git-remote-zuul-no-submodules
+    wrappers:
+      - timeout:
+          timeout: 1  # minutes
+          fail: true
+      - timestamps
+      - ansicolor
+    maven:
+      goals: "checkstyle:checkstyle"
+    publishers:
+      - checkstyle-xml
