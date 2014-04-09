@@ -264,7 +264,17 @@
       - timestamps
       - ansicolor
     maven:
-      goals: "checkstyle:checkstyle"
-      maven-opts: "-Dcheckstyle.config.location=$WORKSPACE/checkstyle.xml"
+      goals: "checkstyle:checkstyle-aggregate"
+      maven-opts: "-Dcheckstyle.config.location=$WORKSPACE/checkstyle.xml -Dencoding=utf-8"
     publishers:
-      - checkstyle-xml
+      - checkstyle:
+          pattern: "**/checkstyle-result.xml"
+          canRunOnFailed: true
+          healthy: 0
+          unHealthy: 100
+          healthThreshold: 'high'
+          thresholds:
+            unstable:
+              totalHigh: 10
+            failed:
+              totalHigh: 1
