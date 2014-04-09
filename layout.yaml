@@ -298,6 +298,10 @@ jobs:
   - name: ^.*-debian-glue$
     voting: false
 
+  # The Android app still has plenty of checkstyle issues to fix
+  - name: apps-android-wikipedia-maven-checkstyle
+    voting: false
+
   # Work in progress https://gerrit.wikimedia.org/r/110666
   - name: parsoidsvc-debian-glue
     voting: false
@@ -983,9 +987,11 @@ projects:
     check-voter:
       - apps-android-wikipedia-jslint
       - apps-android-wikipedia-tox-flake8
+      - apps-android-wikipedia-maven-checkstyle
     gate-and-submit:
       - apps-android-wikipedia-jslint
       - apps-android-wikipedia-tox-flake8
+      - apps-android-wikipedia-maven-checkstyle
 
   - name: labs/incubator
     check-voter:
