@@ -11,8 +11,9 @@
 
          # Prepare some paths lookup
          export GEM_PATH="`pwd`/vendor"
+
          ./vendor/bin/bundle --version
-         ./vendor/bin/bundle install --path vendor
+         ./vendor/bin/bundle install --gemfile=tests/browser/Gemfile --path vendor
 
          # Later on one can exec tests with:
          # GEM_PATH=`pwd`/bundle:`pwd`vendor ./bundle/bin/bundle  exec cucumber
@@ -32,7 +33,7 @@
          # Make a tarball for archiving
          GIT_COMMIT_SHORT=`git rev-parse --short HEAD`
          TAR_FILE="qa-browsertests-$BUILD_NUMBER-g$GIT_COMMIT_SHORT.tar.gz"
-         tar -czf "$TAR_FILE" vendor .bundle
+         tar -czf "$TAR_FILE" vendor tests/browser/.bundle
 
     publishers:
      - archive:
