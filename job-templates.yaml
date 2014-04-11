@@ -23,6 +23,16 @@
      - jsonlint
 
 - job-template:
+    name: '{name}-jsduck'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck:
+        config: '$WORKSPACE/jsduck.config.json'
+
+- job-template:
     name: '{name}-csslint'
     node: hasSlaveScripts
     defaults: use-remote-zuul-no-submodules
