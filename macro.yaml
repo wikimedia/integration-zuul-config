@@ -166,6 +166,7 @@
             export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
             /srv/deployment/integration/slave-scripts/tools/bundler/bundle exec cucumber --color \
                 --tags @clean \
+                --tags @{browser} \
                 --format pretty \
                 --format junit --out "$WORKSPACE/log" \
                 --format html --out "$WORKSPACE/log/report.html"
