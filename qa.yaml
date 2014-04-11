@@ -4,6 +4,10 @@
      # See bug 54384 for some background
     builders:
      - shell: |
+         # Shared cache of gems to avoid hitting rubygems all the time
+         # See https://github.com/bundler/bundler/issues/2856
+         export GEM_HOME="$WORKSPACE/../gems"
+
          mkdir vendor
 
          # Fetch bundle from rubygems repo
