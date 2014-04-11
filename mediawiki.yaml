@@ -66,8 +66,8 @@
     triggers:
      - zuul
     builders:
-     - jsduck:
-        config: '$WORKSPACE/maintenance/jsduck/config.json'
+     - shell: |
+        $WORKSPACE/maintenance/mwjsduck-gen --version "$ZUUL_BRANCH"
 
 - job-template:
     name: '{name}-jsduck-publish'
@@ -79,9 +79,8 @@
     triggers:
      - zuul
     builders:
-     - jsduck:
-        config: '$WORKSPACE/maintenance/jsduck/config.json'
      - shell: |
+        $WORKSPACE/maintenance/mwjsduck-gen --version "$ZUUL_BRANCH"
         rsync --recursive --delete-after --force $WORKSPACE/resources/ "$WORKSPACE/docs/js/modules/"
      - documentation-sync-subdir:
         src: '$WORKSPACE/docs/js'
