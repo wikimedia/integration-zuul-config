@@ -69,11 +69,11 @@
      - shell: |
         $WORKSPACE/maintenance/mwjsduck-gen --version "$ZUUL_BRANCH"
 
-- job-template:
-    name: '{name}-jsduck-publish'
+- job:
+    name: 'mediawiki-core-jsduck-publish'
     node: gallium
     defaults: use-zuul
-    concurrent: false  # avoid race condition
+    concurrent: false
     scm:
      - git-mwcore
     triggers:
@@ -92,7 +92,7 @@
     name: '{name}-doxygen-publish'
     node: gallium
     defaults: use-zuul
-    concurrent: false  # avoid race condition
+    concurrent: false
     scm:
      - git-mwcore
     triggers:
@@ -219,7 +219,7 @@
       - '{name}-qunit'
       - 'mediawiki-core-jsduck'
       - 'mediawiki-core-npm'
-      - '{name}-jsduck-publish'
+      - 'mediawiki-core-jsduck-publish'
       - '{name}-doxygen-publish'
       - '{name}-whitespaces'
       - '{name}-phpcs-lenient'

@@ -1,4 +1,4 @@
-- job-template:
+- job:
     name: 'VisualEditor-jsduck'
     defaults: use-remote-zuul
     concurrent: true
@@ -16,12 +16,43 @@
      - '{name}-ruby1.9.3lint'
      - 'VisualEditor-jsduck'
 
+- job:
+    name: 'oojs-core-jsduck-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck:
+        config: '$WORKSPACE/jsduck.config.json'
+     - documentation-sync:
+        src: '$WORKSPACE/docs/'
+        project: 'oojs'
+        version: '$ZUUL_BRANCH'
+
 - project:
     name: 'oojs-core'
     jobs:
      - '{name}-jslint'
      - '{name}-npm'
      - '{name}-jsduck'
+     - 'oojs-core-jsduck-publish'
+
+- job:
+    name: 'oojs-ui-jsduck-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck:
+        config: '$WORKSPACE/jsduck.config.json'
+     - documentation-sync:
+        src: '$WORKSPACE/docs/'
+        project: 'oojs-ui'
+        version: '$ZUUL_BRANCH'
 
 - project:
     name: 'oojs-ui'
@@ -29,13 +60,14 @@
      - '{name}-jslint'
      - '{name}-npm'
      - '{name}-jsduck'
+     - 'oojs-ui-jsduck-publish'
 
 - project:
     name: 'qrpedia'
     jobs:
      - '{name}-phplint'
 
-- job-template:
+- job:
     name: 'search-highlighter'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 7'
