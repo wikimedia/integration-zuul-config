@@ -9,6 +9,22 @@
      - archive:
          artifacts: '*.gem'
 
+- job-template:
+    name: 'mediawiki-vagrant-puppet-doc'
+    node: gallium  # webhost where doc is published
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        #!/bin/bash -ex
+        /usr/bin/puppet doc \
+            --mode rdoc \
+            --outputdir /srv/org/wikimedia/doc/mediawiki-vagrant \
+            --modulepath "$WORKSPACE/puppet/modules" \
+            --manifestdir "$WORKSPACE/puppet/manifests"
+
 - project:
     name: 'mediawiki-ruby-api'
     jobs:
@@ -34,3 +50,4 @@
      - '{name}-puppetlint-strict'
      - '{name}-puppet-validate'
      - '{name}-erblint-HEAD'
+     - 'mediawiki-vagrant-puppet-doc'
