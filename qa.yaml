@@ -54,9 +54,6 @@
 
 
 # Should be a multi configuration job
-#
-# The job is not used because it takes too long and the tests fails under
-# phantomjs anyway.
 - job-template:
     name: 'qa-browsertests-run'
     node: hasBrowserTests
@@ -73,7 +70,9 @@
          ./vendor/bin/bundle  exec cucumber --color \
             --format pretty \
             --format junit --out junit \
-            --format html --out report.html
+            --format html --out report.html \
+            --tags @clean \
+            --tags @$BROWSER
 
     publishers:
      - xunit:
