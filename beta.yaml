@@ -130,42 +130,32 @@
 #
 - job-template:
     name: beta-mediawiki-config-update-{datacenter}
-    defaults: use-zuul  # FIXME should use 'beta' probably
+    defaults: beta
     node: deployment-bastion-{datacenter}
+
+    # Do not run concurrently with the downstream job
+    block-downstream: true
 
     triggers:
      - zuul
 
-    scm:
-        # Hack, remove the git scm from `use-zuul`. There is
-        # no need to clone / fetch the repository.
-
     builders:
-     # FIXME: this should probably be a shell script
-     - shell: |
-        # Shell out using sudo:
-        #  -u : to user  mwdeploy
-        #  -E : preserve environnement variables
-        #  -H : set HOME to mwdeploy default home
-        #  -s /bin/bash -c '': da hack
-        #
-        # InitialiseSettings.php need to be touched to update the config
-        # cache on the Apaches instances.
-        sudo -u mwdeploy -E -H -s /bin/bash -c '
-          set -ex ;
-          pwd ;
-          cd /data/project/apache/common-local ;
-          pwd ;
-          git remote update ;
-          git reset --hard "$ZUUL_COMMIT" ;
-          git tag "jenkins_build_$BUILD_NUMBER" "$ZUUL_COMMIT" ;
-          touch /data/project/apache/common-local/wmf-config/InitialiseSettings.php ;
-         '
-        # Refresh the databases lists
-        sudo -u mwdeploy /data/project/apache/common-local/multiversion/refreshWikiversionsCDB
+     - shell: /usr/local/bin/wmf-beta-mwconfig-update
+     - trigger-builds:
+       - project: "beta-scap-{datacenter}"
+         block: true
 
     logrotate:
         daysToKeep: 15
+
+    publishers:
+      - email-ext:
+          recipients: qa@lists.wikimedia.org
+          attach-build-log: true
+          first-failure: true
+          aborted: true
+          failure: false
+          fixed: true
 
 # Job updating MediaWiki core+extensions code and refreshing the message
 #
@@ -176,17 +166,48 @@
     defaults: beta
     node: deployment-bastion-{datacenter}
 
+    # Do not run concurrently with the downstream job
+    block-downstream: true
+
     builders:
       # The beta autoupdate script uses npm and need the home to be set to
       # mwdeploy home, that is done by passing -H to sudo
-      - shell: "sudo -H -u mwdeploy /usr/local/bin/wmf-beta-autoupdate.py --verbose"
+      - shell: |
+          sudo -H -u mwdeploy /usr/local/bin/wmf-beta-autoupdate.py --verbose
+      - trigger-builds:
+        - project: "beta-scap-{datacenter}"
+          block: true
 
     logrotate:
-        daysToKeep: 15
+        daysToKeep: 7
 
     triggers:
-     # Every six minutes:
-     - timed: '*/6 * * * *'
+     # Every ten minutes:
+     - timed: 'H/10 * * * *'
+
+    publishers:
+      - email-ext:
+          recipients: qa@lists.wikimedia.org
+          attach-build-log: true
+          first-failure: true
+          aborted: true
+          failure: false
+          fixed: true
+
+- job-template:
+    name: beta-scap-{datacenter}
+    defaults: beta
+    node: deployment-bastion-{datacenter}
+
+    # Do not run concurrently with upstream jobs
+    block-upstream: true
+
+    builders:
+      - shell: |
+          /usr/local/bin/wmf-beta-scap "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
+
+    logrotate:
+        daysToKeep: 7
 
 - job-template:
     name: beta-parsoid-update-{datacenter}
@@ -219,4 +240,5 @@
      - beta-mediawiki-config-update-{datacenter}
      - beta-parsoid-update-{datacenter}
      - beta-recompile-math-texvc-{datacenter}
+     - beta-scap-{datacenter}
      - beta-update-databases-{datacenter}
