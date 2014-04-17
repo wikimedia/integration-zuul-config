@@ -63,12 +63,16 @@
           export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
-          gem install bundler --no-ri --no-rdoc
+          mkdir vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
           cd {folder}/browser/
-          bundle install --verbose
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # ContentTranslation
 
@@ -102,12 +106,16 @@
           export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
-          gem install bundler --no-ri --no-rdoc
+          mkdir vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
           cd {folder}/browser/
-          bundle install --verbose
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @{browser} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @{browser} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # MobileFrontend
 
@@ -141,12 +149,16 @@
           export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
-          gem install bundler --no-ri --no-rdoc
+          mkdir vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
           cd {folder}/browser/
-          bundle install --verbose
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @{browser} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @{browser} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # UniversalLanguageSelector
 
@@ -180,12 +192,16 @@
           export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
-          gem install bundler --no-ri --no-rdoc
+          mkdir vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
           cd {folder}/browser/
-          bundle install --verbose
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # UploadWizard
 
@@ -265,12 +281,16 @@
           export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
-          gem install bundler --no-ri --no-rdoc
+          mkdir vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
           cd {folder}/browser/
-          bundle install --verbose
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit features/verify_production_wikis.feature || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit features/verify_production_wikis.feature || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # ZeroRatedMobileAccess
 
@@ -304,12 +324,16 @@
           export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
-          gem install bundler --no-ri --no-rdoc
+          mkdir vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
           cd tests/browser/
-          bundle install --verbose
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # browsertests
 
@@ -350,9 +374,13 @@
           export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
-          gem install bundler --no-ri --no-rdoc
+          mkdir vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
           cd {folder}/browser/
-          bundle install --verbose
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @$BROWSER_TAG || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @$BROWSER_TAG || (echo -e "\nJob has failed (exit code: $?)."; false)
