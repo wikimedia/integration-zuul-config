@@ -33,15 +33,7 @@
           recipients: '{recipients}'
           body: '${{SCRIPT, template="wikimedia.template"}}'
 
-      - ircbot:
-          strategy: all
-          notify-start: false
-          notify-committers: false
-          notify-culprits: false
-          notify-upstream: false
-          notify-fixers: false
-          message-type: summary-scm
-          matrix-notifier: only-configurations
+      - browsertests-irc
 
     triggers:
       - timed: 'H 3,18 * * *'
@@ -224,15 +216,7 @@
     publishers:
       - email:
           recipients: multimedia-alerts@lists.wikimedia.org
-      - ircbot:
-          strategy: all
-          notify-start: false
-          notify-committers: false
-          notify-culprits: false
-          notify-upstream: false
-          notify-fixers: false
-          message-type: summary-scm
-          matrix-notifier: only-configurations
+      - browsertests-irc
 
 - builder:
     name: UploadWizard-api
