@@ -58,6 +58,10 @@
           export PLATFORM='{platform}'
           export VERSION={version}
 
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+
           # install ruby dependencies
           gem install bundler --no-ri --no-rdoc
           cd {folder}/browser/
@@ -92,6 +96,10 @@
           export MEDIAWIKI_USER={mediawiki_user}
           export PLATFORM='{platform}'
           export VERSION={version}
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
           gem install bundler --no-ri --no-rdoc
@@ -128,6 +136,10 @@
           export PLATFORM='{platform}'
           export VERSION={version}
 
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+
           # install ruby dependencies
           gem install bundler --no-ri --no-rdoc
           cd {folder}/browser/
@@ -162,6 +174,10 @@
           export MEDIAWIKI_USER={mediawiki_user}
           export PLATFORM='{platform}'
           export VERSION={version}
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
           gem install bundler --no-ri --no-rdoc
@@ -244,6 +260,10 @@
           export PLATFORM='{platform}'
           export VERSION={version}
 
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+
           # install ruby dependencies
           gem install bundler --no-ri --no-rdoc
           cd {folder}/browser/
@@ -278,6 +298,10 @@
           # set up environment variables
           export BROWSER={browser}
           export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
           gem install bundler --no-ri --no-rdoc
@@ -320,6 +344,10 @@
           else
             BROWSER_TAG=$BROWSER
           fi
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
 
           # install ruby dependencies
           gem install bundler --no-ri --no-rdoc
