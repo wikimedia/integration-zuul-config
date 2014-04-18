@@ -205,8 +205,7 @@ pipelines:
         # pipeline by simply commenting 'recheck' on a change.
         - event: comment-added
           comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
-          require-approval:
-            - email_filter: *email_whitelist
+          email_filter: *email_whitelist
 
     success-message: 'Build succeeded.'
     success:
