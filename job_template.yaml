@@ -55,49 +55,12 @@
           export PLATFORM='{platform}'
           export VERSION={version}
 
-          # Shared cache of gems to avoid hitting rubygems all the time
-          # See https://github.com/bundler/bundler/issues/2856
-          export GEM_HOME="$WORKSPACE/../gems"
-
-          # install ruby dependencies
-          mkdir vendor
-          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
-          # Prepare some paths lookup
-          export GEM_PATH="`pwd`/vendor"
-
-          cd {folder}/browser/
-          "$WORKSPACE"/vendor/bin/bundle install --verbose
-
-          # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-# ContentTranslation
-
-- job-template:
-    name: 'browsertests-ContentTranslation-{name}'
-
-    builders:
-      - ContentTranslation:
-          browser: '{browser}'
-          folder: '{folder}'
-          mediawiki_password_variable: '{mediawiki_password_variable}'
-          mediawiki_url: '{mediawiki_url}'
-          mediawiki_user: '{mediawiki_user}'
-          platform: '{platform}'
-          version: '{version}'
-
-- builder:
-    name: ContentTranslation
-    builders:
-      - shell: |
-          # set up environment variables
-          export BROWSER={browser}
-          export HEADLESS=true
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/index.php/
-          export MEDIAWIKI_USER={mediawiki_user}
-          export PLATFORM='{platform}'
-          export VERSION={version}
+          if [ $BROWSER == "internet_explorer" ]
+          then
+            BROWSER_TAG=${{BROWSER}}_$VERSION
+          else
+            BROWSER_TAG=$BROWSER
+          fi
 
           # Shared cache of gems to avoid hitting rubygems all the time
           # See https://github.com/bundler/bundler/issues/2856
@@ -113,95 +76,7 @@
           "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @{browser} || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-# MobileFrontend
-
-- job-template:
-    name: 'browsertests-MobileFrontend-{name}'
-
-    builders:
-      - MobileFrontend:
-          browser: '{browser}'
-          folder: '{folder}'
-          mediawiki_password_variable: '{mediawiki_password_variable}'
-          mediawiki_url: '{mediawiki_url}'
-          mediawiki_user: '{mediawiki_user}'
-          platform: '{platform}'
-          version: '{version}'
-
-- builder:
-    name: MobileFrontend
-    builders:
-      - shell: |
-          # set up environment variables
-          export BROWSER={browser}
-          export HEADLESS=true
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
-          export MEDIAWIKI_USER={mediawiki_user}
-          export PLATFORM='{platform}'
-          export VERSION={version}
-
-          # Shared cache of gems to avoid hitting rubygems all the time
-          # See https://github.com/bundler/bundler/issues/2856
-          export GEM_HOME="$WORKSPACE/../gems"
-
-          # install ruby dependencies
-          mkdir vendor
-          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
-          # Prepare some paths lookup
-          export GEM_PATH="`pwd`/vendor"
-
-          cd {folder}/browser/
-          "$WORKSPACE"/vendor/bin/bundle install --verbose
-
-          # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @{browser} || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-# UniversalLanguageSelector
-
-- job-template:
-    name: 'browsertests-UniversalLanguageSelector-{name}'
-
-    builders:
-      - UniversalLanguageSelector:
-          browser: '{browser}'
-          folder: '{folder}'
-          mediawiki_password_variable: '{mediawiki_password_variable}'
-          mediawiki_url: '{mediawiki_url}'
-          mediawiki_user: '{mediawiki_user}'
-          platform: '{platform}'
-          version: '{version}'
-
-- builder:
-    name: UniversalLanguageSelector
-    builders:
-      - shell: |
-          # set up environment variables
-          export BROWSER={browser}
-          export HEADLESS=true
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/MediaWiki/core/index.php/
-          export MEDIAWIKI_USER={mediawiki_user}
-          export PLATFORM='{platform}'
-          export VERSION={version}
-
-          # Shared cache of gems to avoid hitting rubygems all the time
-          # See https://github.com/bundler/bundler/issues/2856
-          export GEM_HOME="$WORKSPACE/../gems"
-
-          # install ruby dependencies
-          mkdir vendor
-          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
-          # Prepare some paths lookup
-          export GEM_PATH="`pwd`/vendor"
-
-          cd {folder}/browser/
-          "$WORKSPACE"/vendor/bin/bundle install --verbose
-
-          # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @$BROWSER_TAG || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # UploadWizard
 
@@ -327,54 +202,3 @@
 
           # run tests
           "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
-
-# browsertests
-
-- job-template:
-    name: 'browsertests-{name}'
-
-    builders:
-      - browsertests:
-          browser: '{browser}'
-          folder: '{folder}'
-          mediawiki_password_variable: '{mediawiki_password_variable}'
-          mediawiki_url: '{mediawiki_url}'
-          mediawiki_user: '{mediawiki_user}'
-          platform: '{platform}'
-          version: '{version}'
-
-- builder:
-    name: browsertests
-    builders:
-      - shell: |
-          # set up environment variables
-          export BROWSER={browser}
-          export HEADLESS=true
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
-          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
-          export MEDIAWIKI_USER={mediawiki_user}
-          export PLATFORM='{platform}'
-          export VERSION={version}
-
-          if [ $BROWSER == "internet_explorer" ]
-          then
-            BROWSER_TAG=${{BROWSER}}_$VERSION
-          else
-            BROWSER_TAG=$BROWSER
-          fi
-
-          # Shared cache of gems to avoid hitting rubygems all the time
-          # See https://github.com/bundler/bundler/issues/2856
-          export GEM_HOME="$WORKSPACE/../gems"
-
-          # install ruby dependencies
-          mkdir vendor
-          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
-          # Prepare some paths lookup
-          export GEM_PATH="`pwd`/vendor"
-
-          cd {folder}/browser/
-          "$WORKSPACE"/vendor/bin/bundle install --verbose
-
-          # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @$BROWSER_TAG || (echo -e "\nJob has failed (exit code: $?)."; false)
