@@ -20,7 +20,7 @@
           recursive-submodules: true
 
     builders:
-      - shell: mkdir -p "$WORKSPACE/log"
+      - shell: mkdir -p "$WORKSPACE/log/junit"
       - default:
           browser: '{browser}'
           folder: '{folder}'
@@ -32,7 +32,7 @@
 
     publishers:
       - junit:
-          results: '{folder}/browser/reports/junit/*.xml'
+          results: 'log/junit/*.xml'
 
       - email-ext:
           recipients: '{recipients}'
@@ -41,7 +41,7 @@
       - browsertests-irc
 
       - archive:
-          artifacts: 'log/*.log, log/report.html, log/*.png'
+          artifacts: 'log/*.log, log/junit/*.xml, log/report.html, log/*.png'
 
     triggers:
       - timed: 'H 3,18 * * *'
@@ -91,7 +91,8 @@
             --color \
             --verbose \
             --format pretty \
-            --format Cucumber::Formatter::Sauce --out reports/junit \
+            --format Cucumber::Formatter::Sauce \
+            --out "$WORKSPACE/log/junit" \
             --tags @{mediawiki_url} \
             --tags @$BROWSER_TAG \
             || (echo -e "\nJob has failed (exit code: $?)."; false)
@@ -187,7 +188,7 @@
             --verbose \
             --format pretty \
             --format Cucumber::Formatter::Sauce \
-            --out reports/junit \
+            --out "$WORKSPACE/log/junit" \
             features/verify_production_wikis.feature \
             || (echo -e "\nJob has failed (exit code: $?)."; false)
 
@@ -238,6 +239,6 @@
             --verbose \
             --format pretty \
             --format Cucumber::Formatter::Sauce \
-            --out reports/junit \
+            --out "$WORKSPACE/log/junit" \
             --tags @{mediawiki_url} \
             || (echo -e "\nJob has failed (exit code: $?)."; false)
