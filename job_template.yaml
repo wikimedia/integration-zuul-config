@@ -85,7 +85,15 @@
           "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} --tags @$BROWSER_TAG || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
+            --backtrace \
+            --color \
+            --verbose \
+            --format pretty \
+            --format Cucumber::Formatter::Sauce --out reports/junit \
+            --tags @{mediawiki_url} \
+            --tags @$BROWSER_TAG \
+            || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # UploadWizard
 
@@ -125,8 +133,13 @@
           DEV/bin/pip install -rtests/api/requirements.txt
 
           # run tests
-          DEV/bin/python tests/api/upload-wizard_tests.py --username "{mediawiki_user}" --api_url "http://{mediawiki_url}/w/api.php"
-          DEV/bin/python tests/api/upload-wizard_tests.py --gen_new_image --username "{mediawiki_user}" --api_url "http://{mediawiki_url}/w/api.php"
+          DEV/bin/python tests/api/upload-wizard_tests.py \
+            --username "{mediawiki_user}" \
+            --api_url "http://{mediawiki_url}/w/api.php"
+          DEV/bin/python tests/api/upload-wizard_tests.py \
+            --gen_new_image \
+            --username "{mediawiki_user}" \
+            --api_url "http://{mediawiki_url}/w/api.php"
 
 # VisualEditor
 
@@ -167,7 +180,15 @@
           "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit features/verify_production_wikis.feature || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
+            --backtrace \
+            --color \
+            --verbose \
+            --format pretty \
+            --format Cucumber::Formatter::Sauce \
+            --out reports/junit \
+            features/verify_production_wikis.feature \
+            || (echo -e "\nJob has failed (exit code: $?)."; false)
 
 # ZeroRatedMobileAccess
 
