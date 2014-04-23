@@ -1,3 +1,24 @@
+# YAML structure to define email recipients aliases
+- notification-emails:
+    name: listofemails  # a 'name' is required by JJB.
+    lists:
+     - CentralAuth: &emails-CentralAuth
+        cmcmahon@wikimedia.org csteipp@wikimedia.org
+     - CirrusSearch: &emails-CirrusSearch
+        cmcmahon@wikimedia.org neverett@wikimedia.org
+     - i18n: &emails-i18n
+        aaharoni@wikimedia.org cmcmahon@wikimedia.org nlaxstrom@wikimedia.org
+     - mobile: &emails-mobile
+        cmcmahon@wikimedia.org mobile-tech@wikimedia.org
+     - MultimediaViewer: &emails-multimedia
+        multimedia-alerts@lists.wikimedia.org
+     - qa: &emails-qa
+        cmcmahon@wikimedia.org
+     - ULS: &emails-ULS
+        aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org nlaxstrom@wikimedia.org sthottingal@wikimedia.org
+     - VisualEditor: &emails-VisualEditor
+        cmcmahon@wikimedia.org jforrester@wikimedia.org
+
 # CentralAuth
 
 ## test2.wikipedia.org
@@ -10,7 +31,7 @@
     mediawiki_url: test2.wikipedia.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org csteipp@wikimedia.org
+    recipients: *emails-CentralAuth
     repository: mediawiki/extensions/CentralAuth
     version: 27
 
@@ -29,7 +50,7 @@
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org neverett@wikimedia.org
+    recipients: *emails-CirrusSearch
     repository: mediawiki/extensions/CirrusSearch
     version: 27
 
@@ -46,7 +67,7 @@
     mediawiki_url: test2.wikipedia.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org neverett@wikimedia.org
+    recipients: *emails-CirrusSearch
     repository: mediawiki/extensions/CirrusSearch
     version: 27
 
@@ -65,7 +86,7 @@
     mediawiki_url: language-stage.wmflabs.org
     mediawiki_user: TranslatorToDa
     platform: Linux
-    recipients: aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org sthottingal@wikimedia.org
+    recipients: *emails-ULS
     repository: mediawiki/extensions/ContentTranslation
     version: 27
 
@@ -84,7 +105,7 @@
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org
+    recipients: *emails-qa
     repository: mediawiki/extensions/Flow
     version: 27
 
@@ -101,7 +122,7 @@
     mediawiki_url: test2.wikipedia.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org
+    recipients: *emails-qa
     repository: mediawiki/extensions/Flow
     version: 27
 
@@ -120,7 +141,7 @@
     mediawiki_url: en.m.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org mobile-tech@wikimedia.org
+    recipients: *emails-mobile
     repository: mediawiki/extensions/MobileFrontend
     version: 27
 
@@ -137,7 +158,7 @@
     mediawiki_url: en.m.wikipedia.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org mobile-tech@wikimedia.org
+    recipients: *emails-mobile
     repository: mediawiki/extensions/MobileFrontend
     version: 27
 
@@ -154,7 +175,7 @@
     mediawiki_url: test2.m.wikipedia.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org mobile-tech@wikimedia.org
+    recipients: *emails-mobile
     repository: mediawiki/extensions/MobileFrontend
     version: 27
 
@@ -173,7 +194,7 @@
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: multimedia-alerts@lists.wikimedia.org
+    recipients: *emails-multimedia
     repository: mediawiki/extensions/MultimediaViewer
     version: 27
 
@@ -192,7 +213,7 @@
     mediawiki_url: sandbox.translatewiki.net
     mediawiki_user: Selenium
     platform: Linux
-    recipients: aaharoni@wikimedia.org cmcmahon@wikimedia.org nlaxstrom@wikimedia.org
+    recipients: *emails-i18n
     repository: mediawiki/extensions/TwnMainPage
     version: 27
 
@@ -211,7 +232,7 @@
     mediawiki_url: meta.wikimedia.org
     mediawiki_user: Selenium
     platform: Linux
-    recipients: aaharoni@wikimedia.org cmcmahon@wikimedia.org nlaxstrom@wikimedia.org
+    recipients: *emails-i18n
     repository: mediawiki/extensions/Translate
     version: 27
 
@@ -228,7 +249,7 @@
     mediawiki_url: sandbox.translatewiki.net
     mediawiki_user: Selenium-Translate
     platform: Linux
-    recipients: aaharoni@wikimedia.org cmcmahon@wikimedia.org nlaxstrom@wikimedia.org
+    recipients: *emails-i18n
     repository: mediawiki/extensions/Translate
     version: 27
 
@@ -248,7 +269,7 @@
     mediawiki_url: commons.wikimedia.beta.wmflabs.org
     mediawiki_user: Uls
     platform: Linux
-    recipients: aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org nlaxstrom@wikimedia.org sthottingal@wikimedia.org
+    recipients: *emails-ULS
     repository: mediawiki/extensions/UniversalLanguageSelector
     version: 27
 
@@ -265,7 +286,7 @@
     mediawiki_url: language-browsertests.wmflabs.org
     mediawiki_user: Bttesting
     platform: Linux
-    recipients: aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org nlaxstrom@wikimedia.org sthottingal@wikimedia.org
+    recipients: *emails-ULS
     repository: mediawiki/extensions/UniversalLanguageSelector
     version: 27
 
@@ -282,7 +303,7 @@
     mediawiki_url: sandbox.translatewiki.net
     mediawiki_user: Selenium
     platform: Linux
-    recipients: aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org nlaxstrom@wikimedia.org sthottingal@wikimedia.org
+    recipients: *emails-ULS
     repository: mediawiki/extensions/UniversalLanguageSelector
     version: 27
 
@@ -325,7 +346,7 @@
     mediawiki_url: commons.wikimedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org
+    recipients: *emails-qa
     repository: mediawiki/extensions/UploadWizard
     version: 27
 
@@ -344,7 +365,7 @@
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org
+    recipients: *emails-VisualEditor
     repository: mediawiki/extensions/VisualEditor
     version: 27
 
@@ -358,7 +379,7 @@
     browser: firefox
     folder: modules/ve-mw/test
     platform: Linux
-    recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org
+    recipients: *emails-VisualEditor
     repository: mediawiki/extensions/VisualEditor
     version: 27
 
@@ -375,7 +396,7 @@
     mediawiki_url: test2.wikipedia.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org jforrester@wikimedia.org
+    recipients: *emails-VisualEditor
     repository: mediawiki/extensions/VisualEditor
     version: 27
 
@@ -394,7 +415,7 @@
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org
+    recipients: *emails-qa
     repository: mediawiki/extensions/WikiLove
     version: 27
 
@@ -409,7 +430,7 @@
     browser: phantomjs
     folder: tests
     mediawiki_url: en.m.wikipedia.org
-    recipients: cmcmahon@wikimedia.org
+    recipients: *emails-qa
     repository: mediawiki/extensions/ZeroRatedMobileAccess
 
     jobs:
@@ -427,7 +448,7 @@
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org
+    recipients: *emails-qa
     repository: qa/browsertests
     version: 27
 
@@ -444,7 +465,7 @@
     mediawiki_url: test2.wikipedia.org
     mediawiki_user: Selenium_user
     platform: Linux
-    recipients: cmcmahon@wikimedia.org
+    recipients: *emails-qa
     repository: qa/browsertests
     version: 27
 
