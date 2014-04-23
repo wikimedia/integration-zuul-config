@@ -232,4 +232,12 @@
           "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber --backtrace --color --verbose --format pretty --format Cucumber::Formatter::Sauce --out reports/junit --tags @{mediawiki_url} || (echo -e "\nJob has failed (exit code: $?)."; false)
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
+            --backtrace \
+            --color \
+            --verbose \
+            --format pretty \
+            --format Cucumber::Formatter::Sauce \
+            --out reports/junit \
+            --tags @{mediawiki_url} \
+            || (echo -e "\nJob has failed (exit code: $?)."; false)
