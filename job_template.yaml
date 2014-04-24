@@ -2,9 +2,10 @@
 
 - job-template:
     name: 'browsertests-{name}'
+    defaults: browsertests
 
 - defaults:
-    name: global
+    name: browsertests
     node: hasBrowserTests  # bind them to wmflabs slaves
 
     disabled: false
@@ -101,6 +102,7 @@
 
 - job-template:
     name: 'UploadWizard-api-{name}'
+    defaults: browsertests
     mediawiki_password_variable: '{mediawiki_password_variable}'
     mediawiki_url: '{mediawiki_url}'
     pollscm: '{pollscm}'
@@ -147,6 +149,7 @@
 
 - job-template:
     name: 'browsertests-VisualEditor-{name}'
+    defaults: browsertests
 
     triggers:
       - timed: "@weekly"
@@ -196,6 +199,7 @@
 
 - job-template:
     name: 'browsertests-ZeroRatedMobileAccess-{name}'
+    defaults: browsertests
 
     builders:
       - ZeroRatedMobileAccess:
