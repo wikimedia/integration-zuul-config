@@ -177,14 +177,6 @@
     name: ZeroRatedMobileAccess
     builders:
       - shell: |
-          # install phantomjs
-          curl -s -o use-node https://repository-cloudbees.forge.cloudbees.com/distributions/ci-addons/node/use-node
-          NODE_VERSION=0.11.8 . ./use-node
-          rm -f $HOME/bin/phantomjs
-          npm install phantomjs
-          ln -fs $WORKSPACE/node_modules/phantomjs/lib/phantom/bin/phantomjs $HOME/bin/phantomjs
-          phantomjs -v
-
           # set up environment variables
           export BROWSER={browser}
           export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
