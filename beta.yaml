@@ -141,9 +141,6 @@
 
     builders:
      - shell: /usr/local/bin/wmf-beta-mwconfig-update
-     - trigger-builds:
-       - project: "beta-scap-{datacenter}"
-         block: true
 
     logrotate:
         daysToKeep: 15
@@ -156,6 +153,8 @@
           aborted: true
           failure: false
           fixed: true
+      - trigger:
+          project: beta-scap-{datacenter}
 
 # Job updating MediaWiki core+extensions code and refreshing the message
 #
@@ -174,9 +173,6 @@
       # mwdeploy home, that is done by passing -H to sudo
       - shell: |
           sudo -H -u mwdeploy /usr/local/bin/wmf-beta-autoupdate.py --verbose
-      - trigger-builds:
-        - project: "beta-scap-{datacenter}"
-          block: true
 
     logrotate:
         daysToKeep: 7
@@ -193,6 +189,8 @@
           aborted: true
           failure: false
           fixed: true
+      - trigger:
+          project: beta-scap-{datacenter}
 
 - job-template:
     name: beta-scap-{datacenter}
@@ -208,6 +206,15 @@
 
     logrotate:
         daysToKeep: 7
+
+    publishers:
+      - email-ext:
+          recipients: qa@lists.wikimedia.org
+          attach-build-log: true
+          first-failure: true
+          aborted: true
+          failure: false
+          fixed: true
 
 - job-template:
     name: beta-parsoid-update-{datacenter}
