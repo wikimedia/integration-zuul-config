@@ -45,6 +45,9 @@
             /srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh
 
         - shell: |
+           # record the versions of parsertests we're running, for debugging
+           # if something goes wrong
+           find -name parserTests.txt -print0 | xargs -0 md5sum -b
            # Now run parserTests
            # FIXME should use the phpunit wrapper
            cd src/mediawiki/core
