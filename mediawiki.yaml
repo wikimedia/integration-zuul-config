@@ -135,7 +135,7 @@
      - archive-log-dir
 
 - job-template:
-    name: mediawiki-core-phpunit-hhvm
+    name: mediawiki-core-regression-hhvm-{branch}
     node: hasHhvm && hasPhpUnit
     defaults: use-remote-zuul
     concurrent: true
@@ -242,7 +242,6 @@
       - mediawiki-jobs
       - '{name}-phpcs-HEAD'
       - mediawiki-core-release
-      - mediawiki-core-phpunit-hhvm
 
 # For regression testing:
 
@@ -322,6 +321,7 @@
       - REL1_23
     # Find a way to support WMF branches
     jobs:
+     - 'mediawiki-core-regression-hhvm-{branch}'
      - 'mediawiki-core-regression-{branch}'
      - '{name}-phpcs'
      - '{name}-phpcs-HEAD'
