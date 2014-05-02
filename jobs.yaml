@@ -189,31 +189,22 @@
         mediawiki_url: sandbox.translatewiki.net
         mediawiki_user: Selenium
 
-# UploadWizard-commons.wikimedia.beta.wmflabs.org-chrome
-
-## API
-
+# Upload Wizard API test
 - project:
-    name: commons.wikimedia.beta.wmflabs.org
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
-    mediawiki_url: commons.wikimedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
-    pollscm: '* * * * *'
+    name: UploadWizard-api
     repository: mediawiki/extensions/UploadWizard
 
     jobs:
-      - 'UploadWizard-api-{name}'
-
-- project:
-    name: commons.wikimedia.org
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
-    mediawiki_url: commons.wikimedia.org
-    mediawiki_user: Selenium_user
-    pollscm: '0 5 31 2 *'
-    repository: mediawiki/extensions/UploadWizard
-
-    jobs:
-      - 'UploadWizard-api-{name}'
+     - 'UploadWizard-api-{mediawiki_url}':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: commons.wikimedia.beta.wmflabs.org
+        mediawiki_user: Selenium_user
+        pollscm: '* * * * *'
+     - 'UploadWizard-api-{mediawiki_url}':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: commons.wikimedia.org
+        mediawiki_user: Selenium_user
+        pollscm: '0 5 31 2 *'
 
 - project:
     name: UploadWizard
