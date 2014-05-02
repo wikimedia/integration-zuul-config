@@ -346,9 +346,6 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
-  - name: mediawiki-core-phpunit-hhvm
-    branch: ^master$
-    voting: false
   - name: mediawiki-core-phpcs-strict-HEAD
     voting: false
   - name: mediawiki-core-phpcs-lenient-HEAD
@@ -796,6 +793,13 @@ jobs:
   - name: mediawiki-core-regression-REL1_23
     branch: ^REL1_23
 
+  - name: mediawiki-core-regression-hhvm-REL1_23
+    branch: ^REL1_23$
+    voting: false
+  - name: mediawiki-core-regression-hhvm-master
+    branch: ^master$
+    voting: false
+
   # Extensions for which tests are non-functional or absent:
   - name: ^mwext-EtherEditor-testextensions.*
     voting: false
@@ -939,7 +943,6 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-lint:
-        - mediawiki-core-phpunit-hhvm
         - mediawiki-core-phpunit-databaseless
         - mediawiki-core-install-sqlite:
           - mediawiki-core-qunit
@@ -966,6 +969,8 @@ projects:
       - mediawiki-core-regression-REL1_21
       - mediawiki-core-regression-REL1_22
       - mediawiki-core-regression-REL1_23
+      - mediawiki-core-regression-hhvm-REL1_23
+      - mediawiki-core-regression-hhvm-master
       #- mediawiki-core-regression-phpcs-HEAD
       - mediawiki-core-doxygen-publish
     publish:
