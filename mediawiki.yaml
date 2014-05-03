@@ -88,8 +88,8 @@
         version: '$ZUUL_BRANCH'
         subdir: 'js/'
 
-- job-template:
-    name: '{name}-doxygen-publish'
+- job:
+    name: 'mediawiki-core-doxygen-publish'
     node: gallium
     defaults: use-zuul
     concurrent: false
@@ -220,7 +220,7 @@
       - 'mediawiki-core-jsduck'
       - 'mediawiki-core-npm'
       - 'mediawiki-core-jsduck-publish'
-      - '{name}-doxygen-publish'
+      - 'mediawiki-core-doxygen-publish'
       - '{name}-whitespaces'
       - '{name}-phpcs-lenient'
       - '{name}-phpcs-lenient-HEAD'
