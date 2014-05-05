@@ -9,6 +9,20 @@
     builders:
         - shell: "set | egrep '^ZUUL'"
 
+# parameters:
+# - projects : Gerrit project to clone
+- builder:
+    name: zuul-cloner
+    builders:
+        - shell: |
+            /usr/local/bin/zuul-cloner --version
+            /usr/local/bin/zuul-cloner \
+                --color \
+                --verbose \
+                --workspace src \
+                http://localhost:8082/ \
+                {projects}
+
 - job-template:
     name: '{prefix}-lint'
     builders:
@@ -23,3 +37,26 @@
         - mwext-SecondExtension
     jobs:
         - '{prefix}-lint'
+
+- job-template:
+    name: 'integration-{title}'
+    builders:
+        - dump-zuul-env
+        - zuul-cloner:
+            projects: '{projects}'
+
+- project:
+    name: CI
+    jobs:
+        - integration-{title}:
+            title: 'many-mw-exts'
+            projects: >
+                mediawiki/core
+                mediawiki/extensions/FirstExtension
+                mediawiki/extensions/SecondExtension
+
+        - integration-{title}:
+            title: 'with-mediawiki'
+            projects: >
+                $ZUUL_PROJECT
+                mediawiki/core
