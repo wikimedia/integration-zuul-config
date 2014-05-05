@@ -94,16 +94,20 @@ project-templates:
     - name: project-template
       test:
          - '{prefix}-lint'
+         - 'mediawiki-core-lint'
       gate-and-submit:
          - '{prefix}-lint'
+         - 'mediawiki-core-lint'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
+
   - name: mediawiki/core
-    template:
-        - name: project-template
-          prefix: mediawiki-core
+    test:
+       - 'mediawiki-core-lint'
+    gate-and-submit:
+       - 'mediawiki-core-lint'
 
   - name: mediawiki/extensions/FirstExtension
     template:
