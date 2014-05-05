@@ -1,0 +1,21 @@
+- defaults:
+    name: global
+    wrappers:
+        - ansicolor
+        - timestamps
+
+- job-template:
+    name: '{prefix}-lint'
+    builders:
+        - shell: |
+            set | egrep '^ZUUL'
+            echo 'Fake linter'
+
+- project:
+    name: MediaWiki
+    prefix:
+        - mediawiki-core
+        - mwext-FirstExtension
+        - mwext-SecondExtension
+    jobs:
+        - '{prefix}-lint'
