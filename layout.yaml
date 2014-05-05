@@ -83,20 +83,32 @@ pipelines:
        - event: ref-updated
          ref: ^refs/tags/.*$
 
-# Fine tune some jobs
+# Make all jobs voting
 jobs:
   - name: '^.*$'
     voting: true
+
+project-templates:
+    - name: project-template
+      test:
+         - '{prefix}-lint'
+      gate-and-submit:
+         - '{prefix}-lint'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
   - name: mediawiki/core
-    test:
-      - mediawiki-core-lint
-    gate-and-submit:
-      - mediawiki-core-lint
-    postmerge:
-      - mediawiki-core-lint
-    publish:
-      - mediawiki-core-release
+    template:
+        - name: project-template
+          prefix: mediawiki-core
+
+  - name: mediawiki/extensions/FirstExtension
+    template:
+        - name: project-template
+          prefix: mwext-FirstExtension
+
+  - name: mediawiki/extensions/SecondExtension
+    template:
+        - name: project-template
+          prefix: mwext-SecondExtension
