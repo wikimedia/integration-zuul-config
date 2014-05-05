@@ -4,12 +4,16 @@
         - ansicolor
         - timestamps
 
+- builder:
+    name: dump-zuul-env
+    builders:
+        - shell: "set | egrep '^ZUUL'"
+
 - job-template:
     name: '{prefix}-lint'
     builders:
-        - shell: |
-            set | egrep '^ZUUL'
-            echo 'Fake linter'
+        - dump-zuul-env
+        - shell: "echo 'Fake linter'"
 
 - project:
     name: MediaWiki
