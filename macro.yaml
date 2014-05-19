@@ -40,6 +40,15 @@
           # See https://github.com/bundler/bundler/issues/2856
           export GEM_HOME="$WORKSPACE/../gems"
 
+          # Attempt to figure out MediaWiki branch being used and fetch it out
+          # if the extension has the same branch
+          MEDIAWIKI_GIT_BRANCH=$(/srv/deployment/integration/slave-scripts/bin/mw-api-siteinfo.py "$MEDIAWIKI_API_URL" git_branch)
+          # FIXME should verify the repository actually has the deployed
+          # branch. Might want to fallback to the master branch.
+          git checkout -f "$MEDIAWIKI_GIT_BRANCH"
+          git reset --hard "$MEDIAWIKI_GIT_BRANCH"
+          git clean -x -q -d -f
+
           # install ruby dependencies
           mkdir -p vendor
           gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
