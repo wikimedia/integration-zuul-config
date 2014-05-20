@@ -524,6 +524,8 @@ jobs:
     voting: false
   - name: analytics-gerrit-stats-pyflakes
     voting: false
+  - name: analytics-geowiki-tox-flake8
+    voting: false
   - name: analytics-glass-pep8
     voting: false
   - name: analytics-glass-pyflakes
@@ -1003,6 +1005,12 @@ projects:
     template:
       - name: 'python-lint'
         prefix: 'analytics-editor-geocoding'
+
+  - name: analytics/geowiki
+    check-voter:
+     - analytics-geowiki-tox-flake8
+    gate-and-submit:
+     - analytics-geowiki-tox-flake8
 
   - name: analytics/gerrit-stats
     template:
