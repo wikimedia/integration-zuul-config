@@ -45,13 +45,13 @@
           MEDIAWIKI_GIT_BRANCH=$(/srv/deployment/integration/slave-scripts/bin/mw-api-siteinfo.py "$MEDIAWIKI_API_URL" git_branch)
 
 
-          git checkout -f "$MEDIAWIKI_GIT_BRANCH" || {{
-              echo "$MEDIAWIKI_GIT_BRANCH branch does not exist."
+          git checkout -f "origin/$MEDIAWIKI_GIT_BRANCH" || {{
+              echo "origin/$MEDIAWIKI_GIT_BRANCH branch does not exist."
               echo "Fallbacking to master branch..."
               MEDIAWIKI_GIT_BRANCH='master'
-              git checkout -f $MEDIAWIKI_GIT_BRANCH
+              git checkout -f origin/$MEDIAWIKI_GIT_BRANCH
           }}
-          git reset --hard "$MEDIAWIKI_GIT_BRANCH"
+          git reset --hard "origin/$MEDIAWIKI_GIT_BRANCH"
           git clean -x -q -d -f
 
           # install ruby dependencies
