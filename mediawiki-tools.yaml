@@ -33,7 +33,9 @@
      - doc
     jobs:
      - '{name}-tox-{toxenv}'
-     - '{name}-tox-doc-publish'
+     - '{name}-tox-doc-publish':
+        docsrc: 'html'
+        docdest: 'mw-tools-releng'
 
 - project:
     name: 'mw-tools-scap'
@@ -43,5 +45,7 @@
      - flake8
     jobs:
      - '{name}-tox-{toxenv}'
-     - '{name}-tox-doc-publish'
+     - '{name}-tox-doc-publish':
+        docsrc: 'docs/_build/html'
+        docdest: 'mw-tools-scap'
      - python-jobs
