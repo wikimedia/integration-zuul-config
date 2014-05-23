@@ -116,10 +116,13 @@
 - project:
     name: 'operations-puppet'
 
+    toxenv:
+     - data_admin_lint
     jobs:
      - '{name}-erblint-HEAD'
      - '{name}-puppetlint-lenient'
      - '{name}-puppetlint-strict'
+     - '{name}-tox-{toxenv}'
      - operations-puppet-typos
      - operations-puppet-validate
      - operations-puppet-spec
