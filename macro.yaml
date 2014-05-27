@@ -302,13 +302,6 @@
          "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
          "\$wgEnableJavaScriptTest = true;\n" >> $WORKSPACE/LocalSettings.php
 
-        # HACK HACK
-        # mediawiki/conf.d/00_set_debug_log.php cant initialize the
-        # mw-debug-www.log file since it lacks jenkins-slave permissions.
-        mkdir -p "$WORKSPACE"/log
-        # Make it world writable
-        chmod 777 "$WORKSPACE"/log
-
         # Make sure to compress MediaWiki log dir after phpunit has ran
         function compress_log_dir() {{
             echo "Compressing logs under $LOG_DIR"
