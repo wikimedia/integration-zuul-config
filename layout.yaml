@@ -472,6 +472,10 @@ jobs:
     voting: false
   - name: mwext-Wikidata-jslint
     voting: false
+  - name: mwext-ZeroBanner-jslint  # bug 65817
+    voting: false
+  - name: mwext-ZeroPortal-jslint  # bug 65818
+    voting: false
   - name: mwext-ZeroRatedMobileAccess-jslint  # bug 61647
     voting: false
   - name: mwext-skins-jslint
@@ -3226,6 +3230,16 @@ projects:
       - mwext-Workflow-yamllint
     gate-and-submit:
       *mwext-Workflow-all-test-jobs
+
+  - name: mediawiki/extensions/ZeroBanner
+    template:
+      - name: extension-unittests
+        extname: ZeroBanner
+
+  - name: mediawiki/extensions/ZeroPortal
+    template:
+      - name: extension-unittests
+        extname: ZeroPortal
 
   - name: mediawiki/extensions/ZeroRatedMobileAccess
     template:
