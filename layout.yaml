@@ -727,10 +727,6 @@ jobs:
     # (times out or doesn't start in the first place).
     branch: (?!REL1_19)
 
-  # Experimental
-  - name: ^mwext-DataValues-qunit$
-    voting: false
-
   # Bug 65151
   - name: ^mwext-UploadWizard-qunit$
     voting: false
@@ -1868,21 +1864,6 @@ projects:
       - name: extension-checks
         extname: CustomUserSignup
 
-  - name: mediawiki/extensions/DataValues
-    check:
-     - mwext-DataValues-jslint
-     - mwext-DataValues-lint
-    test:
-     - mwext-DataValues-jslint
-     - mwext-DataValues-lint:
-       - mwext-DataValues-testextensions-master
-       - mwext-DataValues-qunit
-    gate-and-submit:
-     - mwext-DataValues-jslint
-     - mwext-DataValues-lint:
-       - mwext-DataValues-testextensions-master
-       - mwext-DataValues-qunit
-
   - name: mediawiki/extensions/DataTypes
     template:
       - name: extension-unittests
@@ -1905,11 +1886,6 @@ projects:
     template:
       - name: extension-checks
         extname: DeleteBatch
-
-  - name: mediawiki/extensions/Diff
-    template:
-      - name: extension-unittests
-        extname: Diff
 
   - name: mediawiki/extensions/DisableAccount
     template:
@@ -2201,11 +2177,6 @@ projects:
     template:
       - name: extension-unittests
         extname: JsonConfig
-
-  - name: mediawiki/extensions/JsonData
-    template:
-      - name: extension-unittests
-        extname: JsonData
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
@@ -2819,11 +2790,6 @@ projects:
       - name: extension-checks
         extname: skins
 
-  - name: mediawiki/extensions/SlippyMap
-    template:
-      - name: extension-unittests
-        extname: SlippyMap
-
   - name: mediawiki/extensions/Solarium
     template:
       - name: extension-checks
@@ -3024,16 +2990,6 @@ projects:
         - mwext-TwnMainPage-testextensions-master
       - mwext-TwnMainPage-ruby1.9.3lint
 
-  - name: mediawiki/extensions/TwoFactorAuthentication
-    template:
-      - name: extension-unittests
-        extname: TwoFactorAuthentication
-
-  - name: mediawiki/extensions/Persona
-    template:
-      - name: extension-unittests
-        extname: Persona
-
   - name: mediawiki/extensions/OpenBadges
     template:
       - name: extension-unittests
@@ -3202,11 +3158,6 @@ projects:
       - mwext-Wikibase-jslint
       - mwext-Wikibase-ruby1.9.3lint
       - mwext-Wikibase-lint
-
-  - name: mediawiki/extensions/WikibaseQueryEngine
-    template:
-      - name: extension-checks
-        extname: WikibaseQueryEngine
 
   - name: mediawiki/extensions/WikibaseQuery
     template:
