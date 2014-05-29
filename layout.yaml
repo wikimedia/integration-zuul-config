@@ -1773,9 +1773,12 @@ projects:
 
   - name: mediawiki/extensions/ConfirmEdit
     template:
-      - name: extension-checks
+      - name: extension-unittests
         extname: ConfirmEdit
-    check-only:
+    check:
+      - mwext-ConfirmEdit-pep8
+      - mwext-ConfirmEdit-pyflakes
+    test:
       - mwext-ConfirmEdit-pep8
       - mwext-ConfirmEdit-pyflakes
     gate-and-submit:
