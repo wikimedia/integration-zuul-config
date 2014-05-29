@@ -1771,16 +1771,14 @@ projects:
       - name: extension-checks
         extname: Configure
 
-  # FIXME: it has pep8
   - name: mediawiki/extensions/ConfirmEdit
+    template:
+      - name: extension-checks
+        extname: ConfirmEdit
     check-only:
-      - mwext-ConfirmEdit-jslint
-      - mwext-ConfirmEdit-lint
       - mwext-ConfirmEdit-pep8
       - mwext-ConfirmEdit-pyflakes
     gate-and-submit:
-      - mwext-ConfirmEdit-jslint
-      - mwext-ConfirmEdit-lint
       - mwext-ConfirmEdit-pep8
       - mwext-ConfirmEdit-pyflakes
 
