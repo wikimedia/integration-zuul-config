@@ -26,7 +26,7 @@
 # for easy reuse. Meant to be run on post merge commit.
 - job-template:
     name: 'qa-browsertests-postmerge'
-    node: hasBrowserTests
+    node: contintLabsSlave
     defaults: use-remote-zuul
     triggers:
      - zuul
@@ -45,7 +45,7 @@
 
 - job-template:
     name: 'qa-browsertests-build'
-    node: hasBrowserTests
+    node: contintLabsSlave
     defaults: use-remote-zuul
     triggers:
      - zuul
@@ -56,7 +56,7 @@
 # Should be a multi configuration job
 - job-template:
     name: 'qa-browsertests-run'
-    node: hasBrowserTests
+    node: contintLabsSlave
     defaults: use-remote-zuul
     triggers:
      - zuul
