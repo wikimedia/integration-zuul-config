@@ -2245,6 +2245,26 @@ projects:
       - name: extension-unittests
         extname: LocalisationUpdate
 
+  - name: mediawiki/extensions/Mantle
+    check:
+      - mwext-Mantle-lint
+      - mwext-Mantle-jslint
+      - mwext-Mantle-phpcs-HEAD
+    test:
+      - mwext-Mantle-jslint
+      - mwext-Mantle-lint:
+        - mwext-Mantle-testextensions-master
+      - mwext-Mantle-phpcs-HEAD
+      - mwext-Mantle-qunit
+      - mwext-Mantle-qunit-mobile
+    gate-and-submit:
+      - mwext-Mantle-jslint
+      - mwext-Mantle-lint:
+        - mwext-Mantle-testextensions-master
+      - mwext-Mantle-phpcs-HEAD
+      - mwext-Mantle-qunit
+      - mwext-Mantle-qunit-mobile
+
   - name: mediawiki/extensions/Math
     template:
       - name: extension-unittests
