@@ -4,6 +4,8 @@
     node: hasSlaveScripts
     defaults: use-remote-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 90
 
     triggers:
      - zuul
@@ -18,6 +20,8 @@
     node: hasSlaveScripts
     defaults: use-remote-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 90
 
     triggers:
      - zuul
@@ -33,6 +37,8 @@
     # Dont process other puppet submodules
     defaults: use-remote-zuul-no-submodules
     concurrent: true
+    logrotate:
+        daysToKeep: 90
 
     triggers:
      - zuul
@@ -53,6 +59,8 @@
     node: gallium  # webhost where doc is published
     defaults: use-remote-zuul
     concurrent: false  # dont want to race doc creation!
+    logrotate:
+        daysToKeep: 90
 
     triggers:
      - zuul
@@ -71,6 +79,8 @@
     name: 'operations-puppet-typos'
     defaults: use-remote-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 90
 
     triggers:
      - zuul
