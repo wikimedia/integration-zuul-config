@@ -10,6 +10,8 @@
     node: hasSlaveScripts
     defaults: use-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 15
     scm:
      - git-mwcore
     triggers:
@@ -22,6 +24,8 @@
     node: hasSlaveScripts
     defaults: use-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 15
     scm:
      - git-mwcore
     triggers:
@@ -35,6 +39,8 @@
     node: contintLabsSlave
     defaults: use-remoteonly-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 15
     triggers:
      - zuul
     builders:
@@ -47,6 +53,8 @@
     node: gallium
     defaults: use-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 15
     scm:
      - git-mwcore
     triggers:
@@ -61,6 +69,8 @@
     name: 'mediawiki-core-jsduck'
     defaults: use-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 15
     scm:
      - git-mwcore
     triggers:
@@ -74,6 +84,8 @@
     node: gallium
     defaults: use-zuul
     concurrent: false
+    logrotate:
+        daysToKeep: 15
     scm:
      - git-mwcore
     triggers:
@@ -105,6 +117,8 @@
     node: hasSlaveScripts
     defaults: use-remote-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 15
     scm:
      - git-mwcore
     triggers:
@@ -121,6 +135,8 @@
     node: hasSlaveScripts
     defaults: use-remote-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 15
     scm:
      - git-mwcore
     triggers:
@@ -159,6 +175,8 @@
          fail: true
      - timestamps
      - ansicolor
+    logrotate:
+        daysToKeep: 90
 
 # A job template to install MediaWiki against a specific DB backend
 #
@@ -167,6 +185,8 @@
 - job-template:
     name: '{name}-install-{databasetype}'
     defaults: use-zuul
+    logrotate:
+        daysToKeep: 15
     scm:
      - git-mwcore
     triggers:
@@ -261,6 +281,8 @@
     publishers:
      - phpunit-junit-2
      - archive-log-dir
+    logrotate:
+        daysToKeep: 90
 
 - job:
     name: 'mediawiki-core-code-coverage'
