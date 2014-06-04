@@ -914,6 +914,14 @@ project-templates:
       - '{prefix}-pep8'
       - '{prefix}-pyflakes'
 
+  - name: python-lint-checkonly
+    check-only:
+      - '{prefix}-pep8'
+      - '{prefix}-pyflakes'
+    gate-and-submit:
+      - '{prefix}-pep8'
+      - '{prefix}-pyflakes'
+
   - name: puppet
     # FIXME add merge probably
     # voting since we usually do not have any unit tests
@@ -927,14 +935,13 @@ projects:
   - name: gerrit
 
   - name: integration/jenkins
+    template:
+     - name: 'python-lint'
+       prefix: 'integration-jenkins'
     check-voter:
-      - 'integration-jenkins-pep8'
       - 'integration-jenkins-phplint'
-      - 'integration-jenkins-pyflakes'
     gate-and-submit:
-      - 'integration-jenkins-pep8'
       - 'integration-jenkins-phplint'
-      - 'integration-jenkins-pyflakes'
 
   - name: integration/jenkins-job-builder-config
     # FIXME: make this 'check' whenever we have integration tests
@@ -1201,13 +1208,12 @@ projects:
      - mw-skins-webplatform-phplint
 
   - name: mediawiki/tools/code-utils
+    template:
+     - name: 'python-lint'
+       prefix: 'mw-tools-codeutils'
     check-voter:
-     - mw-tools-codeutils-pep8
-     - mw-tools-codeutils-pyflakes
      - mw-tools-codeutils-phplint
     gate-and-submit:
-     - mw-tools-codeutils-pep8
-     - mw-tools-codeutils-pyflakes
      - mw-tools-codeutils-phplint
 
   - name: mediawiki/tools/dippybird
@@ -1348,12 +1354,9 @@ projects:
       - operations-dns-lint
 
   - name: operations/dumps
-    check-voter:
-      - operations-dumps-pep8
-      - operations-dumps-pyflakes
-    gate-and-submit:
-      - operations-dumps-pep8
-      - operations-dumps-pyflakes
+    template:
+      - name: 'python-lint'
+        prefix: 'operations-dumps'
 
   - name: operations/mediawiki-config
     check:
@@ -1437,12 +1440,9 @@ projects:
       - operations-software-pyflakes
 
   - name: operations/software/redactatron
-    check-voter:
-      - operations-software-redactatron-pep8
-      - operations-software-redactatron-pyflakes
-    gate-and-submit:
-      - operations-software-redactatron-pep8
-      - operations-software-redactatron-pyflakes
+    template:
+     - name: 'python-lint'
+       prefix: 'operations-software-redactatron'
 
   - name: translatewiki
     check-only:
@@ -1474,15 +1474,14 @@ projects:
       - wikimedia-fundraising-dash-npm
 
   - name: wikimedia/fundraising/tools
+    template:
+     - name: 'python-lint'
+       prefix: 'wikimedia-fundraising-tools'
     check-voter:
       - wikimedia-fundraising-tools-jslint
-      - wikimedia-fundraising-tools-pep8
-      - wikimedia-fundraising-tools-pyflakes
       - wikimedia-fundraising-tools-yamllint
     gate-and-submit:
       - wikimedia-fundraising-tools-jslint
-      - wikimedia-fundraising-tools-pep8
-      - wikimedia-fundraising-tools-pyflakes
       - wikimedia-fundraising-tools-yamllint
 
   - name: wikimedia/fundraising/crm
@@ -1510,15 +1509,14 @@ projects:
       - wikimedia-fundraising-crm-drupal-phplint
 
   - name: wikimedia/fundraising/SmashPig
+    template:
+     - name: 'python-lint'
+       prefix: 'wikimedia-fundraising-SmashPig'
     check-voter:
-      - wikimedia-fundraising-SmashPig-pep8
       - wikimedia-fundraising-SmashPig-phplint
-      - wikimedia-fundraising-SmashPig-pyflakes
       - wikimedia-fundraising-SmashPig-sphinx-doc
     gate-and-submit:
-      - wikimedia-fundraising-SmashPig-pep8
       - wikimedia-fundraising-SmashPig-phplint
-      - wikimedia-fundraising-SmashPig-pyflakes
       - wikimedia-fundraising-SmashPig-sphinx-doc
 
   - name: wikimedia/wikimania-scholarships
@@ -1902,16 +1900,15 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/DumpHTML
+    template:
+     - name: 'python-lint-checkonly'
+       prefix: 'mwext-DumpHTML'
     check-only:
       - mwext-DumpHTML-jslint
       - mwext-DumpHTML-lint
-      - mwext-DumpHTML-pep8
-      - mwext-DumpHTML-pyflakes
     gate-and-submit:
       - mwext-DumpHTML-jslint
       - mwext-DumpHTML-lint
-      - mwext-DumpHTML-pep8
-      - mwext-DumpHTML-pyflakes
 
   - name: mediawiki/extensions/E3Experiments
     template:
@@ -2323,16 +2320,15 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/Offline
+    template:
+     - name: 'python-lint-checkonly'
+       prefix: 'mwext-Offline'
     check-only:
       - mwext-Offline-jslint
       - mwext-Offline-lint
-      - mwext-Offline-pep8
-      - mwext-Offline-pyflakes
     gate-and-submit:
       - mwext-Offline-jslint
       - mwext-Offline-lint
-      - mwext-Offline-pep8
-      - mwext-Offline-pyflakes
 
   - name: mediawiki/extensions/OggHandler
     template:
@@ -2347,15 +2343,14 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/OpenStackManager
+    template:
+     - name: 'python-lint-checkonly'
+       prefix: 'mwext-OpenStackManager'
     check-only:
       - mwext-OpenStackManager-jslint
       - mwext-OpenStackManager-lint
-      - mwext-OpenStackManager-pep8
-      - mwext-OpenStackManager-pyflakes
     gate-and-submit:
       - mwext-OpenStackManager-jslint
-      - mwext-OpenStackManager-pep8
-      - mwext-OpenStackManager-pyflakes
       - mwext-OpenStackManager-lint
 
   - name: mediawiki/extensions/PagedTiffHandler
@@ -2435,12 +2430,9 @@ projects:
       - beta-parsoid-update-eqiad
 
   - name: mediawiki/services/rcstream
-    check-voter:
-      - rcstream-pep8
-      - rcstream-pyflakes
-    gate-and-submit:
-      - rcstream-pep8
-      - rcstream-pyflakes
+    template:
+     - name: 'python-lint'
+       prefix: 'rcstream'
 
    # SSS: Till we migrate all our WIP and unreviewed patches over
    # to the new repository, let us keep this in place.
@@ -2554,16 +2546,15 @@ projects:
       - name: extension-checks
 
   - name: mediawiki/extensions/SemanticBundle
+    template:
+     - name: 'python-lint-checkonly'
+       prefix: 'mwext-SemanticBundle'
     check-only:
      - mwext-SemanticBundle-jslint
      - mwext-SemanticBundle-lint
-     - mwext-SemanticBundle-pep8
-     - mwext-SemanticBundle-pyflakes
     gate-and-submit:
      - mwext-SemanticBundle-jslint
      - mwext-SemanticBundle-lint
-     - mwext-SemanticBundle-pep8
-     - mwext-SemanticBundle-pyflakes
 
   - name: mediawiki/extensions/SemanticCompoundQueries
     template:
