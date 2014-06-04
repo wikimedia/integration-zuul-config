@@ -875,26 +875,26 @@ project-templates:
   # Does run the unit tests on 'test' and 'gate-and-submit'
   - name: extension-unittests
     check:
-     - 'mwext-{extname}-jslint'
-     - 'mwext-{extname}-lint'
+     - 'mwext-{name}-jslint'
+     - 'mwext-{name}-lint'
     test:
-     - 'mwext-{extname}-jslint'
-     - 'mwext-{extname}-lint':
-       - 'mwext-{extname}-testextensions-master'
+     - 'mwext-{name}-jslint'
+     - 'mwext-{name}-lint':
+       - 'mwext-{name}-testextensions-master'
     gate-and-submit:
-     - 'mwext-{extname}-jslint'
-     - 'mwext-{extname}-lint':
-       - 'mwext-{extname}-testextensions-master'
+     - 'mwext-{name}-jslint'
+     - 'mwext-{name}-lint':
+       - 'mwext-{name}-testextensions-master'
 
   # Template for MediaWiki extensions.
   # No unit tests but vote on linting.
   - name: extension-checks
     check-only:
-     - 'mwext-{extname}-jslint'
-     - 'mwext-{extname}-lint'
+     - 'mwext-{name}-jslint'
+     - 'mwext-{name}-lint'
     gate-and-submit:
-     - 'mwext-{extname}-jslint'
-     - 'mwext-{extname}-lint'
+     - 'mwext-{name}-jslint'
+     - 'mwext-{name}-lint'
 
   - name: python
     check-voter:
@@ -1536,85 +1536,70 @@ projects:
 
 #### MediaWiki extensions ######################################
 
+
   - name: mediawiki/extensions/AbuseFilter
     template:
       - name: extension-unittests
-        extname: AbuseFilter
 
   - name: mediawiki/extensions/AccountAudit
     template:
       - name: extension-unittests
-        extname: AccountAudit
 
   - name: mediawiki/extensions/ActiveAbstract
     template:
       - name: extension-unittests
-        extname: ActiveAbstract
 
   - name: mediawiki/extensions/AdminLinks
     template:
       - name: extension-checks
-        extname: AdminLinks
 
   - name: mediawiki/extensions/Agora
     template:
       - name: extension-checks
-        extname: Agora
 
   - name: mediawiki/extensions/AntiBot
     template:
       - name: extension-unittests
-        extname: AntiBot
 
   - name: mediawiki/extensions/AntiSpoof
     template:
       - name: extension-unittests
-        extname: AntiSpoof
 
   - name: mediawiki/extensions/Annotator
     template:
       - name: extension-checks
-        extname: Annotator
 
   - name: mediawiki/extensions/APC
     template:
       - name: extension-checks
-        extname: APC
 
   - name: mediawiki/extensions/ApprovedRevs
     template:
       - name: extension-checks
-        extname: ApprovedRevs
 
   - name: mediawiki/extensions/ArticleFeedback
     template:
       - name: extension-checks
-        extname: ArticleFeedback
 
   - name: mediawiki/extensions/ArticleFeedbackv5
     template:
       - name: extension-checks
-        extname: ArticleFeedbackv5
 
   - name: mediawiki/extensions/ApiSandbox
     template:
       - name: extension-unittests
-        extname: ApiSandbox
 
   - name: mediawiki/extensions/Arrays
     template:
       - name: extension-unittests
-        extname: Arrays
 
   - name: mediawiki/extensions/Babel
     template:
       - name: extension-checks
-        extname: Babel
 
   - name: mediawiki/extensions/BetaFeatures
     template:
       - name: extension-unittests
-        extname: BetaFeatures
 
   - name: mediawiki/extensions/BlameMaps
     check-only:
@@ -1631,57 +1616,46 @@ projects:
   - name: mediawiki/extensions/BlogPage
     template:
       - name: extension-unittests
-        extname: BlogPage
 
   - name: mediawiki/extensions/BookManager
     template:
       - name: extension-unittests
-        extname: BookManager
 
   - name: mediawiki/extensions/BookManagerv2
     template:
       - name: extension-checks
-        extname: BookManagerv2
 
   - name: mediawiki/extensions/Calendar
     template:
       - name: extension-unittests
-        extname: Calendar
 
   - name: mediawiki/extensions/Campaigns
     template:
       - name: extension-unittests
-        extname: Campaigns
 
   - name: mediawiki/extensions/Capiunto
     template:
       - name: extension-unittests
-        extname: Capiunto
 
   - name: mediawiki/extensions/CategoryTagSorter
     template:
       - name: extension-unittests
-        extname: CategoryTagSorter
 
   - name: mediawiki/extensions/CategoryTree
     template:
       - name: extension-unittests
-        extname: CategoryTree
 
   - name: mediawiki/extensions/CharInsert
     template:
       - name: extension-unittests
-        extname: CharInsert
 
   - name: mediawiki/extensions/CheckUser
     template:
       - name: extension-unittests
-        extname: CheckUser
 
   - name: mediawiki/extensions/Cite
     template:
       - name: extension-unittests
-        extname: Cite
 
   - name: mediawiki/extensions/cldr
     check-only:
@@ -1697,12 +1671,10 @@ projects:
   - name: mediawiki/extensions/CentralAuth
     template:
       - name: extension-unittests
-        extname: CentralAuth
 
   - name: mediawiki/extensions/CentralNotice
     template:
       - name: extension-unittests
-        extname: CentralNotice
 
   - name: mediawiki/extensions/CirrusSearch
     check:
@@ -1724,32 +1696,26 @@ projects:
   - name: mediawiki/extensions/CleanChanges
     template:
       - name: extension-unittests
-        extname: CleanChanges
 
   - name: mediawiki/extensions/ClickTracking
     template:
       - name: extension-checks
-        extname: ClickTracking
 
   - name: mediawiki/extensions/ClientSide
     template:
       - name: extension-unittests
-        extname: ClientSide
 
   - name: mediawiki/extensions/CodeEditor
     template:
       - name: extension-unittests
-        extname: CodeEditor
 
   - name: mediawiki/extensions/CodeReview
     template:
       - name: extension-unittests
-        extname: CodeReview
 
   - name: mediawiki/extensions/Collection
     template:
       - name: extension-unittests
-        extname: Collection
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     check:
@@ -1794,22 +1760,18 @@ projects:
   - name: mediawiki/extensions/CommonsMetadata
     template:
       - name: extension-unittests
-        extname: CommonsMetadata
 
   - name: mediawiki/extensions/Configure
     template:
       - name: extension-checks
-        extname: Configure
 
   - name: mediawiki/extensions/ConfirmAccount
     template:
       - name: extension-unittests
-        extname: ConfirmAccount
 
   - name: mediawiki/extensions/ConfirmEdit
     template:
       - name: extension-unittests
-        extname: ConfirmEdit
     check:
       - mwext-ConfirmEdit-pep8
       - mwext-ConfirmEdit-pyflakes
@@ -1837,77 +1799,62 @@ projects:
   - name: mediawiki/extensions/ContributionScores
     template:
       - name: extension-checks
-        extname: ContributionScores
 
   - name: mediawiki/extensions/CommonMessages
     template:
       - name: extension-unittests
-        extname: CommonMessages
 
   - name: mediawiki/extensions/CommunityApplications
     template:
       - name: extension-checks
-        extname: CommunityApplications
 
   - name: mediawiki/extensions/CommunityHiring
     template:
       - name: extension-checks
-        extname: CommunityHiring
 
   - name: mediawiki/extensions/CommunityVoice
     template:
       - name: extension-unittests
-        extname: CommunityVoice
 
   - name: mediawiki/extensions/ContactPage
     template:
       - name: extension-unittests
-        extname: ContactPage
 
   - name: mediawiki/extensions/ContactPageFundraiser
     template:
       - name: extension-checks
-        extname: ContactPageFundraiser
 
   - name: mediawiki/extensions/FundraisingChart
     template:
       - name: extension-checks
-        extname: FundraisingChart
 
   - name: mediawiki/extensions/ContributionReporting
     template:
       - name: extension-checks
-        extname: ContributionReporting
 
   - name: mediawiki/extensions/ContributionTracking
     template:
       - name: extension-unittests
-        extname: ContributionTracking
 
   - name: mediawiki/extensions/ConventionExtension
     template:
       - name: extension-unittests
-        extname: ConventionExtension
 
   - name: mediawiki/extensions/CreditsSource
     template:
       - name: extension-unittests
-        extname: CreditsSource
 
   - name: mediawiki/extensions/CustomData
     template:
       - name: extension-unittests
-        extname: CustomData
 
   - name: mediawiki/extensions/CustomUserSignup
     template:
       - name: extension-checks
-        extname: CustomUserSignup
 
   - name: mediawiki/extensions/DataTypes
     template:
       - name: extension-unittests
-        extname: DataTypes
 
   - name: mediawiki/extensions/DonationInterface
     check:
@@ -1925,42 +1872,34 @@ projects:
   - name: mediawiki/extensions/DeleteBatch
     template:
       - name: extension-checks
-        extname: DeleteBatch
 
   - name: mediawiki/extensions/DisableAccount
     template:
       - name: extension-unittests
-        extname: DisableAccount
 
   - name: mediawiki/extensions/Disambiguator
     template:
       - name: extension-unittests
-        extname: Disambiguator
 
   - name: mediawiki/extensions/DiscussionThreading
     template:
       - name: extension-checks
-        extname: DiscussionThreading
 
   - name: mediawiki/extensions/DismissableSiteNotice
     template:
       - name: extension-unittests
-        extname: DismissableSiteNotice
 
   - name: mediawiki/extensions/DoubleWiki
     template:
       - name: extension-unittests
-        extname: DoubleWiki
 
   - name: mediawiki/extensions/Drafts
     template:
       - name: extension-unittests
-        extname: Drafts
 
   - name: mediawiki/extensions/DynamicSidebar
     template:
       - name: extension-unittests
-        extname: DynamicSidebar
 
   - name: mediawiki/extensions/DumpHTML
     check-only:
@@ -1977,37 +1916,30 @@ projects:
   - name: mediawiki/extensions/E3Experiments
     template:
       - name: extension-unittests
-        extname: E3Experiments
 
   - name: mediawiki/extensions/Echo
     template:
       - name: extension-unittests
-        extname: Echo
 
   - name: mediawiki/extensions/Editcount
     template:
       - name: extension-checks
-        extname: Editcount
 
   - name: mediawiki/extensions/EditPageTracking
     template:
       - name: extension-checks
-        extname: EditPageTracking
 
   - name: mediawiki/extensions/EducationProgram
     template:
       - name: extension-unittests
-        extname: EducationProgram
 
   - name: mediawiki/extensions/EmailCapture
     template:
       - name: extension-checks
-        extname: EmailCapture
 
   - name: mediawiki/extensions/EtherEditor
     template:
       - name: extension-unittests
-        extname: EtherEditor
 
   - name: mediawiki/extensions/EventLogging
     check:
@@ -2032,22 +1964,18 @@ projects:
   - name: mediawiki/extensions/ExpandTemplates
     template:
       - name: extension-checks
-        extname: ExpandTemplates
 
   - name: mediawiki/extensions/ExtensionDistributor
     template:
       - name: extension-unittests
-        extname: ExtensionDistributor
 
   - name: mediawiki/extensions/FeaturedFeeds
     template:
       - name: extension-unittests
-        extname: FeaturedFeeds
 
   - name: mediawiki/extensions/FlaggedRevs
     template:
       - name: extension-unittests
-        extname: FlaggedRevs
 
   - name: mediawiki/extensions/Flow
     check:
@@ -2068,22 +1996,18 @@ projects:
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
       - name: extension-checks
-        extname: FormPreloadPostCache
 
   - name: mediawiki/extensions/FundraiserLandingPage
     template:
       - name: extension-checks
-        extname: FundraiserLandingPage
 
   - name: mediawiki/extensions/Gadgets
     template:
       - name: extension-unittests
-        extname: Gadgets
 
   - name: mediawiki/extensions/GettingStarted
     template:
       - name: extension-unittests
-        extname: GettingStarted
     test:
       - mwext-GettingStarted-qunit
     gate-and-submit:
@@ -2092,77 +2016,62 @@ projects:
   - name: mediawiki/extensions/GeoCrumbs
     template:
       - name: extension-unittests
-        extname: GeoCrumbs
 
   - name: mediawiki/extensions/GeoData
     template:
       - name: extension-unittests
-        extname: GeoData
 
   - name: mediawiki/extensions/GeoGebra
     template:
       - name: extension-unittests
-        extname: GeoGebra
 
   - name: mediawiki/extensions/Git2Pages
     template:
       - name: extension-unittests
-        extname: Git2Pages
 
   - name: mediawiki/extensions/Gitweb
     template:
       - name: extension-unittests
-        extname: Gitweb
 
   - name: mediawiki/extensions/GlobalBlocking
     template:
       - name: extension-unittests
-        extname: GlobalBlocking
 
   - name: mediawiki/extensions/GlobalCssJs
     template:
       - name: extension-unittests
-        extname: GlobalCssJs
 
   - name: mediawiki/extensions/GlobalPreferences
     template:
       - name: extension-unittests
-        extname: GlobalPreferences
 
   - name: mediawiki/extensions/GlobalUsage
     template:
       - name: extension-unittests
-        extname: GlobalUsage
 
   - name: mediawiki/extensions/GoogleAdSense
     template:
       - name: extension-checks
-        extname: GoogleAdSense
 
   - name: mediawiki/extensions/GoogleAppEngine
     template:
       - name: extension-unittests
-        extname: GoogleAppEngine
 
   - name: mediawiki/extensions/GoogleCustomWikiSearch
     template:
       - name: extension-checks
-        extname: GoogleCustomWikiSearch
 
   - name: mediawiki/extensions/GoogleNewsSitemap
     template:
       - name: extension-unittests
-        extname: GoogleNewsSitemap
 
   - name: mediawiki/extensions/GoogleSiteSearch
     template:
       - name: extension-checks
-        extname: GoogleSiteSearch
 
   - name: mediawiki/extensions/GraphViz
     template:
       - name: extension-unittests
-        extname: GraphViz
 
   - name: mediawiki/extensions/GuidedTour
     check:
@@ -2186,27 +2095,22 @@ projects:
   - name: mediawiki/extensions/GWToolset
     template:
       - name: extension-unittests
-        extname: GWToolset
 
   - name: mediawiki/extensions/I18nTags
     template:
       - name: extension-checks
-        extname: I18nTags
 
   - name: mediawiki/extensions/ImageMap
     template:
       - name: extension-unittests
-        extname: ImageMap
 
   - name: mediawiki/extensions/InputBox
     template:
       - name: extension-unittests
-        extname: InputBox
 
   - name: mediawiki/extensions/Insider
     template:
       - name: extension-unittests
-        extname: Insider
 
   - name: mediawiki/extensions/Interwiki
     check-only:
@@ -2221,57 +2125,46 @@ projects:
   - name: mediawiki/extensions/intersection
     template:
       - name: extension-unittests
-        extname: intersection
 
   - name: mediawiki/extensions/JsonConfig
     template:
       - name: extension-unittests
-        extname: JsonConfig
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
       - name: extension-unittests
-        extname: LabeledSectionTransclusion
 
   - name: mediawiki/extensions/LandingCheck
     template:
       - name: extension-unittests
-        extname: LandingCheck
 
   - name: mediawiki/extensions/LastModified
     template:
       - name: extension-checks
-        extname: LastModified
 
   - name: mediawiki/extensions/LdapAuthentication
     template:
       - name: extension-unittests
-        extname: LdapAuthentication
 
   - name: mediawiki/extensions/Lingo
     template:
       - name: extension-checks
-        extname: Lingo
 
   - name: mediawiki/extensions/LinkedWiki
     template:
       - name: extension-checks
-        extname: LinkedWiki
 
   - name: mediawiki/extensions/LiquidThreads
     template:
       - name: extension-unittests
-        extname: LiquidThreads
 
   - name: mediawiki/extensions/Listings
     template:
       - name: extension-unittests
-        extname: Listings
 
   - name: mediawiki/extensions/LocalisationUpdate
     template:
       - name: extension-unittests
-        extname: LocalisationUpdate
 
   - name: mediawiki/extensions/Mantle
     check:
@@ -2296,29 +2189,24 @@ projects:
   - name: mediawiki/extensions/Math
     template:
       - name: extension-unittests
-        extname: Math
     postmerge:
       - beta-recompile-math-texvc-eqiad
 
   - name: mediawiki/extensions/MathSearch
     template:
       - name: extension-unittests
-        extname: MathSearch
 
   - name: mediawiki/extensions/MapSources
     template:
       - name: extension-unittests
-        extname: MapSources
 
   - name: mediawiki/extensions/MassMessage
     template:
       - name: extension-unittests
-        extname: MassMessage
 
   - name: mediawiki/extensions/MarkAsHelpful
     template:
       - name: extension-unittests
-        extname: MarkAsHelpful
 
   - name: mediawiki/extensions/MobileFrontend
     check:
@@ -2346,22 +2234,18 @@ projects:
   - name: mediawiki/extensions/MobileApp
     template:
       - name: extension-unittests
-        extname: MobileApp
 
   - name: mediawiki/extensions/MolHandler
     template:
       - name: extension-unittests
-        extname: MolHandler
 
   - name: mediawiki/extensions/MoodBar
     template:
       - name: extension-unittests
-        extname: MoodBar
 
   - name: mediawiki/extensions/MultiMaps
     template:
       - name: extension-unittests
-        extname: MultiMaps
 
   - name: mediawiki/extensions/MultimediaViewer
     check:
@@ -2384,73 +2268,59 @@ projects:
   - name: mediawiki/extensions/MwEmbedSupport
     template:
       - name: extension-unittests
-        extname: MwEmbedSupport
 
   - name: mediawiki/extensions/MWSearch
     template:
       - name: extension-unittests
-        extname: MWSearch
 
   # TODO: add qunit
   - name: mediawiki/extensions/Narayam
     template:
       - name: extension-checks
-        extname: Narayam
 
   - name: mediawiki/extensions/NaturalLanguageList
     template:
       - name: extension-unittests
-        extname: NaturalLanguageList
 
   - name: mediawiki/extensions/NavigationTiming
     template:
       - name: extension-unittests
-        extname: NavigationTiming
 
   - name: mediawiki/extensions/NewestPages
     template:
       - name: extension-checks
-        extname: NewestPages
 
   - name: mediawiki/extensions/NewUserMessage
     template:
       - name: extension-unittests
-        extname: NewUserMessage
 
   - name: mediawiki/extensions/NewUserNotif
     template:
       - name: extension-checks
-        extname: NewUserNotif
 
   - name: mediawiki/extensions/Nonlinear
     template:
       - name: extension-unittests
-        extname: Nonlinear
 
   - name: mediawiki/extensions/Nostalgia
     template:
       - name: extension-unittests
-        extname: Nostalgia
 
   - name: mediawiki/extensions/Nuke
     template:
       - name: extension-unittests
-        extname: Nuke
 
   - name: mediawiki/extensions/OATHAuth
     template:
       - name: extension-unittests
-        extname: OATHAuth
 
   - name: mediawiki/extensions/OAI
     template:
       - name: extension-unittests
-        extname: OAI
 
   - name: mediawiki/extensions/OAuth
     template:
       - name: extension-unittests
-        extname: OAuth
 
   - name: mediawiki/extensions/Offline
     check-only:
@@ -2467,17 +2337,14 @@ projects:
   - name: mediawiki/extensions/OggHandler
     template:
       - name: extension-unittests
-        extname: OggHandler
 
   - name: mediawiki/extensions/OpenID
     template:
       - name: extension-checks
-        extname: OpenID
 
   - name: mediawiki/extensions/OpenSearchXml
     template:
       - name: extension-unittests
-        extname: OpenSearchXml
 
   - name: mediawiki/extensions/OpenStackManager
     check-only:
@@ -2494,32 +2361,26 @@ projects:
   - name: mediawiki/extensions/PagedTiffHandler
     template:
       - name: extension-unittests
-        extname: PagedTiffHandler
 
   - name: mediawiki/extensions/PageImages
     template:
       - name: extension-unittests
-        extname: PageImages
 
   - name: mediawiki/extensions/PageTriage
     template:
       - name: extension-unittests
-        extname: PageTriage
 
   - name: mediawiki/extensions/ParserFunctions
     template:
       - name: extension-unittests
-        extname: ParserFunctions
 
   - name: mediawiki/extensions/ParserHooks
     template:
       - name: extension-checks
-        extname: ParserHooks
 
   - name: mediawiki/extensions/Petition
     template:
       - name: extension-unittests
-        extname: Petition
 
   - name: mediawiki/services/cxserver
     check-voter:
@@ -2598,27 +2459,22 @@ projects:
   - name: mediawiki/extensions/PdfHandler
     template:
       - name: extension-unittests
-        extname: PdfHandler
 
   - name: mediawiki/extensions/PhpTags
     template:
       - name: extension-unittests
-        extname: PhpTags
 
   - name: mediawiki/extensions/PhpTagsFunctions
     template:
       - name: extension-unittests
-        extname: PhpTagsFunctions
 
   - name: mediawiki/extensions/PHPExcel
     template:
       - name: extension-checks
-        extname: PHPExcel
 
   - name: mediawiki/extensions/Poem
     template:
       - name: extension-unittests
-        extname: Poem
 
   - name: mediawiki/extensions/PoolCounter
     check:
@@ -2636,82 +2492,66 @@ projects:
   - name: mediawiki/extensions/Popups
     template:
       - name: extension-unittests
-        extname: Popups
 
   - name: mediawiki/extensions/PostEdit
     template:
       - name: extension-checks
-        extname: PostEdit
 
   - name: mediawiki/extensions/ProofreadPage
     template:
       - name: extension-unittests
-        extname: ProofreadPage
 
   - name: mediawiki/extensions/Quiz
     template:
       - name: extension-unittests
-        extname: Quiz
 
   - name: mediawiki/extensions/RandomRootPage
     template:
       - name: extension-unittests
-        extname: RandomRootPage
 
   - name: mediawiki/extensions/ReaderFeedback
     template:
       - name: extension-checks
-        extname: ReaderFeedback
 
   - name: mediawiki/extensions/RelatedArticles
     template:
       - name: extension-unittests
-        extname: RelatedArticles
 
   - name: mediawiki/extensions/RelatedSites
     template:
       - name: extension-unittests
-        extname: RelatedSites
 
   - name: mediawiki/extensions/Renameuser
     template:
       - name: extension-unittests
-        extname: Renameuser
 
   - name: mediawiki/extensions/ReplaceSet
     template:
       - name: extension-unittests
-        extname: ReplaceSet
 
   - name: mediawiki/extensions/ReplaceText
     template:
       - name: extension-checks
-        extname: ReplaceText
 
   - name: mediawiki/extensions/RSS
     template:
       - name: extension-unittests
-        extname: RSS
 
   - name: mediawiki/extensions/Score
     template:
       - name: extension-unittests
-        extname: Score
 
   - name: mediawiki/extensions/SearchExtraNS
     template:
       - name: extension-unittests
-        extname: SearchExtraNS
 
   - name: mediawiki/extensions/SecurePoll
     template:
       - name: extension-unittests
-        extname: SecurePoll
 
   - name: mediawiki/extensions/SemanticACL
     template:
       - name: extension-checks
-        extname: SemanticACL
 
   - name: mediawiki/extensions/SemanticBundle
     check-only:
@@ -2728,217 +2568,174 @@ projects:
   - name: mediawiki/extensions/SemanticCompoundQueries
     template:
       - name: extension-checks
-        extname: SemanticCompoundQueries
 
   - name: mediawiki/extensions/SemanticDrilldown
     template:
       - name: extension-checks
-        extname: SemanticDrilldown
 
   - name: mediawiki/extensions/SemanticExpressiveness
     template:
       - name: extension-checks
-        extname: SemanticExpressiveness
 
   - name: mediawiki/extensions/SemanticExtraSpecialProperties
     template:
       - name: extension-checks
-        extname: SemanticExtraSpecialProperties
 
   - name: mediawiki/extensions/SemanticForms
     template:
       - name: extension-unittests
-        extname: SemanticForms
 
   - name: mediawiki/extensions/SemanticFormsInputs
     template:
       - name: extension-checks
-        extname: SemanticFormsInputs
 
   - name: mediawiki/extensions/SemanticGenealogy
     template:
       - name: extension-checks
-        extname: SemanticGenealogy
 
   - name: mediawiki/extensions/SemanticGlossary
     template:
       - name: extension-checks
-        extname: SemanticGlossary
 
   - name: mediawiki/extensions/SemanticImageAnnotator
     template:
       - name: extension-checks
-        extname: SemanticImageAnnotator
 
   - name: mediawiki/extensions/SemanticImageInput
     template:
       - name: extension-checks
-        extname: SemanticImageInput
 
   - name: mediawiki/extensions/SemanticInternalObjects
     template:
       - name: extension-checks
-        extname: SemanticInternalObjects
 
   - name: mediawiki/extensions/SemanticMaps
     template:
       - name: extension-checks
-        extname: SemanticMaps
 
   - name: mediawiki/extensions/SemanticMediaWiki
     template:
       - name: extension-unittests
-        extname: SemanticMediaWiki
 
   - name: mediawiki/extensions/SemanticPageMaker
     template:
       - name: extension-checks
-        extname: SemanticPageMaker
 
   - name: mediawiki/extensions/SemanticPageSeries
     template:
       - name: extension-checks
-        extname: SemanticPageSeries
 
   - name: mediawiki/extensions/SemanticResultFormats
     template:
       - name: extension-unittests
-        extname: SemanticResultFormats
 
   - name: mediawiki/extensions/SemanticSignup
     template:
       - name: extension-checks
-        extname: SemanticSignup
 
   - name: mediawiki/extensions/SemanticTasks
     template:
       - name: extension-checks
-        extname: SemanticTasks
 
   - name: mediawiki/extensions/SemanticTitle
     template:
       - name: extension-checks
-        extname: SemanticTitle
 
   - name: mediawiki/extensions/SemanticUpdateOnPurge
     template:
       - name: extension-checks
-        extname: SemanticUpdateOnPurge
 
   - name: mediawiki/extensions/SemanticWatchlist
     template:
       - name: extension-checks
-        extname: SemanticWatchlist
 
   - name: mediawiki/extensions/Scribunto
     template:
       - name: extension-unittests
-        extname: Scribunto
 
   - name: mediawiki/extensions/ShortUrl
     template:
       - name: extension-unittests
-        extname: ShortUrl
 
   - name: mediawiki/extensions/SimpleAntiSpam
     template:
       - name: extension-checks
-        extname: SimpleAntiSpam
 
   - name: mediawiki/extensions/SimpleFarm
     template:
       - name: extension-checks
-        extname: SimpleFarm
 
   - name: mediawiki/extensions/SiteMatrix
     template:
       - name: extension-unittests
-        extname: SiteMatrix
 
   - name: mediawiki/extensions/SkinPerPage
     template:
       - name: extension-checks
-        extname: SkinPerPage
 
   - name: mediawiki/extensions/skins
     template:
       - name: extension-checks
-        extname: skins
 
   - name: mediawiki/extensions/Solarium
     template:
       - name: extension-unittests
-        extname: Solarium
 
   - name: mediawiki/extensions/SpamBlacklist
     template:
       - name: extension-unittests
-        extname: SpamBlacklist
 
   - name: mediawiki/extensions/Spreadsheet
     template:
       - name: extension-checks
-        extname: Spreadsheet
 
   - name: mediawiki/extensions/StickToThatLanguage
     template:
       - name: extension-unittests
-        extname: StickToThatLanguage
 
   - name: mediawiki/extensions/StopForumSpam
     template:
       - name: extension-unittests
-        extname: StopForumSpam
 
   - name: mediawiki/extensions/StrategyWiki
     template:
       - name: extension-unittests
-        extname: StrategyWiki
 
   - name: mediawiki/extensions/SubPageList3
     template:
       - name: extension-unittests
-        extname: SubPageList3
 
   - name: mediawiki/extensions/SubpageSortkey
     template:
       - name: extension-unittests
-        extname: SubpageSortkey
 
   - name: mediawiki/extensions/Sudo
     template:
       - name: extension-checks
-        extname: Sudo
 
   - name: mediawiki/extensions/Survey
     template:
       - name: extension-unittests
-        extname: Survey
 
   - name: mediawiki/extensions/SVGEdit
     template:
       - name: extension-checks
-        extname: SVGEdit
 
   - name: mediawiki/extensions/SwiftCloudFiles
     template:
       - name: extension-unittests
-        extname: SwiftCloudFiles
 
   - name: mediawiki/extensions/TemplateSandbox
     template:
       - name: extension-unittests
-        extname: TemplateSandbox
 
   - name: mediawiki/extensions/TextExtracts
     template:
       - name: extension-unittests
-        extname: TextExtracts
 
   - name: mediawiki/extensions/SideBarMenu
     template:
       - name: extension-unittests
-        extname: SideBarMenu
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
     check-only:
@@ -2971,12 +2768,10 @@ projects:
   - name: mediawiki/extensions/Thanks
     template:
       - name: extension-unittests
-        extname: Thanks
 
   - name: mediawiki/extensions/TimedMediaHandler
     template:
       - name: extension-unittests
-        extname: TimedMediaHandler
 
   - name: mediawiki/extensions/timeline
     check-only:
@@ -2989,22 +2784,18 @@ projects:
   - name: mediawiki/extensions/TitleBlacklist
     template:
       - name: extension-unittests
-        extname: TitleBlacklist
 
   - name: mediawiki/extensions/TitleKey
     template:
       - name: extension-unittests
-        extname: TitleKey
 
   - name: mediawiki/extensions/TocTree
     template:
       - name: extension-unittests
-        extname: TocTree
 
   - name: mediawiki/extensions/TorBlock
     template:
       - name: extension-unittests
-        extname: TorBlock
 
   - name: mediawiki/extensions/Translate
     check:
@@ -3044,12 +2835,10 @@ projects:
   - name: mediawiki/extensions/Transliterator
     template:
       - name: extension-unittests
-        extname: Transliterator
 
   - name: mediawiki/extensions/TrustedXFF
     template:
       - name: extension-unittests
-        extname: TrustedXFF
 
   - name: mediawiki/extensions/TwnMainPage
     check:
@@ -3073,12 +2862,10 @@ projects:
   - name: mediawiki/extensions/OpenBadges
     template:
       - name: extension-unittests
-        extname: OpenBadges
 
   - name: mediawiki/extensions/UnicodeConverter
     template:
       - name: extension-unittests
-        extname: UnicodeConverter
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     check:
@@ -3103,7 +2890,6 @@ projects:
   - name: mediawiki/extensions/UploadBlacklist
     template:
       - name: extension-checks
-        extname: UploadBlacklist
 
   - name: mediawiki/extensions/UploadWizard
     check:
@@ -3132,32 +2918,26 @@ projects:
   - name: mediawiki/extensions/UserDailyContribs
     template:
       - name: extension-unittests
-        extname: UserDailyContribs
 
   - name: mediawiki/extensions/UserMerge
     template:
       - name: extension-unittests
-        extname: UserMerge
 
   - name: mediawiki/extensions/UserOptionStats
     template:
       - name: extension-checks
-        extname: UserOptionStats
 
   - name: mediawiki/extensions/UserThrottle
     template:
       - name: extension-checks
-        extname: UserThrottle
 
   - name: mediawiki/extensions/Validator
     template:
       - name: extension-unittests
-        extname: Validator
 
   - name: mediawiki/extensions/Variables
     template:
       - name: extension-unittests
-        extname: Variables
 
   - name: mediawiki/extensions/Vector
     check-only:
@@ -3172,12 +2952,10 @@ projects:
   - name: mediawiki/extensions/VectorBeta
     template:
       - name: extension-unittests
-        extname: VectorBeta
 
   - name: mediawiki/extensions/VipsScaler
     template:
       - name: extension-unittests
-        extname: VipsScaler
 
   - name: mediawiki/extensions/VisualEditor
     check:
@@ -3207,7 +2985,6 @@ projects:
   - name: mediawiki/extensions/WebChat
     template:
       - name: extension-checks
-        extname: WebChat
 
   - name: mediawiki/extensions/WebFonts
     check-only:
@@ -3222,7 +2999,6 @@ projects:
   - name: mediawiki/extensions/WebPlatformAuth
     template:
       - name: extension-unittests
-        extname: WebPlatformAuth
 
   - name: mediawiki/extensions/WikiEditor
     check-only:
@@ -3247,62 +3023,50 @@ projects:
   - name: mediawiki/extensions/WikibaseQuery
     template:
       - name: extension-checks
-        extname: WikibaseQuery
 
   - name: mediawiki/extensions/Wikidata
     template:
       - name: extension-unittests
-        extname: Wikidata
 
   - name: mediawiki/extensions/WikiForum
     template:
       - name: extension-checks
-        extname: WikiForum
 
   - name: mediawiki/extensions/WikiLexicalData
     template:
       - name: extension-checks
-        extname: WikiLexicalData
 
   - name: mediawiki/extensions/WikiLove
     template:
       - name: extension-unittests
-        extname: WikiLove
 
   - name: mediawiki/extensions/wikihiero
     template:
       - name: extension-unittests
-        extname: wikihiero
 
   - name: mediawiki/extensions/WikimediaEvents
     template:
       - name: extension-unittests
-        extname: WikimediaEvents
 
   - name: mediawiki/extensions/WikimediaIncubator
     template:
       - name: extension-unittests
-        extname: WikimediaIncubator
 
   - name: mediawiki/extensions/WikimediaMaintenance
     template:
       - name: extension-unittests
-        extname: WikimediaMaintenance
 
   - name: mediawiki/extensions/WikimediaMessages
     template:
       - name: extension-unittests
-        extname: WikimediaMessages
 
   - name: mediawiki/extensions/WikimediaShopLink
     template:
       - name: extension-unittests
-        extname: WikimediaShopLink
 
   - name: mediawiki/extensions/WikiObjectModel
     template:
       - name: extension-checks
-        extname: WikiObjectModel
 
   - name: mediawiki/extensions/Workflow
     check:
@@ -3319,17 +3083,14 @@ projects:
   - name: mediawiki/extensions/ZeroBanner
     template:
       - name: extension-unittests
-        extname: ZeroBanner
 
   - name: mediawiki/extensions/ZeroPortal
     template:
       - name: extension-unittests
-        extname: ZeroPortal
 
   - name: mediawiki/extensions/ZeroRatedMobileAccess
     template:
       - name: extension-unittests
-        extname: ZeroRatedMobileAccess
 
 #### PHP Extensions ###################################################
 
