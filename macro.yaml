@@ -239,7 +239,7 @@
         node-modules: '{node-modules}'
 
 - builder:
-    name: jsduck
+    name: jsduck-conf
     builders:
     # Zuul uses Python str.format(obj) for {config} substitutions
     # Escape as {foo} as {{key}} to avoid triggering a KeyError in Zuul parser
@@ -272,6 +272,12 @@
         fi
         # Exit with exit code of jsduck command, or whether we found errors
         exit $ec
+
+- builder:
+    name: jsduck
+    builders:
+    - jsduck-conf:
+        config: 'jsduck.json'
 
 - builder:
     name: qunit
