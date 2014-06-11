@@ -343,13 +343,28 @@ jobs:
     files:
      - '^composer.json$'
 
+  - name: ^.*-phpcs(-HEAD)?$
+    voting: false
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+
+  - name: ^.*-phpcs-HEAD$
+    voting: false
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+
+  - name: mwext-MobileFrontend-phpcs-HEAD
+    voting: true
+  - name: mwext-TemplateData-phpcs-HEAD
+    voting: true
+  - name: mwext-VisualEditor-phpcs-HEAD
+    voting: true
+
   # Experiment for bug 48420
   - name: ^.*phpcs-lenient(-HEAD)?$
-    voting: true
     files:
      - '^.*\.(php|php5|phtml|inc)$'
   - name: ^.*phpcs-strict(-HEAD)?$
-    voting: true
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
@@ -633,16 +648,6 @@ jobs:
   - name: mediawiki-vagrant-puppetlint-strict
     voting: false
 
-  # PHP CodeSniffer (experimental)
-  - name: ^.*-phpcs(-HEAD)?$
-    voting: false
-    files:
-     - '^.*\.(php|php5|phtml|inc)$'
-  - name: ^.*-phpcs-HEAD$
-    voting: false
-    files:
-     - '^.*\.(php|php5|phtml|inc)$'
-
   # Rejecting changes having trailing whitespaces cause too many false
   # positives. So only report the whitespace issues, but don't let it vote.
   - name: ^.*-whitespaces$
@@ -705,13 +710,6 @@ jobs:
   # Browsertests for ULS (bug 52120)
   - name: mwext-browsertests-UniversalLanguageSelector-phantomjs
     voting: false
-
-  - name: mwext-MobileFrontend-phpcs-HEAD
-    voting: true
-  - name: mwext-TemplateData-phpcs-HEAD
-    voting: true
-  - name: mwext-VisualEditor-phpcs-HEAD
-    voting: true
 
   - name: mediawiki-core-doxygen-publish
     branch: ^(master|REL.*)$  # bug 50325
