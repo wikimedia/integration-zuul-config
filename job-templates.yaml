@@ -53,17 +53,6 @@
      - npm
 
 - job-template:
-    name: '{name}-npmtest'
-    node: contintLabsSlave
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - npmtest:
-        node-modules: '{node-modules}'
-
-- job-template:
     name: '{name}-puppetlint-lenient'
     node: contintLabsSlave
     defaults: use-remote-zuul-no-submodules

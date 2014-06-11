@@ -215,29 +215,6 @@
         npm install
         npm test
 
-# This build step only uses the npm bin to execute the 'scripts.test' command in package.json.
-# It does not download any modules from the npm repository.
-#
-# However it does require trust/CR2 because it allows arbitrary execution through package.json.
-#
-# - node-modules: Gerrit project name for an appropriate node_modules subdir (may be empty,
-#    in which case it will assume it is in the current repository already).
-- builder:
-    name: npmtest-in
-    builders:
-     - shell: |
-        #!/bin/bash -xe
-        cd "{dir}"
-        [[ -n '{node-modules}' ]] && git clone 'https://gerrit.wikimedia.org/r/p/{node-modules}' node_modules
-        npm test
-
-- builder:
-    name: npmtest
-    builders:
-     - npmtest-in:
-        dir: '$WORKSPACE'
-        node-modules: '{node-modules}'
-
 - builder:
     name: jsduck-conf
     builders:

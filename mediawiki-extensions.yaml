@@ -82,16 +82,6 @@
          artifacts: 'log/*.log, log/report.html, log/*.png'
 
 - job-template:
-    name: '{name}-{ext-name}-npmtest'
-    node: contintLabsSlave
-    defaults: use-remoteonly-zuul
-    triggers:
-     - zuul
-    builders:
-     - npmtest:
-        node-modules: '{node-modules}'
-
-- job-template:
     name: '{name}-{ext-name}-phpcs-HEAD'
     node: hasSlaveScripts
     defaults: use-remote-zuul
