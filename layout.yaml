@@ -339,6 +339,10 @@ jobs:
     files:
      - '^.*\.rb$'
 
+  - name: ^php-composer-validate$
+    files:
+     - '^composer.json$'
+
   # Experiment for bug 48420
   - name: ^.*phpcs-lenient(-HEAD)?$
     voting: true
@@ -354,24 +358,24 @@ jobs:
   - name: mediawiki-core-phpcs-lenient-HEAD
     voting: false
 
-  # Made voting by default. Jobs now need to be explicitly made non voting
-  - name: ^.*-jslint$
-    voting: true
-    files:
-     # Triggers on changes made to .jshintrc, .jshintignore, .jscsrc, *.js and *.json
-     - '^(\.js.*|.*\.(js|json)$)'
-
   - name: ^mediawiki-core-npm$
     files:
      - '^(\.js.*|.*\.(js|json)$)'
 
-  - name: ^php-composer-validate$
+  - name: ^.*-jsduck$
     files:
-     - '^composer.json$'
+     - '^.*\.(js|json)$'
 
-  # Some projects which are most probably not passing jshint yet:
-  #
-  # Tracking bug is 60619
+  - name: ^.*-jsduck-publish$
+    files:
+     - '^.*\.(js|json)$'
+
+  - name: ^.*-jslint$
+    files:
+     # Matches: .jscsrc, .jshintrc, .jshintignore, *.js and *.json
+     - '^(\.js.*|.*\.(js|json)$)'
+
+  # Exceptions for projects not yet passing jshint (bug 60619)
   # https://bugzilla.wikimedia.org/showdependencytree.cgi?id=60619
   #
   - name: mwext-Agora-jslint  # bug 66190
@@ -500,13 +504,6 @@ jobs:
     voting: false
   - name: wikimedia-fundraising-dash-jslint  # bug 65053
     voting: false
-  - name: ^.*-jsduck$
-    files:
-     - '^.*\.(js|json)$'
-
-  - name: ^.*-jsduck-publish$
-    files:
-     - '^.*\.(js|json)$'
 
   - name: ^.*-pep8$
     files:
@@ -516,6 +513,8 @@ jobs:
     files:
      - '^(.*\.py|tox.ini|setup.cfg)$'
 
+  # Exceptions for projects not yet passing pep8 or pyflakes
+  #
   - name: analytics-asana-stats-pep8
     voting: false
   - name: analytics-asana-stats-pyflakes
@@ -594,6 +593,22 @@ jobs:
     voting: false
   - name: wikimedia-fundraising-SmashPig-pyflakes
     voting: false
+  - name: labs-migration-assistant-pyflakes
+    voting: false  # being worked on
+  - name: pywikibot-core-tox-flake8
+    voting: false
+
+  - name: operations-puppet-pep8
+    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
+
+  - name: operations-puppet-spec
+    voting: false
+    success-message: 'Rejoice! Unit tests are passing.'
+    failure-message: 'Experimental unit tests, please ignore.'
+
+  - name: operations-software-pep8
+    files:
+     - '^.*\.py$'
 
   - name: ^.*-perllint$
     files:
@@ -611,19 +626,12 @@ jobs:
   - name: translatewiki-puppetlint-strict
     voting: false
 
-  - name: operations-puppet-pep8
-    voting: true
-    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
-
-  - name: operations-puppet-spec
+  - name: mediawiki-vagrant-erblint-HEAD
     voting: false
-    success-message: 'Rejoice! Unit tests are passing.'
-    failure-message: 'Experimental unit tests, please ignore.'
-
-  - name: operations-software-pep8
-    voting: true
-    files:
-     - '^.*\.py$'
+  - name: mediawiki-vagrant-puppetlint-lenient
+    voting: false
+  - name: mediawiki-vagrant-puppetlint-strict
+    voting: false
 
   # PHP CodeSniffer (experimental)
   - name: ^.*-phpcs(-HEAD)?$
@@ -687,40 +695,14 @@ jobs:
   - name: 'mwext-VisualEditor-sync-gerrit'
     branch: ^master$
 
-  - name: labs-migration-assistant-pep8
-    voting: true
-  - name: labs-migration-assistant-pyflakes
-    voting: false  # being worked on
-
-  - name: mwext-EventLogging-pep8
-    voting: true
-  - name: sartoris-pep8
-    voting: true
-  - name: sartoris-pyflakes
-    voting: true
-
   # FIXME: work in progress
   - name: sartoris-sphinx-doc
     voting: false
 
-  - name: mw-tools-fluoride-pep8
-    voting: true
-  - name: mw-tools-fluoride-pyflakes
-    voting: true
-  - name: mw-tools-release-pep8
-    voting: true
-  - name: operations-debs-ircecho-pep8
-    voting: true
-
-  - name: mw-tools-release-pyflakes
-    voting: true
-  - name: operations-debs-ircecho-pyflakes
-    voting: true
-
   - name: mediawiki-core-jslint
     # Doesn't work in MediaWiki REL1_19 (bug 44846)
     branch: (?!REL1_19)
-  # bug 52120 browsertests for ULS
+  # Browsertests for ULS (bug 52120)
   - name: mwext-browsertests-UniversalLanguageSelector-phantomjs
     voting: false
 
@@ -748,78 +730,55 @@ jobs:
   - name: mediawiki-core-jsduck-publish
     branch: ^(REL1_21|REL1_22|REL1_23|master)$
 
-  # Bug 61848
-  # FlaggablePageTest::testPageDataFromTitle triggers an uncommitted
-  # transaction.
-  - name: ^mwext-FlaggedRevs-testextensions.*
-    voting: false
 
-  # mwext-SideBarMenu-testextensions-master
-  - name: ^mwext-SideBarMenu-testextensions-.*
-    voting: false
-
+  # Exceptions for projects not yet passing phpunit tests
   #
-  # Extensions for which parser tests are not passing :-(
-  #
-
-  # https://bugzilla.wikimedia.org/49879
-  - name: ^mwext-BookManager-testextensions.*
+  - name: ^mwext-BookManager-testextensions.* # bug 49879
     voting: false
-
   - name: ^mwext-AccountAudit-testextensions.*  # bug 65875
     voting: false
-
   - name: ^mwext-CommunityVoice-testextensions.*  # bug 65876
     voting: false
-
   - name: ^mwext-CreditsSource-testextensions.*  # bug 65877
     voting: false
-
   - name: ^mwext-EditPageTracking-testextensions.*  # bug 66191
     voting: false
-
   - name: ^mwext-OpenID-testextensions.*  # no sqlite support
     voting: false
-
   - name: ^mwext-MobileApp-testextensions.*  # bug 65954
     voting: false
-
-  # https://bugzilla.wikimedia.org/49881
-  - name: ^mwext-NaturalLanguageList-testextensions.*
+  - name: ^mwext-NaturalLanguageList-testextensions.* # bug 49881
     voting: false
-
   - name: ^mwext-OAI-testextensions.*  # bug 65895
     voting: false
-
-  # Missing some dependency:
-  - name: ^mwext-ParserHooks-testextensions.*
+  - name: ^mwext-ParserHooks-testextensions.* # Missing some dependency:
     voting: false
-
-  # One day maybe we will test Semantic MediaWiki properly
-  - name: ^mwext-SemanticMediaWiki-testextensions.*
+  - name: ^mwext-SemanticMediaWiki-testextensions.* # Not yet tested properly
     voting: false
   - name: ^mwext-SemanticResultFormats-testextensions.*
     voting: false
-
   - name: ^mwext-Spreadsheet-testextensions.*  # depends on github
     voting: false
-
   - name: ^mwext-TitleKey-testextensions.*  # bug 65896
     voting: false
-
-  # https://bugzilla.wikimedia.org/49882
-  - name: ^mwext-Transliterator-testextensions.*
+  - name: ^mwext-Transliterator-testextensions.* # bug 49882
     voting: false
-
-  # The JsonData phpunit tests are meant to be independent and
-  # do not play well with the MediaWiki phpunit wrapper for now :(
-  # See also: https://gerrit.wikimedia.org/r/#/c/52292/
   - name: ^mwext-JsonData-testextensions.*
+    # The JsonData phpunit tests are meant to be independent and
+    # do not play well with the MediaWiki phpunit wrapper for now :(
+    # See also: https://gerrit.wikimedia.org/r/#/c/52292/
     voting: false
-
-  # Has an insert that introduce multiple values, that requires SQLite
-  # version 3.7.11
   - name: ^mwext-PageTriage-testextensions-master
+    # Has an insert that introduces multiple values, that
+    # requires SQLite v3.7.11
+    voting: false
+  - name: ^mwext-EtherEditor-testextensions.*
+    voting: false
+  - name: ^mwext-SideBarMenu-testextensions-.*
+    voting: false
+  - name: ^mwext-FlaggedRevs-testextensions.* # bug 61848
+    # FlaggablePageTest::testPageDataFromTitle triggers an uncommitted
+    # transaction.
     voting: false
 
   # MediaWiki core regression tests (on merge and per branches):
@@ -845,18 +804,9 @@ jobs:
     branch: ^master$
     voting: false
 
-  # Extensions for which tests are non-functional or absent:
-  - name: ^mwext-EtherEditor-testextensions.*
-    voting: false
-
   # Being worked on with Nik
   - name: mwext-browsertests-CirrusSearch-phantomjs
     voting: false
-
-  - name: mwext-UploadWizard-pep8
-    voting: true
-  - name: mwext-UploadWizard-pyflakes
-    voting: true
 
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
@@ -866,23 +816,8 @@ jobs:
   - name: wikimedia-fundraising-SmashPig-sphinx-doc
     voting: false
 
-  - name: pywikibot-core-tox-flake8
-    voting: false
-
-  - name: pywikibot-compat-pep8
-    voting: true
-  - name: pywikibot-core-pep8
-    voting: true
-
   # Work in progress (bug 54384)
   - name: qa-browsertests-build
-    voting: false
-
-  - name: mediawiki-vagrant-erblint-HEAD
-    voting: false
-  - name: mediawiki-vagrant-puppetlint-lenient
-    voting: false
-  - name: mediawiki-vagrant-puppetlint-strict
     voting: false
 
 
