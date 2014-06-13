@@ -246,6 +246,28 @@
      - shell: |
          sudo /etc/init.d/parsoid restart
 
+- job-template:
+    name: beta-cxserver-update-{datacenter}
+    defaults: beta
+    node: deployment-cxserver-{datacenter}
+    triggers:
+     - zuul
+
+    builders:
+     - git-cxserver-and-deploy-repos
+     - shell: |
+         CXSERVER_TARGET=/srv/deployment/cxserver
+         mkdir -p "$CXSERVER_TARGET"
+         # sync workspace and deployment target
+         RSYNC_OPTS="--update --times --recursive --links --delete-after --delay-updates"
+         rsync $RSYNC_OPTS $WORKSPACE/cxserver "$CXSERVER_TARGET"
+         rsync $RSYNC_OPTS $WORKSPACE/deploy "$CXSERVER_TARGET"
+         # Configuration file is managed by puppet
+         ln -s /srv/deployment/cxserver/config.js "$CXSERVER_TARGET/cxserver/config.js"
+
+     - shell: |
+         sudo service cxserver restart
+
 - project:
     name: beta
     datacenter:
@@ -253,6 +275,7 @@
     jobs:
      - beta-code-update-{datacenter}
      - beta-mediawiki-config-update-{datacenter}
+     - beta-cxserver-update-{datacenter}
      - beta-parsoid-update-{datacenter}
      - beta-recompile-math-texvc-{datacenter}
      - beta-scap-{datacenter}
