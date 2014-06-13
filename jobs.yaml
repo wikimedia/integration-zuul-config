@@ -244,6 +244,11 @@
     repository: mediawiki/extensions/VisualEditor
 
     jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        headless: 'false'
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
+        mediawiki_user: Selenium_user
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
         mediawiki_url: en.wikipedia.beta.wmflabs.org
