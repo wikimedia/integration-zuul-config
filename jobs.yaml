@@ -105,6 +105,19 @@
     repository: mediawiki/extensions/MobileFrontend
 
     jobs:
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        headless: 'false'
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: en.m.wikipedia.beta.wmflabs.org
+        mediawiki_user: Selenium_user
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+        headless: 'false'
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: en.m.wikipedia.beta.wmflabs.org
+        mediawiki_user: Selenium_user
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
         mediawiki_url: en.m.wikipedia.beta.wmflabs.org
