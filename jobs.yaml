@@ -74,7 +74,6 @@
 # Flow
 - project:
     name: Flow
-    browser: firefox
     folder: tests
     headless: 'false'
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
@@ -93,7 +92,6 @@
 # MobileFrontend
 - project:
     name: MobileFrontend
-    browser: firefox
     folder: tests
     headless: 'false'
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
@@ -223,9 +221,8 @@
 # VisualEditor
 - project:
     name: VisualEditor
-    browser: firefox
     folder: modules/ve-mw/test
-    headless: 'true'
+    headless: 'false'
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
@@ -235,29 +232,9 @@
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        headless: 'false'
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
-        mediawiki_url: en.wikipedia.beta.wmflabs.org
-        mediawiki_user: Selenium_user
+        browser: firefox
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
-        headless: 'false'
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
-        mediawiki_url: en.wikipedia.beta.wmflabs.org
-        mediawiki_user: Selenium_user
-
-- project:
-    name: production
-    browser: firefox
-    folder: modules/ve-mw/test
-    headless: 'true'
-    platform: linux
-    recipients: *emails-VisualEditor
-    repository: mediawiki/extensions/VisualEditor
-
-    jobs:
-      - 'browsertests-VisualEditor-{name}-{platform}-{browser}'
-
 
 # WikiLove
 - project:
