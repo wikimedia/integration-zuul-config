@@ -105,7 +105,7 @@
 # VisualEditor
 
 - job-template:
-    name: 'browsertests-VisualEditor-{name}-{platform}-{browser}'
+    name: 'browsertests-{name}-production-{platform}-{browser}-sauce'
     defaults: browsertests
 
     triggers:
@@ -123,7 +123,7 @@
       - shell: |
           # set up environment variables
           export BROWSER={browser}
-          export HEADLESS=true
+          export HEADLESS=false
           export PLATFORM='{platform}'
 
           # We only care about one version of our browser and do not need a job
