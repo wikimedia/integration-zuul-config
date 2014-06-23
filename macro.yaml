@@ -9,15 +9,11 @@
           export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
           export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
           export MEDIAWIKI_USER={mediawiki_user}
+          export PLATFORM='{platform}'
+          # Replace PLATFORM underscores (Jenkins) to spaces (SauceLabs)
+          export PLATFORM=${{PLATFORM//_/ }}
           export SCREENSHOT_FAILURES=true
           export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
-
-          if [ '{platform}' == 'Windows_XP' ]
-          then
-            export PLATFORM='Windows XP'
-          else
-            export PLATFORM='{platform}'
-          fi
 
           # We only care about one version of our browser and do not need a job
           # per version.  Thus the versions to use are hardcoded there.
