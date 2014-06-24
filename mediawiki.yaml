@@ -151,6 +151,24 @@
      - archive-log-dir
 
 - job-template:
+    name: 'mediawiki-vendor-integration'
+    node: productionSlaves  # not on labs for now
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+
+- job-template:
     name: mediawiki-core-regression-hhvm-{branch}
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul
@@ -263,6 +281,7 @@
       - '{name}-phpcs-HEAD'
       - mediawiki-core-release
       - '{name}-ruby1.9.3lint'
+      - mediawiki-vendor-integration
 
 # For regression testing:
 
