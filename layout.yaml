@@ -219,6 +219,21 @@ pipelines:
       gerrit:
         verified: -1
 
+  - name: experimental
+    description: >
+      Jobs manually triggered by whitelisted users commenting 'check experimental'.
+      The jobs are never reporting back to Gerrit. Useful for experimenting new jobs.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*check experimental\.?\s*$
+          email_filter: *email_whitelist
+    success:
+      gerrit: {}
+    failure:
+      gerrit: {}
+
   # Actual gate (report/vote in Gerrit)
   # Will auto-submit change on success!
   #
