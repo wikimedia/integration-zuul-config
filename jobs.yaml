@@ -60,7 +60,7 @@
     name: ContentTranslation
     browser: firefox
     folder: tests
-    headless: 'true'
+    headless: 'false'
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
     mediawiki_url: language-stage.wmflabs.org
     mediawiki_user: Selenium_user
@@ -69,7 +69,7 @@
     repository: mediawiki/extensions/ContentTranslation
 
     jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}'
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
 
 # Flow
 - project:
@@ -135,7 +135,7 @@
     name: TwnMainPage
     browser: firefox
     folder: tests
-    headless: 'true'
+    headless: 'false'
     mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
     mediawiki_url: sandbox.translatewiki.net
     mediawiki_user: Selenium
@@ -144,24 +144,24 @@
     repository: mediawiki/extensions/TwnMainPage
 
     jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}'
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
 
 # Translate
 - project:
     name: Translate
     browser: firefox
     folder: tests
-    headless: 'true'
+    headless: 'false'
     platform: linux
     recipients: *emails-i18n
     repository: mediawiki/extensions/Translate
 
     jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
         mediawiki_url: meta.wikimedia.org
         mediawiki_user: Selenium
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_TRANSLATE_SANDBOX_TRANSLATEWIKI_NET
         mediawiki_url: sandbox.translatewiki.net
         mediawiki_user: Selenium-Translate
@@ -171,21 +171,21 @@
     name: UniversalLanguageSelector
     browser: firefox
     folder: tests
-    headless: 'true'
+    headless: 'false'
     platform: linux
     recipients: *emails-ULS
     repository: mediawiki/extensions/UniversalLanguageSelector
 
     jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_ULS_WMFLABS_ORG
         mediawiki_url: commons.wikimedia.beta.wmflabs.org
         mediawiki_user: Uls
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
         mediawiki_url: language-browsertests.wmflabs.org
         mediawiki_user: Selenium_user
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
         mediawiki_url: sandbox.translatewiki.net
         mediawiki_user: Selenium
