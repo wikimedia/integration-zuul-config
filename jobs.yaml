@@ -290,17 +290,17 @@
     name: qa
     browser: firefox
     folder: tests
-    headless: 'true'
+    headless: 'false'
     platform: linux
     recipients: *emails-qa
     repository: qa/browsertests
 
     jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
         mediawiki_url: test2.wikipedia.org
         mediawiki_user: Selenium_user
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
         mediawiki_url: en.wikipedia.beta.wmflabs.org
         mediawiki_user: Selenium_user
