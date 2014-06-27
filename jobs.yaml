@@ -71,6 +71,22 @@
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
 
+# Core
+- project:
+    name: Core
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-ULS
+    repository: mediawiki/core
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+
 # Flow
 - project:
     name: Flow
