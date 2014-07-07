@@ -8,6 +8,24 @@
     name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
     defaults: browsertests
 
+- job-template:
+    name: 'browsertests-{name}-language-screenshot-{platform}-{browser}-sauce'
+    defaults: browsertests
+    project-type: matrix
+    axes:
+     - axis:
+        type: label-expression
+        name: label
+        values:
+         - contintLabsSlave
+     - axis:
+        type: user-defined
+        name: LANGUAGE_SCREENSHOT_CODE
+        values:
+         - de
+         - en
+         - he
+
 - defaults:
     name: browsertests
     node: contintLabsSlave
