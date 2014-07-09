@@ -188,20 +188,20 @@
             features/verify_production_wikis.feature \
             || (echo -e "\nJob has failed (exit code: $?)."; false)
 
-# ZeroRatedMobileAccess
+# ZeroBanner
 
 - job-template:
-    name: 'browsertests-ZeroRatedMobileAccess-{name}-{platform}-{browser}'
+    name: 'browsertests-ZeroBanner-{name}-{platform}-{browser}'
     defaults: browsertests
 
     builders:
-      - ZeroRatedMobileAccess:
+      - ZeroBanner:
           browser: '{browser}'
           folder: '{folder}'
           mediawiki_url: '{mediawiki_url}'
 
 - builder:
-    name: ZeroRatedMobileAccess
+    name: ZeroBanner
     builders:
       - shell: |
           # set up environment variables
