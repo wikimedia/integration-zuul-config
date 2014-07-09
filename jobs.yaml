@@ -22,17 +22,17 @@
     name: CirrusSearch
     browser: firefox
     folder: tests
-    headless: 'true'
+    headless: 'false'
     mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-CirrusSearch
     repository: mediawiki/extensions/CirrusSearch
 
     jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
         mediawiki_url: en.wikipedia.beta.wmflabs.org
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}':
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
         mediawiki_url: test2.wikipedia.org
 
