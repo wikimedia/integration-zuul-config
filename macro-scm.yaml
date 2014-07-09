@@ -6,21 +6,6 @@
 # This git macro hardcodes mediawiki/core to never update the submodules.
 #
 - scm:
-    name: git-mwcore-nosubmodules
-    scm:
-     - git:
-        url: '/srv/ssd/zuul/git/mediawiki/core'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        disable-submodules: true
-        # Avoid recloning large repositories, trust git-clean instead
-        wipe-workspace: false
-        clean: true
-
-# FIXME: Both this one and the above don't do submodules, the only difference
-# is the reference-repo. Merge these two?
-- scm:
     name: git-mwcore
     scm:
      - git:
