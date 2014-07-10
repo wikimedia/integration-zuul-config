@@ -1064,6 +1064,10 @@
         dependencies: 'EventLogging'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
+        ext-name: MobileFrontend
+        dependencies: 'Mantle'
+     - '{name}-{ext-name}-testextensions-{mwbranch}':
+        name: mwext
         ext-name: NavigationTiming
         dependencies: 'EventLogging'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
@@ -1126,13 +1130,13 @@
         dependencies: 'EventLogging'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: ZeroRatedMobileAccess
-        dependencies: MobileFrontend
+        dependencies: 'MobileFrontend,Mantle'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: ZeroBanner
-        dependencies: 'JsonConfig,MobileFrontend'
+        dependencies: 'JsonConfig,MobileFrontend,Mantle'
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: ZeroPortal
-        dependencies: 'JsonConfig,MobileFrontend,ZeroBanner'
+        dependencies: 'JsonConfig,MobileFrontend,Mantle,ZeroBanner'
 
      # qunit jobs for MediaWiki extensions
 
@@ -1161,9 +1165,11 @@
      - '{name}-{ext-name}-qunit':
         name: mwext
         ext-name: MobileFrontend
+        dependencies: Mantle
      - '{name}-{ext-name}-qunit-mobile':
         name: mwext
         ext-name: MobileFrontend
+        dependencies: Mantle
      - '{name}-{ext-name}-qunit':
         name: mwext
         ext-name: MultimediaViewer
@@ -1234,7 +1240,7 @@
          ext-name: CirrusSearch
          browser: phantomjs
          # Please also update extensions unit tests above
-         dependencies: 'Cite,Elastica,MwEmbedSupport,TimedMediaHandler,PdfHandler'
+         dependencies: 'Cite,Elastica,Mantle,MwEmbedSupport,TimedMediaHandler,PdfHandler'
      - '{name}-{ext-name}-{browser}':
          name: mwext-browsertests
          ext-name: Flow
