@@ -2040,10 +2040,7 @@ projects:
   - name: mediawiki/extensions/GettingStarted
     template:
       - name: extension-unittests
-    test:
-      - mwext-GettingStarted-qunit
-    gate-and-submit:
-      - mwext-GettingStarted-qunit
+      - name: extension-qunit
 
   - name: mediawiki/extensions/GeoCrumbs
     template:
@@ -2251,27 +2248,18 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/MobileFrontend
+    template:
+      - name: extension-unittests
+      - name: extension-qunit-and-mobile
     check:
-      - mwext-MobileFrontend-lint
-      - mwext-MobileFrontend-jslint
       - mwext-MobileFrontend-ruby1.9.3lint
       - mwext-MobileFrontend-phpcs-HEAD
     test:
-      - mwext-MobileFrontend-jslint
-      - mwext-MobileFrontend-lint:
-        - mwext-MobileFrontend-testextensions-master
       - mwext-MobileFrontend-ruby1.9.3lint
       - mwext-MobileFrontend-phpcs-HEAD
-      - mwext-MobileFrontend-qunit
-      - mwext-MobileFrontend-qunit-mobile
     gate-and-submit:
-      - mwext-MobileFrontend-jslint
-      - mwext-MobileFrontend-lint:
-        - mwext-MobileFrontend-testextensions-master
       - mwext-MobileFrontend-ruby1.9.3lint
       - mwext-MobileFrontend-phpcs-HEAD
-      - mwext-MobileFrontend-qunit
-      - mwext-MobileFrontend-qunit-mobile
 
   - name: mediawiki/extensions/MobileApp
     template:
@@ -2290,6 +2278,8 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/MultimediaViewer
+    template:
+      - name: extension-qunit
     check:
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
@@ -2297,12 +2287,10 @@ projects:
     test:
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
-      - mwext-MultimediaViewer-qunit
       - mwext-MultimediaViewer-doc-test
     gate-and-submit:
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
-      - mwext-MultimediaViewer-qunit
       - mwext-MultimediaViewer-doc-test
     postmerge:
       - mwext-MultimediaViewer-doc-publish
@@ -2801,21 +2789,17 @@ projects:
       - mwext-SyntaxHighlight_GeSHi-lint
 
   - name: mediawiki/extensions/TemplateData
+    template:
+      - name: extension-unittests
+      - name: extension-qunit
     check:
-      - mwext-TemplateData-lint
-      - mwext-TemplateData-jslint
       - mwext-TemplateData-phpcs-HEAD
     test:
-      - mwext-TemplateData-lint
       - mwext-TemplateData-npm
-      - mwext-TemplateData-qunit
       - mwext-TemplateData-testextensions-master
       - mwext-TemplateData-phpcs-HEAD
     gate-and-submit:
-      - mwext-TemplateData-lint
       - mwext-TemplateData-npm
-      - mwext-TemplateData-qunit
-      - mwext-TemplateData-testextensions-master
       - mwext-TemplateData-phpcs-HEAD
 
   - name: mediawiki/extensions/Thanks
@@ -2953,26 +2937,19 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/UploadWizard
+    template:
+      - name: extension-unittests
+      - name: extension-qunit
     check:
-      - mwext-UploadWizard-jslint
       - mwext-UploadWizard-phpcs-HEAD
-      - mwext-UploadWizard-lint
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
     test:
-      - mwext-UploadWizard-jslint
-      - mwext-UploadWizard-qunit
       - mwext-UploadWizard-phpcs-HEAD
-      - mwext-UploadWizard-lint:
-        - mwext-UploadWizard-testextensions-master
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
     gate-and-submit:
-      - mwext-UploadWizard-jslint
-      - mwext-UploadWizard-qunit
       - mwext-UploadWizard-phpcs-HEAD
-      - mwext-UploadWizard-lint:
-        - mwext-UploadWizard-testextensions-master
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
 
@@ -3019,6 +2996,8 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/VisualEditor
+    template:
+      - name: extension-qunit
     check:
       - mwext-VisualEditor-jslint
       - mwext-VisualEditor-lint
@@ -3030,14 +3009,12 @@ projects:
       - mwext-VisualEditor-ruby1.9.3lint
       - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-doc-test
-      - mwext-VisualEditor-qunit
     gate-and-submit:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
       - mwext-VisualEditor-ruby1.9.3lint
       - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-doc-test
-      - mwext-VisualEditor-qunit
       - experiment-gating-dependencies
     postmerge:
       - mwext-VisualEditor-doc-publish
