@@ -301,14 +301,16 @@
 
 # ZeroBanner
 - project:
-    name: en.m.wikipedia.org
+    name: ZeroBanner
     browser: phantomjs
     folder: tests
     headless: 'true'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
     mediawiki_url: en.m.wikipedia.org
+    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/ZeroBanner
 
     jobs:
-     - 'browsertests-ZeroBanner-{name}-{platform}-{browser}'
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}'
