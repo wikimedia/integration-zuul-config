@@ -883,6 +883,12 @@ project-templates:
      - 'mwext-{name}-jslint'
      - 'mwext-{name}-lint'
 
+  - name: mw-skin
+    check-voter:
+     - 'mw-skins-{name}-phplint'
+    gate-and-submit:
+     - 'mw-skins-{name}-phplint'
+
   - name: python
     check-voter:
       - '{prefix}-pep8'
@@ -1185,23 +1191,73 @@ projects:
     postmerge:
      - mediawiki-selenium-gembuild
 
+  - name: mediawiki/skins/apex
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/BlueSky
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/BlueSpiceSkin
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/chameleon
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/CologneBlue
+    template:
+     - name: mw-skin
+
   - name: mediawiki/skins/erudite
-    check-voter:
-     - mw-skins-erudite-phplint
-    gate-and-submit:
-     - mw-skins-erudite-phplint
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/Example
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/GreyStuff
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/Mask
+    template:
+     - name: mw-skin
 
   - name: mediawiki/skins/mediawiki-strapping
-    check-voter:
-     - mw-skins-mediawiki-strapping-phplint
-    gate-and-submit:
-     - mw-skins-mediawiki-strapping-phplint
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/Modern
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/MonoBook
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/Nimbus
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/Nostalgia
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/Splash
+    template:
+     - name: mw-skin
+
+  - name: mediawiki/skins/Truglass
+    template:
+     - name: mw-skin
 
   - name: mediawiki/skins/webplatform
-    check-voter:
-     - mw-skins-webplatform-phplint
-    gate-and-submit:
-     - mw-skins-webplatform-phplint
+    template:
+     - name: mw-skin
 
   - name: mediawiki/tools/code-utils
     template:
