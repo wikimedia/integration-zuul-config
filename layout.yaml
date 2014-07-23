@@ -1174,18 +1174,26 @@ projects:
      - integration-docroot-deploy
 
   - name: mediawiki/ruby/api
-    check-voter:
+    check:
      - mediawiki-ruby-api-ruby1.9.3lint
+    test:
+     - mediawiki-ruby-api-ruby1.9.3lint
+     - mediawiki-ruby-api-gembuild
     gate-and-submit:
      - mediawiki-ruby-api-ruby1.9.3lint
+     - mediawiki-ruby-api-gembuild
     postmerge:
      - mediawiki-ruby-api-gembuild
 
   - name: mediawiki/selenium
-    check-voter:
+    check:
      - mediawiki-selenium-ruby1.9.3lint
+    test:
+     - mediawiki-selenium-ruby1.9.3lint
+     - mediawiki-selenium-gembuild
     gate-and-submit:
      - mediawiki-selenium-ruby1.9.3lint
+     - mediawiki-selenium-gembuild
     postmerge:
      - mediawiki-selenium-gembuild
 
