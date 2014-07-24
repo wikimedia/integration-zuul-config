@@ -4,9 +4,15 @@
     name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}'
     defaults: browsertests
 
+    triggers:
+      - timed: 'H 3,18 * * *'
+
 - job-template:
     name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
     defaults: browsertests
+
+    triggers:
+      - timed: 'H 3,18 * * *'
 
 - job-template:
     name: 'browsertests-{name}-language-screenshot-{platform}-{browser}-sauce'
@@ -67,9 +73,6 @@
 
       - archive:
           artifacts: 'log/*.log, log/junit/*.xml, log/report.html, log/*.png'
-
-    triggers:
-      - timed: 'H 3,18 * * *'
 
     wrappers:
       - ansicolor
