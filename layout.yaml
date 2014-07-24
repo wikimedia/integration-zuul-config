@@ -1050,9 +1050,10 @@ projects:
         prefix: 'analytics-glass'
 
   - name: analytics/quarry/web
-    template:
-      - name: 'python-lint'
-        prefix: 'analytics-quarry-web'
+    check-voter:
+      - analytics-quarry-web-tox-flake8
+    gate-and-submit:
+      - analytics-quarry-web-tox-flake8
 
   - name: analytics/kraken
     test:
