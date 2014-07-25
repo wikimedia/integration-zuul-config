@@ -171,6 +171,24 @@
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
         mediawiki_url: mediawiki.org
 
+# PageTriage
+- project:
+    name: PageTriage
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/PageTriage
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+
 # TwnMainPage
 
 ## sandbox.translatewiki.net
