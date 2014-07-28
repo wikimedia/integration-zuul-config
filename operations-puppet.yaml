@@ -93,6 +93,24 @@
         (fgrep -R --file=typos --exclude=typos *) && HAS_TYPO=1 || HAS_TYPO=0
         exit $HAS_TYPO
 
+- job-template:
+    name: 'operations-puppet-tabs'
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    logrotate:
+        daysToKeep: 90
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: |
+         #!/bin/bash -e
+         echo "Looking for tabulations in puppet manifests..."
+         set -x
+         (grep --recursive -e '^\t' --exclude-dir='.git' --include='*.pp' .) && HAS_TAB=1 || HAS_TAB=0
+         exit $HAS_TAB
+
 - project:
     name: 'operations-puppet'
 
@@ -104,6 +122,7 @@
      - '{name}-puppetlint-lenient'
      - '{name}-puppetlint-strict'
      - '{name}-tox-{toxenv}'
+     - operations-puppet-tabs
      - operations-puppet-typos
      - operations-puppet-spec
      - operations-puppet-test
