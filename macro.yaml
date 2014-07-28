@@ -79,10 +79,10 @@
           "$WORKSPACE"/vendor/bin/bundle install --verbose
 
           if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
-            CUCUMBER_EXTRA_PARAMETERS="--tags @language_screenshot"
+            CUCUMBER_PARAMETER="@language_screenshot"
             export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
           else
-            CUCUMBER_EXTRA_PARAMETERS=''
+            CUCUMBER_PARAMETER="@{mediawiki_url}"
           fi
 
           # run tests
@@ -93,9 +93,8 @@
             --format pretty \
             --format Cucumber::Formatter::Sauce \
             --out "$WORKSPACE/log/junit" \
-            --tags @{mediawiki_url} \
+            --tags $CUCUMBER_PARAMETER \
             --tags @$BROWSER_TAG \
-            $CUCUMBER_EXTRA_PARAMETERS \
             || (echo -e "\nJob has failed (exit code: $?)."; false)
 
           if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
