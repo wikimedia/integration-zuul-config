@@ -108,7 +108,7 @@
          #!/bin/bash -e
          echo "Looking for tabulations in puppet manifests..."
          set -x
-         (grep --recursive -e '^\t' --exclude-dir='.git' --include='*.pp' .) && HAS_TAB=1 || HAS_TAB=0
+         (grep --recursive -P '^\t' --exclude-dir='.git' --include='*.pp' .) && HAS_TAB=1 || HAS_TAB=0
          exit $HAS_TAB
 
 - project:
