@@ -939,15 +939,20 @@ projects:
       - integration-jjb-config-test
 
   - name: integration/zuul-config
-    # FIXME: make this 'check' whenever we have integration tests
-    check-voter:
+    check:
       - integration-zuul-config-yamllint
       - integration-zuul-layoutvalidation
       - integration-zuul-layoutdiff
+    test:
+      - integration-zuul-config-yamllint
+      - integration-zuul-layoutvalidation
+      - integration-zuul-layoutdiff
+      - integration-zuul-config-tox-py27
     gate-and-submit:
       - integration-zuul-config-yamllint
       - integration-zuul-layoutvalidation
       - integration-zuul-layoutdiff
+      - integration-zuul-config-tox-py27
 
   - name: mediawiki/core
     check:
