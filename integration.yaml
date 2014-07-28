@@ -135,10 +135,13 @@
 
 - project:
     name: 'integration-zuul-config'
+    toxenv:
+     - py27
     jobs:
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation'
      - '{name}-yamllint'
+     - '{name}-tox-{toxenv}'
 
 - project:
     name: 'integration-jjb-config'
