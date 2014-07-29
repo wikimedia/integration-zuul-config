@@ -16,6 +16,8 @@
         qa-alerts@lists.wikimedia.org aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org nlaxstrom@wikimedia.org sthottingal@wikimedia.org
      - VisualEditor: &emails-VisualEditor
         qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org jforrester@wikimedia.org
+     - Growth: &emails-growth
+        qa-alerts@lists.wikimedia.org mflaschen@wikimedia.org rmoen@wikimedia.org samsmith@wikimedia.org
 
 # CirrusSearch
 - project:
@@ -147,6 +149,22 @@
         browser: chrome
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
+
+# GettingStarted
+- project:
+    name: GettingStarted
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-growth
+    repository: mediawiki/extensions/GettingStarted
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
 
 # MobileFrontend
 - project:
