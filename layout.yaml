@@ -914,6 +914,16 @@ project-templates:
       - 'operations-puppet-{module}-erblint-HEAD'
       - 'operations-puppet-{module}-pplint-HEAD'
 
+  # Template for MediaWiki extensions.
+  # Run Ruby linter.
+  - name: extension-rubylint
+    check:
+     - 'mwext-{name}-ruby1.9.3lint'
+    test:
+     - 'mwext-{name}-ruby1.9.3lint'
+    gate-and-submit:
+     - 'mwext-{name}-ruby1.9.3lint'
+
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
@@ -963,6 +973,7 @@ projects:
       - mediawiki-core-phpcs-strict-HEAD
       - mediawiki-core-jslint
       - mediawiki-core-lint
+      - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     test:
       - mediawiki-core-phpcs-lenient-HEAD
@@ -976,6 +987,7 @@ projects:
           - mediawiki-core-phpunit-api
           - mediawiki-core-phpunit-misc
           - mediawiki-core-phpunit-parser
+      - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     gate-and-submit:
 #      - mediawiki-core-phpcs-lenient-HEAD
@@ -989,6 +1001,7 @@ projects:
           - mediawiki-core-phpunit-api
           - mediawiki-core-phpunit-misc
           - mediawiki-core-phpunit-parser
+      - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     experimental:
       - mediawiki-core-extensions-integration
@@ -1661,6 +1674,7 @@ projects:
   - name: mediawiki/extensions/ArticleFeedbackv5
     template:
       - name: extension-checks
+      - name: extension-rubylint
 
   - name: mediawiki/extensions/ApiSandbox
     template:
@@ -1771,21 +1785,20 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/CirrusSearch
+    template:
+     - name: extension-rubylint
     check:
      - mwext-CirrusSearch-jslint
      - mwext-CirrusSearch-lint
-     - mwext-CirrusSearch-ruby1.9.3lint
     test:
      - mwext-CirrusSearch-jslint
      - mwext-CirrusSearch-lint:
        - mwext-CirrusSearch-testextensions-master
-     - mwext-CirrusSearch-ruby1.9.3lint
      - mwext-browsertests-CirrusSearch-phantomjs # experimental
     gate-and-submit:
      - mwext-CirrusSearch-jslint
      - mwext-CirrusSearch-lint:
        - mwext-CirrusSearch-testextensions-master
-     - mwext-CirrusSearch-ruby1.9.3lint
 
   - name: mediawiki/extensions/CleanChanges
     template:
@@ -2077,21 +2090,20 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/Flow
+    template:
+     - name: extension-rubylint
     check:
      - mwext-Flow-jslint
      - mwext-Flow-lint
-     - mwext-Flow-ruby1.9.3lint
     test:
      - mwext-Flow-jslint
      - mwext-Flow-lint:
        - mwext-Flow-testextensions-master
-     - mwext-Flow-ruby1.9.3lint
      - mwext-Flow-qunit
     gate-and-submit:
      - mwext-Flow-jslint
      - mwext-Flow-lint:
        - mwext-Flow-testextensions-master
-     - mwext-Flow-ruby1.9.3lint
      - mwext-Flow-qunit
 
   - name: mediawiki/extensions/FormPreloadPostCache
@@ -2309,6 +2321,7 @@ projects:
   - name: mediawiki/extensions/Math
     template:
       - name: extension-unittests
+      - name: extension-rubylint
     postmerge:
       - beta-recompile-math-texvc-eqiad
 
@@ -2336,14 +2349,12 @@ projects:
     template:
       - name: extension-unittests
       - name: extension-qunit-and-mobile
+      - name: extension-rubylint
     check:
-      - mwext-MobileFrontend-ruby1.9.3lint
       - mwext-MobileFrontend-phpcs-HEAD
     test:
-      - mwext-MobileFrontend-ruby1.9.3lint
       - mwext-MobileFrontend-phpcs-HEAD
     gate-and-submit:
-      - mwext-MobileFrontend-ruby1.9.3lint
       - mwext-MobileFrontend-phpcs-HEAD
 
   - name: mediawiki/extensions/MobileApp
@@ -2365,6 +2376,7 @@ projects:
   - name: mediawiki/extensions/MultimediaViewer
     template:
       - name: extension-qunit
+      - name: extension-rubylint
     check:
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
@@ -2486,6 +2498,7 @@ projects:
   - name: mediawiki/extensions/PageTriage
     template:
       - name: extension-unittests
+      - name: extension-rubylint
 
   - name: mediawiki/extensions/ParserFunctions
     template:
@@ -2935,23 +2948,22 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/Translate
+    template:
+      - name: extension-rubylint
     check:
       - mwext-Translate-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-Translate-jslint
       - mwext-Translate-lint
-      - mwext-Translate-ruby1.9.3lint
     test:
       - mwext-Translate-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-Translate-jslint
       - mwext-Translate-lint:
         - mwext-Translate-testextensions-master
-      - mwext-Translate-ruby1.9.3lint
     gate-and-submit:
       - mwext-Translate-phpcs-strict # Experiment for bug 48420
       - mwext-Translate-jslint
       - mwext-Translate-lint:
         - mwext-Translate-testextensions-master
-      - mwext-Translate-ruby1.9.3lint
     experimental:
       - mediawiki-core-extensions-integration
       - mediawiki-language-extension-bundle-integration
@@ -2983,23 +2995,22 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/TwnMainPage
+    template:
+      - name: extension-rubylint
     check:
       - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-lint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-TwnMainPage-ruby1.9.3lint
     test:
       - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-TwnMainPage-lint:
         - mwext-TwnMainPage-testextensions-master
-      - mwext-TwnMainPage-ruby1.9.3lint
     gate-and-submit:
       - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-TwnMainPage-lint:
         - mwext-TwnMainPage-testextensions-master
-      - mwext-TwnMainPage-ruby1.9.3lint
 
   - name: mediawiki/extensions/OpenBadges
     template:
@@ -3010,24 +3021,23 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/UniversalLanguageSelector
+    template:
+      - name: extension-rubylint
     check:
       - mwext-UniversalLanguageSelector-lint
       - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-UniversalLanguageSelector-jslint
-      - mwext-UniversalLanguageSelector-ruby1.9.3lint
     test:
       - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-UniversalLanguageSelector-jslint
       - mwext-UniversalLanguageSelector-lint:
         - mwext-UniversalLanguageSelector-testextensions-master
-      - mwext-UniversalLanguageSelector-ruby1.9.3lint
       - mwext-browsertests-UniversalLanguageSelector-phantomjs # Experiment, bug 52120
     gate-and-submit:
       - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-UniversalLanguageSelector-jslint
       - mwext-UniversalLanguageSelector-lint:
         - mwext-UniversalLanguageSelector-testextensions-master
-      - mwext-UniversalLanguageSelector-ruby1.9.3lint
     experimental:
       - mediawiki-core-extensions-integration
       - mediawiki-language-extension-bundle-integration
@@ -3040,6 +3050,7 @@ projects:
     template:
       - name: extension-unittests
       - name: extension-qunit
+      - name: extension-rubylint
     check:
       - mwext-UploadWizard-phpcs-HEAD
       - mwext-UploadWizard-pep8
@@ -3098,21 +3109,19 @@ projects:
   - name: mediawiki/extensions/VisualEditor
     template:
       - name: extension-qunit
+      - name: extension-rubylint
     check:
       - mwext-VisualEditor-jslint
       - mwext-VisualEditor-lint
-      - mwext-VisualEditor-ruby1.9.3lint
       - mwext-VisualEditor-phpcs-HEAD
     test:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
-      - mwext-VisualEditor-ruby1.9.3lint
       - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-doc-test
     gate-and-submit:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
-      - mwext-VisualEditor-ruby1.9.3lint
       - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-doc-test
       - experiment-gating-dependencies
@@ -3177,6 +3186,7 @@ projects:
   - name: mediawiki/extensions/WikiLove
     template:
       - name: extension-unittests
+      - name: extension-rubylint
 
   - name: mediawiki/extensions/wikihiero
     template:
@@ -3221,6 +3231,7 @@ projects:
   - name: mediawiki/extensions/ZeroBanner
     template:
       - name: extension-unittests
+      - name: extension-rubylint
 
   - name: mediawiki/extensions/ZeroPortal
     template:
