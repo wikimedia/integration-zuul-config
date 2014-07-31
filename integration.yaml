@@ -56,7 +56,7 @@
 # Job to check JJB config
 - job-template:
     name: 'integration-jjb-config-test'
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul  # TODO does not really use it
     concurrent: true
     triggers:
@@ -79,7 +79,7 @@
 
 - job-template:
     name: 'integration-jjb-config-diff'
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     triggers:
      - zuul

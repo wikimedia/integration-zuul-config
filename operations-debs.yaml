@@ -60,7 +60,7 @@
 - job-template:
     name: '{name}-debian-glue'
     defaults: use-remote-zuul
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     triggers:
      - zuul
 
@@ -89,7 +89,7 @@
 
 - job-template:
     name: '{name}-debbuild'
-    node: hasContintPackages
+    node: hasContintPackages && UbuntuPrecise
     defaults: use-remote-zuul
 
     scm:

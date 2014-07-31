@@ -3,7 +3,7 @@
 # on a project base.
 - job-template:
     name: '{name}-{ext-name}-jslint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -14,7 +14,7 @@
 
 - job-template:
     name: '{name}-{ext-name}-csslint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -24,7 +24,7 @@
 
 - job-template:
     name: '{name}-{ext-name}-npm'
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -34,7 +34,7 @@
 
 - job-template:
     name: '{name}-{ext-name}-phplint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -45,7 +45,7 @@
 # Compatibility: Use '{name}-{ext-name}-phplint' instead
 - job-template:
     name: '{name}-{ext-name}-lint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -58,7 +58,7 @@
 #
 - job-template:
     name: '{name}-{ext-name}-{browser}'
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-zuul-for-mw-ext
     triggers:
      - zuul
@@ -83,7 +83,7 @@
 
 - job-template:
     name: '{name}-{ext-name}-phpcs-HEAD'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
     triggers:
@@ -95,7 +95,7 @@
 
 - job-template:
     name: '{name}-{ext-name}-qunit'
-    node: productionSlaves  # labs instances not ready yet
+    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
     defaults: use-zuul-for-mw-ext
     concurrent: true
     triggers:
@@ -111,7 +111,7 @@
 
 - job-template:
     name: '{name}-{ext-name}-qunit-mobile'
-    node: productionSlaves  # labs instances not ready yet
+    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
     defaults: use-zuul-for-mw-ext
     concurrent: true
     triggers:
@@ -128,7 +128,7 @@
 # Run all extension tests
 - job-template:
     name: '{name}-{ext-name}-testextensions-{mwbranch}'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-zuul-for-mw-ext
     triggers:
      - zuul
@@ -255,7 +255,7 @@
 # and server configurations.
 - job-template:
     name: 'mwext-Wikibase-{kind}-tests'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-zuul-for-mw-ext
     ext-name: 'Wikibase'
     triggers:

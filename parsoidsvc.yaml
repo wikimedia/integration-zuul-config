@@ -10,7 +10,7 @@
 # Runs MediaWiki core @master PHP parser tests
 - job-template:
     name: parsoidsvc-php-parsertests
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     concurrent: true
     wrappers:
         - timeout:
@@ -92,7 +92,7 @@
 
 - job-template:
     name: parsoidsvc-{repository}-parse-tool-check
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: true
     wrappers:
@@ -118,7 +118,7 @@
 
 - job-template:
     name: parsoidsvc-{repository}-roundtrip-test-check
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: true
     wrappers:
@@ -143,7 +143,7 @@
 
 - job-template:
     name: parsoidsvc-{repository}-parsertests-run-harder
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: true
     wrappers:

@@ -7,7 +7,7 @@
 
 - job-template:
     name: '{name}-lint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-zuul
     concurrent: true
     logrotate:
@@ -21,7 +21,7 @@
 
 - job-template:
     name: 'mediawiki-core-jslint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-zuul
     concurrent: true
     logrotate:
@@ -36,7 +36,7 @@
 
 - job-template:
     name: 'mediawiki-core-npm'
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: true
     logrotate:
@@ -50,7 +50,7 @@
 # Generic job to run QUnit
 - job-template:
     name: '{name}-qunit'
-    node: productionSlaves  # labs instances not ready yet
+    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
     defaults: use-zuul
     concurrent: true
     logrotate:
@@ -114,7 +114,7 @@
 
 - job-template:
     name: '{name}-whitespaces'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
     logrotate:
@@ -132,7 +132,7 @@
 # @param phpunit-group suffix for an ant target 'phpunit-{phpunit-group}
 - job-template:
     name: '{name}-phpunit-{phpunit-group}'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
     logrotate:
@@ -152,7 +152,7 @@
 
 - job-template:
     name: mediawiki-core-regression-hhvm-{branch}
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
     scm:
@@ -268,7 +268,7 @@
 
 - job-template:
     name: 'mediawiki-core-regression-{branch}'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-zuul
     scm:
      - git-mwcore

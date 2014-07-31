@@ -2,7 +2,7 @@
 
 - job-template:
     name: '{name}-erblint-HEAD'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     logrotate:
@@ -15,7 +15,7 @@
 # Generic job to run JSHint
 - job-template:
     name: '{name}-jslint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -36,7 +36,7 @@
 
 - job-template:
     name: '{name}-csslint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -46,7 +46,7 @@
 
 - job-template:
     name: '{name}-npm'
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -56,7 +56,7 @@
 
 - job-template:
     name: '{name}-puppetlint-lenient'
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     logrotate:
@@ -70,7 +70,7 @@
 
 - job-template:
     name: '{name}-puppetlint-strict'
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     logrotate:
@@ -84,7 +84,7 @@
 
 - job-template:
     name: '{name}-pplint-HEAD'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     logrotate:
@@ -96,7 +96,7 @@
 
 - job-template:
     name: '{name}-perllint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -106,7 +106,7 @@
 
 - job-template:
     name: '{name}-phplint'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -117,7 +117,7 @@
 # PHP CodeSniffer on everything under the workspace
 - job-template:
     name: '{name}-phpcs'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -131,7 +131,7 @@
 # PHP CodeSniffer on changed files
 - job-template:
     name: '{name}-phpcs-HEAD'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -144,7 +144,7 @@
 
 - job-template:
     name: '{name}-phpcs-strict'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -157,7 +157,7 @@
 
 - job-template:
     name: '{name}-phpcs-strict-HEAD'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -170,7 +170,7 @@
 
 - job-template:
     name: '{name}-phpcs-lenient'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -183,7 +183,7 @@
 
 - job-template:
     name: '{name}-phpcs-lenient-HEAD'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -196,7 +196,7 @@
 
 - job-template:
     name: '{name}-phpunit'
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults: use-remote-zuul
     triggers:
      - zuul
@@ -250,7 +250,7 @@
 - job-template:
     name: '{name}-yamllint'
     defaults: use-remote-zuul-no-submodules
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     concurrent: true
     triggers:
      - zuul
@@ -260,7 +260,7 @@
 # Java checktyle for maven projects
 - job-template:
     name: '{name}-maven-checkstyle'
-    node: contintLabsSlave  # Maven download the whole internet
+    node: contintLabsSlave && UbuntuPrecise # Maven download the whole internet
     concurrent: true
     project-type: maven
     triggers:

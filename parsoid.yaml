@@ -26,7 +26,7 @@
 
 - job-template:
     name: parsoid-parsertests-run
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults:
         use-remote-zuul
     triggers:
@@ -55,7 +55,7 @@
 
 - job-template:
     name: parsoid-php-parsertests
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     wrappers:
         - timeout:
             timeout: 10
@@ -91,7 +91,7 @@
 
 - job-template:
     name: parsoid-parsertests
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     triggers:
         - zuul
     builders:
@@ -120,7 +120,7 @@
 
 - job-template:
     name: parsoid-regressions
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     defaults:
         use-remote-zuul
     triggers:
@@ -153,7 +153,7 @@
 
 #- job-template:
 #    name: parsoid-server-sanity-check
-#    node: hasSlaveScripts
+#    node: hasSlaveScripts && UbuntuPrecise
 #    defaults:
 #        use-remote-zuul
 #    triggers:
@@ -193,7 +193,7 @@
 
 - job-template:
     name: parsoid-parse-tool-check
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     wrappers:
         - timeout:
             timeout: 5
@@ -229,7 +229,7 @@
 
 - job-template:
     name: parsoid-roundtrip-test-check
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     wrappers:
         - timeout:
             timeout: 5
@@ -264,7 +264,7 @@
 
 - job-template:
     name: parsoid-parsertests-run-harder
-    node: hasSlaveScripts
+    node: hasSlaveScripts && UbuntuPrecise
     wrappers:
         - timeout:
             timeout: 10
