@@ -361,6 +361,9 @@ jobs:
     files:
      - '^composer.json$'
 
+  - name: ^php-(.*)-hhvm-build$  # Experimental bug 63120
+    voting: false
+
   - name: ^.*-phpcs(-HEAD)?$
     voting: false
     files:
@@ -3253,15 +3256,19 @@ projects:
     # no check pipeline since -build runs code :-)
     test:
       - php-FastStringSearch-build
+      - php-FastStringSearch-hhvm-build
     gate-and-submit:
       - php-FastStringSearch-build
+      - php-FastStringSearch-hhvm-build
 
   - name: mediawiki/php/luasandbox
     # no check pipeline since -build runs code :-)
     test:
       - php-luasandbox-build
+      - php-luasandbox-hhvm-build
     gate-and-submit:
       - php-luasandbox-build
+      - php-luasandbox-hhvm-build
 
   - name: mediawiki/php/NativePreprocessor
     # no check pipeline since -build runs code :-)
@@ -3281,8 +3288,10 @@ projects:
     # no check pipeline since -build runs code :-)
     test:
       - php-wikidiff2-build
+      - php-wikidiff2-hhvm-build
     gate-and-submit:
       - php-wikidiff2-build
+      - php-wikidiff2-hhvm-build
 
   - name: mediawiki/php/wmerrors
     # no check pipeline since -build runs code :-)
