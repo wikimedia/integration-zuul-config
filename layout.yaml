@@ -931,11 +931,16 @@ projects:
     template:
      - name: 'python-lint'
        prefix: 'integration-jenkins'
-    check-voter:
+    check:
       - 'integration-jenkins-phplint'
+      - 'integration-jenkins-yamllint'
+    test:
+      - 'integration-jenkins-phplint'
+      - 'integration-jenkins-phpunit'
       - 'integration-jenkins-yamllint'
     gate-and-submit:
       - 'integration-jenkins-phplint'
+      - 'integration-jenkins-phpunit'
       - 'integration-jenkins-yamllint'
 
   - name: integration/jenkins-job-builder-config
