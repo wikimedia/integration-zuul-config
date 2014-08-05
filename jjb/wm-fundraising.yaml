@@ -1,3 +1,29 @@
+- job-template:
+    name: 'wikimedia-fundraising-civicrm'
+    builders:
+     - shell: /srv/deployment/integration/slave-scripts/bin/civi-ci-create-dbs.sh
+     - zuul-cloner:
+         projects: >
+             mediawiki/extensions/DonationInterface
+             wikimedia/fundraising/crm
+             wikimedia/fundraising/crm/civicrm
+             wikimedia/fundraising/crm/drupal
+             wikimedia/fundraising/phpmailer
+             wikimedia/fundraising/twig
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: /srv/deployment/integration/slave-scripts/bin/civi-ci-drop-dbs.sh
+         # Confusing options follow. Need to have them both set to false to
+         # ensure the postbuildscript is ALWAYS run.
+         onsuccess: false
+         onfailure: false
+
+- project:
+    name: 'wikimedia-fundraising-civicrm'
+    jobs:
+     - 'wikimedia-fundraising-civicrm'
+
 - project:
     name: 'wikimedia-fundraising-tools'
 
