@@ -1453,8 +1453,6 @@ jobs:
     voting: false
   - name: pywikibot-bots-CommonsDelinker-tox-flake8
     voting: false
-  - name: pywikibot-core-pyflakes
-    voting: false
   - name: pywikibot-compat-pyflakes
     voting: false
   - name: wikimedia-fundraising-tools-pep8
@@ -1467,8 +1465,6 @@ jobs:
     voting: false
   - name: labs-migration-assistant-pyflakes
     voting: false # being worked on
-  - name: pywikibot-core-tox-flake8
-    voting: false
   - name: pywikibot-core-tox-flake8-docstrings
     voting: false
 
@@ -5711,18 +5707,11 @@ projects:
         prefix: 'pywikibot-compat'
 
   - name: pywikibot/core
-    check:
-      - 'pywikibot-core-pep8'
-      - 'pywikibot-core-pyflakes'
-    test:
-      - 'pywikibot-core-pep8'
-      - 'pywikibot-core-pyflakes'
+    check-voter:
       - 'pywikibot-core-tox-flake8'
       - 'pywikibot-core-tox-flake8-docstrings'
       - 'pywikibot-core-tox-nose'
     gate-and-submit:
-      - 'pywikibot-core-pep8'
-      - 'pywikibot-core-pyflakes'
       - 'pywikibot-core-tox-flake8'
       - 'pywikibot-core-tox-nose'
 
