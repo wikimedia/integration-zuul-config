@@ -259,6 +259,22 @@
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
 
+# PdfHandler
+- project:
+    name: PdfHandler
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+    mediawiki_url: test2.wikipedia.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/PdfHandler
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+
 # TwnMainPage
 - project:
     name: TwnMainPage
