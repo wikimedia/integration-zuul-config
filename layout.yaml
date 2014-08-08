@@ -3194,22 +3194,21 @@ projects:
       - mediawiki-language-extension-bundle-integration
 
   - name: mediawiki/extensions/Mantle
+    template:
+      - name: extension-phpcs
     check:
       - mwext-Mantle-lint
       - mwext-Mantle-jslint
-      - mwext-Mantle-phpcs-HEAD
     test:
       - mwext-Mantle-jslint
       - mwext-Mantle-lint:
         - mwext-Mantle-testextensions-master
-      - mwext-Mantle-phpcs-HEAD
       - mwext-Mantle-qunit
       - mwext-Mantle-qunit-mobile
     gate-and-submit:
       - mwext-Mantle-jslint
       - mwext-Mantle-lint:
         - mwext-Mantle-testextensions-master
-      - mwext-Mantle-phpcs-HEAD
       - mwext-Mantle-qunit
       - mwext-Mantle-qunit-mobile
 
@@ -3245,12 +3244,7 @@ projects:
       - name: extension-unittests
       - name: extension-qunit-and-mobile
       - name: extension-rubylint
-    check:
-      - mwext-MobileFrontend-phpcs-HEAD
-    test:
-      - mwext-MobileFrontend-phpcs-HEAD
-    gate-and-submit:
-      - mwext-MobileFrontend-phpcs-HEAD
+      - name: extension-phpcs
 
   - name: mediawiki/extensions/MobileApp
     template:
@@ -4975,15 +4969,14 @@ projects:
    # to the new repository, let us keep this in place.
    # FIXME use a template
   - name: mediawiki/extensions/Parsoid
+    template:
+      - name: extension-phpcs
     check:
       - mwext-Parsoid-jslint
-      - mwext-Parsoid-phpcs-HEAD
     test:
       - mwext-Parsoid-jslint
-      - mwext-Parsoid-phpcs-HEAD
     gate-and-submit:
       - mwext-Parsoid-jslint
-      - mwext-Parsoid-phpcs-HEAD
 
   - name: mediawiki/extensions/PdfHandler
     template:
@@ -5290,15 +5283,12 @@ projects:
     template:
       - name: extension-unittests
       - name: extension-qunit
-    check:
-      - mwext-TemplateData-phpcs-HEAD
+      - name: extension-phpcs
     test:
       - mwext-TemplateData-npm
       - mwext-TemplateData-testextensions-master
-      - mwext-TemplateData-phpcs-HEAD
     gate-and-submit:
       - mwext-TemplateData-npm
-      - mwext-TemplateData-phpcs-HEAD
 
   - name: mediawiki/extensions/Thanks
     template:
@@ -5436,16 +5426,14 @@ projects:
       - name: extension-unittests
       - name: extension-qunit
       - name: extension-rubylint
+      - name: extension-phpcs
     check:
-      - mwext-UploadWizard-phpcs-HEAD
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
     test:
-      - mwext-UploadWizard-phpcs-HEAD
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
     gate-and-submit:
-      - mwext-UploadWizard-phpcs-HEAD
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
 
@@ -5495,19 +5483,17 @@ projects:
     template:
       - name: extension-qunit
       - name: extension-rubylint
+      - name: extension-phpcs
     check:
       - mwext-VisualEditor-jslint
       - mwext-VisualEditor-lint
-      - mwext-VisualEditor-phpcs-HEAD
     test:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
-      - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-doc-test
     gate-and-submit:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
-      - mwext-VisualEditor-phpcs-HEAD
       - mwext-VisualEditor-doc-test
       - experiment-gating-dependencies
     postmerge:
