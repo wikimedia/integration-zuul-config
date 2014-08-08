@@ -1713,6 +1713,16 @@ project-templates:
      - 'mwext-{name}-qunit'
 
   # Template for MediaWiki extensions.
+  # Triggers phpcs jobs
+  - name: extension-phpcs
+    check:
+      - 'mwext-{name}-phpcs-HEAD'
+    test:
+      - 'mwext-{name}-phpcs-HEAD'
+    gate-and-submit:
+      - 'mwext-{name}-phpcs-HEAD'
+
+  # Template for MediaWiki extensions.
   # Triggers qunit and qunit mobile jobs
   - name: extension-qunit-and-mobile
     test:
