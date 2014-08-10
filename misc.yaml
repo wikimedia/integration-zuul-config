@@ -88,3 +88,25 @@
     name: 'search-highlighter'
     jobs:
      - 'search-highlighter'
+
+- job:
+    name: 'unicodejs-jsduck-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck-conf:
+        config: '$WORKSPACE/jsduck.json'
+     - documentation-sync:
+        src: '$WORKSPACE/docs/code'
+        project: 'unicodejs'
+        version: '$ZUUL_BRANCH'
+
+- project:
+    name: 'unicodejs'
+    jobs:
+     - '{name}-npm'
+     - '{name}-jsduck'
+     - 'unicodejs-jsduck-publish'
