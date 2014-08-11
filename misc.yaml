@@ -31,13 +31,33 @@
         project: 'oojs'
         version: '$ZUUL_BRANCH'
 
+- job:
+    name: 'oojs-core-jsduck'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck-conf:
+        config: '$WORKSPACE/jsduck.config.json'
+
 - project:
     name: 'oojs-core'
     jobs:
      - '{name}-jslint'
      - '{name}-npm'
-     - '{name}-jsduck'
+     - 'oojs-core-jsduck'
      - 'oojs-core-jsduck-publish'
+
+- job:
+    name: 'oojs-ui-jsduck'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck-conf:
+        config: '$WORKSPACE/jsduck.config.json'
 
 - job:
     name: 'oojs-ui-jsduck-publish'
@@ -59,7 +79,7 @@
     jobs:
      - '{name}-jslint'
      - '{name}-npm'
-     - '{name}-jsduck'
+     - 'oojs-ui-jsduck'
      - 'oojs-ui-jsduck-publish'
 
 - project:
@@ -97,8 +117,7 @@
     triggers:
      - zuul
     builders:
-     - jsduck-conf:
-        config: '$WORKSPACE/jsduck.json'
+     - jsduck
      - documentation-sync:
         src: '$WORKSPACE/docs/code'
         project: 'unicodejs'
