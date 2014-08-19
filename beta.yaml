@@ -122,6 +122,9 @@
     builders:
      - shell: "sudo -u mwdeploy mwscript update.php --wiki=$wikidb --quick"
 
+    publishers:
+      - beta-irc
+
     # We do not have a good way to detect databases modifications, so just spam
     # the beta cluster with update requests.
     triggers:
@@ -156,6 +159,7 @@
         daysToKeep: 15
 
     publishers:
+      - beta-irc
       - email-ext:
           recipients: qa-alerts@lists.wikimedia.org
           attach-build-log: true
@@ -192,6 +196,7 @@
      - timed: 'H/10 * * * *'
 
     publishers:
+      - beta-irc
       - email-ext:
           recipients: qa-alerts@lists.wikimedia.org
           attach-build-log: false
@@ -218,6 +223,7 @@
         daysToKeep: 7
 
     publishers:
+      - beta-irc
       - email-ext:
           recipients: qa-alerts@lists.wikimedia.org
           attach-build-log: true
@@ -247,6 +253,8 @@
 
      - shell: |
          sudo /etc/init.d/parsoid restart
+    publishers:
+      - beta-irc
 
 - job-template:
     name: beta-cxserver-update-{datacenter}
@@ -269,6 +277,24 @@
 
      - shell: |
          sudo service cxserver restart
+    publishers:
+     - beta-irc
+
+- publisher:
+    name: beta-irc
+    publishers:
+      - ircbot:
+          strategy: new-failure-and-fixed
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary
+          matrix-notifier: only-parent
+          channels:
+              - name: '#wikimedia-qa'
+                notify-only: true
 
 - project:
     name: beta
