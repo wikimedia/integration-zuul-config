@@ -352,7 +352,8 @@
      - BreadCrumbs2
      - Calendar
      - Campaigns
-     - Capiunto
+     - Capiunto:
+        dependencies: 'Scribunto'
      - Carp
      - CategorySlideShow
      - CategorySortHeaders
@@ -366,7 +367,9 @@
      - CharRangeSpan
      - Checkpoint
      - CheckUser
-     - CirrusSearch
+     - CirrusSearch:
+        # Please also update browsertests dependencies
+        dependencies: 'Cite,Elastica,MwEmbedSupport,TimedMediaHandler,PdfHandler'
      - Cite
      - CiteThisPage
      - Citoid
@@ -412,7 +415,8 @@
      - CustomData
      - CustomUserSignup
      - DataTransfer
-     - DataTypes
+     - DataTypes:
+        dependencies: 'DataValues'
      - DebianISOCodes
      - DeleteBatch
      - DeleteOwn
@@ -428,7 +432,8 @@
      - DismissableSiteNotice
      - DisqusTag
      - DjangoAnalytics
-     - DonationInterface
+     - DonationInterface:
+        dependencies: 'ContributionTracking'
      - DoubleWiki
      - DownloadCounter
      - DPLforum
@@ -442,7 +447,8 @@
      - Editcount
      - EditPageTracking
      - EditSubpages
-     - EducationProgram
+     - EducationProgram:
+        dependencies: 'cldr'
      - Elastica
      - EmailCapture
      - EnhanceContactForm
@@ -463,8 +469,10 @@
      - FeedsFromPrivateWikis
      - FilterListUsers
      - FirstSteps
-     - FlaggedRevs
-     - Flow
+     - FlaggedRevs:
+        dependencies: 'Scribunto'
+     - Flow:
+        dependencies: 'AbuseFilter,SpamBlacklist,CheckUser,Mantle,Echo'
      - FlvHandler
      - ForcePreview
      - FormatDates
@@ -481,7 +489,8 @@
      - GeoCrumbs
      - GeoData
      - GeoGebra
-     - GettingStarted
+     - GettingStarted:
+        dependencies: 'CentralAuth,EventLogging,GuidedTour'
      - Git2Pages
      - Gitweb
      - GlobalBlocking
@@ -506,7 +515,8 @@
      - GoogleSiteSearch
      - GraphViz
      - GroupsSidebar
-     - GuidedTour
+     - GuidedTour:
+        dependencies: 'EventLogging'
      - GWToolset
      - Hanp
      - HashTables
@@ -570,11 +580,13 @@
      - Maintenance
      - MaintenanceShell
      - Mantle
-     - Maps
+     - Maps:
+        dependencies: 'Validator'
      - MapSources
      - MarkAsHelpful
      - MassEditRegex
-     - MassMessage
+     - MassMessage:
+        dependencies: 'LiquidThreads'
      - Math
      - MathSearch
      - MediaFunctions
@@ -582,8 +594,10 @@
      - MediaWikiChat
      - Minifier
      - MixedNamespaceSearchSuggestions
-     - MobileApp
-     - MobileFrontend
+     - MobileApp:
+        dependencies: 'MobileFrontend,Mantle'
+     - MobileFrontend:
+        dependencies: 'Mantle'
      - Model
      - MolHandler
      - MoodBar
@@ -604,7 +618,8 @@
      - NamespaceRelations
      - Narayam
      - NaturalLanguageList
-     - NavigationTiming
+     - NavigationTiming:
+        dependencies: 'EventLogging'
      - Negref
      - NetworkAuth
      - NewestPages
@@ -618,7 +633,8 @@
      - Nonlinear
      - Nostalgia
      - NoTitle
-     - NSFileRepo
+     - NSFileRepo:
+        dependencies: 'Lockdown'
      - Nuke
      - NukeDPL
      - NumberFormat
@@ -670,10 +686,12 @@
      - PHPExcel
      - PhpHighlight
      - PhpTags
-     - PhpTagsFunctions
+     - PhpTagsFunctions:
+        dependencies: 'PhpTags'
      - PhpTagsMaps
      - PhpTagsSMW
-     - PhpTagsWiki
+     - PhpTagsWiki:
+        dependencies: 'PhpTags,PhpTagsFunctions'
      - PictureGame
      - Poem
      - Poll
@@ -687,7 +705,8 @@
      - Premoderation
      - PrivateDomains
      - PronunciationRecording
-     - ProofreadPage
+     - ProofreadPage:
+        dependencies: 'LabeledSectionTransclusion'
      - ProtectSite
      - PubSubHubbub
      - PurgeClickThrough
@@ -705,7 +724,8 @@
      - RandomInCategory
      - RandomRootPage
      - RandomUsersWithAvatars
-     - Ratings
+     - Ratings:
+        dependencies: 'Validator'
      - RDFIO
      - ReaderFeedback
      - ReassignEdits
@@ -777,7 +797,8 @@
      - SimpleChanges
      - SimpleFarm
      - SimpleSecurity
-     - SimpleSurvey
+     - SimpleSurvey:
+        dependencies: 'PrefSwitch'
      - SiteMatrix
      - SiteMetrics
      - SiteSettings
@@ -827,24 +848,29 @@
      - TemplateInfo
      - TemplateSandbox
      - TextExtracts
-     - Thanks
+     - Thanks:
+        dependencies: 'Echo,Flow,Mantle'
      - Theme
      - ThemeDesigner
      - ThrottleOverride
      - ThumbParser
-     - TimedMediaHandler
+     - TimedMediaHandler:
+        dependencies: 'MwEmbedSupport'
      - timeline
      - TimelineTable
      - TimeMachine
      - TimezoneSelector
-     - TitleBlacklist
+     - TitleBlacklist:
+        dependencies: 'AntiSpoof'
      - TitleIcon
      - TitleKey
      - TocTree
      - TorBlock
      - Translate
-     - TranslateSvg
-     - TranslationNotifications
+     - TranslateSvg:
+        dependencies: 'Translate'
+     - TranslationNotifications:
+        dependencies: 'Translate'
      - Transliterator
      - TrustedXFF
      - TweetANew
@@ -871,7 +897,8 @@
      - UserPageViewTracker
      - UserStatus
      - UserThrottle
-     - Validator
+     - Validator:
+        dependencies: 'DataValues'
      - ValueView
      - Variables
      - Vector
@@ -912,7 +939,8 @@
      - Wikilog
      - WikiLove
      - WikiLovesMonuments
-     - WikimediaEvents
+     - WikimediaEvents:
+        dependencies: 'EventLogging'
      - WikimediaIncubator
      - WikimediaMaintenance
      - WikimediaMessages
@@ -920,7 +948,8 @@
      - WikiObjectModel
      - WikiTextLoggedInOut
      - WikiTwidget
-     - WikivoteMapsYandex
+     - WikivoteMapsYandex:
+        dependencies: 'Maps'
      - WindowsAzureSDK
      - WindowsAzureStorage
      - Workflow
@@ -929,9 +958,12 @@
      - YetAnotherKeywords
      - YotpoReviews
      - YouTube
-     - ZeroBanner
-     - ZeroPortal
-     - ZeroRatedMobileAccess
+     - ZeroBanner:
+        dependencies: 'JsonConfig,MobileFrontend,Mantle'
+     - ZeroPortal:
+        dependencies: 'JsonConfig,MobileFrontend,Mantle,ZeroBanner'
+     - ZeroRatedMobileAccess:
+        dependencies: 'MobileFrontend,Mantle'
 
     mwbranch:
      - master
@@ -945,117 +977,7 @@
     jobs:
      - mwext-check-jobs
 
-    # Extra jobs for specific extensions
-
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: Capiunto
-        dependencies: 'Scribunto'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: CirrusSearch
-        # Please also update browsertests dependencies
-        dependencies: 'Cite,Elastica,MwEmbedSupport,TimedMediaHandler,PdfHandler'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: DataTypes
-        dependencies: 'DataValues'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: DonationInterface
-        dependencies: 'ContributionTracking'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: EducationProgram
-        dependencies: 'cldr'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: FlaggedRevs
-        dependencies: 'Scribunto'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: Flow
-        dependencies: 'AbuseFilter,SpamBlacklist,CheckUser,Mantle,Echo'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: GettingStarted
-        dependencies: 'CentralAuth,EventLogging,GuidedTour'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: GuidedTour
-        dependencies: 'EventLogging'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: Maps
-        dependencies: 'Validator'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: MobileApp
-        dependencies: 'MobileFrontend,Mantle'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: MobileFrontend
-        dependencies: 'Mantle'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: NavigationTiming
-        dependencies: 'EventLogging'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: MassMessage
-        dependencies: 'LiquidThreads'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: NSFileRepo
-        dependencies: 'Lockdown'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: PhpTagsFunctions
-        dependencies: 'PhpTags'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: PhpTagsWiki
-        dependencies: 'PhpTags,PhpTagsFunctions'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: ProofreadPage
-        dependencies: 'LabeledSectionTransclusion'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: Ratings
-        dependencies: 'Validator'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: SimpleSurvey
-        dependencies: 'PrefSwitch'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: Thanks
-        dependencies: 'Echo,Flow,Mantle'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: TitleBlacklist
-        dependencies: 'AntiSpoof'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: TimedMediaHandler
-        dependencies: 'MwEmbedSupport'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: TranslateSvg
-        dependencies: 'Translate'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: TranslationNotifications
-        dependencies: 'Translate'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: Validator
-        dependencies: 'DataValues'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: WikivoteMapsYandex
-        dependencies: 'Maps'
+     # Wikibase related
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         name: mwext
         ext-name: Wikibase
@@ -1078,19 +1000,6 @@
      - '{name}-{ext-name}-testextensions-{mwbranch}':
         ext-name: WikibaseDataModel
         dependencies: 'Diff,DataValues'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        name: mwext
-        ext-name: WikimediaEvents
-        dependencies: 'EventLogging'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        ext-name: ZeroRatedMobileAccess
-        dependencies: 'MobileFrontend,Mantle'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        ext-name: ZeroBanner
-        dependencies: 'JsonConfig,MobileFrontend,Mantle'
-     - '{name}-{ext-name}-testextensions-{mwbranch}':
-        ext-name: ZeroPortal
-        dependencies: 'JsonConfig,MobileFrontend,Mantle,ZeroBanner'
 
      # qunit jobs for MediaWiki extensions
 
