@@ -1574,6 +1574,10 @@ jobs:
   - name: mediawiki-core-doxygen-publish
     branch: ^(master|REL.*)$ # bug 50325
 
+  - name: mediawiki-vendor-integration
+    branch: ^(master|REL.*)$  # probably fails on wmf branches
+    voting: false  # TODO add it to gate-and-submit
+
   - name: mediawiki-core-qunit
     # Doesn't work in MediaWiki REL1_19
     # (times out or doesn't start in the first place).
@@ -1835,6 +1839,7 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-lint:
+        - mediawiki-vendor-integration
         - mediawiki-core-phpunit-databaseless
         - mediawiki-core-install-sqlite:
           - mediawiki-core-qunit
@@ -1844,11 +1849,13 @@ projects:
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     gate-and-submit:
+    # Non voting jobs are commented out
 #      - mediawiki-core-phpcs-lenient-HEAD
 #      - mediawiki-core-phpcs-strict-HEAD
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-lint:
+        #- mediawiki-vendor-integration
         - mediawiki-core-phpunit-databaseless
         - mediawiki-core-install-sqlite:
           - mediawiki-core-qunit
@@ -1859,7 +1866,6 @@ projects:
       - php-composer-validate
     experimental:
       - mediawiki-core-extensions-integration
-      - mediawiki-vendor-integration
       - mediawiki-language-extension-bundle-integration
     postmerge:
       - mediawiki-core-jsduck-publish
@@ -1877,12 +1883,15 @@ projects:
       - mediawiki-core-release
 
   - name: mediawiki/vendor
-    check-voter:
+    check:
       - php-composer-validate
+    test:
+      - php-composer-validate
+      - mediawiki-vendor-integration
     gate-and-submit:
+      - mediawiki-vendor-integration
       - php-composer-validate
     experimental:
-      - mediawiki-vendor-integration
       - mediawiki-language-extension-bundle-integration
 
 
