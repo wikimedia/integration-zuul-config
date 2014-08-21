@@ -53,30 +53,6 @@
         /usr/local/bin/zuul-server -c /etc/zuul/public.conf -t -l "$WORKSPACE"/layout.yaml 2>before.txt
         colordiff -u before.txt current.txt
 
-# Job to check JJB config
-- job-template:
-    name: 'integration-jjb-config-test'
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul  # TODO does not really use it
-    concurrent: true
-    triggers:
-     - zuul
-    scm:
-        - git:
-            url: 'https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder.git'
-            branches:
-                - master
-        - git:
-            url: '$ZUUL_URL/integration/jenkins-job-builder-config'
-            refspec: '$ZUUL_REF'
-            name: 'origin'
-            disable-submodules: true
-            basedir: config
-    builders:
-     - shell: |
-        mkdir "$WORKSPACE/output/"
-        tox -e venv -- jenkins-jobs test "$WORKSPACE/config/" -o "$WORKSPACE/output/"
-
 - job-template:
     name: 'integration-jjb-config-diff'
     node: contintLabsSlave && UbuntuPrecise
@@ -147,7 +123,6 @@
     name: 'integration-jjb-config'
     jobs:
      - '{name}-yamllint'
-     - 'integration-jjb-config-test'
      - 'integration-jjb-config-diff'
 
 - project:
