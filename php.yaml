@@ -6,6 +6,16 @@
     defaults: use-remote-zuul
     concurrent: true
 
+    # Clear workspace and use a shallow clone from Zuul
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: true
+        shallow-clone: true
+
     triggers:
      - zuul
     builders:
