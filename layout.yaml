@@ -1576,7 +1576,11 @@ jobs:
 
   - name: mediawiki-vendor-integration
     branch: ^(master|REL.*)$  # probably fails on wmf branches
-    voting: false  # TODO add it to gate-and-submit
+  # Old splitted phpunit jobs superseeded by mediawiki-vendor-integration
+  - name: ^mediawiki-core-phpunit-.*$
+    branch: (?!:master|REL.*)$  # covered by mediawiki-vendor-integration
+  - name: ^mediawiki-core-install$
+    branch: (?!:master|REL.*)$  # covered by mediawiki-vendor-integration
 
   - name: mediawiki-core-qunit
     # Doesn't work in MediaWiki REL1_19
@@ -1854,7 +1858,7 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-lint:
-        #- mediawiki-vendor-integration
+        - mediawiki-vendor-integration
         - mediawiki-core-phpunit-databaseless
         - mediawiki-core-install-sqlite:
           - mediawiki-core-qunit
