@@ -1193,13 +1193,7 @@ jobs:
     voting: false
   - name: mwext-WikiArticleFeeds-jslint
     voting: false
-  - name: mwext-WikibaseClient-jslint
-    voting: false
-  - name: mwext-WikibaseLib-jslint
-    voting: false
   - name: mwext-WikibaseMobile-jslint
-    voting: false
-  - name: mwext-WikibaseRepo-jslint
     voting: false
   - name: mwext-WikibaseSolr-jslint
     voting: false
@@ -1360,12 +1354,6 @@ jobs:
   - name: mwext-VoteNY-testextensions-master  # Does not support sqlite
     voting: false
   - name: mwext-Widgets-testextensions-master
-    voting: false
-  - name: mwext-WikibaseClient-testextensions-master
-    voting: false
-  - name: mwext-WikibaseLib-testextensions-master
-    voting: false
-  - name: mwext-WikibaseRepo-testextensions-master
     voting: false
   - name: mwext-WikibaseSolr-testextensions-master
     voting: false
@@ -4860,19 +4848,7 @@ projects:
     template:
       - name: extension-unittests
 
-  - name: mediawiki/extensions/WikibaseClient
-    template:
-      - name: extension-unittests
-
-  - name: mediawiki/extensions/WikibaseLib
-    template:
-      - name: extension-unittests
-
   - name: mediawiki/extensions/WikibaseMobile
-    template:
-      - name: extension-unittests
-
-  - name: mediawiki/extensions/WikibaseRepo
     template:
       - name: extension-unittests
 
@@ -5587,10 +5563,14 @@ projects:
       - mwext-Wikibase-jslint
       - mwext-Wikibase-lint
       - php-composer-validate
-
-  - name: mediawiki/extensions/WikibaseQuery
-    template:
-      - name: extension-checks
+    experimental:
+      - mwext-Wikibase-jslint
+      - mwext-Wikibase-lint
+      - php-composer-validate
+      - mwext-Wikibase-repo-tests
+      - mwext-Wikibase-repo-api-tests
+      - mwext-Wikibase-repo-getentities-api-tests
+      - mwext-Wikibase-client-tests
 
   - name: mediawiki/extensions/Wikidata
     template:
