@@ -1,0 +1,76 @@
+- builder:
+    name: wdj-mw-composer-install-ext
+    builders:
+        - shell: 'cd "$WORKSPACE/extensions/{extension}" &&
+        timeout 300 /usr/local/bin/composer install --prefer-source -vvv'
+
+- builder:
+    name: wdj-wb-apply-settings
+    builders:
+     - shell: "$WORKSPACE/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient} -e {experimental} -b {isbuild}"
+
+- builder:
+    name: wdj-runtests
+    builders:
+        - shell: |
+            cd "$WORKSPACE/tests/phpunit"
+            php phpunit.php \
+               --log-junit "$WORKSPACE/log/junit-wikidata.xml" \
+               --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
+               {params}
+
+- job-template:
+    name: 'mwext-Wikibase-{kind}-tests'
+    node: Wikidata
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - mw-setup-extension:
+        mwbranch: 'master'
+        dependencies: '{dependencies}'
+     - wdj-mw-composer-install-ext:
+          extension: '{ext-name}'
+     - wdj-wb-apply-settings:
+          repoorclient: '{repoorclient}'
+          experimental: 'true'
+          isbuild: 'false'
+     - mw-run-update-script
+     - wdj-runtests:
+          params: '{phpunit-params}'
+    publishers:
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml'
+
+- project:
+    name: wikidata
+    ext-name: 'Wikibase'
+    # By default we do not need any other extensions:
+    dependencies: ""
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+
+    jobs:
+     - 'mwext-Wikibase-{kind}-tests':
+        kind: repo
+        repoorclient: 'repo'
+        phpunit-params: '--group Wikibase --exclude-group WikibaseAPI'
+     - 'mwext-Wikibase-{kind}-tests':
+        kind: repo-api
+        repoorclient: 'repo'
+        phpunit-params: '--group WikibaseAPI --exclude-group GetEntitiesTest'
+     - 'mwext-Wikibase-{kind}-tests':
+        kind: repo-getentities-api
+        repoorclient: 'repo'
+        phpunit-params: '--group GetEntitiesTest'
+     - 'mwext-Wikibase-{kind}-tests':
+        kind: client
+        repoorclient: 'client'
+        dependencies: 'Scribunto'
+        phpunit-params: '--group Wikibase,WikibaseClient'
