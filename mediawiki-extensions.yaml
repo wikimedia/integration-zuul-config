@@ -69,6 +69,8 @@
         mwbranch: 'master'
         dependencies: '{dependencies}'
 
+     - mw-run-update-script
+
      - browsertests:
          tests-path: 'extensions/{ext-name}/tests/browser'
          browser: '{browser}'
@@ -105,6 +107,7 @@
      - mw-setup-extension:
         mwbranch: 'master'
         dependencies: '{dependencies}'
+     - mw-run-update-script
      - qunit
     publishers:
      - archive-log-dir
@@ -121,6 +124,7 @@
      - mw-setup-extension:
         mwbranch: 'master'
         dependencies: '{dependencies}'
+     - mw-run-update-script
      - qunit-mobile
     publishers:
      - archive-log-dir
@@ -136,6 +140,7 @@
      - mw-setup-extension:
         mwbranch: '{mwbranch}'
         dependencies: '{dependencies}'
+     - mw-run-update-script
      - mw-run-phpunit-allexts
     # TODO, find ways to additionaly run tests for core but
     # without extensions tests
@@ -264,6 +269,7 @@
      - mw-setup-extension:
         mwbranch: 'master'
         dependencies: '{dependencies}'
+     - mw-run-update-script
      - mw-run-phpunit-allexts
     publishers:
      - archive-log-dir
