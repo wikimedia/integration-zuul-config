@@ -151,6 +151,35 @@
      - junit:
         results: 'log/junit*.xml'
 
+# Run extension tests via Zuul cloner
+- job-template:
+    name: '{name}-{ext-name}-testextension'
+    node: hasSlaveScripts && UbuntuPrecise
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         # Build dependencies list
+         rm -f deps.txt
+         touch deps.txt
+         echo -e "mediawiki/core\nmediawiki/vendor\nmediawiki/extensions/{ext-name}" >> deps.txt
+         echo $(IFS=,; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;) >> deps.txt
+     - zuul-cloner:
+         projects: >
+             $(cat deps.txt)
+     - mw-install-sqlite
+     - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - mw-run-phpunit-allexts
+    # TODO, find ways to additionaly run tests for core but
+    # without extensions tests
+    publishers:
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml'
+
+
 - job-template:
     name: 'mwext-GuidedTour-doc-test'
     defaults: use-remote-zuul
@@ -269,6 +298,7 @@
      - '{name}-{ext-name}-lint'
      - '{name}-{ext-name}-jslint'
      - '{name}-{ext-name}-testextensions-{mwbranch}'
+     - '{name}-{ext-name}-testextension'
      - '{name}-{ext-name}-phpcs-HEAD'
 
 - project:
