@@ -51,16 +51,17 @@
 - job-template:
     name: '{name}-qunit'
     node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
-    defaults: use-zuul
     concurrent: true
     logrotate:
         daysToKeep: 15
-    scm:
-     - git-mwcore
     triggers:
      - zuul
 
     builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
      - mw-install-sqlite
      - mw-apply-settings
      - qunit

@@ -117,6 +117,9 @@
      - shell: |
         #!/bin/bash -x
 
+        # Load context (namely: MW_INSTALL_PATH)
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
         # Let apache write in sqlite file
         mkdir -p data
         chmod a+w data/
@@ -141,13 +144,13 @@
           \$wgScriptPath = '/$TEST_ID/w';
           \$wgArticlePath = '/$TEST_ID/wiki/\$1';
           \$wgScript = \$wgStylePath = \$wgLogo = false;
-          " >> $WORKSPACE/LocalSettings.php
+          " >> "$MW_INSTALL_PATH/LocalSettings.php"
 
         # On labs:
         DOCROOT="/mnt/localhost-browsertests"
 
         # Publish WORKSPACE in Apache
-        ln -s "$WORKSPACE" "$DOCROOT/$TEST_ID"
+        ln -s "$MW_INSTALL_PATH" "$DOCROOT/$TEST_ID"
         curl --location --include "http://localhost:9413/$TEST_ID/" |head -n42
 
         # Shared cache of gems to avoid hitting rubygems all the time
@@ -274,6 +277,10 @@
     builders:
      - shell: |
         #!/bin/bash -x
+
+        # Load context (namely: MW_INSTALL_PATH)
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
         # Create unique sub directory name
         #TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
         # String of jenkins-$JOB_NAME-$BUILD_NUMBER.
@@ -283,7 +290,7 @@
          "<?php\n\$wgServer = 'http://localhost:9412';\n"\
          "\$wgScriptPath = '/${{TEST_ID}}';\n"\
          "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
-         "\$wgEnableJavaScriptTest = true;\n" >> $WORKSPACE/LocalSettings.php
+         "\$wgEnableJavaScriptTest = true;\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
 
         # Make sure to compress MediaWiki log dir after phpunit has ran
         function compress_log_dir() {{
@@ -294,8 +301,10 @@
 
         # The location is free or we make it free
         test ! -e /srv/localhost/qunit/$TEST_ID || rm /srv/localhost/qunit/$TEST_ID;
+
         # Publish our install in the QUnit server document root
-        ln -s $WORKSPACE /srv/localhost/qunit/$TEST_ID
+        ln -s "$MW_INSTALL_PATH" /srv/localhost/qunit/$TEST_ID
+
         # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
         curl --include "http://localhost:9412/$TEST_ID/index.php?title=Special:BlankPage" | head -n42
         curl --include "http://localhost:9412/$TEST_ID/load.php?debug=true&modules=startup&only=scripts" | head -n42
