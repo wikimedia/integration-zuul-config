@@ -44,6 +44,28 @@
      - junit:
         results: 'log/junit*.xml'
 
+- job:
+    name: 'mwext-Wikibase-qunit'
+    node: Wikidata
+    concurrent: true
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - mw-setup-extension:
+        mwbranch: 'master'
+        dependencies: '{dependencies}'
+     - wdj-mw-composer-install-ext:
+          extension: '{ext-name}'
+     - wdj-wb-apply-settings:
+          repoorclient: 'repo' # qunit tests are in lib so this can be either..
+          experimental: 'true'
+          isbuild: 'false'
+     - mw-run-update-script
+     - qunit
+    publishers:
+     - archive-log-dir
+
 - project:
     name: wikidata
     ext-name: 'Wikibase'
@@ -75,3 +97,4 @@
         repoorclient: 'client'
         dependencies: 'Scribunto'
         phpunit-params: '--group Wikibase,WikibaseClient'
+     - 'mwext-Wikibase-qunit'
