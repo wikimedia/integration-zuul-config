@@ -66,6 +66,28 @@
     publishers:
      - archive-log-dir
 
+- job-template:
+    name: 'mwext-Wikidata-{kind}-tests'
+    node: Wikidata # As this does not use composer there is no reason it can not also use regular slaves
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - mw-setup-extension:
+        mwbranch: 'master' # This should test against the current branch (not important yet)
+        dependencies: '{dependencies}'
+     - wd-wb-apply-settings:
+          repoorclient: '{repoorclient}'
+          experimental: '{experimental}'
+          isbuild: 'true'
+     - mw-run-update-script
+     - wd-runtests:
+          params: '{phpunit-params}'
+    publishers:
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml'
+
 - project:
     name: wikidata
     # By default we do not need any other extensions:
@@ -107,3 +129,33 @@
 
      - 'mwext-Wikibase-qunit':
         ext-name: 'Wikibase'
+
+     - 'mwext-Wikidata-{kind}-tests':
+        ext-name: 'Wikidata'
+        kind: client
+        repoorclient: 'client'
+        experimental: 'true'
+        dependencies: 'Scribunto'
+        phpunit-params: '--group Wikibase,WikibaseClient'
+
+     - 'mwext-Wikidata-{kind}-tests':
+        ext-name: 'Wikidata'
+        kind: client-nonexperimental
+        repoorclient: 'client'
+        experimental: 'false'
+        dependencies: 'Scribunto'
+        phpunit-params: '--group Wikibase,WikibaseClient'
+
+     - 'mwext-Wikidata-{kind}-tests':
+        ext-name: 'Wikidata'
+        kind: repo
+        repoorclient: 'repo'
+        experimental: 'true'
+        phpunit-params: '--group Wikibase,PropertySuggester'
+
+     - 'mwext-Wikidata-{kind}-tests':
+        ext-name: 'Wikidata'
+        kind: repo-nonexperimental
+        repoorclient: 'repo'
+        experimental: 'false'
+        phpunit-params: '--group Wikibase,PropertySuggester'
