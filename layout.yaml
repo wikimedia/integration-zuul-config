@@ -1570,6 +1570,8 @@ jobs:
 
   - name: ^mwext-Wikibase-qunit$
     voting: false
+  - name: ^mwext-Wikidata-qunit$
+    voting: false
 
   - name: mediawiki-core-jsduck
     branch: ^(REL1_21|REL1_22|REL1_23|master)$
@@ -5581,6 +5583,14 @@ projects:
   - name: mediawiki/extensions/Wikidata
     template:
       - name: extension-unittests
+    experimental:
+      - mwext-Wikidata-jslint
+      - mwext-Wikidata-lint
+      - mwext-Wikidata-client-tests
+      - mwext-Wikidata-client-nonexperimental-tests
+      - mwext-Wikidata-repo-tests
+      - mwext-Wikidata-repo-nonexperimental-tests
+      - mwext-Wikidata-qunit
 
   - name: mediawiki/extensions/WikiForum
     template:
