@@ -1,16 +1,16 @@
 - builder:
-    name: wdj-mw-composer-install-ext
+    name: wd-mw-composer-install-ext
     builders:
         - shell: 'cd "$WORKSPACE/extensions/{extension}" &&
         timeout 300 /usr/local/bin/composer install --prefer-source -vvv'
 
 - builder:
-    name: wdj-wb-apply-settings
+    name: wd-wb-apply-settings
     builders:
      - shell: "$WORKSPACE/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient} -e {experimental} -b {isbuild}"
 
 - builder:
-    name: wdj-runtests
+    name: wd-runtests
     builders:
         - shell: |
             cd "$WORKSPACE/tests/phpunit"
@@ -30,14 +30,14 @@
      - mw-setup-extension:
         mwbranch: 'master'
         dependencies: '{dependencies}'
-     - wdj-mw-composer-install-ext:
-          extension: '{ext-name}'
-     - wdj-wb-apply-settings:
+     - wd-mw-composer-install-ext:
+          extension: 'Wikibase'
+     - wd-wb-apply-settings:
           repoorclient: '{repoorclient}'
           experimental: 'true'
           isbuild: 'false'
      - mw-run-update-script
-     - wdj-runtests:
+     - wd-runtests:
           params: '{phpunit-params}'
     publishers:
      - archive-log-dir
@@ -55,9 +55,9 @@
      - mw-setup-extension:
         mwbranch: 'master'
         dependencies: '{dependencies}'
-     - wdj-mw-composer-install-ext:
+     - wd-mw-composer-install-ext:
           extension: '{ext-name}'
-     - wdj-wb-apply-settings:
+     - wd-wb-apply-settings:
           repoorclient: 'repo' # qunit tests are in lib so this can be either..
           experimental: 'true'
           isbuild: 'false'
@@ -68,7 +68,6 @@
 
 - project:
     name: wikidata
-    ext-name: 'Wikibase'
     # By default we do not need any other extensions:
     dependencies: ""
 
@@ -80,21 +79,31 @@
       - ansicolor
 
     jobs:
+
      - 'mwext-Wikibase-{kind}-tests':
+        ext-name: 'Wikibase'
         kind: repo
         repoorclient: 'repo'
         phpunit-params: '--group Wikibase --exclude-group WikibaseAPI'
+
      - 'mwext-Wikibase-{kind}-tests':
+        ext-name: 'Wikibase'
         kind: repo-api
         repoorclient: 'repo'
         phpunit-params: '--group WikibaseAPI --exclude-group GetEntitiesTest'
+
      - 'mwext-Wikibase-{kind}-tests':
+        ext-name: 'Wikibase'
         kind: repo-getentities-api
         repoorclient: 'repo'
         phpunit-params: '--group GetEntitiesTest'
+
      - 'mwext-Wikibase-{kind}-tests':
+        ext-name: 'Wikibase'
         kind: client
         repoorclient: 'client'
         dependencies: 'Scribunto'
         phpunit-params: '--group Wikibase,WikibaseClient'
-     - 'mwext-Wikibase-qunit'
+
+     - 'mwext-Wikibase-qunit':
+        ext-name: 'Wikibase'
