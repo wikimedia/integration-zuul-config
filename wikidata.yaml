@@ -5,9 +5,14 @@
         timeout 300 /usr/local/bin/composer install --prefer-source -vvv'
 
 - builder:
-    name: wd-wb-apply-settings
+    name: wd-wikibase-apply-settings
     builders:
-     - shell: "$WORKSPACE/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient} -e {experimental} -b {isbuild}"
+     - shell: "$WORKSPACE/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient} -e {experimental} -b false"
+
+- builder:
+    name: wd-build-apply-settings
+    builders:
+     - shell: "$WORKSPACE/extensions/Wikidata/vendor/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient} -e {experimental} -b true"
 
 - builder:
     name: wd-runtests
@@ -32,10 +37,9 @@
         dependencies: '{dependencies}'
      - wd-mw-composer-install-ext:
           extension: 'Wikibase'
-     - wd-wb-apply-settings:
+     - wd-wikibase-apply-settings:
           repoorclient: '{repoorclient}'
           experimental: 'true'
-          isbuild: 'false'
      - mw-run-update-script
      - wd-runtests:
           params: '{phpunit-params}'
@@ -57,10 +61,9 @@
         dependencies: '{dependencies}'
      - wd-mw-composer-install-ext:
           extension: '{ext-name}'
-     - wd-wb-apply-settings:
+     - wd-wikibase-apply-settings:
           repoorclient: 'repo' # qunit tests are in lib so this can be either..
           experimental: 'true'
-          isbuild: 'false'
      - mw-run-update-script
      - qunit
     publishers:
@@ -77,10 +80,9 @@
      - mw-setup-extension:
         mwbranch: 'master' # This should test against the current branch (not important yet)
         dependencies: '{dependencies}'
-     - wd-wb-apply-settings:
+     - wd-build-apply-settings:
           repoorclient: '{repoorclient}'
           experimental: '{experimental}'
-          isbuild: 'true'
      - mw-run-update-script
      - wd-runtests:
           params: '{phpunit-params}'
@@ -100,10 +102,9 @@
      - mw-setup-extension:
         mwbranch: 'master'
         dependencies: '{dependencies}'
-     - wd-wb-apply-settings:
+     - wd-build-apply-settings:
           repoorclient: 'repo' # qunit tests are in lib so this can be either..
           experimental: 'true'
-          isbuild: 'false'
      - mw-run-update-script
      - qunit
     publishers:
