@@ -114,8 +114,6 @@
     builders:
 
      - shell: |
-        #!/bin/bash -x
-
         # Load context (namely: MW_INSTALL_PATH)
         . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
@@ -222,7 +220,6 @@
     # Zuul uses Python str.format(obj) for {config} substitutions
     # Escape as {foo} as {{key}} to avoid triggering a KeyError in Zuul parser
      - shell: |
-        #!/bin/bash
         echo "Running JSDuck with {config}..."
         # Get version
         # - ZUUL_REF: refs/zuul/master/Z74178670e7c5495199f8a92e92cf609c
@@ -241,8 +238,10 @@
         ec=$?
         if [[ $ec -eq 0 ]]
         then
+            set +e
             grep "^Warning:" jsduck.log > /dev/null
             gr=$?
+            set -e
             if [[ $gr -eq 0 ]]
             then
                 ec=1
@@ -274,8 +273,6 @@
     name: qunit-querystring
     builders:
      - shell: |
-        #!/bin/bash -x
-
         # Load context (namely: MW_INSTALL_PATH)
         . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
