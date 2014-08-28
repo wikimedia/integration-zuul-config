@@ -88,7 +88,6 @@
     # Use `cd` because jshint reads .jshintrc and .jshintignore from cwd.
     builders:
      - shell: |
-        #!/bin/bash -xe
         cd "{dir}"
         /srv/deployment/integration/slave-scripts/bin/jshint --version
         /srv/deployment/integration/slave-scripts/bin/jshint .
@@ -185,7 +184,6 @@
     name: csslint-in
     builders:
      - shell: |
-        #!/bin/bash -xe
         cd "{dir}"
         /srv/deployment/integration/slave-scripts/bin/wmfgrunt --cwd="$PWD" --verbose csslint
 
