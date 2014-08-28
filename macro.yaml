@@ -269,6 +269,9 @@
         querystring: '&useformat=mobile'
 
 # - querystring: (with leading questionmark)
+#
+# Should be associated with the publisher 'qunit-cleanup' to delete the
+# temporary workspace under /srv/localhost/qunit after the build is complete.
 - builder:
     name: qunit-querystring
     builders:
@@ -305,11 +308,18 @@
         curl --include "http://localhost:9412/$TEST_ID/load.php?debug=true&modules=startup&only=scripts" | head -n42
         # Run QUnit tests via PhantomJS
         /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit{querystring}"
-        gqec=$?
-        # Clean up
-        rm /srv/localhost/qunit/$TEST_ID
-        # Re-use exit code of grunt-qunit command
-        exit $gqec
+
+- publisher:
+    name: qunit-cleanup
+    publishers:
+     - postbuildscript:
+         builders:
+           - shell: |
+               rm "/srv/localhost/qunit/$BUILD_TAG"
+         # Options are confusing, setting them both to false ensures the
+         # postbuildscript is ALWAYS run.
+         onsuccess: False
+         onfailure: False
 
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
