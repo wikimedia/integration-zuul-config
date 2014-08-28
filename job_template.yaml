@@ -1,0 +1,225 @@
+# default
+
+- job-template:
+    name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}'
+    defaults: browsertests
+
+    triggers:
+      - timed: 'H 3,18 * * *'
+
+- job-template:
+    name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+    defaults: browsertests
+
+    triggers:
+      - timed: 'H 3,18 * * *'
+
+- job-template:
+    name: 'browsertests-{name}-language-screenshot-{platform}-{browser}-sauce'
+    defaults: browsertests
+    project-type: matrix
+    execution-strategy:
+      sequential: true
+    axes:
+     - axis:
+        type: label-expression
+        name: label
+        values:
+         - contintLabsSlave && UbuntuPrecise
+     - axis:
+        type: user-defined
+        name: LANGUAGE_SCREENSHOT_CODE
+        values:
+         - ast
+         - cs
+         - de
+         - en
+         - es
+         - fi
+         - fr
+         - gl
+         - he
+         - ilo
+         - it
+         - kn
+         - mk
+         - nb
+         - pl
+         - pt
+         - ro
+         - ru
+         - sl
+         - sv
+         - uk
+         - vi
+         - yue
+
+- defaults:
+    name: browsertests
+    node: contintLabsSlave && UbuntuPrecise
+
+    properties:
+     - throttle:
+         max-per-node: 1
+         max-total: 0
+         enabled: true
+         option: 'category'
+         categories:
+          # They are defined in the global configuration
+          # https://integration.wikimedia.org/ci/configure
+          - browsertest-one-per-node
+
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/{repository}
+          branches:
+            - master
+          wipe-workspace: false  # keep the workspace...
+          clean: true            # ... and use git clean instead
+          prune: true            # prune remote obsoletes branches
+          recursive-submodules: true
+
+    builders:
+      - shell: mkdir -p "$WORKSPACE/log/junit"
+      - browsertest-website:
+          browser: '{browser}'
+          headless: '{headless}'
+          folder: '{folder}'
+          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_url: '{mediawiki_url}'
+          mediawiki_user: '{mediawiki_user}'
+          platform: '{platform}'
+
+    publishers:
+      - junit:
+          results: 'log/junit/*.xml'
+
+      - email-ext:
+          recipients: '{recipients}'
+          body: '${{SCRIPT, template="wikimedia.template"}}'
+
+      - browsertests-irc
+
+      - claim-build
+
+      - archive:
+          artifacts: 'log/*.log, log/junit/*.xml, log/report.html, log/*.png'
+
+    wrappers:
+      - ansicolor
+      - timestamps
+
+# UploadWizard
+
+- job-template:
+    name: 'UploadWizard-api-{mediawiki_url}'
+    defaults: browsertests
+    mediawiki_password_variable: '{mediawiki_password_variable}'
+    mediawiki_url: '{mediawiki_url}'
+    pollscm: '{pollscm}'
+
+    triggers:
+      - timed: "H */6 * * *"
+      - pollscm: "{pollscm}"
+
+    builders:
+      - UploadWizard-api:
+          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_url: '{mediawiki_url}'
+          mediawiki_user: '{mediawiki_user}'
+
+    publishers:
+      - email:
+          recipients: multimedia-alerts@lists.wikimedia.org
+      - browsertests-irc
+
+- builder:
+    name: UploadWizard-api
+    builders:
+      - shell: |
+          # set up environment variables
+          set -e
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          # install python
+          virtualenv --distribute DEV
+
+          # install python dependencies
+          DEV/bin/pip install -rtests/api/requirements.txt
+
+          # run tests
+          DEV/bin/python tests/api/upload-wizard_tests.py \
+            --username "{mediawiki_user}" \
+            --api_url "http://{mediawiki_url}/w/api.php"
+          DEV/bin/python tests/api/upload-wizard_tests.py \
+            --gen_new_image \
+            --username "{mediawiki_user}" \
+            --api_url "http://{mediawiki_url}/w/api.php"
+
+# VisualEditor
+
+- job-template:
+    name: 'browsertests-{name}-production-{platform}-{browser}-sauce'
+    defaults: browsertests
+
+    triggers:
+      - timed: "@weekly"
+
+    builders:
+      - VisualEditor:
+          browser: '{browser}'
+          folder: '{folder}'
+          platform: '{platform}'
+
+- builder:
+    name: VisualEditor
+    builders:
+      - shell: |
+          # set up environment variables
+          export BROWSER={browser}
+          export HEADLESS=false
+          export PLATFORM='{platform}'
+
+          # We only care about one version of our browser and do not need a job
+          # per version.  Thus the versions to use are hardcoded there.
+          #
+          # VERSION is used for SauceLabs
+          #
+          case "$BROWSER" in
+            'firefox')
+                export VERSION=27
+                ;;
+            'chrome')
+                # Empty version will get us the latest one
+                export VERSION=''
+                ;;
+            *)
+                echo "Browser '$BROWSER' unsupported. Can not determine version"
+                exit 1
+                ;;
+          esac
+          echo "Using browser: $BROWSER at version $VERSION"
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+
+          # install ruby dependencies
+          mkdir -p vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
+          cd {folder}/browser/
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
+
+          # run tests
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
+            --backtrace \
+            --color \
+            --verbose \
+            --format pretty \
+            --format Cucumber::Formatter::Sauce \
+            --out "$WORKSPACE/log/junit" \
+            features/verify_production_wikis.feature \
+            || (echo -e "\nJob has failed (exit code: $?)."; false)

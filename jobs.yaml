@@ -1,0 +1,404 @@
+# YAML structure to define email recipients aliases
+- notification-emails:
+    name: listofemails  # a 'name' is required by JJB.
+    lists:
+     - CirrusSearch: &emails-CirrusSearch
+        qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org neverett@wikimedia.org
+     - i18n: &emails-i18n
+        qa-alerts@lists.wikimedia.org aaharoni@wikimedia.org cmcmahon@wikimedia.org nlaxstrom@wikimedia.org
+     - mobile: &emails-mobile
+        qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org
+     - MultimediaViewer: &emails-multimedia
+        qa-alerts@lists.wikimedia.org multimedia-alerts@lists.wikimedia.org
+     - qa: &emails-qa
+        qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org
+     - ULS: &emails-ULS
+        qa-alerts@lists.wikimedia.org aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org nlaxstrom@wikimedia.org sthottingal@wikimedia.org
+     - VisualEditor: &emails-VisualEditor
+        qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org jforrester@wikimedia.org
+     - Growth: &emails-growth
+        qa-alerts@lists.wikimedia.org mflaschen@wikimedia.org rmoen@wikimedia.org samsmith@wikimedia.org
+
+# CirrusSearch
+- project:
+    name: CirrusSearch
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-CirrusSearch
+    repository: mediawiki/extensions/CirrusSearch
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: test2.wikipedia.org
+
+# ContentTranslation
+- project:
+    name: ContentTranslation
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: language-stage.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-ULS
+    repository: mediawiki/extensions/ContentTranslation
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+
+# Core
+- project:
+    name: Core
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/core
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+
+# Echo
+- project:
+    name: Echo
+    folder: tests
+    headless: 'false'
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/Echo
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+        mediawiki_url: test2.wikipedia.org
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        mediawiki_url: test2.wikipedia.org
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+
+# Flow
+- project:
+    name: Flow
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/Flow
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: internet_explorer
+        platform: 'windows_8'
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: test2.wikipedia.org
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: test2.wikipedia.org
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: internet_explorer
+        platform: 'windows_8'
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: test2.wikipedia.org
+
+# Math
+- project:
+    name: Math
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/Math
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+
+# GettingStarted
+- project:
+    name: GettingStarted
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-growth
+    repository: mediawiki/extensions/GettingStarted
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+
+# MobileFrontend
+- project:
+    name: MobileFrontend
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.m.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-mobile
+    repository: mediawiki/extensions/MobileFrontend
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: test2.m.wikipedia.org
+
+# MultimediaViewer
+- project:
+    name: MultimediaViewer
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-multimedia
+    repository: mediawiki/extensions/MultimediaViewer
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: internet_explorer
+        platform: 'windows_8'
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: safari
+        platform: 'os_x_10.9'
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: mediawiki.org
+
+# PageTriage
+- project:
+    name: PageTriage
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/PageTriage
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+
+# TwnMainPage
+
+## sandbox.translatewiki.net
+
+- project:
+    name: TwnMainPage
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
+    mediawiki_url: sandbox.translatewiki.net
+    mediawiki_user: Selenium
+    platform: linux
+    recipients: *emails-i18n
+    repository: mediawiki/extensions/TwnMainPage
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+
+# Translate
+- project:
+    name: Translate
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    platform: linux
+    recipients: *emails-i18n
+    repository: mediawiki/extensions/Translate
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
+        mediawiki_url: meta.wikimedia.org
+        mediawiki_user: Selenium
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_TRANSLATE_SANDBOX_TRANSLATEWIKI_NET
+        mediawiki_url: sandbox.translatewiki.net
+        mediawiki_user: Selenium-Translate
+
+# UniversalLanguageSelector
+- project:
+    name: UniversalLanguageSelector
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    platform: linux
+    recipients: *emails-ULS
+    repository: mediawiki/extensions/UniversalLanguageSelector
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_ULS_WMFLABS_ORG
+        mediawiki_url: commons.wikimedia.beta.wmflabs.org
+        mediawiki_user: Uls
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: language-browsertests.wmflabs.org
+        mediawiki_user: Selenium_user
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
+        mediawiki_url: sandbox.translatewiki.net
+        mediawiki_user: Selenium
+
+# Upload Wizard API test
+- project:
+    name: UploadWizard-api
+    mediawiki_user: Selenium_user
+    repository: mediawiki/extensions/UploadWizard
+
+    jobs:
+     - 'UploadWizard-api-{mediawiki_url}':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: commons.wikimedia.beta.wmflabs.org
+
+        pollscm: '* * * * *'
+     - 'UploadWizard-api-{mediawiki_url}':
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: commons.wikimedia.org
+        pollscm: '0 5 31 2 *'
+
+- project:
+    name: UploadWizard
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: commons.wikimedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/UploadWizard
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+
+# VisualEditor
+- project:
+    name: VisualEditor
+    folder: modules/ve-mw/tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-VisualEditor
+    repository: mediawiki/extensions/VisualEditor
+
+    jobs:
+     - '{name}-jslint'
+     - '{name}-npm'
+     - '{name}-ruby1.9.3lint'
+     - 'VisualEditor-jsduck'
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        platform: 'windows_xp'
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: test2.wikipedia.org
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: test2.wikipedia.org
+     - 'browsertests-{name}-production-{platform}-{browser}-sauce':
+        browser: firefox
+     - 'browsertests-{name}-language-screenshot-{platform}-{browser}-sauce':
+        browser: firefox
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_LANGUAGESCREENSHOTBOT_WMFLABS_ORG
+        mediawiki_user: LanguageScreenshotBot
+
+# WikiLove
+- project:
+    name: WikiLove
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/WikiLove
+
+    jobs:
+      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+
+# ZeroBanner
+- project:
+    name: ZeroBanner
+    browser: phantomjs
+    folder: tests
+    headless: 'true'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+    mediawiki_url: en.m.wikipedia.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/ZeroBanner
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}'
