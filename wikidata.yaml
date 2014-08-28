@@ -89,6 +89,27 @@
      - junit:
         results: 'log/junit*.xml'
 
+- job-template:
+    name: 'mwext-Wikidata-qunit'
+    node: Wikidata
+    concurrent: true
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+    builders:
+     - mw-setup-extension:
+        mwbranch: 'master'
+        dependencies: '{dependencies}'
+     - wd-wb-apply-settings:
+          repoorclient: 'repo' # qunit tests are in lib so this can be either..
+          experimental: 'true'
+          isbuild: 'false'
+     - mw-run-update-script
+     - qunit
+    publishers:
+     - archive-log-dir
+     - qunit-cleanup
+
 - project:
     name: wikidata
     # By default we do not need any other extensions:
@@ -160,3 +181,6 @@
         repoorclient: 'repo'
         experimental: 'false'
         phpunit-params: '--group Wikibase,PropertySuggester'
+
+     - 'mwext-Wikidata-qunit':
+        ext-name: 'Wikidata'
