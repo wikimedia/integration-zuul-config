@@ -695,6 +695,12 @@
             CUCUMBER_PARAMETER="@{mediawiki_url}"
           fi
 
+          if [ $BROWSER == 'phantomjs' ]; then
+              npm install 'phantomjs@>=1.9.7-0 <1.9.8'
+              export PATH="`pwd`/node_modules/.bin:$PATH"
+              phantomjs --version
+          fi
+
           # run tests
           "$WORKSPACE"/vendor/bin/bundle exec cucumber \
             --backtrace \
