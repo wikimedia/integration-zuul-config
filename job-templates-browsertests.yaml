@@ -44,6 +44,11 @@
     name: 'browsertests-{name}-language-screenshot-{platform}-{browser}-sauce'
     defaults: browsertests
     project-type: matrix
+    parameters:
+     - string:
+        name: MEDIAWIKI_API_UPLOAD_URL
+        default: https://commons.wikimedia.org/w/api.php
+        description: "Upload API URL for uploading screenshots"
     execution-strategy:
       sequential: true
     axes:
