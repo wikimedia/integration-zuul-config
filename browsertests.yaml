@@ -114,8 +114,6 @@
     name: Flow
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
-    mediawiki_url: en.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
@@ -124,12 +122,18 @@
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: internet_explorer
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
         platform: 'windows_8'
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
