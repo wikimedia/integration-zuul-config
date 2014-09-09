@@ -3,31 +3,28 @@
     name: listofemails  # a 'name' is required by JJB.
     lists:
      - CirrusSearch: &emails-CirrusSearch
-        qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org neverett@wikimedia.org
+        cmcmahon@wikimedia.org neverett@wikimedia.org qa-alerts@lists.wikimedia.org
+
+     - Growth: &emails-growth
+        mflaschen@wikimedia.org qa-alerts@lists.wikimedia.org rmoen@wikimedia.org samsmith@wikimedia.org
 
      - i18n: &emails-i18n
-        qa-alerts@lists.wikimedia.org aaharoni@wikimedia.org cmcmahon@wikimedia.org
-
-     - mobile: &emails-mobile
-        qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org
+        aaharoni@wikimedia.org cmcmahon@wikimedia.org qa-alerts@lists.wikimedia.org
 
      - MultimediaViewer: &emails-multimedia
-        qa-alerts@lists.wikimedia.org multimedia-alerts@lists.wikimedia.org
+        multimedia-alerts@lists.wikimedia.org qa-alerts@lists.wikimedia.org
 
      - qa: &emails-qa
-        qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org
+        cmcmahon@wikimedia.org qa-alerts@lists.wikimedia.org
 
      - ULS: &emails-ULS
-        qa-alerts@lists.wikimedia.org aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org
+        aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org qa-alerts@lists.wikimedia.org
 
      - UploadWizard: &emails-UploadWizard
         qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org neilk@neilk.net
 
      - VisualEditor: &emails-VisualEditor
-        qa-alerts@lists.wikimedia.org cmcmahon@wikimedia.org jforrester@wikimedia.org
-
-     - Growth: &emails-growth
-        qa-alerts@lists.wikimedia.org mflaschen@wikimedia.org rmoen@wikimedia.org samsmith@wikimedia.org
+        cmcmahon@wikimedia.org jforrester@wikimedia.org qa-alerts@lists.wikimedia.org
 
 # CirrusSearch
 - project:
@@ -195,7 +192,7 @@
     mediawiki_url: en.m.wikipedia.beta.wmflabs.org
     mediawiki_user: Selenium_user
     platform: linux
-    recipients: *emails-mobile
+    recipients: *emails-qa
     repository: mediawiki/extensions/MobileFrontend
 
     jobs:
