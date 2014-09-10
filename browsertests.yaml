@@ -197,10 +197,10 @@
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: firefox
+        browser: chrome
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: chrome
+        browser: firefox
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
@@ -368,10 +368,10 @@
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: firefox
+        browser: chrome
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: chrome
+        browser: firefox
 
 # VisualEditor
 - project:
@@ -395,23 +395,18 @@
      - 'VisualEditor-jsduck'
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: firefox
-
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: safari
-        platform: 'os_x_10.9'
+        browser: firefox
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: internet_explorer
         platform: 'windows_8'
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: firefox
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
-        mediawiki_url: test2.wikipedia.org
+        browser: safari
+        platform: 'os_x_10.9'
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
@@ -419,8 +414,7 @@
         mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: safari
-        platform: 'os_x_10.9'
+        browser: firefox
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
         mediawiki_url: test2.wikipedia.org
 
@@ -434,6 +428,12 @@
         browser: internet_explorer
         platform: 'windows_8.1'
         version: '11'
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: safari
+        platform: 'os_x_10.9'
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-production-{platform}-{browser}-sauce':
         browser: firefox
