@@ -15,6 +15,25 @@
       - timed: 'H 3,18 * * *'
 
 - job-template:
+    name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce'
+    defaults: browsertests
+
+    builders:
+      - shell: mkdir -p "$WORKSPACE/log/junit"
+      - browsertest-website-version:
+          browser: '{browser}'
+          headless: '{headless}'
+          folder: '{folder}'
+          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_url: '{mediawiki_url}'
+          mediawiki_user: '{mediawiki_user}'
+          platform: '{platform}'
+          version: '{version}'
+
+    triggers:
+      - timed: 'H 3,18 * * *'
+
+- job-template:
     name: 'browsertests-{name}-language-screenshot-{platform}-{browser}-sauce'
     defaults: browsertests
     project-type: matrix
