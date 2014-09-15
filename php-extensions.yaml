@@ -14,16 +14,8 @@
     triggers:
      - zuul
     builders:
-     # The sed line below fix up hphpize injected $CWD at time of build to
-     # HHVM_INCLUDE_DIRS causing the build to fail with:
-     #
-     #   cc1plus: error: /root/hhvm/joe/hhvm: Permission denied
-     #
-     # https://bugzilla.wikimedia.org/68944
-     #
      - shell: |
          hphpize
-         sed -i 's%;/root/hhvm/joe/hhvm%%' CMakeLists.txt
          cmake .
          make
 
