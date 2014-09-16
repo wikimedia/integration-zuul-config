@@ -165,8 +165,22 @@
             node parserTests --wt2html --wt2wt --html2wt --html2html --selser --no-color --quiet --blacklist
 
 - job-template:
-    name: parsoidsvc-{repository}-npm
+    name: parsoidsvc-{repository}-npm-0.10
+    node: contintLabsSlave && UbuntuTrusty
     builders:
+    - assert-node-version-0.10
+    - parsoid-set-env:
+        repository: '{repository}'
+    - shell: |
+        node --version
+        npm --version
+        npm test
+
+- job-template:
+    name: parsoidsvc-{repository}-npm-0.8
+    node: contintLabsSlave && UbuntuPrecise
+    builders:
+    - assert-node-version-0.8
     - parsoid-set-env:
         repository: '{repository}'
     - shell: |
@@ -186,5 +200,6 @@
         - 'parsoidsvc-{repository}-parse-tool-check'
         - 'parsoidsvc-{repository}-roundtrip-test-check'
         - 'parsoidsvc-{repository}-parsertests-run-harder'
-        - 'parsoidsvc-{repository}-npm'
+        - 'parsoidsvc-{repository}-npm-0.8'
+        - 'parsoidsvc-{repository}-npm-0.10'
         - parsoidsvc-php-parsertests
