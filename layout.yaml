@@ -1662,15 +1662,20 @@ project-templates:
     test:
      - 'mwext-{name}-jslint'
      - 'mwext-{name}-lint':
-       - 'mwext-{name}-testextensions-master'
+       # Extensions tests with core+vendor
+       - 'mwext-{name}-testextension'
     gate-and-submit:
+     # Gate core and extensions together by using a shared job. Can probably be
+     # removed whenever mediawiki-core-extensions-integration is ready
+     - mediawiki-core-lint
+
      - 'mwext-{name}-jslint'
      - 'mwext-{name}-lint':
-       - 'mwext-{name}-testextensions-master'
+       # Extensions tests with core+vendor
+       - 'mwext-{name}-testextension'
+
     experimental:
       - mediawiki-core-extensions-integration
-      # Extensions tests with core+vendor
-      - 'mwext-{name}-testextension'
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
