@@ -828,6 +828,19 @@
             "$WORKSPACE"/vendor/bin/bundle exec ruby1.9.1 upload.rb
           fi
 
+- property:
+    name: throttle-one-per-node
+    properties:
+     - throttle:
+         max-per-node: 1
+         max-total: 0
+         enabled: true
+         option: 'category'
+         categories:
+          # They are defined in the global configuration
+          # https://integration.wikimedia.org/ci/configure
+          - one-per-node
+
 - publisher:
     name: browsertests-irc
     publishers:

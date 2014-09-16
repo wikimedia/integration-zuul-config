@@ -155,6 +155,9 @@
 - job-template:
     name: '{name}-{ext-name}-testextension'
     node: hasSlaveScripts && UbuntuPrecise
+    concurrent: true
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
