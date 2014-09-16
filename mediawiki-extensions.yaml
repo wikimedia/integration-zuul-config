@@ -166,7 +166,9 @@
          rm -f deps.txt
          touch deps.txt
          echo -e "mediawiki/core\nmediawiki/vendor\nmediawiki/extensions/{ext-name}" >> deps.txt
-         echo "$(IFS=,; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
+         if [ "{dependencies}" != "" ]; then
+             echo "$(IFS=,; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
+         fi
      - zuul-cloner:
          projects: >
              $(cat deps.txt)
