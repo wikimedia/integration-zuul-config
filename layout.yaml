@@ -2687,17 +2687,15 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/cldr
-    check-only:
+    template:
+      - name: extension-unittests
+    check:
       - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-cldr-jslint
-      - mwext-cldr-lint
+    test:
+      - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
     gate-and-submit:
       - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-cldr-jslint
-      - mwext-cldr-lint:
-        - mwext-cldr-testextensions-master
     experimental:
-      - mediawiki-core-extensions-integration
       - mediawiki-language-extension-bundle-integration
 
   - name: mediawiki/extensions/CentralAuth
@@ -2710,19 +2708,10 @@ projects:
 
   - name: mediawiki/extensions/CirrusSearch
     template:
+     - name: extension-unittests
      - name: extension-rubylint
-    check:
-     - mwext-CirrusSearch-jslint
-     - mwext-CirrusSearch-lint
     test:
-     - mwext-CirrusSearch-jslint
-     - mwext-CirrusSearch-lint:
-       - mwext-CirrusSearch-testextensions-master
      - mwext-browsertests-CirrusSearch-phantomjs # experimental
-    gate-and-submit:
-     - mwext-CirrusSearch-jslint
-     - mwext-CirrusSearch-lint:
-       - mwext-CirrusSearch-testextensions-master
 
   - name: mediawiki/extensions/CleanChanges
     template:
@@ -2894,19 +2883,12 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/DonationInterface
-    check:
-      - mwext-DonationInterface-jslint
-      - mwext-DonationInterface-lint
+    template:
+      - name: extension-unittests
     test:
       - mwext-DonationInterface-npm
-      - mwext-DonationInterface-jslint
-      - mwext-DonationInterface-lint
-      - mwext-DonationInterface-testextensions-master
     gate-and-submit:
       - mwext-DonationInterface-npm
-      - mwext-DonationInterface-jslint
-      - mwext-DonationInterface-lint
-      - mwext-DonationInterface-testextensions-master
     experimental:
       - wikimedia-fundraising-civicrm
 
@@ -2988,24 +2970,17 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/EventLogging
+    template:
+      - name: extension-unittests
+      - name: extension-qunit
     check:
-      - mwext-EventLogging-jslint
       - mwext-EventLogging-tox-flake8
-      - mwext-EventLogging-lint
     test:
-      - mwext-EventLogging-jslint
       - mwext-EventLogging-tox-flake8
       - mwext-EventLogging-tox-py27
-      - mwext-EventLogging-lint:
-        - mwext-EventLogging-testextensions-master
-        - mwext-EventLogging-qunit
     gate-and-submit:
-      - mwext-EventLogging-jslint
       - mwext-EventLogging-tox-flake8
       - mwext-EventLogging-tox-py27
-      - mwext-EventLogging-lint:
-        - mwext-EventLogging-testextensions-master
-        - mwext-EventLogging-qunit
 
   - name: mediawiki/extensions/ExpandTemplates
     template:
@@ -3026,18 +3001,10 @@ projects:
   - name: mediawiki/extensions/Flow
     template:
      - name: extension-rubylint
-    check:
-     - mwext-Flow-jslint
-     - mwext-Flow-lint
+     - name: extension-unittests
     test:
-     - mwext-Flow-jslint
-     - mwext-Flow-lint:
-       - mwext-Flow-testextensions-master
      - mwext-Flow-qunit
     gate-and-submit:
-     - mwext-Flow-jslint
-     - mwext-Flow-lint:
-       - mwext-Flow-testextensions-master
      - mwext-Flow-qunit
 
   - name: mediawiki/extensions/FormPreloadPostCache
@@ -3135,20 +3102,13 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/GuidedTour
-    check:
-     - mwext-GuidedTour-jslint
-     - mwext-GuidedTour-lint
+    template:
+      - name: extension-unittests
     test:
-     - mwext-GuidedTour-jslint
-     - mwext-GuidedTour-lint:
-       - mwext-GuidedTour-testextensions-master
-       - mwext-GuidedTour-qunit
+     - mwext-GuidedTour-qunit
      - mwext-GuidedTour-doc-test
     gate-and-submit:
-     - mwext-GuidedTour-jslint
-     - mwext-GuidedTour-lint:
-       - mwext-GuidedTour-testextensions-master
-       - mwext-GuidedTour-qunit
+     - mwext-GuidedTour-qunit
      - mwext-GuidedTour-doc-test
     postmerge:
      - mwext-GuidedTour-doc-publish
@@ -3235,20 +3195,12 @@ projects:
 
   - name: mediawiki/extensions/Mantle
     template:
+      - name: extension-unittests
       - name: extension-phpcs
-    check:
-      - mwext-Mantle-lint
-      - mwext-Mantle-jslint
     test:
-      - mwext-Mantle-jslint
-      - mwext-Mantle-lint:
-        - mwext-Mantle-testextensions-master
       - mwext-Mantle-qunit
       - mwext-Mantle-qunit-mobile
     gate-and-submit:
-      - mwext-Mantle-jslint
-      - mwext-Mantle-lint:
-        - mwext-Mantle-testextensions-master
       - mwext-Mantle-qunit
       - mwext-Mantle-qunit-mobile
 
@@ -5316,7 +5268,6 @@ projects:
       - name: extension-phpcs
     test:
       - mwext-TemplateData-npm
-      - mwext-TemplateData-testextensions-master
     gate-and-submit:
       - mwext-TemplateData-npm
 
@@ -5355,41 +5306,25 @@ projects:
   - name: mediawiki/extensions/Translate
     template:
       - name: extension-rubylint
+      - name: extension-unittests
     check:
       - mwext-Translate-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-Translate-jslint
-      - mwext-Translate-lint
     test:
       - mwext-Translate-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-Translate-jslint
-      - mwext-Translate-lint:
-        - mwext-Translate-testextensions-master
     gate-and-submit:
       - mwext-Translate-phpcs-strict # Experiment for bug 48420
-      - mwext-Translate-jslint
-      - mwext-Translate-lint:
-        - mwext-Translate-testextensions-master
     experimental:
-      - mediawiki-core-extensions-integration
       - mediawiki-language-extension-bundle-integration
 
   - name: mediawiki/extensions/TranslationNotifications
+    template:
+      - name: extension-unittests
     check:
       - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-TranslationNotifications-jslint
-      - mwext-TranslationNotifications-lint
     test:
       - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-TranslationNotifications-jslint
-      - mwext-TranslationNotifications-lint:
-        - mwext-TranslationNotifications-testextensions-master
     gate-and-submit:
       - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-TranslationNotifications-jslint
-      - mwext-TranslationNotifications-lint:
-        - mwext-TranslationNotifications-testextensions-master
-    experimental:
-      - mediawiki-core-extensions-integration
 
   - name: mediawiki/extensions/Transliterator
     template:
@@ -5402,20 +5337,13 @@ projects:
   - name: mediawiki/extensions/TwnMainPage
     template:
       - name: extension-rubylint
+      - name: extension-unittests
     check:
-      - mwext-TwnMainPage-jslint
-      - mwext-TwnMainPage-lint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
     test:
-      - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-TwnMainPage-lint:
-        - mwext-TwnMainPage-testextensions-master
     gate-and-submit:
-      - mwext-TwnMainPage-jslint
       - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-TwnMainPage-lint:
-        - mwext-TwnMainPage-testextensions-master
 
   - name: mediawiki/extensions/OpenBadges
     template:
@@ -5428,23 +5356,15 @@ projects:
   - name: mediawiki/extensions/UniversalLanguageSelector
     template:
       - name: extension-rubylint
+      - name: extension-unittests
     check:
-      - mwext-UniversalLanguageSelector-lint
       - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-UniversalLanguageSelector-jslint
     test:
       - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-UniversalLanguageSelector-jslint
-      - mwext-UniversalLanguageSelector-lint:
-        - mwext-UniversalLanguageSelector-testextensions-master
       - mwext-browsertests-UniversalLanguageSelector-phantomjs # Experiment, bug 52120
     gate-and-submit:
       - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
-      - mwext-UniversalLanguageSelector-jslint
-      - mwext-UniversalLanguageSelector-lint:
-        - mwext-UniversalLanguageSelector-testextensions-master
     experimental:
-      - mediawiki-core-extensions-integration
       - mediawiki-language-extension-bundle-integration
 
   - name: mediawiki/extensions/UploadBlacklist
@@ -5638,16 +5558,12 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/Workflow
-    check:
-      - mwext-Workflow-jslint
-      - mwext-Workflow-lint
-    test: &mwext-Workflow-all-test-jobs
-      - mwext-Workflow-jslint
-      - mwext-Workflow-lint:
-        - mwext-Workflow-testextensions-master
+    template:
+      - name: extension-unittests
+    test:
       - mwext-Workflow-yamllint
     gate-and-submit:
-      *mwext-Workflow-all-test-jobs
+      - mwext-Workflow-yamllint
 
   - name: mediawiki/extensions/ZeroBanner
     template:
