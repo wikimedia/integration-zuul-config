@@ -17,6 +17,9 @@
      - qa: &emails-qa
         cmcmahon@wikimedia.org qa-alerts@lists.wikimedia.org
 
+     - qa: &emails-qa-alerts
+        qa-alerts@lists.wikimedia.org
+
      - ULS: &emails-ULS
         aaharoni@wikimedia.org cmcmahon@wikimedia.org kmistry@wikimedia.org qa-alerts@lists.wikimedia.org
 
@@ -56,8 +59,11 @@
     mediawiki_url: language-stage.wmflabs.org
     mediawiki_user: Selenium_user
     platform: linux
-    recipients: *emails-ULS
     repository: mediawiki/extensions/ContentTranslation
+
+    # Restrict email notifications since language-stage is broken
+    #recipients: *emails-ULS
+    recipients: *emails-qa-alerts
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
@@ -235,6 +241,10 @@
         browser: internet_explorer
         platform: 'windows_7'
         version: '8'
+        # MultimediaViewer is known to be broken under IE 8.0. Restrict email
+        # notifications while it is being worked on.
+        # Bug 70932
+        recipients: *emails-qa-alerts
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce':
         browser: internet_explorer
@@ -330,6 +340,8 @@
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_TRANSLATE_SANDBOX_TRANSLATEWIKI_NET
         mediawiki_url: sandbox.translatewiki.net
         mediawiki_user: Selenium-Translate
+        # Restrict emails notifications since sandbox.translate is unstable/broken
+        recipients: *emails-qa-alerts
 
 # UniversalLanguageSelector
 - project:
@@ -351,6 +363,8 @@
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
         mediawiki_url: language-browsertests.wmflabs.org
         mediawiki_user: Selenium_user
+        # Restrict emails notifications since language-browsertests is unstable/broken
+        recipients: *emails-qa-alerts
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
