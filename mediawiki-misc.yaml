@@ -26,15 +26,25 @@
 
 - project:
     name: 'mediawiki-ruby-api'
+    bundlecommand:
+     - yard
     jobs:
      - '{name}-ruby1.9.3lint'
      - '{name}-gembuild'
+     - '{name}-bundle-{bundlecommand}':
+         bundlecommand:
+          - yard
+     - '{name}-bundle-yard-publish'
 
 - project:
     name: 'mediawiki-selenium'
     jobs:
      - '{name}-ruby1.9.3lint'
      - '{name}-gembuild'
+     - '{name}-bundle-{bundlecommand}':
+         bundlecommand:
+          - yard
+     - '{name}-bundle-yard-publish'
 
 - project:
     # mediawiki/services/mathoid.git
