@@ -131,26 +131,6 @@
      - archive-log-dir
      - qunit-cleanup
 
-# Run all extension tests
-- job-template:
-    name: '{name}-{ext-name}-testextensions-{mwbranch}'
-    node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-zuul-for-mw-ext
-    triggers:
-     - zuul
-    builders:
-     - mw-setup-extension:
-        mwbranch: '{mwbranch}'
-        dependencies: '{dependencies}'
-     - mw-run-update-script
-     - mw-run-phpunit-allexts
-    # TODO, find ways to additionaly run tests for core but
-    # without extensions tests
-    publishers:
-     - archive-log-dir
-     - junit:
-        results: 'log/junit*.xml'
-
 # Run extension tests via Zuul cloner
 - job-template:
     name: '{name}-{ext-name}-testextension'
@@ -302,7 +282,6 @@
     jobs:
      - '{name}-{ext-name}-lint'
      - '{name}-{ext-name}-jslint'
-     - '{name}-{ext-name}-testextensions-{mwbranch}'
      - '{name}-{ext-name}-testextension'
      - '{name}-{ext-name}-phpcs-HEAD'
 
