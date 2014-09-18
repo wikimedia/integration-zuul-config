@@ -154,6 +154,15 @@
      - archive-log-dir
 
 - job-template:
+    name: 'mediawiki-gate'
+    node: productionSlaves
+    concurrent: true
+    builders:
+     - shell: |
+         #!/bin/bash -e
+         echo "Noop job, meant to gate jobs properly"
+
+- job-template:
     name: 'mediawiki-vendor-integration'
     node: productionSlaves  # not on labs for now
     concurrent: true
