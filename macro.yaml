@@ -395,6 +395,17 @@
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh"
 
+# This macro is OBSOLETE
+#
+# Instead one should rely on Zuul cloner:
+#
+# - zuul-cloner-extdeps:
+#    ext-name: '{ext-name}'
+#    dependencies: '{dependencies}'
+# - mw-install-sqlite
+# - shell: "cp deps.txt src/extensions_load.txt"
+# - mw-apply-settings
+#
 - builder:
     name: mw-setup-extension
     builders:
