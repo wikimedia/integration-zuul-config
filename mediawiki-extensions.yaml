@@ -113,20 +113,23 @@
 - builder:
     name: prepare-mediawiki-qunit
     builders:
-     - mw-setup-extension:
-         mwbranch: 'master'
+     - zuul-cloner-extdeps:
+         ext-name: '{ext-name}'
          dependencies: '{dependencies}'
+     - mw-install-sqlite
+     - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
      - mw-run-update-script
 
 - job-template:
     name: '{name}-{ext-name}-qunit'
     node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
-    defaults: use-zuul-for-mw-ext
     concurrent: true
     triggers:
      - zuul
     builders:
      - prepare-mediawiki-qunit:
+         ext-name: '{ext-name}'
          dependencies: '{dependencies}'
      - qunit
     publishers:
@@ -136,12 +139,12 @@
 - job-template:
     name: '{name}-{ext-name}-qunit-mobile'
     node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
-    defaults: use-zuul-for-mw-ext
     concurrent: true
     triggers:
      - zuul
     builders:
      - prepare-mediawiki-qunit:
+         ext-name: '{ext-name}'
          dependencies: '{dependencies}'
      - qunit-mobile
     publishers:
