@@ -95,6 +95,22 @@
     publishers:
      - phpcs
 
+- builder:
+    name: 'zuul-cloner-extdeps'
+    builders:
+     - shell: |
+         # Build dependencies list
+         rm -f deps.txt
+         touch deps.txt
+         echo -e "mediawiki/core\nmediawiki/vendor\nmediawiki/extensions/{ext-name}" >> deps.txt
+         if [ "{dependencies}" != "" ]; then
+             echo "$(IFS=,; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
+         fi
+     - zuul-cloner:
+         projects: >
+             $(cat deps.txt)
+
+
 - job-template:
     name: '{name}-{ext-name}-qunit'
     node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
@@ -141,17 +157,9 @@
     triggers:
      - zuul
     builders:
-     - shell: |
-         # Build dependencies list
-         rm -f deps.txt
-         touch deps.txt
-         echo -e "mediawiki/core\nmediawiki/vendor\nmediawiki/extensions/{ext-name}" >> deps.txt
-         if [ "{dependencies}" != "" ]; then
-             echo "$(IFS=,; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
-         fi
-     - zuul-cloner:
-         projects: >
-             $(cat deps.txt)
+     - zuul-cloner-extdeps:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
      - mw-install-sqlite
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
