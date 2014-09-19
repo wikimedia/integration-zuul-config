@@ -151,6 +151,29 @@
      - archive-log-dir
      - qunit-cleanup
 
+# VisualEditor MediaWiki extensions has the VisualEditor repository as a
+# submodule under lib/ve and Zuul cloner does not process submodules.
+- job-template:
+    name: 'mwext-VisualEditor-qunit'
+    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-qunit:
+         ext-name: 'VisualEditor'
+         dependencies: 'Parsoid'
+     - shell: |
+         cd src/extensions/VisualEditor
+         git submodule update --init
+         git submodule status
+         git submodule foreach git clean -xqdf
+     - qunit
+    publishers:
+     - archive-log-dir
+     - qunit-cleanup
+
+
 # Run extension tests via Zuul cloner
 - job-template:
     name: '{name}-{ext-name}-testextension'
@@ -1058,10 +1081,6 @@
      - '{name}-{ext-name}-npm':
         ext-name: UploadWizard
 
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: VisualEditor
-        dependencies: 'Parsoid'
      - '{name}-{ext-name}-csslint':
         ext-name: VisualEditor
      - '{name}-{ext-name}-npm':
@@ -1304,6 +1323,7 @@
     jobs:
      - '{name}-ruby1.9.3lint'
      - 'mwext-VisualEditor-sync-gerrit'
+     - 'mwext-VisualEditor-qunit'
 
 - project:
     name: 'mwext-WikiLove'
