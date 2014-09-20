@@ -377,6 +377,8 @@ jobs:
     voting: true
   - name: mwext-VisualEditor-phpcs-HEAD
     voting: true
+  - name: oojs-ui-phpcs-HEAD
+    voting: true
 
   # Experiment for bug 48420
   - name: ^.*phpcs-lenient(-HEAD)?$
@@ -5763,11 +5765,16 @@ projects:
   - name: oojs/ui
     check:
       - oojs-ui-jslint
+      - oojs-ui-phplint
     test:
       - oojs-ui-npm
+      - oojs-ui-phplint
+      - oojs-ui-phpcs-HEAD
       - oojs-ui-jsduck
     gate-and-submit:
       - oojs-ui-npm
+      - oojs-ui-phplint
+      - oojs-ui-phpcs-HEAD
       - oojs-ui-jsduck
     postmerge:
       - oojs-ui-jsduck-publish
