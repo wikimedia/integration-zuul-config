@@ -1565,10 +1565,10 @@ jobs:
     voting: false
 
   - name: mediawiki-core-jsduck
-    branch: ^(REL1_21|REL1_22|REL1_23|master)$
+    branch: ^(REL1_21|REL1_22|REL1_23|REL1_24|master)$
 
   - name: mediawiki-core-jsduck-publish
-    branch: ^(REL1_21|REL1_22|REL1_23|master)$
+    branch: ^(REL1_21|REL1_22|REL1_23|REL1_24|master)$
 
 
   # Exceptions for projects not yet passing phpunit tests
@@ -1624,9 +1624,14 @@ jobs:
     branch: ^REL1_22
   - name: mediawiki-core-regression-REL1_23
     branch: ^REL1_23
+  - name: mediawiki-core-regression-REL1_24
+    branch: ^REL1_24
 
   - name: mediawiki-core-regression-hhvm-REL1_23
     branch: ^REL1_23$
+    voting: false
+  - name: mediawiki-core-regression-hhvm-REL1_24
+    branch: ^REL1_24$
     voting: false
   - name: mediawiki-core-regression-hhvm-master
     branch: ^master$
@@ -1855,7 +1860,9 @@ projects:
       - mediawiki-core-regression-REL1_21
       - mediawiki-core-regression-REL1_22
       - mediawiki-core-regression-REL1_23
+      - mediawiki-core-regression-REL1_24
       - mediawiki-core-regression-hhvm-REL1_23
+      - mediawiki-core-regression-hhvm-REL1_24
       - mediawiki-core-regression-hhvm-master
       #- mediawiki-core-regression-phpcs-HEAD
       - mediawiki-core-doxygen-publish
