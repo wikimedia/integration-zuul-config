@@ -6,20 +6,6 @@
 # submodules we do not care about. See bug 42455.
 
 - job-template:
-    name: '{name}-lint'
-    node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-zuul
-    concurrent: true
-    logrotate:
-        daysToKeep: 15
-    scm:
-     - git-mwcore
-    triggers:
-     - zuul
-    builders:
-     - phplint
-
-- job-template:
     name: 'mediawiki-core-jslint'
     node: hasSlaveScripts && UbuntuPrecise
     defaults: use-zuul
@@ -266,7 +252,6 @@
 - job-group:
     name: mediawiki-jobs
     jobs:
-      - '{name}-lint'
       - 'mediawiki-core-jslint'
       - '{name}-qunit'
       - 'mediawiki-core-jsduck'
@@ -291,6 +276,7 @@
     databasetype:
       - sqlite
     jobs:
+      - '{name}-phplint'
       - mediawiki-gate
       - mediawiki-jobs
       - '{name}-phpcs-HEAD'
