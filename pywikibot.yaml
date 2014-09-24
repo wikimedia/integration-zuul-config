@@ -53,10 +53,12 @@
      - flake8-docstrings
      - flake8-docstrings-mandatory
      - nose
+     - nose34  # must only trigger the '-trusty' version
 
     jobs:
      - pywikibot-core-tests
      - '{name}-tox-{toxenv}'
+     - '{name}-tox-{toxenv}-trusty'
 
 - project:
     name: pywikibot-i18n
