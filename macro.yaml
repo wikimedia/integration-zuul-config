@@ -691,6 +691,8 @@
           if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
             CUCUMBER_PARAMETER="@language_screenshot"
             export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
+          elif [[ $JOB_NAME == browsertests-Core-* ]]; then
+            CUCUMBER_PARAMETER="@clean"
           else
             CUCUMBER_PARAMETER="@{mediawiki_url}"
           fi
