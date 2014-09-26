@@ -23,15 +23,16 @@
 - job-template:
     name: 'mediawiki-core-npm'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
     concurrent: true
     logrotate:
         daysToKeep: 15
     triggers:
      - zuul
     builders:
+     - zuul-cloner:
+         projects: "mediawiki/core"
      - npm-in:
-        dir: '$WORKSPACE/tests/frontend'
+        dir: '$WORKSPACE/src/tests/frontend'
 
 # Generic job to run QUnit
 - job-template:
