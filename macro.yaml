@@ -464,15 +464,15 @@
       builders:
        - shell: |
           # File used to track down whether a perl file is failing syntax check
-          rm -f PHPLINT_FAILED
+          rm -f PERLLINT_FAILED
 
           find . \
             \( -name '*.pm' -or -name '*.pl' \) \
             \( -exec perl -Mstrict -Mdiagnostics -cw {} \; \
-            -or -exec touch PHPLINT_FAILED  \; \)
+            -or -exec touch PERLLINT_FAILED  \; \)
 
           # Set exit code to fail the build
-          if [ -e PHPLINT_FAILED ]; then
+          if [ -e PERLLINT_FAILED ]; then
               exit 1
           fi;
 
