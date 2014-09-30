@@ -110,6 +110,13 @@
          projects: >
              $(cat deps.txt)
 
+- builder:
+    name: prepare-mediawiki-qunit
+    builders:
+     - mw-setup-extension:
+         mwbranch: 'master'
+         dependencies: '{dependencies}'
+     - mw-run-update-script
 
 - job-template:
     name: '{name}-{ext-name}-qunit'
@@ -118,12 +125,9 @@
     concurrent: true
     triggers:
      - zuul
-
     builders:
-     - mw-setup-extension:
-        mwbranch: 'master'
-        dependencies: '{dependencies}'
-     - mw-run-update-script
+     - prepare-mediawiki-qunit:
+         dependencies: '{dependencies}'
      - qunit
     publishers:
      - archive-log-dir
@@ -136,12 +140,9 @@
     concurrent: true
     triggers:
      - zuul
-
     builders:
-     - mw-setup-extension:
-        mwbranch: 'master'
-        dependencies: '{dependencies}'
-     - mw-run-update-script
+     - prepare-mediawiki-qunit:
+         dependencies: '{dependencies}'
      - qunit-mobile
     publishers:
      - archive-log-dir
