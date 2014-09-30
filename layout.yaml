@@ -1510,11 +1510,11 @@ jobs:
   - name: integration-docroot-deploy
     branch: ^master$
     success-message: 'Change has been deployed on the server and should be now live on https://integration.wikimedia.org/ or https://doc.wikimedia.org/. Build'
-    failure-message: 'FAILED to deploy change. Please contact a member of the continuous integration team to fixup the docroot on the destination server.'
+    failure-message: 'FAILURE while deploying. Please contact a member of the continuous integration team to fixup the docroot on the destination server.'
 
   - name: 'integration-jjb-config-diff'
     success-message: 'Please carefully review the XML difference before deploying/merging your change.'
-    failure-message: 'FAILED to compare your patchset with the current configuration version'
+    failure-message: 'FAILURE while comparing your patchset with the current configuration version'
 
   - name: 'integration-zuul-layoutdiff'
     voting: false
