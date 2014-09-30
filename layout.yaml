@@ -1532,6 +1532,12 @@ jobs:
   - name: 'mwext-VisualEditor-sync-gerrit'
     branch: ^master$
 
+  # Experimental https://gerrit.wikimedia.org/r/163837
+  # Once made voting remove it from experimental pipeline and uncomment it from
+  # the test and gate-and-submit pipelines.
+  - name: 'VisualEditor-qunit'
+    voting: false
+
   # FIXME: work in progress
   - name: sartoris-sphinx-doc
     voting: false
@@ -5467,12 +5473,16 @@ projects:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
       - mwext-VisualEditor-doc-test
+      #- VisualEditor-qunit
     gate-and-submit:
       - mediawiki-gate
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
       - mwext-VisualEditor-doc-test
       - experiment-gating-dependencies
+      #- VisualEditor-qunit
+    experimental:
+      - VisualEditor-qunit
     postmerge:
       - mwext-VisualEditor-doc-publish
       - mwext-VisualEditor-sync-gerrit
@@ -5784,10 +5794,14 @@ projects:
       - VisualEditor-npm
       - VisualEditor-ruby1.9.3lint
       - VisualEditor-jsduck
+      #- VisualEditor-qunit
     gate-and-submit:
       - VisualEditor-npm
       - VisualEditor-ruby1.9.3lint
       - VisualEditor-jsduck
+      #- VisualEditor-qunit
+    experimental:
+      - VisualEditor-qunit
 
   - name: wikimedia/bots/jouncebot
     check-voter:
