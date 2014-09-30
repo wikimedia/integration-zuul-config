@@ -116,30 +116,6 @@
     builder:
      - lint-whitespaces
 
-# A job template to trigger phpunit groups against a repository.
-#
-# @param name Jenkins job prefix to use
-# @param phpunit-group suffix for an ant target 'phpunit-{phpunit-group}
-- job-template:
-    name: '{name}-phpunit-{phpunit-group}'
-    node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul
-    concurrent: true
-    logrotate:
-        daysToKeep: 15
-    scm:
-     - git-mwcore
-    triggers:
-     - zuul
-
-    builders:
-     - mw-install-sqlite
-     - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh {phpunit-group}"
-    publishers:
-     - phpunit-junit-2
-     - archive-log-dir
-
 - job-template:
     name: 'mediawiki-gate'
     node: productionSlaves
@@ -197,24 +173,6 @@
     logrotate:
         daysToKeep: 90
 
-# A job template to install MediaWiki against a specific DB backend
-#
-# @param name name Jenkins job prefix to use
-# @param databasetype Suffix for an ant target 'installdb-{databasetype}'
-- job-template:
-    name: '{name}-install-{databasetype}'
-    defaults: use-zuul
-    logrotate:
-        daysToKeep: 15
-    scm:
-     - git-mwcore
-    triggers:
-     - zuul
-
-    builders:
-     # FIXME no more supports "databasetype"
-     - mw-install-sqlite
-
 - job-template:
     name: 'mediawiki-core-release'
     concurrent: true
@@ -264,18 +222,9 @@
       - '{name}-phpcs-lenient-HEAD'
       - '{name}-phpcs-strict'
       - '{name}-phpcs-strict-HEAD'
-      - '{name}-phpunit-{phpunit-group}'
-      - '{name}-install-{databasetype}'
 
 - project:
     name: mediawiki-core
-    phpunit-group:
-      - api
-      - databaseless
-      - misc
-      - parser
-    databasetype:
-      - sqlite
     jobs:
       - '{name}-phplint'
       - mediawiki-gate
