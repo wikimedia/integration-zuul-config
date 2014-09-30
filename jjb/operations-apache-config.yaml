@@ -1,25 +1,20 @@
 - job-template:
     name: 'operations-apache-config-lint'
-    defaults: use-remote-zuul
     # only works there cause it needs mod_rewrite which is not on other slaves
     # apparently.
     node: gallium
-
     triggers:
      - zuul
 
     builders:
-     # Snapshot operations/mediawiki-config.git which contains
-     # the Apache document roots.
+     # Phase 1, assert redirects.dat has been updated
+     - zuul-cloner:
+         projects: "--project-branch operations/puppet=production operations/puppet"
      - shell: |
-        git archive \
-            --remote=/srv/ssd/gerrit/operations/mediawiki-config.git \
-            --prefix=mediawiki-config/ \
-            master \
-            | ( cd "$WORKSPACE" && tar xf -)
-
-     - shell: |
+        #!/bin/bash -eu
         echo "Regenerating redirects.conf should not have changed"
+        cd src/operations/puppet/modules/mediawiki/files/apache/sites/redirects
+
         ./refreshDomainRedirects
 
         set +e
@@ -35,16 +30,35 @@
             echo "Continuing.."
         fi
 
+     # Phase2, lint Apache configuration files
+     - zuul-cloner:
+         projects: "operations/mediawiki-config"
+
      - shell: |
-        /bin/sed -i s%/etc/apache2/[^/]*/%% *.conf
-        /bin/sed -i s%/usr/local/apache/conf/%% *.conf
-        /bin/sed -i s%/usr/local/apache/common/%$WORKSPACE/mediawiki-config/% *.conf
+        #!/bin/bash -eu
+        export CI_APACHE_SERVER_ROOT="$WORKSPACE/src/operations/puppet/modules/mediawiki/files/apache"
+
+        # Generate list of .conf files
+        find "$CI_APACHE_SERVER_ROOT" -type f -name '*.conf' > apache_files.txt
+        # Pass commands on them
+        while read apache_file; do
+            echo "Tweaking $apache_file"
+            /bin/sed -i "s%/etc/apache2/[^/]*/%$CI_APACHE_SERVER_ROOT%" $apache_file
+            /bin/sed -i "s%/srv/mediawiki/%$WORKSPACE/src/operations/mediawiki-config/%" $apache_file
+        done < apache_files.txt
+
+        # Hijack unexisting 'apache' username
+        /bin/sed -i -r "s/(User|Group) apache/\1 $USER/" \
+            "$CI_APACHE_SERVER_ROOT/apache2.conf"
+
+        ln -f -s $CI_APACHE_SERVER_ROOT/sites $CI_APACHE_SERVER_ROOT/sites-enabled
+
         /usr/sbin/apache2 -t \
-            -d "$WORKSPACE" \
+            -d "$CI_APACHE_SERVER_ROOT" \
             -C 'Include /etc/apache2/mods-enabled/*.load' \
             -C 'Include /etc/apache2/mods-enabled/*.conf' \
             -C 'Include /etc/apache2/mods-available/expires.load' \
-            -f all.conf
+            -f apache2.conf
 
 - project:
     name: 'operations-apache-config'
