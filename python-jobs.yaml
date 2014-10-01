@@ -1,4 +1,9 @@
-# Invoke a tox environement
+# Invoke a tox environement on Precise
+#
+# Ubuntu Precise provides:
+# python 2.7.3
+# python 3.2.3
+#
 # Parameter: {toxenv}
 - job-template:
     name: '{name}-tox-{toxenv}'
@@ -12,6 +17,27 @@
          venv: '{toxenv}'
     publishers:
      - archive-log-dir
+
+# Invoke a tox environement on Trusty
+#
+# Ubuntu Trusty provides:
+# python 2.7.6
+# python 3.4.0
+#
+# Parameter: {toxenv}
+- job-template:
+    name: '{name}-tox-{toxenv}-trusty'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: '{toxenv}'
+    publishers:
+     - archive-log-dir
+
 
 # Call tox env 'doc' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
