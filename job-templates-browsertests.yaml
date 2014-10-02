@@ -70,6 +70,7 @@
 - defaults:
     name: browsertests
     node: contintLabsSlave && UbuntuPrecise
+    repository_host: 'gerrit.wikimedia.org/r'
 
     properties:
      - throttle:
@@ -84,7 +85,7 @@
 
     scm:
       - git:
-          url: https://gerrit.wikimedia.org/r/{repository}
+          url: https://{repository_host}/{repository}
           branches:
             - master
           wipe-workspace: false  # keep the workspace...
