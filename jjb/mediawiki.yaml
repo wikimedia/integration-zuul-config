@@ -93,21 +93,27 @@
 
 - job:
     name: 'mediawiki-core-doxygen-publish'
-    node: gallium
-    defaults: use-zuul
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: false
-    scm:
-     - git-mwcore
-     - git:
-        url: '/srv/ssd/gerrit/mediawiki/vendor'
-        branches:
-          - master
-        wipe-workspace: false
-        basedir: vendor
     triggers:
      - zuul
     builders:
-     - shell: "/srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh"
+     - shell: |
+         if [ -z $DOC_SUBPATH ]; then
+             echo "\$DOC_SUBPATH is missing. Can not publish."
+             exit 1
+         fi
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - shell: |
+         rm -fR build/doc
+         mkdir -p build/doc
+         TARGET_BASEDIR="$WORKSPACE/build/doc" /srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh
+     - push-doc:
+         docsrc: 'build/doc'
+         docdest: 'mediawiki-core/$DOC_SUBPATH'
 
 - job-template:
     name: '{name}-whitespaces'
