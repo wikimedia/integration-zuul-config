@@ -172,13 +172,13 @@
 - job-template:
     name: mediawiki-core-regression-hhvm-{branch}
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul
-    concurrent: true
-    scm:
-     - git-mwcore
     triggers:
      - zuul
     builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
      - mw-install-sqlite
      - mw-apply-settings
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit-hhvm.sh"
@@ -290,13 +290,14 @@
 - job-template:
     name: 'mediawiki-core-regression-{branch}'
     node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-zuul
-    scm:
-     - git-mwcore
     triggers:
      - zuul
 
     builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
      - mw-install-sqlite
      - mw-apply-settings
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
