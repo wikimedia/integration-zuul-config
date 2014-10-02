@@ -102,6 +102,22 @@
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh"
 
+- job:
+    name: 'hashar-mediawiki-core-doxygen-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: "mediawiki/core"
+     - shell: |
+         mkdir -p build/doc
+         TARGET_BASEDIR="$WORKSPACE/build/doc" /srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh
+     - push-doc:
+         docsrc: 'build/doc'
+         docdest: 'hashar'
+
 - job-template:
     name: '{name}-whitespaces'
     node: hasSlaveScripts && UbuntuPrecise
