@@ -292,7 +292,6 @@
     node: hasSlaveScripts && UbuntuPrecise
     triggers:
      - zuul
-
     builders:
      - zuul-cloner:
          projects: >
@@ -310,14 +309,41 @@
 - job:
     name: 'mediawiki-core-code-coverage'
     node: gallium
-    defaults: global
+    # Set env variables needed by zuul-cloner since job is not triggered by
+    # Zuul but is timed using Jenkins own scheduler.
+    parameters:
+     - string:
+         name: 'ZUUL_BRANCH'
+         default: 'master'
+     - string:
+         name: 'ZUUL_REF'
+         default: 'master'
+     - string:
+         name: 'ZUUL_CHANGE'
+         default: 'timed_build'
+     - string:
+         name: 'ZUUL_PATCHSET'
+         default: 'timed_build'
+     - string:
+         name: 'ZUUL_PIPELINE'
+         default: 'timed_build'
+     - string:
+         name: 'ZUUL_PROJECT'
+         default: 'mediawiki/core'
+     - string:
+         name: 'ZUUL_URL'
+         default: 'https://gerrit.wikimedia.org/r/p'
     builders:
-     - wipe-workspace
-     - get-mw-core:
-        branch: 'master'
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
      - mw-install-sqlite
+     - mw-apply-settings
      # FIXME should use the mw-run-phpunit.sh wrapper
      - shell: |
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
         mkdir -p log
         rm -f log/clover.xml log/clover.bz2
 
@@ -332,6 +358,8 @@
         }
         trap compress_clover_log EXIT
 
+
+        cd "${MW_INSTALL_PATH}"
         nice -n 19 php tests/phpunit/phpunit.php \
             --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
