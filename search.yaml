@@ -1,0 +1,43 @@
+- job:
+    name: 'search-highlighter'
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 7'
+    triggers:
+     - zuul
+    scm:
+     - git-remote-zuul
+    wrappers:
+     - timeout:
+         timeout: 60  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    maven:
+      goals: clean package
+
+- project:
+    name: 'search-highlighter'
+    jobs:
+     - 'search-highlighter'
+
+- job:
+    name: 'search-repository-swift'
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 7'
+    triggers:
+     - zuul
+    scm:
+     - git-remote-zuul
+    wrappers:
+     - timeout:
+         timeout: 60  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    maven:
+      goals: clean package
+
+- project:
+    name: 'search-repository-swift'
+    jobs:
+     - 'search-repository-swift'
