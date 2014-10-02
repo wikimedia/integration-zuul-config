@@ -92,15 +92,21 @@
 
 - job:
     name: 'mediawiki-core-doxygen-publish'
-    node: gallium
-    defaults: use-zuul
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: false
-    scm:
-     - git-mwcore
     triggers:
      - zuul
     builders:
-     - shell: "/srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - shell: |
+         mkdir -p build/doc
+         TARGET_BASEDIR="$WORKSPACE/build/doc" /srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh
+     - push-doc:
+         docsrc: 'build/doc'
+         docdest: 'mediawiki-core'
 
 - job-template:
     name: '{name}-whitespaces'
