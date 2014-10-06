@@ -1788,6 +1788,19 @@ projects:
       - integration-jjb-config-yamllint
       - integration-jjb-config-diff
 
+  - name: integration/phpunit
+    test:
+      - integration-phpunit-mediawiki-REL1_22
+      - integration-phpunit-mediawiki-REL1_23
+      - integration-phpunit-mediawiki-REL1_24
+      - integration-phpunit-mediawiki-master
+    gate-and-submit:
+      - integration-phpunit-mediawiki-REL1_22
+      - integration-phpunit-mediawiki-REL1_23
+      - integration-phpunit-mediawiki-REL1_24
+      - integration-phpunit-mediawiki-master
+      - mediawiki-gate
+
   - name: integration/zuul-config
     check:
       - integration-zuul-config-yamllint
