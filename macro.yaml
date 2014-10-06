@@ -200,6 +200,7 @@
     name: npm
     builders:
     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
         node --version
         npm --version
         npm install
@@ -210,6 +211,7 @@
     builders:
     - shell: |
         cd "{dir}"
+        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
         npm --version
         npm install
         npm test
