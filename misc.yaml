@@ -1,12 +1,23 @@
 - job:
-    name: 'VisualEditor-jsduck'
+    name: 'unicodejs-jsduck-publish'
+    node: gallium
     defaults: use-remote-zuul
-    concurrent: true
+    concurrent: false
     triggers:
      - zuul
     builders:
-     - jsduck-conf:
-        config: '$WORKSPACE/.docs/config.json'
+     - jsduck
+     - documentation-sync:
+        src: '$WORKSPACE/docs/code'
+        project: 'unicodejs'
+        version: '$ZUUL_BRANCH'
+
+- project:
+    name: 'unicodejs'
+    jobs:
+     - '{name}-npm'
+     - '{name}-jsduck'
+     - 'unicodejs-jsduck-publish'
 
 - job:
     name: 'oojs-core-jsduck-publish'
@@ -72,28 +83,17 @@
      - 'oojs-ui-jsduck'
      - 'oojs-ui-jsduck-publish'
 
+- job:
+    name: 'VisualEditor-jsduck'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck-conf:
+        config: '$WORKSPACE/.docs/config.json'
+
 - project:
     name: 'qrpedia'
     jobs:
      - '{name}-phplint'
-
-- job:
-    name: 'unicodejs-jsduck-publish'
-    node: gallium
-    defaults: use-remote-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-     - documentation-sync:
-        src: '$WORKSPACE/docs/code'
-        project: 'unicodejs'
-        version: '$ZUUL_BRANCH'
-
-- project:
-    name: 'unicodejs'
-    jobs:
-     - '{name}-npm'
-     - '{name}-jsduck'
-     - 'unicodejs-jsduck-publish'
