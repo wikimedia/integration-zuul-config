@@ -145,6 +145,31 @@
      - phpunit-junit-2
      - archive-log-dir
 
+# Test out our PHPUnit against various MediaWiki branches
+#
+# Essentially a copy paste of mediawiki-vendor-integration
+- job-template:
+    name: 'integration-phpunit-mediawiki-{mwbranch}'
+    node: productionSlaves  # not on labs for now
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             --branch {mwbranch}
+             mediawiki/core
+             mediawiki/vendor
+             integration/phpunit
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: |
+         export PHPUNIT_DIR="$WORKSPACE/src/integration/phpunit/vendor/phpunit/phpunit"
+         /srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+
 - job-template:
     name: mediawiki-core-regression-hhvm-{branch}
     node: contintLabsSlave && UbuntuTrusty
