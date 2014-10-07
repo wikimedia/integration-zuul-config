@@ -67,6 +67,13 @@
         values:
          - lang_list
 
+- job-template:
+    name: 'browsertests-Wikidata-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+    defaults: browsertests
+
+    triggers:
+          - timed: "H 14 * * *"
+
 - defaults:
     name: browsertests
     node: contintLabsSlave && UbuntuPrecise

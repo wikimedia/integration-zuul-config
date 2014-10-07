@@ -29,6 +29,9 @@
      - VisualEditor: &emails-VisualEditor
         cmcmahon@wikimedia.org jforrester@wikimedia.org qa-alerts@lists.wikimedia.org
 
+     - Wikidata: &emails-Wikidata-qa
+        adrian.lang@wikimedia.de qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de
+
 # CirrusSearch
 - project:
     name: CirrusSearch
@@ -510,56 +513,22 @@
         mediawiki_user: LanguageScreenshotBot
 
 # Wikidata
-- job:
-    name: browsertests-Wikidata-wikidata.beta.wmflabs.org-linux-firefox-sauce
-    node: contintLabsSlave && UbuntuPrecise
+- project:
+    name: WikidataTests
+    defaults: browsertests
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_url: wikidata.beta.wmflabs.org
+    mediawiki_user: WikidataTester
+    platform: linux
+    recipients: *emails-Wikidata-qa
+    repository: WikidataBrowserTests.git
+    repository_host: github.com/wmde
 
-    scm:
-        - git:
-            url: 'https://github.com/wmde/WikidataBrowserTests.git'
-            branches:
-              - 'master'
-            skip-tag: true
-
-    wrappers:
-      - ansicolor
-      - timestamps
-
-    triggers:
-      - timed: 'H 14 * * *'
-
-    builders:
-     - shell: |
-          # Shared cache of gems to avoid hitting rubygems all the time
-          # See https://github.com/bundler/bundler/issues/2856
-          export GEM_HOME="$WORKSPACE/../gems"
-
-          # install ruby dependencies
-          mkdir -p vendor
-          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
-          # Prepare some paths lookup
-          export GEM_PATH="`pwd`/vendor"
-
-          cd tests/browser
-          "$WORKSPACE"/vendor/bin/bundle install --verbose
-
-          cp config/config_ci.yml config/config.yml
-
-          export WB_REPO_USERNAME=WikidataTester
-
-          export BROWSER=firefox
-          export VERSION=25
-          export PLATFORM=Linux
-          export BROWSER_TIMEOUT=30
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
-            --backtrace \
-            --color \
-            --verbose  \
-            --format pretty \
-            --format Cucumber::Formatter::Sauce \
-            --out "$WORKSPACE/log/junit" \
-            --tags @wikidata.beta.wmflabs.org \
-            --tags ~@skip
+    jobs:
+      - 'browsertests-Wikidata-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
 
 # WikiLove
 - project:
