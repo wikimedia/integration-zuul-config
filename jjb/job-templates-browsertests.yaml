@@ -29,6 +29,7 @@
       - shell: mkdir -p "$WORKSPACE/log/junit"
       - browsertest-website-version:
           browser: '{browser}'
+          browser_timeout: '{browser_timeout}'
           cucumber_tags: '{cucumber_tags}'
           headless: '{headless}'
           folder: '{folder}'
@@ -78,6 +79,7 @@
 - defaults:
     name: browsertests
     node: contintLabsSlave && UbuntuPrecise
+    browser_timeout: ''
     repository_host: 'gerrit.wikimedia.org/r'
     cucumber_tags: ''
 
@@ -106,6 +108,7 @@
       - shell: mkdir -p "$WORKSPACE/log/junit"
       - browsertest-website:
           browser: '{browser}'
+          browser_timeout: '{browser_timeout}'
           cucumber_tags: '{cucumber_tags}'
           headless: '{headless}'
           folder: '{folder}'
