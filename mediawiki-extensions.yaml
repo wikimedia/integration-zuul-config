@@ -111,7 +111,7 @@
              $(cat deps.txt)
 
 - builder:
-    name: prepare-mediawiki-qunit
+    name: prepare-mediawiki
     builders:
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
@@ -128,7 +128,7 @@
     triggers:
      - zuul
     builders:
-     - prepare-mediawiki-qunit:
+     - prepare-mediawiki:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
      - qunit
@@ -143,7 +143,7 @@
     triggers:
      - zuul
     builders:
-     - prepare-mediawiki-qunit:
+     - prepare-mediawiki:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
      - qunit-mobile
@@ -160,7 +160,7 @@
     triggers:
      - zuul
     builders:
-     - prepare-mediawiki-qunit:
+     - prepare-mediawiki:
          ext-name: 'VisualEditor'
          dependencies: 'Parsoid'
      - shell: |
