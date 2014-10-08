@@ -29,6 +29,7 @@
       - shell: mkdir -p "$WORKSPACE/log/junit"
       - browsertest-website-version:
           browser: '{browser}'
+          cucumber_tags: '{cucumber_tags}'
           headless: '{headless}'
           folder: '{folder}'
           mediawiki_password_variable: '{mediawiki_password_variable}'
@@ -68,7 +69,7 @@
          - lang_list
 
 - job-template:
-    name: 'browsertests-Wikidata-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+    name: 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce'
     defaults: browsertests
 
     triggers:
@@ -78,6 +79,7 @@
     name: browsertests
     node: contintLabsSlave && UbuntuPrecise
     repository_host: 'gerrit.wikimedia.org/r'
+    cucumber_tags: ''
 
     properties:
      - throttle:
@@ -104,6 +106,7 @@
       - shell: mkdir -p "$WORKSPACE/log/junit"
       - browsertest-website:
           browser: '{browser}'
+          cucumber_tags: '{cucumber_tags}'
           headless: '{headless}'
           folder: '{folder}'
           mediawiki_password_variable: '{mediawiki_password_variable}'

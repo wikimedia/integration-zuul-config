@@ -659,6 +659,7 @@
       - shell: |
           # set up environment variables
           export BROWSER={browser}
+          export CUCUMBER_TAGS={cucumber_tags}
           export HEADLESS={headless}
           export MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
           export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
@@ -738,6 +739,8 @@
             export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
           elif [[ $JOB_NAME == browsertests-Core-* ]]; then
             CUCUMBER_PARAMETER="@clean"
+          elif [[ ! -z $CUCUMBER_TAGS ]]; then
+            CUCUMBER_PARAMETER="$CUCUMBER_TAGS"
           else
             CUCUMBER_PARAMETER="@{mediawiki_url}"
           fi
@@ -775,6 +778,7 @@
       - shell: |
           # set up environment variables
           export BROWSER={browser}
+          export CUCUMBER_TAGS={cucumber_tags}
           export HEADLESS={headless}
           export MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
           export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
@@ -852,6 +856,8 @@
           if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
             CUCUMBER_PARAMETER="@language_screenshot"
             export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
+          elif [[ ! -z $CUCUMBER_TAGS ]]; then
+            CUCUMBER_PARAMETER="$CUCUMBER_TAGS"
           else
             CUCUMBER_PARAMETER="@{mediawiki_url}"
           fi
