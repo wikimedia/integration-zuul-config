@@ -4,7 +4,7 @@ import urllib2
 import yaml
 
 GERRIT_URL = 'https://gerrit.wikimedia.org/r/projects/?type=code'
-ZUUL_LAYOUT = os.path.join(os.path.dirname(__file__), '../layout.yaml')
+ZUUL_LAYOUT = os.path.join(os.path.dirname(__file__), '../zuul/layout.yaml')
 
 
 def get_gerrit_repos():
