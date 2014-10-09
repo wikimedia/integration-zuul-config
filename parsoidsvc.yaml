@@ -74,12 +74,12 @@
 
         case "{repository}" in
         "source")
-            PARSOID_TEST_PATH="./tests"
+            PARSOID_PATH="."
             echo "Running npm install"
             npm install
             ;;
         "deploy")
-            PARSOID_TEST_PATH="./src/tests"
+            PARSOID_PATH="./src"
             # All modules should already be in the deploy repo, no npm install
             ;;
         *)
@@ -87,8 +87,9 @@
             exit 1
             ;;
         esac
-        echo "PARSOID_TEST_PATH=$PARSOID_TEST_PATH" >> parsoid.env
-        echo "NODE_PATH=$NODE_PATH:$WORKSPACE/node_modules" >> parsoid.env
+        echo "PARSOID_PATH=$PARSOID_PATH" >> parsoid.env
+        echo 'NODE_PATH=$NODE_PATH:'"$WORKSPACE/node_modules" >> parsoid.env
+        echo 'PATH=$PATH:'"$WORKSPACE/node_modules/.bin" >> parsoid.env
 
 - job-template:
     name: parsoidsvc-{repository}-parse-tool-check
@@ -110,7 +111,7 @@
             # If any of these commands fail, something is wrong
             set -e
             . parsoid.env
-            cd "$PARSOID_TEST_PATH"
+            cd "$PARSOID_PATH"/tests
             echo "Foo" | node parse.js --wt2html
             echo "Foo" | node parse.js --wt2wt
             echo "Foo" | node parse.js --html2wt
@@ -136,7 +137,7 @@
             # If any of these commands fail, something is wrong
             set -e
             . parsoid.env
-            cd "$PARSOID_TEST_PATH"
+            cd "$PARSOID_PATH"/tests
             node roundtrip-test.js "Barack Obama"
             node roundtrip-test.js --prefix frwiki "Chope"
             node roundtrip-test.js --xml "Parkour"
@@ -161,7 +162,7 @@
             # If any of these commands fail, something is wrong
             set -e
             . parsoid.env
-            cd "$PARSOID_TEST_PATH"
+            cd "$PARSOID_PATH"/tests
             node parserTests --wt2html --wt2wt --html2wt --html2html --selser --no-color --quiet --blacklist
 
 - job-template:
@@ -186,7 +187,7 @@
         npm --version
         set -e
         . parsoid.env
-        cd "$PARSOID_TEST_PATH"/..
+        cd "$PARSOID_PATH"
         npm test
 
 - job-template:
@@ -211,7 +212,7 @@
         npm --version
         set -e
         . parsoid.env
-        cd "$PARSOID_TEST_PATH"/..
+        cd "$PARSOID_PATH"
         npm test
 
 - project:
