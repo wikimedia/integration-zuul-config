@@ -8,7 +8,7 @@
 
          # install ruby dependencies
          mkdir -p vendor
-         gem1.9.3 install --env-shebang -i vendor --no-ri --no-rdoc bundler
+         gem2.0 install --env-shebang -i vendor --no-document bundler
 
          # Prepare some paths lookup
          export GEM_PATH="`pwd`/vendor"
@@ -18,7 +18,7 @@
 
 - job-template:
     name: '{name}-bundle-{bundlecommand}'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul
     concurrent: true
     triggers:
@@ -31,7 +31,7 @@
 # doc.wikimedia.org using an intermediate rsync repository in labs.
 - job-template:
     name: '{name}-bundle-yard-publish'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul
     triggers:
      - zuul
