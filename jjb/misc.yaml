@@ -1,0 +1,99 @@
+- job:
+    name: 'unicodejs-jsduck-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - documentation-sync:
+        src: '$WORKSPACE/docs/code'
+        project: 'unicodejs'
+        version: '$ZUUL_BRANCH'
+
+- project:
+    name: 'unicodejs'
+    jobs:
+     - '{name}-npm'
+     - '{name}-jsduck'
+     - 'unicodejs-jsduck-publish'
+
+- job:
+    name: 'oojs-core-jsduck-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - documentation-sync:
+        src: '$WORKSPACE/docs'
+        project: 'oojs'
+        version: '$ZUUL_BRANCH'
+
+- job:
+    name: 'oojs-core-jsduck'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+
+- project:
+    name: 'oojs-core'
+    jobs:
+     - '{name}-jslint'
+     - '{name}-npm'
+     - 'oojs-core-jsduck'
+     - 'oojs-core-jsduck-publish'
+
+- job:
+    name: 'oojs-ui-jsduck'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+
+- job:
+    name: 'oojs-ui-jsduck-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - documentation-sync:
+        src: '$WORKSPACE/docs'
+        project: 'oojs-ui'
+        version: '$ZUUL_BRANCH'
+
+- project:
+    name: 'oojs-ui'
+    jobs:
+     - '{name}-jslint'
+     - '{name}-npm'
+     - '{name}-phplint'
+     - '{name}-phpcs-HEAD'
+     - 'oojs-ui-jsduck'
+     - 'oojs-ui-jsduck-publish'
+
+- job:
+    name: 'VisualEditor-jsduck'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck-conf:
+        config: '$WORKSPACE/.docs/config.json'
+
+- project:
+    name: 'qrpedia'
+    jobs:
+     - '{name}-phplint'

@@ -1,0 +1,43 @@
+# Holds various projects under 'labs/'
+
+- project:
+    name: 'labs-incubator'
+    jobs:
+     - '{name}-phplint'
+
+- project:
+    name: 'labs-migration-assistant'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'labs-nagios-builder'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'labs-toollabs'
+    jobs:
+     - '{name}-debian-glue'
+     - '{name}-phplint'
+     - '{name}-jslint'
+
+- project:
+    name: 'labs-tools-extdist'
+    toxenv:
+     - flake8
+    jobs:
+     - '{name}-tox-{toxenv}'
+
+- project:
+    name: 'labs-tools-gblrenamemon'
+    toxenv:
+     - flake8
+    jobs:
+     - '{name}-tox-{toxenv}'
+
+- project:
+    name: 'labs-tools-grrrit'
+    jobs:
+     - '{name}-jslint'
+     - '{name}-yamllint'

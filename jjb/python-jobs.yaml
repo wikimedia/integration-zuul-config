@@ -1,0 +1,102 @@
+# Invoke a tox environement on Precise
+#
+# Ubuntu Precise provides:
+# python 2.7.3
+# python 3.2.3
+#
+# Parameter: {toxenv}
+- job-template:
+    name: '{name}-tox-{toxenv}'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: '{toxenv}'
+    publishers:
+     - archive-log-dir
+
+# Invoke a tox environement on Trusty
+#
+# Ubuntu Trusty provides:
+# python 2.7.6
+# python 3.4.0
+#
+# Parameter: {toxenv}
+- job-template:
+    name: '{name}-tox-{toxenv}-trusty'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: '{toxenv}'
+    publishers:
+     - archive-log-dir
+
+
+# Call tox env 'doc' to generate documentation in labs and publish to
+# doc.wikimedia.org using an intermediate rsync repository in labs.
+- job-template:
+    name: '{name}-tox-doc-publish'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: doc
+     - push-doc:
+        docsrc: '{docsrc}'
+        docdest: '{docdest}'
+
+    publishers:
+     - archive-log-dir
+
+- job-template:
+    name: '{name}-sphinx-doc'
+    node: hasContintPackages && UbuntuPrecise
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: "python setup.py build_sphinx"
+
+    # FIXME: should publish somewhere
+
+- job-template:
+    name: '{name}-pep8'
+    node: hasContintPackages && UbuntuPrecise
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    scm:
+     - git-remote-zuul-no-submodules
+    builders:
+     - pep8
+    publishers:
+     - pep8
+
+- job-template:
+    name: '{name}-pyflakes'
+    node: hasContintPackages && UbuntuPrecise
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    scm:
+     - git-remote-zuul-no-submodules
+    builders:
+     - pyflakes
+
+- job-group:
+    name: python-jobs
+    jobs:
+     - '{name}-sphinx-doc'
+     - '{name}-pep8'
+     - '{name}-pyflakes'

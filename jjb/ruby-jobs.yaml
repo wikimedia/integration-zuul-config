@@ -1,0 +1,43 @@
+- builder:
+    name: bundle
+    builders:
+     - shell: |
+         # Shared cache of gems to avoid hitting rubygems all the time
+         # See https://github.com/bundler/bundler/issues/2856
+         export GEM_HOME="$WORKSPACE/../gems"
+
+         # install ruby dependencies
+         mkdir -p vendor
+         gem1.9.3 install --env-shebang -i vendor --no-ri --no-rdoc bundler
+
+         # Prepare some paths lookup
+         export GEM_PATH="`pwd`/vendor"
+
+         vendor/bin/bundle install --verbose
+         vendor/bin/bundle exec {command}
+
+- job-template:
+    name: '{name}-bundle-{bundlecommand}'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - bundle:
+         command: "{bundlecommand}"
+
+# Call bundle 'yard' to generate documentation in labs and publish to
+# doc.wikimedia.org using an intermediate rsync repository in labs.
+- job-template:
+    name: '{name}-bundle-yard-publish'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - bundle:
+         command: 'yard'
+     - push-doc:
+         docsrc: 'doc'
+         docdest: 'rubygems/{name}'

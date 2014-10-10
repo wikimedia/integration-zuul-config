@@ -1,0 +1,62 @@
+- job-template:
+    name: '{name}-gembuild'
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: "gem build *.gemspec"
+    publishers:
+     - archive:
+         artifacts: '*.gem'
+
+- job-template:
+    name: 'mediawiki-vagrant-puppet-doc'
+    node: gallium  # webhost where doc is published
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        /usr/bin/puppet doc \
+            --mode rdoc \
+            --outputdir /srv/org/wikimedia/doc/mediawiki-vagrant \
+            --modulepath "$WORKSPACE/puppet/modules" \
+            --manifestdir "$WORKSPACE/puppet/manifests"
+
+- project:
+    name: 'mediawiki-ruby-api'
+    bundlecommand:
+     - yard
+    jobs:
+     - '{name}-ruby1.9.3lint'
+     - '{name}-gembuild'
+     - '{name}-bundle-{bundlecommand}':
+         bundlecommand:
+          - yard
+     - '{name}-bundle-yard-publish'
+
+- project:
+    name: 'mediawiki-selenium'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+     - '{name}-gembuild'
+     - '{name}-bundle-{bundlecommand}':
+         bundlecommand:
+          - yard
+     - '{name}-bundle-yard-publish'
+
+- project:
+    # mediawiki/services/mathoid.git
+    name: 'mathoidsvc'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'mediawiki-vagrant'
+    jobs:
+     - '{name}-puppetlint-lenient'
+     - '{name}-puppetlint-strict'
+     - '{name}-puppet-validate'
+     - '{name}-erblint-HEAD'
+     - 'mediawiki-vagrant-puppet-doc'

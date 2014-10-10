@@ -1,0 +1,200 @@
+# Git macro that simply fetch under '/source/'
+# Useful to build debian packages.
+- scm:
+    name: git-deb-package
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        basedir: 'source'
+
+- builder:
+    name: debian-glue-generate-git-snapshot
+    builders:
+      - shell: /usr/bin/generate-git-snapshot
+
+- builder:
+    name: debian-glue-build-and-provide-package
+    builders:
+      - shell: |
+          export REPOSITORY=/data/project/debianrepo
+          export REPOS=jenkins-debian-glue
+          /usr/bin/build-and-provide-package
+
+- builder:
+    name: debian-glue-generate-reprepro-codename
+    builders:
+      - shell: /usr/bin/generate-reprepro-codename
+
+- builder:
+    name: debian-glue-increase-version-number
+    builders:
+      - shell: /usr/bin/increase-version-number
+
+- builder:
+    name: debian-glue-lintian
+    builders:
+      - shell: |
+          # We might consider adding --warnings
+          set -o pipefail
+          # Source package:
+          /usr/bin/lintian-junit-report --filename lintian-binary.txt *.dsc | tee lintian-binary.xml
+          # Binary package:
+          /usr/bin/lintian-junit-report --filename lintian-source.txt *.changes | tee lintian-source.xml
+          set +o pipefail
+
+- builder:
+    name: debian-glue-piuparts
+    builders:
+      - shell: |
+          sudo piuparts_wrapper $PWD/*.deb || true
+          piuparts_tap piuparts.txt > piuparts.tap
+
+#
+# JOB TEMPLATES
+#
+
+- job-template:
+    name: '{name}-debian-glue'
+    defaults: use-remote-zuul
+    node: contintLabsSlave && UbuntuPrecise
+    triggers:
+     - zuul
+
+    # Clone into ./source
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        basedir: 'source'
+
+    builders:
+      - debian-glue-generate-git-snapshot
+      - debian-glue-build-and-provide-package
+      - debian-glue-lintian
+      - debian-glue-piuparts
+
+    publishers:
+      - junit:
+          results: 'lintian-*.xml'
+      - tap:
+          results: piuparts.tap
+      - archive:
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
+
+- job-template:
+    name: '{name}-debbuild'
+    node: hasContintPackages && UbuntuPrecise
+    defaults: use-remote-zuul
+
+    scm:
+     - git-deb-package
+
+    builders:
+     - shell: 'cd source && uscan --verbose --rename --download-current-version'
+     - shell: 'cd source && dpkg-buildpackage -rfakeroot -us -uc'
+     - shell: 'lintian --info *.deb'
+
+- job-template:
+    name: '{name}-antbuild'
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+
+    scm:
+     - git-deb-package
+
+    builders:
+     - ant:
+        targets: 'build'
+        buildfile: '$WORKSPACE/source/build.xml'
+
+#
+# PROJECTS
+#
+
+- project:
+    name: gerrit
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'lucene-search-2'
+    jobs:
+     - '{name}-antbuild'
+
+- project:
+    name: 'operations-debs-adminbot'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'operations-debs-archiva'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-gerrit'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-git-fat'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-ganglia'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-ircecho'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'operations-debs-jenkins-debian-glue'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-kafka'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-latexml'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: operations-debs-pybal
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-python-voluptuous'
+    jobs:
+     - '{name}-debbuild'
+
+- project:
+    name: 'operations-debs-varnish'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-vips'
+    jobs:
+     - '{name}-debian-glue'
+
+- project:
+    name: 'operations-debs-wikistats'
+    jobs:
+     - '{name}-debian-glue'
+     - '{name}-phplint'
