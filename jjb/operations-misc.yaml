@@ -1,0 +1,34 @@
+- project:
+    name: 'operations-software'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'operations-software-redactatron'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'operations-dumps'
+    jobs:
+     - python-jobs
+
+- job-template:
+    name: 'operations-dns-lint'
+    node: hasContintPackages && UbuntuPrecise
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         mkdir -p "$WORKSPACE"/build
+         # Lint script provided via puppet authdns::lint class
+         /usr/local/bin/authdns-lint "$WORKSPACE" "$WORKSPACE"/build
+
+- project:
+    name: 'operations-dns'
+    jobs:
+     - 'operations-dns-lint'
+     - '{name}-tabs':
+         fileselector: '*'

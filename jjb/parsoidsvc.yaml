@@ -1,0 +1,232 @@
+# Builder macro that uses multigit.sh to fetch parsoid and parsoid/deploy
+# applying triggered change patch to the proper repository
+- builder:
+    name: git-parsoid-and-deploy-repos
+    builders:
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/multigit.sh \
+          mediawiki/services/parsoid mediawiki/services/parsoid/deploy
+
+# Runs MediaWiki core @master PHP parser tests
+- job-template:
+    name: parsoidsvc-php-parsertests
+    node: hasSlaveScripts && UbuntuPrecise
+    concurrent: true
+    wrappers:
+        - timeout:
+            timeout: 10
+            fail: true
+        - timestamps
+        - ansicolor
+    triggers:
+        - zuul
+    scm:
+        - git:
+            url: '$ZUUL_URL/$ZUUL_PROJECT'
+            reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
+            branches:
+             - '$ZUUL_COMMIT'
+            refspec: '$ZUUL_REF'
+            disable-submodules: true
+            basedir: parsoidsvc
+    builders:
+        # Hack to get mediawiki/core installed in a different directory
+        - shell: |
+            rm -fR src/mediawiki/core
+            mkdir -p src/mediawiki/core
+            export MW_INSTALL_PATH='src/mediawiki/core'
+
+            # mw-core-get.sh only recognize $WORKSPACE so override it to point
+            # to MW_INSTALL_PATH
+            # Support added with https://gerrit.wikimedia.org/r/#/c/130662/
+            # which is pending merge.
+            WORKSPACE=$MW_INSTALL_PATH /srv/deployment/integration/slave-scripts/bin/mw-core-get.sh master
+
+            /srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh
+
+        - shell: |
+           # record the versions of parsertests we're running, for debugging
+           # if something goes wrong
+           find -name parserTests.txt -print0 | xargs -0 md5sum -b
+           # Now run parserTests
+           # FIXME should use the phpunit wrapper
+           cd src/mediawiki/core
+           php tests/parserTests.php --color=no --quiet \
+            --file="$WORKSPACE/parsoidsvc/tests/parserTests.txt"
+
+# Parsoid comes with two repositories:
+# mediawiki/services/parsoid : the actual source code
+# mediawiki/services/parsoid/deploy : node modules + parsoid code under /src/
+#
+# We share the job-templates describing tests commands to run, the
+# parsoid-set-env macro would contains environment variable pointing to the
+# Parsoid `tests` directory and set the NODE_PATH
+#
+# Once used, subsequent shell commands should load the env variables by using:
+#   . parsoid.env
+#
+# Note we run `npm install` so we better have npm installed (ie on labs)
+- builder:
+    name: parsoid-set-env
+    builders:
+     - shell: |
+        rm -f parsoid.env
+
+        case "{repository}" in
+        "source")
+            PARSOID_PATH="."
+            echo "Running npm install"
+            npm install
+            ;;
+        "deploy")
+            PARSOID_PATH="./src"
+            # All modules should already be in the deploy repo, no npm install
+            ;;
+        *)
+            echo "JJB {{repository}} parameter '{repository}' is not recognized."
+            exit 1
+            ;;
+        esac
+        echo "PARSOID_PATH=$PARSOID_PATH" >> parsoid.env
+        echo 'NODE_PATH=$NODE_PATH:'"$WORKSPACE/node_modules" >> parsoid.env
+        echo 'PATH=$PATH:'"$WORKSPACE/node_modules/.bin" >> parsoid.env
+
+- job-template:
+    name: parsoidsvc-{repository}-parse-tool-check
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    wrappers:
+        - timeout:
+            timeout: 5
+            fail: true
+        - timestamps
+        - ansicolor
+    triggers:
+        - zuul
+    builders:
+        - parsoid-set-env:
+            repository: '{repository}'
+        - shell: |
+            # If any of these commands fail, something is wrong
+            set -e
+            . parsoid.env
+            cd "$PARSOID_PATH"/tests
+            echo "Foo" | node parse.js --wt2html
+            echo "Foo" | node parse.js --wt2wt
+            echo "Foo" | node parse.js --html2wt
+            echo "Foo" | node parse.js --html2html
+
+- job-template:
+    name: parsoidsvc-{repository}-roundtrip-test-check
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    wrappers:
+        - timeout:
+            timeout: 5
+            fail: true
+        - timestamps
+        - ansicolor
+    triggers:
+        - zuul
+    builders:
+        - parsoid-set-env:
+            repository: '{repository}'
+        - shell: |
+            # If any of these commands fail, something is wrong
+            set -e
+            . parsoid.env
+            cd "$PARSOID_PATH"/tests
+            node roundtrip-test.js "Barack Obama"
+            node roundtrip-test.js --prefix frwiki "Chope"
+            node roundtrip-test.js --xml "Parkour"
+
+- job-template:
+    name: parsoidsvc-{repository}-parsertests-run-harder
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    wrappers:
+        - timeout:
+            timeout: 10
+            fail: true
+        - timestamps
+        - ansicolor
+    triggers:
+        - zuul
+    builders:
+        - parsoid-set-env:
+            repository: '{repository}'
+        - shell: |
+            # If any of these commands fail, something is wrong
+            set -e
+            . parsoid.env
+            cd "$PARSOID_PATH"/tests
+            node parserTests --wt2html --wt2wt --html2wt --html2html --selser --no-color --quiet --blacklist
+
+- job-template:
+    name: parsoidsvc-{repository}-npm-0.10
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    wrappers:
+        - timeout:
+            timeout: 10
+            fail: true
+        - timestamps
+        - ansicolor
+    triggers:
+        - zuul
+    builders:
+    - assert-node-version-0.10
+    - parsoid-set-env:
+        repository: '{repository}'
+    - shell: |
+        node --version
+        npm --version
+        set -e
+        . parsoid.env
+        cd "$PARSOID_PATH"
+        npm test
+
+- job-template:
+    name: parsoidsvc-{repository}-npm-0.8
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    wrappers:
+        - timeout:
+            timeout: 10
+            fail: true
+        - timestamps
+        - ansicolor
+    triggers:
+        - zuul
+    builders:
+    - assert-node-version-0.8
+    - parsoid-set-env:
+        repository: '{repository}'
+    - shell: |
+        node --version
+        npm --version
+        set -e
+        . parsoid.env
+        cd "$PARSOID_PATH"
+        npm test
+
+- project:
+    name: parsoidsvc
+    # job templates are shared by both repositories
+    repository:
+     - source  # mediawiki/services/parsoid
+     - deploy  # mediawiki/services/parsoid/deploy
+    jobs:
+        - '{name}-jslint'
+        - '{name}-debian-glue'
+        - 'parsoidsvc-{repository}-parse-tool-check'
+        - 'parsoidsvc-{repository}-roundtrip-test-check'
+        - 'parsoidsvc-{repository}-parsertests-run-harder'
+        - 'parsoidsvc-{repository}-npm-0.8'
+        - 'parsoidsvc-{repository}-npm-0.10'
+        - parsoidsvc-php-parsertests

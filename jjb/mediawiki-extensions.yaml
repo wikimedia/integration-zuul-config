@@ -1,0 +1,1347 @@
+# jshint is in a separate job from phplint because various extensions
+# don't pass jshint yet but do pass phplint. This way we can opt-in
+# on a project base.
+- job-template:
+    name: '{name}-{ext-name}-jslint'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jshint
+     - jsonlint
+
+- job-template:
+    name: '{name}-{ext-name}-csslint'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - csslint
+
+- job-template:
+    name: '{name}-{ext-name}-npm'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - npm
+
+- job-template:
+    name: '{name}-{ext-name}-phplint'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - phplint
+
+# Compatibility: Use '{name}-{ext-name}-phplint' instead
+- job-template:
+    name: '{name}-{ext-name}-lint'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - phplint
+
+# Template to run browsertests for an extension
+# Parameters: dependencies
+#
+- job-template:
+    name: '{name}-{ext-name}-{browser}'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-zuul-for-mw-ext
+    triggers:
+     - zuul
+
+    builders:
+     # setup mediawiki master + extension dependencies
+     - mw-setup-extension:
+        mwbranch: 'master'
+        dependencies: '{dependencies}'
+
+     - mw-run-update-script
+
+     - browsertests:
+         tests-path: 'extensions/{ext-name}/tests/browser'
+         browser: '{browser}'
+
+    publishers:
+     - xunit:
+         types:
+          - junit:
+              pattern: 'log/*.xml'
+     - archive:
+         artifacts: 'log/*.log, log/report.html, log/*.png'
+
+- job-template:
+    name: '{name}-{ext-name}-phpcs-HEAD'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - phpcs-HEAD
+    publishers:
+     - phpcs
+
+- builder:
+    name: 'zuul-cloner-extdeps'
+    builders:
+     - shell: |
+         # Build dependencies list
+         rm -f deps.txt
+         touch deps.txt
+         echo -e "mediawiki/core\nmediawiki/vendor\nmediawiki/extensions/{ext-name}" >> deps.txt
+         if [ "{dependencies}" != "" ]; then
+             echo "$(IFS=,; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
+         fi
+     - zuul-cloner:
+         projects: >
+             $(cat deps.txt)
+
+- builder:
+    name: prepare-mediawiki
+    builders:
+     - zuul-cloner-extdeps:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - mw-install-sqlite
+     - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+
+- job-template:
+    name: '{name}-{ext-name}-qunit'
+    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - qunit
+    publishers:
+     - archive-log-dir
+     - qunit-cleanup
+
+- job-template:
+    name: '{name}-{ext-name}-qunit-mobile'
+    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - qunit-mobile
+    publishers:
+     - archive-log-dir
+     - qunit-cleanup
+
+# VisualEditor MediaWiki extensions has the VisualEditor repository as a
+# submodule under lib/ve and Zuul cloner does not process submodules.
+- job-template:
+    name: 'mwext-VisualEditor-qunit'
+    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: 'VisualEditor'
+         dependencies: 'Parsoid'
+     - shell: |
+         cd src/extensions/VisualEditor
+         git submodule update --init
+         git submodule status
+         git submodule foreach git clean -xqdf
+     - qunit
+    publishers:
+     - archive-log-dir
+     - qunit-cleanup
+
+
+# Run extension tests via Zuul cloner
+- job-template:
+    name: '{name}-{ext-name}-testextension'
+    node: hasSlaveScripts && UbuntuPrecise
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - mw-run-phpunit-allexts
+    # TODO, find ways to additionaly run tests for core but
+    # without extensions tests
+    publishers:
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml'
+
+
+- job-template:
+    name: 'mwext-GuidedTour-doc-test'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsduck-conf:
+        config: '$WORKSPACE/.docs/config.json'
+
+- job-template:
+    name: 'mwext-GuidedTour-doc-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - jsduck-conf:
+        config: '$WORKSPACE/.docs/config.json'
+     - shell: |
+        # Set destination and version directory therein
+        DEST_DIR="/srv/org/wikimedia/doc/GuidedTour"
+        DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
+        # Ensure the destination exists
+        mkdir -p $DEST_DIR
+        # Publish it (trailing slash is important!)
+        rsync --recursive --delete-after --force $WORKSPACE/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
+
+- job-template:
+    name: 'mwext-PoolCounter-build'
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        cd daemon
+        make
+
+- job-template:
+    name: 'mwext-MultimediaViewer-doc-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        # Generate documentation
+        $WORKSPACE/docs/generate
+        # Set destination and version directory therein
+        DEST_DIR="/srv/org/wikimedia/doc/MultimediaViewer"
+        DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
+        # Ensure the destination exists
+        mkdir -p $DEST_DIR
+        # Publish it (trailing slash is important!)
+        rsync --recursive --delete-after --force $WORKSPACE/docs/js/ "$DEST_DIR/$DEST_VERSIONDIR/"
+
+- job-template:
+    name: 'mwext-VisualEditor-doc-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        # Generate documentation
+        $WORKSPACE/bin/generateDocs.sh
+        # Set destination and version directory therein
+        DEST_DIR="/srv/org/wikimedia/doc/VisualEditor"
+        DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
+        # Ensure the destination exists
+        mkdir -p $DEST_DIR
+        # Publish it (trailing slash is important!)
+        rsync --recursive --delete-after --force $WORKSPACE/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
+        rsync --recursive --delete-after --force $WORKSPACE/lib/ "$DEST_DIR/$DEST_VERSIONDIR/lib/"
+
+- job-template:
+    name: 'mwext-MultimediaViewer-doc-test'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        export TERM=xterm
+        $WORKSPACE/docs/generate
+
+- job-template:
+    name: 'mwext-VisualEditor-doc-test'
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        export TERM=xterm
+        $WORKSPACE/bin/generateDocs.sh
+
+- job-template:
+    name: 'mwext-VisualEditor-sync-gerrit'  # bug 49846
+    node: gallium  # needs 'jenkins' user which has the 'jenkins-bot' SSH credentials
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - shell: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve.sh
+     - shell: sudo -u jenkins /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh
+
+# These are jobs we create for all of the extensions
+# listed below. If a job should only be created
+# for a select number of extensions or if it needs
+# custom parameters, add it below under "Extra jobs for specific extensions"
+# at the bottom of this file.
+- job-group:
+    name: mwext-check-jobs
+    jobs:
+     - '{name}-{ext-name}-lint'
+     - '{name}-{ext-name}-jslint'
+     - '{name}-{ext-name}-testextension'
+     - '{name}-{ext-name}-phpcs-HEAD'
+
+- project:
+    name: mwext
+
+    # By default we do not need any other extensions:
+    dependencies: ""
+
+    ext-name:
+     - AbsenteeLandlord
+     - AbuseFilter
+     - AccessControl
+     - AccountAudit
+     - AccountInfo
+     - ActionEditSubmit
+     - ActiveAbstract
+     - ActivityMonitor
+     - AddMessages
+     - AddThis
+     - AdManager
+     - AdminLinks
+     - Ads
+     - AdvancedMeta
+     - Agora
+     - AjaxLogin
+     - AJAXPoll
+     - AkismetKlik
+     - AllTimeZones
+     - AnchorHandler
+     - Annotator
+     - AntiBot
+     - AntiSpoof
+     - APC
+     - ApiExplorer
+     - ApiSandbox
+     - ApiSVGProxy
+     - ApprovedRevs
+     - Arrays
+     - ArticleCreationWorkflow
+     - ArticleFeedback
+     - ArticleFeedbackv5
+     - ArticleIndex
+     - AssertEdit
+     - Auth_remoteuser
+     - AuthorProtect
+     - AutoCreateCategoryPages
+     - AutomaticBoardWelcome
+     - AutoProxyBlock
+     - Awesomeness
+     - AWS
+     - AWSSDK
+     - Babel
+     - BatchUserRights
+     - BayesianFilter
+     - BetaFeatures
+     - BiblioPlus
+     - BibManager
+     - Blackout
+     - BlameMaps
+     - BlockAndNuke
+     - BlogPage
+     - BlueSpiceExtensions
+     - BlueSpiceFoundation
+     - BookManager
+     - BookManagerv2
+     - Bootstrap
+     - BounceHandler
+     - BreadCrumbs
+     - BreadCrumbs2
+     - Calendar
+     - Campaigns
+     - Capiunto:
+        dependencies: 'Scribunto'
+     - Carp
+     - CategorySlideShow
+     - CategorySortHeaders
+     - CategoryTagSorter
+     - CategoryTests
+     - CategoryTree
+     - CentralAuth
+     - CentralLogging
+     - CentralNotice
+     - CharInsert
+     - CharRangeSpan
+     - Checkpoint
+     - CheckUser
+     - CirrusSearch:
+        # Please also update browsertests dependencies
+        dependencies: 'Cite,Elastica,MwEmbedSupport,TimedMediaHandler,PdfHandler'
+     - Cite
+     - CiteThisPage
+     - Citoid
+     - cldr
+     - CleanChanges
+     - ClickTracking
+     - ClientSide
+     - CloseWikis
+     - CodeEditor
+     - CodeMirror
+     - CodeReview
+     - Collection
+     - Commentbox
+     - CommentPages
+     - Comments
+     - CommonMessages
+     - CommonsMetadata
+     - CommunityApplications
+     - CommunityHiring
+     - CommunityTwitter
+     - CommunityVoice
+     - ConditionalShowSection
+     - Configure
+     - ConfirmAccount
+     - ConfirmEdit
+     - CongressLookup
+     - ContactPage
+     - ContactPageFundraiser
+     - ContentTranslation:
+        dependencies: 'UniversalLanguageSelector'
+     - Contest
+     - ContributionReporting
+     - ContributionScores
+     - ContributionTracking
+     - Contributors
+     - ConventionExtension
+     - Convert2Wiki
+     - CopyToClipboard
+     - CreatePage
+     - CreateRedirect
+     - CreditsSource
+     - CreditTab
+     - CryoKey
+     - CSS
+     - CustomData
+     - CustomUserSignup
+     - DataTransfer
+     - DataTypes:
+        dependencies: 'DataValues'
+     - DebianISOCodes
+     - DeleteBatch
+     - DeleteOwn
+     - Description2
+     - DeviceMapLogCapture
+     - Diagnosis
+     - Dice
+     - DidYouKnow
+     - DidYouMean
+     - DisableAccount
+     - Disambiguator
+     - DiscussionThreading
+     - DismissableSiteNotice
+     - DisqusTag
+     - DjangoAnalytics
+     - DonationInterface:
+        dependencies: 'ContributionTracking'
+     - DoubleWiki
+     - DownloadCounter
+     - DPLforum
+     - Drafts
+     - DumpHTML
+     - Duplicator
+     - DynamicPageList
+     - DynamicSidebar
+     - E3Experiments
+     - Echo
+     - Editcount
+     - EditPageTracking
+     - EditSubpages
+     - EducationProgram:
+        dependencies: 'cldr'
+     - Elastica
+     - EmailCapture
+     - EnhanceContactForm
+     - ErrorHandler
+     - EtherEditor
+     - EtherpadLite
+     - EventLogging
+     - examples
+     - ExpandTemplates
+     - ExtensionDistributor
+     - ExternalArticles
+     - ExternalData
+     - ExtraLanguageLink
+     - ExtTab
+     - FacebookOpenGraph
+     - FanBoxes
+     - FeaturedFeeds
+     - FeedsFromPrivateWikis
+     - FilterListUsers
+     - FirstSteps
+     - FlaggedRevs:
+        dependencies: 'Scribunto'
+     - Flow:
+        dependencies: 'AbuseFilter,SpamBlacklist,CheckUser,Mantle,Echo'
+     - FlvHandler
+     - ForcePreview
+     - FormatDates
+     - FormatNum
+     - FormelApplet
+     - FormPreloadPostCache
+     - Foxway
+     - FundraiserLandingPage
+     - FundraisingChart
+     - FundraisingEmailUnsubscribe
+     - FundraisingTranslateWorkflow
+     - Gadgets
+     - Genderize
+     - GeoCrumbs
+     - GeoData
+     - GeoGebra
+     - GettingStarted:
+        dependencies: 'CentralAuth,EventLogging,GuidedTour'
+     - Git2Pages
+     - Gitweb
+     - GlobalBlocking
+     - GlobalContributions
+     - GlobalCssJs
+     - GlobalNotice
+     - GlobalPreferences
+     - GlobalUsage
+     - GlobalUserGroups
+     - GlobalUserPage
+     - GlobalUserrights
+     - GoogleAdSense
+     - googleAnalytics
+     - GoogleAppEngine
+     - GoogleCustomWikiSearch
+     - GoogleDocs4MW
+     - GoogleDocTag
+     - GoogleLogin
+     - GoogleMaps
+     - GoogleNewsSitemap
+     - GooglePlusOne
+     - GoogleSiteSearch
+     - Graph:
+        dependencies: 'JsonConfig'
+     - GraphViz
+     - GroupsSidebar
+     - GuidedTour:
+        dependencies: 'EventLogging'
+     - GWToolset:
+        dependencies: 'SyntaxHighlight_GeSHi,Scribunto,TemplateData'
+     - Hanp
+     - HashTables
+     - HeaderTabs
+     - HelpCommons
+     - HelpPages
+     - HidePrefix
+     - HostStats
+     - Hovergallery
+     - HSTS
+     - HTMLets
+     - HTMLTags
+     - I18nTags
+     - IframePage
+     - IfTemplates
+     - ImageLink
+     - ImageMap
+     - ImageMetrics:
+        dependencies: 'EventLogging'
+     - IndexFunction
+     - InlineCategorizer
+     - InputBox
+     - Insider
+     - InteractiveBlockMessage
+     - Interlanguage
+     - intersection
+     - Interwiki
+     - InterwikiMagic
+     - InviteSignup
+     - Josa
+     - JSBreadCrumbs
+     - JsonConfig
+     - JsonData
+     - LabeledSectionTransclusion
+     - LandingCheck
+     - LanguageSelector
+     - LanguageTag
+     - LastModified
+     - LdapAuthentication
+     - Less
+     - LifeWeb
+     - LifeWebCore
+     - LightweightRDFa
+     - Limn
+     - Lingo
+     - LinkedWiki
+     - LinkFilter
+     - LinkSuggest
+     - LiquidThreads
+     - Listings
+     - ListSignup
+     - LiveTranslate
+     - LocalisationUpdate
+     - Lockdown
+     - LockDownEnglishPages
+     - LogEntry
+     - LogoFunctions
+     - LookupUser
+     - LoopFunctions
+     - Loops
+     - MagicNoCache
+     - Maintenance
+     - MaintenanceShell
+     - Mantle
+     - Maps:
+        dependencies: 'Validator'
+     - MapSources
+     - MarkAsHelpful
+     - MassEditRegex
+     - MassMessage:
+        dependencies: 'LiquidThreads'
+     - Math
+     - MathSearch
+     - MediaFunctions
+     - MediaWikiAuth
+     - MediaWikiChat
+     - Minifier
+     - MixedNamespaceSearchSuggestions
+     - MobileApp:
+        dependencies: 'MobileFrontend,Mantle'
+     - MobileFrontend:
+        dependencies: 'Mantle'
+     - Model
+     - MolHandler
+     - MoodBar
+     - Moodle
+     - Mpdf
+     - MsLinks
+     - MSSQLBackCompat
+     - MsUpload
+     - MultiMaps
+     - MultimediaPlayer
+     - MultimediaViewer
+     - MultiUpload
+     - MwEmbedSupport
+     - MWSearch
+     - MyVariables
+     - NamespaceHTML
+     - NamespacePaths
+     - NamespaceRelations
+     - Narayam
+     - NaturalLanguageList
+     - NavigationTiming:
+        dependencies: 'EventLogging'
+     - Negref
+     - NetworkAuth
+     - NewestPages
+     - News
+     - NewsBox
+     - NewSignupPage
+     - Newsletter
+     - NewUserMessage
+     - NewUserNotif
+     - NewUsersList
+     - Nonlinear
+     - Nostalgia
+     - NoTitle
+     - NSFileRepo:
+        dependencies: 'Lockdown'
+     - Nuke
+     - NukeDPL
+     - NumberFormat
+     - NumberOfWikis
+     - Numbertext
+     - NumerAlpha
+     - OAI
+     - OATHAuth
+     - OAuth
+     - OdbcDatabase
+     - Offline
+     - OfflineImportLexicon
+     - OggHandler
+     - OnlineStatus
+     - OnlineStatusBar
+     - OnlyRecentRecentChanges
+     - OpenBadges
+     - OpenGraphMeta
+     - OpenID
+     - OpenSearchXml
+     - OpenStackManager
+     - OpenStreetMapSlippyMap
+     - OracleTextSearch
+     - Oversight
+     - PageBlock
+     - PageCreationNotif
+     - PageDisqus
+     - PagedTiffHandler
+     - PageImages
+     - PageInCat
+     - PageLanguage
+     - PageNotice
+     - PageSchemas
+     - PageTools
+     - PageTriage
+     - PanScroll
+     - ParserFun
+     - ParserFunctions
+     - ParserHooks
+     - Parsoid
+     - PdfBook
+     - PdfExport
+     - PdfHandler
+     - PerPageLicense
+     - Persona
+     - Petition
+     - PGFTikZ
+     - Phalanx
+     - PHPExcel
+     - PhpHighlight
+     - PhpTags
+     - PhpTagsFunctions:
+        dependencies: 'PhpTags'
+     - PhpTagsMaps
+     - PhpTagsSMW
+     - PhpTagsWiki:
+        dependencies: 'PhpTags,PhpTagsFunctions'
+     - PictureGame
+     - Poem
+     - Poll
+     - PollNY
+     - Polyglot
+     - PoolCounter
+     - Popups
+     - PostEdit
+     - PrefStats
+     - PrefSwitch
+     - Premoderation
+     - PrivateDomains
+     - PronunciationRecording
+     - ProofreadPage:
+        dependencies: 'LabeledSectionTransclusion'
+     - ProtectSite
+     - PubSubHubbub
+     - PurgeClickThrough
+     - Push
+     - PushToWatch
+     - Quantcast
+     - QuickResponse
+     - Quiz
+     - QuizGame
+     - QuizTabulate
+     - RandomFeaturedUser
+     - RandomGameUnit
+     - RandomImage
+     - RandomImageByCategory
+     - RandomInCategory
+     - RandomRootPage
+     - RandomUsersWithAvatars
+     - Ratings:
+        dependencies: 'Validator'
+     - RDFIO
+     - ReaderFeedback
+     - ReassignEdits
+     - RefreshSpecial
+     - RegexFun
+     - RegexFunctions
+     - RelatedArticles
+     - RelatedSites
+     - RelationLinks
+     - Renameuser
+     - ReplaceSet
+     - ReplaceText
+     - RevisionCommentSupplement
+     - RightFunctions
+     - RSS
+     - RT
+     - SandboxLink
+     - Sarcasm
+     - ScanSet
+     - Score
+     - Screenplay
+     - Scribunto
+     - SearchExtraNS
+     - SearchRealnames
+     - SectionDisqus
+     - SecureHTML
+     - SecurePasswords
+     - SecurePoll
+     - SecureSessions
+     - SelectCategory
+     - SelectTag
+     - SemanticACL
+     - SemanticBundle
+     - SemanticComments
+     - SemanticCompoundQueries
+     - SemanticDrilldown
+     - SemanticDummyEditor
+     - SemanticExpressiveness
+     - SemanticExtraSpecialProperties
+     - SemanticForms
+     - SemanticFormsInputs
+     - SemanticGenealogy
+     - SemanticGlossary
+     - SemanticHighcharts
+     - SemanticImageAnnotator
+     - SemanticImageInput
+     - SemanticInternalObjects
+     - SemanticMaps
+     - SemanticMediaWiki
+     - SemanticPageMaker
+     - SemanticPageSeries
+     - SemanticRating
+     - SemanticResultFormats
+     - SemanticSifter
+     - SemanticSignup
+     - SemanticTasks
+     - SemanticTitle
+     - SemanticUpdateOnPurge
+     - SemanticWatchlist
+     - SemanticWebBrowser
+     - SharedCssJs
+     - ShortUrl
+     - ShortUrlApi
+     - ShoutBox
+     - ShoutWikiAds
+     - SidebarDonateBox
+     - SideBarMenu
+     - SignWritingMediaWikiPlugin
+     - SimpleAntiSpam
+     - SimpleChanges
+     - SimpleFarm
+     - SimpleSecurity
+     - SimpleSurvey:
+        dependencies: 'PrefSwitch'
+     - SiteMatrix
+     - SiteMetrics
+     - SiteSettings
+     - SkelJS
+     - SkinPerNamespace
+     - SkinPerPage
+     - skins
+     - SlimboxThumbs
+     - SmoothGallery
+     - SocialLogin
+     - SocialProfile
+     - SoftwareVersion
+     - Solarium
+     - SolrStore
+     - SoundManager2Button
+     - SpamBlacklist
+     - Spark
+     - Special404
+     - SpellingApi
+     - SphinxSearch
+     - SportsTeams
+     - Spreadsheet
+     - SSLClientAuthentication
+     - StaffEdits
+     - StalkerLog
+     - StarterWiki
+     - StickToThatLanguage
+     - StopForumSpam
+     - StrategyWiki
+     - StringFunctionsEscaped
+     - SubpageFun
+     - SubPageList
+     - SubPageList3
+     - SubpageSortkey
+     - Sudo
+     - Suhosin
+     - Survey
+     - SVGEdit
+     - SwarmExport
+     - SwiftCloudFiles
+     - SwiftMailer
+     - SyntaxHighlight_GeSHi
+     - SyntaxHighlighter
+     - Tabber
+     - Tabs
+     - TemplateData
+     - TemplateInfo
+     - TemplateSandbox
+     - TextExtracts
+     - Thanks:
+        dependencies: 'Echo,Flow,Mantle'
+     - Theme
+     - ThemeDesigner
+     - ThrottleOverride
+     - ThumbParser
+     - TimedMediaHandler:
+        dependencies: 'MwEmbedSupport'
+     - timeline
+     - TimelineTable
+     - TimeMachine
+     - TimezoneSelector
+     - TitleBlacklist:
+        dependencies: 'AntiSpoof'
+     - TitleIcon
+     - TitleKey
+     - TocTree
+     - TorBlock
+     - Translate
+     - TranslateSvg:
+        dependencies: 'Translate'
+     - TranslationNotifications:
+        dependencies: 'Translate'
+     - Transliterator
+     - TrustedXFF
+     - TweetANew
+     - TwitterCards
+     - TwitterLogin
+     - TwnMainPage
+     - TwoFactorAuthentication
+     - UIFeedback
+     - UnicodeConverter
+     - UnitTest
+     - UniversalLanguageSelector
+     - UpdateMediaWiki
+     - UploadBlacklist
+     - UploadLocal
+     - UploadWizard
+     - UrlGetParameters
+     - UrlShortener
+     - URNames
+     - UserDailyContribs
+     - UserFunctions
+     - UserGroups
+     - UserMerge
+     - UserOptionStats
+     - UserPageViewTracker
+     - UserStatus
+     - UserThrottle
+     - Validator:
+        dependencies: 'DataValues'
+     - ValueView
+     - Variables
+     - Vector
+     - VectorBeta
+     - Video
+     - ViewFiles
+     - Views
+     - Vine
+     - VipsScaler
+     - VisualChat
+     - VisualEditor
+     - VoteNY
+     - WantedPagesFromNS
+     - WatchSubpages
+     - WebChat
+     - WebFonts
+     - WebPlatformAuth
+     - WebPlatformSearchAutocomplete
+     - WhitelistPages
+     - WhiteSpace
+     - WhoIsWatching
+     - Widgets
+     - WikiArticleFeeds
+     - WikibaseMobile
+     - WikibaseSolr
+     - WikiCategoryTagCloud
+     - Wikidata
+     - WikidataEntitySuggester
+     - WikiEditor
+     - WikiForum
+     - wikihiero
+     - WikiLexicalData
+     - Wikilog
+     - WikiLove
+     - WikiLovesMonuments
+     - WikimediaEvents:
+        dependencies: 'EventLogging'
+     - WikimediaIncubator
+     - WikimediaMaintenance
+     - WikimediaMessages
+     - WikimediaShopLink
+     - WikiObjectModel
+     - WikiTextLoggedInOut
+     - WikiTwidget
+     - WikivoteMapsYandex:
+        dependencies: 'Maps'
+     - WindowsAzureSDK
+     - WindowsAzureStorage
+     - Workflow
+     - WYSIWYG
+     - XMLContentExtension
+     - YetAnotherKeywords
+     - YotpoReviews
+     - YouTube
+     - ZeroBanner:
+        dependencies: 'JsonConfig,MobileFrontend,Mantle'
+     - ZeroPortal:
+        dependencies: 'JsonConfig,MobileFrontend,Mantle,ZeroBanner'
+
+    mwbranch:
+     - master
+# Commented out since they are not triggered for now.
+#     - REL1_23
+#     - REL1_22
+#     - REL1_21
+#     - REL1_20
+#     - REL1_19
+
+    jobs:
+     - mwext-check-jobs
+
+     # qunit jobs for MediaWiki extensions
+
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: ContentTranslation
+        dependencies: 'UniversalLanguageSelector'
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: DataValues
+     - '{name}-{ext-name}-npm':
+        name: mwext
+        ext-name: DonationInterface
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: EventLogging
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: Echo
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: Flow
+        dependencies: 'AbuseFilter,SpamBlacklist,CheckUser,Mantle,MobileFrontend,Echo'
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: GettingStarted
+        dependencies: 'CentralAuth,EventLogging,GuidedTour'
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: GuidedTour
+        dependencies: 'EventLogging'
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: ImageMetrics
+        dependencies: 'EventLogging'
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: Mantle
+        dependencies: 'MobileFrontend'
+     - '{name}-{ext-name}-qunit-mobile':
+        name: mwext
+        ext-name: Mantle
+        dependencies: 'MobileFrontend'
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: MobileFrontend
+        dependencies: Mantle
+     - '{name}-{ext-name}-qunit-mobile':
+        name: mwext
+        ext-name: MobileFrontend
+        dependencies: Mantle
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: MultimediaViewer
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: Popups
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: TemplateData
+     - '{name}-{ext-name}-npm':
+        name: mwext
+        ext-name: TemplateData
+
+     - '{name}-{ext-name}-qunit':
+        name: mwext
+        ext-name: UploadWizard
+     - '{name}-{ext-name}-npm':
+        ext-name: UploadWizard
+
+     - '{name}-{ext-name}-csslint':
+        ext-name: VisualEditor
+     - '{name}-{ext-name}-npm':
+        ext-name: VisualEditor
+
+       # Documentation jobs for extensions
+     - 'mwext-GuidedTour-doc-test':
+     - 'mwext-GuidedTour-doc-publish':
+
+     - 'mwext-MultimediaViewer-doc-test':
+     - 'mwext-MultimediaViewer-doc-publish':
+
+     - 'mwext-VisualEditor-doc-test':
+        ext-name: VisualEditor
+
+     - 'mwext-VisualEditor-doc-publish':
+        ext-name: VisualEditor
+
+# browser tests for MediaWiki extensions
+#
+# One can find a list of all repositories on the mediawiki-selenium ruby gems
+# page at https://github.com/wikimedia/mediawiki-selenium#links
+#
+# Some are commented out, pending testing / proper implementation.
+#
+- project:
+    name: mwext-browsertests
+    dependencies: ''
+    browser:
+     - firefox
+     - phantomjs
+     #- chromium  # Unsupported by Watir yet (bug 61262)
+    ext-name:
+     ##- CirrusSearch  # customized below
+     #- ContentTranslation
+     - Flow
+     - MobileFrontend
+     #- MultimediaViewer
+     - Translatewiki
+     #- Translate
+     #- TwnMainPage
+     - UniversalLanguageSelector
+     - VisualEditor
+     #- Wikibase
+    jobs:
+     - '{name}-{ext-name}-{browser}'
+     - '{name}-{ext-name}-{browser}':
+         name: mwext-browsertests
+         ext-name: CirrusSearch
+         browser: phantomjs
+         # Please also update extensions unit tests above
+         dependencies: 'Cite,Elastica,Mantle,MwEmbedSupport,TimedMediaHandler,PdfHandler'
+     - '{name}-{ext-name}-{browser}':
+         name: mwext-browsertests
+         ext-name: Flow
+         dependencies: 'AbuseFilter,SpamBlacklist,CheckUser'
+
+- project:
+    name: 'mwext-ArticleFeedbackv5'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-BlameMaps'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-cldr'
+    jobs:
+     - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-CirrusSearch'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: mwext-Collection-OfflineContentGenerator
+    jobs:
+        - '{name}-jslint'
+        - '{name}-npm'
+
+- project:
+    name: mwext-Collection-OfflineContentGenerator-bundler
+    jobs:
+        - '{name}-jslint'
+        - '{name}-npm'
+
+- project:
+    name: mwext-Collection-OfflineContentGenerator-latex_renderer
+    jobs:
+        - '{name}-jslint'
+        - '{name}-npm'
+
+- project:
+    name: mwext-Collection-OfflineContentGenerator-text_renderer
+    jobs:
+        - '{name}-jslint'
+        - '{name}-npm'
+
+- project:
+    name: 'mwext-ConfirmEdit'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-ContentTranslation'
+    jobs:
+     - '{name}-phpcs-strict-HEAD'
+     - '{name}-ruby1.9.3lint'
+     - '{name}-yamllint'
+
+- project:
+    name: 'mwext-DumpHTML'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-Echo'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-EventLogging'
+    toxenv:
+     - flake8
+     - py27
+    jobs:
+     - python-jobs
+     - '{name}-tox-{toxenv}'
+
+- project:
+    name: 'mwext-Flow'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-GettingStarted'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-Interwiki'
+    jobs:
+     - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-LocalisationUpdate'
+    jobs:
+     - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-Math'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-MobileFrontend'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-MultimediaViewer'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-Offline'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-OpenStackManager'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-PageTriage'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-PdfHandler'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-PoolCounter'
+    jobs:
+     - 'mwext-PoolCounter-build'
+
+- project:
+    name: 'mwext-SemanticBundle'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-SemanticResultFormats'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-timeline'
+    jobs:
+     - '{name}-perllint'
+
+- project:
+    name: 'mwext-Translate'
+    jobs:
+     - '{name}-phpcs-strict-HEAD'
+     - '{name}-phpcs-strict'
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-TranslationNotifications'
+    jobs:
+     - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-TwnMainPage'
+    jobs:
+     - '{name}-phpcs-strict-HEAD'
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-UniversalLanguageSelector'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+     - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: 'mwext-UploadWizard'
+    jobs:
+     - python-jobs
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-VisualEditor'
+    jobs:
+     - '{name}-ruby1.9.3lint'
+     - 'mwext-VisualEditor-sync-gerrit'
+     - 'mwext-VisualEditor-qunit'
+
+- project:
+    name: 'mwext-WikiLove'
+    jobs:
+     - python-jobs
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-WikimediaMaintenance'
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'mwext-Workflow'
+    jobs:
+     - '{name}-yamllint'
+
+- project:
+    name: 'mwext-ZeroBanner'
+    jobs:
+     - python-jobs
+     - '{name}-ruby1.9.3lint'
+

@@ -1,0 +1,22 @@
+- job-template:
+    name: 'operations-mw-config-tests'
+# Repo has a reference to a git://github.com url which does not
+# work on 10.0.0.0/8 slaves :(
+#
+    node: gallium
+    defaults: use-remote-zuul
+    concurrent: true
+
+    triggers:
+     - zuul
+    builders:
+     - phpunit-junit
+    publishers:
+     - phpunit-junit
+
+- project:
+    name: 'operations-mw-config'
+
+    jobs:
+     - '{name}-phplint'
+     - operations-mw-config-tests

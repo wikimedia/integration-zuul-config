@@ -1,0 +1,911 @@
+# Git comes with a whitespace checking system that will fail whenever the diff
+# contains trailing spaces.  We can use that to easily lint whitespaces in
+# submitted changes.
+
+- builder:
+    name: erblint-HEAD
+    builders:
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head erb \
+        | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
+
+- builder:
+    name: puppet-lint-strict
+    builders:
+     - shell: |
+         rm -f puppet-lint.log
+         puppet-lint --version
+         set -o pipefail
+         puppet-lint \
+            --log-format '%{path}:%{linenumber} %{KIND} %{message} (%{check})' \
+            --fail-on-warnings \
+            . | tee puppet-lint.log
+         set +o pipefail
+
+- builder:
+    name: puppet-lint-lenient
+    builders:
+     - shell: |
+         rm -f puppet-lint.log
+         puppet-lint --version
+         set -o pipefail
+         puppet-lint \
+            --error-level error \
+            --log-format '%{path}:%{linenumber} %{KIND} %{message} (%{check})' \
+            . | tee puppet-lint.log
+         set +o pipefail
+
+- publisher:
+    name: puppet-lint
+    publishers:
+     - archive:
+         artifacts: puppet-lint.log
+
+- builder:
+    name: pplint-HEAD
+    builders:
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head pp \
+        | xargs -n1 -t puppet parser validate
+
+# Lint whitespace in directory {dir}. Usefull when the Git repository has
+# been fetched out in some subdirtory of the Workspace. Example:
+#
+#  builder:
+#    - lint-whitespaces-in:
+#       dir: "$WORKSPACE/extensions/Foobar"
+#
+- builder:
+    name: lint-whitespaces-in
+    builders:
+        - shell: "git --work-tree=\"{dir}\" diff --color --check HEAD^..HEAD"
+
+# Lint whitespaces under $WORKSPACE. This is most probably the one you
+# want to use. Example:
+#
+# builder:
+#  - lint-whitespaces
+#
+- builder:
+    name: lint-whitespaces
+    builders:
+     - lint-whitespaces-in:
+        dir: '$WORKSPACE'
+
+# `get-mw-core` injects mediawiki/core@{requested branch} in $WORKSPACE
+# This should be used when testing extensions
+#
+# The aim is to get the very latest MediaWiki core version into the extension
+# workspace without having to fully clone the repository. We cant use git
+# archive with Gerrit so we get the code from the local replicated clone.
+- builder:
+    name: get-mw-core
+    builders:
+        - shell: "/srv/deployment/integration/slave-scripts/bin/mw-core-get.sh {branch}"
+
+- builder:
+    name: jshint-in
+    # Use `cd` because jshint reads .jshintrc and .jshintignore from cwd.
+    builders:
+     - shell: |
+        cd "{dir}"
+        /srv/deployment/integration/slave-scripts/bin/jshint --version
+        /srv/deployment/integration/slave-scripts/bin/jshint .
+
+- builder:
+    name: jshint
+    builders:
+     - jshint-in:
+        dir: '$WORKSPACE'
+
+- builder:
+    name: jsonlint
+    builders:
+     - shell: /srv/deployment/integration/slave-scripts/bin/json-lint.php .
+
+# Wrapper around cucumber
+# FIXME should be some shell scripts instead
+#
+# Parameters:
+# {tests-path}  where browser tests are located
+# {browser} Type of browser to use (phantomjs, firefox)
+- builder:
+    name: browsertests
+    builders:
+
+     - shell: |
+        # Load context (namely: MW_INSTALL_PATH)
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
+        # Let apache write in sqlite file
+        mkdir -p data
+        chmod a+w data/
+        chmod a+w data/*.sqlite
+
+        # Same for log dir
+        chmod a+w log/
+
+        # And images dir
+        mkdir -p images
+        chmod a+w images/
+
+        # Crazy hack to match production expectations
+        ln -s . w
+
+        TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT/$BUILD_NUMBER" | tr '/' '-'`
+
+        # Post configure MediaWiki
+        echo -n "<?php
+          # Injected by Jenkins Job Builder macro 'browsertests'
+          \$wgServer = 'http://localhost:9413';
+          \$wgScriptPath = '/$TEST_ID/w';
+          \$wgArticlePath = '/$TEST_ID/wiki/\$1';
+          \$wgScript = \$wgStylePath = \$wgLogo = false;
+          " >> "$MW_INSTALL_PATH/LocalSettings.php"
+
+        # On labs:
+        DOCROOT="/mnt/localhost-browsertests"
+
+        # Publish WORKSPACE in Apache
+        ln -s "$MW_INSTALL_PATH" "$DOCROOT/$TEST_ID"
+        curl --location --include "http://localhost:9413/$TEST_ID/" |head -n42
+
+        # Shared cache of gems to avoid hitting rubygems all the time
+        # See https://github.com/bundler/bundler/issues/2856
+        export GEM_HOME="$WORKSPACE/../gems"
+
+        cd {tests-path}
+            /srv/deployment/integration/slave-scripts/tools/bundler/bundle install --path "$GEM_HOME"
+            export BROWSER="{browser}"
+            export HEADLESS=true  # does not harm phantomjs
+            export MEDIAWIKI_URL="http://localhost:9413/$TEST_ID/wiki/"
+            export API_URL="http://localhost:9413/$TEST_ID/w/api.php"
+            export MEDIAWIKI_USER=WikiAdmin
+            export MEDIAWIKI_PASSWORD=testpass
+            export SCREENSHOT_FAILURES=true
+            export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
+            /srv/deployment/integration/slave-scripts/tools/bundler/bundle exec cucumber --color \
+                --tags @clean \
+                --tags @{browser} \
+                --format pretty \
+                --format junit --out "$WORKSPACE/log" \
+                --format html --out "$WORKSPACE/log/report.html"
+        EXIT_CODE=$?
+        echo "Cucumber exit code: $EXIT_CODE"
+
+        # symlink cleanup
+        rm "$DOCROOT/$TEST_ID"
+
+        exit $EXIT_CODE
+
+- builder:
+    name: csslint-in
+    builders:
+     - shell: |
+        cd "{dir}"
+        /srv/deployment/integration/slave-scripts/bin/wmfgrunt --cwd="$PWD" --verbose csslint
+
+- builder:
+    name: csslint
+    builders:
+     - csslint-in:
+        dir: '$WORKSPACE'
+
+# This build step is for projects that have their dev environment configured
+# around npm. This will fetch any npm dependencies into a local node_modules
+# directory in the workspace, and run associated 'scripts' commands as
+# specified in the package.json file (install and test).
+#
+- builder:
+    name: npm
+    builders:
+    - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        node --version
+        npm --version
+        npm install
+        npm test
+
+- builder:
+    name: npm-in
+    builders:
+    - shell: |
+        cd "{dir}"
+        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        npm --version
+        npm install
+        npm test
+
+# Assert node version matches a basic regular expressions
+#
+# Parameter:
+# * version: passed to `grep`
+#
+- builder:
+    name: assert-node-version
+    builders:
+     - shell: |
+         #!/bin/bash -e -u
+         NODE_VERSION=`node --version`
+
+         if ( echo "$NODE_VERSION" | grep "{version}" > /dev/null )
+         then
+             echo "Node version $NODE_VERSION matches '{version}'"
+         else
+             echo "Assertion error: node version $NODE_VERSION does not match '{version}'"
+             exit 1
+         fi
+
+- builder:
+    name: assert-node-version-0.8
+    builders:
+     - assert-node-version:
+         version: ^v0[.]8[.]
+
+- builder:
+    name: assert-node-version-0.10
+    builders:
+     - assert-node-version:
+         version: ^v0[.]10[.]
+
+- builder:
+    name: jsduck-conf
+    builders:
+    # Zuul uses Python str.format(obj) for {config} substitutions
+    # Escape as {foo} as {{key}} to avoid triggering a KeyError in Zuul parser
+     - shell: |
+        echo "Running JSDuck with {config}..."
+        # Get version
+        # - ZUUL_REF: refs/zuul/master/Z74178670e7c5495199f8a92e92cf609c
+        # - ZUUL_BRANCH: master
+        if [[ "$ZUUL_REF" =~ ^refs/tags/(.*) ]]
+        then
+            version="${{BASH_REMATCH[1]}}"
+        elif [[ -n "$ZUUL_BRANCH" ]]
+        then
+            version="$ZUUL_BRANCH"
+        else
+            version="unknown"
+        fi
+        set -o pipefail
+        jsduck --config="{config}" --footer="Generated for branch ${{version}} on {{DATE}} by {{JSDUCK}} {{VERSION}}." --processes 0 --warnings-exit-nonzero 2>&1 | tee jsduck.log
+        ec=$?
+        if [[ $ec -eq 0 ]]
+        then
+            set +e
+            grep "^Warning:" jsduck.log > /dev/null
+            gr=$?
+            set -e
+            if [[ $gr -eq 0 ]]
+            then
+                ec=1
+            fi
+        fi
+        # Exit with exit code of jsduck command, or whether we found errors
+        exit $ec
+
+- builder:
+    name: jsduck
+    builders:
+    - jsduck-conf:
+        config: 'jsduck.json'
+
+- builder:
+    name: qunit
+    builders:
+     - qunit-querystring:
+        querystring: ''
+
+- builder:
+    name: qunit-mobile
+    builders:
+     - qunit-querystring:
+        querystring: '&useformat=mobile'
+
+# - querystring: (with leading questionmark)
+#
+# Should be associated with the publisher 'qunit-cleanup' to delete the
+# temporary workspace under /srv/localhost/qunit after the build is complete.
+- builder:
+    name: qunit-querystring
+    builders:
+     - shell: |
+        # Load context (namely: MW_INSTALL_PATH)
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
+        # Create unique sub directory name
+        #TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
+        # String of jenkins-$JOB_NAME-$BUILD_NUMBER.
+        TEST_ID="$BUILD_TAG"
+        # Configure MediaWiki
+        echo -e \
+         "<?php\n\$wgServer = 'http://localhost:9412';\n"\
+         "\$wgScriptPath = '/${{TEST_ID}}';\n"\
+         "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
+         "\$wgEnableJavaScriptTest = true;\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
+
+        # Make sure to compress MediaWiki log dir after phpunit has ran
+        function compress_log_dir() {{
+            echo "Compressing logs under $LOG_DIR"
+            gzip --verbose --force --best "$WORKSPACE"/log/*.log || :
+        }}
+        trap compress_log_dir EXIT
+
+        # The location is free or we make it free
+        test ! -e /srv/localhost/qunit/$TEST_ID || rm /srv/localhost/qunit/$TEST_ID;
+
+        # Publish our install in the QUnit server document root
+        ln -s "$MW_INSTALL_PATH" /srv/localhost/qunit/$TEST_ID
+
+        # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
+        curl --include "http://localhost:9412/$TEST_ID/index.php?title=Special:BlankPage" | head -n42
+        curl --include "http://localhost:9412/$TEST_ID/load.php?debug=true&modules=startup&only=scripts" | head -n42
+        # Run QUnit tests via PhantomJS
+        /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit{querystring}"
+
+- publisher:
+    name: qunit-cleanup
+    publishers:
+     - postbuildscript:
+         builders:
+           - shell: |
+               rm "/srv/localhost/qunit/$BUILD_TAG"
+         # Options are confusing, setting them both to false ensures the
+         # postbuildscript is ALWAYS run.
+         onsuccess: False
+         onfailure: False
+
+# - src: (without trailing slash)
+# - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
+# - version: (usually branch name) - will be escaped
+- builder:
+    name: documentation-sync
+    builders:
+     - documentation-sync-subdir:
+        src: '{src}'
+        project: '{project}'
+        version: '{version}'
+        subdir: ''
+
+# Is there a way to make the jjb/yaml "{subdir}" param optional?
+# Then we could make it default to empy string instead of creating
+# a separate builder
+# - subdir: (must have trailing slash) - will not be escaped
+- builder:
+    name: documentation-sync-subdir
+    builders:
+     - shell: |
+        # Set destination and version directory therein
+        DEST_DIR="/srv/org/wikimedia/doc"
+        DEST_PROJECTDIR=`echo "{project}" | tr '/' '-'`
+        DEST_VERSIONDIR=`echo "{version}" | tr '/' '-'`
+        DEST_EXTRAPATH="{subdir}"
+        # Ensure the destination exists
+        mkdir -p "$DEST_DIR/$DEST_PROJECTDIR/$DEST_VERSIONDIR/$DEST_EXTRAPATH"
+        # Publish it (trailing slash is important!)
+        rsync --recursive --delete-after --force {src}/ "$DEST_DIR/$DEST_PROJECTDIR/$DEST_VERSIONDIR/$DEST_EXTRAPATH"
+
+# Has to be named something other than 'checkstyle' or python will
+# go into infinite recursion when generating the jobs.
+# JSHint considers all errors to be "high" priority except those
+# suppressed via options in jshintrc (those become "normal").
+# So we need to make sure we don't count warnings that are intentionally
+# ignored by style or convention of the repository.
+- publisher:
+    name: checkstyle-xml
+    publishers:
+     - checkstyle:
+        pattern: '**/checkstyle-*.xml'
+        canRunOnFailed: true
+        healthy: 0
+        unHealthy: 100
+        healthThreshold: 'high'
+        thresholds:
+            unstable:
+                totalHigh: 10
+            failed:
+                totalHigh: 1
+
+- builder:
+    name: mw-apply-settings
+    builders:
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh"
+
+- builder:
+    name: mw-get-extensions
+    builders:
+        - shell: "/srv/deployment/integration/slave-scripts/tools/fetch-mw-ext {dependencies}"
+
+- builder:
+    name: mw-run-update-script
+    builders:
+        - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
+
+# Shell script backed macro installing MediaWiki with a SQLite backend
+- builder:
+    name: mw-install-sqlite
+    builders:
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh"
+
+# This macro is OBSOLETE
+#
+# Instead one should rely on Zuul cloner:
+#
+# - zuul-cloner-extdeps:
+#    ext-name: '{ext-name}'
+#    dependencies: '{dependencies}'
+# - mw-install-sqlite
+# - shell: "cp deps.txt src/extensions_load.txt"
+# - mw-apply-settings
+#
+- builder:
+    name: mw-setup-extension
+    builders:
+     - get-mw-core:
+          branch: '{mwbranch}'
+     - mw-install-sqlite
+     - mw-get-extensions:
+          dependencies: '{dependencies}'
+     - mw-apply-settings
+
+- builder:
+    name: mw-phpunit
+    builders:
+      - shell: 'php tests/phpunit/phpunit.php --log-junit junit-phpunit.xml'
+
+- builder:
+    name: mw-run-phpunit-allexts
+    builders:
+      - shell: '/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit-allexts.sh'
+
+# Generic phpunit builder, output junit log
+# Should be used with publisher 'phpunit-junit'
+- builder:
+    name: phpunit-junit
+    builders:
+     - shell: 'mkdir -p log && /srv/deployment/integration/phpunit/vendor/bin/phpunit --log-junit log/junit-phpunit.xml'
+
+# Publish PHPUnit junit results as generated by phpunit-junit builder
+- publisher:
+    name: phpunit-junit
+    publishers:
+     - xunit:
+        types:
+         - phpunit:
+            pattern: 'log/junit-phpunit.xml'
+
+# Used
+- publisher:
+    name: phpunit-junit-2
+    publishers:
+     - xunit:
+        types:
+         - phpunit:
+            pattern: 'log/junit-mw-phpunit.xml'
+
+# Python pep8 builder - copied from OpenStack project
+- builder:
+    name: pep8
+    builders:
+     - shell: |
+         set +x
+         echo "Using pep8 version: `pep8 --version`"
+         set -x
+         set -o pipefail ; pep8 . | tee pep8.txt ; set +o pipefail
+
+# Python pep8 publisher - copied from OpenStack project
+- publisher:
+    name: pep8
+    publishers:
+     - violations:
+        pep8:
+            min: 0
+            max: 1
+            unstable: 1
+            pattern: '**/pep8.txt'
+
+- builder:
+      name: perllint
+      builders:
+       - shell: |
+          # File used to track down whether a perl file is failing syntax check
+          rm -f PERLLINT_FAILED
+
+          find . \
+            \( -name '*.pm' -or -name '*.pl' \) \
+            \( -exec perl -Mstrict -Mdiagnostics -cw {} \; \
+            -or -exec touch PERLLINT_FAILED  \; \)
+
+          # Set exit code to fail the build
+          if [ -e PERLLINT_FAILED ]; then
+              exit 1
+          fi;
+
+- builder:
+    name: pyflakes
+    builders:
+     - shell: "pyflakes ."
+
+- builder:
+    name: phplint
+    builders:
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc phtml module install \
+        | xargs -n1 -t php -l
+
+# run phpcs on any .php and .inc files in the workspace
+# Except for Messages* and *.i18n.php (such as in installer)
+- builder:
+    name: phpcs
+    builders:
+     - shell: |
+        /srv/deployment/integration/phpcs/vendor/bin/phpcs -v -s . \
+         --encoding=utf-8 \
+         --standard=/srv/deployment/integration/mediawiki-tools-codesniffer/MediaWiki \
+         --extensions=php,inc \
+         --ignore=languages/messages/Messages*.php,*.i18n.php \
+         --report-checkstyle=checkstyle-phpcs.xml \
+         --report-full
+
+# run phpcs on files changed in HEAD. Ignores:
+#  - the mw/core language files
+#  - any .js files
+- builder:
+    name: phpcs-HEAD
+    builders:
+     - shell: |
+        PHPCS_FILES=$(/srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc sample)
+        # No file? No point in proceeding any further (bug 44567)
+        if [ -z "$PHPCS_FILES" ]; then
+            echo "Skipping phpcs: no file remaining to process"
+            exit 0
+        fi
+
+        /srv/deployment/integration/phpcs/vendor/bin/phpcs -v -s $PHPCS_FILES \
+         --encoding=utf-8 \
+         --standard=/srv/deployment/integration/mediawiki-tools-codesniffer/MediaWiki \
+         --ignore=languages/messages/Messages,*.i18n.php \
+         --report-checkstyle=checkstyle-phpcs.xml \
+         --report-full
+
+- builder:
+    name: phpcs-strict
+    builders:
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh
+
+- builder:
+    name: phpcs-strict-HEAD
+    builders:
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh HEAD
+
+- builder:
+    name: phpcs-lenient
+    builders:
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh nowarnings
+
+- builder:
+    name: phpcs-lenient-HEAD
+    builders:
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh nowarnings HEAD
+
+- publisher:
+    name: phpcs
+    publishers:
+     - violations:
+        checkstyle:
+            min: 0
+            max: 1
+            unstable: 1
+            pattern: '**/checkstyle-phpcs.xml'
+
+
+- builder:
+    name: php-extension
+    builders:
+     - shell: |
+        phpize
+        ./configure
+        make
+        make test
+
+- builder:
+    name: puppet-validate
+    builders:
+     - shell: |
+        find . -type f -name '*.pp' -print0 | xargs -0 puppet parser validate
+
+# Run ruby syntax check against any file named '.rb' under the workspace.
+# The ruby interpreter is passed using 'interpreter'
+- builder:
+    name: ruby-lint
+    builders:
+     - shell: |
+        find "$WORKSPACE" -type f -name '*.rb' -print0 | xargs -t -n1 -0 {interpreter} -c
+
+- builder:
+    name: tox
+    builders:
+     - shell: |
+        rm -fR log
+        mkdir -p log
+        set -o pipefail
+        tox -e "{venv}" | tee "log/{venv}.log"
+        set +o pipefail
+
+# Some jobs are not using the git plugin which let us easily wipe
+# a current workspace.  This macro is meant to replace that feature
+# in jobs not using the git plugin.
+# `rm -fR .* *` would attempt to delete '.' and '..' which makes rm
+# to return an exit code of 1.  We use find instead.
+- builder:
+    name: wipe-workspace
+    builders:
+     - shell: 'echo "Wiping workspace"; find . -not -path . -delete; echo "Done"'
+
+- builder:
+    name: yaml-lint
+    builders:
+     - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
+
+- publisher:
+    name: archive-log-dir
+    publishers:
+     - archive:
+        artifacts: 'log/*'
+
+- builder:
+    name: browsertest-website
+    builders:
+      - shell: |
+          # set up environment variables
+          export BROWSER={browser}
+          export CUCUMBER_TAGS={cucumber_tags}
+          export HEADLESS={headless}
+          export MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+          export MEDIAWIKI_USER={mediawiki_user}
+          export PLATFORM='{platform}'
+          # Replace PLATFORM underscores (Jenkins) to spaces (SauceLabs)
+          export PLATFORM=${{PLATFORM//_/ }}
+          export SCREENSHOT_FAILURES=true
+          export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
+
+          # We only care about one version of our browser and do not need a job
+          # per version.  Thus the versions to use are hardcoded there.
+          #
+          # VERSION is used for SauceLabs
+          #
+          case "$BROWSER" in
+            'chrome')
+                # Until upstream problem of bug 69399 is resolved we have to use 28
+                export VERSION=28
+                ;;
+            'firefox')
+                export VERSION=32
+                ;;
+            'internet_explorer')
+                export VERSION=10
+                ;;
+            'phantomjs')
+                export VERSION=''
+                ;;
+            'safari')
+                export VERSION=7
+                ;;
+            *)
+                echo "Browser '$BROWSER' unsupported. Can not determine version"
+                exit 1
+                ;;
+          esac
+          echo "Using browser: $BROWSER at version $VERSION"
+
+          if [ $BROWSER == "internet_explorer" ]
+          then
+            BROWSER_TAG=${{BROWSER}}_$VERSION
+          else
+            BROWSER_TAG=$BROWSER
+          fi
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+
+          # Attempt to figure out MediaWiki branch being used and fetch it out
+          # if the extension has the same branch
+          MEDIAWIKI_GIT_BRANCH=$(/srv/deployment/integration/slave-scripts/bin/mw-api-siteinfo.py "$MEDIAWIKI_API_URL" git_branch)
+
+
+          git checkout -f "origin/$MEDIAWIKI_GIT_BRANCH" || {{
+              echo "origin/$MEDIAWIKI_GIT_BRANCH branch does not exist."
+              echo "Fallbacking to master branch..."
+              MEDIAWIKI_GIT_BRANCH='master'
+              git checkout -f origin/$MEDIAWIKI_GIT_BRANCH
+          }}
+          git reset --hard "origin/$MEDIAWIKI_GIT_BRANCH"
+          git clean -x -q -d -f
+
+          # install ruby dependencies
+          mkdir -p vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
+          cd {folder}/browser/
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
+
+          if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
+            CUCUMBER_PARAMETER="@language_screenshot"
+            export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
+          elif [[ $JOB_NAME == browsertests-Core-* ]]; then
+            CUCUMBER_PARAMETER="@clean"
+          elif [[ ! -z $CUCUMBER_TAGS ]]; then
+            CUCUMBER_PARAMETER="$CUCUMBER_TAGS"
+          else
+            CUCUMBER_PARAMETER="@{mediawiki_url}"
+          fi
+
+          if [ $BROWSER == 'phantomjs' ]; then
+              npm install 'phantomjs@>=1.9.7-0 <1.9.8'
+              export PATH="`pwd`/node_modules/.bin:$PATH"
+              phantomjs --version
+          fi
+
+          # provide config.yml
+          if [ -e "$WORKSPACE/tests/browser/config/config_ci.yml" ] && [ ! -e "$WORKSPACE/tests/browser/config/config.yml" ]; then
+              cp "$WORKSPACE/tests/browser/config/config_ci.yml" "$WORKSPACE/tests/browser/config/config.yml"
+          fi
+
+          # run tests
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
+            --backtrace \
+            --color \
+            --verbose \
+            --format pretty \
+            --format Cucumber::Formatter::Sauce \
+            --out "$WORKSPACE/log/junit" \
+            --tags $CUCUMBER_PARAMETER \
+            --tags @$BROWSER_TAG \
+            || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+          if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
+            "$WORKSPACE"/vendor/bin/bundle exec ruby1.9.1 upload.rb
+          fi
+
+- builder:
+    name: browsertest-website-version
+    builders:
+      - shell: |
+          # set up environment variables
+          export BROWSER={browser}
+          export CUCUMBER_TAGS={cucumber_tags}
+          export HEADLESS={headless}
+          export MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+          export MEDIAWIKI_USER={mediawiki_user}
+          export PLATFORM='{platform}'
+          # Replace PLATFORM underscores (Jenkins) to spaces (SauceLabs)
+          export PLATFORM=${{PLATFORM//_/ }}
+          export SCREENSHOT_FAILURES=true
+          export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
+
+          # We only care about one version of our browser and do not need a job
+          # per version.  Thus the versions to use are hardcoded there.
+          #
+          # VERSION is used for SauceLabs
+          #
+          case "$BROWSER" in
+            'chrome')
+                # Until upstream problem of bug 69399 is resolved we have to use 28
+                export VERSION=28
+                ;;
+            'firefox')
+                export VERSION=27
+                ;;
+            'internet_explorer')
+                export VERSION={version}
+                ;;
+            'phantomjs')
+                export VERSION=''
+                ;;
+            'safari')
+                export VERSION=7
+                ;;
+            *)
+                echo "Browser '$BROWSER' unsupported. Can not determine version"
+                exit 1
+                ;;
+          esac
+          echo "Using browser: $BROWSER at version $VERSION"
+
+          if [ $BROWSER == "internet_explorer" ]
+          then
+            BROWSER_TAG=${{BROWSER}}_$VERSION
+          else
+            BROWSER_TAG=$BROWSER
+          fi
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+
+          # Attempt to figure out MediaWiki branch being used and fetch it out
+          # if the extension has the same branch
+          MEDIAWIKI_GIT_BRANCH=$(/srv/deployment/integration/slave-scripts/bin/mw-api-siteinfo.py "$MEDIAWIKI_API_URL" git_branch)
+
+
+          git checkout -f "origin/$MEDIAWIKI_GIT_BRANCH" || {{
+              echo "origin/$MEDIAWIKI_GIT_BRANCH branch does not exist."
+              echo "Fallbacking to master branch..."
+              MEDIAWIKI_GIT_BRANCH='master'
+              git checkout -f origin/$MEDIAWIKI_GIT_BRANCH
+          }}
+          git reset --hard "origin/$MEDIAWIKI_GIT_BRANCH"
+          git clean -x -q -d -f
+
+          # install ruby dependencies
+          mkdir -p vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
+          cd {folder}/browser/
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
+
+          if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
+            CUCUMBER_PARAMETER="@language_screenshot"
+            export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
+          elif [[ ! -z $CUCUMBER_TAGS ]]; then
+            CUCUMBER_PARAMETER="$CUCUMBER_TAGS"
+          else
+            CUCUMBER_PARAMETER="@{mediawiki_url}"
+          fi
+
+          if [ $BROWSER == 'phantomjs' ]; then
+              npm install 'phantomjs@>=1.9.7-0 <1.9.8'
+              export PATH="`pwd`/node_modules/.bin:$PATH"
+              phantomjs --version
+          fi
+
+          # run tests
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
+            --backtrace \
+            --color \
+            --verbose \
+            --format pretty \
+            --format Cucumber::Formatter::Sauce \
+            --out "$WORKSPACE/log/junit" \
+            --tags $CUCUMBER_PARAMETER \
+            --tags @$BROWSER_TAG \
+            || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+          if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
+            "$WORKSPACE"/vendor/bin/bundle exec ruby1.9.1 upload.rb
+          fi
+
+# Let a job run on different node, but no more than once per node.
+- property:
+    name: throttle-one-per-node
+    properties:
+     - throttle:
+         max-per-node: 1
+         max-total: 0
+         enabled: true
+         option: 'project'
+
+- publisher:
+    name: browsertests-irc
+    publishers:
+      - ircbot:
+          strategy: statechange-only
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary
+          matrix-notifier: only-configurations
+          channels:
+              - name: '#wikimedia-qa'
+                notify-only: true

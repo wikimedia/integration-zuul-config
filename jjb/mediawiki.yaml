@@ -1,0 +1,375 @@
+# This file holds the configuration for all MediaWiki core related jobs
+# regardless of them being lint, merge check, unit test or regression testing.
+
+# Note that mediawiki/core branches may have a lot of submodules, we thus
+# use a specific git macro to prevents Jenkins from updating all the
+# submodules we do not care about. See bug 42455.
+
+- job-template:
+    name: 'mediawiki-core-jslint'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-zuul
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    scm:
+     - git-mwcore
+    triggers:
+     - zuul
+    builders:
+     - jshint
+     - jsonlint
+
+- job-template:
+    name: 'mediawiki-core-npm'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: "mediawiki/core"
+     - npm-in:
+        dir: '$WORKSPACE/src/tests/frontend'
+
+# Generic job to run QUnit
+- job-template:
+    name: '{name}-qunit'
+    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    triggers:
+     - zuul
+
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     - qunit
+    publishers:
+     - qunit-cleanup
+
+- job-template:
+    name: 'mediawiki-core-jsduck'
+    defaults: use-zuul
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    scm:
+     - git-mwcore
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        $WORKSPACE/maintenance/mwjsduck-gen --version "$ZUUL_BRANCH"
+
+- job:
+    name: 'mediawiki-core-jsduck-publish'
+    node: gallium
+    defaults: use-zuul
+    concurrent: false
+    logrotate:
+        daysToKeep: 15
+    scm:
+     - git-mwcore
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        $WORKSPACE/maintenance/mwjsduck-gen --version "$ZUUL_BRANCH"
+        rsync --recursive --delete-after --force $WORKSPACE/resources/ "$WORKSPACE/docs/js/modules/"
+     - documentation-sync-subdir:
+        src: '$WORKSPACE/docs/js'
+        project: 'mediawiki-core'
+        version: '$ZUUL_BRANCH'
+        subdir: 'js/'
+
+- job:
+    name: 'mediawiki-core-doxygen-publish'
+    node: gallium
+    defaults: use-zuul
+    concurrent: false
+    scm:
+     - git-mwcore
+    triggers:
+     - zuul
+    builders:
+     - shell: "/srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh"
+
+- job-template:
+    name: '{name}-whitespaces'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    scm:
+     - git-mwcore
+    triggers:
+     - zuul
+    builder:
+     - lint-whitespaces
+
+- job-template:
+    name: 'mediawiki-gate'
+    node: productionSlaves
+    concurrent: true
+    logrotate:
+        daysToKeep: 90
+    builders:
+     - shell: |
+         #!/bin/bash -e
+         echo "Noop job, meant to gate jobs properly"
+
+- job-template:
+    name: 'mediawiki-vendor-integration'
+    node: productionSlaves  # not on labs for now
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+
+# Test out our PHPUnit against various MediaWiki branches
+#
+# Essentially a copy paste of mediawiki-vendor-integration
+- job-template:
+    name: 'integration-phpunit-mediawiki-{mwbranch}'
+    node: productionSlaves  # not on labs for now
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             --branch {mwbranch}
+             mediawiki/core
+             mediawiki/vendor
+             integration/phpunit
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: |
+         export PHPUNIT_DIR="$WORKSPACE/src/integration/phpunit/vendor/phpunit/phpunit"
+         /srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+
+- job-template:
+    name: mediawiki-core-regression-hhvm-{branch}
+    node: contintLabsSlave && UbuntuTrusty
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit-hhvm.sh"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+    wrappers:
+     # Failsafe to avoid blocking builds in production since this is still very
+     # experimental.
+     # TODO remove wrappers and use the default whenever hhvm is ready.
+     - timeout:
+         timeout: 8
+         fail: true
+     - timestamps
+     - ansicolor
+    logrotate:
+        daysToKeep: 90
+
+- job-template:
+    name: 'mediawiki-core-release'
+    concurrent: true
+
+    triggers:
+     - zuul-post
+
+    # Fetch latest version of the release script
+    scm:
+     - git:
+        url: '/srv/ssd/gerrit/mediawiki/tools/release'
+        wipe-workspace: true
+
+    builders:
+     - shell: |
+        VERSION=`echo "$ZUUL_REF"|sed 's%^refs/tags/%%'`
+        echo "From tag $ZUUL_REF, extracted version $VERSION"
+        python make-release/make-release.py \
+            --yes \
+            --git-root https://gerrit.wikimedia.org/r/p/mediawiki \
+            --conf 'make-release/make-release.yaml' \
+            --dont-sign \
+            "$VERSION"
+
+        mkdir -p "$WORKSPACE"/log
+        php /srv/deployment/integration/phpunit/vendor/bin/phpunit \
+          --configuration make-release/phpunit.xml \
+          --log-junit log/junit-phpunit.xml \
+          make-release/testReleaseTarball.php "$VERSION"
+
+    publishers:
+     - phpunit-junit
+     - archive:
+         artifacts: 'build/*.gz'
+
+- job-group:
+    name: mediawiki-jobs
+    jobs:
+      - 'mediawiki-core-jslint'
+      - '{name}-qunit'
+      - 'mediawiki-core-jsduck'
+      - 'mediawiki-core-npm'
+      - 'mediawiki-core-jsduck-publish'
+      - 'mediawiki-core-doxygen-publish'
+      - '{name}-whitespaces'
+      - '{name}-phpcs-lenient'
+      - '{name}-phpcs-lenient-HEAD'
+      - '{name}-phpcs-strict'
+      - '{name}-phpcs-strict-HEAD'
+
+- project:
+    name: mediawiki-core
+    jobs:
+      - '{name}-phplint'
+      - mediawiki-gate
+      - mediawiki-jobs
+      - '{name}-phpcs-HEAD'
+      - mediawiki-core-release
+      - '{name}-ruby1.9.3lint'
+      - mediawiki-vendor-integration
+
+# For regression testing:
+
+- job-template:
+    name: 'mediawiki-core-regression-{branch}'
+    node: hasSlaveScripts && UbuntuPrecise
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+    logrotate:
+        daysToKeep: 90
+
+- job:
+    name: 'mediawiki-core-code-coverage'
+    node: gallium
+    # Set env variables needed by zuul-cloner since job is not triggered by
+    # Zuul but is timed using Jenkins own scheduler.
+    parameters:
+     - string:
+         name: 'ZUUL_BRANCH'
+         default: 'master'
+     - string:
+         name: 'ZUUL_REF'
+         default: 'master'
+     - string:
+         name: 'ZUUL_CHANGE'
+         default: 'timed_build'
+     - string:
+         name: 'ZUUL_PATCHSET'
+         default: 'timed_build'
+     - string:
+         name: 'ZUUL_PIPELINE'
+         default: 'timed_build'
+     - string:
+         name: 'ZUUL_PROJECT'
+         default: 'mediawiki/core'
+     - string:
+         name: 'ZUUL_URL'
+         default: 'https://gerrit.wikimedia.org/r/p'
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     # FIXME should use the mw-run-phpunit.sh wrapper
+     - shell: |
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
+        mkdir -p log
+        rm -f log/clover.xml log/clover.bz2
+
+        # Since clover file are huge, compress them before archiving
+        # We need to keep the original though for the cloverphp plugin
+        function compress_clover_log() {
+            if [ -s "log/clover.xml" ]; then
+                echo "Compressing log/clover.xml with bz2..."
+                bzip2 --verbose --best --keep log/clover.xml
+                echo "Compression completed."
+            fi
+        }
+        trap compress_clover_log EXIT
+
+
+        cd "${MW_INSTALL_PATH}"
+        nice -n 19 php tests/phpunit/phpunit.php \
+            --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
+            --exclude-group Dump,Broken,ParserFuzz,Stub \
+            --coverage-clover log/clover.xml \
+            --coverage-html /srv/org/wikimedia/integration/cover/mediawiki-core/master/php \
+            || :
+        # PHP segfault (bug 43972) so ignore any error with '|| :' or the
+        # Jenkins plugin will never generate the coverage report for us
+        # https://issues.jenkins-ci.org/browse/JENKINS-21046
+
+        echo "Code coverage report is available at:"
+        echo "https://integration.wikimedia.org/cover/mediawiki-core/master/php"
+    publishers:
+     - archive:
+         artifacts: 'log/clover.xml.bz2'
+     - cloverphp:
+         xml-location: 'log/clover.xml'
+    triggers:
+     - timed: '0 3,15 * * *'
+    wrappers:
+     - ansicolor
+     - timestamps
+
+- project:
+    name: mediawiki-core-regression
+    branch:
+      - master
+      - REL1_19
+      - REL1_20
+      - REL1_21
+      - REL1_22
+      - REL1_23
+      - REL1_24
+    # Find a way to support WMF branches
+    jobs:
+     - 'mediawiki-core-regression-hhvm-{branch}'
+     - 'mediawiki-core-regression-{branch}'
+     - '{name}-phpcs'
+     - '{name}-phpcs-HEAD'

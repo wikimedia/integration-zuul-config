@@ -1,0 +1,88 @@
+# Jobs for git repositories under analytics/*
+
+- project:
+    name: 'analytics-asana-stats'
+
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'analytics-gerrit-stats'
+
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'analytics-geowiki'
+    toxenv:
+     - flake8
+    jobs:
+     - '{name}-tox-{toxenv}'
+
+- project:
+    name: 'analytics-glass'
+
+    jobs:
+     - python-jobs
+
+- job-template:
+    name: 'analytics-kraken'
+    project-type: maven
+    triggers:
+     - zuul
+    scm:
+     - git-remote-zuul
+    wrappers:
+     - timeout:
+         timeout: 30 # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    maven:
+      goals: clean package
+
+- project:
+    name: 'analytics-kraken'
+    jobs:
+     - 'analytics-kraken'
+
+- project:
+    name: 'analytics-multimedia'
+    toxenv:
+     - flake8
+    jobs:
+     - '{name}-tox-{toxenv}'
+
+- project:
+    name: 'analytics-quarry-web'
+    toxenv:
+     - flake8
+    jobs:
+     - '{name}-tox-{toxenv}'
+
+- project:
+    name: 'analytics-reportcard'
+
+    jobs:
+     - python-jobs
+
+- project:
+    name: 'analytics-wikimetrics'
+    toxenv:
+     - flake8
+    jobs:
+     - '{name}-tox-{toxenv}'
+
+- project:
+    name: 'analytics-wp-zero'
+    toxenv:
+     - flake8
+    jobs:
+     - '{name}-tox-{toxenv}'
+
+- project:
+    name: 'analytics-limn-mobile-data'
+    toxenv:
+     - flake8
+    jobs:
+     - '{name}-tox-{toxenv}'
