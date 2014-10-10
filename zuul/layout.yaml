@@ -339,16 +339,6 @@ jobs:
     voting: false
     files: 'debian/.*'
 
-  # Parsoid tests overhaul experimentation (phase two)
-  - name: ^parsoidsvc-(parsertests|parse|roundtrip)-.*
-    voting: false
-
-  # Work in progress
-  - name: ^parsoidsvc-(source|deploy)-npm-0.8
-    voting: false
-  - name: ^parsoidsvc-(source|deploy)-npm-0.10
-    voting: false
-
   # Experiment dependencies between repositories
   - name: experiment-gating-dependencies
     voting: false
@@ -4958,10 +4948,6 @@ projects:
       - parsoidsvc-source-parse-tool-check
       - parsoidsvc-source-parsertests-run-harder
       - parsoidsvc-source-roundtrip-test-check
-      # non voting:
-      - parsoidsvc-parse-tool-check
-      - parsoidsvc-roundtrip-test-check
-      - parsoidsvc-parsertests-run-harder
       - parsoidsvc-source-npm-0.8
       - parsoidsvc-source-npm-0.10
 
@@ -4971,26 +4957,26 @@ projects:
       - parsoidsvc-source-parse-tool-check
       - parsoidsvc-source-parsertests-run-harder
       - parsoidsvc-source-roundtrip-test-check
+      - parsoidsvc-source-npm-0.8
+      - parsoidsvc-source-npm-0.10
       - experiment-gating-dependencies
     postmerge:
       - beta-parsoid-update-eqiad
 
   - name: mediawiki/services/parsoid/deploy
     test:
+      - parsoidsvc-debian-glue
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-parsertests-run-harder
       - parsoidsvc-deploy-roundtrip-test-check
-      - parsoidsvc-debian-glue
-      # non voting:
       - parsoidsvc-deploy-npm-0.8
       - parsoidsvc-deploy-npm-0.10
-      - parsoidsvc-parsertests-run-harder
-      - parsoidsvc-parse-tool-check
-      - parsoidsvc-roundtrip-test-check
     gate-and-submit:
-      - parsoidsvc-deploy-parsertests-run-harder
       - parsoidsvc-deploy-parse-tool-check
+      - parsoidsvc-deploy-parsertests-run-harder
       - parsoidsvc-deploy-roundtrip-test-check
+      - parsoidsvc-deploy-npm-0.8
+      - parsoidsvc-deploy-npm-0.10
       - experiment-gating-dependencies
     postmerge:
       - beta-parsoid-update-eqiad
