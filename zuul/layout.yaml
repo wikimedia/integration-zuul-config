@@ -1772,11 +1772,21 @@ projects:
 
   - name: integration/config
     check:
-     - noop
+      - integration-config-yamllint
+      - integration-zuul-layoutdiff
+      - integration-zuul-layoutvalidation
     test:
-     - noop
+      - integration-config-tox-py27
+      - integration-config-yamllint
+      - integration-jjb-config-diff
+      - integration-zuul-layoutdiff
+      - integration-zuul-layoutvalidation
     gate-and-submit:
-     - noop
+      - integration-config-tox-py27
+      - integration-config-yamllint
+      - integration-jjb-config-diff
+      - integration-zuul-layoutdiff
+      - integration-zuul-layoutvalidation
 
   - name: integration/jenkins
     template:
@@ -1794,15 +1804,6 @@ projects:
       - 'integration-jenkins-phpunit'
       - 'integration-jenkins-yamllint'
 
-  - name: integration/jenkins-job-builder-config
-    # FIXME: make this 'check' whenever we have integration tests
-    check-voter:
-      - integration-jjb-config-yamllint
-      - integration-jjb-config-diff
-    gate-and-submit:
-      - integration-jjb-config-yamllint
-      - integration-jjb-config-diff
-
   - name: integration/phpunit
     test:
       - integration-phpunit-mediawiki-REL1_22
@@ -1815,22 +1816,6 @@ projects:
       - integration-phpunit-mediawiki-REL1_24
       - integration-phpunit-mediawiki-master
       - mediawiki-gate
-
-  - name: integration/zuul-config
-    check:
-      - integration-zuul-config-yamllint
-      - integration-zuul-layoutvalidation
-      - integration-zuul-layoutdiff
-    test:
-      - integration-zuul-config-yamllint
-      - integration-zuul-layoutvalidation
-      - integration-zuul-layoutdiff
-      - integration-zuul-config-tox-py27
-    gate-and-submit:
-      - integration-zuul-config-yamllint
-      - integration-zuul-layoutvalidation
-      - integration-zuul-layoutdiff
-      - integration-zuul-config-tox-py27
 
   - name: mediawiki/core
     check:

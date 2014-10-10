@@ -20,7 +20,7 @@
         git checkout $ZUUL_COMMIT
         echo "`date -R`> $ZUUL_COMMIT" >> /srv/jenkins-autodeploy
 
-# Pass zuul-config.git:zuul/layout.yaml to zuul-server layout validation
+# Pass integration/config.git:zuul/layout.yaml to zuul-server layout validation
 # Requires zuul to be installed on the Jenkins host.
 - job-template:
     name: 'integration-zuul-layoutvalidation'
@@ -71,7 +71,7 @@
           branches:
            - master
       - git:
-          url: '$ZUUL_URL/integration/jenkins-job-builder-config'
+          url: '$ZUUL_URL/integration/config'
           branches:
            - '$ZUUL_COMMIT'
           refspec: '$ZUUL_REF'
@@ -105,28 +105,24 @@
         echo "Done."
         echo "Carefully review the diff above before deploying the jobs and merging the patch"
 
+
+- project:
+    name: 'integration-config'
+    toxenv:
+     - py27
+    jobs:
+     - 'integration-jjb-config-diff'
+     - 'integration-zuul-layoutdiff'
+     - 'integration-zuul-layoutvalidation'
+     - '{name}-tox-{toxenv}'
+     - '{name}-yamllint'
+
 - project:
     name: 'integration-docroot'
     jobs:
      - 'integration-docroot-deploy'
      - '{name}-phplint'
      - '{name}-jslint'
-
-- project:
-    name: 'integration-zuul-config'
-    toxenv:
-     - py27
-    jobs:
-     - 'integration-zuul-layoutdiff'
-     - 'integration-zuul-layoutvalidation'
-     - '{name}-yamllint'
-     - '{name}-tox-{toxenv}'
-
-- project:
-    name: 'integration-jjb-config'
-    jobs:
-     - '{name}-yamllint'
-     - 'integration-jjb-config-diff'
 
 - project:
     name: 'integration-jenkins'
