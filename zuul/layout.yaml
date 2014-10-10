@@ -387,27 +387,28 @@ jobs:
     # Release branches do not support hhvm. Hopefully REL1_25 will.
     branch: (?!REL1_19|REL1_22|REL1_23|REL1_24)
 
+  - name: mwext-cldr-phpcs-HEAD
+    voting: true
+  - name: mwext-ContentTranslation-phpcs-HEAD
+    voting: true
+  - name: mwext-Interwiki-phpcs-HEAD
+    voting: true
   - name: mwext-MobileFrontend-phpcs-HEAD
     voting: true
   - name: mwext-TemplateData-phpcs-HEAD
+    voting: true
+  - name: mwext-Translate-phpcs-HEAD
+    voting: true
+  - name: mwext-TranslationNotifications-phpcs-HEAD
+    voting: true
+  - name: mwext-TwnMainPage-phpcs-HEAD
+    voting: true
+  - name: mwext-UniversalLanguageSelector-phpcs-HEAD
     voting: true
   - name: mwext-VisualEditor-phpcs-HEAD
     voting: true
   - name: oojs-ui-phpcs-HEAD
     voting: true
-
-  # Experiment for bug 48420
-  - name: ^.*phpcs-lenient(-HEAD)?$
-    files:
-     - '^.*\.(php|php5|phtml|inc)$'
-  - name: ^.*phpcs-strict(-HEAD)?$
-    files:
-     - '^.*\.(php|php5|phtml|inc)$'
-
-  - name: mediawiki-core-phpcs-strict-HEAD
-    voting: false
-  - name: mediawiki-core-phpcs-lenient-HEAD
-    voting: false
 
   - name: ^mediawiki-core-npm$
     files:
@@ -1900,15 +1901,13 @@ projects:
   - name: mediawiki/core
     check:
       - mediawiki-core-whitespaces
-      - mediawiki-core-phpcs-lenient-HEAD
-      - mediawiki-core-phpcs-strict-HEAD
+      - mediawiki-core-phpcs-HEAD
       - mediawiki-core-jslint
       - mediawiki-core-phplint
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     test:
-      - mediawiki-core-phpcs-lenient-HEAD
-      - mediawiki-core-phpcs-strict-HEAD
+      - mediawiki-core-phpcs-HEAD
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-phplint:
@@ -1920,8 +1919,7 @@ projects:
       - php-composer-validate
     gate-and-submit:
     # Non voting jobs are commented out
-#      - mediawiki-core-phpcs-lenient-HEAD
-#      - mediawiki-core-phpcs-strict-HEAD
+#      - mediawiki-core-phpcs-HEAD
       - mediawiki-gate
       - mediawiki-core-jsduck
       - mediawiki-core-npm
@@ -2856,11 +2854,11 @@ projects:
     template:
       - name: extension-unittests
     check:
-      - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-cldr-phpcs-HEAD
     test:
-      - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-cldr-phpcs-HEAD
     gate-and-submit:
-      - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-cldr-phpcs-HEAD
 
   - name: mediawiki/extensions/CentralAuth
     template:
@@ -2994,7 +2992,7 @@ projects:
 
   - name: mediawiki/extensions/ContentTranslation
     check-only:
-      - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-ContentTranslation-phpcs-HEAD
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-bundle-rubocop
@@ -3004,7 +3002,7 @@ projects:
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
-      - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-ContentTranslation-phpcs-HEAD
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-bundle-rubocop
@@ -3368,13 +3366,13 @@ projects:
 
   - name: mediawiki/extensions/Interwiki
     check-only:
-      - mwext-Interwiki-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-Interwiki-phpcs-HEAD
       - mwext-Interwiki-jslint
       - mwext-Interwiki-lint
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
-      - mwext-Interwiki-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-Interwiki-phpcs-HEAD
       - mwext-Interwiki-jslint
       - mwext-Interwiki-lint
       - php-composer-validate
@@ -5600,21 +5598,21 @@ projects:
       - name: extension-rubylint
       - name: extension-unittests
     check:
-      - mwext-Translate-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-Translate-phpcs-HEAD
     test:
-      - mwext-Translate-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-Translate-phpcs-HEAD
     gate-and-submit:
-      - mwext-Translate-phpcs-strict # Experiment for bug 48420
+      - mwext-Translate-phpcs-HEAD
 
   - name: mediawiki/extensions/TranslationNotifications
     template:
       - name: extension-unittests
     check:
-      - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-TranslationNotifications-phpcs-HEAD
     test:
-      - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-TranslationNotifications-phpcs-HEAD
     gate-and-submit:
-      - mwext-TranslationNotifications-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-TranslationNotifications-phpcs-HEAD
 
   - name: mediawiki/extensions/Transliterator
     template:
@@ -5629,11 +5627,11 @@ projects:
       - name: extension-rubylint
       - name: extension-unittests
     check:
-      - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-TwnMainPage-phpcs-HEAD
     test:
-      - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-TwnMainPage-phpcs-HEAD
     gate-and-submit:
-      - mwext-TwnMainPage-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-TwnMainPage-phpcs-HEAD
 
   - name: mediawiki/extensions/OpenBadges
     template:
@@ -5648,12 +5646,12 @@ projects:
       - name: extension-rubylint
       - name: extension-unittests
     check:
-      - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-UniversalLanguageSelector-phpcs-HEAD
     test:
-      - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-UniversalLanguageSelector-phpcs-HEAD
       - mwext-browsertests-UniversalLanguageSelector-phantomjs # Experiment, bug 52120
     gate-and-submit:
-      - mwext-UniversalLanguageSelector-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-UniversalLanguageSelector-phpcs-HEAD
 
   - name: mediawiki/extensions/UploadBlacklist
     template:
