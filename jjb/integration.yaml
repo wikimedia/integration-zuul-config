@@ -88,11 +88,11 @@
         export PY_COLORS=1
 
         echo "Generating config for proposed patchset..."
-        tox -e venv -- jenkins-jobs test "$WORKSPACE/config" -o "$WORKSPACE/output-proposed"
+        tox -e venv -- jenkins-jobs test "$WORKSPACE/config/jjb" -o "$WORKSPACE/output-proposed"
 
         echo "Generating reference config from parent..."
         (cd $WORKSPACE/config; git checkout HEAD^)
-        tox -e venv -- jenkins-jobs test "$WORKSPACE/config" -o "$WORKSPACE/output-parent"
+        tox -e venv -- jenkins-jobs test "$WORKSPACE/config/jjb" -o "$WORKSPACE/output-parent"
 
         echo "--------------------------------------------"
         echo "File changed:"
