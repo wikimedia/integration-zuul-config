@@ -636,55 +636,14 @@
 - builder:
     name: phpcs
     builders:
-     - shell: |
-        /srv/deployment/integration/phpcs/vendor/bin/phpcs -v -s . \
-         --encoding=utf-8 \
-         --standard=/srv/deployment/integration/mediawiki-tools-codesniffer/MediaWiki \
-         --extensions=php,inc \
-         --ignore=languages/messages/Messages*.php,*.i18n.php \
-         --report-checkstyle=checkstyle-phpcs.xml \
-         --report-full
+     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh
 
-# run phpcs on files changed in HEAD. Ignores:
-#  - the mw/core language files
-#  - any .js files
+# run phpcs on files changed in HEAD.
+# Except for Messages* and *.i18n.php (such as in installer)
 - builder:
     name: phpcs-HEAD
     builders:
-     - shell: |
-        PHPCS_FILES=$(/srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc sample)
-        # No file? No point in proceeding any further (bug 44567)
-        if [ -z "$PHPCS_FILES" ]; then
-            echo "Skipping phpcs: no file remaining to process"
-            exit 0
-        fi
-
-        /srv/deployment/integration/phpcs/vendor/bin/phpcs -v -s $PHPCS_FILES \
-         --encoding=utf-8 \
-         --standard=/srv/deployment/integration/mediawiki-tools-codesniffer/MediaWiki \
-         --ignore=languages/messages/Messages,*.i18n.php \
-         --report-checkstyle=checkstyle-phpcs.xml \
-         --report-full
-
-- builder:
-    name: phpcs-strict
-    builders:
-     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh
-
-- builder:
-    name: phpcs-strict-HEAD
-    builders:
      - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh HEAD
-
-- builder:
-    name: phpcs-lenient
-    builders:
-     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh nowarnings
-
-- builder:
-    name: phpcs-lenient-HEAD
-    builders:
-     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh nowarnings HEAD
 
 - publisher:
     name: phpcs
