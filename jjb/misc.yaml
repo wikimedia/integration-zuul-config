@@ -73,6 +73,21 @@
         project: 'oojs-ui'
         version: '$ZUUL_BRANCH'
 
+- job:
+    name: 'oojs-ui-demos-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - shell:
+        rsync --recursive --delete-after --force "$WORKSPACE/lib/" "$WORKSPACE/demos/lib/"
+     - documentation-sync:
+        src: '$WORKSPACE/demos/'
+        project: 'oojs-ui'
+        version: '$ZUUL_BRANCH'
+
 - project:
     name: 'oojs-ui'
     jobs:
@@ -82,6 +97,7 @@
      - '{name}-phpcs-HEAD'
      - 'oojs-ui-jsduck'
      - 'oojs-ui-jsduck-publish'
+     - 'oojs-ui-demos-publish'
 
 - job:
     name: 'VisualEditor-jsduck'
