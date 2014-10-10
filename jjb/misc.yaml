@@ -145,6 +145,22 @@
      - global-teardown
 
 - job:
+    name: 'oojs-ui-demos-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - npm-install
+     - composer-update
+     - doc-publish:
+        docsrc: '.'
+        docdest: 'oojs-ui/$DOC_SUBPATH/demos'
+    publishers:
+     - global-teardown
+
+- job:
     name: 'visualeditor-coverage'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
