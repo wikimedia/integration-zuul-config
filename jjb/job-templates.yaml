@@ -270,6 +270,19 @@
      - ruby-lint:
         interpreter: 'ruby1.9.3'
 
+- job-template:
+    name: '{name}-ruby2.0lint'
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    node: contintLabsSlave && UbuntuTrusty
+    logrotate:
+        daysToKeep: 90
+    triggers:
+     - zuul
+    builders:
+     - ruby-lint:
+        interpreter: 'ruby2.0'
+
 # Verifiy whether there is any leading tabs in files matching 'fileselector'.
 #
 # 'fileselector': the parameter is passed to grep --include= option and is
