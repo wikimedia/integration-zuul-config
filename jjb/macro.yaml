@@ -653,3 +653,261 @@
      - archive:
         artifacts: 'log/*'
 
+- builder:
+    name: browsertest-website
+    builders:
+      - shell: |
+          # set up environment variables
+          export BROWSER={browser}
+          export BROWSER_TIMEOUT={browser_timeout}
+          export CUCUMBER_TAGS={cucumber_tags}
+          export HEADLESS={headless}
+          export MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+          export MEDIAWIKI_USER={mediawiki_user}
+          export PLATFORM='{platform}'
+          # Replace PLATFORM underscores (Jenkins) to spaces (SauceLabs)
+          export PLATFORM=${{PLATFORM//_/ }}
+          export SCREENSHOT_FAILURES=true
+          export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
+
+          # We only care about one version of our browser and do not need a job
+          # per version.  Thus the versions to use are hardcoded there.
+          #
+          # VERSION is used for SauceLabs
+          #
+          case "$BROWSER" in
+            'chrome')
+                # Until upstream problem of bug 69399 is resolved we have to use 28
+                export VERSION=28
+                ;;
+            'firefox')
+                export VERSION=32
+                ;;
+            'internet_explorer')
+                export VERSION=10
+                ;;
+            'phantomjs')
+                export VERSION=''
+                ;;
+            'safari')
+                export VERSION=7
+                ;;
+            *)
+                echo "Browser '$BROWSER' unsupported. Can not determine version"
+                exit 1
+                ;;
+          esac
+          echo "Using browser: $BROWSER at version $VERSION"
+
+          if [ $BROWSER == "internet_explorer" ]
+          then
+            BROWSER_TAG=${{BROWSER}}_$VERSION
+          else
+            BROWSER_TAG=$BROWSER
+          fi
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+
+          # Attempt to figure out MediaWiki branch being used and fetch it out
+          # if the extension has the same branch
+          MEDIAWIKI_GIT_BRANCH=$(/srv/deployment/integration/slave-scripts/bin/mw-api-siteinfo.py "$MEDIAWIKI_API_URL" git_branch)
+
+
+          git checkout -f "origin/$MEDIAWIKI_GIT_BRANCH" || {{
+              echo "origin/$MEDIAWIKI_GIT_BRANCH branch does not exist."
+              echo "Fallbacking to master branch..."
+              MEDIAWIKI_GIT_BRANCH='master'
+              git checkout -f origin/$MEDIAWIKI_GIT_BRANCH
+          }}
+          git reset --hard "origin/$MEDIAWIKI_GIT_BRANCH"
+          git clean -x -q -d -f
+
+          # install ruby dependencies
+          mkdir -p vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
+          cd {folder}/browser/
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
+
+          if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
+            CUCUMBER_PARAMETER="@language_screenshot"
+            export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
+          elif [[ $JOB_NAME == browsertests-Core-* ]]; then
+            CUCUMBER_PARAMETER="@clean"
+          elif [[ ! -z $CUCUMBER_TAGS ]]; then
+            CUCUMBER_PARAMETER="$CUCUMBER_TAGS"
+          else
+            CUCUMBER_PARAMETER="@{mediawiki_url}"
+          fi
+
+          if [ $BROWSER == 'phantomjs' ]; then
+              npm install 'phantomjs@>=1.9.7-0 <1.9.8'
+              export PATH="`pwd`/node_modules/.bin:$PATH"
+              phantomjs --version
+          fi
+
+          # provide config.yml
+          if [ -e "$WORKSPACE/tests/browser/config/config_ci.yml" ] && [ ! -e "$WORKSPACE/tests/browser/config/config.yml" ]; then
+              cp "$WORKSPACE/tests/browser/config/config_ci.yml" "$WORKSPACE/tests/browser/config/config.yml"
+          fi
+
+          # run tests
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
+            --backtrace \
+            --color \
+            --verbose \
+            --format pretty \
+            --format Cucumber::Formatter::Sauce \
+            --out "$WORKSPACE/log/junit" \
+            --tags $CUCUMBER_PARAMETER \
+            --tags @$BROWSER_TAG \
+            || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+          if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
+            "$WORKSPACE"/vendor/bin/bundle exec ruby1.9.1 upload.rb
+          fi
+
+- builder:
+    name: browsertest-website-version
+    builders:
+      - shell: |
+          # set up environment variables
+          export BROWSER={browser}
+          export BROWSER_TIMEOUT={browser_timeout}
+          export CUCUMBER_TAGS={cucumber_tags}
+          export HEADLESS={headless}
+          export MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
+          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
+          export MEDIAWIKI_USER={mediawiki_user}
+          export PLATFORM='{platform}'
+          # Replace PLATFORM underscores (Jenkins) to spaces (SauceLabs)
+          export PLATFORM=${{PLATFORM//_/ }}
+          export SCREENSHOT_FAILURES=true
+          export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
+
+          # We only care about one version of our browser and do not need a job
+          # per version.  Thus the versions to use are hardcoded there.
+          #
+          # VERSION is used for SauceLabs
+          #
+          case "$BROWSER" in
+            'chrome')
+                # Until upstream problem of bug 69399 is resolved we have to use 28
+                export VERSION=28
+                ;;
+            'firefox')
+                export VERSION=27
+                ;;
+            'internet_explorer')
+                export VERSION={version}
+                ;;
+            'phantomjs')
+                export VERSION=''
+                ;;
+            'safari')
+                export VERSION=7
+                ;;
+            *)
+                echo "Browser '$BROWSER' unsupported. Can not determine version"
+                exit 1
+                ;;
+          esac
+          echo "Using browser: $BROWSER at version $VERSION"
+
+          if [ $BROWSER == "internet_explorer" ]
+          then
+            BROWSER_TAG=${{BROWSER}}_$VERSION
+          else
+            BROWSER_TAG=$BROWSER
+          fi
+
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+
+          # Attempt to figure out MediaWiki branch being used and fetch it out
+          # if the extension has the same branch
+          MEDIAWIKI_GIT_BRANCH=$(/srv/deployment/integration/slave-scripts/bin/mw-api-siteinfo.py "$MEDIAWIKI_API_URL" git_branch)
+
+
+          git checkout -f "origin/$MEDIAWIKI_GIT_BRANCH" || {{
+              echo "origin/$MEDIAWIKI_GIT_BRANCH branch does not exist."
+              echo "Fallbacking to master branch..."
+              MEDIAWIKI_GIT_BRANCH='master'
+              git checkout -f origin/$MEDIAWIKI_GIT_BRANCH
+          }}
+          git reset --hard "origin/$MEDIAWIKI_GIT_BRANCH"
+          git clean -x -q -d -f
+
+          # install ruby dependencies
+          mkdir -p vendor
+          gem1.9.3 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          # Prepare some paths lookup
+          export GEM_PATH="`pwd`/vendor"
+
+          cd {folder}/browser/
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
+
+          if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
+            CUCUMBER_PARAMETER="@language_screenshot"
+            export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
+          elif [[ ! -z $CUCUMBER_TAGS ]]; then
+            CUCUMBER_PARAMETER="$CUCUMBER_TAGS"
+          else
+            CUCUMBER_PARAMETER="@{mediawiki_url}"
+          fi
+
+          if [ $BROWSER == 'phantomjs' ]; then
+              npm install 'phantomjs@>=1.9.7-0 <1.9.8'
+              export PATH="`pwd`/node_modules/.bin:$PATH"
+              phantomjs --version
+          fi
+
+          # run tests
+          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
+            --backtrace \
+            --color \
+            --verbose \
+            --format pretty \
+            --format Cucumber::Formatter::Sauce \
+            --out "$WORKSPACE/log/junit" \
+            --tags $CUCUMBER_PARAMETER \
+            --tags @$BROWSER_TAG \
+            || (echo -e "\nJob has failed (exit code: $?)."; false)
+
+          if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
+            "$WORKSPACE"/vendor/bin/bundle exec ruby1.9.1 upload.rb
+          fi
+
+# Let a job run on different node, but no more than once per node.
+- property:
+    name: throttle-one-per-node
+    properties:
+     - throttle:
+         max-per-node: 1
+         max-total: 0
+         enabled: true
+         option: 'project'
+
+- publisher:
+    name: browsertests-irc
+    publishers:
+      - ircbot:
+          strategy: statechange-only
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary
+          matrix-notifier: only-configurations
+          channels:
+              - name: '#wikimedia-qa'
+                notify-only: true
