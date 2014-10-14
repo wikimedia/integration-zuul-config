@@ -35,6 +35,9 @@
      - Wikidata-devs: &emails-Wikidata-devs
         adrian.lang@wikimedia.de katie.filbert@wikimedia.de qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de
 
+     - ZeroPortal: &emails-ZeroPortal
+        abaso@wikimedia.org qa-alerts@lists.wikimedia.org
+
 # CirrusSearch
 - project:
     name: CirrusSearch
@@ -577,3 +580,21 @@
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}'
+
+# ZeroPortal
+- project:
+    name: ZeroPortal
+    defaults: browsertests
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+    mediawiki_url: zero.wikimedia.org
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-ZeroPortal
+    repository: mediawiki/extensions/ZeroPortal
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+
