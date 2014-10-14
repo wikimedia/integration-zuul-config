@@ -16,8 +16,8 @@ For more about the Jenkins Job Builder software and how to use it, refer to the 
 
 Generate XML files for Jenkins jobs from YAML files:
 
-    $ jenkins-jobs test config/ -o output/
+    $ jenkins-jobs test config/jjb/ -o output/
 
 Update Jenkins jobs which name starts with "browsertests":
 
-    $ jenkins-jobs --conf etc/jenkins_jobs.ini update config/ browsertests*
+    $ jenkins-jobs --conf etc/jenkins_jobs.ini update config/jjb/ browsertests*
