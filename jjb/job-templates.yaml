@@ -235,6 +235,18 @@
      - puppet-validate
 
 - job-template:
+    name: '{name}-rubocop'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    logrotate:
+        daysToKeep: 90
+    triggers:
+     - zuul
+    builders:
+     - rubocop
+
+- job-template:
     name: '{name}-rubylint'
     defaults: use-remote-zuul-no-submodules
     concurrent: true
