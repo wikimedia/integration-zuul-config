@@ -622,6 +622,18 @@
      - shell: |
         find "$WORKSPACE" -type f -name '*.rb' -print0 | xargs -t -n1 -0 {interpreter} -c
 
+# Run rubocop, Ruby linter
+- builder:
+    name: rubocop
+    builders:
+     - shell: |
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems"
+          gem install rubocop
+
+          rubocop
+
 - builder:
     name: tox
     builders:
