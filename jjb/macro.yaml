@@ -622,6 +622,26 @@
      - shell: |
         find "$WORKSPACE" -type f -name '*.rb' -print0 | xargs -t -n1 -0 {interpreter} -c
 
+# Run rubocop, Ruby linter
+- builder:
+    name: rubocop
+    builders:
+     - shell: |
+          # Shared cache of gems to avoid hitting rubygems all the time
+          # See https://github.com/bundler/bundler/issues/2856
+          export GEM_HOME="$WORKSPACE/../gems/`ruby2.0 -e 'puts RUBY_VERSION'`"
+          mkdir -p vendor
+          gem2.0 install --env-shebang -i vendor rubocop --no-document
+          export GEM_PATH="`pwd`/vendor"
+
+          mkdir -p "$WORKSPACE/log"
+          rm -f "$WORKSPACE/log/rubocop.html"
+          vendor/bin/rubocop --format progress --format html --out log/rubocop.html
+
+    publishers:
+      - archive:
+          artifacts: 'log/*'
+
 - builder:
     name: tox
     builders:
