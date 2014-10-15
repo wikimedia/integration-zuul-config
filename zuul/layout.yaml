@@ -1441,6 +1441,55 @@ jobs:
   - name: pywikibot-core-tox-flake8-docstrings
     voting: false
 
+  # Exceptions for projects not yet passing pep8 or pyflakes
+  #
+  - name: mediawiki-core-bundle-rubocop
+    voting: false
+  - name: mediawiki-ruby-api-bundle-rubocop
+    voting: false
+  - name: mediawiki-selenium-bundle-rubocop
+    voting: false
+  - name: mwext-ArticleFeedbackv5-bundle-rubocop
+    voting: false
+  - name: mwext-CirrusSearch-bundle-rubocop
+    voting: false
+  - name: mwext-ContentTranslation-bundle-rubocop
+    voting: false
+  - name: mwext-Echo-bundle-rubocop
+    voting: false
+  - name: mwext-Flow-bundle-rubocop
+    voting: false
+  - name: mwext-GettingStarted-bundle-rubocop
+    voting: false
+  - name: mwext-Math-bundle-rubocop
+    voting: false
+  - name: mwext-MobileFrontend-bundle-rubocop
+    voting: false
+  - name: mwext-MultimediaViewer-bundle-rubocop
+    voting: false
+  - name: mwext-PageTriage-bundle-rubocop
+    voting: false
+  - name: mwext-PdfHandler-bundle-rubocop
+    voting: false
+  - name: mwext-Translate-bundle-rubocop
+    voting: false
+  - name: mwext-TwnMainPage-bundle-rubocop
+    voting: false
+  - name: mwext-UniversalLanguageSelector-bundle-rubocop
+    voting: false
+  - name: mwext-UploadWizard-bundle-rubocop
+    voting: false
+  - name: mwext-VisualEditor-bundle-rubocop
+    voting: false
+  - name: mwext-WikiLove-bundle-rubocop
+    voting: false
+  - name: mwext-ZeroBanner-bundle-rubocop
+    voting: false
+  - name: mwext-ZeroPortal-bundle-rubocop
+    voting: false
+  - name: VisualEditor-bundle-rubocop
+    voting: false
+
   - name: operations-puppet-pep8
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
 
@@ -1749,10 +1798,13 @@ project-templates:
   # Run Ruby linter.
   - name: extension-rubylint
     check:
+     - 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
     test:
+     - 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
     gate-and-submit:
+     - 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
@@ -1814,6 +1866,7 @@ projects:
       - mediawiki-core-phpcs-strict-HEAD
       - mediawiki-core-jslint
       - mediawiki-core-phplint
+      - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     test:
@@ -1824,6 +1877,7 @@ projects:
       - mediawiki-core-phplint:
         - mediawiki-vendor-integration
         - mediawiki-core-qunit
+      - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     gate-and-submit:
@@ -1836,6 +1890,7 @@ projects:
       - mediawiki-core-phplint:
         - mediawiki-vendor-integration
         - mediawiki-core-qunit
+      - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     experimental:
@@ -2047,12 +2102,15 @@ projects:
 
   - name: mediawiki/ruby/api
     check:
+     - mediawiki-ruby-api-bundle-rubocop
      - mediawiki-ruby-api-ruby1.9.3lint
     test:
+     - mediawiki-ruby-api-bundle-rubocop
      - mediawiki-ruby-api-ruby1.9.3lint
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard
     gate-and-submit:
+     - mediawiki-ruby-api-bundle-rubocop
      - mediawiki-ruby-api-ruby1.9.3lint
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard
@@ -2062,12 +2120,15 @@ projects:
 
   - name: mediawiki/selenium
     check:
+     - mediawiki-selenium-bundle-rubocop
      - mediawiki-selenium-ruby1.9.3lint
     test:
+     - mediawiki-selenium-bundle-rubocop
      - mediawiki-selenium-ruby1.9.3lint
      - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard
     gate-and-submit:
+     - mediawiki-selenium-bundle-rubocop
      - mediawiki-selenium-ruby1.9.3lint
      - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard
@@ -2837,6 +2898,7 @@ projects:
       - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
+      - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
@@ -2845,6 +2907,7 @@ projects:
       - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
+      - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
@@ -5620,6 +5683,7 @@ projects:
   - name: mediawiki/extensions/ZeroPortal
     template:
       - name: extension-unittests
+      - name: extension-rubylint
 
 #### PHP Extensions ###################################################
 
@@ -5811,13 +5875,16 @@ projects:
   - name: VisualEditor/VisualEditor
     check:
       - VisualEditor-jslint
+      - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
     test:
       - VisualEditor-npm
+      - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
       - VisualEditor-jsduck
     gate-and-submit:
       - VisualEditor-npm
+      - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
       - VisualEditor-jsduck
 
