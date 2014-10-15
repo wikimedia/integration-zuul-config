@@ -1798,14 +1798,16 @@ project-templates:
   # Run Ruby linter.
   - name: extension-rubylint
     check:
-     - 'mwext-{name}-bundle-rubocop'
+     #- 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
     test:
-     - 'mwext-{name}-bundle-rubocop'
+     #- 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
     gate-and-submit:
-     - 'mwext-{name}-bundle-rubocop'
+     #- 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
+    experimental:
+     - 'mwext-{name}-bundle-rubocop'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
@@ -1866,7 +1868,6 @@ projects:
       - mediawiki-core-phpcs-strict-HEAD
       - mediawiki-core-jslint
       - mediawiki-core-phplint
-      - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     test:
@@ -1877,7 +1878,7 @@ projects:
       - mediawiki-core-phplint:
         - mediawiki-vendor-integration
         - mediawiki-core-qunit
-      - mediawiki-core-bundle-rubocop
+      #- mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     gate-and-submit:
@@ -1890,10 +1891,11 @@ projects:
       - mediawiki-core-phplint:
         - mediawiki-vendor-integration
         - mediawiki-core-qunit
-      - mediawiki-core-bundle-rubocop
+      #- mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
     experimental:
+      - mediawiki-core-bundle-rubocop
       - mediawiki-core-extensions-integration
       - mediawiki-language-extension-bundle-integration
     postmerge:
@@ -2102,33 +2104,33 @@ projects:
 
   - name: mediawiki/ruby/api
     check:
-     - mediawiki-ruby-api-bundle-rubocop
      - mediawiki-ruby-api-ruby1.9.3lint
     test:
-     - mediawiki-ruby-api-bundle-rubocop
+     #- mediawiki-ruby-api-bundle-rubocop
      - mediawiki-ruby-api-ruby1.9.3lint
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard
     gate-and-submit:
-     - mediawiki-ruby-api-bundle-rubocop
+     #- mediawiki-ruby-api-bundle-rubocop
      - mediawiki-ruby-api-ruby1.9.3lint
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard
     postmerge:
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard-publish
+    experimental:
+     - mediawiki-ruby-api-bundle-rubocop
 
   - name: mediawiki/selenium
     check:
-     - mediawiki-selenium-bundle-rubocop
      - mediawiki-selenium-ruby1.9.3lint
     test:
-     - mediawiki-selenium-bundle-rubocop
+     #- mediawiki-selenium-bundle-rubocop
      - mediawiki-selenium-ruby1.9.3lint
      - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard
     gate-and-submit:
-     - mediawiki-selenium-bundle-rubocop
+     #- mediawiki-selenium-bundle-rubocop
      - mediawiki-selenium-ruby1.9.3lint
      - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard
@@ -2137,6 +2139,7 @@ projects:
      - mediawiki-selenium-bundle-yard-publish
     experimental:
      - mediawiki-selenium-bundle-rspec
+     - mediawiki-selenium-bundle-rubocop
 
   - name: mediawiki/skins/apex
     template:
@@ -2898,7 +2901,7 @@ projects:
       - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
-      - mwext-ContentTranslation-bundle-rubocop
+      #- mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
@@ -2907,10 +2910,12 @@ projects:
       - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
-      - mwext-ContentTranslation-bundle-rubocop
+      #- mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
+    experimental:
+      - mwext-ContentTranslation-bundle-rubocop
 
   - name: mediawiki/extensions/ContributionScores
     template:
@@ -5875,18 +5880,20 @@ projects:
   - name: VisualEditor/VisualEditor
     check:
       - VisualEditor-jslint
-      - VisualEditor-bundle-rubocop
+      #- VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
     test:
       - VisualEditor-npm
-      - VisualEditor-bundle-rubocop
+      #- VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
       - VisualEditor-jsduck
     gate-and-submit:
       - VisualEditor-npm
-      - VisualEditor-bundle-rubocop
+      #- VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
       - VisualEditor-jsduck
+    experimental:
+      - VisualEditor-bundle-rubocop
 
   - name: wikimedia/bots/jouncebot
     check-voter:
