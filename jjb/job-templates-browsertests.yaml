@@ -25,20 +25,6 @@
     name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce'
     defaults: browsertests
 
-    builders:
-      - shell: mkdir -p "$WORKSPACE/log/junit"
-      - browsertest-website-version:
-          browser: '{browser}'
-          browser_timeout: '{browser_timeout}'
-          cucumber_tags: '{cucumber_tags}'
-          headless: '{headless}'
-          folder: '{folder}'
-          mediawiki_password_variable: '{mediawiki_password_variable}'
-          mediawiki_url: '{mediawiki_url}'
-          mediawiki_user: '{mediawiki_user}'
-          platform: '{platform}'
-          version: '{version}'
-
     triggers:
       - timed: 'H 3,18 * * *'
 
@@ -82,6 +68,7 @@
     browser_timeout: ''
     repository_host: 'gerrit.wikimedia.org/r'
     cucumber_tags: ''
+    version: '10'
 
     properties:
      - throttle:
@@ -116,6 +103,7 @@
           mediawiki_url: '{mediawiki_url}'
           mediawiki_user: '{mediawiki_user}'
           platform: '{platform}'
+          version: '{version}'
 
     publishers:
       - junit:
