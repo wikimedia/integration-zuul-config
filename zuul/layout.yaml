@@ -1801,16 +1801,14 @@ project-templates:
   # Run Ruby linter.
   - name: extension-rubylint
     check:
-     #- 'mwext-{name}-bundle-rubocop'
+     - 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
     test:
-     #- 'mwext-{name}-bundle-rubocop'
+     - 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
     gate-and-submit:
-     #- 'mwext-{name}-bundle-rubocop'
-     - 'mwext-{name}-ruby1.9.3lint'
-    experimental:
      - 'mwext-{name}-bundle-rubocop'
+     - 'mwext-{name}-ruby1.9.3lint'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
@@ -2906,7 +2904,7 @@ projects:
       - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
-      #- mwext-ContentTranslation-bundle-rubocop
+      - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
@@ -2915,12 +2913,10 @@ projects:
       - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
-      #- mwext-ContentTranslation-bundle-rubocop
+      - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
-    experimental:
-      - mwext-ContentTranslation-bundle-rubocop
 
   - name: mediawiki/extensions/ContributionScores
     template:
@@ -5883,20 +5879,18 @@ projects:
   - name: VisualEditor/VisualEditor
     check:
       - VisualEditor-jslint
-      #- VisualEditor-bundle-rubocop
+      - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
     test:
       - VisualEditor-npm
-      #- VisualEditor-bundle-rubocop
+      - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
       - VisualEditor-jsduck
     gate-and-submit:
       - VisualEditor-npm
-      #- VisualEditor-bundle-rubocop
+      - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
       - VisualEditor-jsduck
-    experimental:
-      - VisualEditor-bundle-rubocop
 
   - name: wikimedia/bots/jouncebot
     check-voter:
