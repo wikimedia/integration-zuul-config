@@ -68,9 +68,13 @@
 - project:
     name: 'mediawiki-vagrant'
     jobs:
+     - '{name}-bundle-{bundlecommand}':
+         bundlecommand:
+          - rubocop
      - '{name}-puppetlint-lenient'
      - '{name}-puppetlint-strict'
      - '{name}-puppet-validate'
+     - '{name}-ruby1.9.3lint'
      - '{name}-erblint-HEAD'
      - '{name}-bundle17-{bundlecommand}':
          bundlecommand:
