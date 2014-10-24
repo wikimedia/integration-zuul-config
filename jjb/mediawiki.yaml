@@ -54,6 +54,7 @@
      - qunit
     publishers:
      - qunit-cleanup
+     - mw-teardown
 
 - job-template:
     name: 'mediawiki-core-jsduck'
@@ -144,6 +145,7 @@
     publishers:
      - phpunit-junit-2
      - archive-log-dir
+     - mw-teardown
 
 # Test out our PHPUnit against various MediaWiki branches
 #
@@ -169,6 +171,7 @@
     publishers:
      - phpunit-junit-2
      - archive-log-dir
+     - mw-teardown
 
 - job-template:
     name: mediawiki-core-regression-hhvm-{branch}
@@ -186,6 +189,7 @@
     publishers:
      - phpunit-junit-2
      - archive-log-dir
+     - mw-teardown
     wrappers:
      # Failsafe to avoid blocking builds in production since this is still very
      # experimental.
@@ -280,6 +284,7 @@
     publishers:
      - phpunit-junit-2
      - archive-log-dir
+     - mw-teardown
     logrotate:
         daysToKeep: 90
 
@@ -354,6 +359,7 @@
          artifacts: 'log/clover.xml.bz2'
      - cloverphp:
          xml-location: 'log/clover.xml'
+     - mw-teardown
     triggers:
      - timed: '0 3,15 * * *'
     wrappers:

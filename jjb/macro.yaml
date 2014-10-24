@@ -422,10 +422,24 @@
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
 
 # Shell script backed macro installing MediaWiki with a SQLite backend
+#
+# One should invoke the publisher mw-teardown to get rid of the sqlite database
+# directory after the build is finished.
 - builder:
     name: mw-install-sqlite
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh"
+
+- publisher:
+    name: mw-teardown
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown.sh"
+         # Options are confusing, setting them both to false ensures the
+         # postbuildscript is ALWAYS run.
+         onsuccess: False
+         onfailure: False
 
 # This macro is OBSOLETE
 #

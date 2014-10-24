@@ -82,6 +82,7 @@
               pattern: 'log/*.xml'
      - archive:
          artifacts: 'log/*.log, log/report.html, log/*.png'
+     - mw-teardown
 
 - job-template:
     name: '{name}-{ext-name}-phpcs-HEAD'
@@ -135,6 +136,7 @@
     publishers:
      - archive-log-dir
      - qunit-cleanup
+     - mw-teardown
 
 - job-template:
     name: '{name}-{ext-name}-qunit-mobile'
@@ -150,6 +152,7 @@
     publishers:
      - archive-log-dir
      - qunit-cleanup
+     - mw-teardown
 
 # VisualEditor MediaWiki extensions has the VisualEditor repository as a
 # submodule under lib/ve and Zuul cloner does not process submodules.
@@ -172,6 +175,7 @@
     publishers:
      - archive-log-dir
      - qunit-cleanup
+     - mw-teardown
 
 
 # Run extension tests via Zuul cloner
@@ -194,6 +198,7 @@
      - archive-log-dir
      - junit:
         results: 'log/junit*.xml'
+     - mw-teardown
 
 
 - job-template:
