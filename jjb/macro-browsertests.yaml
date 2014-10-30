@@ -86,6 +86,7 @@
           if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
             CUCUMBER_PARAMETER="@language_screenshot"
             export LANGUAGE_SCREENSHOT_PATH="$WORKSPACE/log"
+            export KEEP_BROWSER_OPEN=true
           elif [[ $JOB_NAME == browsertests-Core-* ]]; then
             CUCUMBER_PARAMETER="@clean"
           elif [[ ! -z $CUCUMBER_TAGS ]]; then
