@@ -258,6 +258,30 @@
       - beta-irc
 
 - job-template:
+    name: beta-ocg-update-{datacenter}
+    defaults: beta
+    node: deployment-ocg-{datacenter}
+    triggers:
+     - zuul
+
+    builders:
+     - git-ocg-and-deploy-repos
+     - shell: |
+         OCG_TARGET=/srv/deployment/ocg
+         mkdir -p "$OCG_TARGET"
+         # sync workspace and deployment target
+         RSYNC_OPTS="--update --times --recursive --links --delete-after --delay-updates"
+         rsync $RSYNC_OPTS $WORKSPACE/ocg "$OCG_TARGET"
+         rsync $RSYNC_OPTS $WORKSPACE/deploy "$OCG_TARGET"
+         # Configuration file is managed by puppet
+         ln -s /srv/deployment/ocg/localsettings.js "$OCG_TARGET"/ocg/api/localsettings.js
+
+     - shell: |
+         sudo /etc/init.d/ocg restart
+    publishers:
+      - beta-irc
+
+- job-template:
     name: beta-cxserver-update-{datacenter}
     defaults: beta
     node: deployment-cxserver-{datacenter}
@@ -305,6 +329,7 @@
      - beta-code-update-{datacenter}
      - beta-mediawiki-config-update-{datacenter}
      - beta-cxserver-update-{datacenter}
+     - beta-ocg-update-{datacenter}
      - beta-parsoid-update-{datacenter}
      - beta-recompile-math-texvc-{datacenter}
      - beta-scap-{datacenter}
