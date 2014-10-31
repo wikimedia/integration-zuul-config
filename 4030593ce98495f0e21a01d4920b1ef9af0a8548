@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e936f18_ddac1535",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-10-31T20:02:10Z",
+      "side": 1,
+      "message": "If I remember the git plugin behave weirdly when using multiples repositories. It might consider a commit to vendor is more recent and not update the mediawiki/core.\n\nYou can give it a try though, refresh the job and retrigger it manually from https://integration.wikimedia.org/ci/job/mediawiki-core-doxygen-publish/\n\nIf that works, lets land this patch.\n\n\nNext thing is that we should drop the scm: section entirely and instead use the builder \u0027zuul-cloner\u0027 to clone both projects.  Though they would be under  $WORKSPACE/src/ so the  mwcore-docgen.sh would have to be adjusted.",
+      "revId": "4030593ce98495f0e21a01d4920b1ef9af0a8548",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
