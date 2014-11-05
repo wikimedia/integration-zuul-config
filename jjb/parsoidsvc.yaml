@@ -145,7 +145,7 @@
             node roundtrip-test.js --xml "Parkour"
 
 - job-template:
-    name: parsoidsvc-{repository}-parsertests-run-harder
+    name: parsoidsvc-{repository}-parsertests
     node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -228,7 +228,7 @@
         - '{name}-debian-glue'
         - 'parsoidsvc-{repository}-parse-tool-check'
         - 'parsoidsvc-{repository}-roundtrip-test-check'
-        - 'parsoidsvc-{repository}-parsertests-run-harder'
+        - 'parsoidsvc-{repository}-parsertests'
         - 'parsoidsvc-{repository}-npm-0.8'
         - 'parsoidsvc-{repository}-npm-0.10'
         - parsoidsvc-php-parsertests
