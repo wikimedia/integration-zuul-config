@@ -145,29 +145,6 @@
             node roundtrip-test.js --xml "Parkour"
 
 - job-template:
-    name: parsoidsvc-{repository}-parsertests-run-harder
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    wrappers:
-        - timeout:
-            timeout: 10
-            fail: true
-        - timestamps
-        - ansicolor
-    triggers:
-        - zuul
-    builders:
-        - parsoid-set-env:
-            repository: '{repository}'
-        - shell: |
-            # If any of these commands fail, something is wrong
-            set -e
-            . parsoid.env
-            cd "$PARSOID_PATH"/tests
-            node parserTests --wt2html --wt2wt --html2wt --html2html --selser --no-color --quiet --blacklist
-
-- job-template:
     name: parsoidsvc-{repository}-npm-0.10
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
@@ -228,7 +205,6 @@
         - '{name}-debian-glue'
         - 'parsoidsvc-{repository}-parse-tool-check'
         - 'parsoidsvc-{repository}-roundtrip-test-check'
-        - 'parsoidsvc-{repository}-parsertests-run-harder'
         - 'parsoidsvc-{repository}-npm-0.8'
         - 'parsoidsvc-{repository}-npm-0.10'
         - parsoidsvc-php-parsertests
