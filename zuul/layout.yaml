@@ -5057,13 +5057,17 @@ projects:
       - beta-parsoid-update-eqiad
 
   - name: mediawiki/services/parsoid/deploy
+    check:
+      - parsoidsvc-jslint
     test:
+      - parsoidsvc-jslint
       - parsoidsvc-debian-glue
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
       - parsoidsvc-deploy-npm-0.10
     gate-and-submit:
+      - parsoidsvc-jslint
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
