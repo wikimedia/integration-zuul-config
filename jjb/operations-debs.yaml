@@ -180,8 +180,12 @@
 
 - project:
     name: operations-debs-pybal
+    toxenv:
+     - py27
+     - flake8
     jobs:
      - '{name}-debian-glue'
+     - '{name}-tox-{toxenv}'
 
 - project:
     name: 'operations-debs-python-voluptuous'
