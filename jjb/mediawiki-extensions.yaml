@@ -1023,6 +1023,9 @@
 
      - '{name}-{ext-name}-qunit':
         name: mwext
+        ext-name: CentralNotice
+     - '{name}-{ext-name}-qunit':
+        name: mwext
         ext-name: ContentTranslation
         dependencies: 'UniversalLanguageSelector'
      - '{name}-{ext-name}-qunit':
@@ -1165,6 +1168,14 @@
 
 - project:
     name: 'mwext-CentralAuth'
+    jobs:
+     - '{name}-bundle-{bundlecommand}':
+         bundlecommand:
+          - rubocop
+     - '{name}-ruby1.9.3lint'
+
+- project:
+    name: 'mwext-CentralNotice'
     jobs:
      - '{name}-bundle-{bundlecommand}':
          bundlecommand:
