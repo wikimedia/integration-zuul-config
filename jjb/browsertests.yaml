@@ -35,6 +35,28 @@
      - Wikidata-devs: &emails-Wikidata-devs
         adrian.lang@wikimedia.de katie.filbert@wikimedia.de qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de
 
+# CentralNotice
+- project:
+    name: CentralNotice
+    defaults: browsertests
+    folder: tests
+    headless: 'false'
+    mediawiki_user: Selenium_user
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/CentralNotice
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
+        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+
 # CirrusSearch
 - project:
     name: CirrusSearch
