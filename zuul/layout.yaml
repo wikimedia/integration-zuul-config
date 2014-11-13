@@ -1599,7 +1599,7 @@ jobs:
   - name: mediawiki-core-doxygen-publish
     branch: ^(master|REL.*)$ # bug 50325
 
-  - name: mediawiki-vendor-integration
+  - name: mediawiki-phpunit
     queue-name: mediawiki
 
   - name: mediawiki-core-qunit
@@ -1881,7 +1881,7 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-phplint:
-        - mediawiki-vendor-integration
+        - mediawiki-phpunit
         - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
@@ -1894,7 +1894,7 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-phplint:
-        - mediawiki-vendor-integration
+        - mediawiki-phpunit
         - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
@@ -1925,9 +1925,9 @@ projects:
     test:
       - php-composer-validate
       - mediawiki-core-qunit
-      - mediawiki-vendor-integration
+      - mediawiki-phpunit
     gate-and-submit:
-      - mediawiki-vendor-integration
+      - mediawiki-phpunit
       - mediawiki-core-qunit
       - php-composer-validate
     experimental:
