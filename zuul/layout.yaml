@@ -16,6 +16,8 @@
 # - http://ci.openstack.org/zuul/zuul.html#layout-yaml
 # - http://ci.openstack.org/zuul/zuul.html#configuration
 
+includes:
+  - python-file: '/etc/zuul/wikimedia/zuul/doc_functions.py'
 
 pipelines:
   # Terminology:
@@ -326,6 +328,9 @@ jobs:
   # beginning of the filename. '.js$' will only match '.js' not 'foo.js'.
   #
   # See: http://docs.python.org/2/library/re.html#search-vs-match
+
+  - name: ^.*-publish$
+    parameter-function: set_doc_subpath
 
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
