@@ -72,6 +72,11 @@
      - postbuildscript:
          builders:
           - shell: |
+              if [ -z $ZUUL_UUID ]; then
+                  # Avoid deleting all pending doc when ZUUL_UUID is not set
+                  echo "\$ZUUL_UUID is not set, skipping removal from publishing instance."
+                  exit 0
+              fi
               echo "Removing directory from publishing instance..."
               rm -rf "$ZUUL_UUID"
               # The trick here is that the local side of the rsync does not
