@@ -216,6 +216,17 @@
         npm install
         npm test
 
+- builder:
+    name: npm-travis
+    builders:
+    - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        npm --version
+        npm install
+        echo Configuring gerrit remote as the npmjenkins user
+        . /srv/deployment/integration/slave-scripts/bin/travis-set-env.sh "{project}"
+        npm run travis
+
 # Assert node version matches a basic regular expressions
 #
 # Parameter:

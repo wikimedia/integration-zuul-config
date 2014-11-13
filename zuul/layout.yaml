@@ -331,6 +331,10 @@ jobs:
   - name: analytics-kraken
     voting: false
 
+  # Experimental travis integration
+  - name: ^.*-npmtravis$
+    voting: false
+
   # Experimental building of Debian packages
   # based on jenkins-debian-glue
   - name: ^.*-debian-glue$
@@ -2880,10 +2884,12 @@ projects:
     test:
       - mwext-Collection-OfflineContentGenerator-bundler-jslint
       - mwext-Collection-OfflineContentGenerator-bundler-npm
+      - mwext-Collection-OfflineContentGenerator-bundler-npmtravis
     gate-and-submit:
       - mediawiki-gate
       - mwext-Collection-OfflineContentGenerator-bundler-jslint
       - mwext-Collection-OfflineContentGenerator-bundler-npm
+      - mwext-Collection-OfflineContentGenerator-bundler-npmtravis
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
     check:
