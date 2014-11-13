@@ -54,6 +54,16 @@
      - npm
 
 - job-template:
+    name: '{name}-npmtravis'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - npm-travis
+
+- job-template:
     name: '{name}-puppetlint-lenient'
     node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
