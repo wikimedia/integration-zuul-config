@@ -20,6 +20,6 @@
      - zuul
     builders:
      - shell: |
-         /srv/deployment/integration/composer/vendor/bin/composer --ansi validate
+         if test -f "composer.json"; then /srv/deployment/integration/composer/vendor/bin/composer --ansi validate;fi
     logrotate:
         daysToKeep: 15
