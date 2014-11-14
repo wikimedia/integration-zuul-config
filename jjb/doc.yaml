@@ -62,7 +62,8 @@
             echo "Can not rsync the documentation, aborting."
             exit 1
          fi
-         rsync --recursive --delete-after "rsync://10.68.16.255/doc/$ZUUL_UUID"/ "/srv/org/wikimedia/doc/$WMF_CI_DOC_DEST"
+         DEST="/srv/org/wikimedia/doc/$WMF_CI_DOC_DEST"
+         rsync --rsync-path="mkdir -p \"$DEST\" && rsync"  --recursive --delete-after "rsync://10.68.16.255/doc/$ZUUL_UUID"/ "$DEST"
      - shell: |
          set +x
          echo
