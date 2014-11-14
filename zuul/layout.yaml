@@ -1,0 +1,126 @@
+# vim: set ts=2 sw=2 et ai foldmethod=indent:
+#
+# This is the Zuul configuration file for the Wikimedia Foundation.
+#
+# Zuul configuration is organised in three main sections:
+#
+# - pipelines: Abstracts incoming Gerrit events and what to report back in Gerrit.
+#
+# - jobs: Override the pipeline configuration on a per job basis.
+#    This is how we specificy behaviour for individual projects and jobs.
+#
+# - projects: For each project we specify what jobs to run, in what order jobs
+#    should depend on each other and for which pipelines the jobs should run.
+#
+# See also upstream documentation:
+# - http://ci.openstack.org/zuul/zuul.html#layout-yaml
+# - http://ci.openstack.org/zuul/zuul.html#configuration
+
+
+pipelines:
+  - name: test
+    description: >
+      Jobs restricted to trusted users. Will vote +2.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+    success:
+      gerrit:
+        verified: 2
+    failure:
+      gerrit:
+        verified: -1
+
+  # Actual gate (report/vote in Gerrit)
+  # Will auto-submit change on success!
+  #
+  # WARNING: Also update the "gate" pipeline when changing this one.
+  #
+  - name: gate-and-submit
+    description: >
+      Patchsets that have been reviewed. Will be merged by Jenkins if tests pass.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: comment-added
+          approval:
+            - code-review: 2
+    start:
+      gerrit:
+        verified: 0
+    success:
+      gerrit:
+        verified: 2
+        # Let Zuul merge the change \O/
+        submit: true
+    failure:
+      gerrit:
+        verified: -1
+
+  - name: postmerge
+    description: Jobs triggered after a change has been merged.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: change-merged
+
+  # Pipeline reacting whenever a reference is updated
+  - name: post
+    description: Whenever a reference is updated.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+       - event: ref-updated
+         ref: ^(?!(devnull|refs/.*)).*$
+
+  # Pipeline for tags (either a new one or a removal)
+  - name: publish
+    description: Whenever tags are published.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+       - event: ref-updated
+         ref: ^refs/tags/.*$
+
+# Make all jobs voting
+jobs:
+  - name: '^.*$'
+    voting: true
+
+project-templates:
+    - name: project-template
+      test:
+         - '{prefix}-lint'
+         - 'mediawiki-core-lint'
+         - integration-with-mediawiki:
+           -  integration-many-mw-exts
+      gate-and-submit:
+         - '{prefix}-lint'
+         - 'mediawiki-core-lint'
+         - integration-with-mediawiki:
+           -  integration-many-mw-exts
+
+# Register the Gerrit project name, apply them pipelines that in turn trigger
+# a set of jobs.
+projects:
+
+  - name: mediawiki/core
+    test:
+       - 'mediawiki-core-lint'
+       -  integration-many-mw-exts
+    gate-and-submit:
+       - 'mediawiki-core-lint'
+       -  integration-many-mw-exts
+
+  - name: mediawiki/extensions/FirstExtension
+    template:
+        - name: project-template
+          prefix: mwext-FirstExtension
+
+  - name: mediawiki/extensions/SecondExtension
+    template:
+        - name: project-template
+          prefix: mwext-SecondExtension
