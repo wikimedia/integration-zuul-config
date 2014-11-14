@@ -1720,17 +1720,20 @@ project-templates:
     check:
      - 'mwext-{name}-jslint'
      - 'mwext-{name}-lint'
+     - php-composer-validate
     test:
      - 'mwext-{name}-jslint'
      - 'mwext-{name}-lint':
        # Extensions tests with core+vendor
        - 'mwext-{name}-testextension'
+     - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - 'mwext-{name}-jslint'
      - 'mwext-{name}-lint':
        # Extensions tests with core+vendor
        - 'mwext-{name}-testextension'
+     - php-composer-validate
 
     experimental:
       - mediawiki-core-extensions-integration
@@ -1769,17 +1772,21 @@ project-templates:
     check-only:
      - 'mwext-{name}-jslint'
      - 'mwext-{name}-lint'
+     - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - 'mwext-{name}-jslint'
      - 'mwext-{name}-lint'
+     - php-composer-validate
 
   - name: mw-skin
     check-voter:
      - 'mw-skins-{name}-phplint'
+     - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - 'mw-skins-{name}-phplint'
+     - php-composer-validate
 
   - name: python
     check-voter:
@@ -2752,12 +2759,14 @@ projects:
       - mwext-BlameMaps-lint
       - mwext-BlameMaps-pep8
       - mwext-BlameMaps-pyflakes
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-BlameMaps-jslint
       - mwext-BlameMaps-lint
       - mwext-BlameMaps-pep8
       - mwext-BlameMaps-pyflakes
+      - php-composer-validate
 
   - name: mediawiki/extensions/BlogPage
     template:
@@ -2964,6 +2973,7 @@ projects:
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
@@ -2973,6 +2983,7 @@ projects:
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
+      - php-composer-validate
 
   - name: mediawiki/extensions/ContributionScores
     template:
@@ -3083,10 +3094,12 @@ projects:
     check-only:
       - mwext-DumpHTML-jslint
       - mwext-DumpHTML-lint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-DumpHTML-jslint
       - mwext-DumpHTML-lint
+      - php-composer-validate
 
   - name: mediawiki/extensions/E3Experiments
     template:
@@ -3299,11 +3312,13 @@ projects:
       - mwext-Interwiki-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-Interwiki-jslint
       - mwext-Interwiki-lint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-Interwiki-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-Interwiki-jslint
       - mwext-Interwiki-lint
+      - php-composer-validate
 
   - name: mediawiki/extensions/intersection
     template:
@@ -3420,15 +3435,18 @@ projects:
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
       - mwext-MultimediaViewer-doc-test
+      - php-composer-validate
     test:
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
       - mwext-MultimediaViewer-doc-test
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
       - mwext-MultimediaViewer-doc-test
+      - php-composer-validate
     postmerge:
       - mwext-MultimediaViewer-doc-publish
 
@@ -3496,10 +3514,12 @@ projects:
     check-only:
       - mwext-Offline-jslint
       - mwext-Offline-lint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-Offline-jslint
       - mwext-Offline-lint
+      - php-composer-validate
 
   - name: mediawiki/extensions/OggHandler
     template:
@@ -3520,10 +3540,12 @@ projects:
     check-only:
       - mwext-OpenStackManager-jslint
       - mwext-OpenStackManager-lint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-OpenStackManager-jslint
       - mwext-OpenStackManager-lint
+      - php-composer-validate
 
   - name: mediawiki/extensions/PageBlock
     template:
@@ -5119,11 +5141,14 @@ projects:
       - name: extension-phpcs
     check:
       - mwext-Parsoid-jslint
+      - php-composer-validate
     test:
       - mwext-Parsoid-jslint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-Parsoid-jslint
+      - php-composer-validate
 
   - name: mediawiki/extensions/PdfHandler
     template:
@@ -5158,15 +5183,18 @@ projects:
     check:
       - mwext-PoolCounter-jslint
       - mwext-PoolCounter-lint
+      - php-composer-validate
     test:
       - mwext-PoolCounter-jslint
       - mwext-PoolCounter-lint
       - mwext-PoolCounter-build
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-PoolCounter-jslint
       - mwext-PoolCounter-lint
       - mwext-PoolCounter-build
+      - php-composer-validate
 
   - name: mediawiki/extensions/Popups
     template:
@@ -5240,10 +5268,12 @@ projects:
     check-only:
      - mwext-SemanticBundle-jslint
      - mwext-SemanticBundle-lint
+     - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - mwext-SemanticBundle-jslint
      - mwext-SemanticBundle-lint
+     - php-composer-validate
 
   - name: mediawiki/extensions/SemanticCompoundQueries
     template:
@@ -5426,11 +5456,13 @@ projects:
       - mwext-SyntaxHighlight_GeSHi-jslint
       - mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
       - mwext-SyntaxHighlight_GeSHi-lint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-SyntaxHighlight_GeSHi-jslint
       - mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
       - mwext-SyntaxHighlight_GeSHi-lint
+      - php-composer-validate
 
   - name: mediawiki/extensions/TemplateData
     template:
@@ -5454,10 +5486,12 @@ projects:
     check-only:
      - mwext-timeline-lint
      - mwext-timeline-perllint
+     - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - mwext-timeline-lint
      - mwext-timeline-perllint
+     - php-composer-validate
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
@@ -5590,11 +5624,13 @@ projects:
       - mwext-Vector-jslint
       - mwext-Vector-phpcs-HEAD
       - mwext-Vector-lint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-Vector-jslint
       - mwext-Vector-phpcs-HEAD
       - mwext-Vector-lint
+      - php-composer-validate
 
   - name: mediawiki/extensions/VectorBeta
     template:
@@ -5612,16 +5648,19 @@ projects:
     check:
       - mwext-VisualEditor-jslint
       - mwext-VisualEditor-lint
+      - php-composer-validate
     test:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
       - mwext-VisualEditor-doc-test
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
       - mwext-VisualEditor-doc-test
       - experiment-gating-dependencies
+      - php-composer-validate
     postmerge:
       - mwext-VisualEditor-doc-publish
       - mwext-VisualEditor-sync-gerrit
@@ -5635,11 +5674,13 @@ projects:
       - mwext-WebFonts-jslint
       - mwext-WebFonts-phpcs-HEAD
       - mwext-WebFonts-lint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-WebFonts-jslint
       - mwext-WebFonts-phpcs-HEAD
       - mwext-WebFonts-lint
+      - php-composer-validate
 
   - name: mediawiki/extensions/WebPlatformAuth
     template:
@@ -5650,11 +5691,13 @@ projects:
       - mwext-WikiEditor-jslint
       - mwext-WikiEditor-phpcs-HEAD
       - mwext-WikiEditor-lint
+      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-WikiEditor-jslint
       - mwext-WikiEditor-phpcs-HEAD
       - mwext-WikiEditor-lint
+      - php-composer-validate
 
   - name: mediawiki/extensions/Wikibase
     check:
