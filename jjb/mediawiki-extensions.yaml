@@ -124,7 +124,7 @@
 
 - job-template:
     name: '{name}-{ext-name}-qunit'
-    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
+    node: contintLabsSlave && UbuntuPrecise  # labs instances not ready yet
     concurrent: true
     triggers:
      - zuul
@@ -158,7 +158,7 @@
 # submodule under lib/ve and Zuul cloner does not process submodules.
 - job-template:
     name: 'mwext-VisualEditor-qunit'
-    node: productionSlaves && UbuntuPrecise  # labs instances not ready yet
+    node: contintLabsSlave && UbuntuPrecise  # labs instances not ready yet
     concurrent: true
     triggers:
      - zuul
