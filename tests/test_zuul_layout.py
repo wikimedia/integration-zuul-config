@@ -75,6 +75,19 @@ class TestZuulLayout(unittest.TestCase):
         """Returns name of projects for a given pipeline"""
         return [p.name for p in self.getPipeline(pipeline_name).getProjects()]
 
+    def getProjectsNames(self, search=None):
+        """Returns names of all defined projects
+
+        search: a regular expression to match project names against (using
+                re.search). Default: None, do not filter.
+        """
+        projects = set()
+        for pipeline in self.getPipelines():
+            projects |= set(
+                [p for p in self.getPipelineProjectsNames(pipeline.name)
+                 if search is None or re.search(search, p)])
+        return sorted(projects)
+
     def getProjectDef(self, project):
         """Returns pipelines and their jobs for a given project"""
         ret = {}
@@ -92,20 +105,15 @@ class TestZuulLayout(unittest.TestCase):
 
     def test_mw_repos_have_composer_validate_job(self):
         mw_repos = (
-            'mediawiki/core$',
-            'mediawiki/extensions/\w+$',
-            'mediawiki/skins/',
-            'mediawiki/vendor$',
+            '^mediawiki/core$',
+            '^mediawiki/extensions/\w+$',
+            '^mediawiki/skins/',
+            '^mediawiki/vendor$',
         )
         re_mw = '(' + '|'.join(mw_repos) + ')'
+        mw_projects = self.getProjectsNames(search=re_mw)
 
-        # Mediawiki projects defined in any pipeline
-        mw_projects = set()
-        for pipeline in self.getPipelines():
-            mw_projects |= set(
-                [p for p in self.getPipelineProjectsNames(pipeline.name)
-                 if re.match(re_mw, p)])
-        mw_projects = sorted(mw_projects)
+        self.assertIn('mediawiki/core', mw_projects)
 
         for mw_project in mw_projects:
             project_def = self.getProjectDef(mw_project)
