@@ -72,24 +72,22 @@
 
 - job:
     name: 'mediawiki-core-jsduck-publish'
-    node: gallium
-    defaults: use-zuul
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: false
     logrotate:
         daysToKeep: 15
-    scm:
-     - git-mwcore
     triggers:
      - zuul
     builders:
+     - assert-env-doc_subpath
+     - zuul-cloner:
+         projects: "mediawiki/core"
      - shell: |
-        $WORKSPACE/maintenance/mwjsduck-gen --version "$ZUUL_BRANCH"
-        rsync --recursive --delete-after --force $WORKSPACE/resources/ "$WORKSPACE/docs/js/modules/"
-     - documentation-sync-subdir:
-        src: '$WORKSPACE/docs/js'
-        project: 'mediawiki-core'
-        version: '$ZUUL_BRANCH'
-        subdir: 'js/'
+        src/maintenance/mwjsduck-gen --version "$DOC_SUBPATH"
+        rsync --recursive --delete-after --force src/resources/ src/docs/js/modules/
+     - push-doc:
+         docsrc: 'src/docs/js'
+         docdest: 'mediawiki-core/$DOC_SUBPATH/js'
 
 - job:
     name: 'mediawiki-core-doxygen-publish'
