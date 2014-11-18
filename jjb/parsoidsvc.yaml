@@ -95,7 +95,7 @@
 
 - job-template:
     name: parsoidsvc-{repository}-parse-tool-check
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
     wrappers:
@@ -121,7 +121,7 @@
 
 - job-template:
     name: parsoidsvc-{repository}-roundtrip-test-check
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
     wrappers:
@@ -199,7 +199,7 @@
 # usual use-remote-zuul-no-submodules defaults for the {name}-jslint job
 - job-template:
     name: parsoidsvc-jslint
-    node: hasSlaveScripts && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
