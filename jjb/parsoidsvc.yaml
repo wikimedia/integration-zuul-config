@@ -195,12 +195,12 @@
         npm test
 
 # slightly customized version of jshint job, since we have a package.json
-# which is a symlink, and so fails jsonlint under the usual
-# use-remote-zuul-no-submodules defaults for the {name}-jslint job
+# which is a symlink inside a submodule, and so fails jsonlint under the
+# usual use-remote-zuul-no-submodules defaults for the {name}-jslint job
 - job-template:
     name: parsoidsvc-jslint
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remoteonly-zuul
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
       - zuul
