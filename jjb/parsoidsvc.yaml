@@ -194,13 +194,15 @@
         cd "$PARSOID_PATH"
         npm test
 
-# slightly customized version of jshint job, since we have a package.json
-# which is a symlink, and so fails jsonlint under the usual
-# use-remote-zuul-no-submodules defaults for the {name}-jslint job
+# run jshint on the deploy repo contents --- we're primarily trying to
+# target the parsoid configuration file contents here.  We can't run
+# the standard {name}-jslint job, because it doesn't check out
+# submodules and so sees package.json as a broken symlink when it
+# invokes json-lint.
 - job-template:
-    name: parsoidsvc-jslint
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remoteonly-zuul
+    name: parsoidsvc-deploy-jshint
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
       - zuul
@@ -214,10 +216,11 @@
      - source  # mediawiki/services/parsoid
      - deploy  # mediawiki/services/parsoid/deploy
     jobs:
-        - 'parsoidsvc-jslint'
+        - '{name}-jslint'
         - '{name}-debian-glue'
         - 'parsoidsvc-{repository}-parse-tool-check'
         - 'parsoidsvc-{repository}-roundtrip-test-check'
         - 'parsoidsvc-{repository}-npm-0.8'
         - 'parsoidsvc-{repository}-npm-0.10'
+        - parsoidsvc-deploy-jshint
         - parsoidsvc-php-parsertests
