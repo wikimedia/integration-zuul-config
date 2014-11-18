@@ -98,11 +98,7 @@
     triggers:
      - zuul
     builders:
-     - shell: |
-         if [ -z $DOC_SUBPATH ]; then
-             echo "\$DOC_SUBPATH is missing. Can not publish."
-             exit 1
-         fi
+     - assert-env-doc_subpath
      - zuul-cloner:
          projects: >
              mediawiki/core
