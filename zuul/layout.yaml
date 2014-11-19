@@ -3414,10 +3414,24 @@ projects:
 
   - name: mediawiki/extensions/MobileFrontend
     template:
-      - name: extension-unittests
       - name: extension-qunit-and-mobile
       - name: extension-rubylint
       - name: extension-phpcs
+    check:
+      - mwext-MobileFrontend-jslint
+      - mwext-MobileFrontend-lint
+      - php-composer-validate
+    test:
+      - mwext-MobileFrontend-lint
+      - mwext-MobileFrontend-testextension
+      - mwext-MobileFrontend-npm
+      - php-composer-validate
+    gate-and-submit:
+      - mediawiki-gate
+      - mwext-MobileFrontend-lint
+      - mwext-MobileFrontend-testextension
+      - mwext-MobileFrontend-npm
+      - php-composer-validate
 
   - name: mediawiki/extensions/MobileApp
     template:
