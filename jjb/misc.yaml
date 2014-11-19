@@ -108,3 +108,7 @@
      - '{name}-phplint'
      - '{name}-phpunit'
      - php-composer-validate
+     - '{name}-composer-{composer_command}':
+         composer_command: 'phpunit'
+         composer_command_args: '--log-junit log/phpunit-junit.xml'
+         # FIXME: need to pass publisher 'phpunit-junit'
