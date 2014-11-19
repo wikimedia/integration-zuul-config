@@ -95,3 +95,38 @@
 
     logrotate:
         daysToKeep: 15
+
+# Generate doxygen documentation to doc.wikimedia.org
+#
+# Parameters:
+#
+# docsrc: dir where the doc has been generated to, relative to the source root.
+#         For HTML documentation, Doxygen uses OUTPUT_DIRECTORY/HTML_OUTPUT
+#         which would default to 'html'.  Check the project Doxyfile parameters
+#         to get the exact path.
+# docdest: directory under doc.wikimedia.org/. MUST contains the string
+#          '/$DOC_SUBPATH/' to namespace the published documentations by
+#          branches and tags.
+- job-template:
+    name: '{name}-doxygen-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: false
+    triggers:
+        - zuul
+    builders:
+        - assert-env-doc_subpath
+        - shell: |
+            if [[ '{docdest}' != *'/$DOC_SUBPATH/'*]]; then
+                echo "The docdest parameter MUST contains '/\$DOC_SUBPATH/ to namespace docs"
+                echo "per branches and tags. Given: '{docdest}'."
+                exit 1
+            fi
+        - zuul-cloner:
+            projects: "$ZUUL_PROJECT"
+        - shell: |
+            cd "src/$ZUUL_PROJECT"
+            doxygen -v
+            doxygen
+        - push-doc:
+            docsrc: 'src/$ZUUL_PROJECT/{docsrc}'
+            docdest: '{docdest}'
