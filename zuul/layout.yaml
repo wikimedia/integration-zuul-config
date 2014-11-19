@@ -1743,7 +1743,6 @@ project-templates:
        # Extensions tests with core+vendor
        - 'mwext-{name}-testextension'
      - php-composer-validate
-
     experimental:
       - mediawiki-core-extensions-integration
 
@@ -3194,11 +3193,25 @@ projects:
   - name: mediawiki/extensions/Flow
     template:
      - name: extension-rubylint
-     - name: extension-unittests
+    check:
+     - mwext-Flow-jslint
+     - mwext-Flow-lint
+     - php-composer-validate
     test:
+     - mwext-Flow-npm
      - mwext-Flow-qunit
+     - mwext-Flow-lint:
+       - mwext-Flow-testextension
+     - php-composer-validate
     gate-and-submit:
+     - mediawiki-gate
+     - mwext-Flow-npm
      - mwext-Flow-qunit
+     - mwext-Flow-lint:
+       - mwext-Flow-testextension
+     - php-composer-validate
+    experimental:
+      - mediawiki-core-extensions-integration
 
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
