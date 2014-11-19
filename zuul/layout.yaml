@@ -1747,6 +1747,27 @@ project-templates:
       - mediawiki-core-extensions-integration
 
   # Template for MediaWiki extensions.
+  # Like extension-unittests but it doesn't run jslint
+  - name: extension-tests
+    check:
+     - 'mwext-{name}-lint'
+     - php-composer-validate
+    test:
+     - 'mwext-{name}-lint':
+       # Extensions tests with core+vendor
+       - 'mwext-{name}-testextension'
+     - php-composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - 'mwext-{name}-lint':
+       # Extensions tests with core+vendor
+       - 'mwext-{name}-testextension'
+     - php-composer-validate
+
+    experimental:
+      - mediawiki-core-extensions-integration
+
+  # Template for MediaWiki extensions.
   # Triggers qunit jobs
   - name: extension-qunit
     test:
@@ -3414,10 +3435,14 @@ projects:
 
   - name: mediawiki/extensions/MobileFrontend
     template:
-      - name: extension-unittests
+      - name: extension-tests
       - name: extension-qunit-and-mobile
       - name: extension-rubylint
       - name: extension-phpcs
+    test:
+     - mwext-MobileFrontend-npm
+    gate-and-submit:
+     - mwext-MobileFrontend-npm
 
   - name: mediawiki/extensions/MobileApp
     template:
