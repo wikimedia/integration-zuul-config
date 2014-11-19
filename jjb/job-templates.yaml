@@ -58,8 +58,15 @@
 # Parameters:
 #
 # composer_command: the command to pass to composer, ex: 'phpunit'
+#
 # composer_command_args: extra arguments to pass to the command,
 # will be passed after '--'. Default is '', set in the JJB 'global' default.
+#
+# composer_publishers: publishers to use with this job. If you need to pass
+# several, use a tuple object:
+#   !!python/tuple ['phpunit-junit', # 'archive-log-dir']
+# Default is: '!!python/tuple []', no publisher applied, set in the JJB
+# 'global' default.
 #
 # Notes:
 #
@@ -80,6 +87,7 @@
 #       - '{name}-composer-{composer_command}'
 #          composer_command: phpunit
 #          composer_command_args: '--log-junit log/phpunit-junit.xml'
+#          composer_publishers: !!python/tuple ['phpunit-junit', 'archive-log-dir']
 #
 - job-template:
     name: '{name}-composer-{composer_command}'
@@ -96,6 +104,9 @@
 
          composer install --working-dir "$WORKSPACE/src/$ZUUL_PROJECT" --prefer-dist --profile
          composer {composer_command} --working-dir "$WORKSPACE/src/$ZUUL_PROJECT" -- {composer_command_args}
+
+    # see http://ci.openstack.org/jenkins-job-builder/definition.html#variable-references
+    publishers: '{obj:composer_publishers}'
 
 - job-template:
     name: '{name}-puppetlint-lenient'

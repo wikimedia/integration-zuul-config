@@ -111,4 +111,4 @@
      - '{name}-composer-{composer_command}':
          composer_command: 'phpunit'
          composer_command_args: '--log-junit log/phpunit-junit.xml'
-         # FIXME: need to pass publisher 'phpunit-junit'
+         composer_publishers: !!python/tuple ['phpunit-junit', 'archive-log-dir']

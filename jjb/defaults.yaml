@@ -7,6 +7,13 @@
 
     # Default variables passed to jobs
     composer_command_args: ""
+    # Use a tuple to prevent JJB from expanding each element of a list which
+    # would realize a job per element when we want to pass the sequence of
+    # elements.
+    # http://ci.openstack.org/jenkins-job-builder/definition.html#variable-references
+    #
+    # See job-template '{name}-composer-{composer_command}' for usage.
+    composer_publishers: !!python/tuple []
 
     wrappers:
       - timeout:
