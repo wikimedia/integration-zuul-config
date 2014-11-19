@@ -3194,11 +3194,23 @@ projects:
   - name: mediawiki/extensions/Flow
     template:
      - name: extension-rubylint
-     - name: extension-unittests
+    check:
+     - 'mwext-{name}-jslint'
+     - 'mwext-{name}-lint'
+     - php-composer-validate
     test:
+     - mwext-Flow-npm
      - mwext-Flow-qunit
+     - 'mwext-{name}-lint':
+       - 'mwext-{name}-testextension'
+     - php-composer-validate
     gate-and-submit:
+     - mediawiki-gate
+     - mwext-Flow-npm
      - mwext-Flow-qunit
+     - 'mwext-{name}-lint':
+       - 'mwext-{name}-testextension'
+     - php-composer-validate
 
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
