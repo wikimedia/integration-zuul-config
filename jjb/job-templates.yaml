@@ -53,6 +53,50 @@
     builders:
      - npm
 
+# Runs composer install then composer {composer_command}
+#
+# Parameters:
+#
+# composer_command: the command to pass to composer, ex: 'phpunit'
+# composer_command_args: extra arguments to pass to the command,
+# will be passed after '--'. Default is '', set in the JJB 'global' default.
+#
+# Notes:
+#
+# `composer install` is being passed `--prefer-dist` to download cacheable
+# tarballs when possible.
+#
+# Both composer commands have `--working-dir` since Zuul cloner clones under
+# src/$ZUUL_PROJECT. `composer_command_args` can thus reference paths
+# relatively to the src/$ZUUL_PROJECT directory.
+#
+# Example:
+#
+# project:
+#   name: myproject
+#   jobs:
+#       - '{name}-composer-{composer_command}':
+#          composer_command: test
+#       - '{name}-composer-{composer_command}'
+#          composer_command: phpunit
+#          composer_command_args: '--log-junit log/phpunit-junit.xml'
+#
+- job-template:
+    name: '{name}-composer-{composer_command}'
+    node: contintLabsSlaves && UbuntuPrecise  # Precise == PHP 5.3.x
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+     - zuul-cloner:
+         projects: "$ZUUL_PROJECT"
+     - shell: |
+         rm -fR build log
+         mkdir -p build log
+
+         composer install --working-dir "$WORKSPACE/src/$ZUUL_PROJECT" --prefer-dist --profile
+         composer {composer_command} --working-dir "$WORKSPACE/src/$ZUUL_PROJECT" -- {composer_command_args}
+
 - job-template:
     name: '{name}-puppetlint-lenient'
     node: contintLabsSlave && UbuntuPrecise
