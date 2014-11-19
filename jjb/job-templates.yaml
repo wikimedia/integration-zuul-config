@@ -53,6 +53,29 @@
     builders:
      - npm
 
+# Run composer install and composer test
+#
+# Notes:
+#
+# `composer install` is being passed `--prefer-dist` to download cacheable
+# tarballs when possible.
+#
+# Both composer commands have `--working-dir` since Zuul cloner clones under
+# src/$ZUUL_PROJECT.
+#
+- job-template:
+    name: '{name}-composer'
+    node: contintLabsSlaves && UbuntuPrecise
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         composer validate
+         composer install --prefer-dist --profile
+         composer test
+
 - job-template:
     name: '{name}-puppetlint-lenient'
     node: contintLabsSlave && UbuntuPrecise
