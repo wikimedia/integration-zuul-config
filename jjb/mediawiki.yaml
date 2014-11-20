@@ -56,6 +56,28 @@
      - qunit-cleanup
      - mw-teardown
 
+
+- job-template:
+    name: 'mediawiki-core-qunit-labsSlave
+    node: contintLabsSlave && UbuntuPrecise
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    triggers:
+     - zuul
+
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     - qunit
+    publishers:
+     - qunit-cleanup
+     - mw-teardown
+
 - job-template:
     name: 'mediawiki-core-jsduck'
     defaults: use-zuul
