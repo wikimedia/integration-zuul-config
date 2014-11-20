@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e936f18_eb8df47f",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 3417,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-20T16:22:52Z",
+      "side": 0,
+      "message": "The extension-unittests is a template that injects jobs in different pipelines:\n\nhttps://git.wikimedia.org/blob/integration%2Fconfig/a9c3f3767d4785b86ebd437a49ae3423c2f14fec/zuul%2Flayout.yaml#L1727\n\nIt includes the jslint job which we want to remove per Timo comment, but the template also include a bunch of other jobs we want to trigger:\n\n  php-composer-validate\n  mwext-MobileFrontend-testextension (phpunit tests)\n  mwext-MobileFrontend-lint (php syntax)\n  mediawiki-gate (which is required)\n\n\nSince more repositories are including jshint directly in npm, I guess we want to extract mwext-{name}-jslint to another template and only apply it on repositories that matter.\n\n\nTimo, I guess that could be done in another change so we get the npm job applied on MobileFrontend?  I think we can afford running jshint twice while it is being sorted out.",
+      "revId": "a9c3f3767d4785b86ebd437a49ae3423c2f14fec",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
