@@ -168,6 +168,8 @@
         . parsoid.env
         cd "$PARSOID_PATH"
         npm test
+    publishers:
+     - archive-npm-debug-log
 
 - job-template:
     name: parsoidsvc-{repository}-npm-0.8
@@ -193,6 +195,8 @@
         . parsoid.env
         cd "$PARSOID_PATH"
         npm test
+    publishers:
+     - archive-npm-debug-log
 
 # slightly customized version of jshint job, since we have a package.json
 # which is a symlink inside a submodule, and so fails jsonlint under the

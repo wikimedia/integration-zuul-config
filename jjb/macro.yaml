@@ -671,6 +671,13 @@
      - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
 
 - publisher:
+    name: archive-npm-debug-log
+    publishers:
+     - archive:
+         artifacts: 'npm-debug.log'
+         allow-empty: 'true'
+
+- publisher:
     name: archive-log-dir
     publishers:
      - archive:
