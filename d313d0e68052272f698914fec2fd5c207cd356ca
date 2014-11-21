@@ -88,6 +88,24 @@
     },
     {
       "key": {
+        "uuid": "6e936f18_ac45b948",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-21T21:01:59Z",
+      "side": 1,
+      "message": "I patched JJB a few months ago to pass key/values as variables to job templates:\n\nhttp://ci.openstack.org/jenkins-job-builder/definition.html#defaults\nhttps://review.openstack.org/#/c/100020/\n\nThat is a bit of a hack, but let us define default value for variables. That will indeed let us remove the templates such as:\n\n builders\n     - shell: cd {dir}\n\nWe could define  dir: \u0027.\u0027",
+      "parentUuid": "6e936f18_0f1075f6",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e936f18_4c79abc1",
         "filename": "jjb/job-templates.yaml",
         "patchSetId": 1
@@ -99,6 +117,41 @@
       "writtenOn": "2014-11-19T17:13:22Z",
       "side": 1,
       "message": "Rogue colon at the end of this line?",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e936f18_6cd7b150",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-21T21:01:59Z",
+      "side": 1,
+      "message": "The colon is needed, but is missing in the next definition...",
+      "parentUuid": "6e936f18_4c79abc1",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e936f18_8cda3d76",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-21T21:01:59Z",
+      "side": 1,
+      "message": "... there the line is missing a trailing colon.",
       "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -122,6 +175,24 @@
     },
     {
       "key": {
+        "uuid": "6e936f18_ccc5a55f",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-21T21:01:59Z",
+      "side": 1,
+      "message": "The test command is too generic and would not let us define Jenkins publishers that matches the commands being executed.\n\nThe next patch pass to the phpunit command name extra args to generate the a JUnit output:\n\n https://gerrit.wikimedia.org/r/#/c/174411/2/jjb/misc.yaml,unified\n\nAnd the patch after ( https://gerrit.wikimedia.org/r/#/c/174412/ ) uses a dirty hack to pass JJB publishers macros to the job.  Ie use the Xunit plugin to interpret the output of the junit-phpunit.xml\n\n\nThe reason I did that is that if you define a single \u0027test\u0027 run script that runs several commands and invoke it with:\n\n   composer test -- --some-opt\n\n--some-opt is passed to EACH command.  Which is not going to play nice.\n\nBy having the job named phpunit, it makes it clear we expect phpunit to be run.",
+      "parentUuid": "6e936f18_cf604da2",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e936f18_8f3fa581",
         "filename": "jjb/job-templates.yaml",
         "patchSetId": 1
@@ -139,6 +210,24 @@
     },
     {
       "key": {
+        "uuid": "6e936f18_cc4a8527",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-21T21:01:59Z",
+      "side": 1,
+      "message": "Per POSIX -R is the recursive option, -r is the equivalent http://pubs.opengroup.org/onlinepubs/009604499/utilities/rm.html \n\nOn BSD systems the man page states -R and I learned to use -R :D",
+      "parentUuid": "6e936f18_8f3fa581",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e936f18_2f4a112b",
         "filename": "jjb/job-templates.yaml",
         "patchSetId": 1
@@ -150,6 +239,41 @@
       "writtenOn": "2014-11-19T17:47:06Z",
       "side": 1,
       "message": "-p should not be needed. They are not nested and should not exist at this point. Prefer strict.",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e936f18_4c0d15ea",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-21T21:01:59Z",
+      "side": 1,
+      "message": "I use -p out of habit, since both directories are force removed just above, can be dropped indeed.",
+      "parentUuid": "6e936f18_2f4a112b",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e936f18_0c9dcd5a",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-21T21:01:59Z",
+      "side": 1,
+      "message": "Self note, per Timo, insert there:\n\n composer validate\n\nThat will let us drop the php-composer-validate job from repositories adoption this {name}-composer-phpunit template.",
       "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
