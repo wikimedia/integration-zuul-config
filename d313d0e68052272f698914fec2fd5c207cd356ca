@@ -193,6 +193,24 @@
     },
     {
       "key": {
+        "uuid": "4ea06b5a_ab84b5a4",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2014-11-23T23:50:42Z",
+      "side": 1,
+      "message": "What other kind of arguments would we pass? Do we even need the jUnit one? Can\u0027t say I\u0027ve ever used it for anything useful. The build trend detection in Jenkins for regular test pipeline jobs is useless since there\u0027s no meaningful relationship between any two patches (they\u0027re all arbitrary proposed patches, for different branches, sometimes even for different repositories). And for regression jobs, they should always be green, and we detect failures via the command line. We don\u0027t need graphs showing the number of failures over time since we apply zero tolerance.\n\nMy point being, it\u0027d be really useful to be able to run \u0027composer test\u0027 in any php project and have it run all the relevant tests without having to know where the tests are, what linter/checker/unit test to run, and just have it work.\n\nThat way local developers don\u0027t have to run \u0027composer test \u0026\u0026 composer phpunit\u0027. And semantically it\u0027d make sense for \u0027test\u0027 to include... tests.\n\nExamples:\n\n* https://github.com/cssjanus/php-cssjanus\n* https://github.com/wikimedia/nagf\n* https://github.com/Krinkle/intuition\n* https://github.com/wikimedia/simplei18n\n\nI agree there can be cases in theory where we want the Jenkins run to be different than what people would run locally, but so far I\u0027ve been able to avoid that with npm-test and believe we can maintain that without any hacks for composer as well. At least I\u0027d like to try avoid making it natural to have exceptions by design (unless there are cases that call for it already).",
+      "parentUuid": "6e936f18_ccc5a55f",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e936f18_8f3fa581",
         "filename": "jjb/job-templates.yaml",
         "patchSetId": 1
