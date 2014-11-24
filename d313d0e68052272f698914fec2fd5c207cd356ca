@@ -247,6 +247,24 @@
     },
     {
       "key": {
+        "uuid": "4ea06b5a_f90e1037",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-24T20:45:16Z",
+      "side": 1,
+      "message": "The link points directly to the trace instead of the console that has a lot of text.  That is less intimidating to some entry level developers that barely have any knowledge of our Jenkins runs and/or Unix commands. It is working fine and I don\u0027t see why we should drop that plugin when there is solution to keep it.\n\nThe feature we need is to be able to inject arguments specific to a command being part of a serie of commands.  Another use case is generating the doc or the coverage reports.\n\n\nSo either:\n\nA) we have one entry point per command, and thus a job for each command. We can then pass whatever specific args we need since they will not badly interact with some unrelated command (the state of this change and how it is done for the ruby bundle and python tox jobs).\n\nB) we have a single entry point (test) chaining all the commands (what is done for javascript npm jobs); and we write down a set of variable naming conventions to let Jenkins pass command specific arguments.\n\nC) an horrible mix of both: we define an entry point per command to let Jenkins pass the args it needs and add a default entry point meant for developers and invoking all the other entry points:\n\n  {\n      \"scripts\": {\n         \"test\": [\n            \u0027composer phpunit\u0027,\n            \u0027composer phplint\u0027,\n          ]\n         \"phpunit\": \"phpunit $PHPUNIT_ARGS\",\n         \"phplint\": \"phplint $PHPLINT_ARGS\",\n      }\n  }\n\n\nAs you said, it is easier to use a single entry point \u0027test\u0027 which folks are familiar with. I just need extra parameters to be injectable.\n\n\n\nSlightly unrelated: I have filled an issue on PHPUnit to have it supports env variable in addition to command line options  ( https://github.com/sebastianbergmann/phpunit/issues/1513 ).",
+      "parentUuid": "4ea06b5a_832f5df3",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e936f18_8f3fa581",
         "filename": "jjb/job-templates.yaml",
         "patchSetId": 1
