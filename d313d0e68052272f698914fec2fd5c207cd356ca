@@ -211,6 +211,24 @@
     },
     {
       "key": {
+        "uuid": "4ea06b5a_e34d0141",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-11-24T17:08:09Z",
+      "side": 1,
+      "message": "The --log-junit is used to generate test report for each build such as:\n\nhttps://integration.wikimedia.org/ci/job/mediawiki-phpunit/438/testReport/\n\nWhich gives you a nice view of all tests failing along with the output for that test and the stacktrace (ex: https://integration.wikimedia.org/ci/job/mediawiki-phpunit/438/testReport/(root)/TextPassDumperTest/testPrefetchPlain/ ).\n\nThe trend result is indeed useless.\n\n-------\n\nThat being said, we could have PHPUnit arguments passed via an environment variable:\n\n    {\n        \"scripts\": {\n            \"test\": [\n                \"echo Running php linting\",\n                \"echo Running PHPUnit $PHPUNIT_ARGS\"\n            ]\n        }\n    }\n\nAnd have Jenkins (or a developer) uses:\n\n PHPUNIT_ARGS\u003d\"\u0027--log-junit log/phpunit-junit.xml\u0027\" composer test\n\n\nTo set that env variable in Jenkins we can define in the job template a new parameter that will be applied on any composer job:\n\n parameters:\n   - string:\n       name: PHPUNIT_ARGS\n       default: \u0027--log-junit log/phpunit-junit.xml\u0027\n\nThat is easy and straightforward. Although that will define that env variable for any composer job, we will not have to repeat it on each job.\n\n\nWith that, we can use \u0027test\u0027 as the entry point and still define the extra arguments Jenkins require when running PHPUnit.",
+      "parentUuid": "4ea06b5a_ab84b5a4",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e936f18_8f3fa581",
         "filename": "jjb/job-templates.yaml",
         "patchSetId": 1
