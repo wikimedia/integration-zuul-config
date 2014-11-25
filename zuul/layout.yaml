@@ -1616,7 +1616,7 @@ jobs:
     voting: false
 
   - name: mediawiki-core-doxygen-publish
-    branch: ^(master|REL.*)$ # bug 50325
+    branch: ^(master|REL.*|refs/tags/.*)$ # REL is bug 50325
 
   - name: mediawiki-phpunit
     queue-name: mediawiki
@@ -1945,6 +1945,7 @@ projects:
       #- mediawiki-core-regression-phpcs-HEAD
       - mediawiki-core-doxygen-publish
     publish:
+      - mediawiki-core-doxygen-publish
       - mediawiki-core-release
 
   - name: mediawiki/vendor
