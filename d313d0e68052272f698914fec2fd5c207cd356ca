@@ -265,6 +265,24 @@
     },
     {
       "key": {
+        "uuid": "4ea06b5a_68fc68d6",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2014-11-25T02:52:00Z",
+      "side": 1,
+      "message": "Just an example, but:  phplint should run before phpunit (recommended order is lint, unit, coding style), phplint wouldn\u0027t take arguments and not need a separate command.\n\nBut yes, a separate phpunit command that takes ENV from Jenkins seems fine.\n\nOne problem though, how do we allow a simple and extendable test pipeline while passing arguments to phpunit and not running phpunit twice.\n\nHaving Jenkins run composer-phplint \u0026\u0026 composer-phpunit separately defaults the purpose of having composer-test (it isn\u0027t extendable as it requires changing the job to add/remove any command).\n\nAlso, if it\u0027s only for phpunit, we wouldn\u0027t even have to declare it in composer.scripts. We can just run that phpunit command with the desired arguments directly from the Jenkins macro here.\n\n\nAs for jUnit being easier for entry level developers. I don\u0027t believe that.\n\n* They don\u0027t get that anywhere else and not locally either. When they read the first basic documentation about phpunit it\u0027ll involve the command line and how it\u0027s output works.\n* The command line output uses the same terminology as rendering by Jenkins plugin.\n* The Jenkins plugin rendering isn\u0027t much of a rendering. It matches the command line text verbatim. It only groups them a little bit.\n* A user would have to know about the existence of the \"Test Report\" and how that interface works. Something that is undocumented and not discoverable at the moment. The phpunit console report on the other hand is linked directly from Gerrit. And displays the same \"Test x failed. Expected: Actual: Diff\" text that jUnit reports. jUnit doesn\u0027t visualise this at the moment.\n\nHas this been an actual issue with new contributors in the past? I see new contributors on GitHub with PHP projects all the time, using only Travis CI\u0027s report from the pull request. I\u0027ve never seen this be an issue.\n\nWhich doc generator are you referring to?\n\nCoverage reports would be done from Jenkins I guess. Doesn\u0027t involve composer-test.",
+      "parentUuid": "4ea06b5a_f90e1037",
+      "revId": "d313d0e68052272f698914fec2fd5c207cd356ca",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e936f18_8f3fa581",
         "filename": "jjb/job-templates.yaml",
         "patchSetId": 1
