@@ -1616,7 +1616,9 @@ jobs:
     voting: false
 
   - name: mediawiki-core-doxygen-publish
-    branch: ^(master|REL.*)$ # bug 50325
+    # ref-updated ref (ex: refs/tags/1.24.0) is matched by branch as well:
+    # https://review.openstack.org/14096
+    branch: ^(master|REL.*|refs/tags/.*)$ # bug 50325
 
   - name: mediawiki-phpunit
     queue-name: mediawiki
@@ -1945,6 +1947,7 @@ projects:
       #- mediawiki-core-regression-phpcs-HEAD
       - mediawiki-core-doxygen-publish
     publish:
+      - mediawiki-core-doxygen-publish
       - mediawiki-core-release
 
   - name: mediawiki/vendor
