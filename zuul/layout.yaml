@@ -331,6 +331,10 @@ jobs:
 
   - name: ^.*-publish$
     parameter-function: set_doc_subpath
+    # Only build master for merged change (postmerge) and allow tags (publish)
+    # ref-updated events are matched by the branch: filter as well:
+    # https://review.openstack.org/14096  T75991
+    branch: ^(master|refs/tags/.*)$
 
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
