@@ -1,8 +1,9 @@
 - builder:
     name: wd-mw-composer-install-ext
     builders:
-        - shell: 'cd "$WORKSPACE/extensions/{extension}" &&
-        timeout 300 /usr/local/bin/composer install --prefer-source -vvv'
+        - shell: |
+            composer=/srv/deployment/integration/composer/vendor/bin/composer
+            cd "$WORKSPACE/extensions/{extension}" && timeout 300 $composer install --prefer-source -vvv
 
 - builder:
     name: wd-wikibase-apply-settings
@@ -26,7 +27,7 @@
 
 - job-template:
     name: 'mwext-Wikibase-{kind}-tests'
-    node: Wikidata
+    node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     defaults: use-zuul-for-mw-ext
     triggers:
@@ -51,7 +52,7 @@
 
 - job-template:
     name: 'mwext-Wikibase-qunit'
-    node: Wikidata
+    node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     defaults: use-zuul-for-mw-ext
     triggers:
@@ -74,7 +75,7 @@
 
 - job-template:
     name: 'mwext-Wikidata-{kind}-tests'
-    node: Wikidata # As this does not use composer there is no reason it can not also use regular slaves
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-zuul-for-mw-ext
     triggers:
      - zuul
@@ -96,7 +97,7 @@
 
 - job-template:
     name: 'mwext-Wikidata-qunit'
-    node: Wikidata
+    node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     defaults: use-zuul-for-mw-ext
     triggers:
