@@ -14,11 +14,6 @@
      - shell: "$WORKSPACE/src/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient} -e {experimental} -b false"
 
 - builder:
-    name: wd-build-apply-settings
-    builders:
-     - shell: "$WORKSPACE/src/extensions/Wikidata/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient} -e {experimental} -b true"
-
-- builder:
     name: wd-runtests
     builders:
         - shell: |
@@ -75,53 +70,6 @@
      - wd-wikibase-apply-settings:
           repoorclient: 'repo' # qunit tests are in lib so this can be either..
           experimental: 'true'
-     - mw-apply-settings
-     - mw-run-update-script
-     - qunit-karma
-    publishers:
-     - archive-log-dir
-     - qunit-cleanup
-     - mw-teardown
-
-- job-template:
-    name: 'mwext-Wikidata-{kind}-tests'
-    node: contintLabsSlave && UbuntuPrecise
-    triggers:
-     - zuul
-    builders:
-     - zuul-cloner-extdeps:
-         ext-name: 'Wikidata'
-         dependencies: '{dependencies}'
-     - wd-build-apply-settings:
-          repoorclient: '{repoorclient}'
-          experimental: '{experimental}'
-     - mw-install-sqlite
-     - shell: "cp deps.txt src/extensions_load.txt"
-     - mw-apply-settings
-     - mw-run-update-script
-     - wd-runtests:
-          params: '{phpunit-params}'
-    publishers:
-     - archive-log-dir
-     - junit:
-        results: 'log/junit*.xml'
-     - mw-teardown
-
-- job-template:
-    name: 'mwext-Wikidata-qunit'
-    node: contintLabsSlave && UbuntuPrecise
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - zuul-cloner-extdeps:
-         ext-name: 'Wikidata'
-         dependencies: '{dependencies}'
-     - wd-build-apply-settings:
-          repoorclient: 'repo' # qunit tests are in lib so this can be either..
-          experimental: 'true'
-     - mw-install-sqlite
-     - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
      - qunit-karma
@@ -189,42 +137,6 @@
 
      - 'mwext-{ext-name}-qunit':
         ext-name: 'Wikibase'
-
-     - 'mwext-Wikidata-{kind}-tests':
-        ext-name: 'Wikidata'
-        kind: client
-        repoorclient: 'client'
-        experimental: 'true'
-        dependencies: 'Scribunto,Capiunto,cldr'
-        phpunit-params: '--group Wikibase,WikibaseClient'
-
-     - 'mwext-Wikidata-{kind}-tests':
-        ext-name: 'Wikidata'
-        kind: client-nonexperimental
-        repoorclient: 'client'
-        experimental: 'false'
-        dependencies: 'Scribunto,Capiunto,cldr'
-        phpunit-params: '--group Wikibase,WikibaseClient'
-
-     - 'mwext-Wikidata-{kind}-tests':
-        ext-name: 'Wikidata'
-        kind: repo
-        repoorclient: 'repo'
-        experimental: 'true'
-        dependencies: 'Scribunto,Capiunto,cldr'
-        phpunit-params: '--group Wikibase,PropertySuggester,Purtle'
-
-     - 'mwext-Wikidata-{kind}-tests':
-        ext-name: 'Wikidata'
-        kind: repo-nonexperimental
-        repoorclient: 'repo'
-        experimental: 'false'
-        dependencies: 'Scribunto,Capiunto,cldr'
-        phpunit-params: '--group Wikibase,PropertySuggester,Purtle'
-
-     - 'mwext-Wikidata-qunit':
-        ext-name: 'Wikidata'
-
 
 - job:
     name: wikidata-gremlin
