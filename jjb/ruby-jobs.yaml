@@ -6,14 +6,20 @@
          # See https://github.com/bundler/bundler/issues/2856
          export GEM_HOME="$WORKSPACE/../gems/2.0.0"
 
-         # install ruby dependencies
-         mkdir -p vendor
-         gem2.0 install --env-shebang -i vendor --no-document bundler
-
          # Prepare some paths lookup
+         mkdir -p vendor
          export GEM_PATH="`pwd`/vendor"
 
-         vendor/bin/bundle install --verbose
+         # Install bundler if it's not installed already
+         if ! gem2.0 which -q bundler &> /dev/null; then
+           gem2.0 install --env-shebang -i vendor --no-document bundler
+         fi
+
+         # Attempt gem installation from local cache first, then remote
+         if ! vendor/bin/bundle install --local --verbose; then
+           vendor/bin/bundle install --verbose
+         fi
+
          vendor/bin/bundle exec {command}
 
 - job-template:
