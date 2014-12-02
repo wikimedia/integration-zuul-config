@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ea06b5a_dc6bd480",
+        "filename": "jjb/ruby-jobs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-12-02T10:52:54Z",
+      "side": 1,
+      "message": "Once bundler is installed, that will prevent any further upgrade and will stall the version indefinitely.\n\nWhat do you think about adding a version requirement there so we can bump bundler version ?\n\n $ gem query --installed --version \u0027\u003e\u003d1.7.4\u0027 bundler; echo $?\n true\n 0\n $ gem query --installed --version \u0027\u003e\u003d1.7.5\u0027 bundler; echo $?\n 1\n $\n\nThis way we can ensure a minimum version is present. Will ease the update whenever we end up needed a feature from bundle 1.8.x.\n\n\nFor the context, we went with `gem install` because the Debian package provided in Ubuntu Precise/Trusty are fairly outdated. A better approach would backport the package from Ubuntu, 1.7.4 is available ( http://packages.ubuntu.com/source/vivid/bundler ) but I am not sure how much hassle it is to backport it :-\\     That is just for context purposes, dismiss it :-]",
+      "revId": "be0e5f9965dc6b7f43d990a662e5265dcaa1414b",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4ea06b5a_fc22504f",
+        "filename": "jjb/ruby-jobs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2014-12-02T10:52:54Z",
+      "side": 1,
+      "message": "`bundle install --local` does not seem to be needed. From a support request I sent upstream ( https://github.com/bundler/bundler/issues/2856 ) bundle looks first for gems in GEM_HOME which we set above to be shared between jobs on the same instance.\n\nLooking at a random job https://integration.wikimedia.org/ci/job/browsertests-MultimediaViewer-en.wikipedia.beta.wmflabs.org-linux-chrome-sauce/321/consoleFull , bundle does not seem to hit rubygems since it find them in the GEM_HOME cache:\n\n\n $ bundle install --verbose\n Using ast 2.0.0\n 0:  ast (2.0.0) from /mnt/jenkins-workspace/workspace/ \\\n   browsertests-MultimediaViewer-en.wikipedia.beta.wmflabs.org-linux-chrome-sauce/ \\\n   ../gems/2.0.0/specifications/ast-2.0.0.gemspec\n Using slop 3.6.0\n 0:  slop (3.6.0) from /mnt/jenkins-workspace/workspace/ \\\n  browsertests-MultimediaViewer-en.wikipedia.beta.wmflabs.org-linux- chrome-sauce/ \\\n  ../gems/2.0.0/specifications/slop-3.6.0.gemspec\n Using parser 2.2.0.pre.4\n ...\n\n\nSo I think we can just  bundle install --verbose :-)",
+      "revId": "be0e5f9965dc6b7f43d990a662e5265dcaa1414b",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
