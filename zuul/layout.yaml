@@ -1538,6 +1538,9 @@ jobs:
   - name: cdb-phpunit
     voting: false
 
+  - name: citoid-npm
+    voting: false
+
   # Rejecting changes having trailing whitespaces cause too many false
   # positives. So only report the whitespace issues, but don't let it vote.
   - name: ^.*-whitespaces$
@@ -5149,6 +5152,12 @@ projects:
       - jobrunner-phplint
     gate-and-submit:
       - jobrunner-phplint
+
+  - name: mediawiki/services/citoid
+    test:
+      - citoid-npm
+    gate-and-submit:
+      - citoid-npm
 
   - name: mediawiki/services/mathoid
     test:
