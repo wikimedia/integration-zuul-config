@@ -45,22 +45,37 @@
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/CentralNotice
+    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
         mediawiki_url: en.wikipedia.beta.wmflabs.org
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
         mediawiki_url: en.wikipedia.beta.wmflabs.org
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce':
+        browser: internet_explorer
+        platform: 'windows_7'
+        version: '10'
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce':
+        browser: internet_explorer
+        platform: 'windows_7'
+        version: '11'
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: safari
+        platform: 'os_x_10.9'
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
         mediawiki_url: en.m.wikipedia.beta.wmflabs.org
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
 
 # CirrusSearch
 - project:
