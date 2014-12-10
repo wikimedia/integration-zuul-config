@@ -180,6 +180,9 @@
 
 
 # Run extension tests via Zuul cloner
+#
+# Triggered for test/gate-and-submit pipeline. Will be replaced by HHVM/Zend
+# jobs as defined by the template '{name}-{ext-name}-testextension-{phpflavor}'.
 - job-template:
     name: '{name}-{ext-name}-testextension'
     node: hasSlaveScripts && UbuntuPrecise
@@ -201,6 +204,35 @@
         results: 'log/junit*.xml'
      - mw-teardown
 
+
+# Run extension tests via Zuul cloner
+#
+# On the experimental pipeline, use hhvm and zend. Will eventually replace the
+# '{name}-{ext-name}-testextension' job template defined above.
+- job-template:
+    name: '{name}-{ext-name}-testextension-{phpflavor}'
+    # See mediawiki.yaml mediawiki-phpunit-{phpflavor}
+    node: '(productionSlaves && UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (contintLabsSlave && UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - mw-run-phpunit-allexts
+    # TODO, find ways to additionaly run tests for core but
+    # without extensions tests
+    publishers:
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown
 
 - job-template:
     name: 'mwext-GuidedTour-doc-test'
@@ -320,6 +352,10 @@
      - '{name}-{ext-name}-lint'
      - '{name}-{ext-name}-jslint'
      - '{name}-{ext-name}-testextension'
+     - '{name}-{ext-name}-testextension-{phpflavor}':
+         phpflavor:
+             - hhvm
+             - zend
      - '{name}-{ext-name}-phpcs-HEAD'
 
 - project:
