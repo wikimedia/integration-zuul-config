@@ -379,6 +379,10 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
+  - name: ^(mwext|mediawiki).*-hhvm$
+    # Release branches do not support hhvm. Hopefully REL1_25 will.
+    branch: (?!REL1_23|REL1_24)
+
   - name: mwext-MobileFrontend-phpcs-HEAD
     voting: true
   - name: mwext-TemplateData-phpcs-HEAD
@@ -1742,6 +1746,7 @@ project-templates:
      - php-composer-validate
     experimental:
       - mediawiki-core-extensions-integration
+      - 'mwext-{name}-testextension-hhvm'
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
@@ -1929,6 +1934,8 @@ projects:
     experimental:
       - mediawiki-core-extensions-integration
       - mediawiki-language-extension-bundle-integration
+      - mediawiki-phpunit-hhvm
+      - mediawiki-phpunit-zend
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-regression-master
@@ -3211,6 +3218,7 @@ projects:
      - php-composer-validate
     experimental:
       - mediawiki-core-extensions-integration
+      - mwext-Flow-testextension-hhvm
 
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
@@ -3473,6 +3481,7 @@ projects:
       - php-composer-validate
     experimental:
       - mediawiki-core-extensions-integration
+      - mwext-MobileFrontend-testextension-hhvm
 
   - name: mediawiki/extensions/MobileApp
     template:
