@@ -138,12 +138,27 @@
          echo "Noop job, meant to gate jobs properly"
 
 - job-template:
-    name: 'mediawiki-phpunit'
-    node: productionSlaves  # not on labs for now
+    name: 'mediawiki-phpunit-{phpflavor}'
+    # Select runnable node based on the phpflavor (hhvm or zend)
+    #
+    # We want to reuse the same job template for both PHP flavor:
+    # - HHVM flavor runs on Trusty CI labs slaves which have HHVM
+    # - Zend flavor runs on productionSlaves with Precise which ships Zend PHP 5.3
+    #
+    # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
+    # definition based on the job name.
+    #
+    # If you want to verify the slaves, head to the job configuration page,
+    # search for 'Restrict where this project can be run', below the input box
+    # is a text: Slaves in [label]: X . Clicking [label] will list nodes
+    # matching the expression.
+    node: '(productionSlaves && UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (contintLabsSlave && UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
     triggers:
      - zuul
     builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
      - zuul-cloner:
          projects: >
              mediawiki/core
@@ -158,7 +173,8 @@
 
 # Test out our PHPUnit against various MediaWiki branches
 #
-# Essentially a copy paste of mediawiki-phpunit
+# Essentially a copy paste of mediawiki-phpunit-{phpflavor}
+# FIXME: support HHVM
 - job-template:
     name: 'integration-phpunit-mediawiki-{mwbranch}'
     node: productionSlaves  # not on labs for now
@@ -263,6 +279,9 @@
 
 - project:
     name: mediawiki-core
+    phpflavor:
+        - hhvm
+        - zend
     jobs:
       - '{name}-phplint'
       - mediawiki-gate
@@ -273,7 +292,7 @@
          bundlecommand:
           - rubocop
       - '{name}-ruby1.9.3lint'
-      - mediawiki-phpunit
+      - 'mediawiki-phpunit-{phpflavor}'
 
 # For regression testing:
 
