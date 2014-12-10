@@ -1705,6 +1705,10 @@ jobs:
     branch: ^master$
     voting: false
 
+  - name: mediawiki-phpunit-hhvm
+    # Release branches do not support hhvm. Hopefully REL1_25 will:
+    branch: (?!REL1_23|REL1_24)
+
   # Being worked on with Nik
   - name: mwext-browsertests-CirrusSearch-phantomjs
     voting: false
@@ -1929,6 +1933,8 @@ projects:
     experimental:
       - mediawiki-core-extensions-integration
       - mediawiki-language-extension-bundle-integration
+      - mediawiki-phpunit-hhvm
+      - mediawiki-phpunit-zend
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-regression-master

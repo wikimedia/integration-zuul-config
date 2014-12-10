@@ -225,6 +225,45 @@
              exit 1
          fi
 
+# Assert 'php' is phpflavor
+#
+# Parameter:
+# * phpflavor: 'hhvm' or 'zend'
+#
+- builder:
+    name: assert-phpflavor
+    builders:
+        - shell: |
+            #!/bin/bash -e -u
+            PHP_VERSION=`php --version`
+
+            case "{phpflavor}" in
+                ( 'hhvm' )
+                    MATCHER='^HipHop'
+                ;;
+                ( 'zend' )
+                    MATCHER='^Zend Engine'
+                ;;
+                ( * )
+                    echo "Invalid phpflavor '{phpflavor}' for JJB macro 'assert-phpflavor'"
+                    echo "Must be either 'hhvm' or 'zend'"
+                    exit 1
+                ;;
+            esac
+
+            if ( echo "$PHP_VERSION" | egrep "$MATCHER" > /dev/null ); then
+                echo -e "php is {phpflavor}:\n\n$PHP_VERSION\n"
+            else
+                echo -e "Assertion error: php is not {phpflavor}:\n\n$PHP_VERSION\n"
+                exit 1
+            fi
+
+- builder:
+    name: 'hhvm-clear-hhbc'
+    builders:
+        - shell: |
+            rm -f *.hhbc
+
 # Assert node version matches a basic regular expressions
 #
 # Parameter:
