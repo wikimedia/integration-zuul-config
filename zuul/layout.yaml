@@ -383,6 +383,9 @@ jobs:
     # Release branches do not support hhvm. Hopefully REL1_25 will.
     branch: (?!REL1_23|REL1_24)
 
+  - name: ^mediawiki-phpunit-hhvm
+    voting: false  # T75531 ApiFormatWddxTest::testValidSyntax fails
+
   - name: mwext-MobileFrontend-phpcs-HEAD
     voting: true
   - name: mwext-TemplateData-phpcs-HEAD
@@ -1622,7 +1625,9 @@ jobs:
   - name: mediawiki-core-release
     branch: ^(?!refs/tags/wmf/.*)
 
-  - name: mediawiki-phpunit
+  - name: mediawiki-phpunit-hhvm
+    queue-name: mediawiki
+  - name: mediawiki-phpunit-zend
     queue-name: mediawiki
 
   - name: mediawiki-core-qunit
@@ -1914,7 +1919,8 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-phplint:
-        - mediawiki-phpunit
+        - mediawiki-phpunit-hhvm
+        - mediawiki-phpunit-zend
         - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
@@ -1927,14 +1933,12 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-phplint:
-        - mediawiki-phpunit
+        - mediawiki-phpunit-hhvm
+        - mediawiki-phpunit-zend
         - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
-    experimental:
-      - mediawiki-phpunit-hhvm
-      - mediawiki-phpunit-zend
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-regression-master
@@ -1959,9 +1963,11 @@ projects:
     test:
       - php-composer-validate
       - mediawiki-core-qunit
-      - mediawiki-phpunit
+      - mediawiki-phpunit-hhvm
+      - mediawiki-phpunit-zend
     gate-and-submit:
-      - mediawiki-phpunit
+      - mediawiki-phpunit-hhvm
+      - mediawiki-phpunit-zend
       - mediawiki-core-qunit
       - php-composer-validate
 
