@@ -387,6 +387,14 @@ jobs:
     # Release branches do not support hhvm. Hopefully REL1_25 will.
     branch: (?!REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
 
+  # Job testing multiple extensions together
+  - name: ^mediawiki-extensions-(hhvm|zend)$
+    # Extensions do not pass tests together until 1.25alpha...
+    branch: (?!REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  # Run the legacy job for the older branches
+  - name: ^mwext-Echo-testextension-(hhvm|zend)$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+
   - name: mwext-MobileFrontend-phpcs-HEAD
     voting: true
   - name: mwext-TemplateData-phpcs-HEAD
@@ -1740,6 +1748,14 @@ project-templates:
      - php-composer-validate
     experimental:
       - 'mwext-{name}-testextension-hhvm'
+
+  - name: extension-gate
+    test:
+      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-zend
+    gate-and-submit:
+      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-zend
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
@@ -3130,6 +3146,7 @@ projects:
 
   - name: mediawiki/extensions/Echo
     template:
+      - name: extension-gate
       - name: extension-unittests
       - name: extension-qunit
       - name: extension-rubylint
