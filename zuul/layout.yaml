@@ -2495,14 +2495,17 @@ projects:
   - name: operations/mediawiki-config
     check:
       - operations-mw-config-phplint
+      - php-composer-validate
     test:
       - operations-mw-config-phplint
       - operations-mw-config-tests
       - operations-apache-config-lint
+      - php-composer-validate
     gate-and-submit:
       - operations-mw-config-phplint
       - operations-mw-config-tests
       - operations-apache-config-lint
+      - php-composer-validate
     postmerge:
       - beta-mediawiki-config-update-eqiad
 
