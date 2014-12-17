@@ -318,6 +318,14 @@
      - shell: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve.sh
      - shell: sudo -u jenkins /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh
 
+- builder:
+    name: composer-install-ext
+    builders:
+        - shell: |
+            composer=/srv/deployment/integration/composer/vendor/bin/composer
+            cd "$WORKSPACE/extensions/{extension}" && timeout 300 $composer install --prefer-source -vvv
+
+
 # These are jobs we create for all of the extensions
 # listed below. If a job should only be created
 # for a select number of extensions or if it needs
@@ -1140,6 +1148,9 @@
      - '{name}-{ext-name}-qunit':
         name: mwext
         ext-name: WikibaseJavaScriptApi
+        builders:
+        - composer-install-ext:
+          - extension: '{ext-name}'
 
 # browser tests for MediaWiki extensions
 #
