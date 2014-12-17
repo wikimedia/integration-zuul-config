@@ -137,29 +137,7 @@
          #!/bin/bash -e
          echo "Noop job, meant to gate jobs properly"
 
-# Triggered for test/gate-and-submit pipeline. Will be replaced by HHVM/Zend
-# jobs as defined by the template 'mediawiki-phpunit-{phpflavor}'.
-- job-template:
-    name: 'mediawiki-phpunit'
-    node: productionSlaves  # not on labs for now
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-sqlite
-     - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
-    publishers:
-     - phpunit-junit-2
-     - archive-log-dir
-     - mw-teardown
-
-# On the experimental pipeline, use hhvm and zend. Will eventually replace the
-# 'mediawiki-phpunit' job template defined above.
+# Use hhvm or zend
 - job-template:
     name: 'mediawiki-phpunit-{phpflavor}'
     # Select runnable node based on the phpflavor (hhvm or zend)
