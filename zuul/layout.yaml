@@ -387,6 +387,34 @@ jobs:
     # Release branches do not support hhvm. Hopefully REL1_25 will.
     branch: (?!REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
 
+  # Jobs testing multiple extensions together
+  #
+  # TODO stop triggering zend jobs for the wmf branches
+
+  # Extensions tested together, since 1.25alpha ...
+  - name: ^mediawiki-extensions-(hhvm|zend)$
+    branch: (?!REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+
+  # ... older branches get the legacy job
+  - name: ^mwext-Echo-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-JsonConfig-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-Mantle-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-MobileApp-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-MobileFrontendend-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-VisualEditor-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-WikiGrok-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-ZeroBanner-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-ZeroPortal-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+
   - name: mwext-MobileFrontend-phpcs-HEAD
     voting: true
   - name: mwext-TemplateData-phpcs-HEAD
@@ -1741,6 +1769,14 @@ project-templates:
     experimental:
       - 'mwext-{name}-testextension-hhvm'
 
+  - name: extension-gate
+    test:
+      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-zend
+    gate-and-submit:
+      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-zend
+
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
   - name: extension-qunit
@@ -1903,6 +1939,8 @@ projects:
       - mediawiki-core-phplint:
         - mediawiki-phpunit-hhvm
         - mediawiki-phpunit-zend
+        - mediawiki-extensions-hhvm
+        - mediawiki-extensions-zend
         - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
@@ -1917,6 +1955,8 @@ projects:
       - mediawiki-core-phplint:
         - mediawiki-phpunit-hhvm
         - mediawiki-phpunit-zend
+        - mediawiki-extensions-hhvm
+        - mediawiki-extensions-zend
         - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
@@ -1947,9 +1987,13 @@ projects:
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-zend
+      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-zend
     gate-and-submit:
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-zend
+      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-zend
       - mediawiki-core-qunit
       - php-composer-validate
 
@@ -3130,6 +3174,7 @@ projects:
 
   - name: mediawiki/extensions/Echo
     template:
+      - name: extension-gate
       - name: extension-unittests
       - name: extension-qunit
       - name: extension-rubylint
@@ -3380,6 +3425,7 @@ projects:
 
   - name: mediawiki/extensions/JsonConfig
     template:
+      - name: extension-gate
       - name: extension-unittests
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
@@ -3420,6 +3466,7 @@ projects:
 
   - name: mediawiki/extensions/Mantle
     template:
+      - name: extension-gate
       - name: extension-unittests
       - name: extension-phpcs
     test:
@@ -3458,6 +3505,7 @@ projects:
 
   - name: mediawiki/extensions/MobileFrontend
     template:
+      - name: extension-gate
       - name: extension-qunit-and-mobile
       - name: extension-rubylint
       - name: extension-phpcs
@@ -3483,6 +3531,7 @@ projects:
 
   - name: mediawiki/extensions/MobileApp
     template:
+      - name: extension-gate
       - name: extension-unittests
 
   - name: mediawiki/extensions/MolHandler
@@ -5719,6 +5768,7 @@ projects:
 
   - name: mediawiki/extensions/VisualEditor
     template:
+      - name: extension-gate
       - name: extension-qunit
       - name: extension-rubylint
       - name: extension-phpcs
@@ -5854,6 +5904,7 @@ projects:
 
   - name: mediawiki/extensions/WikiGrok
     template:
+      - name: extension-gate
       - name: extension-unittests
       - name: extension-phpcs
 
@@ -5871,11 +5922,13 @@ projects:
 
   - name: mediawiki/extensions/ZeroBanner
     template:
+      - name: extension-gate
       - name: extension-unittests
       - name: extension-rubylint
 
   - name: mediawiki/extensions/ZeroPortal
     template:
+      - name: extension-gate
       - name: extension-unittests
       - name: extension-rubylint
 
