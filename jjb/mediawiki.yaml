@@ -173,6 +173,55 @@
      - archive-log-dir
      - mw-teardown
 
+- job-template:
+    name: 'mediawiki-phpunit-integration-{phpflavor}'
+    # See 'mediawiki-phpunit-{phpflavor}'
+    node: '(productionSlaves && UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (contintLabsSlave && UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    concurrent: true
+
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - shell: |
+         rm -f deps.txt
+         touch deps.txt
+         # TODO Can be made nicer when the extension_load.txt file starts
+         # supporting empty new lines.  https://gerrit.wikimedia.org/r/183884
+         echo "mediawiki/extensions/Echo
+         mediawiki/extensions/JsonConfig
+         mediawiki/extensions/Mantle
+         mediawiki/extensions/MobileApp
+         mediawiki/extensions/MobileFrontend
+         mediawiki/extensions/VisualEditor
+         mediawiki/extensions/WikiGrok
+         mediawiki/extensions/ZeroBanner
+         mediawiki/extensions/ZeroPortal" > deps.txt
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+             $(cat deps.txt)
+     - shell: |
+         cd src/extensions/VisualEditor
+         git submodule foreach git clean -xdff -q
+         git submodule update --init
+         git submodule status
+     - mw-install-sqlite
+     - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - mw-run-phpunit-allexts
+    #- shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - archive-log-dir
+     - mw-teardown
+
+
 # Test out our PHPUnit against various MediaWiki branches
 #
 # Essentially a copy paste of mediawiki-phpunit-{phpflavor}
@@ -295,6 +344,7 @@
           - rubocop
       - '{name}-ruby1.9.3lint'
       - 'mediawiki-phpunit-{phpflavor}'
+      - 'mediawiki-phpunit-integration-{phpflavor}'
 
 # For regression testing:
 
