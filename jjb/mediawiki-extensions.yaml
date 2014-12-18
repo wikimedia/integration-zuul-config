@@ -110,6 +110,12 @@
      - zuul-cloner:
          projects: >
              $(cat deps.txt)
+     # zuul-cloner should let us process submodules whenever needed
+     - shell: |
+         if [ ! $(grep mediawiki/extensions/VisualEditor deps.txt > /dev/null) ]; then
+            cd src/extensions/VisualEditor
+            git submodule update --init
+         fi
 
 - builder:
     name: prepare-mediawiki
@@ -651,9 +657,9 @@
      - Minifier
      - MixedNamespaceSearchSuggestions
      - MobileApp:
-        dependencies: 'MobileFrontend,Mantle'
+        dependencies: 'Echo,MobileFrontend,Mantle,VisualEditor'
      - MobileFrontend:
-        dependencies: 'Mantle'
+        dependencies: 'Echo,Mantle,VisualEditor'
      - Model
      - MolHandler
      - MoodBar
@@ -991,7 +997,7 @@
      - WikiEditor
      - WikiForum
      - WikiGrok:
-        dependencies: 'MobileFrontend,Mantle'
+        dependencies: 'Echo,MobileFrontend,Mantle,VisualEditor'
      - wikihiero
      - WikiLexicalData
      - Wikilog
@@ -1017,9 +1023,9 @@
      - YotpoReviews
      - YouTube
      - ZeroBanner:
-        dependencies: 'JsonConfig,MobileFrontend,Mantle'
+        dependencies: 'Echo,JsonConfig,MobileFrontend,Mantle,VisualEditor'
      - ZeroPortal:
-        dependencies: 'JsonConfig,MobileFrontend,Mantle,ZeroBanner'
+        dependencies: 'Echo,JsonConfig,MobileFrontend,Mantle,VisualEditor,ZeroBanner'
 
     mwbranch:
      - master
