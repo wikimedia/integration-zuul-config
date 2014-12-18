@@ -2395,14 +2395,6 @@ projects:
     postmerge:
       - mediawiki-vagrant-puppet-doc
 
-  - name: operations/apache-config
-    # FIXME: convert back to "check" pipeline whenever we have
-    # integration tests
-    test:
-      - operations-apache-config-lint
-    gate-and-submit:
-      - operations-apache-config-lint
-
   - name: operations/debs/adminbot
     template:
       - name: 'python-lint'
@@ -2494,11 +2486,9 @@ projects:
     test:
       - operations-mw-config-phplint
       - operations-mw-config-tests
-      - operations-apache-config-lint
     gate-and-submit:
       - operations-mw-config-phplint
       - operations-mw-config-tests
-      - operations-apache-config-lint
     postmerge:
       - beta-mediawiki-config-update-eqiad
 
