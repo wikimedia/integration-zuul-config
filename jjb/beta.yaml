@@ -249,8 +249,6 @@
          RSYNC_OPTS="--update --times --recursive --links --delete-after --delay-updates"
          rsync $RSYNC_OPTS $WORKSPACE/parsoid "$PARSOID_TARGET"
          rsync $RSYNC_OPTS $WORKSPACE/deploy "$PARSOID_TARGET"
-         # Configuration file is managed by puppet
-         ln -s /srv/deployment/parsoid/localsettings.js "$PARSOID_TARGET"/parsoid/api/localsettings.js
 
      - shell: |
          sudo /etc/init.d/parsoid restart
