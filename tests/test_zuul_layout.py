@@ -129,6 +129,8 @@ class TestZuulLayout(unittest.TestCase):
                               (mw_project, pipeline))
                 self.assertIn(
                     'php-composer-validate', project_def[pipeline],
+                    ('php-composer-validate' in project_def[pipeline]) or
+                        any([job for job in project_def[pipeline] if re.search('-composer$', job)]),
                     'Project %s pipeline %s must have php-composer-validate'
                     % (mw_project, pipeline))
 
