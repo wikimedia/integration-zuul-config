@@ -374,7 +374,7 @@
         curl --include "http://localhost:9412/$TEST_ID/index.php?title=Special:BlankPage" | head -n42
         curl --include "http://localhost:9412/$TEST_ID/load.php?debug=true&modules=startup&only=scripts" | head -n42
         # Run QUnit tests via PhantomJS
-        /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --verbose --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit{querystring}"
+        /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit{querystring}"
 
 - publisher:
     name: qunit-cleanup
