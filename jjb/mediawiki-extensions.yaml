@@ -112,7 +112,7 @@
              $(cat deps.txt)
      # zuul-cloner should let us process submodules whenever needed
      - shell: |
-         if [ ! $(grep mediawiki/extensions/VisualEditor deps.txt > /dev/null) ]; then
+         if grep -q mediawiki/extensions/VisualEditor deps.txt; then
             cd src/extensions/VisualEditor
             git submodule update --init
          fi
