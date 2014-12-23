@@ -268,6 +268,26 @@
         rsync --recursive --delete-after --force $WORKSPACE/docs/js/ "$DEST_DIR/$DEST_VERSIONDIR/"
 
 - job-template:
+    name: 'mwext-MobileFrontend-doc-publish'
+    node: gallium
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        # Identify where mediawiki core is installed
+        export MW_INSTALL_PATH=$WORKSPACE/../../
+        # Generate documentation into docs folder
+        cd $WORKSPACE && make docs
+        # Set destination and version directory therein
+        DEST_DIR="/srv/org/wikimedia/doc/MobileFrontend"
+        DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
+        # Ensure the destination exists
+        mkdir -p $DEST_DIR
+        # Publish it (trailing slash is important!)
+        rsync --recursive --delete-after --force $WORKSPACE/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
+
+- job-template:
     name: 'mwext-VisualEditor-doc-publish'
     node: gallium
     defaults: use-remote-zuul

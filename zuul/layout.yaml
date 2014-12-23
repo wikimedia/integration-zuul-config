@@ -1595,6 +1595,9 @@ jobs:
   - name: 'mwext-MultimediaViewer-doc-publish'
     branch: ^master$
 
+  - name: 'mwext-MobileFrontend-doc-publish'
+    branch: ^master$
+
   - name: 'mwext-VisualEditor-doc-publish'
     branch: ^master$
   - name: 'mwext-VisualEditor-sync-gerrit'
@@ -3488,6 +3491,8 @@ projects:
       - php-composer-validate
     experimental:
       - mwext-MobileFrontend-testextension-hhvm
+    postmerge:
+      - mwext-MobileFrontend-doc-publish
 
   - name: mediawiki/extensions/MobileApp
     template:
