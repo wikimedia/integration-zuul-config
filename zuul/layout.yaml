@@ -6000,12 +6000,16 @@ projects:
       - 'pywikibot-core-tox-nose34-trusty'
 
   - name: pywikibot/i18n
-    template:
-      - name: 'python-lint-checkonly'
-        prefix: 'pywikibot-i18n'
+    check:
+      - pywikibot-i18n-pep8
+      - pywikibot-i18n-pyflakes
     test:
+      - pywikibot-i18n-pep8
+      - pywikibot-i18n-pyflakes
       - pywikibot-i18n-npm
     gate-and-submit:
+      - pywikibot-i18n-pep8
+      - pywikibot-i18n-pyflakes
       - pywikibot-i18n-npm
 
   - name: qrpedia
