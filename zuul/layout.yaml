@@ -6001,8 +6001,12 @@ projects:
 
   - name: pywikibot/i18n
     template:
-      - name: 'python-lint'
+      - name: 'python-lint-checkonly'
         prefix: 'pywikibot-i18n'
+    test:
+      - pywikibot-i18n-npm
+    gate-and-submit:
+      - pywikibot-i18n-npm
 
   - name: qrpedia
     check-voter:
