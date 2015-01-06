@@ -184,3 +184,26 @@
 
      - 'mwext-Wikidata-qunit':
         ext-name: 'Wikidata'
+
+
+- job:
+    name: wikidata-gremlin
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 7'
+    triggers:
+     - zuul
+    scm:
+     - git-remote-zuul
+    wrappers:
+     - timeout:
+         timeout: 60  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    maven:
+      goals: clean package
+
+- project:
+    name: wikidata-gremlin
+    jobs:
+      - wikidata-gremlin
