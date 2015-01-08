@@ -50,3 +50,13 @@
      - channels
     jobs:
      - '{name}-tox-{toxenv}-trusty'
+
+- job-template:
+    name: 'labs-tools-wikibugs2-autopull'
+    defaults: use-remote-zuul
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: curl https://tools.wmflabs.org/wikibugs/pull.php
