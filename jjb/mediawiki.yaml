@@ -20,20 +20,6 @@
      - jshint
      - jsonlint
 
-- job-template:
-    name: 'mediawiki-core-npm'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    logrotate:
-        daysToKeep: 15
-    triggers:
-     - zuul
-    builders:
-     - zuul-cloner:
-         projects: "mediawiki/core"
-     - npm-in:
-        dir: '$WORKSPACE/src/tests/frontend'
-
 # Generic job to run QUnit
 - job-template:
     name: '{name}-qunit'
@@ -270,7 +256,7 @@
       - 'mediawiki-core-jslint'
       - '{name}-qunit'
       - 'mediawiki-core-jsduck'
-      - 'mediawiki-core-npm'
+      - '{name}-npm'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
       - '{name}-whitespaces'
