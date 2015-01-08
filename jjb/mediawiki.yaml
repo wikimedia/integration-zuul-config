@@ -264,8 +264,11 @@
      - archive:
          artifacts: 'build/*.gz'
 
-- job-group:
-    name: mediawiki-jobs
+- project:
+    name: mediawiki-core
+    phpflavor:
+        - hhvm
+        - zend
     jobs:
       - 'mediawiki-core-jslint'
       - '{name}-qunit'
@@ -278,13 +281,6 @@
       - '{name}-phpcs-lenient-HEAD'
       - '{name}-phpcs-strict'
       - '{name}-phpcs-strict-HEAD'
-
-- project:
-    name: mediawiki-core
-    phpflavor:
-        - hhvm
-        - zend
-    jobs:
       - '{name}-phplint'
       - mediawiki-gate
       - mediawiki-jobs
