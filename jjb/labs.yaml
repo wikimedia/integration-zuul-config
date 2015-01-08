@@ -50,3 +50,13 @@
      - channels
     jobs:
      - '{name}-tox-{toxenv}-trusty'
+     - 'labs-tools-wikibugs2-autopull'
+
+- job-template:
+    name: 'labs-tools-wikibugs2-autopull'
+    node: contintLabsSlave
+    concurrent: false
+    logrotate:
+        daysToKeep: 15
+    builders:
+      - shell: curl --fail --silent --show-error --max-time 10 https://tools.wmflabs.org/wikibugs/pull.php
