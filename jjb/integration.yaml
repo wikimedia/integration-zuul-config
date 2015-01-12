@@ -136,11 +136,14 @@
 
 - project:
     name: 'integration-jenkins'
+    toxenv:
+     - flake8
+     - py27
     jobs:
      - '{name}-phplint'
      - '{name}-phpunit'
-     - '{name}-yamllint'
      - python-jobs
+     - '{name}-tox-{toxenv}'
 
 - project:
     name: 'integration-phpunit'

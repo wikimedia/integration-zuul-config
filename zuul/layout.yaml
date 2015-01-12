@@ -1865,15 +1865,16 @@ projects:
        prefix: 'integration-jenkins'
     check:
       - 'integration-jenkins-phplint'
-      - 'integration-jenkins-yamllint'
     test:
+      - 'integration-jenkins-tox-flake8'
+      - 'integration-jenkins-tox-py27'
       - 'integration-jenkins-phplint'
       - 'integration-jenkins-phpunit'
-      - 'integration-jenkins-yamllint'
     gate-and-submit:
+      - 'integration-jenkins-tox-flake8'
+      - 'integration-jenkins-tox-py27'
       - 'integration-jenkins-phplint'
       - 'integration-jenkins-phpunit'
-      - 'integration-jenkins-yamllint'
 
   - name: integration/phpunit
     test:
