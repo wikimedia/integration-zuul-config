@@ -178,6 +178,8 @@
     # See 'mediawiki-phpunit-{phpflavor}'
     node: '(productionSlaves && UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (contintLabsSlave && UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
+    logrotate:
+        daysToKeep: 15
 
     triggers:
      - zuul
