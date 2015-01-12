@@ -5176,22 +5176,17 @@ projects:
 
   - name: mediawiki/services/cxserver
     check-voter:
-      - cxserver-jslint
       - cxserver-npm
     gate-and-submit:
-      - cxserver-jslint
       - cxserver-npm
     postmerge:
       - beta-cxserver-update-eqiad
 
   - name: mediawiki/services/cxserver/deploy
-# FIXME figure out whether we want to run nmp/jslint
-#    check-voter:
-#      - cxserver-jslint
-#      - cxserver-npm
-#    gate-and-submit:
-#      - cxserver-jslint
-#      - cxserver-npm
+    check-voter:
+      - cxserver-npm
+    gate-and-submit:
+      - cxserver-npm
     postmerge:
       - beta-cxserver-update-eqiad
 
