@@ -53,6 +53,16 @@
     builders:
      - npm
 
+- job-template:
+    name: '{name}-{repository}-npm'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - npm-oid
+
 # Run composer install and composer test
 #
 # Notes:

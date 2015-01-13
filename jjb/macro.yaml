@@ -206,6 +206,58 @@
         npm install
         npm test
 
+# Variant that can use a deploy repo for the dependencies.
+# See macro setup-npm-oid below.
+- builder:
+    name: npm-oid
+    builders:
+     - setup-npm-oid
+     - shell: |
+         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+         node --version
+         npm --version
+         . npm-oid.env
+         cd "$NPM_SET_PATH"
+         npm test
+
+# cxserver and parsoid services come with two repositories:
+# eg
+# mediawiki/services/cxserver: the actual source code
+# mediawiki/services/cxserver/deploy : node modules + code under /src/
+#
+# We share the job-templates describing tests commands to run, the
+# setup-npm-oid macro would contains environment variable pointing to the
+# source `tests` directory and set the NODE_PATH
+#
+# Once used, subsequent shell commands should load the env variables by using:
+#   . npm-oid.env
+#
+# Note we run `npm install` so we better have npm installed (ie on labs)
+- builder:
+    name: setup-npm-oid
+    builders:
+     - shell: |
+        rm -f npm-oid.env
+
+        case "{repository}" in
+        "source")
+            NPM_SET_PATH="."
+            echo "Running npm install"
+            npm install
+            ;;
+        "deploy")
+            NPM_SET_PATH="./src"
+            # All modules should already be in the deploy repo, no npm install
+            ;;
+        *)
+            echo "JJB {{repository}} parameter '{repository}' is not recognized."
+            exit 1
+            ;;
+        esac
+        echo  NPM_SET_PATH=$NPM_SET_PATH" >> npm-oid.env
+        echo 'NODE_PATH=$NODE_PATH:'"$WORKSPACE/node_modules" >> npm-oid.env
+        echo 'PATH=$PATH:'"$WORKSPACE/node_modules/.bin" >> npm-oid.env
+
 - builder:
     name: assert-env-doc_subpath
     builders:
