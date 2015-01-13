@@ -3,7 +3,10 @@
 - builder:
     name: git-cxserver-and-deploy-repos
     builders:
+     - setup-npm-oid:
+         repository: '{repository}'
      - shell: |
+        . npm-oid.env
         /srv/deployment/integration/slave-scripts/bin/multigit.sh \
           mediawiki/services/cxserver mediawiki/services/cxserver/deploy
 
