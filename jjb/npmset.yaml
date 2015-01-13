@@ -1,0 +1,37 @@
+# cxserver and parsoid services comes with two repositories:
+# eg
+# mediawiki/services/cxserver: the actual source code
+# mediawiki/services/cxserver/deploy : node modules + cxserver code under /src/
+#
+# We share the job-templates describing tests commands to run, the
+# npm-set-env macro would contains environment variable pointing to the
+# cxserver `tests` directory and set the NODE_PATH
+#
+# Once used, subsequent shell commands should load the env variables by using:
+#   . {repository}.env
+#
+# Note we run `npm install` so we better have npm installed (ie on labs)
+- builder:
+    name: npm-set-env
+    builders:
+     - shell: |
+        rm -f npm-oid.env
+
+        case "{repository}" in
+        "source")
+            NPM_SET_PATH="."
+            echo "Running npm install"
+            npm install
+            ;;
+        "deploy")
+            NPM_SET_PATH="./src"
+            # All modules should already be in the deploy repo, no npm install
+            ;;
+        *)
+            echo "JJB {{repository}} parameter '{repository}' is not recognized."
+            exit 1
+            ;;
+        esac
+        echo  NPM_SET_PATH=$NPM_SET_PATH" >> npm-oid.env
+        echo 'NODE_PATH=$NODE_PATH:'"$WORKSPACE/node_modules" >> npm-oid.env
+        echo 'PATH=$PATH:'"$WORKSPACE/node_modules/.bin" >> npm-oid.env
