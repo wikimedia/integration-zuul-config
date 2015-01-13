@@ -56,43 +56,6 @@
     publishers:
         - mw-teardown
 
-# Parsoid comes with two repositories:
-# mediawiki/services/parsoid : the actual source code
-# mediawiki/services/parsoid/deploy : node modules + parsoid code under /src/
-#
-# We share the job-templates describing tests commands to run, the
-# parsoid-set-env macro would contains environment variable pointing to the
-# Parsoid `tests` directory and set the NODE_PATH
-#
-# Once used, subsequent shell commands should load the env variables by using:
-#   . parsoid.env
-#
-# Note we run `npm install` so we better have npm installed (ie on labs)
-- builder:
-    name: parsoid-set-env
-    builders:
-     - shell: |
-        rm -f parsoid.env
-
-        case "{repository}" in
-        "source")
-            PARSOID_PATH="."
-            echo "Running npm install"
-            npm install
-            ;;
-        "deploy")
-            PARSOID_PATH="./src"
-            # All modules should already be in the deploy repo, no npm install
-            ;;
-        *)
-            echo "JJB {{repository}} parameter '{repository}' is not recognized."
-            exit 1
-            ;;
-        esac
-        echo "PARSOID_PATH=$PARSOID_PATH" >> parsoid.env
-        echo 'NODE_PATH=$NODE_PATH:'"$WORKSPACE/node_modules" >> parsoid.env
-        echo 'PATH=$PATH:'"$WORKSPACE/node_modules/.bin" >> parsoid.env
-
 - job-template:
     name: parsoidsvc-{repository}-parse-tool-check
     node: contintLabsSlave && UbuntuTrusty
@@ -107,7 +70,7 @@
     triggers:
         - zuul
     builders:
-        - parsoid-set-env:
+        - npm-set-env:
             repository: '{repository}'
         - shell: |
             # If any of these commands fail, something is wrong
@@ -133,7 +96,7 @@
     triggers:
         - zuul
     builders:
-        - parsoid-set-env:
+        - npm-set-env:
             repository: '{repository}'
         - shell: |
             # If any of these commands fail, something is wrong
@@ -159,7 +122,7 @@
         - zuul
     builders:
     - assert-node-version-0.10
-    - parsoid-set-env:
+    - npm-set-env:
         repository: '{repository}'
     - shell: |
         node --version
@@ -184,7 +147,7 @@
         - zuul
     builders:
     - assert-node-version-0.8
-    - parsoid-set-env:
+    - npm-set-env:
         repository: '{repository}'
     - shell: |
         node --version
