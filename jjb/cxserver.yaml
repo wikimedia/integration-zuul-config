@@ -3,6 +3,8 @@
 - builder:
     name: git-cxserver-and-deploy-repos
     builders:
+     - cxserver-set-env:
+         repository: '{repository}'
      - shell: |
         /srv/deployment/integration/slave-scripts/bin/multigit.sh \
           mediawiki/services/cxserver mediawiki/services/cxserver/deploy
