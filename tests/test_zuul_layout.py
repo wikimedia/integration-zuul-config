@@ -161,3 +161,41 @@ class TestZuulLayout(unittest.TestCase):
         self.assertTrue(rel_job.changeMatches(ref))
         ref.ref = 'refs/tags/2.0'
         self.assertTrue(rel_job.changeMatches(ref))
+
+    def test_valid_jobs_in_check_pipelines(self):
+        check_pipelines = [p.name for p in self.getPipelines()
+                           if p.name.startswith('check')]
+
+        # Uniq list of projects having a check* pipeline defined
+        actual = {}
+        # List of jobs allowed in check* pipelines
+        safe_jobs = [
+            '.*-(js|php|perl|shell|yaml|)lint',
+            '.*-(pp|erb)lint-HEAD',
+            '.*-(tabs|typos)',
+            '.*-pep8',
+            '.*-phpcs(-lenient|-strict|)-HEAD',
+            '.*-puppet-validate',
+            '.*-puppetlint-(strict|lenient)',
+            '.*-pyflakes',
+            '.*-ruby(2\.0|1\.9\.3)lint',
+            '.*-whitespaces',
+            'noop',
+            'php-composer-validate',
+        ]
+        safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
+
+        for check_pipeline in check_pipelines:
+            actual[check_pipeline] = {}
+            for project in self.getPipelineProjectsNames(check_pipeline):
+                jobs = self.getProjectDef(project)[check_pipeline]
+                unsafe_jobs = [j for j in jobs
+                               if not re.match(safe_jobs_re, j)]
+                if unsafe_jobs:
+                    actual[check_pipeline][project] = unsafe_jobs
+
+        self.maxDiff = None
+
+        # We expect check pipelines to have no unsafe jobs
+        expected = {k: {} for k in check_pipelines}
+        self.assertEquals(expected, actual)
