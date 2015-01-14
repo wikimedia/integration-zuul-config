@@ -143,6 +143,30 @@
      - mw-teardown
      - archive-log-dir
 
+# This is a copy of job template '{name}-{ext-name}-qunit' above.
+# This runs composer-install-ext in addition to '{name}-{ext-name}-qunit'.
+#
+# @todo: Running composer should be an optional part of prepare-mediawiki
+#        in order to fix other jobs for extensions with composer-managed
+#        dependencies as well.
+- job-template:
+    name: 'mwext-WikibaseJavaScriptApi-qunit'
+    node: contintLabsSlave && UbuntuPrecise
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - composer-install-ext:
+         extension: '{ext-name}'
+     - qunit
+    publishers:
+     - qunit-cleanup
+     - mw-teardown
+     - archive-log-dir
+
 - job-template:
     # Based on '{name}-{ext-name}-qunit' but:
     # * qunit -> qunit-karma (to run npm-install and karma)
@@ -355,6 +379,15 @@
     builders:
      - shell: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve.sh
      - shell: sudo -u jenkins /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh
+
+- builder:
+    name: composer-install-ext
+    builders:
+        - shell: |
+            composer=/srv/deployment/integration/composer/vendor/bin/composer
+            cd "$WORKSPACE/src/extensions/{extension}"
+            $composer update --no-progress --prefer-dist --profile
+
 
 # These are jobs we create for all of the extensions
 # listed below. If a job should only be created
@@ -1188,8 +1221,7 @@
      - 'mwext-VisualEditor-doc-publish':
         ext-name: VisualEditor
 
-     - '{name}-{ext-name}-qunit':
-        name: mwext
+     - 'mwext-WikibaseJavaScriptApi-qunit':
         ext-name: WikibaseJavaScriptApi
 
 # browser tests for MediaWiki extensions
