@@ -58,17 +58,6 @@
      - archive-log-dir
 
 - job-template:
-    name: '{name}-sphinx-doc'
-    node: hasContintPackages && UbuntuPrecise
-    defaults: use-remote-zuul
-    triggers:
-     - zuul
-    builders:
-     - shell: "python setup.py build_sphinx"
-
-    # FIXME: should publish somewhere
-
-- job-template:
     name: '{name}-pep8'
     node: hasContintPackages && UbuntuPrecise
     defaults: use-remote-zuul
@@ -97,6 +86,5 @@
 - job-group:
     name: python-jobs
     jobs:
-     - '{name}-sphinx-doc'
      - '{name}-pep8'
      - '{name}-pyflakes'
