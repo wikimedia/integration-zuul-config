@@ -1623,10 +1623,6 @@ jobs:
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
     branch: ^master$
 
-  # FIXME: work in progress
-  - name: sartoris-sphinx-doc
-    voting: false
-
   - name: mediawiki-core-jslint
     # Doesn't work in MediaWiki REL1_19 (bug 44846)
     branch: (?!REL1_19)
@@ -1739,8 +1735,6 @@ jobs:
 
   - name: wikimedia-fundraising-tools-yamllint
     voting: false
-  - name: wikimedia-fundraising-SmashPig-sphinx-doc
-    voting: false
 
 
 project-templates:
@@ -1832,11 +1826,9 @@ project-templates:
     check-voter:
       - '{prefix}-pep8'
       - '{prefix}-pyflakes'
-      - '{prefix}-sphinx-doc'
     gate-and-submit:
       - '{prefix}-pep8'
       - '{prefix}-pyflakes'
-      - '{prefix}-sphinx-doc'
 
   - name: python-lint
     check-voter:
@@ -1865,7 +1857,6 @@ project-templates:
   # Run Ruby linter.
   - name: extension-rubylint
     check:
-     - 'mwext-{name}-bundle-rubocop'
      - 'mwext-{name}-ruby1.9.3lint'
     test:
      - 'mwext-{name}-bundle-rubocop'
@@ -1881,8 +1872,7 @@ projects:
 
   - name: integration/config
     check:
-      - integration-zuul-layoutdiff
-      - integration-zuul-layoutvalidation
+      - noop
     test:
       - integration-config-tox-flake8
       - integration-config-tox-py27
@@ -2004,7 +1994,7 @@ projects:
         prefix: 'analytics-asana-stats'
 
   - name: analytics/aggregator
-    check-voter:
+    test:
      - analytics-aggregator-tox-flake8
      - analytics-aggregator-tox-flake8-bin
      - analytics-aggregator-tox-py27
@@ -2014,7 +2004,7 @@ projects:
      - analytics-aggregator-tox-py27
 
   - name: analytics/blog
-    check-voter:
+    test:
      - analytics-blog-tox-flake8
      - analytics-blog-tox-py27
     gate-and-submit:
@@ -2022,7 +2012,7 @@ projects:
      - analytics-blog-tox-py27
 
   - name: analytics/geowiki
-    check-voter:
+    test:
      - analytics-geowiki-tox-flake8
     gate-and-submit:
      - analytics-geowiki-tox-flake8
@@ -2038,7 +2028,7 @@ projects:
         prefix: 'analytics-glass'
 
   - name: analytics/quarry/web
-    check-voter:
+    test:
       - analytics-quarry-web-tox-flake8
     gate-and-submit:
       - analytics-quarry-web-tox-flake8
@@ -2061,19 +2051,19 @@ projects:
      - analytics-libanon
 
   - name: analytics/limn-mobile-data
-    check-voter:
+    test:
      - analytics-limn-mobile-data-tox-flake8
     gate-and-submit:
      - analytics-limn-mobile-data-tox-flake8
 
   - name: analytics/limn-language-data
-    check-voter:
+    test:
      - analytics-limn-language-data-tox-flake8
     gate-and-submit:
      - analytics-limn-language-data-tox-flake8
 
   - name: analytics/multimedia
-    check-voter:
+    test:
      - analytics-multimedia-tox-flake8
     gate-and-submit:
      - analytics-multimedia-tox-flake8
@@ -2103,13 +2093,13 @@ projects:
      - analytics-wikistats
 
   - name: analytics/wikimetrics
-    check-voter:
+    test:
      - analytics-wikimetrics-tox-flake8
     gate-and-submit:
      - analytics-wikimetrics-tox-flake8
 
   - name: analytics/wp-zero
-    check-voter:
+    test:
      - analytics-wp-zero-tox-flake8
     gate-and-submit:
      - analytics-wp-zero-tox-flake8
@@ -2121,7 +2111,9 @@ projects:
       - apps-android-commons-build
 
   - name: apps/android/wikipedia
-    check-voter:
+    check:
+      - apps-android-wikipedia-jslint
+    test:
       - apps-android-wikipedia-jslint
       - apps-android-wikipedia-tox-flake8
       - apps-android-wikipedia-maven-checkstyle
@@ -2184,7 +2176,7 @@ projects:
      - labs-tools-grrrit-yamllint
 
   - name: labs/tools/wikibugs2
-    check-voter:
+    test:
      - labs-tools-wikibugs2-tox-channels-trusty
      - labs-tools-wikibugs2-tox-flake8-trusty
     gate-and-submit:
@@ -2610,13 +2602,13 @@ projects:
       - operations-software-pyflakes
 
   - name: operations/software/ircyall
-    check-voter:
+    test:
       - operations-software-ircyall-tox-flake8-trusty
     gate-and-submit:
       - operations-software-ircyall-tox-flake8-trusty
 
   - name: operations/software/labsdb-auditor
-    check-voter:
+    test:
       - operations-software-labsdb-auditor-tox-flake8-trusty
     gate-and-submit:
       - operations-software-labsdb-auditor-tox-flake8-trusty
@@ -2648,7 +2640,9 @@ projects:
       - wikimedia-bugzilla-wikibugs-perllint
 
   - name: wikimedia/fundraising/dash
-    check-voter:
+    check:
+      - wikimedia-fundraising-dash-jslint
+    test:
       - wikimedia-fundraising-dash-jslint
       - wikimedia-fundraising-dash-npm
     gate-and-submit:
@@ -2715,10 +2709,8 @@ projects:
        prefix: 'wikimedia-fundraising-SmashPig'
     check-voter:
       - wikimedia-fundraising-SmashPig-phplint
-      - wikimedia-fundraising-SmashPig-sphinx-doc
     gate-and-submit:
       - wikimedia-fundraising-SmashPig-phplint
-      - wikimedia-fundraising-SmashPig-sphinx-doc
 
   - name: wikimedia/iegreview
     check:
@@ -3041,7 +3033,14 @@ projects:
       - mwext-ConfirmEdit-pyflakes
 
   - name: mediawiki/extensions/ContentTranslation
-    check-only:
+    check:
+      - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
+      - mwext-ContentTranslation-jslint
+      - mwext-ContentTranslation-lint
+      - mwext-ContentTranslation-ruby1.9.3lint
+      - mwext-ContentTranslation-yamllint
+      - php-composer-validate
+    test:
       - mwext-ContentTranslation-phpcs-strict-HEAD # Experiment, bug 48420
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
@@ -3220,9 +3219,6 @@ projects:
     template:
       - name: extension-unittests
       - name: extension-qunit
-    check:
-      - mwext-EventLogging-tox-flake8
-      - mwext-EventLogging-tox-flake8-bin
     test:
       - mwext-EventLogging-tox-flake8
       - mwext-EventLogging-tox-flake8-bin
@@ -3562,7 +3558,6 @@ projects:
     check:
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
-      - mwext-MultimediaViewer-doc-test
       - php-composer-validate
     test:
       - mwext-MultimediaViewer-lint
@@ -5184,7 +5179,7 @@ projects:
 # End of new currently disabled extensions checks from mass extension import - Addshore
 
   - name: mediawiki/services/cxserver
-    check-voter:
+    test:
       - cxserver-npm
     gate-and-submit:
       - cxserver-npm
@@ -5192,7 +5187,7 @@ projects:
       - beta-cxserver-update-eqiad
 
   - name: mediawiki/services/cxserver/deploy
-    check-voter:
+    test:
       - cxserver-npm
     gate-and-submit:
       - cxserver-npm
@@ -6046,7 +6041,9 @@ projects:
         prefix: 'pywikibot-compat'
 
   - name: pywikibot/core
-    check-voter:
+    check:
+      - noop
+    test:
       - 'pywikibot-core-tox-flake8'
       - 'pywikibot-core-tox-flake8-docstrings'
       - 'pywikibot-core-tox-flake8-docstrings-mandatory'
@@ -6160,7 +6157,6 @@ projects:
   - name: VisualEditor/VisualEditor
     check:
       - VisualEditor-jslint
-      - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
     test:
       - VisualEditor-npm
@@ -6180,7 +6176,7 @@ projects:
       - wikidata-gremlin
 
   - name: wikimedia/bots/jouncebot
-    check-voter:
+    test:
       - wikimedia-bots-jouncebot-tox-flake8
       - wikimedia-bots-jouncebot-yamllint
     gate-and-submit:
