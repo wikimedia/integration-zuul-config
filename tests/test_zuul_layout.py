@@ -219,3 +219,22 @@ class TestZuulLayout(unittest.TestCase):
         event.comment = 'Patch Set 1:\n\nrecheck'
         event.account = {'email': 'untrusted@example.org'}
         self.assertFalse(test_manager.eventMatches(event, change))
+
+    def test_pipelines_trustiness(self):
+        check_manager = self.getPipeline('check').manager
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        # Untrusted user
+        untrusted_event = zuul.model.TriggerEvent()
+        untrusted_event.type = 'patchset-created'
+        untrusted_event.account = {'email': 'untrusted@example.org'}
+        self.assertTrue(check_manager.eventMatches(untrusted_event, change))
+        self.assertFalse(test_manager.eventMatches(untrusted_event, change))
+
+        # Trusted user
+        trusted_event = zuul.model.TriggerEvent()
+        trusted_event.type = 'patchset-created'
+        trusted_event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertFalse(check_manager.eventMatches(trusted_event, change))
+        self.assertTrue(test_manager.eventMatches(trusted_event, change))
