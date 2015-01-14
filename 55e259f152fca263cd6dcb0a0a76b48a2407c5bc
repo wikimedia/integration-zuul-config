@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ee703fc5_dbb663d7",
+        "filename": "jjb/mediawiki-extensions.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-01-14T14:26:16Z",
+      "side": 1,
+      "message": "I am not a huge fan of that dedicated template which is merely to be able to bring in `data-values/javascript` via composer.\n\nIf that lib is used by other extensions, we might want to include it in mediawiki/vendor , though core does not rely on it :-\\",
+      "revId": "55e259f152fca263cd6dcb0a0a76b48a2407c5bc",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ee703fc5_fba9e778",
+        "filename": "jjb/mediawiki-extensions.yaml",
+        "patchSetId": 14
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-01-14T14:26:16Z",
+      "side": 1,
+      "message": "The prepare-mediawiki macro uses zuul-cloner which clones the repositories under /src/ so:\n\n -cd \"$WORKSPACE/extensions/{extension}\"\n +cd \"$WORKSPACE/src/extensions/{extension}\"\n\nYou can have the composer install command on its own line instead of \u0026\u0026. Jenkins run the shell scripts with set -e which causes it to abort whenever a command exit non zero.",
+      "revId": "55e259f152fca263cd6dcb0a0a76b48a2407c5bc",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
