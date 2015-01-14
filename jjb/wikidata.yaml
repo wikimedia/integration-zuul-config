@@ -124,6 +124,24 @@
      - qunit-cleanup
      - mw-teardown
 
+# This is a modified version of '{name}-{ext-name}-qunit'.
+# It runs "composer update" before the qunit tests.
+- job:
+    name: 'mwext-WikibaseJavaScriptApi-qunit'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-zuul-project
+     - wd-mw-composer-install-ext:
+          extension: 'WikibaseJavaScriptApi'
+     - qunit-karma
+    publishers:
+     - qunit-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
 - project:
     name: wikidata
     # By default we do not need any other extensions:
