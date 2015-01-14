@@ -199,3 +199,81 @@ class TestZuulLayout(unittest.TestCase):
         # We expect check pipelines to have no unsafe jobs
         expected = {k: {} for k in check_pipelines}
         self.assertEquals(expected, actual)
+
+    def test_recheck_comment_trusted_user(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1:\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_comment_untrusted_user(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1:\n\nrecheck'
+        event.account = {'email': 'untrusted@example.org'}
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+    def test_pipelines_trustiness(self):
+        check_manager = self.getPipeline('check').manager
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        # Untrusted user
+        untrusted_event = zuul.model.TriggerEvent()
+        untrusted_event.type = 'patchset-created'
+        untrusted_event.account = {'email': 'untrusted@example.org'}
+        self.assertTrue(check_manager.eventMatches(untrusted_event, change))
+        self.assertFalse(test_manager.eventMatches(untrusted_event, change))
+
+        # Trusted user
+        trusted_event = zuul.model.TriggerEvent()
+        trusted_event.type = 'patchset-created'
+        trusted_event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertFalse(check_manager.eventMatches(trusted_event, change))
+        self.assertTrue(test_manager.eventMatches(trusted_event, change))
+
+    def test_nothing(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        change.approvals = [
+            {'description': 'Verified',
+             'type': 'VRFY',
+             'value': '1',
+             'by': {'username': 'jenkins-bot'},
+             },
+            {'description': 'Code-Review',
+             'type': 'CRVW',
+             'value': '1',
+             'by': {'email': 'jdoe@wikimedia.org'},
+             },
+        ]
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.account = {'email': 'untrusted@example.org'}
+        event.approvals = [
+            {'description': 'Code-Review',
+             'type': 'CRVW',
+             'value': '1',
+             'by': {'email': 'unstrusted@example.org'},
+             },
+        ]
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.approvals = [
+            {'description': 'Code-Review',
+             'type': 'CRVW',
+             'value': '1',
+             },
+        ]
+        self.assertTrue(test_manager.eventMatches(event, change))
