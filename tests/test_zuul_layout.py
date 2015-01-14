@@ -199,3 +199,23 @@ class TestZuulLayout(unittest.TestCase):
         # We expect check pipelines to have no unsafe jobs
         expected = {k: {} for k in check_pipelines}
         self.assertEquals(expected, actual)
+
+    def test_recheck_comment_trusted_user(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1:\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_comment_untrusted_user(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1:\n\nrecheck'
+        event.account = {'email': 'untrusted@example.org'}
+        self.assertFalse(test_manager.eventMatches(event, change))
