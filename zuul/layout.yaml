@@ -1769,8 +1769,6 @@ jobs:
   - name: mwext-VisualEditor-qunit-karma
     voting: false
 
-  - name: ^mwext-WikibaseJavaScriptApi-qunit$
-    voting: false
   - name: ^mwext-Wikidata-qunit$
     voting: false
 
@@ -5974,7 +5972,23 @@ projects:
   - name: mediawiki/extensions/WikibaseJavaScriptApi
     template:
       - name: extension-qunit
-      - name: extension-unittests
+    # partially from extension-unittests as mwext-{name}-testextension-zend has no composer support yet
+    check:
+      - 'mwext-{name}-jslint'
+      - 'mwext-{name}-lint'
+      - php-composer-validate
+    test:
+      - 'mwext-{name}-jslint'
+      - 'mwext-{name}-lint':
+      - php-composer-validate
+    gate-and-submit:
+      - mediawiki-gate
+      - 'mwext-{name}-jslint'
+      - 'mwext-{name}-lint':
+      - php-composer-validate
+    experimental:
+      - 'mediawiki-extensions-hhvm'
+      - 'mwext-{name}-testextension-hhvm'
 
   - name: mediawiki/extensions/Wikidata
     template:
