@@ -145,6 +145,24 @@
      - archive-log-dir
 
 - job-template:
+    name: 'mwext-WikibaseJavaScriptApi-qunit'
+    node: contintLabsSlave && UbuntuPrecise
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - qunit
+     - composer-install-ext:
+         extension: '{ext-name}'
+    publishers:
+     - qunit-cleanup
+     - mw-teardown
+     - archive-log-dir
+
+- job-template:
     name: '{name}-{ext-name}-qunit-mobile'
     # @todo: Test and migrate to contintLabsSlave
     node: productionSlaves && UbuntuPrecise
@@ -317,6 +335,14 @@
     builders:
      - shell: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve.sh
      - shell: sudo -u jenkins /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh
+
+- builder:
+    name: composer-install-ext
+    builders:
+        - shell: |
+            composer=/srv/deployment/integration/composer/vendor/bin/composer
+            cd "$WORKSPACE/extensions/{extension}" && $composer install --no-progress --profile --prefer-dist
+
 
 # These are jobs we create for all of the extensions
 # listed below. If a job should only be created
@@ -1139,8 +1165,7 @@
      - 'mwext-VisualEditor-doc-publish':
         ext-name: VisualEditor
 
-     - '{name}-{ext-name}-qunit':
-        name: mwext
+     - 'mwext-WikibaseJavaScriptApi-qunit':
         ext-name: WikibaseJavaScriptApi
 
 # browser tests for MediaWiki extensions
