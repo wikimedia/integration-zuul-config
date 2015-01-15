@@ -398,7 +398,15 @@ jobs:
     queue-name: mediawiki
 
   # ... older branches get the legacy job
+  - name: ^mwext-AbuseFilter-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-CheckUser-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-ConfirmEdit-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-Echo-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-EventLogging-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-JsonConfig-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
@@ -407,6 +415,8 @@ jobs:
   - name: ^mwext-MobileApp-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-MobileFrontend-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-SpamBlacklist-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-Thanks-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
@@ -2750,6 +2760,7 @@ projects:
 
   - name: mediawiki/extensions/AbuseFilter
     template:
+      - name: extension-gate
       - name: extension-unittests
 
   - name: mediawiki/extensions/AccountAudit
@@ -2882,6 +2893,7 @@ projects:
 
   - name: mediawiki/extensions/CheckUser
     template:
+      - name: extension-gate
       - name: extension-unittests
 
   - name: mediawiki/extensions/Cite
@@ -3025,6 +3037,7 @@ projects:
 
   - name: mediawiki/extensions/ConfirmEdit
     template:
+      - name: extension-gate
       - name: extension-unittests
     check:
       - mwext-ConfirmEdit-pep8
@@ -3221,6 +3234,7 @@ projects:
 
   - name: mediawiki/extensions/EventLogging
     template:
+      - name: extension-gate
       - name: extension-unittests
       - name: extension-qunit
     test:
@@ -5531,6 +5545,7 @@ projects:
 
   - name: mediawiki/extensions/SpamBlacklist
     template:
+      - name: extension-gate
       - name: extension-unittests
 
   - name: mediawiki/extensions/Spreadsheet
