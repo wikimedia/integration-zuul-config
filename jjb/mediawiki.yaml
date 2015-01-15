@@ -187,6 +187,13 @@
          mediawiki/extensions/WikiGrok
          mediawiki/extensions/ZeroBanner
          mediawiki/extensions/ZeroPortal" > deps.txt
+     - shell:
+         # When triggered from the experimental pipeline, add the project to
+         # the list of dependencies. Used to inject an extension which is not
+         # yet part of the list above.
+         if [ "$ZUUL_PIPELINE" == 'experimental' ] && ! grep -q "$ZUUL_PROJECT" deps.txt; then
+            echo "$ZUUL_PROJECT" >> deps.txt
+         fi
      - zuul-cloner:
          projects: >
              mediawiki/core
