@@ -669,16 +669,6 @@
         PY_COLORS=1 tox -v -e "{venv}" | tee "log/{venv}.log"
         set +o pipefail
 
-# Some jobs are not using the git plugin which let us easily wipe
-# a current workspace.  This macro is meant to replace that feature
-# in jobs not using the git plugin.
-# `rm -fR .* *` would attempt to delete '.' and '..' which makes rm
-# to return an exit code of 1.  We use find instead.
-- builder:
-    name: wipe-workspace
-    builders:
-     - shell: 'echo "Wiping workspace"; find . -not -path . -delete; echo "Done"'
-
 - builder:
     name: yaml-lint
     builders:
