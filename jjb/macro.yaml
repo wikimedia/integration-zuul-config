@@ -314,57 +314,58 @@
         config: 'jsduck.json'
 
 - builder:
-    name: qunit
+    name: prepare-qunit-localhost
     builders:
-     - qunit-querystring:
-        querystring: ''
-
-- builder:
-    name: qunit-mobile
-    builders:
-     - qunit-querystring:
-        querystring: '&useformat=mobile'
-
-# - querystring: (with leading questionmark)
-#
-# Should be associated with the publisher 'qunit-cleanup' to delete the
-# temporary workspace under /srv/localhost/qunit after the build is complete.
-- builder:
-    name: qunit-querystring
     builders:
      - shell: |
         # Load context (namely: MW_INSTALL_PATH)
         . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
-        # Create unique sub directory name
-        #TEST_ID=`echo "$ZUUL_PROJECT/$ZUUL_COMMIT" | tr '/' '-'`
-        # String of jenkins-$JOB_NAME-$BUILD_NUMBER.
-        TEST_ID="$BUILD_TAG"
         # Configure MediaWiki
         echo -e \
          "<?php\n\$wgServer = 'http://localhost:9412';\n"\
-         "\$wgScriptPath = '/${{TEST_ID}}';\n"\
+         "\$wgScriptPath = '/${BUILD_TAG}';\n"\
          "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
          "\$wgEnableJavaScriptTest = true;\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
 
         # Make sure to compress MediaWiki log dir after phpunit has ran
         function compress_log_dir() {{
             echo "Compressing logs under $LOG_DIR"
-            gzip --verbose --force --best "$WORKSPACE"/log/*.log || :
+            gzip --verbose --force --best "$LOG_DIR"/*.log || :
         }}
         trap compress_log_dir EXIT
 
         # The location is free or we make it free
-        test ! -e /srv/localhost/qunit/$TEST_ID || rm /srv/localhost/qunit/$TEST_ID;
+        test ! -e /srv/localhost/qunit/$BUILD_TAG || rm /srv/localhost/qunit/$BUILD_TAG;
 
         # Publish our install in the QUnit server document root
-        ln -s "$MW_INSTALL_PATH" /srv/localhost/qunit/$TEST_ID
+        ln -s "$MW_INSTALL_PATH" /srv/localhost/qunit/$BUILD_TAG
 
         # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
-        curl --include "http://localhost:9412/$TEST_ID/index.php?title=Special:BlankPage" | head -n42
-        curl --include "http://localhost:9412/$TEST_ID/load.php?debug=true&modules=startup&only=scripts" | head -n42
-        # Run QUnit tests via PhantomJS
-        /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --qunit-url="http://localhost:9412/$TEST_ID/index.php?title=Special:JavaScriptTest/qunit{querystring}"
+        curl --include "http://localhost:9412/$BUILD_TAG/index.php?title=Special:BlankPage" | head -n42
+        curl --include "http://localhost:9412/$BUILD_TAG/load.php?debug=true&modules=startup&only=scripts" | head -n42
+
+# qunit
+#
+# ALWAYS pair with 'qunit-cleanup' publisher to ensure we don't leave
+# garbage behind in /srv/localhost/qunit
+- builder:
+    name: qunit-querystring
+    builders:
+     - prepare-qunit-localhost
+     - shell: |
+        # Run Special:JavaScriptTest/qunit via grunt-contrib-qunit in PhantomJS
+        /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --qunit-url="http://localhost:9412/$BUILD_TAG/index.php?title=Special:JavaScriptTest/qunit{querystring}"
+- builder:
+    name: qunit
+    builders:
+     - qunit-querystring:
+        querystring: ''
+- builder:
+    name: qunit-mobile
+    builders:
+     - qunit-querystring:
+        querystring: '&useformat=mobile'
 
 - publisher:
     name: qunit-cleanup
