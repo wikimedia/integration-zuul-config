@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "ae6ac7d6_2630d1fb",
+        "filename": "tests/test_zuul_layout.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 79
+      },
+      "writtenOn": "2015-01-19T13:05:57Z",
+      "side": 1,
+      "message": "The \u0027by\u0027 field is not emitted by Gerrit.\n\nSo, I guess the \u0027by\u0027 is either some Zuul magic, (or it is only here for readibility\nand get\u0027s ignored by the event_matches)?",
+      "revId": "a0ab2c1a9286874054c3eddc3134981642099878",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ee703fc5_0da49cae",
         "filename": "tests/test_zuul_layout.py",
         "patchSetId": 3
@@ -13,6 +30,24 @@
       "writtenOn": "2015-01-14T19:39:40Z",
       "side": 1,
       "message": "At this point \u0027change\u0027 is a change on mediawiki/core with votes:\n\n jenkins-bot         V  +1\n jdoe@wikimedia.org  CR +1",
+      "revId": "a0ab2c1a9286874054c3eddc3134981642099878",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae6ac7d6_46294599",
+        "filename": "tests/test_zuul_layout.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 79
+      },
+      "writtenOn": "2015-01-19T13:05:57Z",
+      "side": 1,
+      "message": "I previous versions, Gerrit\u0027s approvals came with types CRVW, and VRFY, but these days, Gerrit should return a JSON like\n\n  {\"type\":\"Code-Review\",\"description\":\"Code-Review\",\"value\":\"+1\"}\n\n[1] for a CR+1 approval, and\n\n  {\"type\":\"Verified\",\"description\":\"Verified\",\"value\":\"+1\"}\n\n[2] for V+1.\n\nSo the type field would be \"Code-Review\" instead of \"CRVW\" and \"Verified\"\ninstead of \"VRFY\".\n\nBut maybe Zuul is doing some translation internally?\n\n\n[1] https://git.wikimedia.org/blob/All-Projects/9c27bbf6b4ad67545371332b3a45896bd278ac4b/project.config#L71\n[2] https://git.wikimedia.org/blob/All-Projects/9c27bbf6b4ad67545371332b3a45896bd278ac4b/project.config#L65",
+      "parentUuid": "ee703fc5_0da49cae",
       "revId": "a0ab2c1a9286874054c3eddc3134981642099878",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -64,6 +99,24 @@
       "writtenOn": "2015-01-14T19:39:40Z",
       "side": 1,
       "message": "Once the tests are completed, jenkins-bot will vote Verified -1 or Verified -2, thus further events would miss the jenkins-bot verified 0/1 requirement.",
+      "revId": "a0ab2c1a9286874054c3eddc3134981642099878",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae6ac7d6_4610655b",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 79
+      },
+      "writtenOn": "2015-01-19T13:05:57Z",
+      "side": 1,
+      "message": "\u003e \"[...] jenkins-bot will vote Verified -1 or Verified -2\"\n\nI guess it\u0027s just a typo, but just to make sure I understand what we\u0027re\ndiscussing ... is the quoted \"-2\" meant to be \"+2\"?\n\nSo if a change is either V+0 or V+1 by jenkins-bot [and the other conditions]\nthen Jenkins will run the tests and do V-1 or V+2.",
+      "parentUuid": "ee703fc5_adb010d9",
       "revId": "a0ab2c1a9286874054c3eddc3134981642099878",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
