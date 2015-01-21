@@ -425,7 +425,7 @@
         nice -n 19 php tests/phpunit/phpunit.php \
             --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
-            --coverage-clover log/clover.xml \
+            --coverage-clover "$WORKSPACE/log/clover.xml" \
             --coverage-html /srv/org/wikimedia/integration/cover/mediawiki-core/master/php \
             || :
         # PHP segfault (bug 43972) so ignore any error with '|| :' or the
