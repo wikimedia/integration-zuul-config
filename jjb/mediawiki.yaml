@@ -420,9 +420,7 @@
         }
         trap compress_clover_log EXIT
 
-
-        cd "${MW_INSTALL_PATH}"
-        nice -n 19 php tests/phpunit/phpunit.php \
+        nice -n 19 php $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
             --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
             --coverage-clover log/clover.xml \
