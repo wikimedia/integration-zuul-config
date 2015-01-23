@@ -56,6 +56,13 @@
          - lang_list
 
 - job-template:
+    name: 'browsertests-MobileFrontend-{name}-{platform}-{browser}-sauce'
+    defaults: browsertests
+
+    triggers:
+          - timed: "H 14 * * *"
+
+- job-template:
     name: 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce'
     defaults: browsertests
 
