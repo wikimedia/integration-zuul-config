@@ -1661,6 +1661,12 @@ jobs:
     branch: (?!REL1_19)
     queue-name: mediawiki
 
+  - name: mediawiki-core-qunit-karma
+    # @since MediaWiki 1.25-alpha
+    branch: ^(master)$
+    queue-name: mediawiki
+    voting: false
+
   - name: ^mwext-WikibaseJavaScriptApi-qunit$
     voting: false
   - name: ^mwext-Wikibase-qunit$
@@ -1948,6 +1954,7 @@ projects:
         - mediawiki-extensions-hhvm
         - mediawiki-extensions-zend
         - mediawiki-core-qunit
+        - mediawiki-core-qunit-karma
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-validate
