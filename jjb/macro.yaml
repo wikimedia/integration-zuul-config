@@ -374,8 +374,7 @@
          builders:
            - shell: |
                rm -f "/srv/localhost/qunit/$BUILD_TAG"
-         # Options are confusing, setting them both to false ensures the
-         # postbuildscript is ALWAYS run.
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
          onsuccess: False
          onfailure: False
 
@@ -447,8 +446,9 @@
 
 # Shell script backed macro installing MediaWiki with a SQLite backend
 #
-# One should invoke the publisher mw-teardown to get rid of the sqlite database
-# directory after the build is finished.
+#
+# ALWAYS pair with 'mw-teardown' publisher to ensure we don't leave
+# sqlite databases behind after the build is finished.
 - builder:
     name: mw-install-sqlite
     builders:
@@ -460,14 +460,13 @@
      - postbuildscript:
          builders:
           - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown.sh"
-         # Options are confusing, setting them both to false ensures the
-         # postbuildscript is ALWAYS run.
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
          onsuccess: False
          onfailure: False
 
 # This macro is OBSOLETE
 #
-# Instead one should rely on Zuul cloner:
+# Instead one should use Zuul cloner:
 #
 # - zuul-cloner-extdeps:
 #    ext-name: '{ext-name}'

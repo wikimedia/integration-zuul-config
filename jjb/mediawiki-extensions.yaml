@@ -68,9 +68,7 @@
      - mw-setup-extension:
         mwbranch: 'master'
         dependencies: '{dependencies}'
-
      - mw-run-update-script
-
      - browsertests:
          tests-path: 'extensions/{ext-name}/tests/browser'
          browser: '{browser}'
@@ -81,8 +79,9 @@
           - junit:
               pattern: 'log/*.xml'
      - archive:
-         artifacts: 'log/*.log, log/report.html, log/*.png'
+         artifacts: 'log/report.html, log/*.png'
      - mw-teardown
+     - archive-log-dir
 
 - job-template:
     name: '{name}-{ext-name}-phpcs-HEAD'
@@ -180,9 +179,9 @@
          git submodule foreach git clean -xdff -q
      - qunit
     publishers:
-     - archive-log-dir
      - qunit-cleanup
      - mw-teardown
+     - archive-log-dir
 
 # Run extension tests via Zuul cloner
 #
@@ -206,10 +205,10 @@
     # TODO, find ways to additionaly run tests for core but
     # without extensions tests
     publishers:
-     - archive-log-dir
      - junit:
         results: 'log/junit*.xml'
      - mw-teardown
+     - archive-log-dir
 
 - job-template:
     name: 'mwext-GuidedTour-doc-test'
