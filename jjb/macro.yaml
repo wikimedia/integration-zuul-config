@@ -317,23 +317,15 @@
     name: prepare-qunit-localhost
     builders:
      - shell: |
-        # Load context (namely: MW_INSTALL_PATH)
-        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+        # Load context (e.g. MW_INSTALL_PATH, MW_SERVER, MW_SCRIPT_PATH)
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-qunit.sh
 
         # Configure MediaWiki
         echo -e \
-         "<?php\n\$wgServer = 'http://localhost:9412';\n"\
-         "\$wgScriptPath = '/${BUILD_TAG}';\n"\
+         "<?php\n\$wgServer = '${MW_SERVER}';\n"\
+         "\$wgScriptPath = '${MW_SCRIPT_PATH}';\n"\
          "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
          "\$wgEnableJavaScriptTest = true;\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
-
-        # Make sure to compress MediaWiki log dir after phpunit has ran
-        function compress_log_dir() {
-            LOG_DIR="$WORKSPACE/log"
-            echo "Compressing logs under $LOG_DIR"
-            gzip --verbose --force --best "$LOG_DIR"/*.log || :
-        }
-        trap compress_log_dir EXIT
 
         # The location is free or we make it free
         test ! -e /srv/localhost/qunit/$BUILD_TAG || rm /srv/localhost/qunit/$BUILD_TAG;
@@ -342,8 +334,8 @@
         ln -s "$MW_INSTALL_PATH" /srv/localhost/qunit/$BUILD_TAG
 
         # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
-        curl --include "http://localhost:9412/$BUILD_TAG/index.php?title=Special:BlankPage" | head -n42
-        curl --include "http://localhost:9412/$BUILD_TAG/load.php?debug=true&modules=startup&only=scripts" | head -n42
+        curl --include "$MW_SERVER/$MW_SCRIPT_PATH/index.php?title=Special:BlankPage" | head -n42
+        curl --include "MW_SERVER/$MW_SCRIPT_PATH/load.php?debug=true&modules=startup&only=scripts" | head -n42
 
 # qunit
 #
@@ -366,6 +358,17 @@
     builders:
      - qunit-querystring:
         querystring: '&useformat=mobile'
+- builder:
+    name: qunit-karma
+    builders:
+    builders:
+     - prepare-qunit-localhost
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-qunit.sh
+        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        cd $MW_INSTALL_PATH
+        npm install
+        grunt karma:main
 
 - publisher:
     name: qunit-cleanup
