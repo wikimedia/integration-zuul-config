@@ -366,6 +366,15 @@
     builders:
      - qunit-querystring:
         querystring: '&useformat=mobile'
+- builder:
+    name: qunit-karma
+    builders:
+    builders:
+     - expose-localhost-qunit
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        npm install
+        grunt karma:main
 
 - publisher:
     name: qunit-cleanup
