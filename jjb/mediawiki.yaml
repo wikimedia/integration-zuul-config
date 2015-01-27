@@ -21,7 +21,7 @@
      - jsonlint
 
 - job-template:
-    name: '{name}-qunit'
+    name: 'mediawiki-core-qunit'
     node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     logrotate:
@@ -37,6 +37,31 @@
      - mw-install-sqlite
      - mw-apply-settings
      - qunit
+    publishers:
+     - qunit-cleanup
+     - mw-teardown
+     - archive-log-dir
+
+- job-template:
+    # Based on 'mediawiki-core-qunit' but:
+    # * qunit -> qunit-karma (to run npm-install and karma)
+    # * UbuntuPrecise -> UbuntuTrusty (for new local browsers and nodejs version)
+    name: 'mediawiki-core-qunit-karma'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    triggers:
+     - zuul
+
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     - qunit-karma
     publishers:
      - qunit-cleanup
      - mw-teardown
@@ -324,7 +349,8 @@
         - zend
     jobs:
       - 'mediawiki-core-jslint'
-      - '{name}-qunit'
+      - 'mediawiki-core-qunit'
+      - 'mediawiki-core-qunit-karma'
       - 'mediawiki-core-jsduck'
       - '{name}-npm'
       - 'mediawiki-core-jsduck-publish'

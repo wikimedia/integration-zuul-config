@@ -144,6 +144,25 @@
      - archive-log-dir
 
 - job-template:
+    # Based on '{name}-{ext-name}-qunit' but:
+    # * qunit -> qunit-karma (to run npm-install and karma)
+    # * UbuntuPrecise -> UbuntuTrusty (for new local browsers and nodejs version)
+    name: '{name}-{ext-name}-qunit-karma'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - qunit-karma
+    publishers:
+     - qunit-cleanup
+     - mw-teardown
+     - archive-log-dir
+
+- job-template:
     name: '{name}-{ext-name}-qunit-mobile'
     # @todo: Test and migrate to contintLabsSlave
     node: productionSlaves && UbuntuPrecise
@@ -160,9 +179,9 @@
      - mw-teardown
      - archive-log-dir
 
-# VisualEditor MediaWiki extensions has the VisualEditor repository as a
-# submodule under lib/ve and Zuul cloner does not process submodules.
 - job-template:
+    # This is a copy of '{name}-{ext-name}-qunit', but with processes ve's submodule
+    # since Zuul cloner does not support git submodules.
     name: 'mwext-VisualEditor-qunit'
     node: contintLabsSlave && UbuntuPrecise
     concurrent: true
@@ -178,6 +197,26 @@
          git submodule status
          git submodule foreach git clean -xdff -q
      - qunit
+    publishers:
+     - qunit-cleanup
+     - mw-teardown
+     - archive-log-dir
+- job-template:
+    name: 'mwext-VisualEditor-qunit-karma'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: 'VisualEditor'
+         dependencies: 'Parsoid'
+     - shell: |
+         cd src/extensions/VisualEditor
+         git submodule update --init
+         git submodule status
+         git submodule foreach git clean -xdff -q
+     - qunit-karma
     publishers:
      - qunit-cleanup
      - mw-teardown
