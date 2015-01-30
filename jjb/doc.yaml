@@ -1,8 +1,6 @@
-# builder: push-doc
-#
 # Sync files from a Jenkins slave in labs to a central rsync server from which
 # another job (executing on gallium) can pull in the files and publish them
-# under https://doc.wikimedia.org/.
+# on https://doc.wikimedia.org/.
 #
 # Uses $ZUUL_UUID as a unique identifier.
 #
@@ -12,7 +10,7 @@
 # docdest: Directory under doc.wikimedia.org/
 #
 - builder:
-    name: push-doc
+    name: doc-publish
     docsrc: '{docsrc}'
     docdest: '{docdest}'
     builders:
@@ -24,9 +22,8 @@
             exit 1
          fi
          rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
-     # rsync folder to doc.wikimedia.org
      - trigger-builds:
-       - project: 'publish-doc'
+       - project: doc-publish-sync
          block: true
          current-parameters: true  # Pass Zuul parameters
          predefined-parameters:
@@ -37,8 +34,8 @@
 #
 # Uses $ZUUL_UUID as a unique identifier.
 - job:
-    name: 'publish-doc'
-    node: gallium  # hosts doc.wikimedia.org
+    name: doc-publish-sync
+    node: gallium # hosts doc.wikimedia.org
 
     parameters:
      - string:
