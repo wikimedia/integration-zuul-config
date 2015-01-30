@@ -1,16 +1,15 @@
 - job:
     name: 'unicodejs-jsduck-publish'
-    node: gallium
-    defaults: use-remote-zuul
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
     concurrent: false
     triggers:
      - zuul
     builders:
      - jsduck
-     - documentation-sync:
-        src: '$WORKSPACE/docs/code'
-        project: 'unicodejs'
-        version: '$ZUUL_BRANCH'
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'unicodejs/$ZUUL_BRANCH'
 
 - project:
     name: 'unicodejs'
