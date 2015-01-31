@@ -1979,9 +1979,7 @@ projects:
       - mediawiki-core-npm
       - mediawiki-core-phplint:
         - mediawiki-phpunit-hhvm
-        - mediawiki-phpunit-zend
         - mediawiki-extensions-hhvm
-        - mediawiki-extensions-zend
         - mediawiki-core-qunit
         - mediawiki-core-qunit-karma
       - mediawiki-core-bundle-rubocop
@@ -1996,8 +1994,10 @@ projects:
       - mediawiki-core-npm
       - mediawiki-core-phplint:
         - mediawiki-phpunit-hhvm
-        - mediawiki-phpunit-zend
         - mediawiki-extensions-hhvm
+        # Test pipeline runs hhvm-only for speed. The gate pipeline
+        # runs zend still for catching regressions.
+        - mediawiki-phpunit-zend
         - mediawiki-extensions-zend
         - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
