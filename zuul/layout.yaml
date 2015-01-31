@@ -412,6 +412,8 @@ jobs:
   # ... older branches get the legacy job
   - name: ^mwext-AbuseFilter-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-AntiSpoof-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-CheckUser-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-ConfirmEdit-testextension-zend$
@@ -2819,6 +2821,7 @@ projects:
 
   - name: mediawiki/extensions/AntiSpoof
     template:
+      - name: extension-gate
       - name: extension-unittests
 
   - name: mediawiki/extensions/Annotator
