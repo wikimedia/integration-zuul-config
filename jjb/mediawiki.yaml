@@ -229,6 +229,8 @@
          if [ "$ZUUL_PIPELINE" == 'experimental' ] && ! grep -q "$ZUUL_PROJECT" deps.txt; then
             echo "$ZUUL_PROJECT" >> deps.txt
          fi
+         # Ensure consitent loading
+         sort -o deps.txt deps.txt
      - zuul-cloner:
          projects: >
              mediawiki/core
