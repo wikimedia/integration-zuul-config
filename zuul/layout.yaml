@@ -425,7 +425,11 @@ jobs:
   # ... older branches get the legacy job
   - name: ^mwext-AbuseFilter-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-Babel-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-CheckUser-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-cldr-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-ConfirmEdit-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
@@ -444,6 +448,8 @@ jobs:
   - name: ^mwext-SpamBlacklist-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-Thanks-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-UniversalLanguageSelector-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-VisualEditor-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
@@ -2868,6 +2874,7 @@ projects:
 
   - name: mediawiki/extensions/Babel
     template:
+      - name: extension-gate
       - name: extension-unittests
 
   - name: mediawiki/extensions/BetaFeatures
@@ -2948,6 +2955,7 @@ projects:
 
   - name: mediawiki/extensions/cldr
     template:
+      - name: extension-gate
       - name: extension-unittests
     check:
       - mwext-cldr-phpcs-strict-HEAD # Experiment, bug 48420
@@ -5747,6 +5755,7 @@ projects:
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     template:
+      - name: extension-gate
       - name: extension-rubylint
       - name: extension-unittests
     check:
