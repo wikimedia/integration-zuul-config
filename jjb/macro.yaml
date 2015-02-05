@@ -17,7 +17,7 @@
          puppet-lint --version
          set -o pipefail
          puppet-lint \
-            --log-format '%{path}:%{linenumber} %{KIND} %{message} (%{check})' \
+            --log-format '%{path}:%{line} %{KIND} %{message} (%{check})' \
             --fail-on-warnings \
             . | tee puppet-lint.log
          set +o pipefail
@@ -31,7 +31,7 @@
          set -o pipefail
          puppet-lint \
             --error-level error \
-            --log-format '%{path}:%{linenumber} %{KIND} %{message} (%{check})' \
+            --log-format '%{path}:%{line} %{KIND} %{message} (%{check})' \
             . | tee puppet-lint.log
          set +o pipefail
 
