@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e7c4fa4_cd58ff8e",
+        "filename": "jjb/cxserver.yaml",
+        "patchSetId": 16
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-02-06T13:40:15Z",
+      "side": 1,
+      "message": "That macro is only used for the job that updates cxserver on the beta cluster ( https://integration.wikimedia.org/ci/job/beta-cxserver-update-eqiad/ ) and it clones both cxserver and its deploy repo. So there is no need to load any env there.\n\nInstead you want to generate jobs that will be triggered on patch proposal on either repos like its is done in jjb/parsoidsvc.yaml :\n\n - project:\n     name: parsoidsvc\n     # job templates are shared by both repositories\n     repository:\n      - source  # mediawiki/services/parsoid\n      - deploy  # mediawiki/services/parsoid/deploy\n     jobs:\n         \u003csnip\u003e\n         - \u0027parsoidsvc-{repository}-npm-0.10\u0027",
+      "revId": "b1f539a1b9246db0e0467bc5ea72f5b2653e6bad",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
