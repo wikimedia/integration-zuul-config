@@ -203,6 +203,7 @@
         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
         node --version
         npm --version
+        rm -rf node_modules
         npm install
         npm test
 
@@ -215,6 +216,8 @@
          repository: '{repository}'
      - shell: |
          . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+         # node_modules is not purged, taken care of by setup-npm-oid
+
          node --version
          npm --version
          . npm-oid.env
@@ -244,6 +247,7 @@
         "source")
             NPM_SET_PATH="."
             echo "Running npm install"
+            rm -rf node_modules
             npm install
             ;;
         "deploy")
@@ -420,6 +424,7 @@
         . /srv/deployment/integration/slave-scripts/bin/mw-set-env-qunit.sh
         cd $MW_INSTALL_PATH
         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        rm -rf node_modules
         npm install
         grunt karma:main
 
