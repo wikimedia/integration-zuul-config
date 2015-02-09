@@ -251,8 +251,12 @@
             npm install
             ;;
         "deploy")
-            NPM_SET_PATH="./src"
-            # All modules should already be in the deploy repo, no npm install
+            if [ "$ZUUL_PROJECT" == "mediawiki/services/parsoid/deploy" ]; then
+                NPM_SET_PATH="./src"
+                # All modules should already be in the deploy repo, no npm install
+            else
+                NPM_SET_PATH="$WORKSPACE"
+            fi
             ;;
         *)
             echo "JJB {{repository}} parameter '{repository}' is not recognized."
