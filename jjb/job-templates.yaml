@@ -64,11 +64,11 @@
      - npm-oid:
          repository: '{repository}'
 
-# Run composer install and composer test
+# Run composer update and composer test
 #
 # Notes:
 #
-# `composer install` is being passed `--prefer-dist` to download cacheable
+# `composer update` is being passed `--prefer-dist` to download cacheable
 # tarballs when possible.
 #
 - job-template:
@@ -81,7 +81,7 @@
     builders:
      - shell: |
          /srv/deployment/integration/composer/vendor/bin/composer validate
-         /srv/deployment/integration/composer/vendor/bin/composer install --no-progress --prefer-dist --profile
+         /srv/deployment/integration/composer/vendor/bin/composer update --no-progress --prefer-dist --profile
          /srv/deployment/integration/composer/vendor/bin/composer test
 
 - job-template:
