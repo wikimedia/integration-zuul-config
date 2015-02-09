@@ -166,6 +166,9 @@
         "deploy")
             NPM_SET_PATH="./src"
             # All modules should already be in the deploy repo, no npm install
+
+            # grunt.loadNpmTasks() does not honor NODE_PATH so fake it
+            ln -fs "$WORKSPACE/node_modules" "$NPM_SET_PATH/node_modules"
             ;;
         *)
             echo "JJB {{repository}} parameter '{repository}' is not recognized."
