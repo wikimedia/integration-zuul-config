@@ -109,9 +109,8 @@
           cucumber_tags: '{cucumber_tags}'
           headless: '{headless}'
           folder: '{folder}'
-          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_credentials_id: '{mediawiki_credentials_id}'
           mediawiki_url: '{mediawiki_url}'
-          mediawiki_user: '{mediawiki_user}'
           platform: '{platform}'
           version: '{version}'
 
@@ -139,6 +138,15 @@
     wrappers:
       - ansicolor
       - timestamps
+      # Wiki usernames and passwords are hold in Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/browsertests/
+      - credentials-binding:
+          - username-password:
+              credential-id: '{mediawiki_credentials_id}'
+              # FIXME JJB does not support splitted user/pass variables although the plugin does.
+              # http://ci.openstack.org/jenkins-job-builder/wrappers.html#wrappers.credentials-binding
+              # Pass both in a single variable, separated by ':'
+              variable: MEDIAWIKI_CREDENTIALS
 
 # UploadWizard
 
@@ -146,7 +154,7 @@
     name: 'UploadWizard-api-{mediawiki_url}'
     defaults: browsertests
     node: contintLabsSlave && UbuntuPrecise
-    mediawiki_password_variable: '{mediawiki_password_variable}'
+    mediawiki_credentials_id: '{mediawiki_credentials_id}'
     mediawiki_url: '{mediawiki_url}'
     pollscm: '{pollscm}'
 
@@ -156,9 +164,8 @@
 
     builders:
       - UploadWizard-api:
-          mediawiki_password_variable: '{mediawiki_password_variable}'
+          mediawiki_credentials_id: '{mediawiki_credentials_id}'
           mediawiki_url: '{mediawiki_url}'
-          mediawiki_user: '{mediawiki_user}'
 
     publishers:
       - email:
@@ -171,7 +178,15 @@
       - shell: |
           # set up environment variables
           set -e
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
+
+          set +x
+          if [ -z $MEDIAWIKI_CREDENTIALS ]; then
+              echo "\$MEDIAWIKI_CREDENTIALS is empty. Check job configuration."
+              exit 1
+          fi
+          export MEDIAWIKI_USER=`echo $MEDIAWIKI_CREDENTIALS | cut -f1 -d:`
+          export MEDIAWIKI_PASSWORD=`echo $MEDIAWIKI_CREDENTIALS | cut -f2- -d:`
+          set -x
 
           # install python
           virtualenv --distribute DEV
@@ -181,11 +196,11 @@
 
           # run tests
           DEV/bin/python tests/api/upload-wizard_tests.py \
-            --username "{mediawiki_user}" \
+            --username "$MEDIAWIKI_USER" \
             --api_url "http://{mediawiki_url}/w/api.php"
           DEV/bin/python tests/api/upload-wizard_tests.py \
             --gen_new_image \
-            --username "{mediawiki_user}" \
+            --username "$MEDIAWIKI_USER" \
             --api_url "http://{mediawiki_url}/w/api.php"
 
 # VisualEditor
