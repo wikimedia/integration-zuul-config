@@ -11,14 +11,22 @@
           export CUCUMBER_TAGS={cucumber_tags}
           export HEADLESS={headless}
           export MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
-          export MEDIAWIKI_PASSWORD_VARIABLE={mediawiki_password_variable}
           export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
-          export MEDIAWIKI_USER={mediawiki_user}
           export PLATFORM='{platform}'
           # Replace PLATFORM underscores (Jenkins) to spaces (SauceLabs)
           export PLATFORM=${{PLATFORM//_/ }}
           export SCREENSHOT_FAILURES=true
           export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
+
+          set +x
+          if [ -z $MEDIAWIKI_CREDENTIALS ]; then
+              echo "\$MEDIAWIKI_CREDENTIALS is empty. Check job configuration."
+              exit 1
+          fi
+          export MEDIAWIKI_USER=`echo $MEDIAWIKI_CREDENTIALS | cut -f1 -d:`
+          MEDIAWIKI_PASSWORD=`echo $MEDIAWIKI_CREDENTIALS | cut -f2- -d:`
+          export MEDIAWIKI_PASSWORD_VARIABLE='MEDIAWIKI_PASSWORD'
+          set -x
 
           # We only care about one version of our browser and do not need a job
           # per version.  Thus the versions to use are hardcoded there.
