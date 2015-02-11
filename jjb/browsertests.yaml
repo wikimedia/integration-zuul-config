@@ -41,11 +41,10 @@
     defaults: browsertests
     folder: tests
     headless: 'false'
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/CentralNotice
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
@@ -84,18 +83,17 @@
     browser: firefox
     folder: tests
     headless: 'false'
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-CirrusSearch
     repository: mediawiki/extensions/CirrusSearch
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
         mediawiki_url: en.wikipedia.beta.wmflabs.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
 
 # Core
@@ -105,9 +103,8 @@
     browser: firefox
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
     mediawiki_url: en.wikipedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/core
@@ -121,7 +118,6 @@
     defaults: browsertests
     folder: tests
     headless: 'false'
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/Echo
@@ -130,22 +126,22 @@
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
         mediawiki_url: en.wikipedia.beta.wmflabs.org
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
         mediawiki_url: en.wikipedia.beta.wmflabs.org
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
 
 # Flow
 - project:
@@ -153,7 +149,6 @@
     defaults: browsertests
     folder: tests
     headless: 'false'
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/Flow
@@ -161,48 +156,45 @@
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
         mediawiki_url: en.wikipedia.beta.wmflabs.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
         mediawiki_url: en.wikipedia.beta.wmflabs.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: internet_explorer
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
         mediawiki_url: en.wikipedia.beta.wmflabs.org
         platform: 'windows_8'
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: internet_explorer
         platform: 'windows_8'
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-monobook-sauce':
         browser: chrome
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user_monobook-at-beta.wmflabs.org
         mediawiki_url: en.wikipedia.beta.wmflabs.org
-        mediawiki_user: Selenium_user_monobook
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-monobook-sauce':
         browser: firefox
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user_monobook-at-beta.wmflabs.org
         mediawiki_url: en.wikipedia.beta.wmflabs.org
-        mediawiki_user: Selenium_user_monobook
-
 
 
 
@@ -212,9 +204,8 @@
     defaults: browsertests
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.wikipedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/Math
@@ -233,9 +224,8 @@
     browser: firefox
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.wikipedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-growth
     repository: mediawiki/extensions/GettingStarted
@@ -249,9 +239,8 @@
     defaults: browsertests
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.m.wikipedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/MobileFrontend
@@ -270,7 +259,7 @@
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.m.wikipedia.org
 
 # MultimediaViewer
@@ -280,9 +269,8 @@
     browser: firefox
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.wikipedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-multimedia
     repository: mediawiki/extensions/MultimediaViewer
@@ -323,7 +311,7 @@
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: mediawiki.org
 
 # PageTriage
@@ -332,9 +320,8 @@
     defaults: browsertests
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.wikipedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/PageTriage
@@ -353,9 +340,8 @@
     browser: firefox
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+    mediawiki_credentials_id: Selenium_user-at-wikipedia.org
     mediawiki_url: test2.wikipedia.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/PdfHandler
@@ -376,37 +362,33 @@
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_ULS_WMFLABS_ORG
+        mediawiki_credentials_id: Uls-at-beta.wmflabs.org
         mediawiki_url: commons.wikimedia.beta.wmflabs.org
-        mediawiki_user: Uls
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
         mediawiki_url: language-browsertests.wmflabs.org
-        mediawiki_user: Selenium_user
         # Restrict emails notifications since language-browsertests is unstable/broken
         recipients: *emails-qa-alerts
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_SANDBOX_TRANSLATEWIKI_NET
+        mediawiki_credentials_id: Selenium-at-sandbox.translatewiki.net
         mediawiki_url: sandbox.translatewiki.net
-        mediawiki_user: Selenium
 
 # UploadWizard
 - project:
     name: UploadWizard-api
     defaults: browsertests
-    mediawiki_user: Selenium_user
     repository: mediawiki/extensions/UploadWizard
 
     jobs:
      - 'UploadWizard-api-{mediawiki_url}':
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
         mediawiki_url: commons.wikimedia.beta.wmflabs.org
         pollscm: '* * * * *'
 
      - 'UploadWizard-api-{mediawiki_url}':
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: commons.wikimedia.org
         pollscm: '0 5 31 2 *'
 
@@ -415,9 +397,8 @@
     defaults: browsertests
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: commons.wikimedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-UploadWizard
     repository: mediawiki/extensions/UploadWizard
@@ -435,9 +416,8 @@
     defaults: browsertests
     folder: modules/ve-mw/tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.wikipedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-VisualEditor
     repository: mediawiki/extensions/VisualEditor
@@ -471,18 +451,18 @@
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: internet_explorer
         platform: 'windows_8'
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce':
@@ -493,7 +473,7 @@
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: safari
         platform: 'os_x_10.9'
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+        mediawiki_credentials_id: Selenium_user-at-wikipedia.org
         mediawiki_url: test2.wikipedia.org
 
      - 'browsertests-{name}-production-{platform}-{browser}-sauce':
@@ -501,8 +481,7 @@
 
      - 'browsertests-{name}-language-screenshot-{platform}-{browser}':
         browser: firefox
-        mediawiki_password_variable: MEDIAWIKI_PASSWORD_LANGUAGESCREENSHOTBOT_WMFLABS_ORG
-        mediawiki_user: LanguageScreenshotBot
+        mediawiki_credentials_id: LanguageScreenshotBot-at-beta.wmflabs.org
         platform: 'os_x_10.10'
 
 # Wikidata
@@ -512,9 +491,8 @@
     browser: firefox
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: WikidataTester-at-beta.wmflabs.org
     mediawiki_url: wikidata.beta.wmflabs.org
-    mediawiki_user: WikidataTester
     platform: linux
     recipients: *emails-Wikidata-qa
     repository: WikidataBrowserTests.git
@@ -541,9 +519,8 @@
     browser: firefox
     folder: tests
     headless: 'false'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WMFLABS_ORG
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.wikipedia.beta.wmflabs.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/WikiLove
@@ -558,9 +535,8 @@
     browser: phantomjs
     folder: tests
     headless: 'true'
-    mediawiki_password_variable: MEDIAWIKI_PASSWORD_SELENIUM_USER_WIKIPEDIA_ORG
+    mediawiki_credentials_id: Selenium_user-at-wikipedia.org
     mediawiki_url: en.m.wikipedia.org
-    mediawiki_user: Selenium_user
     platform: linux
     recipients: *emails-qa
     repository: mediawiki/extensions/ZeroBanner
