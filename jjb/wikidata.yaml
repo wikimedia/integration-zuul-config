@@ -138,6 +138,7 @@
         ext-name: 'Wikibase'
         kind: repo
         repoorclient: 'repo'
+        dependencies: 'cldr'
         phpunit-params: '--group Wikibase --exclude-group WikibaseAPI'
 
      - 'mwext-Wikibase-{kind}-tests':
@@ -150,7 +151,7 @@
         ext-name: 'Wikibase'
         kind: client
         repoorclient: 'client'
-        dependencies: 'Scribunto'
+        dependencies: 'Scribunto,cldr'
         phpunit-params: '--group Wikibase,WikibaseClient'
 
      - 'mwext-Wikibase-qunit':
@@ -161,7 +162,7 @@
         kind: client
         repoorclient: 'client'
         experimental: 'true'
-        dependencies: 'Scribunto'
+        dependencies: 'Scribunto,cldr'
         phpunit-params: '--group Wikibase,WikibaseClient'
 
      - 'mwext-Wikidata-{kind}-tests':
@@ -169,7 +170,7 @@
         kind: client-nonexperimental
         repoorclient: 'client'
         experimental: 'false'
-        dependencies: 'Scribunto'
+        dependencies: 'Scribunto,cldr'
         phpunit-params: '--group Wikibase,WikibaseClient'
 
      - 'mwext-Wikidata-{kind}-tests':
@@ -177,6 +178,7 @@
         kind: repo
         repoorclient: 'repo'
         experimental: 'true'
+        dependencies: 'Scribunto,cldr'
         phpunit-params: '--group Wikibase,PropertySuggester'
 
      - 'mwext-Wikidata-{kind}-tests':
@@ -184,6 +186,7 @@
         kind: repo-nonexperimental
         repoorclient: 'repo'
         experimental: 'false'
+        dependencies: 'Scribunto,cldr'
         phpunit-params: '--group Wikibase,PropertySuggester'
 
      - 'mwext-Wikidata-qunit':
