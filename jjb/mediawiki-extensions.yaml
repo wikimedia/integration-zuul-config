@@ -1377,11 +1377,15 @@
 
 - project:
     name: 'mwext-MobileFrontend'
+    docsrc: 'docs'
+    docdest: 'MobileFrontend'
     jobs:
      - '{name}-bundle-{bundlecommand}':
          bundlecommand:
           - rubocop
      - '{name}-ruby1.9.3lint'
+     - '{name}-docs'
+     - '{name}-docs-publish'
 
 - project:
     name: 'mwext-MultimediaViewer'
