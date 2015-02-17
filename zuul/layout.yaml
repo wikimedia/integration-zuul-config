@@ -437,6 +437,8 @@ jobs:
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-EventLogging-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
+  - name: ^mwext-Gather-testextension-zend$
+    branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-JsonConfig-testextension-zend$
     branch: (REL1_19|REL1_22|REL1_23|REL1_24|fundraising/REL1_23)
   - name: ^mwext-Mantle-testextension-zend$
@@ -3345,6 +3347,12 @@ projects:
   - name: mediawiki/extensions/Gadgets
     template:
       - name: extension-unittests
+
+  - name: mediawiki/extensions/Gather
+    template:
+      - name: extension-gate
+      - name: extension-unittests
+      - name: extension-phpcs
 
   - name: mediawiki/extensions/GettingStarted
     template:
