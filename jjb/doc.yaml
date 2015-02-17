@@ -95,3 +95,74 @@
 
     logrotate:
         daysToKeep: 15
+
+- job-template:
+    name: '{name}-docs'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         make docs
+    publishers:
+     - archive-log-dir
+
+- job-template:
+    name: '{name}-docs-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    logrotate:
+        daysToKeep: 15
+    triggers:
+     - zuul
+    builders:
+     - assert-env-doc_subpath
+     - shell: |
+         make docs
+     - doc-publish:
+         docsrc: '{docsrc}'
+         docdest: '{docdest}'
+    publishers:
+     - archive-log-dir
+
+- job-template:
+    name: '{name}-mwextdocs'
+    node: contintLabsSlave && UbuntuTrusty
+    logrotate:
+        daysToKeep: 15
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             $ZUUL_PROJECT
+     - shell: |
+         export MW_INSTALL_PATH="$WORKSPACE/src"
+         cd src/extensions/`basename $ZUUL_PROJECT`
+         make docs
+
+- job-template:
+    name: '{name}-mwextdocs-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    logrotate:
+        daysToKeep: 15
+    triggers:
+     - zuul
+    builders:
+     - assert-env-doc_subpath
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             $ZUUL_PROJECT
+     - shell: |
+         export MW_INSTALL_PATH="$WORKSPACE/src"
+         cd src/extensions/`basename $ZUUL_PROJECT`
+         make docs
+     - doc-publish:
+         docsrc: '{docsrc}'
+         docdest: '{docdest}'
