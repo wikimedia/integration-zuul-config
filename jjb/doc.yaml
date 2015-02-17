@@ -95,3 +95,35 @@
 
     logrotate:
         daysToKeep: 15
+
+- job-template:
+    name: '{name}-docs'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         rm -fR log
+         mkdir -p log
+         make docs
+    publishers:
+     - archive-log-dir
+
+- job-template:
+    name: '{name}-docs-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    triggers:
+     - zuul
+    builders:
+     - assert-env-doc_subpath
+     - shell: |
+         rm -fR log
+         mkdir -p log
+         make docs
+     - doc-publish:
+         docsrc: '{docsrc}'
+         docdest: '{docdest}'
+    publishers:
+     - archive-log-dir
