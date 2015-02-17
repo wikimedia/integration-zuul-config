@@ -1,3 +1,32 @@
+- job-template:
+    name: 'phabricator-wmf-integration'
+
+    # FIXME  should use php5 on Trusty to have Zend PHP 5.5.x
+    node: contintLabsSlave && UbuntuPrecise  # Zend PHP 5.3.x
+
+    concurrent: true
+    logrotate:
+        daysToKeep: 90
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+            phabricator/arcanist
+            phabricator/extensions/BurnDownCharts
+            phabricator/extensions/Sprint
+            phabricator/extensions/security
+            phabricator/libphutil
+            phabricator/phabricator
+     - shell: "php --version"
+     - shell: |
+         find src/ -type d -name .git -print -exec bash -c 'cd "{{}}/.."; $WORKSPACE/src/phabricator/arcanist/bin/arc --ansi lint .' \;
+
+- project:
+    name: 'phabricator'
+    jobs:
+     - 'phabricator-wmf-integration'
+
 - project:
     name: 'phabricator-arcanist'
     jobs:
