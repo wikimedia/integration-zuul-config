@@ -2898,8 +2898,24 @@ projects:
       - name: extension-checks
 
   - name: mediawiki/extensions/Citoid
-    template:
-      - name: extension-unittests
+    check:
+      - mwext-Citoid-lint
+      - php-composer-validate
+    test:
+      - mwext-Citoid-lint
+      - mwext-Citoid-testextension-hhvm
+      - mwext-Citoid-testextension-zend
+      - mwext-Citoid-npm
+      - php-composer-validate
+    gate-and-submit:
+      - mediawiki-gate
+      - mwext-Citoid-lint
+      - mwext-Citoid-testextension-hhvm
+      - mwext-Citoid-testextension-zend
+      - mwext-Citoid-npm
+      - php-composer-validate
+    experimental:
+      - mediawiki-extensions-hhvm
 
   - name: mediawiki/extensions/cldr
     template:
