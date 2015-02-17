@@ -2946,8 +2946,15 @@ projects:
       - name: extension-checks
 
   - name: mediawiki/extensions/Citoid
-    template:
-      - name: extension-unittests
+    check:
+      - mwext-Citoid-jslint
+    test:
+      - mwext-Citoid-jslint
+      - mwext-Citoid-npm
+    gate-and-submit:
+      - mediawiki-gate
+      - mwext-Citoid-jslint
+      - mwext-Citoid-npm
 
   - name: mediawiki/extensions/cldr
     template:
