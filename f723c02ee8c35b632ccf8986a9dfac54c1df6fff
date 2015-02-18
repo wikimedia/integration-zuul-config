@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "6e7c4fa4_b698187c",
+        "filename": "jjb/ruby-jobs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-02-18T21:37:06Z",
+      "side": 1,
+      "message": "Looking at the jobs diff at https://integration.wikimedia.org/ci/job/integration-jjb-config-diff/2182/consoleFull :\n\n mediawiki-selenium-bundle-yard-publish\n\n if [ \u0027None\u0027 !\u003d \u0027\u0027 ]; then\n   version\u003d(-v \u0027None\u0027)\n\nSeems bundler-version is not passed and thus interpreted by python as an empty value i.e. string \u0027None\u0027.",
+      "revId": "f723c02ee8c35b632ccf8986a9dfac54c1df6fff",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e7c4fa4_93e08f25",
         "filename": "jjb/ruby-jobs.yaml",
         "patchSetId": 2
@@ -31,6 +48,24 @@
       "side": 1,
       "message": "Never mind. This appears to the be the right syntax.\n\nhttp://ci.openstack.org/jenkins-job-builder/definition.html#job-template\n\nI guess `jenkins-jobs test` just takes longer than I expected.",
       "parentUuid": "6e7c4fa4_93e08f25",
+      "revId": "f723c02ee8c35b632ccf8986a9dfac54c1df6fff",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e7c4fa4_f689b027",
+        "filename": "jjb/ruby-jobs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-02-18T21:37:06Z",
+      "side": 1,
+      "message": "Yup double curly braces usually solve it :-]  The JJB diff let you confirm it is properly escaped ( https://integration.wikimedia.org/ci/job/integration-jjb-config-diff/2182/consoleFull )",
+      "parentUuid": "6e7c4fa4_53f0b7c3",
       "revId": "f723c02ee8c35b632ccf8986a9dfac54c1df6fff",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
