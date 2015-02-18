@@ -6,13 +6,20 @@
          # See https://github.com/bundler/bundler/issues/2856
          export GEM_HOME="$WORKSPACE/../gems/2.0.0"
 
-         # install ruby dependencies
+         # Install bundler
+         if [ '{bundler-version}' != '' ]; then
+           version=(-v '{bundler-version}')
+         else
+           version=()
+         fi
+
          mkdir -p vendor
-         gem2.0 install --env-shebang -i vendor --no-document bundler
+         gem2.0 install --env-shebang -i vendor --no-document "${{version[@]}}" bundler
 
          # Prepare some paths lookup
          export GEM_PATH="`pwd`/vendor"
 
+         # Install dependencies
          vendor/bin/bundle install --verbose
          vendor/bin/bundle exec {command}
 
@@ -26,6 +33,19 @@
     builders:
      - bundle:
          command: "{bundlecommand}"
+         bundler-version: ~
+
+- job-template:
+    name: '{name}-bundle17-{bundlecommand}'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - bundle:
+         command: "{bundlecommand}"
+         bundler-version: '>= 1.7.13, < 1.8.0'
 
 # Call bundle 'yard' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
@@ -38,6 +58,7 @@
     builders:
      - bundle:
          command: 'yard'
+         bundler-version: ~
      - doc-publish:
          docsrc: 'doc'
          docdest: 'rubygems/{name}'
