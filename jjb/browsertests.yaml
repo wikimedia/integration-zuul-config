@@ -35,6 +35,22 @@
      - Wikidata-devs: &emails-Wikidata-devs
         adrian.lang@wikimedia.de katie.filbert@wikimedia.de qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de
 
+# CentralAuth
+- project:
+    name: CentralAuth
+    defaults: browsertests
+    browser: firefox
+    folder: tests
+    headless: 'false'
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/CentralAuth
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
+
 # CentralNotice
 - project:
     name: CentralNotice
