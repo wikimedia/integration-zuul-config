@@ -89,19 +89,6 @@
           artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
 
 - job-template:
-    name: '{name}-debbuild'
-    node: hasContintPackages && UbuntuPrecise
-    defaults: use-remote-zuul
-
-    scm:
-     - git-deb-package
-
-    builders:
-     - shell: 'cd source && uscan --verbose --rename --download-current-version'
-     - shell: 'cd source && dpkg-buildpackage -rfakeroot -us -uc'
-     - shell: 'lintian --info *.deb'
-
-- job-template:
     name: '{name}-antbuild'
     defaults: use-remote-zuul
     triggers:
@@ -187,11 +174,6 @@
     jobs:
      - '{name}-debian-glue'
      - '{name}-tox-{toxenv}'
-
-- project:
-    name: 'operations-debs-python-voluptuous'
-    jobs:
-     - '{name}-debbuild'
 
 - project:
     name: 'operations-debs-varnish'
