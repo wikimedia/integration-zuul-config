@@ -178,7 +178,8 @@
      - deploy  # mediawiki/services/parsoid/deploy
     jobs:
         - 'parsoidsvc-jslint'
-        - '{name}-debian-glue'
+        - '{name}-debian-glue':
+            distribution: trusty
         - 'parsoidsvc-{repository}-parse-tool-check'
         - 'parsoidsvc-{repository}-roundtrip-test-check'
         - 'parsoidsvc-{repository}-npm-0.8'

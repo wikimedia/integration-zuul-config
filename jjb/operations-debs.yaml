@@ -20,6 +20,7 @@
     name: debian-glue-build-and-provide-package
     builders:
       - shell: |
+          export distribution={distribution}
           export REPOSITORY=/data/project/debianrepo
           export REPOS=jenkins-debian-glue
           /usr/bin/build-and-provide-package
@@ -59,6 +60,7 @@
 
 - job-template:
     name: '{name}-debian-glue'
+    #name: '{name}-debian-glue-{distribution}'
     defaults: use-remote-zuul
     node: contintLabsSlave && UbuntuTrusty
     concurrent: true
@@ -76,7 +78,8 @@
 
     builders:
       - debian-glue-generate-git-snapshot
-      - debian-glue-build-and-provide-package
+      - debian-glue-build-and-provide-package:
+          distribution: '{distribution}'
       - debian-glue-lintian
       - debian-glue-piuparts
 
@@ -109,7 +112,8 @@
 - project:
     name: gerrit
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'lucene-search-2'
@@ -124,27 +128,32 @@
 - project:
     name: 'operations-debs-apertium-apy'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-archiva'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-gerrit'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-git-fat'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-ganglia'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-ircecho'
@@ -154,17 +163,20 @@
 - project:
     name: 'operations-debs-jenkins-debian-glue'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-kafka'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-latexml'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: operations-debs-pybal
@@ -172,21 +184,25 @@
      - py27
      - flake8
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
      - '{name}-tox-{toxenv}'
 
 - project:
     name: 'operations-debs-varnish'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-vips'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
 
 - project:
     name: 'operations-debs-wikistats'
     jobs:
-     - '{name}-debian-glue'
+     - '{name}-debian-glue':
+         distribution: trusty
      - '{name}-phplint'
