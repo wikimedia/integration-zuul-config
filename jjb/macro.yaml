@@ -689,11 +689,6 @@
         PY_COLORS=1 tox -v -e "{venv}" | tee "log/{venv}.log"
         set +o pipefail
 
-- builder:
-    name: yaml-lint
-    builders:
-     - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
-
 - publisher:
     name: archive-log-dir
     publishers:
