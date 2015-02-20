@@ -1742,9 +1742,6 @@ jobs:
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
 
-  - name: wikimedia-fundraising-tools-yamllint
-    voting: false
-
 
 project-templates:
 
@@ -2182,10 +2179,8 @@ projects:
   - name: labs/tools/grrrit
     check-voter:
      - labs-tools-grrrit-jslint
-     - labs-tools-grrrit-yamllint
     gate-and-submit:
      - labs-tools-grrrit-jslint
-     - labs-tools-grrrit-yamllint
 
   - name: labs/tools/wikibugs2
     test:
@@ -2659,14 +2654,12 @@ projects:
       - translatewiki-puppetlint-lenient
       - translatewiki-puppetlint-strict
       - translatewiki-shelllint
-      #- translatewiki-yamllint (Broken, T86194)
     gate-and-submit:
       - translatewiki-phplint
       - translatewiki-puppet-validate
       - translatewiki-puppetlint-lenient
       - translatewiki-puppetlint-strict
       - translatewiki-shelllint
-      #- translatewiki-yamllint (Broken, T86194)
 
   - name: wikimedia/bugzilla/wikibugs
     # Only lint on submission for now, that will be voting
@@ -2689,10 +2682,8 @@ projects:
        prefix: 'wikimedia-fundraising-tools'
     check-voter:
       - wikimedia-fundraising-tools-jslint
-      - wikimedia-fundraising-tools-yamllint
     gate-and-submit:
       - wikimedia-fundraising-tools-jslint
-      - wikimedia-fundraising-tools-yamllint
 
   - name: wikimedia/fundraising/crm
     check-voter:
@@ -3077,7 +3068,6 @@ projects:
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-ruby1.9.3lint
-      - mwext-ContentTranslation-yamllint
       - php-composer-validate
     test:
       - mwext-ContentTranslation-phpcs-HEAD
@@ -3085,7 +3075,6 @@ projects:
       - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
-      - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
       - php-composer-validate
     gate-and-submit:
@@ -3095,7 +3084,6 @@ projects:
       - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
-      - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
       - php-composer-validate
 
@@ -5970,10 +5958,6 @@ projects:
   - name: mediawiki/extensions/Workflow
     template:
       - name: extension-unittests
-    test:
-      - mwext-Workflow-yamllint
-    gate-and-submit:
-      - mwext-Workflow-yamllint
 
   - name: mediawiki/extensions/ZeroBanner
     template:
@@ -6236,7 +6220,5 @@ projects:
   - name: wikimedia/bots/jouncebot
     test:
       - wikimedia-bots-jouncebot-tox-flake8
-      - wikimedia-bots-jouncebot-yamllint
     gate-and-submit:
       - wikimedia-bots-jouncebot-tox-flake8
-      - wikimedia-bots-jouncebot-yamllint

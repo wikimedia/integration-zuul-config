@@ -278,19 +278,6 @@
          (grep --recursive -P '^\t' --exclude-dir='.git' --include='{fileselector}' .) && HAS_TAB=1 || HAS_TAB=0
          exit $HAS_TAB
 
-
-- job-template:
-    name: '{name}-yamllint'
-    defaults: use-remote-zuul-no-submodules
-    node: hasSlaveScripts && UbuntuPrecise
-    concurrent: true
-    logrotate:
-        daysToKeep: 90
-    triggers:
-     - zuul
-    builders:
-     - yaml-lint
-
 # Java checktyle for maven projects
 - job-template:
     name: '{name}-maven-checkstyle'
