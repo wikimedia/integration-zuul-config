@@ -699,3 +699,15 @@
     publishers:
      - archive:
         artifacts: 'log/*'
+
+# Notes:
+#
+# `composer update` is being passed `--prefer-dist` to download cacheable
+# tarballs when possible.
+#
+- builder:
+    name: composer-update
+    builders:
+     - shell: |
+        /srv/deployment/integration/composer/vendor/bin/composer validate
+        /srv/deployment/integration/composer/vendor/bin/composer update --no-progress --prefer-dist --profile

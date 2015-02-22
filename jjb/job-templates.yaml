@@ -66,11 +66,6 @@
 
 # Run composer update and composer test
 #
-# Notes:
-#
-# `composer update` is being passed `--prefer-dist` to download cacheable
-# tarballs when possible.
-#
 - job-template:
     name: '{name}-composer'
     node: contintLabsSlave && UbuntuPrecise
@@ -79,9 +74,8 @@
     triggers:
      - zuul
     builders:
+     - composer-update
      - shell: |
-         /srv/deployment/integration/composer/vendor/bin/composer validate
-         /srv/deployment/integration/composer/vendor/bin/composer update --no-progress --prefer-dist --profile
          /srv/deployment/integration/composer/vendor/bin/composer test
 
 - job-template:
