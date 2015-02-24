@@ -84,6 +84,23 @@
          /srv/deployment/integration/composer/vendor/bin/composer update --no-progress --prefer-dist --profile
          /srv/deployment/integration/composer/vendor/bin/composer test
 
+# Checks the committed composer.lock file against the database at
+# https://github.com/FriendsOfPHP/security-advisories and the API
+# provided by https://security.sensiolabs.org to see if any of them
+# have reported security issues. See also T74193.
+- job-template:
+    name: '{name}-composer-security'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         curl -i -H "Accept: text/plain" https://security.sensiolabs.org/check_lock -F lock=@composer.lock -o sensiolabs.check
+         cat sensiolabs.check && grep -F "X-Alerts: 0" sensiolabs.check
+
+
 - job-template:
     name: '{name}-puppetlint-lenient'
     node: contintLabsSlave && UbuntuPrecise
