@@ -2889,6 +2889,15 @@ projects:
     template:
       - name: extension-unittests
 
+  - name: mediawiki/extensions/Buggy
+    check:
+      - mwext-Buggy-lint
+      - php-composer-validate
+    gate-and-submit:
+      - mediawiki-gate
+      - mwext-Buggy-lint
+      - php-composer-validate
+
   - name: mediawiki/extensions/Calendar
     template:
       - name: extension-unittests
