@@ -7,10 +7,12 @@
 
 - project:
     name: 'mw-tools-codesniffer'
-
+    phpflavor:
+        - zend
+        - hhvm
     jobs:
      - '{name}-phplint'
-     - '{name}-composer'
+     - '{name}-composer-{phpflavor}'
 
 - project:
     name: 'mw-tools-dippybird'

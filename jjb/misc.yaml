@@ -103,8 +103,11 @@
 
 - project:
     name: 'cdb'
+    phpflavor:
+        - zend
+        - hhvm
     jobs:
-     - '{name}-composer'
+     - '{name}-composer-{phpflavor}'
      - '{name}-phplint'
 
 - project:
@@ -114,6 +117,9 @@
 
 - project:
     name: 'utfnormal'
+    phpflavor:
+        - zend
+        - hhvm
     jobs:
-     - '{name}-composer'
+     - '{name}-composer-{phpflavor}'
      - '{name}-phplint'
