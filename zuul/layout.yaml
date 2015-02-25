@@ -2418,12 +2418,19 @@ projects:
      - mw-tools-scap-tox-doc-publish
 
   - name: mediawiki/vagrant
-    check-voter:
+    check:
+      - mediawiki-vagrant-puppet-validate
+      - mediawiki-vagrant-erblint-HEAD
+      - mediawiki-vagrant-puppetlint-lenient
+      - mediawiki-vagrant-puppetlint-strict
+    test:
+      - mediawiki-vagrant-bundle17-rspec
       - mediawiki-vagrant-puppet-validate
       - mediawiki-vagrant-erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
     gate-and-submit:
+      - mediawiki-vagrant-bundle17-rspec
       - mediawiki-vagrant-erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
@@ -2432,7 +2439,6 @@ projects:
       - mediawiki-vagrant-puppet-doc
     experimental:
       - mediawiki-vagrant-bundle17-cucumber
-      - mediawiki-vagrant-bundle17-rspec
       - mediawiki-vagrant-bundle17-rubocop
 
   - name: operations/debs/adminbot
