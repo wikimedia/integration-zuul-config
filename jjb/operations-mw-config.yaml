@@ -16,8 +16,10 @@
 
 - project:
     name: 'operations-mw-config'
-
+    phpflavor:
+        - zend
+        - hhvm
     jobs:
      - '{name}-phplint'
-     - '{name}-composer'
+     - '{name}-composer-{phpflavor}'
      - operations-mw-config-tests

@@ -67,8 +67,8 @@
 # Run composer update and composer test
 #
 - job-template:
-    name: '{name}-composer'
-    node: contintLabsSlave && UbuntuPrecise
+    name: '{name}-composer-{phpflavor}'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
