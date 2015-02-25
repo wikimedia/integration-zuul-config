@@ -2377,9 +2377,11 @@ projects:
      - mw-tools-codesniffer-phplint
      - php-composer-validate
     test:
-     - mw-tools-codesniffer-composer
+     - mw-tools-codesniffer-composer-zend
+     - mw-tools-codesniffer-composer-hhvm
     gate-and-submit:
-     - mw-tools-codesniffer-composer
+     - mw-tools-codesniffer-composer-zend
+     - mw-tools-codesniffer-composer-hhvm
 
   - name: mediawiki/tools/dippybird
     check-voter:
@@ -2554,7 +2556,8 @@ projects:
       - operations-mw-config-tests
       - php-composer-validate
     experimental:
-      - operations-mw-config-composer
+      - operations-mw-config-composer-zend
+      - operations-mw-config-composer-hhvm
     postmerge:
       - beta-mediawiki-config-update-eqiad
 
@@ -6139,18 +6142,22 @@ projects:
      - cdb-phplint
      - php-composer-validate
     test:
-     - cdb-composer
+     - cdb-composer-hhvm
+     - cdb-composer-zend
     gate-and-submit:
-     - cdb-composer
+     - cdb-composer-hhvm
+     - cdb-composer-zend
 
   - name: utfnormal
     check:
      - utfnormal-phplint
      - php-composer-validate
     test:
-     - utfnormal-composer
+     - utfnormal-composer-hhvm
+     # Zend is pretty slow so only test it on gate
     gate-and-submit:
-     - utfnormal-composer
+     - utfnormal-composer-zend
+     - utfnormal-composer-hhvm
 
   - name: sartoris
     template:
