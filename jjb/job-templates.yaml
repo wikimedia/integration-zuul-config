@@ -93,7 +93,11 @@
      - shell: |
          curl -i -H "Accept: text/plain" https://security.sensiolabs.org/check_lock -F lock=@composer.lock -o sensiolabs.check
          cat sensiolabs.check && grep -F "X-Alerts: 0" sensiolabs.check
-
+    publishers:
+     - email:
+        recipients: '{notify}'
+    triggers:
+        - timed: "H 20 * * *"
 
 - job-template:
     name: '{name}-puppetlint-lenient'
