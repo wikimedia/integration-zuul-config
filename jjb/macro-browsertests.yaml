@@ -4,8 +4,7 @@
       - shell: |
           # set up environment variables
           export BROWSER={browser}
-          if [ -n "{browser_timeout}" ]
-          then
+          if [ -n "{browser_timeout}" ]; then
             export BROWSER_TIMEOUT={browser_timeout}
           fi
           export CUCUMBER_TAGS={cucumber_tags}
@@ -17,6 +16,16 @@
           export PLATFORM=${{PLATFORM//_/ }}
           export SCREENSHOT_FAILURES=true
           export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
+
+          # Set MEDIAWIKI_ENVIRONMENT for mediawiki-selenium >= 1.0.0
+          case '{mediawiki_url}' in
+            'en.wikipedia.beta.wmflabs.org')
+              export MEDIAWIKI_ENVIRONMENT=beta
+              ;;
+            'test2.wikipedia.org')
+              export MEDIAWIKI_ENVIRONMENT=test2
+              ;;
+          esac
 
           set +x
           if [ -z $MEDIAWIKI_CREDENTIALS ]; then
