@@ -203,6 +203,22 @@
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
 
+# Gather
+- project:
+    name: Gather
+    defaults: browsertests
+    folder: tests
+    headless: 'false'
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
+    mediawiki_url: en.m.wikipedia.beta.wmflabs.org
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/Gather
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+
 # GettingStarted
 - project:
     name: GettingStarted
