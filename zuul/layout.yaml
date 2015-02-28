@@ -1703,33 +1703,6 @@ jobs:
     # transaction.
     voting: false
 
-  # MediaWiki core regression tests (on merge and per branches):
-  - name: ^mediawiki-core-regression-.*
-    failure-message: ERROR! It seems this job introduced a regression although it might be caused by a previous commit.
-  - name: mediawiki-core-regression-master
-    branch: ^master$
-  - name: mediawiki-core-regression-REL1_19
-    branch: ^REL1_19$
-  - name: mediawiki-core-regression-REL1_20
-    branch: ^REL1_20$
-  - name: mediawiki-core-regression-REL1_21
-    branch: ^REL1_21
-  - name: mediawiki-core-regression-REL1_22
-    branch: ^REL1_22
-  - name: mediawiki-core-regression-REL1_23
-    branch: ^REL1_23
-  - name: mediawiki-core-regression-REL1_24
-    branch: ^REL1_24
-
-  - name: mediawiki-core-regression-hhvm-REL1_23
-    branch: ^REL1_23$
-    voting: false
-  - name: mediawiki-core-regression-hhvm-REL1_24
-    branch: ^REL1_24$
-    voting: false
-  - name: mediawiki-core-regression-hhvm-master
-    branch: ^master$
-
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
 
@@ -1956,16 +1929,6 @@ projects:
       - php-composer-validate
     postmerge:
       - mediawiki-core-jsduck-publish
-      - mediawiki-core-regression-master
-      - mediawiki-core-regression-REL1_19
-      - mediawiki-core-regression-REL1_20
-      - mediawiki-core-regression-REL1_21
-      - mediawiki-core-regression-REL1_22
-      - mediawiki-core-regression-REL1_23
-      - mediawiki-core-regression-REL1_24
-      - mediawiki-core-regression-hhvm-REL1_23
-      - mediawiki-core-regression-hhvm-REL1_24
-      - mediawiki-core-regression-hhvm-master
       #- mediawiki-core-regression-phpcs-HEAD
       - mediawiki-core-doxygen-publish
     publish:

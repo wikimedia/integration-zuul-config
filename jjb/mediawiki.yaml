@@ -314,35 +314,6 @@
      - mw-teardown
 
 - job-template:
-    name: mediawiki-core-regression-hhvm-{branch}
-    node: contintLabsSlave && UbuntuTrusty
-    triggers:
-     - zuul
-    builders:
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-sqlite
-     - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit-hhvm.sh"
-    publishers:
-     - phpunit-junit-2
-     - archive-log-dir
-     - mw-teardown
-    wrappers:
-     # Failsafe to avoid blocking builds in production since this is still very
-     # experimental.
-     # TODO remove wrappers and use the default whenever hhvm is ready.
-     - timeout:
-         timeout: 8
-         fail: true
-     - timestamps
-     - ansicolor
-    logrotate:
-        daysToKeep: 90
-
-- job-template:
     name: 'mediawiki-core-release'
     concurrent: true
 
@@ -404,28 +375,6 @@
       - 'mediawiki-phpunit-{phpflavor}'
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}'
-
-# For regression testing:
-
-- job-template:
-    name: 'mediawiki-core-regression-{branch}'
-    node: hasSlaveScripts && UbuntuPrecise
-    triggers:
-     - zuul
-    builders:
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-sqlite
-     - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
-    publishers:
-     - phpunit-junit-2
-     - archive-log-dir
-     - mw-teardown
-    logrotate:
-        daysToKeep: 90
 
 - job:
     name: 'mediawiki-core-code-coverage'
@@ -502,18 +451,3 @@
     wrappers:
      - ansicolor
      - timestamps
-
-- project:
-    name: mediawiki-core-regression
-    branch:
-      - master
-      - REL1_19
-      - REL1_20
-      - REL1_21
-      - REL1_22
-      - REL1_23
-      - REL1_24
-    # Find a way to support WMF branches
-    jobs:
-     - 'mediawiki-core-regression-hhvm-{branch}'
-     - 'mediawiki-core-regression-{branch}'
