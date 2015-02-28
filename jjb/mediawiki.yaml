@@ -187,6 +187,31 @@
      - archive-log-dir
      - mw-teardown
 
+# Same as above, except uses composer instead of mediawiki/vendor.
+# Currently experimental, will eventually be used for `master`, and
+# wmf/ branches will use mediawiki/vendor. See T90303.
+- job-template:
+    name: 'mediawiki-phpunit-{phpflavor}-composer'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+     - composer-update
+     - mw-install-sqlite
+     - mw-apply-settings
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+     - mw-teardown
+
 - job-template:
     name: 'mediawiki-extensions-{phpflavor}'
     # See 'mediawiki-phpunit-{phpflavor}'
@@ -374,6 +399,7 @@
           - rubocop
       - '{name}-ruby1.9.3lint'
       - 'mediawiki-phpunit-{phpflavor}'
+      - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}'
 
 # For regression testing:
