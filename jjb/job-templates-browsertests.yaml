@@ -213,60 +213,14 @@
       - timed: "@weekly"
 
     builders:
-      - VisualEditor:
+      - shell: mkdir -p "$WORKSPACE/log/junit"
+      - browsertest-website:
           browser: '{browser}'
+          browser_timeout: '{browser_timeout}'
+          cucumber_tags: '{cucumber_tags}'
+          headless: '{headless}'
           folder: '{folder}'
+          mediawiki_credentials_id: '{mediawiki_credentials_id}'
+          mediawiki_url: '{mediawiki_url}'
           platform: '{platform}'
-
-- builder:
-    name: VisualEditor
-    builders:
-      - shell: |
-          # set up environment variables
-          export BROWSER={browser}
-          export HEADLESS=false
-          export PLATFORM='{platform}'
-
-          # We only care about one version of our browser and do not need a job
-          # per version.  Thus the versions to use are hardcoded there.
-          #
-          # VERSION is used for SauceLabs
-          #
-          case "$BROWSER" in
-            'firefox')
-                export VERSION=27
-                ;;
-            'chrome')
-                # Empty version will get us the latest one
-                export VERSION=''
-                ;;
-            *)
-                echo "Browser '$BROWSER' unsupported. Can not determine version"
-                exit 1
-                ;;
-          esac
-          echo "Using browser: $BROWSER at version $VERSION"
-
-          # Shared cache of gems to avoid hitting rubygems all the time
-          # See https://github.com/bundler/bundler/issues/2856
-          export GEM_HOME="$WORKSPACE/../gems/2.0.0"
-
-          # install ruby dependencies
-          mkdir -p vendor
-          gem2.0 install --env-shebang -i vendor bundler --no-ri --no-rdoc
-          # Prepare some paths lookup
-          export GEM_PATH="`pwd`/vendor"
-
-          cd {folder}/browser/
-          "$WORKSPACE"/vendor/bin/bundle install --verbose
-
-          # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
-            --backtrace \
-            --color \
-            --verbose \
-            --format pretty \
-            --format Cucumber::Formatter::Sauce \
-            --out "$WORKSPACE/log/junit" \
-            features/verify_production_wikis.feature \
-            || (echo -e "\nJob has failed (exit code: $?)."; false)
+          version: '{version}'
