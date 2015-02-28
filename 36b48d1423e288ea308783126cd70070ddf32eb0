@@ -16,6 +16,24 @@
       "revId": "36b48d1423e288ea308783126cd70070ddf32eb0",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e7c4fa4_8e9814c4",
+        "filename": "jjb/browsertests.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1054
+      },
+      "writtenOn": "2015-02-28T04:13:13Z",
+      "side": 0,
+      "message": "Interestingly, it seems this is what SauceLabs wants. As per their config tool (https://docs.saucelabs.com/reference/platforms-configurator) to get a plain Android 4.4 emulator:\n\ncaps \u003d Selenium::WebDriver::Remote::Capabilities.android\ncaps[\u0027platform\u0027] \u003d \u0027Linux\u0027\ncaps[\u0027version\u0027] \u003d \u00274.4\u0027\ncaps[\u0027deviceName\u0027] \u003d \u0027Android Emulator\u0027\ncaps[\u0027device-orientation\u0027] \u003d \u0027portrait\u0027\n\nAs far as I understand, without more tweaking elsewhere, we can\u0027t send the last two parameters to SauceLabs. But it also seems they don\u0027t care and probably give us some reasonable defaults.\n\nWRT which browser app is being tested on the emulator, I guess they don\u0027t give you a choice. See: https://saucelabs.com/platforms/#android\n\nHere\u0027s a change to add @android, @iphone and @ipad tags in our simple CentralNotice browser test: https://gerrit.wikimedia.org/r/#/c/193552/",
+      "parentUuid": "6e7c4fa4_2492494f",
+      "revId": "36b48d1423e288ea308783126cd70070ddf32eb0",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
