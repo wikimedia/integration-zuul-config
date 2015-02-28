@@ -85,10 +85,16 @@
 - job-template:
     name: '{name}-composer-security'
     node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remoteonly-zuul
     concurrent: true
-    triggers:
-     - zuul
+    scm:
+      - git:
+          url: 'https://gerrit.wikimedia.org/r/{repository}'
+          branches:
+            - master
+          wipe-workspace: false  # keep the workspace...
+          clean: true            # ... and use git clean instead
+          prune: true            # prune remote obsoletes branches
+          recursive-submodules: false
     builders:
      - shell: |
          curl -i -H "Accept: text/plain" https://security.sensiolabs.org/check_lock -F lock=@composer.lock -o sensiolabs.check
