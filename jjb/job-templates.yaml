@@ -85,11 +85,11 @@
 - job-template:
     name: '{name}-composer-security'
     node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remoteonly-zuul
     concurrent: true
-    triggers:
-     - zuul
     builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/vendor
      - shell: |
          curl -i -H "Accept: text/plain" https://security.sensiolabs.org/check_lock -F lock=@composer.lock -o sensiolabs.check
          cat sensiolabs.check && grep -F "X-Alerts: 0" sensiolabs.check
