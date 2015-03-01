@@ -194,15 +194,13 @@
     name: 'mediawiki-phpunit-{phpflavor}-composer'
     node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
+    defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
      - assert-phpflavor:
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
      - composer-update
      - mw-install-sqlite
      - mw-apply-settings
