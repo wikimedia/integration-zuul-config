@@ -1196,45 +1196,6 @@
         name: mwext
         ext-name: WikibaseJavaScriptApi
 
-# browser tests for MediaWiki extensions
-#
-# One can find a list of all repositories on the mediawiki-selenium ruby gems
-# page at https://github.com/wikimedia/mediawiki-selenium#links
-#
-# Some are commented out, pending testing / proper implementation.
-#
-- project:
-    name: mwext-browsertests
-    dependencies: ''
-    browser:
-     - firefox
-     - phantomjs
-     #- chromium  # Unsupported by Watir yet (bug 61262)
-    ext-name:
-     ##- CirrusSearch  # customized below
-     #- ContentTranslation
-     - Flow
-     - MobileFrontend
-     #- MultimediaViewer
-     - Translatewiki
-     #- Translate
-     #- TwnMainPage
-     - UniversalLanguageSelector
-     - VisualEditor
-     #- Wikibase
-    jobs:
-     - '{name}-{ext-name}-{browser}'
-     - '{name}-{ext-name}-{browser}':
-         name: mwext-browsertests
-         ext-name: CirrusSearch
-         browser: phantomjs
-         # Please also update extensions unit tests above
-         dependencies: 'Cite,Elastica,Mantle,MwEmbedSupport,TimedMediaHandler,PdfHandler'
-     - '{name}-{ext-name}-{browser}':
-         name: mwext-browsertests
-         ext-name: Flow
-         dependencies: 'AbuseFilter,SpamBlacklist,CheckUser'
-
 - project:
     name: 'mwext-ArticleFeedbackv5'
     jobs:

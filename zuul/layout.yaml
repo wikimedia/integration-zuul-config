@@ -1624,9 +1624,6 @@ jobs:
   - name: mediawiki-core-jslint
     # Doesn't work in MediaWiki REL1_19 (bug 44846)
     branch: (?!REL1_19)
-  # Browsertests for ULS (bug 52120)
-  - name: mwext-browsertests-UniversalLanguageSelector-phantomjs
-    voting: false
 
   - name: mediawiki-core-doxygen-publish
     branch: ^(master|REL.*|refs/tags/.*)$ # REL is bug 50325
@@ -1732,10 +1729,6 @@ jobs:
     voting: false
   - name: mediawiki-core-regression-hhvm-master
     branch: ^master$
-
-  # Being worked on with Nik
-  - name: mwext-browsertests-CirrusSearch-phantomjs
-    voting: false
 
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
@@ -2972,8 +2965,6 @@ projects:
     template:
      - name: extension-unittests
      - name: extension-rubylint
-    test:
-     - mwext-browsertests-CirrusSearch-phantomjs # experimental
 
   - name: mediawiki/extensions/CleanChanges
     template:
@@ -5762,7 +5753,6 @@ projects:
       - mwext-UniversalLanguageSelector-phpcs-HEAD
     test:
       - mwext-UniversalLanguageSelector-phpcs-HEAD
-      - mwext-browsertests-UniversalLanguageSelector-phantomjs # Experiment, bug 52120
     gate-and-submit:
       - mwext-UniversalLanguageSelector-phpcs-HEAD
 
