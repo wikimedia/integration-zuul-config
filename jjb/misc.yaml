@@ -69,17 +69,6 @@
      - '{name}-jsduck'
      - 'oojs-ui-jsduck-publish'
 
-- job:
-    name: 'VisualEditor-jsduck'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - jsduck-conf:
-        config: '$WORKSPACE/.docs/config.json'
-
 - project:
     name: 'qrpedia'
     jobs:
