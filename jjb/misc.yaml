@@ -11,26 +11,38 @@
         docsrc: 'docs'
         docdest: 'unicodejs/$ZUUL_BRANCH'
 
+- job:
+    name: 'oojs-core-jsduck-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'oojs/$ZUUL_BRANCH'
+
+- job:
+    name: 'oojs-ui-jsduck-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'oojs-ui/$ZUUL_BRANCH'
+
 - project:
     name: 'unicodejs'
     jobs:
      - '{name}-npm'
      - '{name}-jsduck'
      - 'unicodejs-jsduck-publish'
-
-- job:
-    name: 'oojs-core-jsduck-publish'
-    node: gallium
-    defaults: use-remote-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-     - documentation-sync:
-        src: '$WORKSPACE/docs'
-        project: 'oojs'
-        version: '$ZUUL_BRANCH'
 
 - project:
     name: 'oojs-core'
@@ -39,20 +51,6 @@
      - '{name}-npm'
      - '{name}-jsduck'
      - 'oojs-core-jsduck-publish'
-
-- job:
-    name: 'oojs-ui-jsduck-publish'
-    node: gallium
-    defaults: use-remote-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-     - documentation-sync:
-        src: '$WORKSPACE/docs'
-        project: 'oojs-ui'
-        version: '$ZUUL_BRANCH'
 
 - project:
     name: 'oojs-ui'
