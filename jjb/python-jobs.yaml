@@ -10,6 +10,8 @@
     node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 30
     triggers:
      - zuul
     builders:
@@ -30,6 +32,8 @@
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul
     concurrent: true
+    logrotate:
+        daysToKeep: 30
     triggers:
      - zuul
     builders:
@@ -45,6 +49,8 @@
     name: '{name}-tox-doc-publish'
     node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul
+    logrotate:
+        daysToKeep: 30
     triggers:
      - zuul
     builders:
