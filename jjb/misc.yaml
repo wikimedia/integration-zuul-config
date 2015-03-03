@@ -32,31 +32,13 @@
         project: 'oojs'
         version: '$ZUUL_BRANCH'
 
-- job:
-    name: 'oojs-core-jsduck'
-    defaults: use-remote-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-
 - project:
     name: 'oojs-core'
     jobs:
      - '{name}-jslint'
      - '{name}-npm'
-     - 'oojs-core-jsduck'
+     - '{name}-jsduck'
      - 'oojs-core-jsduck-publish'
-
-- job:
-    name: 'oojs-ui-jsduck'
-    defaults: use-remote-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - jsduck
 
 - job:
     name: 'oojs-ui-jsduck-publish'
@@ -86,7 +68,7 @@
          bundlecommand:
           - rubocop
      - '{name}-ruby2.0lint'
-     - 'oojs-ui-jsduck'
+     - '{name}-jsduck'
      - 'oojs-ui-jsduck-publish'
 
 - job:
