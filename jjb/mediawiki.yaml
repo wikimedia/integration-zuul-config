@@ -28,7 +28,6 @@
         daysToKeep: 15
     triggers:
      - zuul
-
     builders:
      - zuul-cloner:
          projects: >
@@ -69,12 +68,11 @@
 
 - job-template:
     name: 'mediawiki-core-jsduck'
-    defaults: use-zuul
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
     concurrent: true
     logrotate:
         daysToKeep: 15
-    scm:
-     - git-mwcore
     triggers:
      - zuul
     builders:
