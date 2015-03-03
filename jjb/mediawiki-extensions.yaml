@@ -250,7 +250,7 @@
      - archive-log-dir
 
 - job-template:
-    name: 'mwext-GuidedTour-doc-test'
+    name: '{name}-{ext-name}-jsduck'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -260,7 +260,7 @@
      - jsduck
 
 - job-template:
-    name: 'mwext-GuidedTour-doc-publish'
+    name: 'mwext-GuidedTour-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: false
@@ -283,7 +283,7 @@
         make
 
 - job-template:
-    name: 'mwext-MultimediaViewer-doc-publish'
+    name: 'mwext-MultimediaViewer-jsduck-publish'
     node: gallium
     defaults: use-remote-zuul
     triggers:
@@ -301,7 +301,7 @@
         rsync --recursive --delete-after --force $WORKSPACE/docs/js/ "$DEST_DIR/$DEST_VERSIONDIR/"
 
 - job-template:
-    name: 'mwext-VisualEditor-doc-publish'
+    name: 'mwext-VisualEditor-jsduck-publish'
     node: gallium
     defaults: use-remote-zuul
     triggers:
@@ -320,7 +320,7 @@
         rsync --recursive --delete-after --force $WORKSPACE/lib/ "$DEST_DIR/$DEST_VERSIONDIR/lib/"
 
 - job-template:
-    name: 'mwext-MultimediaViewer-doc-test'
+    name: 'mwext-MultimediaViewer-jsduck'
     defaults: use-remote-zuul
     concurrent: true
     triggers:
@@ -331,7 +331,7 @@
         $WORKSPACE/docs/generate
 
 - job-template:
-    name: 'mwext-VisualEditor-doc-test'
+    name: 'mwext-VisualEditor-jsduck'
     defaults: use-remote-zuul
     concurrent: true
     triggers:
@@ -1176,16 +1176,18 @@
         ext-name: VisualEditor
 
        # Documentation jobs for extensions
-     - 'mwext-GuidedTour-doc-test':
-     - 'mwext-GuidedTour-doc-publish':
+     - '{name}-{ext-name}-jsduck':
+        name: mwext
+        ext-name: GuidedTour
+     - 'mwext-GuidedTour-jsduck-publish':
 
-     - 'mwext-MultimediaViewer-doc-test':
-     - 'mwext-MultimediaViewer-doc-publish':
+     - 'mwext-MultimediaViewer-jsduck':
+     - 'mwext-MultimediaViewer-jsduck-publish':
 
-     - 'mwext-VisualEditor-doc-test':
+     - 'mwext-VisualEditor-jsduck':
         ext-name: VisualEditor
 
-     - 'mwext-VisualEditor-doc-publish':
+     - 'mwext-VisualEditor-jsduck-publish':
         ext-name: VisualEditor
 
      - '{name}-{ext-name}-qunit':
