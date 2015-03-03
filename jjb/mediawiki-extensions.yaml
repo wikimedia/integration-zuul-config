@@ -302,22 +302,26 @@
 
 - job-template:
     name: 'mwext-VisualEditor-jsduck-publish'
-    node: gallium
-    defaults: use-remote-zuul
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
     triggers:
      - zuul
     builders:
      - shell: |
         # Generate documentation
-        $WORKSPACE/bin/generateDocs.sh
-        # Set destination and version directory therein
-        DEST_DIR="/srv/org/wikimedia/doc/VisualEditor"
-        DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
-        # Ensure the destination exists
-        mkdir -p $DEST_DIR
-        # Publish it (trailing slash is important!)
-        rsync --recursive --delete-after --force $WORKSPACE/docs/ "$DEST_DIR/$DEST_VERSIONDIR/"
-        rsync --recursive --delete-after --force $WORKSPACE/lib/ "$DEST_DIR/$DEST_VERSIONDIR/lib/"
+        ./bin/generateDocs.sh
+        # Replace symlink with copy for publishing
+        rm docs/lib
+        # Avoid copying all of lib/ since it contains the entire VisualEditor repository as
+        # submodule, containing non-essential code that should not be pushed to doc.wikimedia.org
+        mkdir -p docs/lib/ve
+        # Use of trailing slash for src and not dest is important
+        rsync --recursive --force lib/ve/lib/ docs/lib/ve/lib
+        rsync --recursive --force lib/ve/src/ docs/lib/ve/src
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'VisualEditor/$ZUUL_BRANCH'
 
 - job-template:
     name: 'mwext-MultimediaViewer-jsduck'
