@@ -1603,13 +1603,13 @@ jobs:
   - name: 'integration-zuul-layoutvalidation-gate'
     branch: (?!labs)
 
-  - name: 'mwext-GuidedTour-doc-publish'
+  - name: 'mwext-GuidedTour-jsduck-publish'
     branch: ^master$
 
-  - name: 'mwext-MultimediaViewer-doc-publish'
+  - name: 'mwext-MultimediaViewer-jsduck-publish'
     branch: ^master$
 
-  - name: 'mwext-VisualEditor-doc-publish'
+  - name: 'mwext-VisualEditor-jsduck-publish'
     branch: ^master$
   - name: 'mwext-VisualEditor-sync-gerrit'
     branch: ^master$
@@ -3435,12 +3435,12 @@ projects:
       - name: extension-unittests
     test:
      - mwext-GuidedTour-qunit
-     - mwext-GuidedTour-doc-test
+     - mwext-GuidedTour-jsduck
     gate-and-submit:
      - mwext-GuidedTour-qunit
-     - mwext-GuidedTour-doc-test
+     - mwext-GuidedTour-jsduck
     postmerge:
-     - mwext-GuidedTour-doc-publish
+     - mwext-GuidedTour-jsduck-publish
 
   - name: mediawiki/extensions/GWToolset
     template:
@@ -3617,16 +3617,16 @@ projects:
     test:
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
-      - mwext-MultimediaViewer-doc-test
+      - mwext-MultimediaViewer-jsduck
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-MultimediaViewer-lint
       - mwext-MultimediaViewer-jslint
-      - mwext-MultimediaViewer-doc-test
+      - mwext-MultimediaViewer-jsduck
       - php-composer-validate
     postmerge:
-      - mwext-MultimediaViewer-doc-publish
+      - mwext-MultimediaViewer-jsduck
 
   - name: mediawiki/extensions/MwEmbedSupport
     template:
@@ -5836,18 +5836,18 @@ projects:
     test:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
-      - mwext-VisualEditor-doc-test
+      - mwext-VisualEditor-jsduck
       - mwext-VisualEditor-qunit-karma
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-lint
-      - mwext-VisualEditor-doc-test
+      - mwext-VisualEditor-jsduck
       - experiment-gating-dependencies
       - php-composer-validate
     postmerge:
-      - mwext-VisualEditor-doc-publish
+      - mwext-VisualEditor-jsduck-publish
       - mwext-VisualEditor-sync-gerrit
     experimental:
       - mediawiki-extensions-hhvm
