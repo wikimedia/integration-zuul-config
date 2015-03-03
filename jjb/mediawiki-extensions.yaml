@@ -257,8 +257,7 @@
     triggers:
      - zuul
     builders:
-     - jsduck-conf:
-        config: '$WORKSPACE/.docs/config.json'
+     - jsduck
 
 - job-template:
     name: 'mwext-GuidedTour-doc-publish'
@@ -268,8 +267,7 @@
     triggers:
      - zuul
     builders:
-     - jsduck-conf:
-        config: '$WORKSPACE/.docs/config.json'
+     - jsduck
      - doc-publish:
         docsrc: 'docs'
         docdest: 'GuidedTour/$ZUUL_BRANCH'
