@@ -113,6 +113,7 @@
     triggers:
      - zuul
     builders:
+     - mw-setup
      - assert-env-doc_subpath
      - zuul-cloner:
          projects: >
@@ -125,6 +126,8 @@
      - doc-publish:
          docsrc: 'build/doc'
          docdest: 'mediawiki-core/$DOC_SUBPATH/php'
+    publishers:
+     - mw-teardown
 
 - job-template:
     name: '{name}-whitespaces'
