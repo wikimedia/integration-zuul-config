@@ -430,11 +430,21 @@
     builders:
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
 
+# ALWAYS pair with 'mw-teardown' publisher to ensure we don't leave temporary files behind
+- builder:
+    name: mw-setup
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: "/srv/deployment/integration/slave-scripts/bin/mw-setup.sh"
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
 # Shell script backed macro installing MediaWiki with a SQLite backend
 #
 #
-# ALWAYS pair with 'mw-teardown' publisher to ensure we don't leave
-# sqlite databases behind after the build is finished.
+# ALWAYS pair with 'mw-teardown' publisher to ensure we don't leave temporary files behind
 - builder:
     name: mw-install-sqlite
     builders:
