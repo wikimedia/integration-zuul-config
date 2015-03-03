@@ -284,21 +284,18 @@
 
 - job-template:
     name: 'mwext-MultimediaViewer-jsduck-publish'
-    node: gallium
-    defaults: use-remote-zuul
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
     triggers:
      - zuul
     builders:
      - shell: |
         # Generate documentation
-        $WORKSPACE/docs/generate
-        # Set destination and version directory therein
-        DEST_DIR="/srv/org/wikimedia/doc/MultimediaViewer"
-        DEST_VERSIONDIR=`echo "$ZUUL_BRANCH" | tr '/' '-'`
-        # Ensure the destination exists
-        mkdir -p $DEST_DIR
-        # Publish it (trailing slash is important!)
-        rsync --recursive --delete-after --force $WORKSPACE/docs/js/ "$DEST_DIR/$DEST_VERSIONDIR/"
+        ./docs/generate
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'MultimediaViewer/$ZUUL_BRANCH'
 
 - job-template:
     name: 'mwext-VisualEditor-jsduck-publish'
