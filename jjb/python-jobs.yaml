@@ -8,7 +8,7 @@
 - job-template:
     name: '{name}-tox-{toxenv}'
     node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
@@ -28,7 +28,7 @@
 - job-template:
     name: '{name}-tox-{toxenv}-trusty'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
@@ -44,7 +44,7 @@
 - job-template:
     name: '{name}-tox-doc-publish'
     node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
@@ -60,7 +60,7 @@
 - job-template:
     name: '{name}-pep8'
     node: hasContintPackages && UbuntuPrecise
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
@@ -74,7 +74,7 @@
 - job-template:
     name: '{name}-pyflakes'
     node: hasContintPackages && UbuntuPrecise
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
