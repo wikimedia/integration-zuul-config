@@ -182,6 +182,7 @@ class TestZuulLayout(unittest.TestCase):
             '.*-whitespaces',
             'noop',
             'php-composer-validate',
+            'php-composer-package-validate',
         ]
         safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
 

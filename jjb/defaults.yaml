@@ -104,6 +104,28 @@
       - timestamps
       - ansicolor
 
+- defaults:
+    name: use-remote-zuul-shallow-clone
+
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      <p>This job is triggered by Zuul</p>
+
+    project-type: freestyle
+
+    logrotate:
+        daysToKeep: 30
+
+    scm:
+     - git-remote-zuul-shallow-clone
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+
 # Obsolete, should use Zuul cloner instead
 - defaults:
     name: use-zuul-for-mw-ext
