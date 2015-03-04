@@ -1,25 +1,33 @@
 # Generic Jobs related to PHP
 
+# Job for libraries that are published as composer packages.
+# Includes full validation that packagist.org requires.
 - job:
-    name: php-composer-validate
+    name: php-composer-package-validate
     node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
-
-    # Clear workspace and use a shallow clone from Zuul
-    scm:
-     - git:
-        url: '$ZUUL_URL/$ZUUL_PROJECT'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        wipe-workspace: true
-        shallow-clone: true
 
     triggers:
      - zuul
     builders:
      - shell: |
          /srv/deployment/integration/composer/vendor/bin/composer --ansi validate
+    logrotate:
+        daysToKeep: 15
+
+# Job for anything with a composer.json, but *isn't* going to be
+# published on packagist.org.
+- job:
+    name: php-composer-validate
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         /srv/deployment/integration/composer/vendor/bin/composer --ansi validate --no-check-publish
     logrotate:
         daysToKeep: 15

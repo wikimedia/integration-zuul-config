@@ -80,6 +80,18 @@
         clean: true
         disable-submodules: true
 
+- scm:
+    name: git-remote-zuul-shallow-clone
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: true
+        shallow-clone: true
+
+
 # Wrapper around Zuul Cloner
 #
 # Fallback to the branch ZUUL_BRANCH.
