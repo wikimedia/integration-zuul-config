@@ -128,7 +128,8 @@ class TestZuulLayout(unittest.TestCase):
                               'Project %s lacks %s pipeline' %
                               (mw_project, pipeline))
                 self.assertTrue(
-                    ('php-composer-validate' in project_def[pipeline]) or any(
+                    ('php-composer-validate' in project_def[pipeline]) or
+                    ('php-composer-package-validate' in project_def[pipeline]) or any(
                         [job for job in project_def[pipeline]
                             if job.endswith('-composer')]),
                     'Project %s pipeline %s must have either '
@@ -182,6 +183,7 @@ class TestZuulLayout(unittest.TestCase):
             '.*-whitespaces',
             'noop',
             'php-composer-validate',
+            'php-composer-package-validate',
         ]
         safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
 
