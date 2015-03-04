@@ -1540,9 +1540,6 @@ jobs:
     files:
       - '^.*\.(pl|pm)$'
 
-  - name: operations-apache-config-lint
-    voting: false
-
   - name: operations-puppet-puppetlint-strict
     voting: false
   - name: translatewiki-puppetlint-lenient
@@ -2539,7 +2536,7 @@ projects:
       # testing
       - operations-puppet-spec
       - operations-puppet-tox-data_admin_lint
-      - operations-apache-config-lint
+      #- operations-apache-config-lint (Broken, T72068)
       # Same as `check` pipeline:
       - operations-puppet-erblint-HEAD
       - operations-puppet-pplint-HEAD
