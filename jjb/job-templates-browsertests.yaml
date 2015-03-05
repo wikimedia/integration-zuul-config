@@ -56,6 +56,17 @@
          - lang_list
 
 - job-template:
+    name: 'browsertests-GettingStarted-{name}-{platform}-{browser}-sauce'
+    defaults: browsertests
+    wrappers:
+      - credentials-binding:
+      - text:
+          credential-id: '{mediawiki_captcha_password}'
+          # Feeds into registration_page.rb in GettingStarted; allows
+          # account creation during browser test
+          variable: MEDIAWIKI_CAPTCHA_BYPASS_PASSWORD
+
+- job-template:
     name: 'browsertests-MobileFrontend-{name}-{platform}-{browser}-sauce'
     defaults: browsertests
 
