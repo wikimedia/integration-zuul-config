@@ -11,8 +11,7 @@
     triggers:
      - zuul
     builders:
-     - shell: |
-         /srv/deployment/integration/composer/vendor/bin/composer --ansi validate
+     - composer-validate-package
     logrotate:
         daysToKeep: 15
 
@@ -27,7 +26,23 @@
     triggers:
      - zuul
     builders:
+     - composer-validate
+    logrotate:
+        daysToKeep: 15
+
+# Generic job that runs "composer update" and "composer test"
+- job:
+    name: php-composer-test
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+
+    triggers:
+     - zuul
+    builders:
+     - composer-validate
+     - composer-update
      - shell: |
-         /srv/deployment/integration/composer/vendor/bin/composer --ansi validate --no-check-publish
+         /srv/deployment/integration/composer/vendor/bin/composer test
     logrotate:
         daysToKeep: 15
