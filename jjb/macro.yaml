@@ -616,6 +616,21 @@
      - archive:
         artifacts: 'log/*'
 
+
+# Validate a composer.json
+- builder:
+    name: composer-validate
+    builders:
+     - shell: |
+        /srv/deployment/integration/composer/vendor/bin/composer --ansi validate --no-check-publish
+
+# Validate a composer.json so it can be published on packagist.org
+- builder:
+    name: composer-validate-package
+    builders:
+     - shell: |
+        /srv/deployment/integration/composer/vendor/bin/composer --ansi validate
+
 # Notes:
 #
 # `composer update` is being passed `--prefer-dist` to download cacheable
@@ -625,5 +640,4 @@
     name: composer-update
     builders:
      - shell: |
-        /srv/deployment/integration/composer/vendor/bin/composer validate
         /srv/deployment/integration/composer/vendor/bin/composer update --no-progress --prefer-dist --profile
