@@ -32,7 +32,8 @@
     triggers:
      - zuul
     builders:
-     - jsduck
+     - npm-install
+     - shell: npm run-script doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs-ui/$ZUUL_BRANCH'
