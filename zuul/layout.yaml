@@ -471,8 +471,6 @@ jobs:
     voting: true
   - name: mwext-Interwiki-phpcs-HEAD
     voting: true
-  - name: mwext-MobileFrontend-phpcs-HEAD
-    voting: true
   - name: mwext-TemplateData-phpcs-HEAD
     voting: true
   - name: mwext-Translate-phpcs-HEAD
@@ -3533,27 +3531,21 @@ projects:
       - name: extension-gate
       - name: extension-qunit-and-mobile
       - name: extension-rubylint
-      - name: extension-phpcs
+      - name: composer-test
     check:
       - mwext-MobileFrontend-jslint
       - mwext-MobileFrontend-lint
-      - php-composer-validate
     test:
-      - mwext-MobileFrontend-lint
       #- mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-zend
       - mwext-MobileFrontend-npm
-      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
-      - mwext-MobileFrontend-lint
       #- mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-zend
       - mwext-MobileFrontend-npm
-      - php-composer-validate
     experimental:
       - mwext-MobileFrontend-testextension-hhvm
-      - php-composer-test
 
   - name: mediawiki/extensions/MobileApp
     template:
@@ -5789,30 +5781,24 @@ projects:
       - name: extension-gate
       - name: extension-qunit
       - name: extension-rubylint
-      - name: extension-phpcs
+      - name: composer-test
     check:
       - mwext-VisualEditor-jslint
       - mwext-VisualEditor-lint
-      - php-composer-validate
     test:
       - mwext-VisualEditor-npm
-      - mwext-VisualEditor-lint
       - mwext-VisualEditor-jsduck
       - mwext-VisualEditor-qunit-karma
-      - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-VisualEditor-npm
-      - mwext-VisualEditor-lint
       - mwext-VisualEditor-jsduck
       - experiment-gating-dependencies
-      - php-composer-validate
     postmerge:
       - mwext-VisualEditor-jsduck-publish
       - mwext-VisualEditor-sync-gerrit
     experimental:
       - mediawiki-extensions-hhvm
-      - php-composer-test
 
   - name: mediawiki/extensions/WebChat
     template:
