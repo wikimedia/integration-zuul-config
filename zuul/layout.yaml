@@ -1652,6 +1652,9 @@ jobs:
   - name: mwext-VisualEditor-qunit-karma
     voting: false
 
+  - name: mwext-CentralNotice-qunit-karma
+    voting: false
+
   - name: ^mwext-WikibaseJavaScriptApi-qunit$
     voting: false
   - name: ^mwext-Wikibase-qunit$
@@ -2923,6 +2926,10 @@ projects:
       - name: extension-qunit
       - name: extension-unittests
       - name: extension-rubylint
+    test:
+      - mwext-CentralNotice-qunit-karma
+    gate-and-submit:
+      - mwext-CentralNotice-qunit-karma
 
   - name: mediawiki/extensions/CirrusSearch
     template:
