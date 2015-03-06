@@ -1795,6 +1795,14 @@ project-templates:
      - 'mw-skins-{name}-phplint'
      - php-composer-validate
 
+  - name: composer-test
+    check:
+      - php-composer-validate
+    test:
+      - php-composer-test
+    gate-and-submit:
+      - php-composer-test
+
   - name: python
     check-voter:
       - '{prefix}-pep8'
@@ -2905,12 +2913,9 @@ projects:
     template:
       - name: extension-gate
       - name: extension-unittests
-    check:
-      - mwext-cldr-phpcs-HEAD
-    test:
-      - mwext-cldr-phpcs-HEAD
-    gate-and-submit:
-      - mwext-cldr-phpcs-HEAD
+      - name: extension-phpcs
+    experimental:
+      - php-composer-test
 
   - name: mediawiki/extensions/CentralAuth
     template:
@@ -3042,19 +3047,19 @@ projects:
       - mwext-ConfirmEdit-pyflakes
 
   - name: mediawiki/extensions/ContentTranslation
+    template:
+      - name: composer-test
     check:
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
-      - php-composer-validate
     test:
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
-      - php-composer-test
     gate-and-submit:
       - mediawiki-gate
       - mwext-ContentTranslation-jslint
@@ -3062,7 +3067,6 @@ projects:
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
-      - php-composer-test
 
   - name: mediawiki/extensions/ContributionScores
     template:
@@ -3435,6 +3439,8 @@ projects:
       - mwext-Interwiki-jslint
       - mwext-Interwiki-lint
       - php-composer-validate
+    experimental:
+      - php-composer-test
 
   - name: mediawiki/extensions/intersection
     template:
@@ -3545,6 +3551,7 @@ projects:
       - php-composer-validate
     experimental:
       - mwext-MobileFrontend-testextension-hhvm
+      - php-composer-test
 
   - name: mediawiki/extensions/MobileApp
     template:
@@ -5615,6 +5622,8 @@ projects:
       - mwext-TemplateData-npm
     gate-and-submit:
       - mwext-TemplateData-npm
+    experimental:
+      - php-composer-test
 
   - name: mediawiki/extensions/Thanks
     template:
@@ -5657,22 +5666,16 @@ projects:
     template:
       - name: extension-rubylint
       - name: extension-unittests
-    check:
-      - mwext-Translate-phpcs-HEAD
-    test:
-      - mwext-Translate-phpcs-HEAD
-    gate-and-submit:
-      - mwext-Translate-phpcs-HEAD
+      - name: extension-phpcs
+    experimental:
+      - php-composer-test
 
   - name: mediawiki/extensions/TranslationNotifications
     template:
       - name: extension-unittests
-    check:
-      - mwext-TranslationNotifications-phpcs-HEAD
-    test:
-      - mwext-TranslationNotifications-phpcs-HEAD
-    gate-and-submit:
-      - mwext-TranslationNotifications-phpcs-HEAD
+      - name: extension-phpcs
+    experimental:
+      - php-composer-test
 
   - name: mediawiki/extensions/Transliterator
     template:
@@ -5692,6 +5695,8 @@ projects:
       - mwext-TwnMainPage-phpcs-HEAD
     gate-and-submit:
       - mwext-TwnMainPage-phpcs-HEAD
+    experimental:
+      - php-composer-test
 
   - name: mediawiki/extensions/OpenBadges
     template:
@@ -5706,12 +5711,9 @@ projects:
       - name: extension-gate
       - name: extension-rubylint
       - name: extension-unittests
-    check:
-      - mwext-UniversalLanguageSelector-phpcs-HEAD
-    test:
-      - mwext-UniversalLanguageSelector-phpcs-HEAD
-    gate-and-submit:
-      - mwext-UniversalLanguageSelector-phpcs-HEAD
+      - name: extension-phpcs
+    experimental:
+      - php-composer-test
 
   - name: mediawiki/extensions/UploadBlacklist
     template:
