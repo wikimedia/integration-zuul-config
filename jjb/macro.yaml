@@ -122,7 +122,7 @@
 # specified in the package.json file (install and test).
 #
 - builder:
-    name: npm
+    name: npm-install
     builders:
     - shell: |
         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
@@ -130,6 +130,12 @@
         npm --version
         rm -rf node_modules
         npm install
+- builder:
+    name: npm
+    builders:
+    - npm-install
+    - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
         npm test
 
 # Variant that can use a deploy repo for the dependencies.
