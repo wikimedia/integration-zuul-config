@@ -469,8 +469,6 @@ jobs:
 
   - name: mwext-cldr-phpcs-HEAD
     voting: true
-  - name: mwext-ContentTranslation-phpcs-HEAD
-    voting: true
   - name: mwext-Interwiki-phpcs-HEAD
     voting: true
   - name: mwext-MobileFrontend-phpcs-HEAD
@@ -3045,32 +3043,25 @@ projects:
 
   - name: mediawiki/extensions/ContentTranslation
     check:
-      - mwext-ContentTranslation-phpcs-HEAD
       - mwext-ContentTranslation-jslint
       - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - php-composer-validate
     test:
-      - mwext-ContentTranslation-phpcs-HEAD
       - mwext-ContentTranslation-jslint
-      - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
-      - php-composer-validate
+      - php-composer-test
     gate-and-submit:
       - mediawiki-gate
-      - mwext-ContentTranslation-phpcs-HEAD
       - mwext-ContentTranslation-jslint
-      - mwext-ContentTranslation-lint
       - mwext-ContentTranslation-bundle-rubocop
       - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
-      - php-composer-validate
-    experimental:
       - php-composer-test
 
   - name: mediawiki/extensions/ContributionScores
