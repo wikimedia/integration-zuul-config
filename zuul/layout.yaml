@@ -490,10 +490,12 @@ jobs:
     files:
      - '^(\.js.*|.*\.(js|json)$)'
 
+  - name: jsduck
+    files:
+     - '^.*\.(js|json|css)$'
   - name: ^.*-jsduck$
     files:
      - '^.*\.(js|json|css)$'
-
   - name: ^.*-jsduck-publish$
     files:
      - '^.*\.(js|json|css)$'
@@ -3396,10 +3398,10 @@ projects:
       - name: extension-unittests
     test:
      - mwext-GuidedTour-qunit
-     - mwext-GuidedTour-jsduck
+     - jsduck
     gate-and-submit:
      - mwext-GuidedTour-qunit
-     - mwext-GuidedTour-jsduck
+     - jsduck
     postmerge:
      - mwext-GuidedTour-jsduck-publish
 
@@ -6153,10 +6155,10 @@ projects:
       - oojs-core-jslint
     test:
       - oojs-core-npm
-      - oojs-core-jsduck
+      - jsduck
     gate-and-submit:
       - oojs-core-npm
-      - oojs-core-jsduck
+      - jsduck
     postmerge:
       - oojs-core-jsduck-publish
 
@@ -6171,25 +6173,25 @@ projects:
       - oojs-ui-npm
       - oojs-ui-composer-zend
       - oojs-ui-composer-hhvm
-      - oojs-ui-jsduck
+      - jsduck
       - oojs-ui-ruby2.0lint
     gate-and-submit:
       - oojs-ui-bundle-rubocop
       - oojs-ui-npm
       - oojs-ui-composer-zend
       - oojs-ui-composer-hhvm
-      - oojs-ui-jsduck
+      - jsduck
       - oojs-ui-ruby2.0lint
     postmerge:
       - oojs-ui-jsduck-publish
 
   - name: unicodejs
     test:
-      - unicodejs-jsduck
       - unicodejs-npm
+      - jsduck
     gate-and-submit:
-      - unicodejs-jsduck
       - unicodejs-npm
+      - jsduck
     postmerge:
       - unicodejs-jsduck-publish
 
@@ -6201,12 +6203,12 @@ projects:
       - VisualEditor-npm
       - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
-      - VisualEditor-jsduck
+      - jsduck
     gate-and-submit:
       - VisualEditor-npm
       - VisualEditor-bundle-rubocop
       - VisualEditor-ruby1.9.3lint
-      - VisualEditor-jsduck
+      - jsduck
 
   - name: wikidata/gremlin
     test:

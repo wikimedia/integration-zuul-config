@@ -252,16 +252,6 @@
      - archive-log-dir
 
 - job-template:
-    name: '{name}-{ext-name}-jsduck'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-
-- job-template:
     name: 'mwext-GuidedTour-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
@@ -1181,9 +1171,6 @@
         ext-name: VisualEditor
 
        # Documentation jobs for extensions
-     - '{name}-{ext-name}-jsduck':
-        name: mwext
-        ext-name: GuidedTour
      - 'mwext-GuidedTour-jsduck-publish':
 
      - 'mwext-MultimediaViewer-jsduck':
