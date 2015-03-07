@@ -290,6 +290,19 @@
         docdest: 'MultimediaViewer/$ZUUL_BRANCH'
 
 - job-template:
+    name: 'mwext-TemplateData-jsduck-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'TemplateData/$ZUUL_BRANCH'
+
+- job-template:
     name: 'mwext-VisualEditor-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
@@ -1175,6 +1188,9 @@
 
      - 'mwext-MultimediaViewer-jsduck':
      - 'mwext-MultimediaViewer-jsduck-publish':
+
+     - 'mwext-TemplateData-jsduck-publish':
+        ext-name: TemplateData
 
      - 'mwext-VisualEditor-jsduck':
         ext-name: VisualEditor

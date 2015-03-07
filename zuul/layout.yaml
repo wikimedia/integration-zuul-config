@@ -1604,6 +1604,9 @@ jobs:
   - name: 'mwext-MultimediaViewer-jsduck-publish'
     branch: ^master$
 
+  - name: 'mwext-TemplateData-jsduck-publish'
+    branch: ^master$
+
   - name: 'mwext-VisualEditor-jsduck-publish'
     branch: ^master$
   - name: 'mwext-VisualEditor-sync-gerrit'
@@ -5610,8 +5613,12 @@ projects:
       - name: composer-test
     test:
       - mwext-TemplateData-npm
+      - jsduck
     gate-and-submit:
       - mwext-TemplateData-npm
+      - jsduck
+    postmerge:
+      - mwext-TemplateData-jsduck-publish
 
   - name: mediawiki/extensions/Thanks
     template:
