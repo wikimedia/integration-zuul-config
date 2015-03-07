@@ -40,5 +40,63 @@
     name: 'wikimedia-fundraising-dash'
 
     jobs:
-     - '{name}-jslint'
-     - '{name}-npm'
+      - '{name}-jslint'
+      - '{name}-npm'
+
+- builder:
+    name: fundraising-crm-install
+    builders:
+      - zuul-cloner:
+          projects: >
+            wikimedia/fundraising/crm
+            wikimedia/fundraising/civicrm-buildkit
+      - shell: |
+          # FIXME: temporarily lock to future rev, until CR
+          pushd $WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit
+          git fetch https://gerrit.wikimedia.org/r/wikimedia/fundraising/civicrm-buildkit refs/changes/55/195055/1 && git checkout FETCH_HEAD
+          popd
+          
+          # FIXME: zuul-cloner should do this for us.  See https://phabricator.wikimedia.org/T45045
+          pushd $WORKSPACE/src/wikimedia/fundraising/crm
+          git submodule update -i --recursive
+      - shell: |
+          $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-create-dbs.sh
+          $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-populate-dbs.sh
+
+- builder:
+    name: fundraising-crm-phpunit
+    builders:
+      - shell: |
+          pushd $WORKSPACE/src/wikimedia/fundraising/crm
+          $WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit/bin/phpunit \
+            --log-junit $WORKSPACE/log/junit-phpunit.xml
+
+- builder:
+    name: fundraising-crm-clean
+    builders:
+      - shell: |
+          $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-drop-dbs.sh
+          
+          # FIXME: Some junk gets left behind (e.g. database dsn), which
+          # corrupts later runs.  Remove it.
+          rm -rf $HOME/.amp
+
+- project:
+    # FIXME: rename
+    name: wikimedia-fundraising-civicrm
+    jobs:
+      - wikimedia-fundraising-civicrm
+
+- job:
+    name: wikimedia-fundraising-civicrm
+    # Run on isolated boxes because of messy MySQL behavior and unsafe fetches.
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    triggers:
+      - zuul
+    builders:
+      - fundraising-crm-install
+      - fundraising-crm-phpunit
+      - fundraising-crm-clean
+    publishers:
+      - phpunit-junit
