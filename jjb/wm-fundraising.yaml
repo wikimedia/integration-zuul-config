@@ -48,16 +48,15 @@
     builders:
       - zuul-cloner:
           projects: >
-            wikimedia/fundraising/crm
             wikimedia/fundraising/civicrm-buildkit
+            wikimedia/fundraising/crm
+            wikimedia/fundraising/crm/civicrm
+            wikimedia/fundraising/crm/drupal
+            wikimedia/fundraising/crm/vendor
       - shell: |
           # FIXME: temporarily lock to future rev, until CR
           cd $WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit
           git fetch https://gerrit.wikimedia.org/r/wikimedia/fundraising/civicrm-buildkit refs/changes/55/195055/1 && git checkout FETCH_HEAD
-
-          # FIXME: zuul-cloner should do this for us.  See https://phabricator.wikimedia.org/T45045
-          cd $WORKSPACE/src/wikimedia/fundraising/crm
-          git submodule update -i --recursive
       - shell: |
           $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-create-dbs.sh
           $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-populate-dbs.sh
