@@ -1704,6 +1704,9 @@ jobs:
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
 
+  - name: wikimedia-fundraising-civicrm
+    voting: false
+
   - name: wikimedia-fundraising-tools-yamllint
     voting: false
 
@@ -2661,13 +2664,16 @@ projects:
       - wikimedia-fundraising-tools-yamllint
 
   - name: wikimedia/fundraising/crm
-    check-voter:
+    check:
       - wikimedia-fundraising-crm-jslint
       - phplint
+    test:
+      - wikimedia-fundraising-crm-jslint
+      - phplint
+      - wikimedia-fundraising-civicrm
     gate-and-submit:
       - wikimedia-fundraising-crm-jslint
       - phplint
-    experimental:
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/civicrm
@@ -2677,8 +2683,6 @@ projects:
     gate-and-submit:
       - wikimedia-fundraising-crm-civicrm-jslint
       - phplint
-    experimental:
-      - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/drupal
     check-voter:
@@ -2687,21 +2691,11 @@ projects:
     gate-and-submit:
       - wikimedia-fundraising-crm-drupal-jslint
       - phplint
-    experimental:
-      - wikimedia-fundraising-civicrm
-
-  - name: wikimedia/fundraising/phpmailer
-    experimental:
-      - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/slander
     template:
      - name: python-lint
        prefix: wikimedia-fundraising-slander
-
-  - name: wikimedia/fundraising/twig
-    experimental:
-      - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/SmashPig
     template:
@@ -3125,8 +3119,6 @@ projects:
       - mwext-DonationInterface-npm
     gate-and-submit:
       - mwext-DonationInterface-npm
-    experimental:
-      - wikimedia-fundraising-civicrm
 
   - name: mediawiki/extensions/DeleteBatch
     template:
