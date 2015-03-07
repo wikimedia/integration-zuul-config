@@ -326,18 +326,6 @@
         docdest: 'VisualEditor/$ZUUL_BRANCH'
 
 - job-template:
-    name: 'mwext-MultimediaViewer-jsduck'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        export TERM=xterm
-        $WORKSPACE/docs/generate
-
-- job-template:
     name: 'mwext-VisualEditor-sync-gerrit'  # bug 49846
     node: gallium  # needs 'jenkins' user which has the 'jenkins-bot' SSH credentials
     concurrent: false
@@ -1171,10 +1159,8 @@
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
 
-       # Documentation jobs for extensions
      - 'mwext-GuidedTour-jsduck-publish':
 
-     - 'mwext-MultimediaViewer-jsduck':
      - 'mwext-MultimediaViewer-jsduck-publish':
 
      - 'mwext-TemplateData-jsduck-publish':
