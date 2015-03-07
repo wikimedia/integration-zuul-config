@@ -13,18 +13,6 @@
      - '{name}-jslint'
 
 - project:
-    name: 'wikimedia-fundraising-crm-civicrm'
-
-    jobs:
-     - '{name}-jslint'
-
-- project:
-    name: 'wikimedia-fundraising-crm-drupal'
-
-    jobs:
-     - '{name}-jslint'
-
-- project:
     name: 'wikimedia-fundraising-SmashPig'
 
     jobs:
@@ -40,5 +28,65 @@
     name: 'wikimedia-fundraising-dash'
 
     jobs:
-     - '{name}-jslint'
-     - '{name}-npm'
+      - '{name}-jslint'
+      - '{name}-npm'
+
+- builder:
+    name: fundraising-crm-install
+    builders:
+      - zuul-cloner:
+          projects: >
+            wikimedia/fundraising/civicrm-buildkit
+            wikimedia/fundraising/crm
+            wikimedia/fundraising/crm/civicrm
+            wikimedia/fundraising/crm/drupal
+            wikimedia/fundraising/crm/vendor
+      - shell: |
+          $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-create-dbs.sh
+          $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-populate-dbs.sh
+
+- builder:
+    name: fundraising-crm-phpunit
+    builders:
+      - shell: |
+          cd $WORKSPACE/src/wikimedia/fundraising/crm
+          $WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit/bin/phpunit \
+            --log-junit $WORKSPACE/log/junit-phpunit.xml
+
+- publisher:
+    name: fundraising-crm-clean
+    publishers:
+     - postbuildscript:
+         builders:
+           - shell: |
+               $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-drop-dbs.sh
+
+               # FIXME: Some junk gets left behind (e.g. database dsn), which
+               # corrupts later runs.  Remove it.
+               rm -rf $HOME/.amp
+
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
+- project:
+    # FIXME: rename
+    name: wikimedia-fundraising-civicrm
+    jobs:
+      - wikimedia-fundraising-civicrm
+
+- job:
+    name: wikimedia-fundraising-civicrm
+    # Run on isolated boxes because of messy MySQL behavior and unsafe fetches.
+    node: contintLabsSlave && UbuntuTrusty
+    # FIXME: due to the ~/.amp thing.
+    concurrent: false
+    triggers:
+      - zuul
+    builders:
+      - fundraising-crm-install
+      - fundraising-crm-phpunit
+    publishers:
+      - fundraising-crm-clean
+      - phpunit-junit
+      - archive-log-dir
