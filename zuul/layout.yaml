@@ -5608,13 +5608,17 @@ projects:
 
   - name: mediawiki/extensions/TemplateData
     template:
-      - name: extension-unittests
       - name: extension-qunit
       - name: composer-test
+    check:
+      - 'mwext-{name}-jslint'
     test:
+      - 'mwext-{name}-testextension-zend'
       - mwext-TemplateData-npm
       - jsduck
     gate-and-submit:
+      - mediawiki-gate
+      - 'mwext-{name}-testextension-zend'
       - mwext-TemplateData-npm
       - jsduck
     postmerge:
