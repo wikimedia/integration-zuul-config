@@ -368,11 +368,11 @@ jobs:
   - name: experiment-gating-dependencies
     voting: false
 
-  - name: ^.*-erblint-HEAD$
+  - name: erblint-HEAD
     files:
      - '^.*\.erb$'
 
-  - name: ^.*-pplint-HEAD$
+  - name: pplint-HEAD
     files:
      - '^.*\.pp$'
 
@@ -1830,8 +1830,8 @@ project-templates:
     # FIXME add merge probably
     # voting since we usually do not have any unit tests
     check-voter:
-      - 'operations-puppet-{module}-erblint-HEAD'
-      - 'operations-puppet-{module}-pplint-HEAD'
+      - 'erblint-HEAD'
+      - 'pplint-HEAD'
 
   # Template for MediaWiki extensions.
   # Run Ruby linter.
@@ -2390,20 +2390,20 @@ projects:
   - name: mediawiki/vagrant
     check:
       - mediawiki-vagrant-puppet-validate
-      - mediawiki-vagrant-erblint-HEAD
+      - erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
     test:
       - mediawiki-vagrant-bundle17-cucumber
       - mediawiki-vagrant-bundle17-rspec
       - mediawiki-vagrant-puppet-validate
-      - mediawiki-vagrant-erblint-HEAD
+      - erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
     gate-and-submit:
       - mediawiki-vagrant-bundle17-cucumber
       - mediawiki-vagrant-bundle17-rspec
-      - mediawiki-vagrant-erblint-HEAD
+      - erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
       - mediawiki-vagrant-puppet-validate
@@ -2534,8 +2534,8 @@ projects:
   - name: operations/puppet
     # Only lint on submission for now, that will be voting
     check:
-      - operations-puppet-erblint-HEAD
-      - operations-puppet-pplint-HEAD
+      - erblint-HEAD
+      - pplint-HEAD
       - operations-puppet-puppetlint-lenient
       - operations-puppet-puppetlint-strict
       - operations-puppet-pep8
@@ -2548,8 +2548,8 @@ projects:
       - operations-puppet-tox-data_admin_lint
       #- operations-apache-config-lint (Broken, T72068)
       # Same as `check` pipeline:
-      - operations-puppet-erblint-HEAD
-      - operations-puppet-pplint-HEAD
+      - erblint-HEAD
+      - pplint-HEAD
       - operations-puppet-puppetlint-lenient
       - operations-puppet-puppetlint-strict
       - operations-puppet-pep8
@@ -2563,47 +2563,38 @@ projects:
   - name: operations/puppet/cdh
     template:
       - name: puppet
-        module: cdh
 
   - name: operations/puppet/cdh4
     template:
       - name: puppet
-        module: cdh4
 
   - name: operations/puppet/jmxtrans
     template:
       - name: puppet
-        module: jmxtrans
 
   - name: operations/puppet/kafka
     template:
       - name: puppet
-        module: kafka
 
   - name: operations/puppet/mariadb
     template:
       - name: puppet
-        module: mariadb
 
   - name: operations/puppet/nginx
     template:
       - name: puppet
-        module: nginx
 
   - name: operations/puppet/varnish
     template:
       - name: puppet
-        module: varnish
 
   - name: operations/puppet/wikimetrics
     template:
       - name: puppet
-        module: wikimetrics
 
   - name: operations/puppet/zookeeper
     template:
       - name: puppet
-        module: zookeeper
 
   - name: operations/software
     check-voter:
