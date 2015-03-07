@@ -10,16 +10,6 @@
      - jsonlint
 
 - job-template:
-    name: '{name}-{ext-name}-csslint'
-    node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - csslint
-
-- job-template:
     name: '{name}-{ext-name}-npm'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
@@ -1129,8 +1119,6 @@
      - '{name}-{ext-name}-npm':
         ext-name: UploadWizard
 
-     - '{name}-{ext-name}-csslint':
-        ext-name: VisualEditor
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
 

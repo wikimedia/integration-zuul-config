@@ -103,19 +103,6 @@
     builders:
      - shell: /srv/deployment/integration/slave-scripts/bin/json-lint.php .
 
-- builder:
-    name: csslint-in
-    builders:
-     - shell: |
-        cd "{dir}"
-        /srv/deployment/integration/slave-scripts/bin/wmfgrunt --cwd="$PWD" --verbose csslint
-
-- builder:
-    name: csslint
-    builders:
-     - csslint-in:
-        dir: '$WORKSPACE'
-
 # This build step is for projects that have their dev environment configured
 # around npm. This will fetch any npm dependencies into a local node_modules
 # directory in the workspace, and run associated 'scripts' commands as
