@@ -1,16 +1,15 @@
 # Generic job-templates
 
-- job-template:
-    name: '{name}-erblint-HEAD'
+- job:
+    name: 'erblint-HEAD'
     node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul-no-submodules
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
     builders:
      - erblint-HEAD
 
-# Generic job to run JSHint
 - job-template:
     name: '{name}-jslint'
     node: hasSlaveScripts && UbuntuPrecise
@@ -119,10 +118,10 @@
     publishers:
      - puppet-lint
 
-- job-template:
-    name: '{name}-pplint-HEAD'
+- job:
+    name: 'pplint-HEAD'
     node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul-no-submodules
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
