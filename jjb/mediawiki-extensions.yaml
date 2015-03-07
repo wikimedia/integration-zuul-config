@@ -338,18 +338,6 @@
         $WORKSPACE/docs/generate
 
 - job-template:
-    name: 'mwext-VisualEditor-jsduck'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        export TERM=xterm
-        $WORKSPACE/bin/generateDocs.sh
-
-- job-template:
     name: 'mwext-VisualEditor-sync-gerrit'  # bug 49846
     node: gallium  # needs 'jenkins' user which has the 'jenkins-bot' SSH credentials
     concurrent: false
@@ -1191,9 +1179,6 @@
 
      - 'mwext-TemplateData-jsduck-publish':
         ext-name: TemplateData
-
-     - 'mwext-VisualEditor-jsduck':
-        ext-name: VisualEditor
 
      - 'mwext-VisualEditor-jsduck-publish':
         ext-name: VisualEditor
