@@ -1704,6 +1704,9 @@ jobs:
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
 
+  - name: wikimedia-fundraising-civicrm
+    voting: false
+
   - name: wikimedia-fundraising-tools-yamllint
     voting: false
 
@@ -2661,13 +2664,16 @@ projects:
       - wikimedia-fundraising-tools-yamllint
 
   - name: wikimedia/fundraising/crm
-    check-voter:
+    check:
       - wikimedia-fundraising-crm-jslint
       - phplint
+    test:
+      - wikimedia-fundraising-crm-jslint
+      - phplint
+      - wikimedia-fundraising-civicrm
     gate-and-submit:
       - wikimedia-fundraising-crm-jslint
       - phplint
-    experimental:
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/civicrm
