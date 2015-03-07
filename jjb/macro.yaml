@@ -278,17 +278,11 @@
          version: ^v0[.]10[.]
 
 - builder:
-    name: jsduck-conf
-    builders:
-     - shell: |
-        echo "Running JSDuck with {config}..."
-        jsduck --config="{config}"  --warnings-exit-nonzero
-
-- builder:
     name: jsduck
     builders:
-    - jsduck-conf:
-        config: 'jsduck.json'
+     - shell: |
+        echo "Running JSDuck..."
+        jsduck
 
 - builder:
     name: prepare-qunit-localhost
