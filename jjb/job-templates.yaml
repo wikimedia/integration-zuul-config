@@ -149,10 +149,10 @@
     builders:
      - perllint
 
-- job-template:
-    name: '{name}-phplint'
+- job:
+    name: 'phplint'
     node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul-no-submodules
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
