@@ -84,19 +84,11 @@
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-core-get.sh {branch}"
 
 - builder:
-    name: jshint-in
-    # Use `cd` because jshint reads .jshintrc and .jshintignore from cwd.
-    builders:
-     - shell: |
-        cd "{dir}"
-        /srv/deployment/integration/slave-scripts/bin/jshint --version
-        /srv/deployment/integration/slave-scripts/bin/jshint .
-
-- builder:
     name: jshint
     builders:
-     - jshint-in:
-        dir: '$WORKSPACE'
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/jshint --version
+        /srv/deployment/integration/slave-scripts/bin/jshint .
 
 - builder:
     name: jsonlint
