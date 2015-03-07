@@ -1,6 +1,3 @@
-# jshint is in a separate job from phplint because various extensions
-# don't pass jshint yet but do pass phplint. This way we can opt-in
-# on a project base.
 - job-template:
     name: '{name}-{ext-name}-jslint'
     node: hasSlaveScripts && UbuntuPrecise
@@ -31,27 +28,6 @@
      - zuul
     builders:
      - npm
-
-- job-template:
-    name: '{name}-{ext-name}-phplint'
-    node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - phplint
-
-# Compatibility: Use '{name}-{ext-name}-phplint' instead
-- job-template:
-    name: '{name}-{ext-name}-lint'
-    node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - phplint
 
 # Template to run browsertests for an extension
 # Parameters: dependencies
@@ -343,7 +319,6 @@
 - job-group:
     name: mwext-check-jobs
     jobs:
-     - '{name}-{ext-name}-lint'
      - '{name}-{ext-name}-jslint'
      - '{name}-{ext-name}-testextension-{phpflavor}':
          phpflavor:
