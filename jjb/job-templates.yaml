@@ -53,11 +53,11 @@
          repository: '{repository}'
 
 # Run composer update and composer test
-#
+# Intended for libraries that are published as composer packages
 - job-template:
-    name: '{name}-composer-{phpflavor}'
+    name: 'php-composer-test-{phpflavor}'
     node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
-    defaults: use-remoteonly-zuul
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
@@ -66,6 +66,14 @@
      - composer-update
      - shell: |
          /srv/deployment/integration/composer/vendor/bin/composer test
+
+- project:
+    name: 'php-composer-test-flavored'
+    jobs:
+     - 'php-composer-test-{phpflavor}':
+        phpflavor:
+            - hhvm
+            - zend
 
 # Checks the committed composer.lock file against the database at
 # https://github.com/FriendsOfPHP/security-advisories and the API

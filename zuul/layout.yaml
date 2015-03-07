@@ -1913,11 +1913,23 @@ project-templates:
 
   - name: composer-test
     check:
+      - phplint
       - php-composer-validate
     test:
       - php-composer-test
     gate-and-submit:
       - php-composer-test
+
+  - name: composer-test-package
+    check:
+      - php-composer-package-validate
+      - phplint
+    test:
+      - php-composer-test-hhvm
+      - php-composer-test-zend
+    gate-and-submit:
+      - php-composer-test-hhvm
+      - php-composer-test-zend
 
   - name: python
     check-voter:
@@ -2453,15 +2465,8 @@ projects:
      - phplint
 
   - name: mediawiki/tools/codesniffer
-    check:
-     - phplint
-     - php-composer-package-validate
-    test:
-     - mw-tools-codesniffer-composer-zend
-     - mw-tools-codesniffer-composer-hhvm
-    gate-and-submit:
-     - mw-tools-codesniffer-composer-zend
-     - mw-tools-codesniffer-composer-hhvm
+    template:
+     - name: composer-test-package
 
   - name: mediawiki/tools/dippybird
     check-voter:
@@ -2643,8 +2648,7 @@ projects:
       - operations-mw-config-tests
       - php-composer-validate
     experimental:
-      - operations-mw-config-composer-zend
-      - operations-mw-config-composer-hhvm
+      - php-composer-test
     postmerge:
       - beta-mediawiki-config-update-eqiad
 
@@ -6191,26 +6195,12 @@ projects:
       - phplint
 
   - name: cdb
-    check:
-     - phplint
-     - php-composer-package-validate
-    test:
-     - cdb-composer-hhvm
-     - cdb-composer-zend
-    gate-and-submit:
-     - cdb-composer-hhvm
-     - cdb-composer-zend
+    template:
+     - name: composer-test-package
 
   - name: utfnormal
-    check:
-     - phplint
-     - php-composer-package-validate
-    test:
-     - utfnormal-composer-hhvm
-     # Zend is pretty slow so only test it on gate
-    gate-and-submit:
-     - utfnormal-composer-zend
-     - utfnormal-composer-hhvm
+    template:
+     - name: composer-test-package
 
   - name: sartoris
     template:
@@ -6252,23 +6242,19 @@ projects:
       - oojs-core-jsduck-publish
 
   - name: oojs/ui
+    template:
+      - name: composer-test-package
     check:
       - oojs-ui-jslint
-      - phplint
       - oojs-ui-ruby2.0lint
-      - php-composer-package-validate
     test:
       - oojs-ui-bundle-rubocop
       - oojs-ui-npm
-      - oojs-ui-composer-zend
-      - oojs-ui-composer-hhvm
       - jsduck
       - oojs-ui-ruby2.0lint
     gate-and-submit:
       - oojs-ui-bundle-rubocop
       - oojs-ui-npm
-      - oojs-ui-composer-zend
-      - oojs-ui-composer-hhvm
       - jsduck
       - oojs-ui-ruby2.0lint
     postmerge:
