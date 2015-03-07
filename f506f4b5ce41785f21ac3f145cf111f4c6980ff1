@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e7c4fa4_f22b7876",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2670,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-03-07T19:44:24Z",
+      "side": 1,
+      "message": "wikimedia-fundraising-civicrm runs code, so it should be in the \u0027test\u0027 pipeline which only trigger the job for whitelisted people.\n\n\u0027check-voter\u0027 runs jobs for any people and votes V+2. That is used when a repository only has safe jobs to run.\n\nWhat you need to do is:\n\nrename \u0027check-voter\u0027 to \u0027check\u0027\n\nadd a \u0027test\u0027 pipeline having the same jobs + wikimedia-fundraising-civicrm\n\n\nThis way:\n\nuntrusted people will have the safe jobs and receive a Verified +1 vote\ntrusted people have the safe jobs + the wikimedia-fundraising-civicrm and receive a Verified +2 vote.",
+      "revId": "f506f4b5ce41785f21ac3f145cf111f4c6980ff1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e7c4fa4_92480468",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2674,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-03-07T19:44:24Z",
+      "side": 1,
+      "message": "The job is non voting, so we usually don\u0027t add them to gate-and-submit until it is. But in this case the job is being worked on and will most definitely be made voting very soon. So it is fine :)",
+      "revId": "f506f4b5ce41785f21ac3f145cf111f4c6980ff1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
