@@ -2027,6 +2027,8 @@ projects:
       - integration-zuul-debian-glue
 
   - name: mediawiki/core
+    template:
+      - name: extension-gate
     check:
       - mediawiki-core-whitespaces
       - mediawiki-core-phpcs-HEAD
@@ -2041,24 +2043,18 @@ projects:
       - phplint:
         - mediawiki-phpunit-hhvm
         #- mediawiki-phpunit-zend (disabled, slow, Icac172b16)
-        - mediawiki-extensions-hhvm
-        - mediawiki-extensions-zend
         - mediawiki-core-qunit
         - mediawiki-core-qunit-karma
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-package-validate
     gate-and-submit:
-    # Non voting jobs are commented out
-#      - mediawiki-core-phpcs-HEAD
       - mediawiki-gate
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - phplint:
         - mediawiki-phpunit-hhvm
         - mediawiki-phpunit-zend
-        - mediawiki-extensions-hhvm
-        - mediawiki-extensions-zend
         - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
@@ -2074,6 +2070,8 @@ projects:
       - mediawiki-phpunit-hhvm-composer
 
   - name: mediawiki/vendor
+    template:
+      - name: extension-gate
     check:
       - php-composer-validate
     test:
@@ -2081,13 +2079,9 @@ projects:
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-zend
-      - mediawiki-extensions-hhvm
-      - mediawiki-extensions-zend
     gate-and-submit:
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-zend
-      - mediawiki-extensions-hhvm
-      - mediawiki-extensions-zend
       - mediawiki-core-qunit
       - php-composer-validate
 
@@ -3355,6 +3349,7 @@ projects:
 
   - name: mediawiki/extensions/Flow
     template:
+     - name: extension-gate
      - name: extension-rubylint
     check:
      - mwext-Flow-jslint
@@ -3376,7 +3371,6 @@ projects:
        - mwext-Flow-testextension-zend
      - php-composer-validate
     experimental:
-      - mediawiki-extensions-hhvm
       - mwext-Flow-testextension-hhvm
 
   - name: mediawiki/extensions/FormPreloadPostCache
@@ -5904,8 +5898,6 @@ projects:
     postmerge:
       - mwext-VisualEditor-jsduck-publish
       - mwext-VisualEditor-sync-gerrit
-    experimental:
-      - mediawiki-extensions-hhvm
 
   - name: mediawiki/extensions/WebChat
     template:
