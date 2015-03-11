@@ -156,6 +156,22 @@
     builders:
      - phplint
 
+# Deprecated non-generic phplint job. You should
+# use the above 'phplint' job. Due to a performance issue
+# with Git on Ubuntu Precise (details on T92042), this is
+# kept around for large repositories that need to have their
+# own workspace.
+- job-template:
+    name: '{name}-phplint'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - phplint
+
+
 # PHP CodeSniffer on everything under the workspace
 - job-template:
     name: '{name}-phpcs'
