@@ -117,15 +117,11 @@
 
 - project:
     name: 'integration-config'
-    toxenv:
-     - flake8
-     - py27
     jobs:
      - 'integration-jjb-config-diff'
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation'
      - 'integration-zuul-layoutvalidation-gate'
-     - '{name}-tox-{toxenv}'
 
 - project:
     name: 'integration-docroot'
@@ -135,13 +131,9 @@
 
 - project:
     name: 'integration-jenkins'
-    toxenv:
-     - flake8
-     - py27
     jobs:
      - '{name}-phpunit'
      - python-jobs
-     - '{name}-tox-{toxenv}'
 
 - project:
     name: 'integration-phpunit'
