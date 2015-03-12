@@ -2210,11 +2210,11 @@ projects:
       - apps-android-wikipedia-jslint
     test:
       - apps-android-wikipedia-jslint
-      - apps-android-wikipedia-tox-flake8
+      - tox-flake8
       - apps-android-wikipedia-maven-checkstyle
     gate-and-submit:
       - apps-android-wikipedia-jslint
-      - apps-android-wikipedia-tox-flake8
+      - tox-flake8
       - apps-android-wikipedia-maven-checkstyle
 
   - name: apps/ios/wikipedia
@@ -2474,30 +2474,30 @@ projects:
   - name: mediawiki/tools/release
     test:
       - phplint
-      - mw-tools-release-tox-flake8
-      - mw-tools-release-tox-py27
+      - tox-flake8
+      - tox-py27
     gate-and-submit:
       - phplint
-      - mw-tools-release-tox-flake8
-      - mw-tools-release-tox-py27
+      - tox-flake8
+      - tox-py27
 
   - name: mediawiki/tools/releng
     test:
-      - mw-tools-releng-tox-doc
+      - tox-doc
     gate-and-submit:
-      - mw-tools-releng-tox-doc
+      - tox-doc
     postmerge:
       - mw-tools-releng-tox-doc-publish
 
   - name: mediawiki/tools/scap
     test:
-     - mw-tools-scap-tox-doc
-     - mw-tools-scap-tox-flake8
-     - mw-tools-scap-tox-py27
+     - tox-doc
+     - tox-flake8
+     - tox-py27
     gate-and-submit:
-     - mw-tools-scap-tox-doc
-     - mw-tools-scap-tox-flake8
-     - mw-tools-scap-tox-py27
+     - tox-doc
+     - tox-flake8
+     - tox-py27
     postmerge:
      - mw-tools-scap-tox-doc-publish
 
@@ -2587,11 +2587,11 @@ projects:
   - name: operations/debs/pybal
     test:
      - operations-debs-pybal-debian-glue
-     - operations-debs-pybal-tox-flake8
-     - operations-debs-pybal-tox-py27
+     - tox-flake8
+     - tox-py27
     gate-and-submit:
-     - operations-debs-pybal-tox-flake8
-     - operations-debs-pybal-tox-py27
+     - tox-flake8
+     - tox-py27
 
   - name: operations/debs/varnish
     test:
@@ -2716,15 +2716,15 @@ projects:
 
   - name: operations/software/ircyall
     test:
-      - operations-software-ircyall-tox-flake8-trusty
+      - tox-flake8-trusty
     gate-and-submit:
-      - operations-software-ircyall-tox-flake8-trusty
+      - tox-flake8-trusty
 
   - name: operations/software/labsdb-auditor
     test:
-      - operations-software-labsdb-auditor-tox-flake8-trusty
+      -tox-flake8-trusty
     gate-and-submit:
-      - operations-software-labsdb-auditor-tox-flake8-trusty
+      - tox-flake8-trusty
 
   - name: operations/software/redactatron
     template:
@@ -3321,13 +3321,13 @@ projects:
       - name: extension-unittests
       - name: extension-qunit
     test:
-      - mwext-EventLogging-tox-flake8
-      - mwext-EventLogging-tox-flake8-bin
-      - mwext-EventLogging-tox-py27
+      - tox-flake8
+      - tox-flake8-bin
+      - tox-py27
     gate-and-submit:
-      - mwext-EventLogging-tox-flake8
-      - mwext-EventLogging-tox-flake8-bin
-      - mwext-EventLogging-tox-py27
+      - tox-flake8
+      - tox-flake8-bin
+      - tox-py27
 
   - name: mediawiki/extensions/ExpandTemplates
     template:
@@ -6152,14 +6152,14 @@ projects:
     check:
       - noop
     test:
-      - 'pywikibot-core-tox-flake8'
+      - 'tox-flake8'
       - 'pywikibot-core-tox-flake8-py3-trusty'
       - 'pywikibot-core-tox-flake8-docstrings'
       - 'pywikibot-core-tox-flake8-docstrings-mandatory'
       - 'pywikibot-core-tox-nose'
       - 'pywikibot-core-tox-nose34-trusty'
     gate-and-submit:
-      - 'pywikibot-core-tox-flake8'
+      - 'tox-flake8'
       - 'pywikibot-core-tox-flake8-py3-trusty'
       - 'pywikibot-core-tox-flake8-docstrings-mandatory'
       - 'pywikibot-core-tox-nose'
@@ -6283,8 +6283,8 @@ projects:
 
   - name: wikimedia/bots/jouncebot
     test:
-      - wikimedia-bots-jouncebot-tox-flake8
+      - tox-flake8
       - wikimedia-bots-jouncebot-yamllint
     gate-and-submit:
-      - wikimedia-bots-jouncebot-tox-flake8
+      - tox-flake8
       - wikimedia-bots-jouncebot-yamllint
