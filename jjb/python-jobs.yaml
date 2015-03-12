@@ -1,4 +1,4 @@
-# Invoke a tox environement on Precise
+# Invoke a tox environement on Precise, non-generic
 #
 # Ubuntu Precise provides:
 # python 2.7.3
@@ -18,7 +18,21 @@
     publishers:
      - archive-log-dir
 
-# Invoke a tox environement on Trusty
+# Generic version of above.
+- job-template:
+    name: 'tox-{toxenv}'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: '{toxenv}'
+    publishers:
+     - archive-log-dir
+
+# Invoke a tox environement on Trusty, non-generic
 #
 # Ubuntu Trusty provides:
 # python 2.7.6
@@ -29,6 +43,20 @@
     name: '{name}-tox-{toxenv}-trusty'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: '{toxenv}'
+    publishers:
+     - archive-log-dir
+
+# Generic version of above
+- job-template:
+    name: 'tox-{toxenv}-trusty'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
@@ -88,3 +116,14 @@
     jobs:
      - '{name}-pep8'
      - '{name}-pyflakes'
+
+- project:
+    name: common-tox-jobs
+    toxenv:
+     - flake8
+     - flake8-bin
+     - py27
+
+    jobs:
+     - 'tox-{toxenv}'
+     - 'tox-{toxenv}-trusty'
