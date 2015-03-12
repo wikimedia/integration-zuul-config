@@ -136,10 +136,10 @@
     builders:
      - pplint-HEAD
 
-- job-template:
-    name: '{name}-perllint'
+- job:
+    name: 'perllint'
     node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul-no-submodules
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
