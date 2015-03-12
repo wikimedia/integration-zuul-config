@@ -75,33 +75,24 @@
     triggers:
      - zuul
     builders:
-     - shell: |
-        $WORKSPACE/maintenance/mwjsduck-gen --version "$ZUUL_BRANCH"
+     - jsduck
 
 - job:
     name: 'mediawiki-core-jsduck-publish'
-    node: gallium
-    defaults: use-zuul
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-no-submodules
     concurrent: false
     logrotate:
         daysToKeep: 15
-    scm:
-     - git-mwcore
     triggers:
      - zuul
     builders:
-     - shell: |
-        $WORKSPACE/maintenance/mwjsduck-gen --version "$ZUUL_BRANCH"
-        # Substitute symlink with complete copy since we only publish
-        # the docs/js directory. Have to remove the symlink manually
-        # as otherwise the rsync operation is a no-op (T86864).
-        rm $WORKSPACE/docs/js/modules
-        rsync --recursive --delete-after --force $WORKSPACE/resources/ $WORKSPACE/docs/js/modules/
-     - documentation-sync-subdir:
-        src: '$WORKSPACE/docs/js'
-        project: 'mediawiki-core'
-        version: '$ZUUL_BRANCH'
-        subdir: 'js/'
+     - assert-env-doc_subpath
+     - npm-install
+     - shell: npm run-script doc
+     - doc-publish:
+        docsrc: 'docs/js'
+        docdest: 'mediawiki-core/$DOC_SUBPATH/js'
 
 - job:
     name: 'mediawiki-core-doxygen-publish'
