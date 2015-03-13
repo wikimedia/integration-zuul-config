@@ -41,14 +41,12 @@
 - project:
     name: 'unicodejs'
     jobs:
-     - '{name}-npm'
      - 'unicodejs-jsduck-publish'
 
 - project:
     name: 'oojs-core'
     jobs:
      - '{name}-jslint'
-     - '{name}-npm'
      - 'oojs-core-jsduck-publish'
 
 - project:
@@ -58,14 +56,8 @@
         - hhvm
     jobs:
      - '{name}-jslint'
-     - '{name}-npm'
      - '{name}-bundle-{bundlecommand}':
          bundlecommand:
           - rubocop
      - '{name}-ruby2.0lint'
      - 'oojs-ui-jsduck-publish'
-
-- project:
-    name: 'citoid'
-    jobs:
-     - '{name}-npm'
