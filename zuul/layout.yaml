@@ -5834,16 +5834,11 @@ projects:
       - name: extension-qunit
       - name: extension-rubylint
       - name: extension-phpcs
-    check:
-      - mwext-UploadWizard-pep8
-      - mwext-UploadWizard-pyflakes
     test:
-      - mwext-UploadWizard-pep8
-      - mwext-UploadWizard-pyflakes
+      - tox-flake8
       - mwext-UploadWizard-npm
     gate-and-submit:
-      - mwext-UploadWizard-pep8
-      - mwext-UploadWizard-pyflakes
+      - tox-flake8
       - mwext-UploadWizard-npm
 
   - name: mediawiki/extensions/UserDailyContribs
