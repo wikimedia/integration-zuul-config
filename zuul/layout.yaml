@@ -1931,6 +1931,12 @@ project-templates:
       - php-composer-test-hhvm
       - php-composer-test-zend
 
+  - name: npm
+    test:
+      - npm
+    gate-and-submit:
+      - npm
+
   - name: python
     check-voter:
       - '{prefix}-pep8'
@@ -2753,14 +2759,14 @@ projects:
       - wikimedia-bugzilla-wikibugs-perllint
 
   - name: wikimedia/fundraising/dash
+    template:
+      - name: npm
     check:
       - wikimedia-fundraising-dash-jslint
     test:
       - wikimedia-fundraising-dash-jslint
-      - npm
     gate-and-submit:
       - wikimedia-fundraising-dash-jslint
-      - npm
 
   - name: wikimedia/fundraising/tools
     template:
@@ -3000,6 +3006,8 @@ projects:
       - name: extension-checks
 
   - name: mediawiki/extensions/Citoid
+    template:
+      - name: npm
     check:
       - phplint
       - php-composer-validate
@@ -3007,14 +3015,12 @@ projects:
       - phplint
       - mwext-Citoid-testextension-hhvm
       - mwext-Citoid-testextension-zend
-      - npm
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - phplint
       - mwext-Citoid-testextension-hhvm
       - mwext-Citoid-testextension-zend
-      - npm
       - php-composer-validate
     experimental:
       - mediawiki-extensions-hhvm
@@ -3076,59 +3082,59 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
+    template:
+      - name: npm
     check:
       - mwext-Collection-OfflineContentGenerator-jslint
     test:
       - mwext-Collection-OfflineContentGenerator-jslint
-      - npm
     gate-and-submit:
       - mediawiki-gate
       - mwext-Collection-OfflineContentGenerator-jslint
-      - npm
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
+    template:
+      - name: npm
     check:
       - mwext-Collection-OfflineContentGenerator-bundler-jslint
     test:
       - mwext-Collection-OfflineContentGenerator-bundler-jslint
-      - npm
     gate-and-submit:
       - mediawiki-gate
       - mwext-Collection-OfflineContentGenerator-bundler-jslint
-      - npm
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
+    template:
+      - name: npm
     check:
       - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint
     test:
       - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint
-      - npm
     gate-and-submit:
       - mediawiki-gate
       - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint
-      - npm
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/text_renderer
+    template:
+      - name: npm
     check:
       - mwext-Collection-OfflineContentGenerator-text_renderer-jslint
     test:
       - mwext-Collection-OfflineContentGenerator-text_renderer-jslint
-      - npm
     gate-and-submit:
       - mediawiki-gate
       - mwext-Collection-OfflineContentGenerator-text_renderer-jslint
-      - npm
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/zim_renderer
+    template:
+      - name: npm
     check:
       - mwext-Collection-OfflineContentGenerator-zim_renderer-jslint
     test:
       - mwext-Collection-OfflineContentGenerator-zim_renderer-jslint
-      - npm
     gate-and-submit:
       - mediawiki-gate
       - mwext-Collection-OfflineContentGenerator-zim_renderer-jslint
-      - npm
 
   - name: mediawiki/extensions/CommonsMetadata
     template:
@@ -3261,10 +3267,7 @@ projects:
   - name: mediawiki/extensions/DonationInterface
     template:
       - name: extension-unittests
-    test:
-      - npm
-    gate-and-submit:
-      - npm
+      - name: npm
 
   - name: mediawiki/extensions/DoubleWiki
     template:
@@ -3365,12 +3368,12 @@ projects:
     template:
      - name: extension-gate
      - name: extension-rubylint
+     - name: npm
     check:
      - mwext-Flow-jslint
      - phplint
      - php-composer-validate
     test:
-     - npm
      - mwext-Flow-qunit
      - phplint:
        #- mwext-Flow-testextension-hhvm
@@ -3378,7 +3381,6 @@ projects:
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - npm
      - mwext-Flow-qunit
      - phplint:
        #- mwext-Flow-testextension-hhvm
@@ -3641,18 +3643,17 @@ projects:
       - name: extension-qunit-and-mobile
       - name: extension-rubylint
       - name: composer-test
+      - name: npm
     check:
       - mwext-MobileFrontend-jslint
       - phplint
     test:
       #- mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-zend
-      - npm
     gate-and-submit:
       - mediawiki-gate
       #- mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-zend
-      - npm
     experimental:
       - mwext-MobileFrontend-testextension-hhvm
 
@@ -5301,10 +5302,8 @@ projects:
 # End of new currently disabled extensions checks from mass extension import - Addshore
 
   - name: mediawiki/services/cxserver
-    test:
-      - npm
-    gate-and-submit:
-      - npm
+    template:
+      - name: npm
     postmerge:
       - beta-cxserver-update-eqiad
 
@@ -5323,10 +5322,8 @@ projects:
       - phplint
 
   - name: mediawiki/services/citoid
-    test:
-      - npm
-    gate-and-submit:
-      - npm
+    template:
+      - name: npm
 
   - name: mediawiki/services/mathoid
     test:
@@ -5720,16 +5717,15 @@ projects:
     template:
       - name: extension-qunit
       - name: composer-test
+      - name: npm
     check:
       - mwext-TemplateData-jslint
     test:
       - mwext-TemplateData-testextension-zend
-      - npm
       - jsduck
     gate-and-submit:
       - mediawiki-gate
       - mwext-TemplateData-testextension-zend
-      - npm
       - jsduck
     postmerge:
       - mwext-TemplateData-jsduck-publish
@@ -5834,17 +5830,16 @@ projects:
       - name: extension-qunit
       - name: extension-rubylint
       - name: extension-phpcs
+      - name: npm
     check:
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
     test:
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
-      - npm
     gate-and-submit:
       - mwext-UploadWizard-pep8
       - mwext-UploadWizard-pyflakes
-      - npm
 
   - name: mediawiki/extensions/UserDailyContribs
     template:
@@ -6182,17 +6177,17 @@ projects:
       - 'pywikibot-core-tox-nose34-trusty'
 
   - name: pywikibot/i18n
+    template:
+      - name: npm
     check:
       - pywikibot-i18n-pep8
       - pywikibot-i18n-pyflakes
     test:
       - pywikibot-i18n-pep8
       - pywikibot-i18n-pyflakes
-      - npm
     gate-and-submit:
       - pywikibot-i18n-pep8
       - pywikibot-i18n-pyflakes
-      - npm
 
   - name: qrpedia
     check-voter:
@@ -6236,13 +6231,13 @@ projects:
       - search-repository-swift
 
   - name: oojs/core
+    template:
+      - name: npm
     check:
       - oojs-core-jslint
     test:
-      - npm
       - jsduck
     gate-and-submit:
-      - npm
       - jsduck
     postmerge:
       - oojs-core-jsduck-publish
@@ -6250,28 +6245,27 @@ projects:
   - name: oojs/ui
     template:
       - name: composer-test-package
+      - name: npm
     check:
       - oojs-ui-jslint
       - oojs-ui-ruby2.0lint
     test:
       - oojs-ui-bundle-rubocop
-      - npm
       - jsduck
       - oojs-ui-ruby2.0lint
     gate-and-submit:
       - oojs-ui-bundle-rubocop
-      - npm
       - jsduck
       - oojs-ui-ruby2.0lint
     postmerge:
       - oojs-ui-jsduck-publish
 
   - name: unicodejs
+    template:
+      - name: npm
     test:
-      - npm
       - jsduck
     gate-and-submit:
-      - npm
       - jsduck
     postmerge:
       - unicodejs-jsduck-publish
