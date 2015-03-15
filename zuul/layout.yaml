@@ -519,6 +519,10 @@ jobs:
     files:
      - '^composer.json$'
 
+  - name: phplint
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+
   - name: ^.*-phpcs(-HEAD)?$
     voting: false
     files:
@@ -1835,18 +1839,18 @@ project-templates:
      - php-composer-validate
     test:
      - 'mwext-{name}-jslint'
-     - 'phplint':
-       # Extensions tests with core+vendor
-       #- 'mwext-{name}-testextension-hhvm'
-       - 'mwext-{name}-testextension-zend'
+     - phplint
+     # Extensions tests with core+vendor
+     #- 'mwext-{name}-testextension-hhvm'
+     - 'mwext-{name}-testextension-zend'
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - 'mwext-{name}-jslint'
-     - 'phplint':
-       # Extensions tests with core+vendor
-       #- 'mwext-{name}-testextension-hhvm'
-       - 'mwext-{name}-testextension-zend'
+     - phplint
+     # Extensions tests with core+vendor
+     #- 'mwext-{name}-testextension-hhvm'
+     - 'mwext-{name}-testextension-zend'
      - php-composer-validate
     experimental:
       - 'mediawiki-extensions-hhvm'
@@ -3372,17 +3376,17 @@ projects:
     test:
      - mwext-Flow-npm
      - mwext-Flow-qunit
-     - phplint:
-       #- mwext-Flow-testextension-hhvm
-       - mwext-Flow-testextension-zend
+     - phplint
+     #- mwext-Flow-testextension-hhvm
+     - mwext-Flow-testextension-zend
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - mwext-Flow-npm
      - mwext-Flow-qunit
-     - phplint:
-       #- mwext-Flow-testextension-hhvm
-       - mwext-Flow-testextension-zend
+     - phplint
+     #- mwext-Flow-testextension-hhvm
+     - mwext-Flow-testextension-zend
      - php-composer-validate
     experimental:
       - mwext-Flow-testextension-hhvm
