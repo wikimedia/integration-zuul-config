@@ -179,7 +179,7 @@ class TestZuulLayout(unittest.TestCase):
             '.*-puppet-validate',
             '.*-puppetlint-(strict|lenient)',
             '.*-pyflakes',
-            '.*-ruby(2\.0|1\.9\.3)lint',
+            '(.*-)?ruby(2\.0|1\.9\.3)lint',
             '.*-whitespaces',
             'noop',
             'php-composer-validate',
