@@ -248,26 +248,6 @@
      - puppet-validate
 
 - job-template:
-    name: '{name}-rubylint'
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - ruby-lint:
-        interpreter: 'ruby'
-
-- job-template:
-    name: '{name}-ruby1.8lint'
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - ruby-lint:
-        interpreter: 'ruby1.8'
-
-- job-template:
     name: '{name}-ruby1.9.3lint'
     defaults: use-remote-zuul-no-submodules
     concurrent: true
