@@ -314,7 +314,6 @@
          phpflavor:
              - hhvm
              - zend
-     - '{name}-{ext-name}-phpcs-HEAD'
 
 - project:
     name: mwext
@@ -1136,6 +1135,36 @@
         name: mwext
         ext-name: WikibaseJavaScriptApi
 
+# Deprecated, legacy, phpcs-HEAD jobs.
+# Should be replaced with a "composer test"
+# entry point.
+- project:
+    name: legacy-phpcs-HEAD
+    jobs:
+     - '{name}-{ext-name}-phpcs-HEAD':
+        name: mwext
+        ext-name:
+          - cldr
+          - Gather
+          - Interwiki
+          - Mantle
+          - AutomaticBoardWelcome
+          - JSBreadCrumbs
+          - OnlineStatus
+          - WhitelistPages
+          - Parsoid
+          - Sentry
+          - SyntaxHighlight_GeSHi
+          - Translate
+          - TranslationNotifications
+          - TwnMainPage
+          - UniversalLanguageSelector
+          - UploadWizard
+          - Vector
+          - WebFonts
+          - WikiEditor
+          - WikiGrok
+
 - project:
     name: 'mwext-ArticleFeedbackv5'
     jobs:
@@ -1147,11 +1176,6 @@
     name: 'mwext-BlameMaps'
     jobs:
      - python-jobs
-
-- project:
-    name: 'mwext-cldr'
-    jobs:
-     - '{name}-phpcs-HEAD'
 
 - project:
     name: 'mwext-CentralAuth'
@@ -1207,7 +1231,6 @@
 - project:
     name: 'mwext-ContentTranslation'
     jobs:
-     - '{name}-phpcs-HEAD'
      - '{name}-bundle-{bundlecommand}':
          bundlecommand:
           - rubocop
@@ -1243,16 +1266,6 @@
      - '{name}-bundle-{bundlecommand}':
          bundlecommand:
           - rubocop
-
-- project:
-    name: 'mwext-Interwiki'
-    jobs:
-     - '{name}-phpcs-HEAD'
-
-- project:
-    name: 'mwext-LocalisationUpdate'
-    jobs:
-     - '{name}-phpcs-HEAD'
 
 - project:
     name: 'mwext-Math'
@@ -1317,21 +1330,13 @@
 - project:
     name: 'mwext-Translate'
     jobs:
-     - '{name}-phpcs-HEAD'
-     - '{name}-phpcs'
      - '{name}-bundle-{bundlecommand}':
          bundlecommand:
           - rubocop
 
 - project:
-    name: 'mwext-TranslationNotifications'
-    jobs:
-     - '{name}-phpcs-HEAD'
-
-- project:
     name: 'mwext-TwnMainPage'
     jobs:
-     - '{name}-phpcs-HEAD'
      - '{name}-bundle-{bundlecommand}':
          bundlecommand:
           - rubocop
@@ -1342,7 +1347,6 @@
      - '{name}-bundle-{bundlecommand}':
          bundlecommand:
           - rubocop
-     - '{name}-phpcs-HEAD'
 
 - project:
     name: 'mwext-UploadWizard'
