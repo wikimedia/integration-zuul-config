@@ -490,10 +490,10 @@ jobs:
     files:
      - '^.*\.pp$'
 
-  - name: '^.*-ruby1.9.3lint$'
+  - name: '^(.*-)?ruby1.9.3lint$'
     files:
      - '^.*\.rb$'
-  - name: '^.*-ruby2.0lint$'
+  - name: '^ruby2.0lint$'
     files:
      - '^.*\.rb$'
   - name: '^.*-bundle-rubocop$'
@@ -1970,13 +1970,13 @@ project-templates:
   # Run Ruby linter.
   - name: extension-rubylint
     check:
-     - 'mwext-{name}-ruby1.9.3lint'
+     - 'ruby1.9.3lint'
     test:
      - 'mwext-{name}-bundle-rubocop'
-     - 'mwext-{name}-ruby1.9.3lint'
+     - 'ruby1.9.3lint'
     gate-and-submit:
      - 'mwext-{name}-bundle-rubocop'
-     - 'mwext-{name}-ruby1.9.3lint'
+     - 'ruby1.9.3lint'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
@@ -2299,16 +2299,16 @@ projects:
 
   - name: mediawiki/ruby/api
     check:
-     - mediawiki-ruby-api-ruby1.9.3lint
+     - ruby1.9.3lint
     test:
      - mediawiki-ruby-api-bundle-rubocop
-     - mediawiki-ruby-api-ruby1.9.3lint
+     - ruby1.9.3lint
      - mediawiki-ruby-api-bundle-rspec
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard
     gate-and-submit:
      - mediawiki-ruby-api-bundle-rubocop
-     - mediawiki-ruby-api-ruby1.9.3lint
+     - ruby1.9.3lint
      - mediawiki-ruby-api-bundle-rspec
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard
@@ -2318,16 +2318,16 @@ projects:
 
   - name: mediawiki/selenium
     check:
-     - mediawiki-selenium-ruby1.9.3lint
+     - ruby1.9.3lint
     test:
      - mediawiki-selenium-bundle-rubocop
-     - mediawiki-selenium-ruby1.9.3lint
+     - ruby1.9.3lint
      - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard
      - mediawiki-selenium-bundle-rspec
     gate-and-submit:
      - mediawiki-selenium-bundle-rubocop
-     - mediawiki-selenium-ruby1.9.3lint
+     - ruby1.9.3lint
      - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard
      - mediawiki-selenium-bundle-rspec
@@ -3163,22 +3163,18 @@ projects:
   - name: mediawiki/extensions/ContentTranslation
     template:
       - name: composer-test
+      - name: extension-rubylint
     check:
       - mwext-ContentTranslation-jslint
       - phplint
-      - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
     test:
       - mwext-ContentTranslation-jslint
-      - mwext-ContentTranslation-bundle-rubocop
-      - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
     gate-and-submit:
       - mediawiki-gate
       - mwext-ContentTranslation-jslint
-      - mwext-ContentTranslation-bundle-rubocop
-      - mwext-ContentTranslation-ruby1.9.3lint
       - mwext-ContentTranslation-yamllint
       - mwext-ContentTranslation-qunit
 
@@ -6256,17 +6252,17 @@ projects:
       - name: composer-test-package
     check:
       - oojs-ui-jslint
-      - oojs-ui-ruby2.0lint
+      - ruby2.0lint
     test:
       - oojs-ui-bundle-rubocop
       - npm
       - jsduck
-      - oojs-ui-ruby2.0lint
+      - ruby2.0lint
     gate-and-submit:
       - oojs-ui-bundle-rubocop
       - npm
       - jsduck
-      - oojs-ui-ruby2.0lint
+      - ruby2.0lint
     postmerge:
       - oojs-ui-jsduck-publish
 
@@ -6283,16 +6279,16 @@ projects:
   - name: VisualEditor/VisualEditor
     check:
       - VisualEditor-jslint
-      - VisualEditor-ruby1.9.3lint
+      - ruby1.9.3lint
     test:
       - VisualEditor-npm
       - VisualEditor-bundle-rubocop
-      - VisualEditor-ruby1.9.3lint
+      - ruby1.9.3lint
       - jsduck
     gate-and-submit:
       - VisualEditor-npm
       - VisualEditor-bundle-rubocop
-      - VisualEditor-ruby1.9.3lint
+      - ruby1.9.3lint
       - jsduck
 
   - name: wikidata/gremlin
