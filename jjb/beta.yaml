@@ -125,6 +125,11 @@
     publishers:
       - beta-irc
 
+    wrappers:
+      - timeout:
+          timeout: 45
+          fail: true
+
     # We do not have a good way to detect databases modifications, so just spam
     # the beta cluster with update requests.
     triggers:
