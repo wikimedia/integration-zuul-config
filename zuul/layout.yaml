@@ -5375,9 +5375,10 @@ projects:
       - beta-parsoid-update-eqiad
 
   - name: mediawiki/services/rcstream
-    template:
-     - name: 'python-lint'
-       prefix: 'rcstream'
+    test:
+      - tox-flake8
+    gate-and-submit:
+      - tox-flake8
 
    # SSS: Till we migrate all our WIP and unreviewed patches over
    # to the new repository, let us keep this in place.
