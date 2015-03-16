@@ -27,7 +27,6 @@
     wrappers:
       - timeout:
           timeout: 30
-          fail: true
       - timestamps
       - ansicolor
 
@@ -124,6 +123,10 @@
 
     publishers:
       - beta-irc
+
+    wrappers:
+      - timeout:
+          timeout: 45
 
     # We do not have a good way to detect databases modifications, so just spam
     # the beta cluster with update requests.
@@ -227,7 +230,6 @@
       - timestamps
       - timeout:
           timeout: 45
-          fail: true
 
     publishers:
       - beta-irc
