@@ -24,6 +24,8 @@ def deploy_zuul():
     with cd('/etc/zuul/wikimedia'):
         sudo('git remote update')
         sudo('git --no-pager log -p HEAD..origin/master zuul')
-        if confirm('Does the diff look good?'):
+        if confirm('Does the diff look good?') and confirm('Log your reload' +
+          ' in #wikimedia-releng (e.g. "!log Reloading Zuul to deploy [hash]")'
+        ):
             sudo('git rebase')
             sudo('/etc/init.d/zuul reload')
