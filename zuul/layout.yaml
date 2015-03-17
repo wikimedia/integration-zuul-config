@@ -480,10 +480,6 @@ jobs:
     voting: false
     files: 'debian/.*'
 
-  # Experiment dependencies between repositories
-  - name: experiment-gating-dependencies
-    voting: false
-
   - name: erblint-HEAD
     files:
      - '^.*\.erb$'
@@ -5350,7 +5346,6 @@ projects:
       - parsoidsvc-source-roundtrip-test-check
       - parsoidsvc-source-npm-0.8
       - parsoidsvc-source-npm-0.10
-      - experiment-gating-dependencies
     postmerge:
       - beta-parsoid-update-eqiad
 
@@ -5370,7 +5365,6 @@ projects:
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
       - parsoidsvc-deploy-npm-0.10
-      - experiment-gating-dependencies
     postmerge:
       - beta-parsoid-update-eqiad
 
@@ -5907,7 +5901,6 @@ projects:
       - mediawiki-gate
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-jsduck
-      - experiment-gating-dependencies
     postmerge:
       - mwext-VisualEditor-jsduck-publish
       - mwext-VisualEditor-sync-gerrit
