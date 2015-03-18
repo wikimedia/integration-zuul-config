@@ -240,3 +240,32 @@ class TestZuulLayout(unittest.TestCase):
         trusted_event.account = {'email': 'jdoe@wikimedia.org'}
         self.assertFalse(check_manager.eventMatches(trusted_event, change))
         self.assertTrue(test_manager.eventMatches(trusted_event, change))
+
+    def test_l10nbot_patchets_are_ignored(self):
+        managers = [self.getPipeline(p).manager
+                    for p in ['check', 'check-only', 'check-voter', 'test']]
+        change = zuul.model.Change('mediawiki/core')
+
+        l10n_event = zuul.model.TriggerEvent()
+        l10n_event.type = 'patchset-created'
+        l10n_event.account = {'email': 'l10n-bot@translatewiki.net'}
+
+        [self.assertFalse(manager.eventMatches(l10n_event, change),
+                          'l10-bot should not enter %s pipeline' %
+                          manager.pipeline.name)
+         for manager in managers]
+
+    def test_l10nbot_allowed_in_gate_and_submit(self):
+        gate = self.getPipeline('gate-and-submit').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        l10n_event = zuul.model.TriggerEvent()
+        l10n_event.type = 'comment-added'
+        l10n_event.account = {'email': 'l10n-bot@translatewiki.net'}
+        l10n_event.approvals = [{'type': 'Code-Review',
+                                 'description': 'Code Review',
+                                 'value': '2',
+                                 'by': {'email': 'l10n-bot@translatewiki.net'},
+                                 }]
+
+        self.assertTrue(gate.eventMatches(l10n_event, change))

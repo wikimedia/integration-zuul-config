@@ -196,6 +196,8 @@ pipelines:
     trigger:
       gerrit:
         - event: patchset-created
+          email:
+           - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
           comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
     success-message: 'Basic test build succeeded.'
