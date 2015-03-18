@@ -629,8 +629,6 @@ jobs:
     voting: false
   - name: mwext-ArticleFeedbackv5-jslint # bug 61588
     voting: false
-  - name: mwext-Buggy-jslint # contains intentionally invalid scripts
-    voting: false
   - name: mwext-CheckUser-jslint # bug 61589
     voting: false
   - name: mwext-ClickTracking-jslint # bug 61591
@@ -2981,7 +2979,19 @@ projects:
 
   - name: mediawiki/extensions/Buggy
     template:
-      - name: extension-unittests
+      - name: extension-gate
+      - name: npm
+    check:
+     - phplint
+     - php-composer-validate
+    test:
+     - phplint
+     - mwext-Buggy-testextension-zend
+     - php-composer-validate
+    gate-and-submit:
+     - phplint
+     - mwext-Buggy-testextension-zend
+     - php-composer-validate
 
   - name: mediawiki/extensions/Calendar
     template:
