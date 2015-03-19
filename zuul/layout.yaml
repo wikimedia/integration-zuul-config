@@ -492,7 +492,7 @@ jobs:
   - name: '^ruby2.0lint$'
     files:
      - '^.*\.rb$'
-  - name: '^.*-bundle-rubocop$'
+  - name: '^(.*-)?bundle-rubocop$'
     files:
      # Matches:
      # - .rubocop.yml
@@ -1971,10 +1971,10 @@ project-templates:
     check:
      - 'ruby1.9.3lint'
     test:
-     - 'mwext-{name}-bundle-rubocop'
+     - 'bundle-rubocop'
      - 'ruby1.9.3lint'
     gate-and-submit:
-     - 'mwext-{name}-bundle-rubocop'
+     - 'bundle-rubocop'
      - 'ruby1.9.3lint'
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
@@ -2300,17 +2300,17 @@ projects:
     check:
      - ruby1.9.3lint
     test:
-     - mediawiki-ruby-api-bundle-rubocop
+     - bundle-rubocop
      - ruby1.9.3lint
-     - mediawiki-ruby-api-bundle-rspec
+     - bundle-rspec
      - mediawiki-ruby-api-gembuild
-     - mediawiki-ruby-api-bundle-yard
+     - bundle-yard
     gate-and-submit:
-     - mediawiki-ruby-api-bundle-rubocop
+     - bundle-rubocop
      - ruby1.9.3lint
-     - mediawiki-ruby-api-bundle-rspec
+     - bundle-rspec
      - mediawiki-ruby-api-gembuild
-     - mediawiki-ruby-api-bundle-yard
+     - bundle-yard
     postmerge:
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard-publish
@@ -2319,17 +2319,17 @@ projects:
     check:
      - ruby1.9.3lint
     test:
-     - mediawiki-selenium-bundle-rubocop
+     - bundle-rubocop
      - ruby1.9.3lint
      - mediawiki-selenium-gembuild
-     - mediawiki-selenium-bundle-yard
-     - mediawiki-selenium-bundle-rspec
+     - bundle-yard
+     - bundle-rspec
     gate-and-submit:
-     - mediawiki-selenium-bundle-rubocop
+     - bundle-rubocop
      - ruby1.9.3lint
      - mediawiki-selenium-gembuild
-     - mediawiki-selenium-bundle-yard
-     - mediawiki-selenium-bundle-rspec
+     - bundle-yard
+     - bundle-rspec
     postmerge:
      - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard-publish
@@ -6265,11 +6265,11 @@ projects:
       - oojs-ui-jslint
       - ruby2.0lint
     test:
-      - oojs-ui-bundle-rubocop
+      - bundle-rubocop
       - jsduck
       - ruby2.0lint
     gate-and-submit:
-      - oojs-ui-bundle-rubocop
+      - bundle-rubocop
       - jsduck
       - ruby2.0lint
     postmerge:

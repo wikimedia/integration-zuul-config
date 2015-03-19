@@ -23,6 +23,7 @@
          vendor/bin/bundle install --verbose
          vendor/bin/bundle exec {command}
 
+# Deprecated non-generic job. See below.
 - job-template:
     name: '{name}-bundle-{bundlecommand}'
     node: contintLabsSlave && UbuntuTrusty
@@ -34,6 +35,29 @@
      - bundle:
          command: "{bundlecommand}"
          bundler-version: ''
+
+# Generic bundle job-template.
+- job-template:
+    name: 'bundle-{bundlecommand}'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - bundle:
+         command: "{bundlecommand}"
+         bundler-version: ''
+
+- project:
+    name: common-bundle-jobs
+    bundlecommand:
+     - rspec
+     - rubocop
+     - yard
+    jobs:
+     - 'bundle-{bundlecommand}'
+
 
 - job-template:
     name: '{name}-bundle17-{bundlecommand}'
