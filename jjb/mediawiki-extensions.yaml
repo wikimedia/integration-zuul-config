@@ -90,7 +90,7 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-     - mw-install-sqlite
+     - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
@@ -127,7 +127,7 @@
      - qunit-karma
     publishers:
      - qunit-cleanup
-     - mw-teardown
+     - mw-teardown-mysql
      - archive-log-dir
 
 - job-template:
@@ -187,7 +187,7 @@
      - qunit-karma
     publishers:
      - qunit-cleanup
-     - mw-teardown
+     - mw-teardown-mysql
      - archive-log-dir
 
 # Run extension tests via Zuul cloner
