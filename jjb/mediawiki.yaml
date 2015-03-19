@@ -20,7 +20,7 @@
      - jsonlint
 
 - job-template:
-    name: 'mediawiki-core-qunit'
+    name: 'krinkle-mwcore-mysql-qunit'
     node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     logrotate:
@@ -32,12 +32,12 @@
          projects: >
              mediawiki/core
              mediawiki/vendor
-     - mw-install-sqlite
+     - mw-install-mysql
      - mw-apply-settings
      - qunit
     publishers:
      - qunit-cleanup
-     - mw-teardown
+     - mw-teardown-mysql
      - archive-log-dir
 
 - job-template:
@@ -345,7 +345,7 @@
         - zend
     jobs:
       - 'mediawiki-core-jslint'
-      - 'mediawiki-core-qunit'
+      - 'krinkle-mwcore-mysql-qunit'
       - 'mediawiki-core-qunit-karma'
       - 'mediawiki-core-jsduck'
       - '{name}-npm'
