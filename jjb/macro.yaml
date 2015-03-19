@@ -194,7 +194,7 @@
     name: assert-phpflavor
     builders:
         - shell: |
-            #!/bin/bash -e -u
+            #!/bin/bash -eu
             PHP_VERSION=`php --version`
 
             case "{phpflavor}" in
@@ -404,14 +404,17 @@
     builders:
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-setup.sh"
 
-# Shell script backed macro installing MediaWiki with a SQLite backend
-#
-#
 # ALWAYS pair with 'mw-teardown' publisher to ensure we don't leave temporary files behind
 - builder:
     name: mw-install-sqlite
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh"
+
+# ALWAYS pair with 'mw-teardown-mysql' publisher to ensure we don't leave temporary files behind
+- builder:
+    name: mw-install-mysql
+    builders:
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-mysql.sh"
 
 - publisher:
     name: mw-teardown
@@ -419,6 +422,16 @@
      - postbuildscript:
          builders:
           - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown.sh"
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
+- publisher:
+    name: mw-teardown-mysql
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown-mysql.sh"
          # Postbuild options are confusing, setting both to false ensures the script always runs.
          onsuccess: False
          onfailure: False
