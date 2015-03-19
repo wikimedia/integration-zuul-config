@@ -41,10 +41,10 @@
     name: beta-recompile-math-texvc-{datacenter}
     defaults: beta
     node: deployment-bastion-{datacenter}
-
     triggers:
      - zuul
-
+    logrotate:
+        daysToKeep: 15
     builders:
      - shell: |
          echo "Making sure the Math extension is up to date"
@@ -245,7 +245,8 @@
     node: deployment-parsoid-{datacenter}
     triggers:
      - zuul
-
+    logrotate:
+        daysToKeep: 15
     builders:
      - git-parsoid-and-deploy-repos
      - shell: |
@@ -267,7 +268,8 @@
     node: deployment-cxserver-{datacenter}
     triggers:
      - zuul
-
+    logrotate:
+        daysToKeep: 15
     builders:
      - git-cxserver-and-deploy-repos
      - shell: |
