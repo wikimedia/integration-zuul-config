@@ -21,7 +21,7 @@
 
 - job-template:
     name: 'mediawiki-core-qunit'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     logrotate:
         daysToKeep: 15
@@ -32,12 +32,12 @@
          projects: >
              mediawiki/core
              mediawiki/vendor
-     - mw-install-sqlite
+     - mw-install-mysql
      - mw-apply-settings
      - qunit
     publishers:
      - qunit-cleanup
-     - mw-teardown
+     - mw-teardown-mysql
      - archive-log-dir
 
 - job-template:
@@ -45,7 +45,7 @@
     # * qunit -> qunit-karma (to run npm-install and karma)
     # * UbuntuPrecise -> UbuntuTrusty (for new local browsers and nodejs version)
     name: 'mediawiki-core-qunit-karma'
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     logrotate:
         daysToKeep: 15
