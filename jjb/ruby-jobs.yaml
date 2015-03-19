@@ -60,7 +60,7 @@
 
 
 - job-template:
-    name: '{name}-bundle17-{bundlecommand}'
+    name: 'bundle17-{bundlecommand}'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
     concurrent: true
@@ -70,6 +70,15 @@
      - bundle:
          command: "{bundlecommand}"
          bundler-version: '< 1.8.0'
+
+- project:
+    name: common-bundle17-jobs
+    bundlecommand:
+     - cucumber
+     - rspec
+     - rubocop
+    jobs:
+     - 'bundle17-{bundlecommand}'
 
 # Call bundle 'yard' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
