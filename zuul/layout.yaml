@@ -387,6 +387,23 @@ pipelines:
     failure:
       gerrit: {}
 
+  - name: zend
+    description: >
+      Jobs manually triggered by whitelisted users commenting 'check zend'.
+      Useful for running zend tests that are only part of gate-and-submit.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*check zend\.?\s*$
+          email: *email_whitelist
+    success-message: 'Zend jobs succeeded.'
+    success:
+      gerrit: {}
+    failure-message: 'Zend jobs failed.'
+    failure:
+      gerrit: {}
+
   # Actual gate (report/vote in Gerrit)
   # Will auto-submit change on success!
   #
@@ -2049,6 +2066,9 @@ projects:
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-package-validate
+    zend:
+      # Comment "check zend" to manually run this
+      - mediawiki-phpunit-zend
     gate-and-submit:
       - mediawiki-gate
       - mediawiki-core-jsduck
