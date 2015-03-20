@@ -97,25 +97,6 @@
 
 - job-template:
     name: '{name}-{ext-name}-qunit'
-    node: contintLabsSlave && UbuntuPrecise
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - prepare-mediawiki:
-         ext-name: '{ext-name}'
-         dependencies: '{dependencies}'
-     - qunit
-    publishers:
-     - qunit-cleanup
-     - mw-teardown
-     - archive-log-dir
-
-- job-template:
-    # Based on '{name}-{ext-name}-qunit' but:
-    # * qunit -> qunit-karma (to run npm-install and karma)
-    # * UbuntuPrecise -> UbuntuTrusty (for new local browsers and nodejs version)
-    name: '{name}-{ext-name}-qunit-karma'
     node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
