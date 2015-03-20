@@ -145,13 +145,13 @@
          projects: >
              mediawiki/core
              mediawiki/vendor
-     - mw-install-sqlite
+     - mw-install-mysql
      - mw-apply-settings
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - archive-log-dir
-     - mw-teardown
+     - mw-teardown-mysql
 
 # Same as above, except uses composer instead of mediawiki/vendor.
 # Currently experimental, will eventually be used for `master`, and
