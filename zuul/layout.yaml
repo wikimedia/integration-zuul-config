@@ -1761,16 +1761,8 @@ jobs:
     queue-name: mediawiki
 
   - name: mediawiki-core-qunit
-    # Doesn't work in MediaWiki REL1_19
-    # (times out or doesn't start in the first place).
-    branch: (?!REL1_19)
-    queue-name: mediawiki
-
-  - name: mediawiki-core-qunit-karma
-    # @since MediaWiki 1.25-alpha
     branch: ^(master)$
     queue-name: mediawiki
-    voting: false
 
   - name: mwext-VisualEditor-qunit-karma
     voting: false
@@ -2056,7 +2048,6 @@ projects:
       - mediawiki-phpunit-hhvm
       #- mediawiki-phpunit-zend (disabled, slow, Icac172b16)
       - mediawiki-core-qunit
-      - mediawiki-core-qunit-karma
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
       - php-composer-package-validate
