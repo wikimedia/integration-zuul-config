@@ -123,8 +123,8 @@
     # Select runnable node based on the phpflavor (hhvm or zend)
     #
     # We want to reuse the same job template for both PHP flavor:
-    # - HHVM flavor runs on Trusty CI labs slaves which have HHVM
-    # - Zend flavor runs on productionSlaves with Precise which ships Zend PHP 5.3
+    # - HHVM flavor runs on Trusty CI labs slaves with HHVM
+    # - Zend flavor runs on Precise CI labs slaves with Zend PHP 5.3
     #
     # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
     # definition based on the job name.
@@ -133,7 +133,7 @@
     # search for 'Restrict where this project can be run', below the input box
     # is a text: Slaves in [label]: X . Clicking [label] will list nodes
     # matching the expression.
-    node: '(contintLabsSlave && UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (contintLabsSlave && UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
     triggers:
      - zuul
@@ -171,18 +171,18 @@
              mediawiki/core
      - composer-validate
      - composer-update
-     - mw-install-sqlite
+     - mw-install-mysql
      - mw-apply-settings
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - archive-log-dir
-     - mw-teardown
+     - mw-teardown-mysql
 
+# See 'mediawiki-phpunit-{phpflavor}'
 - job-template:
     name: 'mediawiki-extensions-{phpflavor}'
-    # See 'mediawiki-phpunit-{phpflavor}'
-    node: '(productionSlaves && UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (contintLabsSlave && UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
     logrotate:
         daysToKeep: 15
@@ -238,7 +238,7 @@
          git submodule foreach git clean -xdff -q
          git submodule update --init
          git submodule status
-     - mw-install-sqlite
+     - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
@@ -248,7 +248,7 @@
      - junit:
         results: 'log/junit*.xml'
      - archive-log-dir
-     - mw-teardown
+     - mw-teardown-mysql
 
 
 # Test out our PHPUnit against various MediaWiki branches
@@ -268,7 +268,7 @@
              mediawiki/core
              mediawiki/vendor
              integration/phpunit
-     - mw-install-sqlite
+     - mw-install-mysql
      - mw-apply-settings
      - shell: |
          export PHPUNIT_DIR="$WORKSPACE/src/integration/phpunit/vendor/phpunit/phpunit"
@@ -276,7 +276,7 @@
     publishers:
      - phpunit-junit-2
      - archive-log-dir
-     - mw-teardown
+     - mw-teardown-mysql
 
 - job-template:
     name: 'mediawiki-core-release'
