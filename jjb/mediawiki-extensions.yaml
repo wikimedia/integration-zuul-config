@@ -90,13 +90,14 @@
             git submodule update --init
          fi
 
+# ALWAYS pair with 'mw-teardown-mysql'
 - builder:
     name: prepare-mediawiki
     builders:
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-     - mw-install-sqlite
+     - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
@@ -114,7 +115,7 @@
      - qunit-karma
     publishers:
      - qunit-cleanup
-     - mw-teardown
+     - mw-teardown-mysql
      - archive-log-dir
 
 - job-template:
@@ -130,7 +131,7 @@
      - qunit-mobile
     publishers:
      - qunit-cleanup
-     - mw-teardown
+     - mw-teardown-mysql
      - archive-log-dir
 
 - job-template:
@@ -153,7 +154,7 @@
      - qunit-karma
     publishers:
      - qunit-cleanup
-     - mw-teardown
+     - mw-teardown-mysql
      - archive-log-dir
 
 # Run extension tests via Zuul cloner
@@ -180,7 +181,7 @@
     publishers:
      - junit:
         results: 'log/junit*.xml'
-     - mw-teardown
+     - mw-teardown-mysql
      - archive-log-dir
 
 - job-template:
