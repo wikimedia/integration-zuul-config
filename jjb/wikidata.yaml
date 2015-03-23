@@ -54,7 +54,7 @@
 
 - job-template:
     name: 'mwext-Wikibase-qunit'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
@@ -71,7 +71,7 @@
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
-     - qunit
+     - qunit-karma
     publishers:
      - archive-log-dir
      - qunit-cleanup
@@ -118,7 +118,7 @@
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
-     - qunit
+     - qunit-karma
     publishers:
      - archive-log-dir
      - qunit-cleanup
