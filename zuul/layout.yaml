@@ -1821,11 +1821,9 @@ project-templates:
   # Does run the unit tests on 'test' and 'gate-and-submit'
   - name: extension-unittests
     check:
-     - 'mwext-{name}-jslint'
      - phplint
      - php-composer-validate
     test:
-     - 'mwext-{name}-jslint'
      - phplint
      # Extensions tests with core+vendor
      #- 'mwext-{name}-testextension-hhvm'
@@ -1833,7 +1831,6 @@ project-templates:
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - 'mwext-{name}-jslint'
      - phplint
      # Extensions tests with core+vendor
      #- 'mwext-{name}-testextension-hhvm'
@@ -1843,6 +1840,15 @@ project-templates:
       - 'mediawiki-extensions-hhvm'
       - 'mwext-{name}-testextension-hhvm'
       - php-composer-test
+
+  # Template to run jslint
+  - name: extension-jslint
+    check:
+      - 'mwext-{name}-jslint'
+    test:
+      - 'mwext-{name}-jslint'
+    gate-and-submit:
+      - 'mwext-{name}-jslint'
 
   - name: extension-gate
     test:
@@ -2892,18 +2898,22 @@ projects:
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AccountAudit
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AccountInfo
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ActiveAbstract
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ActivityMonitor
     template:
@@ -2912,34 +2922,42 @@ projects:
   - name: mediawiki/extensions/AddMessages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AdminLinks
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Agora
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AntiBot
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AntiSpoof
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Annotator
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/APC
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ApprovedRevs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ArticleFeedback
     template:
@@ -2953,19 +2971,23 @@ projects:
   - name: mediawiki/extensions/ApiSandbox
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Arrays
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Babel
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BetaFeatures
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BlameMaps
     check-only:
@@ -2985,18 +3007,22 @@ projects:
   - name: mediawiki/extensions/BlogPage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BookManager
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BookManagerv2
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BounceHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Buggy
     template:
@@ -3017,35 +3043,43 @@ projects:
   - name: mediawiki/extensions/Calendar
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Campaigns
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Capiunto
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CategoryTagSorter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CategoryTree
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CharInsert
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CheckUser
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Cite
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CiteThisPage
     template:
@@ -3075,6 +3109,7 @@ projects:
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs
     experimental:
       - php-composer-test
@@ -3088,6 +3123,7 @@ projects:
     template:
       - name: extension-qunit
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-rubylint
 
   - name: mediawiki/extensions/CirrusSearch
@@ -3098,26 +3134,32 @@ projects:
   - name: mediawiki/extensions/CleanChanges
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ClickTracking
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ClientSide
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CodeEditor
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CodeMirror
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CodeReview
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CollapsibleVector
     template:
@@ -3126,6 +3168,7 @@ projects:
   - name: mediawiki/extensions/Collection
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
@@ -3185,19 +3228,23 @@ projects:
   - name: mediawiki/extensions/CommonsMetadata
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Configure
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ConfirmAccount
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ConfirmEdit
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
     check:
       - mwext-ConfirmEdit-pep8
       - mwext-ConfirmEdit-pyflakes
@@ -3229,103 +3276,128 @@ projects:
   - name: mediawiki/extensions/ContributionScores
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ContributionsList
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CommonMessages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CommunityApplications
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CommunityHiring
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CommunityVoice
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ContactPage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ContactPageFundraiser
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FundraisingChart
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ContributionReporting
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ContributionTracking
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ConventionExtension
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CreditsSource
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CustomData
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CustomUserSignup
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DebugMode
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DeleteBatch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DisableAccount
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Disambiguator
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DiscussionThreading
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DismissableSiteNotice
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DonationInterface
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: npm
 
   - name: mediawiki/extensions/DoubleWiki
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Drafts
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DynamicSidebar
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DumpHTML
     template:
@@ -3344,46 +3416,56 @@ projects:
   - name: mediawiki/extensions/E3Experiments
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Echo
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-qunit
       - name: extension-rubylint
 
   - name: mediawiki/extensions/EditAccount
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Editcount
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/EditPageTracking
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/EducationProgram
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Elastica
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/EmailCapture
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/EtherEditor
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/EventLogging
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-qunit
     test:
       - tox-flake8
@@ -3397,18 +3479,22 @@ projects:
   - name: mediawiki/extensions/ExpandTemplates
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ExtensionDistributor
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FeaturedFeeds
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FlaggedRevs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Flow
     template:
@@ -3438,122 +3524,151 @@ projects:
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FundraiserLandingPage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FundraisingTranslateWorkflow
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Gadgets
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Gather
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
       - name: composer-test
 
   - name: mediawiki/extensions/GettingStarted
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-qunit
       - name: extension-rubylint
 
   - name: mediawiki/extensions/GeoCrumbs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GeoData
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GeoGebra
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Git2Pages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GitHub
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Gitweb
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalBlocking
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalContributions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalCssJs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalPreferences
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalUsage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalUserPage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleAdSense
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleAPIClient
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleAnalyticsTopPages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleAppEngine
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleCustomWikiSearch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleLogin
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleNewsSitemap
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleSiteSearch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Graph
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GraphViz
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GuidedTour
     template:
       - name: extension-unittests
+      - name: extension-jslint
     test:
      - mwext-GuidedTour-qunit
      - jsduck
@@ -3566,26 +3681,32 @@ projects:
   - name: mediawiki/extensions/GWToolset
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HelpPages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/I18nTags
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ImageMap
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/InputBox
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Insider
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Interwiki
     check-only:
@@ -3605,52 +3726,64 @@ projects:
   - name: mediawiki/extensions/intersection
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/JsonConfig
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LandingCheck
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LastModified
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LdapAuthentication
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Lingo
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LinkedWiki
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LiquidThreads
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Listings
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LocalisationUpdate
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Mantle
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs
     test:
       - mwext-Mantle-qunit
@@ -3662,6 +3795,7 @@ projects:
   - name: mediawiki/extensions/Math
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-rubylint
     postmerge:
       - beta-recompile-math-texvc-eqiad
@@ -3669,23 +3803,28 @@ projects:
   - name: mediawiki/extensions/MathSearch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MapSources
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MassMessage
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: composer-test
 
   - name: mediawiki/extensions/MarkAsHelpful
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MixedNamespaceSearchSuggestions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MobileFrontend
     template:
@@ -3711,18 +3850,22 @@ projects:
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MolHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MoodBar
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MultiMaps
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MultimediaViewer
     template:
@@ -3749,10 +3892,12 @@ projects:
   - name: mediawiki/extensions/MwEmbedSupport
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MWSearch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   # TODO: add qunit
   - name: mediawiki/extensions/Narayam
@@ -3762,50 +3907,62 @@ projects:
   - name: mediawiki/extensions/NaturalLanguageList
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NavigationTiming
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NewestPages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NewUserMessage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NewUserNotif
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Nonlinear
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Nostalgia
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Nuke
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OATHAuth
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OAI
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OAuth
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OAuthAuthentication
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Offline
     template:
@@ -3824,18 +3981,22 @@ projects:
   - name: mediawiki/extensions/OggHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OpenID
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OpenIDConnect
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OpenSearchXml
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OpenStackManager
     template:
@@ -3854,554 +4015,686 @@ projects:
   - name: mediawiki/extensions/PageBlock
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PagedTiffHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PageImages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PageTriage
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-rubylint
 
   - name: mediawiki/extensions/ParserFunctions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ParserHooks
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Petition
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 # Start of new currently disabled extensions checks from mass extension import - Addshore
 
   - name: mediawiki/extensions/AbsenteeLandlord
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AccessControl
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ActionEditSubmit
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/AddThis
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AdManager
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Ads
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AdvancedMeta
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AjaxLogin
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AJAXPoll
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AkismetKlik
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AllTimeZones
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/AnchorHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ApiExplorer
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ApiFeatureUsage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ApiSVGProxy
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ArticleCreationWorkflow
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ArticleIndex
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/AssertEdit
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Auth_remoteuser
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AuthorProtect
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AutoCreateCategoryPages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AutomaticBoardWelcome
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs # bug 68873
 
   - name: mediawiki/extensions/AutoProxyBlock
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Awesomeness
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AWS
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/AWSSDK
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/BatchUserRights
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BayesianFilter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BiblioPlus
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BibManager
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Blackout
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BlockAndNuke
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BlueSpiceExtensions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BlueSpiceFoundation
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Bootstrap
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BreadCrumbs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/BreadCrumbs2
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Carp
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Cargo
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CategorySlideShow
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CategorySortHeaders
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CategoryTests
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/CentralLogging
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CharRangeSpan
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Checkpoint
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CloseWikis
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Commentbox
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CommentPages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Comments
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CommunityTwitter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ConditionalShowSection
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CongressLookup
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Contest
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/Contributors
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Convert2Wiki
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CopyToClipboard
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CreatePage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CreateRedirect
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CreditTab
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CryoKey
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/CSS
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/DataTransfer
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/DeleteOwn
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Description2
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DeviceMapLogCapture
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Diagnosis
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Dice
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DidYouKnow
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DidYouMean
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DisqusTag
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DjangoAnalytics
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DownloadCounter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DPLforum
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Duplicator
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/DynamicPageList
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/EditSubpages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/EnhanceContactForm
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ErrorHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/EtherpadLite
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/examples
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/ExternalArticles
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ExternalData
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ExtraLanguageLink
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ExtTab
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FanBoxes
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FeedsFromPrivateWikis
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FilterListUsers
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FirstSteps
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/FlvHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ForcePreview
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FormatDates
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FormatNum
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FormelApplet
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Foxway
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/FundraisingEmailUnsubscribe
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Genderize
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalNotice
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalUserGroups
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GlobalUserrights
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/googleAnalytics
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleDocs4MW
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleDocTag
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GoogleMaps
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/GooglePlusOne
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/GroupsSidebar
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/Hanp
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HashTables
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HeaderTabs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HelpCommons
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HidePrefix
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HostStats
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/Hovergallery
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HSTS
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HTMLets
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/HTMLTags
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/IframePage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/IfTemplates
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ImageLink
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ImageMetrics
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-qunit
 
 
   - name: mediawiki/extensions/IndexFunction
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/InlineCategorizer
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/InteractiveBlockMessage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Interlanguage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/InterwikiMagic
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/InviteSignup
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
@@ -4411,498 +4704,615 @@ projects:
   - name: mediawiki/extensions/Josa
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/JSBreadCrumbs
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs # bug 68871
 
   - name: mediawiki/extensions/JsonData
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LanguageSelector
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LanguageTag
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Less
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LifeWeb
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LifeWebCore
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/LightweightRDFa
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Limn
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LinkFilter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LinkSuggest
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ListSignup
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/LiveTranslate
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Lockdown
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LockDownEnglishPages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LogEntry
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LogoFunctions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LookupUser
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/LoopFunctions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Loops
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MagicNoCache
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/Maintenance
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MaintenanceShell
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Maps
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MassEditRegex
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MediaFunctions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MediaWikiAuth
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MediaWikiChat
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/Minifier
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/Model
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Moodle
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Mpdf
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MsLinks
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MSSQLBackCompat
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MsUpload
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/MultimediaPlayer
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MultiUpload
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/MyVariables
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NamespaceHTML
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NamespacePaths
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NamespaceRelations
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Negref
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NetworkAuth
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/News
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NewsBox
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NewSignupPage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Newsletter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NewUsersList
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NoTitle
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/NSFileRepo
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NukeDPL
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NumberFormat
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NumberOfWikis
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Numbertext
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/NumerAlpha
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OdbcDatabase
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OfflineImportLexicon
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OnlineStatus
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs # bug 68816
 
   - name: mediawiki/extensions/OnlineStatusBar
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OnlyRecentRecentChanges
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OpenGraphMeta
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OpenStreetMapSlippyMap
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/OracleTextSearch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Oversight
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PageCreationNotif
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/PageDisqus
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PageInCat
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PageLanguage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PageNotice
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PageSchemas
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PageTools
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PanScroll
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/PdfBook
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PdfExport
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/PerPageLicense
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Persona
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PGFTikZ
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Phalanx
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PhpHighlight
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/PhpTagsMaps
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PhpTagsSMW
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/PictureGame
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/Poll
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PollNY
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Polyglot
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/PrefStats
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PrefSwitch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Premoderation
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PrivateDomains
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PronunciationRecording
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/ProtectSite
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/PubSubHubbub
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/PurgeClickThrough
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/Push
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PushToWatch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Quantcast
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/QuickResponse
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/QuizGame
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/QuizTabulate
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RandomFeaturedUser
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RandomGameUnit
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RandomImage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RandomImageByCategory
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RandomInCategory
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RandomUsersWithAvatars
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Ratings
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RDFIO
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/ReassignEdits
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RefreshSpecial
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RegexFun
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RegexFunctions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RelationLinks
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RestBaseUpdateJobs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RevisionCommentSupplement
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RightFunctions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RT
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SandboxLink
     template:
@@ -4912,460 +5322,569 @@ projects:
   - name: mediawiki/extensions/Sarcasm
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ScanSet
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Screenplay
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SearchRealnames
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SectionDisqus
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SecureHTML
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SecurePasswords
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SecureSessions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SelectCategory
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SelectTag
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticComments
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticHighcharts
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticRating
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticSifter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticWebBrowser
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SharedCssJs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/ShortUrlApi
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ShoutBox
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ShoutWikiAds
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/SidebarDonateBox
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/SignWritingMediaWikiPlugin
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SimpleChanges
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/SimpleSecurity
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SimpleSurvey
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SiteMetrics
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SiteSettings
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SkelJS
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SkinPerNamespace
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SlimboxThumbs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SmoothGallery
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/SocialLogin
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SocialProfile
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SoftwareVersion
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/SolrStore
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SoundManager2Button
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Spark
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Special404
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/SpellingApi
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SphinxSearch
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SportsTeams
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SSLClientAuthentication
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/StaffEdits
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/StalkerLog
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/StarterWiki
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/StringFunctionsEscaped
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SubpageFun
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/Suhosin
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SwarmExport
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/SwiftMailer
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SyntaxHighlighter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Tabber
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Tabs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/TemplateInfo
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Theme
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ThemeDesigner
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ThrottleOverride
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ThumbParser
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TimelineTable
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TimeMachine
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TimezoneSelector
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TitleIcon
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TranslateSvg
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TweetANew
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TwitterCards
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TwitterLogin
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TwoFactorAuthentication
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UIFeedback
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UnitTest
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UpdateMediaWiki
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UploadLocal
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UrlGetParameters
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UrlShortener
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/URNames
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UserFunctions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UserGroups
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UserPageViewTracker
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/UserStatus
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ValueView
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/Video
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/ViewFiles
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Views
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Vine
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/VisualChat
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/VoteNY
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WantedPagesFromNS
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WatchSubpages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/WebPlatformSearchAutocomplete
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/WhitelistPages
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs # bug 68858
 
   - name: mediawiki/extensions/WhiteSpace
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WhoIsWatching
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Widgets
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikiArticleFeeds
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikibaseMobile
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikibaseSolr
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikiCategoryTagCloud
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/WikidataEntitySuggester
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikidataQuality
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Wikilog
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikiLovesMonuments
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
   - name: mediawiki/extensions/WikiTextLoggedInOut
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikiTwidget
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikivoteMapsYandex
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
 
 
   - name: mediawiki/extensions/WindowsAzureSDK
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WindowsAzureStorage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WYSIWYG
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/XMLContentExtension
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/YetAnotherKeywords
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/YotpoReviews
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/YouTube
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ArticleComments
     template:
@@ -5743,31 +6262,38 @@ projects:
   - name: mediawiki/extensions/PdfHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-rubylint
 
   - name: mediawiki/extensions/PhpTags
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PhpTagsFunctions
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PhpTagsWidgets
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PhpTagsWiki
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PHPExcel
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Poem
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PoolCounter
     check:
@@ -5789,63 +6315,78 @@ projects:
   - name: mediawiki/extensions/Popups
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-qunit
 
   - name: mediawiki/extensions/PostEdit
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ProofreadPage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Quiz
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RandomRootPage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ReaderFeedback
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RelatedArticles
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RelatedSites
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Renameuser
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ReplaceSet
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ReplaceText
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/RSS
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Score
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SearchExtraNS
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SecurePoll
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticACL
     template:
@@ -5888,6 +6429,7 @@ projects:
   - name: mediawiki/extensions/SemanticForms
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticFormsInputs
     template:
@@ -5920,10 +6462,12 @@ projects:
   - name: mediawiki/extensions/SemanticMediaWiki
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticMetaTags
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticPageMaker
     template:
@@ -5936,6 +6480,7 @@ projects:
   - name: mediawiki/extensions/SemanticResultFormats
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SemanticSignup
     template:
@@ -5960,31 +6505,38 @@ projects:
   - name: mediawiki/extensions/Sentry
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs
 
   - name: mediawiki/extensions/Scribunto
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/ShortUrl
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SimpleAntiSpam
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SimpleFarm
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SiteMatrix
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SkinPerPage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/skins
     template:
@@ -5993,63 +6545,78 @@ projects:
   - name: mediawiki/extensions/Solarium
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SpamBlacklist
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Spreadsheet
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/StickToThatLanguage
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/StopForumSpam
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/StrategyWiki
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SubPageList3
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SubpageSortkey
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Sudo
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Survey
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SVGEdit
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SwiftCloudFiles
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TemplateSandbox
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TextExtracts
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SideBarMenu
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
     check-only:
@@ -6086,10 +6653,12 @@ projects:
       - name: extension-gate  # T86687
       - name: extension-qunit-and-mobile
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TimedMediaHandler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/timeline
     check-only:
@@ -6105,23 +6674,28 @@ projects:
   - name: mediawiki/extensions/TitleBlacklist
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TitleKey
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TocTree
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TorBlock
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Translate
     template:
       - name: extension-rubylint
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs
     experimental:
       - php-composer-test
@@ -6129,6 +6703,7 @@ projects:
   - name: mediawiki/extensions/TranslationNotifications
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs
     experimental:
       - php-composer-test
@@ -6136,15 +6711,18 @@ projects:
   - name: mediawiki/extensions/Transliterator
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TrustedXFF
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/TwnMainPage
     template:
       - name: extension-rubylint
       - name: extension-unittests
+      - name: extension-jslint
     check:
       - mwext-TwnMainPage-phpcs-HEAD
     test:
@@ -6157,16 +6735,19 @@ projects:
   - name: mediawiki/extensions/OpenBadges
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UnicodeConverter
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     template:
       - name: extension-gate
       - name: extension-rubylint
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs
     experimental:
       - php-composer-test
@@ -6174,10 +6755,12 @@ projects:
   - name: mediawiki/extensions/UploadBlacklist
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UploadWizard
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-qunit
       - name: extension-rubylint
       - name: extension-phpcs
@@ -6195,26 +6778,32 @@ projects:
   - name: mediawiki/extensions/UserDailyContribs
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UserMerge
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UserOptionStats
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/UserThrottle
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Validator
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Variables
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Vector
     check-only:
@@ -6232,14 +6821,17 @@ projects:
   - name: mediawiki/extensions/VectorBeta
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/VipsScaler
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/VirtualKeyboard
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/VisualEditor
     template:
@@ -6264,6 +6856,7 @@ projects:
   - name: mediawiki/extensions/WebChat
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WebFonts
     check-only:
@@ -6283,6 +6876,7 @@ projects:
   - name: mediawiki/extensions/WebPlatformAuth
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikiEditor
     check-only:
@@ -6323,10 +6917,12 @@ projects:
     template:
       - name: extension-qunit
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Wikidata
     template:
       - name: extension-unittests
+      - name: extension-jslint
     experimental:
       - mwext-Wikidata-jslint
       - phplint
@@ -6339,6 +6935,7 @@ projects:
   - name: mediawiki/extensions/WikiForum
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikiLexicalData
     template:
@@ -6347,45 +6944,55 @@ projects:
   - name: mediawiki/extensions/WikiLove
     template:
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-rubylint
 
   - name: mediawiki/extensions/wikihiero
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikimediaEvents
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikimediaIncubator
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikimediaMaintenance
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikimediaMessages
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikimediaShopLink
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/WikiGrok
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-phpcs
 
   - name: mediawiki/extensions/WikiObjectModel
     template:
       - name: extension-unittests
+      - name: extension-jslint
 
   - name: mediawiki/extensions/Workflow
     template:
       - name: extension-unittests
+      - name: extension-jslint
     test:
       - mwext-Workflow-yamllint
     gate-and-submit:
@@ -6395,12 +7002,14 @@ projects:
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-rubylint
 
   - name: mediawiki/extensions/ZeroPortal
     template:
       - name: extension-gate
       - name: extension-unittests
+      - name: extension-jslint
       - name: extension-rubylint
 
 #### PHP Extensions ###################################################
