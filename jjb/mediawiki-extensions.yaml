@@ -9,6 +9,10 @@
      - jshint
      - jsonlint
 
+# This is the non-generic npm job. Most extensions
+  should just need to add "npm" in their zuul config.
+  Only VisualEditor uses this as it needs to checkout
+  submodules.
 - job-template:
     name: '{name}-{ext-name}-npm'
     node: contintLabsSlave && UbuntuTrusty
