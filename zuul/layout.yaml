@@ -1919,6 +1919,17 @@ project-templates:
     gate-and-submit:
       - php-composer-test
 
+  - name: jslint
+    check:
+      - jshint
+      - jsonlint
+    test:
+      - jshint
+      - jsonlint
+    gate-and-submit:
+      - jshint
+      - jsonlint
+
   - name: composer-test-package
     check:
       - php-composer-package-validate
@@ -2864,30 +2875,28 @@ projects:
       - phplint
 
   - name: wikimedia/iegreview
+    template:
+     - name: jslint
     check:
-     - wikimedia-iegreview-jslint
      - phplint
     test:
-     - wikimedia-iegreview-jslint
      - phplint
      - wikimedia-iegreview-phpunit
     gate-and-submit:
-     - wikimedia-iegreview-jslint
      - phplint
      - wikimedia-iegreview-phpunit
 
   - name: wikimedia/wikimania-scholarships
+    template:
+     - name: jslint
     check:
-     - wikimedia-wikimania-scholarships-jslint
      - phplint
      - php-composer-validate
     test:
-     - wikimedia-wikimania-scholarships-jslint
      - phplint
      - wikimedia-wikimania-scholarships-phpunit
      - php-composer-validate
     gate-and-submit:
-     - wikimedia-wikimania-scholarships-jslint
      - phplint
      - wikimedia-wikimania-scholarships-phpunit
      - php-composer-validate
