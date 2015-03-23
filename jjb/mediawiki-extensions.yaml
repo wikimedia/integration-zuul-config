@@ -159,7 +159,7 @@
 - job-template:
     name: '{name}-{ext-name}-testextension-{phpflavor}'
     # See mediawiki.yaml mediawiki-phpunit-{phpflavor}
-    node: '(productionSlaves && UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (contintLabsSlave && UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
     properties:
      - throttle-one-per-node
