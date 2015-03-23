@@ -10,6 +10,8 @@
     builders:
      - erblint-HEAD
 
+# Non-generic version of "jshint" and "jsonlint"
+# below.
 - job-template:
     name: '{name}-jslint'
     node: hasSlaveScripts && UbuntuPrecise
@@ -19,6 +21,26 @@
      - zuul
     builders:
      - jshint
+     - jsonlint
+
+- job:
+    name: 'jshint'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jshint
+
+- job:
+    name: 'jsonlint'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
      - jsonlint
 
 - job:
