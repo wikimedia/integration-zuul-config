@@ -7244,18 +7244,17 @@ projects:
       - unicodejs-jsduck-publish
 
   - name: VisualEditor/VisualEditor
+    template:
+      - name: npm
+      - name: extension-rubylint
     check:
-      - VisualEditor-jslint
-      - ruby1.9.3lint
+      - jshint
+      - jsonlint
     test:
       - VisualEditor-npm
-      - VisualEditor-bundle-rubocop
-      - ruby1.9.3lint
       - jsduck
     gate-and-submit:
       - VisualEditor-npm
-      - VisualEditor-bundle-rubocop
-      - ruby1.9.3lint
       - jsduck
 
   - name: wikidata/gremlin
