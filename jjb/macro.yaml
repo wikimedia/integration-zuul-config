@@ -95,25 +95,23 @@
     builders:
      - shell: /srv/deployment/integration/slave-scripts/bin/json-lint.php .
 
-# This build step is for projects that have their dev environment configured
-# around npm. This will fetch any npm dependencies into a local node_modules
-# directory in the workspace, and run associated 'scripts' commands as
-# specified in the package.json file (install and test).
-#
+# ALWAYS pair with 'global-teardown'
 - builder:
     name: npm-install
     builders:
     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         node --version
         npm --version
         rm -rf node_modules
         npm install
+
+# ALWAYS pair with 'global-teardown'
 - builder:
     name: npm
     builders:
     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         node --version
         npm --version
         rm -rf node_modules
@@ -122,13 +120,15 @@
 
 # Variant that can use a deploy repo for the dependencies.
 # See macro setup-npm-oid below.
+#
+# ALWAYS pair with 'global-teardown'
 - builder:
     name: npm-oid
     builders:
      - setup-npm-oid:
          repository: '{repository}'
      - shell: |
-         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
          # node_modules is not purged, taken care of by setup-npm-oid
 
          node --version
@@ -136,6 +136,16 @@
          . npm-oid.env
          cd "$NPM_SET_PATH"
          npm test
+
+- publisher:
+    name: global-teardown
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: "/srv/deployment/integration/slave-scripts/bin/global-teardown.sh"
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
 
 # cxserver and parsoid services come with two repositories:
 # eg
@@ -263,6 +273,7 @@
         echo "Running JSDuck..."
         jsduck
 
+# ALWAYS pair with 'qunit-cleanup'
 - builder:
     name: prepare-qunit-localhost
     builders:
@@ -289,8 +300,8 @@
 
 # qunit
 #
-# ALWAYS pair with 'qunit-cleanup' publisher to ensure we don't leave
-# garbage behind in /srv/localhost/qunit
+# ALWAYS pair with 'qunit-cleanup'
+# ALWAYS pair with 'global-teardown' (for npm-setup)
 - builder:
     name: qunit-querystring
     builders:
@@ -316,7 +327,7 @@
      - shell: |
         . /srv/deployment/integration/slave-scripts/bin/mw-set-env-qunit.sh
         cd $MW_INSTALL_PATH
-        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         rm -rf node_modules
         npm install
         grunt karma:main
