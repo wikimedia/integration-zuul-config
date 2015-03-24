@@ -2232,23 +2232,23 @@ projects:
       - apps-android-commons-build
 
   - name: apps/android/wikipedia
-    check:
-      - apps-android-wikipedia-jslint
+    template:
+      - name: lint-js
     test:
-      - apps-android-wikipedia-jslint
       - tox-flake8
       - apps-android-wikipedia-maven-checkstyle
     gate-and-submit:
-      - apps-android-wikipedia-jslint
       - tox-flake8
       - apps-android-wikipedia-maven-checkstyle
 
   - name: apps/ios/wikipedia
     check-voter:
-      - apps-ios-wikipedia-jslint
+      - jshint
+      - jsonlint
       - phplint
     gate-and-submit:
-      - apps-ios-wikipedia-jslint
+      - jshint
+      - jsonlint
       - phplint
 
   - name: labs/incubator
@@ -2290,10 +2290,11 @@ projects:
 
   - name: labs/tools/grrrit
     check-voter:
-     - labs-tools-grrrit-jslint
-     - labs-tools-grrrit-yamllint
+     - jshint
+     - jsonlint
     gate-and-submit:
-     - labs-tools-grrrit-jslint
+     - jshint
+     - jsonlint
      - labs-tools-grrrit-yamllint
 
   - name: labs/tools/wikibugs2
@@ -2309,13 +2310,16 @@ projects:
   - name: integration/docroot
     check-voter:
      - phplint
-     - integration-docroot-jslint
+     - jshint
+     - jsonlint
     test:
      - phplint
-     - integration-docroot-jslint
+     - jshint
+     - jsonlint
     gate-and-submit:
      - phplint
-     - integration-docroot-jslint
+     - jshint
+     - jsonlint
     postmerge:
      - integration-docroot-deploy
 
@@ -2810,22 +2814,19 @@ projects:
   - name: wikimedia/fundraising/dash
     template:
       - name: npm
-    check:
-      - wikimedia-fundraising-dash-jslint
-    test:
-      - wikimedia-fundraising-dash-jslint
-    gate-and-submit:
-      - wikimedia-fundraising-dash-jslint
+      - name: lint-js
 
   - name: wikimedia/fundraising/tools
     template:
      - name: 'python-lint'
        prefix: 'wikimedia-fundraising-tools'
     check-voter:
-      - wikimedia-fundraising-tools-jslint
+      - jshint
+      - jsonlint
       - wikimedia-fundraising-tools-yamllint
     gate-and-submit:
-      - wikimedia-fundraising-tools-jslint
+      - jshint
+      - jsonlint
       - wikimedia-fundraising-tools-yamllint
 
   - name: wikimedia/fundraising/crm
@@ -7220,7 +7221,8 @@ projects:
     template:
       - name: npm
     check:
-      - oojs-core-jslint
+      - jshint
+      - jsonlint
     test:
       - jsduck
     gate-and-submit:
@@ -7233,7 +7235,8 @@ projects:
       - name: composer-test-package
       - name: npm
     check:
-      - oojs-ui-jslint
+      - jshint
+      - jsonlint
       - ruby2.0lint
     test:
       - bundle-rubocop
