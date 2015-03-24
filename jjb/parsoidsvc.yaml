@@ -81,6 +81,8 @@
             echo "Foo" | node parse.js --wt2wt
             echo "Foo" | node parse.js --html2wt
             echo "Foo" | node parse.js --html2html
+    publishers:
+     - global-teardown
 
 - job-template:
     name: parsoidsvc-{repository}-roundtrip-test-check
@@ -106,6 +108,8 @@
             node roundtrip-test.js "Barack Obama"
             node roundtrip-test.js --prefix frwiki "Chope"
             node roundtrip-test.js --xml "Parkour"
+    publishers:
+     - global-teardown
 
 - job-template:
     name: parsoidsvc-{repository}-npm-0.10
@@ -131,6 +135,8 @@
         . npm-oid.env
         cd "$NPM_SET_PATH"
         npm test
+    publishers:
+     - global-teardown
 
 - job-template:
     name: parsoidsvc-{repository}-npm-0.8
@@ -156,6 +162,8 @@
         . npm-oid.env
         cd "$NPM_SET_PATH"
         npm test
+    publishers:
+     - global-teardown
 
 # slightly customized version of jshint job, since we have a package.json
 # which is a symlink inside a submodule, and so fails jsonlint under the
