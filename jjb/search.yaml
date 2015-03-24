@@ -112,3 +112,22 @@
     name: 'search-repository-swift'
     jobs:
      - 'search-repository-swift'
+
+- job:
+    name: 'wikidata-query-rdf'
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 7'
+    triggers:
+     - zuul
+    logrotate:
+       daysToKeep: 15
+    scm:
+     - git-remote-zuul
+    wrappers:
+     - timeout:
+         timeout: 60  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    maven:
+      goals: clean package
