@@ -1917,10 +1917,12 @@ project-templates:
   - name: mw-checks
     check-voter:
      - phplint
+     - jsonlint
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - phplint
+     - jsonlint
      - php-composer-validate
 
   - name: composer-test
@@ -2379,9 +2381,9 @@ projects:
     template:
      - name: mw-checks
     check-voter:
-     - mw-skins-Bouquet-jslint
+     - jshint
     gate-and-submit:
-     - mw-skins-Bouquet-jslint
+     - jshint
 
   - name: mediawiki/skins/chameleon
     template:
@@ -2459,9 +2461,9 @@ projects:
     template:
      - name: mw-checks
     check-voter:
-     - mw-skins-Nimbus-jslint
+     - jshint
     gate-and-submit:
-     - mw-skins-Nimbus-jslint
+     - jshint
 
   - name: mediawiki/skins/Nostalgia
     template:
@@ -3200,57 +3202,37 @@ projects:
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
       - name: npm
-    check:
-      - mwext-Collection-OfflineContentGenerator-jslint
-    test:
-      - mwext-Collection-OfflineContentGenerator-jslint
+      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
-      - mwext-Collection-OfflineContentGenerator-jslint
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     template:
       - name: npm
-    check:
-      - mwext-Collection-OfflineContentGenerator-bundler-jslint
-    test:
-      - mwext-Collection-OfflineContentGenerator-bundler-jslint
+      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
-      - mwext-Collection-OfflineContentGenerator-bundler-jslint
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
     template:
       - name: npm
-    check:
-      - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint
-    test:
-      - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint
+      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
-      - mwext-Collection-OfflineContentGenerator-latex_renderer-jslint
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/text_renderer
     template:
       - name: npm
-    check:
-      - mwext-Collection-OfflineContentGenerator-text_renderer-jslint
-    test:
-      - mwext-Collection-OfflineContentGenerator-text_renderer-jslint
+      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
-      - mwext-Collection-OfflineContentGenerator-text_renderer-jslint
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/zim_renderer
     template:
       - name: npm
-    check:
-      - mwext-Collection-OfflineContentGenerator-zim_renderer-jslint
-    test:
-      - mwext-Collection-OfflineContentGenerator-zim_renderer-jslint
+      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
-      - mwext-Collection-OfflineContentGenerator-zim_renderer-jslint
 
   - name: mediawiki/extensions/CommonsMetadata
     template:
