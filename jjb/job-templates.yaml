@@ -328,9 +328,9 @@
          exit $HAS_TAB
 
 
-- job-template:
-    name: '{name}-yamllint'
-    defaults: use-remote-zuul-no-submodules
+- job:
+    name: 'yamllint'
+    defaults: use-remote-zuul-shallow-clone
     node: hasSlaveScripts && UbuntuPrecise
     concurrent: true
     triggers:

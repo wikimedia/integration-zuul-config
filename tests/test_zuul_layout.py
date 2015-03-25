@@ -170,9 +170,9 @@ class TestZuulLayout(unittest.TestCase):
         actual = {}
         # List of jobs allowed in check* pipelines
         safe_jobs = [
-            '(php|perl|json)lint',
+            '(php|perl|json|yaml)lint',
             'jshint',
-            '.*-(js|perl|shell|yaml|php|)lint',
+            '.*-(js|perl|shell|php|)lint',
             '(pp|erb)lint-HEAD',
             '.*-(tabs|typos)',
             '.*-pep8',
