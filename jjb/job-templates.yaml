@@ -253,10 +253,10 @@
      - checkstyle-xml
      - phpcs
 
-- job-template:
-    name: '{name}-phpunit'
+- job:
+    name: 'phpunit'
     node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul
+    defaults: use-remote-zuul-shallow-clone
     triggers:
      - zuul
     builders:
