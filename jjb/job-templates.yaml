@@ -280,6 +280,7 @@
 - job-template:
     name: '{name}-ruby1.9.3lint'
     defaults: use-remote-zuul-no-submodules
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
@@ -290,6 +291,7 @@
 - job:
     name: 'ruby1.9.3lint'
     defaults: use-remote-zuul-shallow-clone
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
