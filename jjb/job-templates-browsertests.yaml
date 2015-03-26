@@ -80,17 +80,6 @@
     logrotate:
         daysToKeep: 31  # ~ 2 * 2 weeks sprints
 
-    properties:
-     - throttle:
-         max-per-node: 1
-         max-total: 0
-         enabled: true
-         option: 'category'
-         categories:
-          # They are defined in the global configuration
-          # https://integration.wikimedia.org/ci/configure
-          - browsertest-one-per-node
-
     scm:
       - git:
           url: https://{repository_host}/{repository}
