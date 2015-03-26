@@ -6253,20 +6253,10 @@ projects:
 
    # SSS: Till we migrate all our WIP and unreviewed patches over
    # to the new repository, let us keep this in place.
-   # FIXME use a template
   - name: mediawiki/extensions/Parsoid
     template:
-      - name: extension-phpcs
-    check:
-      - mwext-Parsoid-jslint
-      - php-composer-validate
-    test:
-      - mwext-Parsoid-jslint
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - mwext-Parsoid-jslint
-      - php-composer-validate
+      - name: composer-test
+      - name: extension-jslint
 
   - name: mediawiki/extensions/PdfHandler
     template:
