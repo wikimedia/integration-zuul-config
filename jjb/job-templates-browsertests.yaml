@@ -4,29 +4,17 @@
     name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}'
     defaults: browsertests
 
-    triggers:
-      - timed: 'H 3,18 * * *'
-
 - job-template:
     name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce'
     defaults: browsertests
-
-    triggers:
-      - timed: 'H 3,18 * * *'
 
 - job-template:
     name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-monobook-sauce'
     defaults: browsertests
 
-    triggers:
-      - timed: 'H 3,18 * * *'
-
 - job-template:
     name: 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce'
     defaults: browsertests
-
-    triggers:
-      - timed: 'H 3,18 * * *'
 
 - job-template:
     name: 'browsertests-{name}-language-screenshot-{platform}-{browser}'
@@ -54,6 +42,9 @@
         name: LANGUAGE_SCREENSHOT_CODE
         values:
          - lang_list
+
+    triggers:
+      - timed: "@yearly"
 
 - job-template:
     name: 'browsertests-MobileFrontend-{name}-{platform}-{browser}-sauce'
@@ -89,6 +80,9 @@
           clean: true            # ... and use git clean instead
           prune: true            # prune remote obsoletes branches
           recursive-submodules: true
+
+    triggers:
+      - timed: "@daily"
 
     builders:
       - shell: mkdir -p "$WORKSPACE/log/junit"
