@@ -73,6 +73,7 @@
     name: browsertests
     node: contintLabsSlave && UbuntuTrusty
     browser_timeout: ''
+    browsertest_job_timeout: 180
     repository_host: 'gerrit.wikimedia.org/r'
     cucumber_tags: ''
     version: '10'
@@ -127,7 +128,7 @@
     wrappers:
       - ansicolor
       - timeout:
-          timeout: 180
+          timeout: '{browsertest_job_timeout}'
       - timestamps
       # Wiki usernames and passwords are hold in Jenkins credentials store
       # https://integration.wikimedia.org/ci/credential-store/domain/browsertests/
