@@ -160,11 +160,18 @@
      - zuul-cloner:
          projects: >
              mediawiki/core
-     - composer-validate
-     - composer-update
+     - shell: |
+         cd src
+         /srv/deployment/integration/composer/vendor/bin/composer --ansi validate --no-check-publish
+     - shell: |
+         cd src
+         /srv/deployment/integration/composer/vendor/bin/composer update --no-progress --prefer-dist --profile
      - mw-install-mysql
      - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+     - shell: |
+         cd src/tests/phpunit
+         php phpunit.php  --exclude-group Broken,ParserFuzz,Stub --log-junit "$WORKSPACE/log/junit-mw-phpunit.xml"
+#     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - mw-teardown-mysql
