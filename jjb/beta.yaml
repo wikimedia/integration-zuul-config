@@ -186,10 +186,8 @@
     block-downstream: true
 
     builders:
-      # The beta autoupdate script uses npm and need the home to be set to
-      # mwdeploy home, that is done by passing -H to sudo
       - shell: |
-          sudo -H -u mwdeploy /usr/local/bin/wmf-beta-autoupdate.py --verbose
+          /usr/local/bin/wmf-beta-autoupdate.py --verbose
 
     logrotate:
         daysToKeep: 7
