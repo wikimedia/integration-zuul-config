@@ -26,7 +26,7 @@
                {params}
 
 - job-template:
-    name: 'mwext-Wikibase-{kind}-tests'
+    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}'
     node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     triggers:
@@ -37,7 +37,7 @@
          dependencies: '{dependencies}'
      - wd-mw-composer-install-ext:
           extension: 'Wikibase'
-     - mw-install-sqlite
+     - 'mw-install-{dbflavor}'
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - wd-wikibase-apply-settings:
@@ -50,7 +50,7 @@
      - archive-log-dir
      - junit:
         results: 'log/junit*.xml'
-     - mw-teardown
+     - 'mw-teardown-{dbflavor}'
 
 - job-template:
     name: 'mwext-Wikibase-qunit'
@@ -142,25 +142,34 @@
         name: 'mwext'
         ext-name: 'Wikibase'
 
-     - 'mwext-Wikibase-{kind}-tests':
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}':
         ext-name: 'Wikibase'
         kind: repo
         repoorclient: 'repo'
         dependencies: 'cldr'
+        dbflavor:
+          - mysql
+          - sqlite
         phpunit-params: '--group Wikibase --exclude-group WikibaseAPI'
 
-     - 'mwext-Wikibase-{kind}-tests':
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}':
         ext-name: 'Wikibase'
         kind: repo-api
         repoorclient: 'repo'
         dependencies: 'cldr'
+        dbflavor:
+          - mysql
+          - sqlite
         phpunit-params: '--group WikibaseAPI,Purtle'
 
-     - 'mwext-Wikibase-{kind}-tests':
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}':
         ext-name: 'Wikibase'
         kind: client
         repoorclient: 'client'
         dependencies: 'Scribunto,cldr'
+        dbflavor:
+          - mysql
+          - sqlite
         phpunit-params: '--group Wikibase,WikibaseClient'
 
      - 'mwext-Wikibase-qunit':

@@ -415,7 +415,7 @@
     builders:
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-setup.sh"
 
-# ALWAYS pair with 'mw-teardown' publisher to ensure we don't leave temporary files behind
+# ALWAYS pair with 'mw-teardown-sqlite' publisher to ensure we don't leave temporary files behind
 - builder:
     name: mw-install-sqlite
     builders:
@@ -434,6 +434,15 @@
          builders:
           - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown.sh"
          # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
+- publisher:
+    name: mw-teardown-sqlite
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown.sh"
          onsuccess: False
          onfailure: False
 
