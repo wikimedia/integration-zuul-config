@@ -1899,6 +1899,14 @@ project-templates:
     gate-and-submit:
      - 'mwext-{name}-qunit'
 
+  # Triggers the generic mwext-qunit job
+  # which doesn't process dependencies
+  - name: extension-qunit-generic
+    test:
+     - 'mwext-qunit'
+    gate-and-submit:
+     - 'mwext-qunit'
+
   # Template for MediaWiki extensions.
   # Triggers phpcs jobs
   - name: extension-phpcs
@@ -6655,7 +6663,7 @@ projects:
 
   - name: mediawiki/extensions/TemplateData
     template:
-      - name: extension-qunit
+      - name: extension-qunit-generic
       - name: composer-test
       - name: npm
     check:

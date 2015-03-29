@@ -118,6 +118,30 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# Generic qunit job for extensions. Can only be used by
+# those that currently don't have dependencies
+- job:
+    name: 'mwext-qunit'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+             $ZUUL_PROJECT
+     - mw-install-mysql
+     - shell: "echo $ZUUL_PROJECT > src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - qunit-karma
+    publishers:
+     - qunit-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
 - job-template:
     name: '{name}-{ext-name}-qunit-mobile'
     node: contintLabsSlave && UbuntuPrecise
@@ -1068,9 +1092,6 @@
      - '{name}-{ext-name}-qunit':
         name: mwext
         ext-name: Popups
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: TemplateData
      - '{name}-{ext-name}-qunit':
         name: mwext
         ext-name: Thanks
