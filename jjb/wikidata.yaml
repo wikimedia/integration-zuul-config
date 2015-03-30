@@ -3,7 +3,7 @@
     builders:
         - shell: |
             composer=/srv/deployment/integration/composer/vendor/bin/composer
-            cd "$WORKSPACE/src/extensions/{extension}" && timeout 300 $composer install --prefer-source -vvv
+            cd "$WORKSPACE/src/extensions/{extension}" && timeout 300 $composer update --prefer-source -vvv
 
 - builder:
     name: wd-wikibase-apply-settings
