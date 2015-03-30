@@ -128,7 +128,7 @@
      - setup-npm-oid:
          repository: '{repository}'
      - shell: |
-         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
+         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
          # node_modules is not purged, taken care of by setup-npm-oid
 
          node --version
@@ -160,10 +160,13 @@
 #   . npm-oid.env
 #
 # Note we run `npm install` so we better have npm installed (ie on labs)
+#
+# ALWAYS pair with 'global-teardown'
 - builder:
     name: setup-npm-oid
     builders:
      - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         rm -f npm-oid.env
 
         case "{repository}" in
