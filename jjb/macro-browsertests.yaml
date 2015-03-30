@@ -37,39 +37,8 @@
           export MEDIAWIKI_PASSWORD_VARIABLE='MEDIAWIKI_PASSWORD'
           set -x
 
-          # We only care about one version of our browser and do not need a job
-          # per version.  Thus the versions to use are hardcoded there.
-          #
           # VERSION is used for SauceLabs
-          #
-          case "$BROWSER" in
-            'android')
-                export VERSION=4.4
-                ;;
-            'chrome')
-                export VERSION=40.0
-                ;;
-            'firefox')
-                export VERSION=35.0
-                ;;
-            'internet_explorer')
-                export VERSION={version}
-                ;;
-            'iphone')
-                export VERSION=8.1
-                ;;
-            'phantomjs')
-                export VERSION=''
-                ;;
-            'safari')
-                export VERSION=7.0
-                ;;
-            *)
-                echo "Browser '$BROWSER' unsupported. Can not determine version"
-                exit 1
-                ;;
-          esac
-          echo "Using browser: $BROWSER at version $VERSION"
+          export VERSION={version}
 
           if [ $BROWSER == "internet_explorer" ]
           then
