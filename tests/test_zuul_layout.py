@@ -137,6 +137,7 @@ class TestZuulLayout(unittest.TestCase):
 
         return
 
+    @unittest.skip('Disabled per T94583, pending overhauling')
     def test_release_mediawiki_non_wmf_version_tags(self):
 
         # Get the mediawiki-core-release job
