@@ -2122,7 +2122,12 @@ projects:
       - mediawiki-core-doxygen-publish
     publish:
       - mediawiki-core-doxygen-publish
-      - mediawiki-core-release
+      # Disabled per T94583, pending overhauling
+      # Once reenabled, please reenable our integration test:
+      #   tests/test_zuul_layout.py
+      #   test_release_mediawiki_non_wmf_version_tags
+      #
+      #- mediawiki-core-release
     experimental:
       - mediawiki-phpunit-zend-composer
       - mediawiki-phpunit-hhvm-composer
