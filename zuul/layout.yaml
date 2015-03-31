@@ -1823,6 +1823,26 @@ project-templates:
       - 'mwext-{name}-testextension-hhvm'
       - php-composer-test
 
+  - name: extension-unittests-generic
+    check:
+     - phplint
+     - php-composer-validate
+    test:
+     - phplint
+     # Extensions tests with core+vendor
+     - mwext-testextension-zend
+     - php-composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - phplint
+     # Extensions tests with core+vendor
+     - mwext-testextension-zend
+     - php-composer-validate
+    experimental:
+      - mediawiki-extensions-hhvm
+      - mwext-testextension-hhvm
+      - php-composer-test
+
   # Template to run jslint
   - name: extension-jslint
     check:
@@ -2910,7 +2930,7 @@ projects:
   - name: mediawiki/extensions/AccountAudit
     template:
       - name: lint-js
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AccountInfo
     template:
