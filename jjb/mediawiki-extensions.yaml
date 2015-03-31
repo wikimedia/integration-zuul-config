@@ -191,6 +191,34 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# Generic phpunit job for extensions. Can only be used by
+# those that currently don't have dependencies
+- job-template:
+    name: 'mwext-testextension-{phpflavor}'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- project:
+    name: 'mwext-testextension-generic'
+    jobs:
+     - 'mwext-testextension-{phpflavor}':
+        phpflavor:
+            - hhvm
+            - zend
+
 - job-template:
     name: 'mwext-GuidedTour-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
