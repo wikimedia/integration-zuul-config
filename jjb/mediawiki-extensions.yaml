@@ -1033,23 +1033,13 @@
      - mwext-check-jobs
 
      # qunit jobs for MediaWiki extensions
+     # Only extensions that have dependencies should be listed here.
+     # Others should use the generic 'mwext-qunit' job.
 
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: CentralNotice
      - '{name}-{ext-name}-qunit':
         name: mwext
         ext-name: ContentTranslation
         dependencies: 'UniversalLanguageSelector,EventLogging'
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: DataValues
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: EventLogging
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: Echo
      - '{name}-{ext-name}-qunit':
         name: mwext
         ext-name: Flow
@@ -1088,22 +1078,12 @@
         dependencies: Mantle
      - '{name}-{ext-name}-qunit':
         name: mwext
-        ext-name: MultimediaViewer
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: Popups
-     - '{name}-{ext-name}-qunit':
-        name: mwext
         ext-name: Thanks
         dependencies: 'Echo,Flow,Mantle,MobileFrontend,VisualEditor,AbuseFilter,SpamBlacklist,CheckUser,EventLogging,ConfirmEdit'
      - '{name}-{ext-name}-qunit-mobile':
         name: mwext
         ext-name: Thanks
         dependencies: 'Echo,Flow,Mantle,MobileFrontend,VisualEditor,AbuseFilter,SpamBlacklist,CheckUser,EventLogging,ConfirmEdit'
-
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: UploadWizard
 
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
@@ -1117,13 +1097,6 @@
 
      - 'mwext-VisualEditor-jsduck-publish':
         ext-name: VisualEditor
-
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: WikibaseJavaScriptApi
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: WikiEditor
 
 # Deprecated, legacy, phpcs-HEAD jobs.
 # Should be replaced with a "composer test"
