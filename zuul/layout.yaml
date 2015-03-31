@@ -2572,6 +2572,7 @@ projects:
       - erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
+      - ruby1.9.3lint
     test:
       - bundle17-cucumber
       - bundle17-rspec
@@ -2579,6 +2580,7 @@ projects:
       - erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
+      - ruby1.9.3lint
     gate-and-submit:
       - bundle17-cucumber
       - bundle17-rspec
@@ -2586,6 +2588,7 @@ projects:
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
       - mediawiki-vagrant-puppet-validate
+      - ruby1.9.3lint
     postmerge:
       - mediawiki-vagrant-puppet-doc
       - mediawiki-vagrant-bundle17-yard-publish
@@ -2720,6 +2723,7 @@ projects:
       - operations-puppet-pep8
       - operations-puppet-tabs
       - operations-puppet-typos
+      - ruby1.9.3lint
     # Same for trusted user
     test:
       # testing
@@ -2734,6 +2738,11 @@ projects:
       - operations-puppet-pep8
       - operations-puppet-tabs
       - operations-puppet-typos
+      - bundle-rubocop
+      - ruby1.9.3lint
+    gate-and-submit:
+      - bundle-rubocop
+      - ruby1.9.3lint
     experimental:
       - operations-puppet-bundle-rspec
     postmerge:
@@ -3561,6 +3570,7 @@ projects:
       - name: extension-unittests
       - name: composer-test
       - name: extension-qunit
+      - name: extension-rubylint
 
   - name: mediawiki/extensions/GettingStarted
     template:
@@ -6299,6 +6309,8 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/PoolCounter
+    template:
+     - name: extension-rubylint
     check:
       - mwext-PoolCounter-jslint
       - phplint
