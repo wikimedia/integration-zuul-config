@@ -102,6 +102,22 @@
      - mw-apply-settings
      - mw-run-update-script
 
+# ALWAYS pair with 'mw-teardown-mysql'
+# Similar to prepare-mediawiki, except gets
+# the extension name from $ZUUL_PROJECT
+- builder:
+    name: prepare-mediawiki-zuul-project
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+             $ZUUL_PROJECT
+     - mw-install-mysql
+     - shell: "echo $ZUUL_PROJECT > src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+
 - job-template:
     name: '{name}-{ext-name}-qunit'
     node: contintLabsSlave && UbuntuTrusty
@@ -127,15 +143,7 @@
     triggers:
      - zuul
     builders:
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-             $ZUUL_PROJECT
-     - mw-install-mysql
-     - shell: "echo $ZUUL_PROJECT > src/extensions_load.txt"
-     - mw-apply-settings
-     - mw-run-update-script
+     - prepare-mediawiki-zuul-project
      - qunit-karma
     publishers:
      - qunit-cleanup
