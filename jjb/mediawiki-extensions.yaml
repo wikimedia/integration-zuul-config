@@ -55,20 +55,6 @@
      - mw-teardown
      - archive-log-dir
 
-# Deprecated, extensions should be converted
-# to use a composer entry point instead
-- job-template:
-    name: '{name}-{ext-name}-phpcs-HEAD'
-    node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - phpcs-HEAD
-    publishers:
-     - phpcs
-
 - builder:
     name: 'zuul-cloner-extdeps'
     builders:
@@ -1111,32 +1097,31 @@
         ext-name: WikibaseJavaScriptApi
 
 
-# Deprecated, legacy, phpcs-HEAD jobs.
-# Should be replaced with a "composer test"
-# entry point.
+
+# Deprecated, extensions should be converted
+# to use a composer entry point instead.
 - project:
     name: legacy-phpcs-HEAD
     jobs:
-     - '{name}-{ext-name}-phpcs-HEAD':
-        name: mwext
-        ext-name:
-          - cldr
-          - Interwiki
-          - Mantle
-          - AutomaticBoardWelcome
-          - JSBreadCrumbs
-          - OnlineStatus
-          - WhitelistPages
-          - Sentry
-          - SyntaxHighlight_GeSHi
-          - Translate
-          - TranslationNotifications
-          - TwnMainPage
-          - UniversalLanguageSelector
-          - UploadWizard
-          - Vector
-          - WebFonts
-          - WikiGrok
+     - '{name}-phpcs-HEAD':
+        name:
+          - mwext-cldr
+          - mwext-Interwiki
+          - mwext-Mantle
+          - mwext-AutomaticBoardWelcome
+          - mwext-JSBreadCrumbs
+          - mwext-OnlineStatus
+          - mwext-WhitelistPages
+          - mwext-Sentry
+          - mwext-SyntaxHighlight_GeSHi
+          - mwext-Translate
+          - mwext-TranslationNotifications
+          - mwext-TwnMainPage
+          - mwext-UniversalLanguageSelector
+          - mwext-UploadWizard
+          - mwext-Vector
+          - mwext-WebFonts
+          - mwext-WikiGrok
 
 - project:
     name: 'mwext-BlameMaps'
