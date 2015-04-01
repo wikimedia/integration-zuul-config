@@ -546,11 +546,6 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
-  - name: ^.*-phpcs-HEAD$
-    voting: false
-    files:
-     - '^.*\.(php|php5|phtml|inc)$'
-
   - name: ^mediawiki.*-hhvm$
     # Release branches do not support hhvm. Hopefully REL1_25 will.
     branch: (?!REL1_19|REL1_23|REL1_24|fundraising/REL1_23)
@@ -6758,12 +6753,7 @@ projects:
       - name: extension-rubylint
       - name: extension-jslint
       - name: extension-unittests
-    check:
-      - mwext-TwnMainPage-phpcs-HEAD
-    test:
-      - mwext-TwnMainPage-phpcs-HEAD
-    gate-and-submit:
-      - mwext-TwnMainPage-phpcs-HEAD
+      - name: extension-phpcs
     experimental:
       - php-composer-test
 
