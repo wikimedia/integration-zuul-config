@@ -542,7 +542,6 @@ jobs:
      - '^.*\.(php|php5|phtml|inc)$'
 
   - name: ^.*-phpcs(-HEAD)?$
-    voting: false
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
@@ -603,18 +602,30 @@ jobs:
   - name: ^mwext-ZeroPortal-testextension-zend$
     branch: (REL1_19|REL1_23|REL1_24|fundraising/REL1_23)
 
-  - name: mwext-cldr-phpcs-HEAD
-    voting: true
-  - name: mwext-Interwiki-phpcs-HEAD
-    voting: true
-  - name: mwext-Translate-phpcs-HEAD
-    voting: true
-  - name: mwext-TranslationNotifications-phpcs-HEAD
-    voting: true
-  - name: mwext-TwnMainPage-phpcs-HEAD
-    voting: true
-  - name: mwext-UniversalLanguageSelector-phpcs-HEAD
-    voting: true
+  - name: mediawiki-core-phpcs-HEAD
+    voting: false
+  - name: mwext-AutomaticBoardWelcome-phpcs-HEAD
+    voting: false
+  - name: mwext-JSBreadCrumbs-phpcs-HEAD
+    voting: false
+  - name: mwext-Mantle-phpcs-HEAD
+    voting: false
+  - name: mwext-OnlineStatus-phpcs-HEAD
+    voting: false
+  - name: mwext-Sentry-phpcs-HEAD
+    voting: false
+  - name: mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
+    voting: false
+  - name: mwext-UploadWizard-phpcs-HEAD
+    voting: false
+  - name: mwext-Vector-phpcs-HEAD
+    voting: false
+  - name: mwext-WebFonts-phpcs-HEAD
+    voting: false
+  - name: mwext-WhitelistPages-phpcs-HEAD
+    voting: false
+  - name: mwext-WikiGrok-phpcs-HEAD
+    voting: false
 
   - name: ^mediawiki-core-npm$
     files:
