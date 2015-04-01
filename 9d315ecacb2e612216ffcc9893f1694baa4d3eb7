@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e7c4fa4_2eb5322f",
+        "filename": "jjb/mediawiki-extensions.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-04-01T14:30:17Z",
+      "side": 1,
+      "message": "You should be able to reuse the existing prepare-mediawiki macro just above which calls \u0027zuul-cloner-extdeps\u0027. That builder is being passed \u0027ext-name\u0027 and \u0027dependencies\u0027.\n\nSo in mwext-qunit you should be able to invoke it as:\n\n builders:\n  - prepare-mediawiki:\n       ext-name: $ZUUL_PROJECT\n       dependencies: \u0027\u0027\n\n\nThough the \u0027zuul-cloner-extdeps\u0027 expects \u0027ext-name\u0027 to be the basename, not the full project name :/  Maybe it can be abused by injecting a shell which will then be executed in the echo command:\n\n builders:\n  - prepare-mediawiki:\n       ext-name: `basename $ZUUL_PROJECT`\n       dependencies: \u0027\u0027\n\nScary isn\u0027t it ?",
+      "revId": "9d315ecacb2e612216ffcc9893f1694baa4d3eb7",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
