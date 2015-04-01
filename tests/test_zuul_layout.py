@@ -177,7 +177,7 @@ class TestZuulLayout(unittest.TestCase):
             '(pp|erb)lint-HEAD',
             '.*-(tabs|typos)',
             '.*-pep8',
-            '.*-phpcs(-lenient|-strict|)-HEAD',
+            '.*-phpcs-HEAD',
             '.*-puppet-validate',
             '.*-puppetlint-(strict|lenient)',
             '.*-pyflakes',
