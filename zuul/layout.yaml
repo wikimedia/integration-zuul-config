@@ -3239,8 +3239,11 @@ projects:
 
   - name: mediawiki/extensions/Collection
     template:
-      - name: lint-js
       - name: extension-unittests
+      - name: npm
+    check:
+     - jshint
+     - jsonlint
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
