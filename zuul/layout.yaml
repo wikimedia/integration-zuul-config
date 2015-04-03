@@ -6548,9 +6548,12 @@ projects:
 
   - name: mediawiki/extensions/Sentry
     template:
-      - name: extension-jslint
       - name: extension-unittests
       - name: extension-phpcs
+      - name: npm
+    check:
+      - jshint
+      - jsonlint
 
   - name: mediawiki/extensions/Scribunto
     template:
