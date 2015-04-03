@@ -17,30 +17,50 @@
      # rsync {docsrc} folder to integration-publisher.eqiad.wmflabs
      - shell: |
          if [ -z $ZUUL_UUID ]; then
-            echo "Parameter \$ZUUL_UUID is missing!"
-            echo "Can not rsync the documentation, aborting."
+            echo "Error: ZUUL_UUID must be set, aborting."
             exit 1
          fi
          rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
+         echo
+         echo "Publishing to https://doc.wikimedia.org/{docdest}/"
      - trigger-builds:
-       - project: doc-publish-sync
+       - project: publish-on-gallium
          block: true
          current-parameters: true  # Pass Zuul parameters
          predefined-parameters:
-           WMF_CI_DOC_DEST={docdest}
+           WMF_CI_PUB_DOCROOT="org/wikimedia/doc"
+           WMF_CI_PUB_DEST={docdest}
 
-# rsync a folder from integration-publisher.eqiad.wmflabs to the docroot
-# of doc.wikimedia.org on gallium.
+# rsync a directory from integration-publisher.eqiad.wmflabs to a website on gallium.
+#
+# Serves:
+#
+# - doc.wikimedia.org/:project/:version
+#   * docroot: org/wikimedia/doc
+#   * dest: PROJECT/$DOC_SUBPATH[/subdir]
+#
+# - integration.wikimedia.org/cover/:project
+#   * docroot: org/wikimedia/integration
+#   * dest: cover/PROJECT
 #
 # Uses $ZUUL_UUID as a unique identifier.
 - job:
-    name: doc-publish-sync
-    node: gallium # hosts doc.wikimedia.org
+    name: publish-on-gallium
+    node: gallium
 
     parameters:
      - string:
-         name: 'WMF_CI_DOC_DEST'
-         description: 'Sub folder under /srv/org/wikimedia/doc/ to copy doc to'
+         # MUST NOT have leading slash.
+         # MUST NOT have trailing slash.
+         # MUST exist on gallium.
+         name: 'WMF_CI_PUB_DOCROOT'
+         description: 'A document root under /srv, such as "org/wikimedia/doc"'
+     - string:
+         # MUST NOT have leading slash.
+         # MUST NOT have trailing slash.
+         # WILL be auto-created if non-existent.
+         name: 'WMF_CI_PUB_DEST'
+         description: 'Sub directory path under the chosen document root, such as "mediawiki-core/DOC_SUBPATH/js"'
 
     triggers:
      - zuul
@@ -50,23 +70,31 @@
          echo "Zuul UUID: $ZUUL_UUID"
          echo "..."
      - shell: |
-         if [ "$WMF_CI_DOC_DEST" == "" ]; then
-             echo "WMF_CI_DOC_DEST parameter is empty. Aborting"
-             exit 1
-         fi
-         if [ -z $ZUUL_UUID ]; then
-            echo "Parameter \$ZUUL_UUID is missing!"
-            echo "Can not rsync the documentation, aborting."
+         if [ "$WMF_CI_PUB_DOCROOT" == "" ]; then
+            echo "Error: WMF_CI_PUB_DOCROOT must be set, aborting."
             exit 1
          fi
-         LOCAL_DEST="/srv/org/wikimedia/doc/$WMF_CI_DOC_DEST"
+         if [ "$WMF_CI_PUB_DEST" == "" ]; then
+            echo "Error: WMF_CI_PUB_DEST must be set, aborting."
+            exit 1
+         fi
+         if [ -z $ZUUL_UUID ]; then
+            echo "Error: ZUUL_UUID must be set, aborting."
+            exit 1
+         fi
+         LOCAL_DOCROOT="/srv/$WMF_CI_PUB_DOCROOT"
+         if [ ! -d $LOCAL_DOCROOT ]; then
+            echo "Error: Invalid docroot. Directory $LOCAL_DOCROOT must exist, aborting."
+            exit 1
+         fi
+         LOCAL_DEST="$LOCAL_DOCROOT/$WMF_CI_PUB_DEST"
          mkdir -p "$LOCAL_DEST"
          rsync --recursive --delete-after "rsync://10.68.16.255/doc/$ZUUL_UUID"/ "$LOCAL_DEST"
      - shell: |
          set +x
+         LOCAL_VHOST=$(echo $WMF_CI_PUB_DOCROOT | awk -F'/' '{ print $3"."$2"."$1 }')
          echo
-         # Strip trailing slash from WMF_CI_DOC_DEST to avoid double slashes
-         echo "Doc published under https://doc.wikimedia.org/${WMF_CI_DOC_DEST%/}/"
+         echo "Published to https://$LOCAL_VHOST/$WMF_CI_PUB_DEST/"
     publishers:
      - postbuildscript:
          builders:
