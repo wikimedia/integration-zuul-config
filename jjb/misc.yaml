@@ -11,6 +11,7 @@
         docsrc: 'docs'
         docdest: 'unicodejs/$ZUUL_BRANCH'
 
+# TODO: Rename to oojs-core-publish
 - job:
     name: 'oojs-core-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
@@ -19,10 +20,19 @@
     triggers:
      - zuul
     builders:
-     - jsduck
+     - npm-install
+     - shell: npm run-script doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs/$ZUUL_BRANCH'
+     - shell: |
+         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
+         npm test
+     - cover-publish:
+        src: 'coverage'
+        dest: 'oojs'
+    publishers:
+     - global-teardown
 
 - job:
     name: 'oojs-ui-jsduck-publish'
