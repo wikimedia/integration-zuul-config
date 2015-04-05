@@ -11,9 +11,8 @@
         docsrc: 'docs'
         docdest: 'unicodejs/$ZUUL_BRANCH'
 
-# TODO: Rename to oojs-core-publish
 - job:
-    name: 'oojs-core-jsduck-publish'
+    name: 'oojs-core-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: false
@@ -33,7 +32,7 @@
      - global-teardown
 
 - job:
-    name: 'oojs-ui-jsduck-publish'
+    name: 'oojs-ui-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: false
@@ -45,6 +44,10 @@
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs-ui/$ZUUL_BRANCH'
+     - npm-run-test
+     - cover-publish:
+        src: 'coverage'
+        dest: 'oojs'
     publishers:
      - global-teardown
 
@@ -56,12 +59,9 @@
 - project:
     name: 'oojs-core'
     jobs:
-     - 'oojs-core-jsduck-publish'
+     - 'oojs-core-publish'
 
 - project:
     name: 'oojs-ui'
-    phpflavor:
-        - zend
-        - hhvm
     jobs:
-     - 'oojs-ui-jsduck-publish'
+     - 'oojs-ui-publish'
