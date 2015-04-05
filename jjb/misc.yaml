@@ -21,13 +21,11 @@
      - zuul
     builders:
      - npm-install
-     - shell: npm run-script doc
+     - npm-run-doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs/$ZUUL_BRANCH'
-     - shell: |
-         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
-         npm test
+     - npm-run-test
      - cover-publish:
         src: 'coverage'
         dest: 'oojs'
@@ -43,7 +41,7 @@
      - zuul
     builders:
      - npm-install
-     - shell: npm run-script doc
+     - npm-run-doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs-ui/$ZUUL_BRANCH'
