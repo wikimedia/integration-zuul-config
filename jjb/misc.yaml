@@ -1,5 +1,5 @@
 - job:
-    name: 'unicodejs-jsduck-publish'
+    name: 'unicodejs-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: false
@@ -10,6 +10,11 @@
      - doc-publish:
         docsrc: 'docs'
         docdest: 'unicodejs/$ZUUL_BRANCH'
+     - npm-install
+     - npm-test
+     - cover-publish:
+        src: 'coverage'
+        dest: 'unicodejs'
 
 # TODO: Rename to oojs-core-publish
 - job:
@@ -51,7 +56,7 @@
 - project:
     name: 'unicodejs'
     jobs:
-     - 'unicodejs-jsduck-publish'
+     - 'unicodejs-publish'
 
 - project:
     name: 'oojs-core'
