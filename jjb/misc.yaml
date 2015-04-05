@@ -16,6 +16,11 @@
         src: 'coverage'
         dest: 'unicodejs'
 
+- project:
+    name: 'unicodejs'
+    jobs:
+     - 'unicodejs-publish'
+
 - job:
     name: 'oojs-core-publish'
     node: contintLabsSlave && UbuntuTrusty
@@ -36,6 +41,11 @@
     publishers:
      - global-teardown
 
+- project:
+    name: 'oojs-core'
+    jobs:
+     - 'oojs-core-publish'
+
 - job:
     name: 'oojs-ui-publish'
     node: contintLabsSlave && UbuntuTrusty
@@ -55,16 +65,6 @@
         dest: 'oojs-ui'
     publishers:
      - global-teardown
-
-- project:
-    name: 'unicodejs'
-    jobs:
-     - 'unicodejs-publish'
-
-- project:
-    name: 'oojs-core'
-    jobs:
-     - 'oojs-core-publish'
 
 - project:
     name: 'oojs-ui'
