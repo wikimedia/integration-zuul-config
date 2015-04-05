@@ -157,6 +157,20 @@
          cd "$NPM_SET_PATH"
          npm test
 
+- builder:
+    name: doxygen
+    builders:
+     - shell: |
+         . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
+         rm -rf doc/html
+         doxygen
+
+# ALWAYS pair with 'global-teardown'
+- builder:
+    name: global-setup
+    builders:
+     - shell: "/srv/deployment/integration/slave-scripts/bin/global-setup.sh"
+
 - publisher:
     name: global-teardown
     publishers:

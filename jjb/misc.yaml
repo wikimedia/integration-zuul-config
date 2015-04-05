@@ -70,3 +70,24 @@
     name: 'oojs-ui'
     jobs:
      - 'oojs-ui-publish'
+
+- job:
+    name: 'cdb-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - global-setup
+     - doxygen
+     - doc-publish:
+        docsrc: 'doc/html'
+        docdest: 'cdb/$ZUUL_BRANCH'
+    publishers:
+     - global-teardown
+
+- project:
+    name: 'cdb'
+    jobs:
+     - 'cdb-publish'
