@@ -84,6 +84,11 @@
      - doc-publish:
         docsrc: 'doc/html'
         docdest: 'cdb/$ZUUL_BRANCH'
+     - composer-update
+     - phpunit-coverage
+     - cover-publish:
+        src: 'coverage'
+        dest: 'cdb'
     publishers:
      - global-teardown
 

@@ -157,6 +157,7 @@
          cd "$NPM_SET_PATH"
          npm test
 
+# MUST run 'global-setup' before this
 - builder:
     name: doxygen
     builders:
@@ -164,6 +165,17 @@
          . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
          rm -rf doc/html
          doxygen
+
+# Intended for use in jobs that use composer-update
+#
+# MUST run 'global-setup' before this
+- builder:
+    name: phpunit-coverage
+    builders:
+     - shell: |
+         . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
+         rm -rf coverage
+         ./vendor/bin/phpunit --coverage-html coverage/
 
 # ALWAYS pair with 'global-teardown'
 - builder:
