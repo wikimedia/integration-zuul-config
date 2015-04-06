@@ -6928,6 +6928,12 @@ projects:
   - name: mediawiki/extensions/WikimediaMessages
     template:
       - name: extension-unittests
+    check:
+      - jsonlint
+    test:
+      - jsonlint
+    gate-and-submit:
+      - jsonlint
 
   - name: mediawiki/extensions/WikimediaShopLink
     template:
