@@ -3015,7 +3015,7 @@ projects:
   - name: mediawiki/extensions/BetaFeatures
     template:
       - name: lint-js
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BlameMaps
     check-only:
@@ -3037,7 +3037,7 @@ projects:
   - name: mediawiki/extensions/BlogPage
     template:
       - name: lint-js
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BookManager
     template:
@@ -3047,29 +3047,20 @@ projects:
   - name: mediawiki/extensions/BookManagerv2
     template:
       - name: lint-js
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BounceHandler
     template:
       - name: lint-js
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Buggy
     template:
       - name: extension-gate
       - name: npm
+      - name: extension-unittests-generic
     check:
      - jsonlint
-     - phplint
-     - php-composer-validate
-    test:
-     - phplint
-     - mwext-Buggy-testextension-zend
-     - php-composer-validate
-    gate-and-submit:
-     - phplint
-     - mwext-Buggy-testextension-zend
-     - php-composer-validate
 
   - name: mediawiki/extensions/Calendar
     template:
@@ -4211,7 +4202,7 @@ projects:
   - name: mediawiki/extensions/BatchUserRights
     template:
       - name: extension-jslint
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BayesianFilter
     template:
@@ -4221,17 +4212,17 @@ projects:
   - name: mediawiki/extensions/BiblioPlus
     template:
       - name: extension-jslint
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BibManager
     template:
       - name: extension-jslint
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Blackout
     template:
       - name: extension-jslint
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BlockAndNuke
     template:
@@ -4246,7 +4237,7 @@ projects:
   - name: mediawiki/extensions/BlueSpiceFoundation
     template:
       - name: extension-jslint
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Bootstrap
     template:
@@ -4256,12 +4247,12 @@ projects:
   - name: mediawiki/extensions/BreadCrumbs
     template:
       - name: extension-jslint
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BreadCrumbs2
     template:
       - name: extension-jslint
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Carp
     template:
