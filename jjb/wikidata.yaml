@@ -26,12 +26,15 @@
                {params}
 
 - job-template:
-    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}'
-    node: contintLabsSlave && UbuntuPrecise
+    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
      - zuul
     builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
      - zuul-cloner-extdeps:
          ext-name: 'Wikibase'
          dependencies: '{dependencies}'
@@ -160,7 +163,7 @@
         name: 'mwext'
         ext-name: 'Wikibase'
 
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}':
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
         ext-name: 'Wikibase'
         kind: repo
         repoorclient: 'repo'
@@ -168,9 +171,12 @@
         dbflavor:
           - mysql
           - sqlite
+        phpflavor:
+          - zend
+          - hhvm
         phpunit-params: '--group Wikibase --exclude-group WikibaseAPI'
 
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}':
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
         ext-name: 'Wikibase'
         kind: repo-api
         repoorclient: 'repo'
@@ -178,9 +184,12 @@
         dbflavor:
           - mysql
           - sqlite
+        phpflavor:
+          - zend
+          - hhvm
         phpunit-params: '--group WikibaseAPI,Purtle'
 
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}':
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
         ext-name: 'Wikibase'
         kind: client
         repoorclient: 'client'
@@ -188,6 +197,9 @@
         dbflavor:
           - mysql
           - sqlite
+        phpflavor:
+          - zend
+          - hhvm
         phpunit-params: '--group Wikibase,WikibaseClient'
 
      - 'mwext-Wikibase-qunit':
