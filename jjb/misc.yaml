@@ -16,11 +16,6 @@
         src: 'coverage'
         dest: 'unicodejs'
 
-- project:
-    name: 'unicodejs'
-    jobs:
-     - 'unicodejs-publish'
-
 - job:
     name: 'oojs-core-publish'
     node: contintLabsSlave && UbuntuTrusty
@@ -40,11 +35,6 @@
         dest: 'oojs'
     publishers:
      - global-teardown
-
-- project:
-    name: 'oojs-core'
-    jobs:
-     - 'oojs-core-publish'
 
 - job:
     name: 'oojs-ui-publish'
@@ -66,11 +56,6 @@
     publishers:
      - global-teardown
 
-- project:
-    name: 'oojs-ui'
-    jobs:
-     - 'oojs-ui-publish'
-
 - job:
     name: 'cdb-publish'
     node: contintLabsSlave && UbuntuTrusty
@@ -84,10 +69,10 @@
      - doc-publish:
         docsrc: 'doc/html'
         docdest: 'cdb/$ZUUL_BRANCH'
+     - composer-update
+     - phpunit-coverage
+     - cover-publish:
+        src: 'coverage'
+        dest: 'cdb'
     publishers:
      - global-teardown
-
-- project:
-    name: 'cdb'
-    jobs:
-     - 'cdb-publish'
