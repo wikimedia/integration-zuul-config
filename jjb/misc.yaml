@@ -1,4 +1,25 @@
 - job:
+    name: 'cdb-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - global-setup
+     - doxygen
+     - doc-publish:
+        docsrc: 'doc/html'
+        docdest: 'cdb/$ZUUL_BRANCH'
+     - composer-update
+     - phpunit-coverage
+     - cover-publish:
+        src: 'coverage'
+        dest: 'cdb'
+    publishers:
+     - global-teardown
+
+- job:
     name: 'unicodejs-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
@@ -57,22 +78,16 @@
      - global-teardown
 
 - job:
-    name: 'cdb-publish'
+    name: 'visualeditor-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: false
     triggers:
      - zuul
     builders:
-     - global-setup
-     - doxygen
-     - doc-publish:
-        docsrc: 'doc/html'
-        docdest: 'cdb/$ZUUL_BRANCH'
-     - composer-update
-     - phpunit-coverage
+     - npm
      - cover-publish:
         src: 'coverage'
-        dest: 'cdb'
+        dest: 'visualeditor'
     publishers:
      - global-teardown
