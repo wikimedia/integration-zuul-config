@@ -91,21 +91,43 @@ class TestZuulLayout(unittest.TestCase):
     # Tests
 
     def assertProjectHasComposerValidate(self, name, definition, pipeline):
+        # php-composer-validate
+        # php-composer-validate-package
+        # php-composer-test-(zend|hhvm)
         self.assertTrue(
             any([job for job in definition
-                 if job.endswith('-composer') or
-                 job.startswith('php-composer')]),
+                 if job.startswith('php-composer')]),
             'Project %s pipeline %s must have either '
-            'php-composer-validate or a *-composer job'
+            'php-composer-validate or a php-composer-test-* job'
+            % (name, pipeline))
+
+    def assertProjectHasPhplint(self, name, definition, pipeline):
+        self.assertTrue(
+            any([job for job in definition
+                 if job.endswith('phplint') or
+                 job.startswith('php-composer-test')]),
+            'Project %s pipeline %s must have either '
+            'phplint or a php-composer-test-* job'
             % (name, pipeline))
 
     def test_repos_have_required_jobs(self):
         repos = {
-            'mediawiki/core$': [self.assertProjectHasComposerValidate],
+            'mediawiki/core$': [
+                self.assertProjectHasComposerValidate,
+                self.assertProjectHasPhplint
+            ],
             'mediawiki/extensions/\w+$': [
-                self.assertProjectHasComposerValidate],
-            'mediawiki/skins/': [self.assertProjectHasComposerValidate],
-            'mediawiki/vendor$': [self.assertProjectHasComposerValidate],
+                self.assertProjectHasComposerValidate,
+                self.assertProjectHasPhplint
+            ],
+            'mediawiki/skins/': [
+                self.assertProjectHasComposerValidate,
+                self.assertProjectHasPhplint
+            ],
+            'mediawiki/vendor$': [
+                self.assertProjectHasComposerValidate,
+                # self.assertProjectHasPhplint FIXME
+            ],
         }
 
         for pipeline in self.getPipelines():
