@@ -658,8 +658,6 @@ jobs:
   # Exceptions for projects not yet passing jshint (bug 60619)
   # https://bugzilla.wikimedia.org/showdependencytree.cgi?id=60619
   #
-  - name: mwext-Agora-jslint # bug 66190
-    voting: false
   - name: mwext-ArticleFeedback-jslint # obsolete - bug 63669
     voting: false
   - name: mwext-ArticleFeedbackv5-jslint # bug 61588
@@ -753,73 +751,25 @@ jobs:
   - name: wikimedia-fundraising-crm-jslint
     voting: false
 # Start of new currently disabled extensions checks from mass extension import - Addshore
-  - name: mwext-AccessControl-jslint
-    voting: false
-  - name: mwext-ActionEditSubmit-jslint
-    voting: false
-  - name: mwext-AddThis-jslint
-    voting: false
-  - name: mwext-AdManager-jslint
-    voting: false
-  - name: mwext-Ads-jslint
-    voting: false
-  - name: mwext-AdvancedMeta-jslint
-    voting: false
   - name: mwext-AjaxLogin-jslint
     voting: false
   - name: mwext-AJAXPoll-jslint
     voting: false
-  - name: mwext-AkismetKlik-jslint
-    voting: false
-  - name: mwext-AllTimeZones-jslint
-    voting: false
-  - name: mwext-AnchorHandler-jslint
-    voting: false
   - name: mwext-ApiExplorer-jslint
-    voting: false
-  - name: mwext-ApiSVGProxy-jslint
     voting: false
   - name: mwext-ArticleCreationWorkflow-jslint
     voting: false
   - name: mwext-ArticleIndex-jslint
     voting: false
-  - name: mwext-AssertEdit-jslint
-    voting: false
-  - name: mwext-Auth_remoteuser-jslint
-    voting: false
-  - name: mwext-AuthorProtect-jslint
-    voting: false
-  - name: mwext-AutoCreateCategoryPages-jslint
-    voting: false
-  - name: mwext-AutomaticBoardWelcome-jslint
-    voting: false
-  - name: mwext-AutoProxyBlock-jslint
-    voting: false
-  - name: mwext-Awesomeness-jslint
-    voting: false
-  - name: mwext-AWS-jslint
-    voting: false
-  - name: mwext-AWSSDK-jslint
-    voting: false
-  - name: mwext-BatchUserRights-jslint
-    voting: false
-  - name: mwext-BayesianFilter-jslint
-    voting: false
   - name: mwext-BiblioPlus-jslint
     voting: false
   - name: mwext-BibManager-jslint
-    voting: false
-  - name: mwext-Blackout-jslint
-    voting: false
-  - name: mwext-BlockAndNuke-jslint
     voting: false
   - name: mwext-BlueSpiceExtensions-jslint
     voting: false
   - name: mwext-BlueSpiceFoundation-jslint
     voting: false
   - name: mwext-Bootstrap-jslint
-    voting: false
-  - name: mwext-BreadCrumbs-jslint
     voting: false
   - name: mwext-BreadCrumbs2-jslint
     voting: false
@@ -2965,7 +2915,6 @@ projects:
 
   - name: mediawiki/extensions/Agora
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AntiBot
@@ -4078,33 +4027,26 @@ projects:
 
   - name: mediawiki/extensions/AccessControl
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ActionEditSubmit
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
-
 
   - name: mediawiki/extensions/AddThis
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AdManager
     template:
-      - name: extension-jslint
       - name: extension-unittests
 
   - name: mediawiki/extensions/Ads
     template:
-      - name: extension-jslint
       - name: extension-unittests
 
   - name: mediawiki/extensions/AdvancedMeta
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AjaxLogin
@@ -4119,18 +4061,14 @@ projects:
 
   - name: mediawiki/extensions/AkismetKlik
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AllTimeZones
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
-
 
   - name: mediawiki/extensions/AnchorHandler
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ApiExplorer
@@ -4145,7 +4083,6 @@ projects:
 
   - name: mediawiki/extensions/ApiSVGProxy
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ArticleCreationWorkflow
@@ -4158,61 +4095,49 @@ projects:
       - name: extension-jslint
       - name: extension-unittests-generic
 
-
   - name: mediawiki/extensions/AssertEdit
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Auth_remoteuser
     template:
-      - name: extension-jslint
       - name: extension-unittests
 
   - name: mediawiki/extensions/AuthorProtect
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AutoCreateCategoryPages
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AutomaticBoardWelcome
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: extension-phpcs # bug 68873
 
   - name: mediawiki/extensions/AutoProxyBlock
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Awesomeness
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AWS
     template:
-      - name: extension-jslint
       - name: extension-unittests
 
   - name: mediawiki/extensions/AWSSDK
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BatchUserRights
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BayesianFilter
     template:
-      - name: extension-jslint
       - name: extension-unittests
 
   - name: mediawiki/extensions/BiblioPlus
@@ -4227,12 +4152,10 @@ projects:
 
   - name: mediawiki/extensions/Blackout
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BlockAndNuke
     template:
-      - name: extension-jslint
       - name: extension-unittests
 
   - name: mediawiki/extensions/BlueSpiceExtensions
@@ -4252,7 +4175,6 @@ projects:
 
   - name: mediawiki/extensions/BreadCrumbs
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/BreadCrumbs2
@@ -4702,11 +4624,6 @@ projects:
     template:
       - name: extension-jslint
       - name: extension-unittests
-
-
-
-
-
 
   - name: mediawiki/extensions/Josa
     template:
@@ -5406,7 +5323,6 @@ projects:
       - name: extension-jslint
       - name: extension-unittests
 
-
   - name: mediawiki/extensions/ShortUrlApi
     template:
       - name: extension-jslint
@@ -5422,12 +5338,10 @@ projects:
       - name: extension-jslint
       - name: extension-unittests
 
-
   - name: mediawiki/extensions/SidebarDonateBox
     template:
       - name: extension-jslint
       - name: extension-unittests
-
 
   - name: mediawiki/extensions/SignWritingMediaWikiPlugin
     template:
@@ -5438,7 +5352,6 @@ projects:
     template:
       - name: extension-jslint
       - name: extension-unittests
-
 
   - name: mediawiki/extensions/SimpleSecurity
     template:
