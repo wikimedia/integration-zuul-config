@@ -99,13 +99,33 @@ class TestZuulLayout(unittest.TestCase):
             'php-composer-validate or a *-composer job'
             % (name, pipeline))
 
+    def assertProjectHasPhplint(self, name, definition, pipeline):
+        self.assertTrue(
+            any([job for job in definition
+                 if job.endswith('phplint') or
+                 job.startswith('php-composer')]),
+            'Project %s pipeline %s must have either '
+            'phplint or a *-composer job'
+            % (name, pipeline))
+
     def test_repos_have_required_jobs(self):
         repos = {
-            'mediawiki/core$': [self.assertProjectHasComposerValidate],
+            'mediawiki/core$': [
+                self.assertProjectHasComposerValidate,
+                self.assertProjectHasPhplint
+            ],
             'mediawiki/extensions/\w+$': [
-                self.assertProjectHasComposerValidate],
-            'mediawiki/skins/': [self.assertProjectHasComposerValidate],
-            'mediawiki/vendor$': [self.assertProjectHasComposerValidate],
+                self.assertProjectHasComposerValidate,
+                self.assertProjectHasPhplint
+            ],
+            'mediawiki/skins/': [
+                self.assertProjectHasComposerValidate,
+                self.assertProjectHasPhplint
+            ],
+            'mediawiki/vendor$': [
+                self.assertProjectHasComposerValidate,
+                self.assertProjectHasPhplint
+            ],
         }
 
         for pipeline in self.getPipelines():
