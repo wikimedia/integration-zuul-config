@@ -85,11 +85,10 @@
              mediawiki/core
              mediawiki/vendor
      - shell: |
-         rm -fR build/doc
-         mkdir -p build/doc
+         rm -rf build/doc
          TARGET_BASEDIR="$WORKSPACE/build/doc" /srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh
      - doc-publish:
-         docsrc: 'build/doc'
+         docsrc: 'build/doc/html'
          docdest: 'mediawiki-core/$DOC_SUBPATH/php'
     publishers:
      - mw-teardown
