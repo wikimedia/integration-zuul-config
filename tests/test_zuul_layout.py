@@ -90,50 +90,51 @@ class TestZuulLayout(unittest.TestCase):
 
     # Tests
 
-    def test_mw_repos_have_composer_validate_job(self):
-        mw_repos = (
-            'mediawiki/core$',
-            'mediawiki/extensions/\w+$',
-            'mediawiki/skins/',
-            'mediawiki/vendor$',
-        )
-        re_mw = '(' + '|'.join(mw_repos) + ')'
+    def assertProjectHasComposerValidate(self, name, definition, pipeline):
+        self.assertTrue(
+            any([job for job in definition
+                 if job.endswith('-composer') or
+                 job.startswith('php-composer')]),
+            'Project %s pipeline %s must have either '
+            'php-composer-validate or a *-composer job'
+            % (name, pipeline))
 
-        # Mediawiki projects defined in any pipeline
-        mw_projects = set()
+    def test_repos_have_required_jobs(self):
+        repos = {
+            'mediawiki/core$': [self.assertProjectHasComposerValidate],
+            'mediawiki/extensions/\w+$': [
+                self.assertProjectHasComposerValidate],
+            'mediawiki/skins/': [self.assertProjectHasComposerValidate],
+            'mediawiki/vendor$': [self.assertProjectHasComposerValidate],
+        }
+
         for pipeline in self.getPipelines():
-            mw_projects |= set(
-                [p for p in self.getPipelineProjectsNames(pipeline.name)
-                 if re.match(re_mw, p)])
-        mw_projects = sorted(mw_projects)
+            for regex, assertions in repos.items():
+                regex_comp = re.compile(regex)
+                for name in self.getPipelineProjectsNames(pipeline.name):
+                    if regex_comp.match(name):
+                        project_def = self.getProjectDef(name)
 
-        for mw_project in mw_projects:
-            project_def = self.getProjectDef(mw_project)
+                        requirements = set()
+                        requirements.add('gate-and-submit')
 
-            requirements = set()
-            requirements.add('gate-and-submit')
+                        if 'check-only' in project_def.keys():
+                            requirements.add('check-only')
+                        elif 'check-voter' in project_def.keys():
+                            # Skins uses a different check pipeline
+                            requirements.add('check-voter')
+                        else:
+                            requirements.add('check')
+                            requirements.add('test')
 
-            if 'check-only' in project_def.keys():
-                requirements.add('check-only')
-            elif 'check-voter' in project_def.keys():
-                # Skins uses a different check pipeline
-                requirements.add('check-voter')
-            else:
-                requirements.add('check')
-                requirements.add('test')
-
-            for pipeline in requirements:
-                # Should be caught by another test:
-                self.assertIn(pipeline, project_def.keys(),
-                              'Project %s lacks %s pipeline' %
-                              (mw_project, pipeline))
-                self.assertTrue(
-                    any([job for job in project_def[pipeline]
-                         if job.endswith('-composer') or
-                         job.startswith('php-composer')]),
-                    'Project %s pipeline %s must have either '
-                    'php-composer-validate or a *-composer job'
-                    % (mw_project, pipeline))
+                        for req_pipeline in requirements:
+                            # Should be caught by another test:
+                            self.assertIn(req_pipeline, project_def.keys(),
+                                          'Project %s lacks %s pipeline' %
+                                          (name, req_pipeline))
+                            for func in assertions:
+                                func(name,
+                                     project_def[req_pipeline], req_pipeline)
 
         return
 
