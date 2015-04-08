@@ -174,21 +174,7 @@
         phpflavor:
           - zend
           - hhvm
-        phpunit-params: '--group Wikibase --exclude-group WikibaseAPI'
-
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
-        ext-name: 'Wikibase'
-        kind: repo-api
-        repoorclient: 'repo'
-        dependencies: 'cldr'
-        dbflavor:
-          - mysql
-          - sqlite
-        phpflavor:
-          - zend
-          - hhvm
-        phpunit-params: '--group WikibaseAPI,Purtle'
-
+        phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
      - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
         ext-name: 'Wikibase'
         kind: client
