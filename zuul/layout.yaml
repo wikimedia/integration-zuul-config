@@ -2056,13 +2056,16 @@ projects:
     template:
       - name: extension-gate
     check:
+      - phplint
       - php-composer-validate
     test:
+      - phplint
       - php-composer-validate
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-zend
     gate-and-submit:
+      - phplint
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-zend
       - mediawiki-core-qunit

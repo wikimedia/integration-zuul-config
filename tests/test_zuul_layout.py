@@ -126,7 +126,7 @@ class TestZuulLayout(unittest.TestCase):
             ],
             'mediawiki/vendor$': [
                 self.assertProjectHasComposerValidate,
-                # self.assertProjectHasPhplint FIXME
+                self.assertProjectHasPhplint
             ],
         }
 
