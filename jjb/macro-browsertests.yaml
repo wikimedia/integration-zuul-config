@@ -42,6 +42,11 @@
 
           if [ $BROWSER == "internet_explorer" ]
           then
+            if [ "$VERSION" == "" ]
+            then
+             echo "Internet explorer job must be given a specific version."
+             exit 1
+            fi
             BROWSER_TAG=${{BROWSER}}_$VERSION
           else
             BROWSER_TAG=$BROWSER
