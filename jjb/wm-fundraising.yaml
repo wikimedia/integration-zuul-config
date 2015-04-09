@@ -50,12 +50,10 @@
      - postbuildscript:
          builders:
            - shell: |
-               # FIXME: Some junk gets left behind (e.g. database dsn), which
-               # corrupts later runs.  Remove it.  Ideally this cache would
-               # be stored under $WORKSPACE and would be cleaned up without
-               # an additional step.  Also, this causes a race condition,
-               # the job can run concurrently once we fix this cache dir.
+               # Symlink the .amp cache directory for easy cleanup.
+               mkdir -p $WORKSPACE/.amp
                rm -rf $HOME/.amp
+               ln -s $WORKSPACE/.amp $HOME/.amp
 
                # Drop the MySQL databases.
                $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-drop-dbs.sh
@@ -74,8 +72,6 @@
     name: wikimedia-fundraising-civicrm
     # Run on isolated boxes because of messy MySQL behavior and unsafe fetches.
     node: contintLabsSlave && UbuntuTrusty
-    # FIXME: due to the ~/.amp thing.
-    concurrent: false
     triggers:
       - zuul
     builders:
