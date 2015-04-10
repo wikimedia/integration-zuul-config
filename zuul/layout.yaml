@@ -17,6 +17,7 @@
 # - http://ci.openstack.org/zuul/zuul.html#configuration
 
 includes:
+  - python-file: 'debian_glue_functions.py'
   - python-file: 'doc_functions.py'
 
 pipelines:
@@ -485,6 +486,13 @@ jobs:
 
   - name: ^.*-publish$
     parameter-function: set_doc_subpath
+
+  - name: ^.*-debian-glue-multi$
+    # Inject distributions to be build to the matrix job
+    parameter-function: set_distributions
+    # Matrix job console is useless, point to build page
+    success-pattern: https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/
+    failure-pattern: https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/
 
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
