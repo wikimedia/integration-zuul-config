@@ -1,16 +1,3 @@
-# Git macro that simply fetch under '/source/'
-# Useful to build debian packages.
-- scm:
-    name: git-deb-package
-    scm:
-     - git:
-        url: '$ZUUL_URL/$ZUUL_PROJECT'
-        reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        basedir: 'source'
-
 - builder:
     name: debian-glue-generate-git-snapshot
     builders:
@@ -91,20 +78,6 @@
       - archive:
           artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
 
-- job-template:
-    name: '{name}-antbuild'
-    defaults: use-remote-zuul
-    triggers:
-     - zuul
-
-    scm:
-     - git-deb-package
-
-    builders:
-     - ant:
-        targets: 'build'
-        buildfile: '$WORKSPACE/source/build.xml'
-
 #
 # PROJECTS
 #
@@ -114,11 +87,6 @@
     jobs:
      - '{name}-debian-glue':
          distribution: trusty
-
-- project:
-    name: 'lucene-search-2'
-    jobs:
-     - '{name}-antbuild'
 
 - project:
     name: 'operations-debs-adminbot'
