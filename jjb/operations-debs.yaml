@@ -13,6 +13,14 @@
           /usr/bin/build-and-provide-package
 
 - builder:
+    name: debian-glue-build-and-provide-package-nodist
+    builders:
+      - shell: |
+          export REPOSITORY=/data/project/debianrepo
+          export REPOS=jenkins-debian-glue
+          /usr/bin/build-and-provide-package
+
+- builder:
     name: debian-glue-generate-reprepro-codename
     builders:
       - shell: /usr/bin/generate-reprepro-codename
@@ -78,9 +86,63 @@
       - archive:
           artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
 
+- job-template:
+    name: '{name}-debian-glue-multi'
+    defaults: use-remote-zuul
+    node: DebianGlue
+    concurrent: true
+    triggers:
+     - zuul
+
+    project-type: matrix
+    parameters:
+     - string:
+         name: DEBIAN_GLUE_DISTRIBUTIONS
+         default: 'sid'
+         description: 'Debian/Ubuntu distributions names (space separated)'
+    axes:
+     - axis:
+         type: label-expression
+         name: label
+         values:
+          - DebianGlue
+     - axis:
+         type: dynamic
+         name: distribution
+         values:
+          - DEBIAN_GLUE_DISTRIBUTIONS
+
+    # Clone into ./source
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        basedir: 'source'
+
+    builders:
+      - debian-glue-generate-git-snapshot
+      - debian-glue-build-and-provide-package-nodist
+      - debian-glue-lintian
+      - debian-glue-piuparts
+
+    publishers:
+      - junit:
+          results: 'lintian-*.xml'
+      - tap:
+          results: piuparts.tap
+      - archive:
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
+
+
 #
 # PROJECTS
 #
+- project:
+    name: integration-zuul
+    jobs:
+     - '{name}-debian-glue-multi'
 
 - project:
     name: gerrit
