@@ -1,27 +1,13 @@
 import os
 import unittest
 
+from fakes import FakeItemChange
+
 set_doc_subpath = None  # defined for flake8
 # Import function
 execfile(os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     '../zuul/doc_functions.py'))
-
-
-class FakeChange(object):
-
-    def __init__(self, branch, ref=None, refspec=None):
-        self.branch = branch
-        if ref:
-            self.ref = ref
-        if refspec:
-            self.refspec = refspec
-
-
-class FakeItemChange(object):
-
-    def __init__(self, *args, **kwargs):
-        self.change = FakeChange(*args, **kwargs)
 
 
 class TestDocFunctions(unittest.TestCase):
