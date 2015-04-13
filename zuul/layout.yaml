@@ -1642,18 +1642,18 @@ jobs:
 
   - name: integration-docroot-deploy
     branch: ^master$
-    success-message: 'Change has been deployed on the server and should be now live on https://integration.wikimedia.org/ or https://doc.wikimedia.org/. Build'
-    failure-message: 'FAILURE while deploying. Please contact a member of the continuous integration team to fixup the docroot on the destination server.'
+    success-message: 'View https://integration.wikimedia.org/ or https://doc.wikimedia.org/. Deployed'
+    failure-message: 'Failed to deploy. Please contact a continuous integration team member to fixup the docroot on the destination server. FAILURE'
 
   - name: 'integration-jjb-config-diff'
-    success-message: 'Please carefully review the XML difference before deploying/merging your change.'
-    failure-message: 'FAILURE while comparing your patchset with the current configuration version'
+    success-message: 'Review the XML difference. Build'
+    failure-message: 'Failed to compare your patchset with the current configuration. FAILURE'
     files: '^jjb/.*'
 
   - name: 'integration-zuul-layoutdiff'
     voting: false
-    success-message: 'Please carefully review the Zuul layout difference before deploying/merging.'
-    failure-message: 'No layout change apparently. Nonetheless, please carefully review before deploying/merging.'
+    success-message: 'No layout difference. Build'
+    failure-message: 'Review the Zuul layout difference. Build'
 
   - name: 'integration-zuul-layoutvalidation-gate'
     branch: (?!labs)
