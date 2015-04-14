@@ -270,28 +270,21 @@
         docsrc: 'docs'
         docdest: 'TemplateData/$ZUUL_BRANCH'
 
-- job-template:
-    name: 'mwext-VisualEditor-jsduck-publish'
+- job:
+    name: 'mwext-VisualEditor-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: false
     triggers:
      - zuul
     builders:
-     - shell: |
-        # Generate documentation
-        ./bin/generateDocs.sh
-        # Replace symlink with copy for publishing
-        rm docs/lib
-        # Avoid copying all of lib/ since it contains the entire VisualEditor repository as
-        # submodule, containing non-essential code that should not be pushed to doc.wikimedia.org
-        mkdir -p docs/lib/ve
-        # Use of trailing slash for src and not dest is important
-        rsync --recursive --force lib/ve/lib/ docs/lib/ve/lib
-        rsync --recursive --force lib/ve/src/ docs/lib/ve/src
+     - npm-install
+     - npm-run-doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'VisualEditor/$ZUUL_BRANCH'
+    publishers:
+     - global-teardown
 
 - job-template:
     name: 'mwext-VisualEditor-sync-gerrit'  # bug 49846
@@ -633,9 +626,6 @@
 
      - 'mwext-TemplateData-jsduck-publish':
         ext-name: TemplateData
-
-     - 'mwext-VisualEditor-jsduck-publish':
-        ext-name: VisualEditor
 
 
 
