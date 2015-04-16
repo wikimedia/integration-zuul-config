@@ -340,10 +340,11 @@
          "\$wgEnableJavaScriptTest = true;\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
 
         # The location is free or we make it free
-        test ! -e /srv/localhost/qunit/$BUILD_TAG || rm /srv/localhost/qunit/$BUILD_TAG;
+        PUBLIC_DIR="/srv/localhost/qunit$MW_SCRIPT_PATH"
+        test ! -e "$PUBLIC_DIR" || rm "$PUBLIC_DIR";
 
         # Publish our install in the QUnit server document root
-        ln -s "$MW_INSTALL_PATH" /srv/localhost/qunit/$BUILD_TAG
+        ln -s "$MW_INSTALL_PATH" "$PUBLIC_DIR"
 
         # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
         curl --include "$MW_SERVER/$MW_SCRIPT_PATH/index.php?title=Special:BlankPage" | head -n42
