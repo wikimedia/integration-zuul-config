@@ -10,7 +10,7 @@
      - doxygen
      - doc-publish:
         docsrc: 'doc/html'
-        docdest: 'cdb/$ZUUL_BRANCH'
+        docdest: 'cdb/$DOC_SUBPATH'
      - composer-update
      - phpunit-coverage
      - cover-publish:
@@ -30,7 +30,7 @@
      - jsduck
      - doc-publish:
         docsrc: 'docs'
-        docdest: 'unicodejs/$ZUUL_BRANCH'
+        docdest: 'unicodejs/$DOC_SUBPATH'
      - npm-install
      - npm-run-test
      - cover-publish:
@@ -49,7 +49,7 @@
      - npm-run-doc
      - doc-publish:
         docsrc: 'docs'
-        docdest: 'oojs/$ZUUL_BRANCH'
+        docdest: 'oojs/$DOC_SUBPATH'
      - npm-run-test
      - cover-publish:
         src: 'coverage'
@@ -69,7 +69,7 @@
      - npm-run-doc
      - doc-publish:
         docsrc: 'docs'
-        docdest: 'oojs-ui/$ZUUL_BRANCH'
+        docdest: 'oojs-ui/$DOC_SUBPATH'
      - npm-run-test
      - cover-publish:
         src: 'coverage'

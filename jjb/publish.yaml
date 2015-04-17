@@ -18,6 +18,10 @@
             echo "Error: ZUUL_UUID must be set, aborting."
             exit 1
          fi
+         if [ -z $DOC_SUBPATH ]; then
+            echo "Error: DOC_SUBPATH must be set, aborting."
+            exit 1
+         fi
          rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
          echo
          echo "Publishing to https://doc.wikimedia.org/{docdest}/"
