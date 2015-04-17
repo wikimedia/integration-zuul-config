@@ -1,7 +1,7 @@
 - job:
     name: 'cdb-publish'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
+    defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
@@ -11,6 +11,18 @@
      - doc-publish:
         docsrc: 'doc/html'
         docdest: 'cdb/$DOC_SUBPATH'
+    publishers:
+     - global-teardown
+
+- job:
+    name: 'cdb-coverage'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - global-setup
      - composer-update
      - phpunit-coverage
      - cover-publish:
@@ -22,25 +34,38 @@
 - job:
     name: 'unicodejs-publish'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
+    defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
-     - jsduck
+     - npm-install
+     - npm-run-doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
-     - npm-install
-     - npm-run-test
+    publishers:
+     - global-teardown
+
+- job:
+    name: 'unicodejs-coverage'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - npm
      - cover-publish:
         src: 'coverage'
         dest: 'unicodejs'
+    publishers:
+     - global-teardown
 
 - job:
     name: 'oojs-core-publish'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
+    defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
@@ -50,7 +75,18 @@
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs/$DOC_SUBPATH'
-     - npm-run-test
+    publishers:
+     - global-teardown
+
+- job:
+    name: 'oojs-core-coverage'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - npm
      - cover-publish:
         src: 'coverage'
         dest: 'oojs'
@@ -60,7 +96,7 @@
 - job:
     name: 'oojs-ui-publish'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
+    defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
@@ -70,7 +106,18 @@
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs-ui/$DOC_SUBPATH'
-     - npm-run-test
+    publishers:
+     - global-teardown
+
+- job:
+    name: 'oojs-ui-coverage'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - npm
      - cover-publish:
         src: 'coverage'
         dest: 'oojs-ui'
@@ -78,9 +125,9 @@
      - global-teardown
 
 - job:
-    name: 'visualeditor-publish'
+    name: 'visualeditor-coverage'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
+    defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
