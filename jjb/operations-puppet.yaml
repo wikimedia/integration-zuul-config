@@ -56,12 +56,8 @@
     triggers:
      - zuul
     builders:
-     - shell: |
-        /usr/bin/puppet doc \
-            --mode rdoc \
-            --outputdir "$WORKSPACE/doc" \
-            --modulepath "$WORKSPACE/modules" \
-            --manifestdir "$WORKSPACE/manifests"
+     - puppet-doc:
+        puppet: "$WORKSPACE"
      - doc-publish:
         docsrc: 'doc'
         docdest: 'puppet'
