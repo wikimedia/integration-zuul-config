@@ -24,7 +24,8 @@
 # Requires zuul to be installed on the Jenkins host.
 - job-template:
     name: 'integration-zuul-layoutvalidation'
-    node: gallium  # it is running Zuul
+    # Same distro as the prod machine hosting Zuul server
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
     triggers:
@@ -35,7 +36,8 @@
 
 - job-template:
     name: 'integration-zuul-layoutvalidation-gate'
-    node: gallium  # it is running Zuul
+    # Same distro as the prod machine hosting Zuul server
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
     triggers:
@@ -51,7 +53,8 @@
 # config.
 - job-template:
     name: 'integration-zuul-layoutdiff'
-    node: gallium  # it is running Zuul
+    # Same distro as the prod machine hosting Zuul server
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
     triggers:
