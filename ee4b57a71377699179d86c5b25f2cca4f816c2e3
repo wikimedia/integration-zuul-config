@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ed113e2_11ddca47",
+        "filename": "jjb/mediawiki-misc.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-04-22T13:25:22Z",
+      "side": 1,
+      "message": "That macro has an assertion to ensure DOC_SUBPATH is set so the job fails with:\n\n Error: DOC_SUBPATH must be set, aborting.\n\nThat variable is populated directly by Zuul. In zuul/doc_functions.py there is a set_doc_subpath() method which inject it to the parameters.  The function is only applied on jobs suffixed with \u0027-publish\u0027:\n\n  - name: ^.*-publish$\n    parameter-function: set_doc_subpath\n\n\nSo we need to rename the job:\n\n - mediawiki-vagrant-puppet-doc\n + mediawiki-vagrant-puppet-doc-publish\n\nThat would make Zuul run that set_doc_subpath() and inject DOC_SUBPATH.",
+      "revId": "ee4b57a71377699179d86c5b25f2cca4f816c2e3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
