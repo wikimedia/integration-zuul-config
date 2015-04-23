@@ -2783,7 +2783,9 @@ projects:
   - name: wikimedia/fundraising/dash
     template:
       - name: npm
-      - name: lint-js
+    check:
+      - jshint
+      - jsonlint
 
   - name: wikimedia/fundraising/tools
     template:
@@ -3166,35 +3168,30 @@ projects:
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
       - name: npm
-      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     template:
       - name: npm
-      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
     template:
       - name: npm
-      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/text_renderer
     template:
       - name: npm
-      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/zim_renderer
     template:
       - name: npm
-      - name: lint-js
     gate-and-submit:
       - mediawiki-gate
 
@@ -3351,7 +3348,6 @@ projects:
 
   - name: mediawiki/extensions/DonationInterface
     template:
-      - name: lint-js
       - name: extension-unittests
       - name: npm
 
@@ -3586,7 +3582,6 @@ projects:
 
   - name: mediawiki/extensions/GlobalUserPage
     template:
-      - name: lint-js
       - name: extension-unittests-generic
       - name: npm
 
@@ -6629,12 +6624,14 @@ projects:
 
   - name: mediawiki/extensions/UploadWizard
     template:
-      - name: lint-js
       - name: extension-unittests-generic
       - name: extension-qunit-generic
       - name: extension-rubylint
       - name: extension-phpcs
       - name: npm
+    check:
+      - jshint
+      - jsonlint
     test:
       - tox-flake8
     gate-and-submit:
