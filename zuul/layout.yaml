@@ -1672,6 +1672,9 @@ jobs:
   - name: 'integration-zuul-layoutvalidation-gate'
     branch: (?!labs)
 
+  - name: 'mwext-CirrusSearch-whitespaces'
+    branch: ^master$
+
   - name: 'mwext-GuidedTour-jsduck-publish'
     branch: ^master$
 
@@ -3134,6 +3137,10 @@ projects:
       - name: lint-js
       - name: extension-unittests
       - name: extension-rubylint
+    test:
+      - mwext-CirrusSearch-whitespaces
+    gate-and-submit:
+      - mwext-CirrusSearch-whitespaces
 
   - name: mediawiki/extensions/CleanChanges
     template:
