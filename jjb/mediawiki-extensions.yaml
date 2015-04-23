@@ -164,6 +164,20 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job-template:
+    name: 'mwext-{name}-whitespaces'
+    node: hasSlaveScripts && UbuntuPrecise
+    defaults: use-remote-zuul
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    scm:
+     - git-mwcore
+    triggers:
+     - zuul
+    builder:
+     - lint-whitespaces
+
 # Run extension tests via Zuul cloner
 #
 - job-template:
@@ -1004,6 +1018,11 @@
     name: 'mwext-BlameMaps'
     jobs:
      - python-jobs
+
+- project:
+    name: 'mwext-CirrusSearch'
+    jobs:
+     - 'mwext-CirrusSearch-whitespaces':
 
 - project:
     name: 'mwext-ConfirmEdit'
