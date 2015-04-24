@@ -3,6 +3,9 @@
     builders:
         - shell: |
             composer=/srv/deployment/integration/composer/vendor/bin/composer
+            if [ "{extension}" != "Wikibase" ]; then
+              cd "$WORKSPACE/src/extensions/Wikibase" && timeout 300 $composer update --prefer-source -vvv
+            fi
             cd "$WORKSPACE/src/extensions/{extension}" && timeout 300 $composer update --prefer-source -vvv
 
 - builder:
@@ -26,7 +29,7 @@
                {params}
 
 - job-template:
-    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}'
+    name: 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}'
     node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
@@ -36,16 +39,16 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - zuul-cloner-extdeps:
-         ext-name: 'Wikibase'
+         ext-name: '{ext-name}'
          dependencies: '{dependencies}'
      - wd-mw-composer-install-ext:
-          extension: 'Wikibase'
+         extension: '{ext-name}'
      - 'mw-install-{dbflavor}'
      - shell: "cp deps.txt src/extensions_load.txt"
-     - mw-apply-settings
      - wd-wikibase-apply-settings:
           repoorclient: '{repoorclient}'
           experimental: 'true'
+     - mw-apply-settings
      - mw-run-update-script
      - wd-runtests:
           params: '{phpunit-params}'
@@ -56,17 +59,17 @@
      - 'mw-teardown-{dbflavor}'
 
 - job-template:
-    name: 'mwext-Wikibase-qunit'
+    name: 'mwext-{ext-name}-qunit'
     node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
     builders:
      - zuul-cloner-extdeps:
-         ext-name: 'Wikibase'
+         ext-name: '{ext-name}'
          dependencies: '{dependencies}'
      - wd-mw-composer-install-ext:
-          extension: 'Wikibase'
+         extension: '{ext-name}'
      - wd-wikibase-apply-settings:
           repoorclient: 'repo' # qunit tests are in lib so this can be either..
           experimental: 'true'
@@ -163,7 +166,7 @@
         name: 'mwext'
         ext-name: 'Wikibase'
 
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
+     - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
         ext-name: 'Wikibase'
         kind: repo
         repoorclient: 'repo'
@@ -175,7 +178,7 @@
           - zend
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
+     - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
         ext-name: 'Wikibase'
         kind: client
         repoorclient: 'client'
@@ -188,7 +191,7 @@
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseClient'
 
-     - 'mwext-Wikibase-qunit':
+     - 'mwext-{ext-name}-qunit':
         ext-name: 'Wikibase'
 
      - 'mwext-Wikidata-{kind}-tests':
@@ -271,3 +274,38 @@
     name: wikidata-query-rdf
     jobs:
       - wikidata-query-rdf
+
+- project:
+    name: WikidataQuality
+    # By default we do not need any other extensions:
+    dependencies: ""
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+
+    jobs:
+
+     - '{name}-{ext-name}-npm':
+        name: 'mwext'
+        ext-name: 'WikidataQuality'
+
+     - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
+        ext-name: 'WikidataQuality'
+        kind: repo
+        repoorclient: 'repo'
+        dependencies: 'Wikibase'
+        dbflavor:
+          - mysql
+          - sqlite
+        phpflavor:
+          - zend
+          - hhvm
+        phpunit-params: '--group WikidataQuality'
+
+     - 'mwext-{ext-name}-qunit':
+        ext-name: 'WikidataQuality'
+        dependencies: 'Wikibase'
