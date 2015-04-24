@@ -1494,8 +1494,6 @@ jobs:
     voting: false
   - name: ^mwext-WikidataEntitySuggester-testextension.*
     voting: false
-  - name: ^mwext-WikidataQuality-testextension.*
-    voting: false
   # Requires composer for autoloader
   - name: ^mwext-WikivoteMapsYandex-testextension.*
     voting: false
@@ -5696,7 +5694,20 @@ projects:
   - name: mediawiki/extensions/WikidataQuality
     template:
       - name: lint-js
-      - name: extension-unittests
+    test:
+      - mwext-WikidataQuality-npm
+      - mwext-WikidataQuality-repo-tests-sqlite-zend
+      - mwext-WikidataQuality-repo-tests-mysql-zend
+      - mwext-WikidataQuality-repo-tests-sqlite-hhvm
+      - mwext-WikidataQuality-repo-tests-mysql-hhvm
+      - mwext-WikidataQuality-qunit
+    gate-and-submit:
+      - mwext-WikidataQuality-npm
+      - mwext-WikidataQuality-repo-tests-sqlite-zend
+      - mwext-WikidataQuality-repo-tests-mysql-zend
+      - mwext-WikidataQuality-repo-tests-sqlite-hhvm
+      - mwext-WikidataQuality-repo-tests-mysql-hhvm
+      - mwext-WikidataQuality-qunit
 
   - name: mediawiki/extensions/Wikilog
     template:
