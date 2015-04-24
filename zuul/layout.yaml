@@ -1506,8 +1506,6 @@ jobs:
     voting: false
   - name: ^mwext-WikidataEntitySuggester-testextension.*
     voting: false
-  - name: ^mwext-WikidataQuality-testextension.*
-    voting: false
   # Requires composer for autoloader
   - name: ^mwext-WikivoteMapsYandex-testextension.*
     voting: false
@@ -1764,6 +1762,11 @@ jobs:
   - name: ^mwext-FlaggedRevs-testextension.* # bug 61848
     # FlaggablePageTest::testPageDataFromTitle triggers an uncommitted
     # transaction.
+    voting: false
+  # Fail because of HHVM bug, see T95864
+  - name: mwext-WikidataQuality-repo-tests-sqlite-hhvm
+    voting: false
+  - name: mwext-WikidataQuality-repo-tests-mysql-hhvm
     voting: false
 
   - name: operations-puppet-doc
@@ -5729,7 +5732,27 @@ projects:
   - name: mediawiki/extensions/WikidataQuality
     template:
       - name: lint-js
-      - name: extension-unittests
+    check:
+      - phplint
+      - php-composer-package-validate
+    test:
+      - phplint
+      - php-composer-package-validate
+      - mwext-WikidataQuality-repo-tests-sqlite-zend
+      - mwext-WikidataQuality-repo-tests-mysql-zend
+      - mwext-WikidataQuality-repo-tests-sqlite-hhvm
+      - mwext-WikidataQuality-repo-tests-mysql-hhvm
+      - mwext-WikidataQuality-qunit
+      - mwext-WikidataQuality-npm
+    gate-and-submit:
+      - phplint
+      - php-composer-package-validate
+      - mwext-WikidataQuality-repo-tests-sqlite-zend
+      - mwext-WikidataQuality-repo-tests-mysql-zend
+      - mwext-WikidataQuality-repo-tests-sqlite-hhvm
+      - mwext-WikidataQuality-repo-tests-mysql-hhvm
+      - mwext-WikidataQuality-qunit
+      - mwext-WikidataQuality-npm
 
   - name: mediawiki/extensions/Wikilog
     template:
