@@ -26,7 +26,7 @@
                {params}
 
 - job-template:
-    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}'
+    name: 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}'
     node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
@@ -163,7 +163,7 @@
         name: 'mwext'
         ext-name: 'Wikibase'
 
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
+     - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
         ext-name: 'Wikibase'
         kind: repo
         repoorclient: 'repo'
@@ -175,7 +175,7 @@
           - zend
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
+     - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
         ext-name: 'Wikibase'
         kind: client
         repoorclient: 'client'
@@ -271,3 +271,38 @@
     name: wikidata-query-rdf
     jobs:
       - wikidata-query-rdf
+
+- project:
+    name: WikidataQuality
+    # By default we do not need any other extensions:
+    dependencies: ""
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+
+    jobs:
+
+     - '{name}-{ext-name}-npm':
+        name: 'mwext'
+        ext-name: 'WikidataQuality'
+
+     - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
+        ext-name: 'WikidataQuality'
+        kind: repo
+        repoorclient: 'repo'
+        dependencies: 'Wikibase'
+        dbflavor:
+          - mysql
+          - sqlite
+        phpflavor:
+          - zend
+          - hhvm
+        phpunit-params: '--group WikidataQuality'
+
+     #TODO
+     #- 'mwext-{ext-name}-qunit':
+     #   ext-name: 'WikidataQuality'
