@@ -185,10 +185,6 @@
     # Do not run concurrently with the downstream job
     block-downstream: true
 
-    builders:
-      - shell: |
-          /usr/local/bin/wmf-beta-autoupdate.py --verbose
-
     logrotate:
         daysToKeep: 7
 
@@ -196,7 +192,14 @@
      # Every ten minutes:
      - timed: 'H/10 * * * *'
 
+    builders:
+      - global-setup
+      - shell: |
+          . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
+          /usr/local/bin/wmf-beta-autoupdate.py --verbose
+
     publishers:
+      - global-teardown
       - beta-irc
       - email-ext:
           recipients: qa-alerts@lists.wikimedia.org
