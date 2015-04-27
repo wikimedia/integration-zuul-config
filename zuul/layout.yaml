@@ -2009,6 +2009,17 @@ projects:
       - integration-phpunit-mediawiki-master
       - mediawiki-gate
 
+  - name: integration/raita
+    template:
+      - name: npm
+    check:
+      - jshint
+      - jsonlint
+    test:
+      - jsduck
+    gate-and-submit:
+      - jsduck
+
   - name: integration/zuul
     experimental:
       - integration-zuul-debian-glue
