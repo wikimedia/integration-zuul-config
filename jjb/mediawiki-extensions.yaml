@@ -90,6 +90,7 @@
              $ZUUL_PROJECT
      - mw-install-mysql
      - shell: "echo $ZUUL_PROJECT > src/extensions_load.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
 
