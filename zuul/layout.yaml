@@ -18,6 +18,7 @@
 
 includes:
   - python-file: 'doc_functions.py'
+  - python-file: 'ext_dependencies.py'
 
 pipelines:
   # Terminology:
@@ -501,6 +502,8 @@ jobs:
 
   - name: ^.*-publish$
     parameter-function: set_doc_subpath
+  - name: ^mwext-(testextension|qunit).*?
+    parameter-function: set_ext_dependencies
 
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
@@ -6535,6 +6538,9 @@ projects:
       - name: extension-qunit-and-mobile
       - name: lint-js
       - name: extension-unittests
+    experimental:
+      - mwext-testextension-zend
+      - mwext-testextension-hhvm
 
   - name: mediawiki/extensions/TimedMediaHandler
     template:
