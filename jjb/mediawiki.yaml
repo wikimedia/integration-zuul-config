@@ -120,7 +120,7 @@
 
 # Use hhvm or zend
 - job-template:
-    name: 'mediawiki-phpunit-{phpflavor}'
+    name: 'mediawiki-phpunit-{dbflavor}-{phpflavor}'
     # Select runnable node based on the phpflavor (hhvm or zend)
     #
     # We want to reuse the same job template for both PHP flavor:
@@ -146,12 +146,12 @@
          projects: >
              mediawiki/core
              mediawiki/vendor
-     - mw-install-mysql
+     - mw-install-{dbflavor}
      - mw-apply-settings
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
     publishers:
      - phpunit-junit-2
-     - mw-teardown-mysql
+     - mw-teardown-{dbflavor}
      - archive-log-dir
 
 # Same as above, except uses composer instead of mediawiki/vendor.
@@ -320,6 +320,9 @@
     phpflavor:
         - hhvm
         - zend
+    dbflavor:
+        - sqlite
+        - mysql
     jobs:
       - 'mediawiki-core-jslint'
       - 'mediawiki-core-qunit'
@@ -337,7 +340,7 @@
          bundlecommand:
           - rubocop
       - '{name}-ruby1.9.3lint'
-      - 'mediawiki-phpunit-{phpflavor}'
+      - 'mediawiki-phpunit-{dbflavor}-{phpflavor}'
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}'
 
