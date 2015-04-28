@@ -12,3 +12,9 @@ class FakeItemChange(object):
 
     def __init__(self, *args, **kwargs):
         self.change = FakeChange(*args, **kwargs)
+
+
+class FakeJob(object):
+
+    def __init__(self, name):
+        self.name = name
