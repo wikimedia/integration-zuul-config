@@ -92,6 +92,19 @@
     publishers:
      - global-teardown
 
+- job:
+    name: 'npm-run-doc'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - npm-install
+     - npm-run-doc
+    publishers:
+     - global-teardown
+
 - job-template:
     name: '{name}-{repository}-npm'
     node: contintLabsSlave && UbuntuTrusty
