@@ -5903,6 +5903,21 @@ projects:
     template:
      - name: mw-checks
 
+  - name: mediawiki/extensions/OOJsUIAjaxLogin
+    template:
+      - name: extension-qunit-generic
+      - name: extension-unittests-generic
+      - name: composer-test
+      - name: npm
+    check:
+      - jshint
+      - jsonlint
+    test:
+      - jsduck
+    gate-and-submit:
+      - mediawiki-gate
+      - jsduck
+
   - name: mediawiki/extensions/PagesList
     template:
      - name: mw-checks
