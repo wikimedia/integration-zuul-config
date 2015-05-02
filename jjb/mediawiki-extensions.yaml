@@ -91,6 +91,11 @@
              mediawiki/core
              mediawiki/vendor
              $(cat src/extensions_load.txt)
+     - shell: |
+         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
+            cd src/extensions/VisualEditor
+            git submodule update --init
+         fi
      - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
