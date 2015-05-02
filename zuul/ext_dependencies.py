@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 dependencies = {
+    'AbuseFilter': ['AntiSpoof'],
     'Flow': ['AbuseFilter', 'CheckUser', 'ConfirmEdit', 'Mantle',
              'MobileFrontend', 'SpamBlacklist', 'Echo', 'EventLogging',
              'VisualEditor'],
