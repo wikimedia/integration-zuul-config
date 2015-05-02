@@ -6,6 +6,7 @@ dependencies = {
              'MobileFrontend', 'SpamBlacklist', 'Echo', 'EventLogging',
              'VisualEditor'],
     'Thanks': ['Echo', 'Flow'],
+    'VectorBeta': ['EventLogging'],
 }
 
 
