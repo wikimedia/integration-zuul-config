@@ -1,8 +1,9 @@
 #!/usr/bin/env python2
 
 dependencies = {
-    'Flow': ['AbuseFilter', 'CheckUser', 'Mantle',
-             'MobileFrontend', 'SpamBlacklist', 'Echo', 'EventLogging'],
+    'Flow': ['AbuseFilter', 'CheckUser', 'ConfirmEdit', 'Mantle',
+             'MobileFrontend', 'SpamBlacklist', 'Echo', 'EventLogging',
+             'VisualEditor'],
     'Thanks': ['Echo', 'Flow'],
 }
 
