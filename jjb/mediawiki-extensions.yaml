@@ -83,14 +83,15 @@
 - builder:
     name: prepare-mediawiki-zuul-project
     builders:
+     - shell: "mkdir -p src"
+     - shell: "echo $ZUUL_PROJECT > src/extensions_load.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> src/extensions_load.txt"
      - zuul-cloner:
          projects: >
              mediawiki/core
              mediawiki/vendor
-             $ZUUL_PROJECT
+             $(cat src/extensions_load.txt)
      - mw-install-mysql
-     - shell: "echo $ZUUL_PROJECT > src/extensions_load.txt"
-     - shell: "echo -e $EXT_DEPENDENCIES >> src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
 
