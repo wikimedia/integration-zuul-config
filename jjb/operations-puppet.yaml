@@ -67,7 +67,8 @@
 # Find out common typos in any files of ops/puppet
 - job-template:
     name: 'operations-puppet-typos'
-    defaults: use-remote-zuul
+    node: contintLabsSlave
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
 
     triggers:
