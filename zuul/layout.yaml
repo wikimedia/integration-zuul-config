@@ -3087,20 +3087,17 @@ projects:
   - name: mediawiki/extensions/Citoid
     template:
       - name: npm
+      - name: extension-unittests-generic
     check:
       - jsonlint
       - phplint
       - php-composer-validate
     test:
       - phplint
-      - mwext-Citoid-testextension-hhvm
-      - mwext-Citoid-testextension-zend
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - phplint
-      - mwext-Citoid-testextension-hhvm
-      - mwext-Citoid-testextension-zend
       - php-composer-validate
     experimental:
       - mediawiki-extensions-hhvm
