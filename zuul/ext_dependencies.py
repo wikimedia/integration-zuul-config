@@ -9,12 +9,12 @@ dependencies = {
     'Disambiguator': ['VisualEditor'],
     'EducationProgram': ['cldr'],
     'Flow': ['AbuseFilter', 'CheckUser', 'ConfirmEdit', 'Mantle',
-             'MobileFrontend', 'SpamBlacklist', 'Echo', 'EventLogging',
-             'VisualEditor'],
+             'SpamBlacklist', 'Echo', 'EventLogging', 'VisualEditor'],
     'Gather': ['PageImages', 'TextExtracts', 'MobileFrontend', 'Echo',
                'Mantle', 'VisualEditor'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
-    'Thanks': ['Echo', 'Flow'],
+    'MobileFrontend': ['Echo', 'Mantle', 'VisualEditor'],
+    'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'VectorBeta': ['EventLogging'],
 }
 
