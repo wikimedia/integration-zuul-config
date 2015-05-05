@@ -3,6 +3,7 @@
 dependencies = {
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
+    'Capiunto': ['Scribunto'],
     'Flow': ['AbuseFilter', 'CheckUser', 'ConfirmEdit', 'Mantle',
              'MobileFrontend', 'SpamBlacklist', 'Echo', 'EventLogging',
              'VisualEditor'],
