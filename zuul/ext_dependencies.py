@@ -2,6 +2,7 @@
 
 dependencies = {
     'AbuseFilter': ['AntiSpoof'],
+    'ApiFeatureUsage': ['Elastica'],
     'Flow': ['AbuseFilter', 'CheckUser', 'ConfirmEdit', 'Mantle',
              'MobileFrontend', 'SpamBlacklist', 'Echo', 'EventLogging',
              'VisualEditor'],
