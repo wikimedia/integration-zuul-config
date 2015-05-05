@@ -5,6 +5,7 @@ dependencies = {
     'ApiFeatureUsage': ['Elastica'],
     'Capiunto': ['Scribunto'],
     'Citoid': ['VisualEditor'],
+    'CodeEditor': ['WikiEditor'],
     'Flow': ['AbuseFilter', 'CheckUser', 'ConfirmEdit', 'Mantle',
              'MobileFrontend', 'SpamBlacklist', 'Echo', 'EventLogging',
              'VisualEditor'],
