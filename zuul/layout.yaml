@@ -3342,7 +3342,7 @@ projects:
   - name: mediawiki/extensions/Disambiguator
     template:
       - name: lint-js
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/DiscussionThreading
     template:
@@ -3419,7 +3419,7 @@ projects:
   - name: mediawiki/extensions/EducationProgram
     template:
       - name: lint-js
-      - name: extension-unittests
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Elastica
     template:
@@ -3475,6 +3475,8 @@ projects:
     template:
      - name: extension-gate
      - name: extension-rubylint
+     - name: extension-unittests-generic
+     - name: extension-qunit-generic
      - name: npm
     check:
      - jshint
@@ -3484,16 +3486,12 @@ projects:
     test:
      - mwext-Flow-qunit
      - phplint
-     #- mwext-Flow-testextension-hhvm
-     - mwext-Flow-testextension-zend
      - php-composer-validate
      - jsduck
     gate-and-submit:
      - mediawiki-gate
      - mwext-Flow-qunit
      - phplint
-     #- mwext-Flow-testextension-hhvm
-     - mwext-Flow-testextension-zend
      - php-composer-validate
      - jsduck
     experimental:
@@ -3523,15 +3521,15 @@ projects:
     template:
       - name: extension-gate
       - name: npm
-      - name: extension-unittests
+      - name: extension-unittests-generic
       - name: composer-test
-      - name: extension-qunit
+      - name: extension-qunit-generic
 
   - name: mediawiki/extensions/GettingStarted
     template:
       - name: lint-js
-      - name: extension-unittests
-      - name: extension-qunit
+      - name: extension-unittests-generic
+      - name: extension-qunit-generic
       - name: extension-rubylint
 
   - name: mediawiki/extensions/GeoCrumbs
