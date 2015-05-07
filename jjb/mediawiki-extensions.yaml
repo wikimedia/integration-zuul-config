@@ -83,14 +83,14 @@
 - builder:
     name: prepare-mediawiki-zuul-project
     builders:
-     - shell: "mkdir -p src"
-     - shell: "echo $ZUUL_PROJECT > src/extensions_load.txt"
-     - shell: "echo -e $EXT_DEPENDENCIES >> src/extensions_load.txt"
+     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
      - zuul-cloner:
          projects: >
              mediawiki/core
              mediawiki/vendor
-             $(cat src/extensions_load.txt)
+             $(cat extensions_load.txt)
+     - shell: "mw extensions_load.txt src/extensions_load.txt"
      - shell: |
          if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
             cd src/extensions/VisualEditor
