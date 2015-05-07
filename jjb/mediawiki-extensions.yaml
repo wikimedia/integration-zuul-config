@@ -90,7 +90,7 @@
              mediawiki/core
              mediawiki/vendor
              $(cat extensions_load.txt)
-     - shell: "mw extensions_load.txt src/extensions_load.txt"
+     - shell: "mv extensions_load.txt src/extensions_load.txt"
      - shell: |
          if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
             cd src/extensions/VisualEditor
