@@ -674,6 +674,11 @@ jobs:
      # Matches: *.json
      - '^.*\.json$'
 
+  # Don't run PHPUnit tests on deployment, because we've removed the class files.
+  - name: mwext-DonationInterface-testextension-zend
+    branch:
+      ^(?!deployment)$
+
   # Exceptions for projects not yet passing jshint (bug 60619)
   # https://bugzilla.wikimedia.org/showdependencytree.cgi?id=60619
   #
