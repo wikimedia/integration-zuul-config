@@ -1,7 +1,46 @@
+- job-template:
+    name: 'apps-android-wikipedia-gradlew'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         ./gradlew -q clean checkstyle assembleAlphaDebug
+    publishers:
+     - archive:
+         # Capture generated .apk and checkstyle.xml
+         artifacts: '**/build/outputs/**,**/build/reports/**'
+     - checkstyle:
+         pattern: "**/build/reports/checkstyle/checkstyle.xml"
+         can-run-on-failed: true
+         healthy: 0
+         unhealthy: 100
+         thresholds:
+           failed:
+               total-all: 1
+
+# Additional lint check, not passing as of May 2015
+- job-template:
+    name: 'apps-android-wikipedia-gradlew-lint'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         ./gradlew -q clean lintAlphaDebug
+    publishers:
+     - archive:
+         artifacts: '**/build/outputs/**'
+
 - project:
     name: 'apps-android-wikipedia'
     jobs:
-      - '{name}-maven-checkstyle'
+      - 'apps-android-wikipedia-gradlew'
+      - 'apps-android-wikipedia-gradlew-lint'
 
 # Build the mighty Commons application for Android Platforms
 # Yuvi rocks (bug 20281).

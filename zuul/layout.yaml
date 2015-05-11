@@ -1645,6 +1645,11 @@ jobs:
   - name: apps-android-commons-build
     voting: false
 
+  # Lint not passing yet. The lintAlphaDebug will be integrated in the other
+  # job later on.
+  - name: apps-android-wikipedia-gradlew-lint
+    voting: false
+
   - name: ^beta-recompile-math-texvc.*
     branch: ^master$
 
@@ -2231,10 +2236,11 @@ projects:
       - name: lint-js
     test:
       - tox-flake8
-      - apps-android-wikipedia-maven-checkstyle
+      - apps-android-wikipedia-gradlew
+      - apps-android-wikipedia-gradlew-lint
     gate-and-submit:
       - tox-flake8
-      - apps-android-wikipedia-maven-checkstyle
+      - apps-android-wikipedia-gradlew
 
   - name: apps/ios/wikipedia
     check-voter:
