@@ -1,7 +1,34 @@
+- job-template:
+    name: 'apps-android-wikipedia-gradlew'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         ./gradlew -q clean
+         ./gradlew checkstyle
+         ./gradlew -q assembleAlphaDebug
+    publishers:
+     - archive:
+         artifacts: '**/build/outputs/**'
+     - checkstyle:
+         pattern: "**/build/reports/checkstyle/checkstyle.xml"
+         canRunOnFailed: true
+         healthy: 0
+         unHealthy: 100
+         healthThreshold: 'high'
+         thresholds:
+           unstable:
+             totalHigh: 10
+           failed:
+             totalHigh: 1
+
 - project:
     name: 'apps-android-wikipedia'
     jobs:
-      - '{name}-maven-checkstyle'
+      - 'apps-android-wikipedia-gradlew'
 
 # Build the mighty Commons application for Android Platforms
 # Yuvi rocks (bug 20281).
