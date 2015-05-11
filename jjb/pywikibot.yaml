@@ -1,38 +1,3 @@
-# Template used to run the pywikibot/core test suite via
-#   python setup.py test
-- job-template:
-    name: 'pywikibot-core-tests'
-    # Needs an internet access to run tests against wikis
-    #node: hasContintPackages && UbuntuPrecise
-    node: gallium
-    defaults: use-remote-zuul
-
-    triggers:
-     - zuul
-
-    builders:
-    # Zuul uses Python str.format(obj) for {config} substitutions
-    # Escape as {foo} as {{key}} to avoid triggering a KeyError in Zuul parser
-     - shell: |
-        cd externals/httplib2
-        python setup.py bdist
-        cd ../..
-        #
-        export PYTHONPATH=`pwd`/externals/httplib2/python2
-        export PYWIKIBOT2_DIR=`pwd`
-        cat > user-config.py << EOF
-        mylang = 'en'
-        family = 'wikipedia'
-        usernames['wikipedia']['en'] = 'Pywikibot-test'
-        password_file = 'passwordfile'
-        EOF
-        #
-        cat > passwordfile << EOF
-        ('Pywikibot-test', '...password...')
-        EOF
-        # hack to make sure we do not download dependencies from pip
-        http_proxy=nowhere https_proxy=nowhere python setup.py test
-
 - project:
     name: 'pywikibot-bots-CommonsDelinker'
     toxenv:
@@ -56,7 +21,6 @@
      - nose34  # must only trigger the '-trusty' version
 
     jobs:
-     - pywikibot-core-tests
      - '{name}-tox-{toxenv}'
      - '{name}-tox-{toxenv}-trusty'
 
