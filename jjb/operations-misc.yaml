@@ -15,7 +15,8 @@
 
 - job-template:
     name: 'operations-dns-lint'
-    node: hasContintPackages && UbuntuPrecise
+    # Depends on production GeoIP T98737
+    node: productionSlaves && UbuntuPrecise
     defaults: use-remote-zuul
     concurrent: true
     triggers:
