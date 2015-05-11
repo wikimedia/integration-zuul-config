@@ -1,7 +1,20 @@
+- job-template:
+    name: 'apps-android-wikipedia-gradlew'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         ./gradlew checkstyle
+         ./gradlew -q clean assembleAlphaDebug
+
 - project:
     name: 'apps-android-wikipedia'
     jobs:
       - '{name}-maven-checkstyle'
+      - 'apps-android-wikipedia-gradlew'
 
 # Build the mighty Commons application for Android Platforms
 # Yuvi rocks (bug 20281).
