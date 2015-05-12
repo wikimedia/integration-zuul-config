@@ -1573,8 +1573,6 @@ jobs:
     voting: false
   - name: operations-dumps-pyflakes
     voting: false
-  - name: operations-software-pyflakes
-    voting: false
   - name: operations-software-redactatron-pep8
     voting: false
   - name: operations-software-redactatron-pyflakes
@@ -1606,10 +1604,6 @@ jobs:
   #
   - name: operations-puppet-pep8
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
-
-  - name: operations-software-pep8
-    files:
-     - '^.*\.py$'
 
   - name: ^perllint$
     files:
@@ -2751,11 +2745,6 @@ projects:
   - name: operations/puppet/zookeeper
     template:
       - name: puppet
-
-  - name: operations/software
-    check-voter:
-      - operations-software-pep8
-      - operations-software-pyflakes
 
   - name: operations/software/ircyall
     test:
