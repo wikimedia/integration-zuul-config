@@ -60,66 +60,16 @@
 
 # Job to run MediaWiki update.php script on all the beta wikis.
 #
-# It is a matrix job which is a very nice feature in Jenkins to have a job run
-# with different input parameters.  It is current drawback is that the list of
-# databases is hardcoded in the Jenkins job (ie below) when it should really be
-# generated out of the current list of database (which is all-labs.dblist in
-# the repository operations/mediawiki-config.git). FIXME We should workaround
-# this by having an integration test that would make sure boths repositories
-# are in sync.
 - job-template:
     name: beta-update-databases-{datacenter}
     defaults: beta
     node: deployment-bastion-{datacenter}
 
-    project-type: matrix
-
-    axes:
-     - axis:
-        type: label-expression
-        name: label
-        values:
-         - deployment-bastion-{datacenter}
-     - axis:
-        type: user-defined
-        name: wikidb
-        values:
-         - aawiki
-         - arwiki
-         - cawiki
-         - commonswiki
-         - deploymentwiki
-         - dewiki
-         - ee_prototypewiki
-         - enwiki
-         - en_rtlwiki
-         - enwikibooks
-         - enwikinews
-         - enwikiquote
-         - enwikisource
-         - enwikiversity
-         - enwiktionary
-         - eowiki
-         - eswiki
-         - fawiki
-         - hewiki
-         - hiwiki
-         - jawiki
-         - kowiki
-         - loginwiki
-         - metawiki
-         - ruwiki
-         - simplewiki
-         - sqwiki
-         - testwiki
-         - ukwiki
-         - wikidatawiki
-         - zhwiki
-
-    # The 'wikidb' axis defined above is exported by Jenkins as an
-    # environnement variable. Makes it trivial to run on all databases.
     builders:
-     - shell: "mwscript update.php --wiki=$wikidb --quick"
+      - global-setup
+      - shell: |
+          . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
+          /usr/local/bin/wmf-beta-update-databases.py
 
     publishers:
       - beta-irc
