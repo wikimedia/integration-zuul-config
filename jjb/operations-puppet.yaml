@@ -1,16 +1,3 @@
-# Run rspec
-- job-template:
-    name: 'operations-puppet-spec'
-    node: hasSlaveScripts && UbuntuPrecise
-    defaults: use-remote-zuul
-    concurrent: true
-
-    triggers:
-     - zuul
-
-    builders:
-     - shell: "rake spec"
-
 # Trigger integration tests hold in 'tests' sub directories as manifests.
 # See the shell wrapper in integration/jenkins.git
 - job-template:
@@ -95,7 +82,6 @@
      - '{name}-puppetlint-strict'
      - '{name}-tox-{toxenv}'
      - operations-puppet-typos
-     - operations-puppet-spec
      - operations-puppet-test
      - operations-puppet-doc
      - operations-puppet-pep8

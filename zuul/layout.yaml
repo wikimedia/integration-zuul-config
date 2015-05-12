@@ -1607,11 +1607,6 @@ jobs:
   - name: operations-puppet-pep8
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
 
-  - name: operations-puppet-spec
-    voting: false
-    success-message: 'Rejoice! Unit tests are passing.'
-    failure-message: 'Experimental unit tests, please ignore.'
-
   - name: operations-software-pep8
     files:
      - '^.*\.py$'
@@ -2707,7 +2702,6 @@ projects:
     # Same for trusted user
     test:
       # testing
-      - operations-puppet-spec
       - operations-puppet-tox-py27
       #- operations-apache-config-lint (Broken, T72068)
       # Same as `check` pipeline:
