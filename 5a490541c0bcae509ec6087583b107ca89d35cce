@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ed113e2_a0cba6a5",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2060,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-05-13T14:16:06Z",
+      "side": 1,
+      "message": "The jobs run the whole test suite but lot do not even hit the database.  It makes sense to run those databaseless tests with hhvm/zend, but makes little sense for the sqlite/mysql ones.\n\nWe used to run the tests split in batches based on groups. Maybe we need to split them again with database vs databaseless (see the group @database). So we would end up with:\n\n @database\n mysql  - hhvm\n mysql  - zend\n sqlite - hhvm\n sqlite - zend\n\n not @database\n hhvm\n zend\n\nThat is rather messy though :-\\",
+      "revId": "5a490541c0bcae509ec6087583b107ca89d35cce",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
