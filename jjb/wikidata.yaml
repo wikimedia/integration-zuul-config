@@ -3,10 +3,12 @@
     builders:
         - shell: |
             composer=/srv/deployment/integration/composer/vendor/bin/composer
-            if [ "{extension}" != "Wikibase" ]; then
-              cd "$WORKSPACE/src/extensions/Wikibase" && timeout 300 $composer update --prefer-source -vvv
-            fi
-            cd "$WORKSPACE/src/extensions/{extension}" && timeout 300 $composer update --prefer-source -vvv
+            cd "$WORKSPACE/src/" \
+            && php -r '$c = json_decode( file_get_contents( "composer.json" ) );
+                       $m="merge-plugin";
+                       $c->extra->$m->include[] = "extensions/*/composer.json";
+                       file_put_contents( "composer.json", json_encode( $c ) );' \
+            && timeout 300 $composer update --prefer-source -vvv
 
 - builder:
     name: wd-wikibase-apply-settings
@@ -41,8 +43,7 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-     - wd-mw-composer-install-ext:
-         extension: '{ext-name}'
+     - wd-mw-composer-install-ext
      - 'mw-install-{dbflavor}'
      - shell: "cp deps.txt src/extensions_load.txt"
      - wd-wikibase-apply-settings:
@@ -68,8 +69,7 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-     - wd-mw-composer-install-ext:
-         extension: '{ext-name}'
+     - wd-mw-composer-install-ext
      - mw-install-sqlite
      - shell: "cp deps.txt src/extensions_load.txt"
      - wd-wikibase-apply-settings:
@@ -140,8 +140,7 @@
      - zuul
     builders:
      - prepare-mediawiki-zuul-project
-     - wd-mw-composer-install-ext:
-          extension: 'WikibaseJavaScriptApi'
+     - wd-mw-composer-install-ext
      - qunit-karma
     publishers:
      - qunit-cleanup
