@@ -1754,7 +1754,6 @@ jobs:
     voting: false
     success-message: 'Example result against MediaWiki core'
     failure-message: 'Example result against MediaWiki core'
-
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
 
@@ -5771,6 +5770,58 @@ projects:
       - mwext-WikidataQuality-repo-tests-sqlite-hhvm
       - mwext-WikidataQuality-repo-tests-mysql-hhvm
       - mwext-WikidataQuality-qunit
+
+  - name: mediawiki/extensions/WikidataQualityConstraints
+    template:
+      - name: lint-js
+      - name: npm
+    check:
+      - phplint
+      - php-composer-package-validate
+    test:
+      - phplint
+      - php-composer-package-validate
+      - mwext-WikidataQualityConstraints-repo-tests-sqlite-hhvm
+      - mwext-WikidataQualityConstraints-repo-tests-mysql-hhvm
+      - mwext-WikidataQualityConstraints-qunit
+    zend:
+      - mwext-WikidataQualityConstraints-repo-tests-sqlite-zend
+      - mwext-WikidataQualityConstraints-repo-tests-mysql-zend
+    gate-and-submit:
+      - phplint
+      - php-composer-package-validate
+      - mwext-WikidataQualityConstraints-repo-tests-sqlite-zend
+      - mwext-WikidataQualityConstraints-repo-tests-mysql-zend
+      - mwext-WikidataQualityConstraints-repo-tests-sqlite-hhvm
+      - mwext-WikidataQualityConstraints-repo-tests-mysql-hhvm
+      - mwext-WikidataQualityConstraints-qunit
+
+  - name: mediawiki/extensions/WikidataQualityExternalValidation
+    template:
+      - name: lint-js
+      - name: npm
+    check:
+      - phplint
+      - php-composer-package-validate
+    test:
+      - phplint
+      - php-composer-package-validate
+      - mwext-WikidataQualityExternalValidation-repo-tests-sqlite-hhvm
+      - mwext-WikidataQualityExternalValidation-repo-tests-mysql-hhvm
+      - mwext-WikidataQualityExternalValidation-qunit
+      - mwext-WikidataQualityExternalValidation-npm
+    zend:
+      - mwext-WikidataQualityExternalValidation-repo-tests-sqlite-zend
+      - mwext-WikidataQualityExternalValidation-repo-tests-mysql-zend
+    gate-and-submit:
+      - phplint
+      - php-composer-package-validate
+      - mwext-WikidataQualityExternalValidation-repo-tests-sqlite-zend
+      - mwext-WikidataQualityExternalValidation-repo-tests-mysql-zend
+      - mwext-WikidataQualityExternalValidation-repo-tests-sqlite-hhvm
+      - mwext-WikidataQualityExternalValidation-repo-tests-mysql-hhvm
+      - mwext-WikidataQualityExternalValidation-qunit
+      - mwext-WikidataQualityExternalValidation-npm
 
   - name: mediawiki/extensions/Wikilog
     template:
