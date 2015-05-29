@@ -14,6 +14,7 @@ dependencies = {
                'Mantle', 'VisualEditor'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'MobileFrontend': ['Echo', 'Mantle', 'VisualEditor'],
+    'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'VectorBeta': ['EventLogging'],
 }
