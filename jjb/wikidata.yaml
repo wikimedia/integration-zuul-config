@@ -1,12 +1,17 @@
 - builder:
-    name: wd-mw-composer-install-ext
+    name: wd-mw-composer-merged-install
     builders:
         - shell: |
+            set -eu
             composer=/srv/deployment/integration/composer/vendor/bin/composer
-            if [ "{extension}" != "Wikibase" ]; then
-              cd "$WORKSPACE/src/extensions/Wikibase" && timeout 300 $composer update --prefer-source -vvv
-            fi
-            cd "$WORKSPACE/src/extensions/{extension}" && timeout 300 $composer update --prefer-source -vvv
+            cd "$WORKSPACE/src/"
+            php -r '$c = json_decode( file_get_contents( "composer.json" ) );
+                       $m="merge-plugin";
+                       $c->extra->$m->include[] = "extensions/*/composer.json";
+                       file_put_contents( "composer.json", json_encode( $c ) );'
+            timeout 300 $composer update --prefer-source -vvv
+            # FIXME BUG the first run just exits without error without finishing especially in a clean working copy
+            timeout 300 $composer update --prefer-source -vvv
 
 - builder:
     name: wd-wikibase-apply-settings
@@ -36,8 +41,8 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-     - wd-mw-composer-install-ext:
-         extension: '{ext-name}'
+         additional-repositories: ''
+     - wd-mw-composer-merged-install
      - 'mw-install-{dbflavor}'
      - shell: "cp deps.txt src/extensions_load.txt"
      - wd-wikibase-apply-settings:
@@ -63,8 +68,8 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-     - wd-mw-composer-install-ext:
-         extension: '{ext-name}'
+         additional-repositories: ''
+     - wd-mw-composer-merged-install
      - mw-install-sqlite
      - shell: "cp deps.txt src/extensions_load.txt"
      - wd-wikibase-apply-settings:
@@ -87,9 +92,15 @@
     triggers:
      - zuul
     builders:
-     - prepare-mediawiki-zuul-project
-     - wd-mw-composer-install-ext:
-          extension: 'WikibaseJavaScriptApi'
+     - zuul-cloner-extdeps:
+         ext-name: 'WikibaseJavaScriptApi'
+         dependencies: ''
+         additional-repositories: ''
+     - wd-mw-composer-merged-install
+     - mw-install-mysql
+     - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
      - qunit-karma
     publishers:
      - qunit-cleanup

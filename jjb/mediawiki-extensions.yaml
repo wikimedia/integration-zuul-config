@@ -48,6 +48,7 @@
 #
 # ext-name: extension basename. Set to '' to ignore
 # dependencies: comma or spaces/newlines separated list of extensions to clone
+# additional-dependencies: gets appended to dependencies, backslash escaping is applied, use \n to separate multiple
 #
 - builder:
     name: 'zuul-cloner-extdeps'
@@ -56,7 +57,10 @@
          # Build dependencies list
          rm -f deps.txt
          touch deps.txt
-         echo -e "mediawiki/core\nmediawiki/vendor" >> deps.txt
+         echo "mediawiki/core" >> deps.txt
+         if [ "{additional-repositories}" != "" ]; then
+             echo -e "{additional-repositories}" >> deps.txt
+         fi
          if [ "{ext-name}" != "" ]; then
             echo "mediawiki/extensions/{ext-name}" >> deps.txt
          fi
@@ -75,6 +79,7 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
