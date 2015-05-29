@@ -6534,19 +6534,10 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
-    check-only:
-      - jshint
-      - jsonlint
-      - mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - jshint
-      - jsonlint
-      - mwext-SyntaxHighlight_GeSHi-phpcs-HEAD
-      - phplint
-      - php-composer-validate
+    template:
+      - name: lint-js
+      - name: extension-phpcs
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TemplateData
     template:
