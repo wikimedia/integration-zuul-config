@@ -1,12 +1,16 @@
 - builder:
-    name: wd-mw-composer-install-ext
+    name: wd-mw-composer-merged-install
     builders:
         - shell: |
             composer=/srv/deployment/integration/composer/vendor/bin/composer
-            if [ "{extension}" != "Wikibase" ]; then
-              cd "$WORKSPACE/src/extensions/Wikibase" && timeout 300 $composer update --prefer-source -vvv
-            fi
-            cd "$WORKSPACE/src/extensions/{extension}" && timeout 300 $composer update --prefer-source -vvv
+            cd "$WORKSPACE/src/" \
+            && php -r '$c = json_decode( file_get_contents( "composer.json" ) );
+                       $m="merge-plugin";
+                       $c->extra->$m->include[] = "extensions/*/composer.json";
+                       file_put_contents( "composer.json", json_encode( $c ) );' \
+            && if [ -e extensions/Wikibase/Wikibase.composer.php ]; then \
+                 sed --in-place -e 's/||/\&\&/; s/!//' extensions/Wikibase/Wikibase.composer.php; fi \
+            && timeout 300 $composer update --prefer-source -vvv
 
 - builder:
     name: wd-wikibase-apply-settings
@@ -41,8 +45,8 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-     - wd-mw-composer-install-ext:
-         extension: '{ext-name}'
+         additional-repositories: ''
+     - wd-mw-composer-merged-install
      - 'mw-install-{dbflavor}'
      - shell: "cp deps.txt src/extensions_load.txt"
      - wd-wikibase-apply-settings:
@@ -68,8 +72,8 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-     - wd-mw-composer-install-ext:
-         extension: '{ext-name}'
+         additional-repositories: ''
+     - wd-mw-composer-merged-install
      - mw-install-sqlite
      - shell: "cp deps.txt src/extensions_load.txt"
      - wd-wikibase-apply-settings:
@@ -92,6 +96,7 @@
      - zuul-cloner-extdeps:
          ext-name: 'Wikidata'
          dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
      - wd-build-apply-settings:
           repoorclient: '{repoorclient}'
           experimental: '{experimental}'
@@ -117,6 +122,7 @@
      - zuul-cloner-extdeps:
          ext-name: 'Wikidata'
          dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
      - wd-build-apply-settings:
           repoorclient: 'repo' # qunit tests are in lib so this can be either..
           experimental: 'true'
@@ -139,9 +145,15 @@
     triggers:
      - zuul
     builders:
-     - prepare-mediawiki-zuul-project
-     - wd-mw-composer-install-ext:
-          extension: 'WikibaseJavaScriptApi'
+     - zuul-cloner-extdeps:
+         ext-name: 'WikibaseJavaScriptApi'
+         dependencies: ''
+         additional-repositories: ''
+     - wd-mw-composer-merged-install
+     - mw-install-mysql
+     - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
      - qunit-karma
     publishers:
      - qunit-cleanup

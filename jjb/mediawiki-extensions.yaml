@@ -51,9 +51,12 @@
          # Build dependencies list
          rm -f deps.txt
          touch deps.txt
-         echo -e "mediawiki/core\nmediawiki/vendor\nmediawiki/extensions/{ext-name}" >> deps.txt
+         echo -e "mediawiki/core\nmediawiki/extensions/{ext-name}" >> deps.txt
          if [ "{dependencies}" != "" ]; then
              echo "$(IFS=,; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
+         fi
+         if [ "{additional-repositories}" != "" ]; then
+             echo -e "{additional-repositories}" >> deps.txt
          fi
      - zuul-cloner:
          projects: >
@@ -72,6 +75,7 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
