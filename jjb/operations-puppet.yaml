@@ -64,10 +64,35 @@
     builders:
      - shell: |
         #!/bin/bash -e
+        echo "Looking potential typos from '/typos' file"
 
-        echo "Looking for usage of 'pmpta' instead of 'pmtpa'..."
-        (fgrep -R --file=typos --exclude=typos *) && HAS_TYPO=1 || HAS_TYPO=0
-        exit $HAS_TYPO
+        # Ignore grep errors, we handle them manually
+        set +e
+            (fgrep -R --file=typos --exclude=typos *)
+            ERR="$?"
+        set -e
+
+        # The grep utility exits with one of the following values:
+        #
+        # 0     One or more lines were selected.
+        # 1     No lines were selected.
+        # >1    An error occurred.
+        #
+        # Flip 0 and 1 meanings:
+        case $ERR in
+            "0")
+                echo "Typos found!"
+                exit 1
+                ;;
+            "1")
+                echo "No typos found!"
+                exit 0
+                ;;
+            *)
+                echo "Some error occured."
+                exit $ERR
+                ;;
+        esac
 
 - project:
     name: 'operations-puppet'
