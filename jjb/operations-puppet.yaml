@@ -65,9 +65,23 @@
      - shell: |
         #!/bin/bash -e
 
-        echo "Looking for usage of 'pmpta' instead of 'pmtpa'..."
-        (fgrep -R --file=typos --exclude=typos *) && HAS_TYPO=1 || HAS_TYPO=0
-        exit $HAS_TYPO
+        echo "Looking potential typos from '/typos' file"
+        (fgrep -R --file=typos --exclude=typos *)
+        ERR="$?"
+        case $ERR in
+            "0")
+                echo "Typos found!"
+                exit 1
+                ;;
+            "1")
+                echo "No typos found!"
+                exit 0
+                ;;
+            *)
+                echo "Some error occured."
+                exit $ERR
+                ;;
+        esac
 
 - project:
     name: 'operations-puppet'
