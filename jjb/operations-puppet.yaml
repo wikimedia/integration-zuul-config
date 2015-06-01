@@ -54,7 +54,8 @@
 # Find out common typos in any files of ops/puppet
 - job-template:
     name: 'operations-puppet-typos'
-    node: contintLabsSlave
+    # Bound to Trusty since we need grep v2.11-8 for -r to not follow symlinks
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
 
@@ -68,7 +69,8 @@
 
         # Ignore grep errors, we handle them manually
         set +e
-            (fgrep -R --file=typos --exclude=typos *)
+            # -r does not follow symlinks
+            (fgrep -r --file=typos --exclude=typos *)
             ERR="$?"
         set -e
 
