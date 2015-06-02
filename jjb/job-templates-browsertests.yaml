@@ -78,9 +78,11 @@
           branches:
             - master
           wipe-workspace: false  # keep the workspace...
-          clean: true            # ... and use git clean instead
+          clean:
+              before: true       # ... and use git clean instead
           prune: true            # prune remote obsoletes branches
-          recursive-submodules: true
+          submodule:
+              recursive: true
 
     triggers:
       - timed: "@daily"
