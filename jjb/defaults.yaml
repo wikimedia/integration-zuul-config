@@ -148,13 +148,16 @@
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
-        recursive-submodules: true
+        submodule:
+            recursive: true
         # Fetch under /extensions/
         # We can not use ZUUL_PROJECT there since the MediaWiki extensions
         # project names are prefixed with 'mediawiki/' in Gerrit.
         basedir: 'extensions/{ext-name}'
         wipe-workspace: true
-        clean: false
+        clean:
+            before: false
+            after: false
 
     wrappers:
       - timeout:

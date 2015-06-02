@@ -155,9 +155,11 @@
           branches:
             - master
           wipe-workspace: false  # keep the workspace...
-          clean: true            # ... and use git clean instead
+          clean:
+              after: true        # ... and use git clean instead
           prune: true            # prune remote obsoletes branches
-          recursive-submodules: false
+          submodule:
+              recursive: false
     builders:
      - shell: |
          curl -i -H "Accept: text/plain" https://security.sensiolabs.org/check_lock -F lock=@composer.lock -o sensiolabs.check

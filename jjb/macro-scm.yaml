@@ -14,9 +14,11 @@
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
-        disable-submodules: true
+        submodule:
+            disable: true
         wipe-workspace: false
-        clean: true
+        clean:
+            after: true
 
 - scm:
     name: git-localonly-zuul
@@ -27,9 +29,11 @@
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
         wipe-workspace: false
-        clean: true
-        # XXX: Why only this one recursive?
-        recursive-submodules: true
+        clean:
+            after: true
+        submodule:
+            # XXX: Why only this one recursive?
+            recursive: true
 
 # Same as git-localonly-zuul but fetches the Zuul changes using two repositories:
 #
@@ -52,7 +56,8 @@
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
         wipe-workspace: false
-        clean: true
+        clean:
+            after: true
 
 # This one doesn't rely on a local /srv/ssd/gerrit replication dest, this is to
 # be used for slaves hosted in labs (e.g. contintLabsSlave nodes).
@@ -65,7 +70,8 @@
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
         wipe-workspace: false
-        clean: true
+        clean:
+            after: true
 
 - scm:
     name: git-remote-zuul-no-submodules
@@ -77,8 +83,10 @@
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
         wipe-workspace: false
-        clean: true
-        disable-submodules: true
+        clean:
+            after: true
+        submodule:
+            disable: true
 
 - scm:
     name: git-remote-zuul-shallow-clone
@@ -90,7 +98,8 @@
         refspec: '$ZUUL_REF'
         wipe-workspace: true
         shallow-clone: true
-        disable-submodules: true
+        submodule:
+            disable: true
 
 
 # Wrapper around Zuul Cloner

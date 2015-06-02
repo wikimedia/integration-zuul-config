@@ -79,7 +79,8 @@
       - git:
           url: 'https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder.git'
           wipe-workspace: false
-          clean: true
+          clean:
+              after: true
           branches:
            - master
       - git:
@@ -89,7 +90,8 @@
           refspec: '$ZUUL_REF'
           basedir: 'config'
           wipe-workspace: false
-          clean: true
+          clean:
+              after: true
     builders:
      - shell: |
         echo "Cleaning out previous output directories"
