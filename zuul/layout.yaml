@@ -2517,6 +2517,10 @@ projects:
         prefix: 'mw-tools-fluoride'
 
   - name: mediawiki/tools/release
+    template:
+      - name: composer-test
+    check:
+      - jsonlint
     test:
       - phplint
       - tox-flake8
