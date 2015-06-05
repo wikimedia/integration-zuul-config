@@ -44,6 +44,11 @@
      - mw-teardown
      - archive-log-dir
 
+# Parameters:
+#
+# ext-name: extension basename. Set to '' to ignore
+# dependencies: comma or spaces/newlines separated list of extensions to clone
+#
 - builder:
     name: 'zuul-cloner-extdeps'
     builders:
@@ -51,9 +56,12 @@
          # Build dependencies list
          rm -f deps.txt
          touch deps.txt
-         echo -e "mediawiki/core\nmediawiki/vendor\nmediawiki/extensions/{ext-name}" >> deps.txt
+         echo -e "mediawiki/core\nmediawiki/vendor" >> deps.txt
+         if [ "{ext-name}" != "" ]; then
+            echo "mediawiki/extensions/{ext-name}" >> deps.txt
+         fi
          if [ "{dependencies}" != "" ]; then
-             echo "$(IFS=,; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
+             echo "$(IFS=', '; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
          fi
      - zuul-cloner:
          projects: >
