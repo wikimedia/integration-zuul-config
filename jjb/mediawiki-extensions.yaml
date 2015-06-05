@@ -70,7 +70,9 @@
      - shell: |
          if grep -q mediawiki/extensions/VisualEditor deps.txt; then
             cd src/extensions/VisualEditor
+            git submodule foreach git clean -xdff -q
             git submodule update --init
+            git submodule status
          fi
 
 # ALWAYS pair with 'mw-teardown-mysql'
