@@ -587,7 +587,7 @@ jobs:
   # TODO stop triggering zend jobs for the wmf branches
 
   # Extensions tested together, since 1.25alpha ...
-  - name: ^mediawiki-extensions-(hhvm|zend)$
+  - name: ^mediawiki-extensions-(qunit|hhvm|zend)$
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
     queue-name: mediawiki
 
@@ -1779,6 +1779,7 @@ project-templates:
      - php-composer-validate
     experimental:
       - 'mediawiki-extensions-hhvm'
+      - mediawiki-extensions-qunit
       - 'mwext-{name}-testextension-hhvm'
       - mwext-testextension-hhvm
       - npm
@@ -1801,6 +1802,7 @@ project-templates:
      - php-composer-validate
     experimental:
       - mediawiki-extensions-hhvm
+      - mediawiki-extensions-qunit
       - mwext-testextension-hhvm
       - npm
       - php-composer-test
@@ -1819,9 +1821,11 @@ project-templates:
     test:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-zend
+      - mediawiki-extensions-qunit
     gate-and-submit:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-zend
+      - mediawiki-extensions-qunit
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
@@ -3099,6 +3103,7 @@ projects:
       - php-composer-validate
     experimental:
       - mediawiki-extensions-hhvm
+      - mediawiki-extensions-qunit
 
   - name: mediawiki/extensions/cldr
     template:
@@ -6789,6 +6794,7 @@ projects:
       - php-composer-validate
     experimental:
       - mediawiki-extensions-hhvm
+      - mediawiki-extensions-qunit
 
   - name: mediawiki/extensions/WebPlatformAuth
     template:
