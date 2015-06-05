@@ -8,6 +8,9 @@
      - Collaboration: &emails-collaboration
         qa-alerts@lists.wikimedia.org mflaschen@wikimedia.org mmullie@wikimedia.org sbisson@wikimedia.org
 
+     - ContentTranslation: &emails-ContentTranslation
+        aaharoni@wikimedia.org qa-alerts@lists.wikimedia.org
+
      - Fundraising: &emails-Fundraising
         fr-tech@wikimedia.org qa-alerts@lists.wikimedia.org
 
@@ -129,6 +132,22 @@
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
         mediawiki_url: en.wikipedia.beta.wmflabs.org
+
+# ContentTranslation
+- project:
+    name: ContentTranslation
+    browser: firefox
+    defaults: browsertests
+    folder: tests
+    headless: 'false'
+    mediawiki_credentials_id: LanguageScreenshotBot-at-beta.wmflabs.org
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    platform: 'os_x_10.10'
+    recipients: *emails-ContentTranslation
+    repository: mediawiki/extensions/ContentTranslation
+
+    jobs:
+     - 'browsertests-{name}-language-screenshot-{platform}-{browser}':
 
 # Core
 - project:
