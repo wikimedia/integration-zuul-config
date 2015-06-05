@@ -66,12 +66,7 @@
      - zuul-cloner:
          projects: >
              $(cat deps.txt)
-     # zuul-cloner should let us process submodules whenever needed
-     - shell: |
-         if grep -q mediawiki/extensions/VisualEditor deps.txt; then
-            cd src/extensions/VisualEditor
-            git submodule update --init
-         fi
+     - ve-submodules-update
 
 # ALWAYS pair with 'mw-teardown-mysql'
 - builder:
@@ -84,6 +79,18 @@
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
+
+# Workaround zuul-cloner not processing submodules
+- builder:
+    name: ve-submodules-update
+    builders:
+     - shell: |
+         if grep -q mediawiki/extensions/VisualEditor deps.txt; then
+            cd src/extensions/VisualEditor
+            git submodule update --init
+            git submodule status
+            git submodule foreach git clean -xdff -q
+         fi
 
 # ALWAYS pair with 'mw-teardown-mysql'
 # Similar to prepare-mediawiki, except gets
@@ -168,11 +175,7 @@
      - prepare-mediawiki:
          ext-name: 'VisualEditor'
          dependencies: 'Parsoid'
-     - shell: |
-         cd src/extensions/VisualEditor
-         git submodule update --init
-         git submodule status
-         git submodule foreach git clean -xdff -q
+     - ve-submodules-update
      - qunit-karma
     publishers:
      - qunit-cleanup
