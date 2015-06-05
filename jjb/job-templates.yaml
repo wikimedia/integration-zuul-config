@@ -8,7 +8,9 @@
     triggers:
      - zuul
     builders:
-     - erblint-HEAD
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head erb \
+        | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
 
 # Non-generic version of "jshint" and "jsonlint"
 # below.
@@ -178,7 +180,15 @@
     triggers:
      - zuul
     builders:
-     - puppet-lint-lenient
+     - shell: |
+         rm -f puppet-lint.log
+         puppet-lint --version
+         set -o pipefail
+         puppet-lint \
+            --error-level error \
+            --log-format '%{{path}}:%{{line}} %{{KIND}} %{{message}} (%{{check}})' \
+            . | tee puppet-lint.log
+         set +o pipefail
     publishers:
      - puppet-lint
 
@@ -190,7 +200,15 @@
     triggers:
      - zuul
     builders:
-     - puppet-lint-strict
+     - shell: |
+         rm -f puppet-lint.log
+         puppet-lint --version
+         set -o pipefail
+         puppet-lint \
+            --log-format '%{{path}}:%{{line}} %{{KIND}} %{{message}} (%{{check}})' \
+            --fail-on-warnings \
+            . | tee puppet-lint.log
+         set +o pipefail
     publishers:
      - puppet-lint
 
@@ -202,7 +220,9 @@
     triggers:
      - zuul
     builders:
-     - pplint-HEAD
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head pp \
+        | xargs -n1 -t puppet parser validate
 
 - job:
     name: 'perllint'
@@ -212,7 +232,19 @@
     triggers:
      - zuul
     builders:
-     - perllint
+     - shell: |
+        # File used to track down whether a perl file is failing syntax check
+        rm -f PERLLINT_FAILED
+
+        find . \
+          \( -name '*.pm' -or -name '*.pl' \) \
+          \( -exec perl -Mstrict -Mdiagnostics -cw {} \; \
+          -or -exec touch PERLLINT_FAILED  \; \)
+
+        # Set exit code to fail the build
+        if [ -e PERLLINT_FAILED ]; then
+            exit 1
+        fi;
 
 - job:
     name: 'phplint'
@@ -288,7 +320,8 @@
     triggers:
      - zuul
     builders:
-     - puppet-validate
+     - shell: |
+        find . -type f -name '*.pp' -print0 | xargs -0 puppet parser validate
 
 # Deprecated non-generic job. Should use the
 # generic "ruby1.9.3lint" job below.
@@ -353,4 +386,4 @@
     triggers:
      - zuul
     builders:
-     - yaml-lint
+     - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
