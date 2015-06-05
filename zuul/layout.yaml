@@ -552,7 +552,7 @@ jobs:
   - name: mediawiki-core-bundle-rubocop
     files:
      - '^(\.rubocop.*|\.gemspec|.*\.rb|Gemfile$)'
-    branch: ^(?!REL1_19|REL1_23|REL1_24|fundraising/REL.*)$
+    branch: ^(?!REL1_23|REL1_24|fundraising/REL.*)$
 
   - name: ^php-composer-validate$
     files:
@@ -572,11 +572,11 @@ jobs:
 
   - name: ^mediawiki.*-hhvm$
     # Release branches do not support hhvm. Hopefully REL1_25 will.
-    branch: (?!REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
   - name: ^mwext.*-hhvm$
     # Release branches do not support hhvm. Hopefully REL1_25 will.
-    branch: (?!REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
   # Jobs testing multiple extensions together
   #
@@ -584,48 +584,48 @@ jobs:
 
   # Extensions tested together, since 1.25alpha ...
   - name: ^mediawiki-extensions-(hhvm|zend)$
-    branch: (?!REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (?!REL1_23|REL1_24|fundraising/REL.*)
     queue-name: mediawiki
 
   # ... older branches get the legacy job
   - name: ^mwext-AbuseFilter-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-Babel-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-CheckUser-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-cldr-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-ConfirmEdit-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-Echo-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-EventLogging-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-Gather-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-JsonConfig-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-Mantle-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-MobileApp-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-MobileFrontend-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-SpamBlacklist-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-Thanks-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-UniversalLanguageSelector-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-VisualEditor-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-WikiGrok-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-ZeroBanner-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
   - name: ^mwext-ZeroPortal-testextension-zend$
-    branch: (REL1_19|REL1_23|REL1_24|fundraising/REL.*)
+    branch: (REL1_23|REL1_24|fundraising/REL.*)
 
   - name: mediawiki-core-phpcs-HEAD
     voting: false
@@ -655,8 +655,6 @@ jobs:
   - name: ^mediawiki-core-npm$
     files:
      - '^(\.js.*|.*\.(js|json)$)'
-    # no packages.json in 1.19
-    branch: (?!REL1_19)
 
   - name: jsduck
     files:
@@ -1689,10 +1687,6 @@ jobs:
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
     branch: ^master$
 
-  - name: mediawiki-core-jslint
-    # Doesn't work in MediaWiki REL1_19 (bug 44846)
-    branch: (?!REL1_19)
-
   - name: mediawiki-core-doxygen-publish
     branch: ^(master|REL.*|refs/tags/(?!wmf).*)$ # REL is bug 50325
 
@@ -1705,7 +1699,6 @@ jobs:
     queue-name: mediawiki
 
   - name: mediawiki-core-qunit
-    branch: (?!REL1_19)
     queue-name: mediawiki
 
   - name: ^mwext-WikibaseJavaScriptApi-testextension-zend$
