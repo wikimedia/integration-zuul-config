@@ -5,7 +5,11 @@
     triggers:
      - zuul
     builders:
-     - php-extension
+     - shell: |
+        phpize
+        ./configure
+        make
+        make test
 
 - job-template:
     name: 'php-{name}-hhvm-build'

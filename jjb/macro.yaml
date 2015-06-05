@@ -1,48 +1,8 @@
-- builder:
-    name: erblint-HEAD
-    builders:
-     - shell: |
-        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head erb \
-        | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
-
-- builder:
-    name: puppet-lint-strict
-    builders:
-     - shell: |
-         rm -f puppet-lint.log
-         puppet-lint --version
-         set -o pipefail
-         puppet-lint \
-            --log-format '%{path}:%{line} %{KIND} %{message} (%{check})' \
-            --fail-on-warnings \
-            . | tee puppet-lint.log
-         set +o pipefail
-
-- builder:
-    name: puppet-lint-lenient
-    builders:
-     - shell: |
-         rm -f puppet-lint.log
-         puppet-lint --version
-         set -o pipefail
-         puppet-lint \
-            --error-level error \
-            --log-format '%{path}:%{line} %{KIND} %{message} (%{check})' \
-            . | tee puppet-lint.log
-         set +o pipefail
-
 - publisher:
     name: puppet-lint
     publishers:
      - archive:
          artifacts: puppet-lint.log
-
-- builder:
-    name: pplint-HEAD
-    builders:
-     - shell: |
-        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head pp \
-        | xargs -n1 -t puppet parser validate
 
 # Lint whitespace in directory {dir}. Usefull when the Git repository has
 # been fetched out in some subdirtory of the Workspace. Example:
@@ -560,16 +520,6 @@
          - phpunit:
             pattern: 'log/junit-mw-phpunit.xml'
 
-# Python pep8 builder - copied from OpenStack project
-- builder:
-    name: pep8
-    builders:
-     - shell: |
-         set +x
-         echo "Using pep8 version: `pep8 --version`"
-         set -x
-         set -o pipefail ; pep8 . | tee pep8.txt ; set +o pipefail
-
 # Python pep8 publisher - copied from OpenStack project
 - publisher:
     name: pep8
@@ -580,28 +530,6 @@
             max: 1
             unstable: 1
             pattern: '**/pep8.txt'
-
-- builder:
-      name: perllint
-      builders:
-       - shell: |
-          # File used to track down whether a perl file is failing syntax check
-          rm -f PERLLINT_FAILED
-
-          find . \
-            \( -name '*.pm' -or -name '*.pl' \) \
-            \( -exec perl -Mstrict -Mdiagnostics -cw {} \; \
-            -or -exec touch PERLLINT_FAILED  \; \)
-
-          # Set exit code to fail the build
-          if [ -e PERLLINT_FAILED ]; then
-              exit 1
-          fi;
-
-- builder:
-    name: pyflakes
-    builders:
-     - shell: "pyflakes ."
 
 - builder:
     name: phplint
@@ -634,22 +562,6 @@
             unstable: 1
             pattern: '**/checkstyle-phpcs.xml'
 
-
-- builder:
-    name: php-extension
-    builders:
-     - shell: |
-        phpize
-        ./configure
-        make
-        make test
-
-- builder:
-    name: puppet-validate
-    builders:
-     - shell: |
-        find . -type f -name '*.pp' -print0 | xargs -0 puppet parser validate
-
 # Run ruby syntax check against any file named '.rb' under the workspace.
 # The ruby interpreter is passed using 'interpreter'
 - builder:
@@ -667,11 +579,6 @@
         set -o pipefail
         PY_COLORS=1 tox -v -e "{venv}" | tee "log/{venv}.log"
         set +o pipefail
-
-- builder:
-    name: yaml-lint
-    builders:
-     - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
 
 - publisher:
     name: archive-log-dir

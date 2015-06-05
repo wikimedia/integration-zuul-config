@@ -95,7 +95,12 @@
     scm:
      - git-remote-zuul-no-submodules
     builders:
-     - pep8
+     # Python pep8 builder - copied from OpenStack project
+     - shell: |
+         set +x
+         echo "Using pep8 version: `pep8 --version`"
+         set -x
+         set -o pipefail ; pep8 . | tee pep8.txt ; set +o pipefail
     publishers:
      - pep8
 
@@ -109,7 +114,7 @@
     scm:
      - git-remote-zuul-no-submodules
     builders:
-     - pyflakes
+     - shell: "pyflakes ."
 
 - job-group:
     name: python-jobs
