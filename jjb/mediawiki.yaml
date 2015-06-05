@@ -194,52 +194,25 @@
      - assert-phpflavor:
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
-     - shell: |
-         rm -f deps.txt
-         touch deps.txt
-         # TODO Can be made nicer when the extension_load.txt file starts
-         # supporting empty new lines.  https://gerrit.wikimedia.org/r/183884
-         echo "mediawiki/extensions/AbuseFilter
-         mediawiki/extensions/Babel
-         mediawiki/extensions/CheckUser
-         mediawiki/extensions/cldr
-         mediawiki/extensions/ConfirmEdit
-         mediawiki/extensions/Echo
-         mediawiki/extensions/EventLogging
-         mediawiki/extensions/Flow
-         mediawiki/extensions/Gather
-         mediawiki/extensions/GlobalCssJs
-         mediawiki/extensions/JsonConfig
-         mediawiki/extensions/Mantle
-         mediawiki/extensions/MobileApp
-         mediawiki/extensions/MobileFrontend
-         mediawiki/extensions/SandboxLink
-         mediawiki/extensions/SpamBlacklist
-         mediawiki/extensions/Thanks
-         mediawiki/extensions/UniversalLanguageSelector
-         mediawiki/extensions/VisualEditor
-         mediawiki/extensions/WikiGrok
-         mediawiki/extensions/ZeroBanner
-         mediawiki/extensions/ZeroPortal" > deps.txt
+     - zuul-cloner-extdeps:
+         ext-name: ''
+         dependencies: '{dependencies}'
      - shell: |
          # When triggered from the experimental pipeline, add the project to
          # the list of dependencies. Used to inject an extension which is not
          # yet part of the list above.
          if [ "$ZUUL_PIPELINE" == 'experimental' ] && ! grep -q "$ZUUL_PROJECT" deps.txt; then
             echo "$ZUUL_PROJECT" >> deps.txt
+            # Evil copy paste of `zuul-cloner` macro
+            # FIXME maybe we should always pass $ZUUL_PROJECT in the macro
+            zuul-cloner --color --verbose \
+                --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+                --workspace src \
+                https://gerrit.wikimedia.org/r/p \
+                "$ZUUL_PROJECT"
          fi
          # Ensure consitent loading
          sort -o deps.txt deps.txt
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-             $(cat deps.txt)
-     - shell: |
-         cd src/extensions/VisualEditor
-         git submodule foreach git clean -xdff -q
-         git submodule update --init
-         git submodule status
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
@@ -339,7 +312,30 @@
       - '{name}-ruby1.9.3lint'
       - 'mediawiki-phpunit-{phpflavor}'
       - 'mediawiki-phpunit-{phpflavor}-composer'
-      - 'mediawiki-extensions-{phpflavor}'
+      - 'mediawiki-extensions-{phpflavor}':
+          dependencies: |
+              AbuseFilter
+              Babel
+              CheckUser
+              cldr
+              ConfirmEdit
+              Echo
+              EventLogging
+              Flow
+              Gather
+              GlobalCssJs
+              JsonConfig
+              Mantle
+              MobileApp
+              MobileFrontend
+              SandboxLink
+              SpamBlacklist
+              Thanks
+              UniversalLanguageSelector
+              VisualEditor
+              WikiGrok
+              ZeroBanner
+              ZeroPortal
 
 - job:
     name: 'mediawiki-core-code-coverage'
