@@ -2215,25 +2215,23 @@ projects:
       - apps-android-commons-build
 
   - name: apps/android/wikipedia
-    template:
-      - name: lint-js
     test:
+      - apps-jslint
       - tox-flake8
       - apps-android-wikipedia-gradlew
       - apps-android-wikipedia-gradlew-lint
     gate-and-submit:
+      - apps-jslint
       - tox-flake8
       - apps-android-wikipedia-gradlew
 
   - name: apps/ios/wikipedia
     check-voter:
-      - jshint
-      - jsonlint
-      - phplint
+      - apps-jslint
+      - apps-phplint
     gate-and-submit:
-      - jshint
-      - jsonlint
-      - phplint
+      - apps-jslint
+      - apps-phplint
 
   - name: labs/incubator
     check-voter:

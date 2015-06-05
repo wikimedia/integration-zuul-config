@@ -1,3 +1,11 @@
+# Separate instance of generic jobs to avoid fast apps/* jobs
+# being blocked on slow unrelated jobs from mediawiki/* (T94322)
+- project:
+    name: apps
+    jobs:
+      - '{name}-jslint'
+      - '{name}-phplint'
+
 - job-template:
     name: 'apps-android-wikipedia-gradlew'
     node: contintLabsSlave && UbuntuTrusty
