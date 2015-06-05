@@ -180,6 +180,31 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- builder:
+    name: inject-experimental-extension
+    builders:
+     - shell: |
+         # When triggered from the experimental pipeline, add the project to
+         # the list of dependencies. Used to inject an extension which is not
+         # yet part of the list above.
+         if [ "$ZUUL_PIPELINE" == 'experimental' ] && ! grep -q "$ZUUL_PROJECT" deps.txt; then
+            echo "$ZUUL_PROJECT" >> deps.txt
+            # Evil copy paste of `zuul-cloner` macro
+            # FIXME maybe we should always pass $ZUUL_PROJECT in the macro
+            zuul-cloner --color --verbose \
+                --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+                --workspace src \
+                https://gerrit.wikimedia.org/r/p \
+                "$ZUUL_PROJECT"
+         fi
+
+- builder:
+    name: sort-deps-txt
+    builders:
+     - shell: |
+         # Ensure consitent loading
+         sort -o deps.txt deps.txt
+
 # See 'mediawiki-phpunit-{phpflavor}'
 - job-template:
     name: 'mediawiki-extensions-{phpflavor}'
@@ -197,22 +222,8 @@
      - zuul-cloner-extdeps:
          ext-name: ''
          dependencies: '{dependencies}'
-     - shell: |
-         # When triggered from the experimental pipeline, add the project to
-         # the list of dependencies. Used to inject an extension which is not
-         # yet part of the list above.
-         if [ "$ZUUL_PIPELINE" == 'experimental' ] && ! grep -q "$ZUUL_PROJECT" deps.txt; then
-            echo "$ZUUL_PROJECT" >> deps.txt
-            # Evil copy paste of `zuul-cloner` macro
-            # FIXME maybe we should always pass $ZUUL_PROJECT in the macro
-            zuul-cloner --color --verbose \
-                --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
-                --workspace src \
-                https://gerrit.wikimedia.org/r/p \
-                "$ZUUL_PROJECT"
-         fi
-         # Ensure consitent loading
-         sort -o deps.txt deps.txt
+     - inject-experimental-extension
+     - sort-deps-txt
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
@@ -225,6 +236,32 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# See 'mediawiki-phpunit-{phpflavor}'
+- job-template:
+    name: 'mediawiki-extensions-qunit'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner-extdeps:
+         ext-name: ''
+         dependencies: '{dependencies}'
+     - inject-experimental-extension
+     - sort-deps-txt
+     - mw-install-mysql
+     - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - qunit-karma
+    #- shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+    publishers:
+     - qunit-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
 
 # Test out our PHPUnit against various MediaWiki branches
 #
@@ -313,7 +350,7 @@
       - 'mediawiki-phpunit-{phpflavor}'
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}':
-          dependencies: |
+          dependencies: &gatedextensions |
               AbuseFilter
               Babel
               CheckUser
@@ -336,6 +373,8 @@
               WikiGrok
               ZeroBanner
               ZeroPortal
+      - 'mediawiki-extensions-qunit':
+          dependencies: *gatedextensions
 
 - job:
     name: 'mediawiki-core-code-coverage'
