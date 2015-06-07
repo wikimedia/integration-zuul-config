@@ -1753,6 +1753,12 @@ jobs:
   - name: mwext-WikidataQuality-repo-tests-mysql-hhvm
     voting: false
 
+  # Job to ease reviews of MW-CS changes
+  - name: mw-tools-codesniffer-mwcore-testrun
+    voting: false
+    success-message: 'Example result against MediaWiki core'
+    failure-message: 'Example result against MediaWiki core'
+
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
 
@@ -2503,6 +2509,8 @@ projects:
   - name: mediawiki/tools/codesniffer
     template:
      - name: composer-test-package
+    test:
+     - mw-tools-codesniffer-mwcore-testrun
 
   - name: mediawiki/tools/dippybird
     check-voter:
