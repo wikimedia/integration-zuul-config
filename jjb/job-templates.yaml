@@ -358,15 +358,16 @@
      - ruby-lint:
         interpreter: 'ruby2.0'
 
-# Verifiy whether there is any leading tabs in files matching 'fileselector'.
+# Verify whether there is any leading tabs in files matching 'fileselector'.
 #
 # 'fileselector': the parameter is passed to grep --include= option and is
 # comma separated.
 #
 - job-template:
     name: '{name}-tabs'
-    defaults: use-remote-zuul-no-submodules
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
+    node: contintLabsSlave && UbuntuTrusty
     triggers:
      - zuul
     builders:
