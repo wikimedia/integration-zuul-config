@@ -23,3 +23,24 @@
      - 'operations-dns-lint'
      - '{name}-tabs':
          fileselector: '*'
+
+- project:
+    name: 'operations-mw-config'
+    jobs:
+     - '{name}-phplint'
+
+# Runs 'phpunit' and 'composer validate', for the
+# operations/mediawiki-config repo to get it out of
+# the MediaWiki gate-and-submit queue (T101908)
+- job:
+    name: 'operations-mw-config-phpunit'
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul-shallow-clone
+    triggers:
+     - zuul
+    builders:
+     - composer-validate
+     - phpunit-junit
+    publishers:
+     - phpunit-junit
+     - archive-log-dir

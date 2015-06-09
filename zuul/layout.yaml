@@ -2680,16 +2680,14 @@ projects:
 
   - name: operations/mediawiki-config
     check:
-      - phplint
+      - operations-mw-config-phplint
       - php-composer-validate
     test:
-      - phplint
-      - phpunit
-      - php-composer-validate
+      - operations-mw-config-phplint
+      - operations-mw-config-phpunit
     gate-and-submit:
-      - phplint
-      - phpunit
-      - php-composer-validate
+      - operations-mw-config-phplint
+      - operations-mw-config-phpunit
     experimental:
       - php-composer-test
     postmerge:
