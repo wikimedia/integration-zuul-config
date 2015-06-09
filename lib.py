@@ -41,3 +41,11 @@ if os.path.isdir('/data/project/ci'):
 else:
     # Legoktm's laptop
     EXTENSIONS_DIR = '/home/km/projects/vagrant/mediawiki/extensions'
+
+
+def update_submodules_and_stuff(path):
+    cwd = os.getcwd()
+    os.chdir(path)
+    subprocess.check_call(['git', 'pull'])
+    subprocess.check_call(['git', 'submodule', 'update', '--init'])
+    os.chdir(cwd)

@@ -19,6 +19,8 @@ NPM = OrderedDict([
     ('jscs', 'grunt-jscs'),
 ])
 
+lib.update_submodules_and_stuff(lib.EXTENSIONS_DIR)
+
 data = defaultdict(dict)
 composers = glob.glob(lib.EXTENSIONS_DIR + '/*/composer.json')
 for composer in composers:
