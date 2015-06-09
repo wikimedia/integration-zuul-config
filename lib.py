@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import codecs
 import functools
+import json
 import os
 import requests
 import subprocess
@@ -9,7 +11,9 @@ import tempfile
 @functools.lru_cache()
 def get_npm_version(package):
     r = requests.get('https://registry.npmjs.org/%s' % package)
-    return r.json()['dist-tags']['latest']
+    version = r.json()['dist-tags']['latest']
+    print('Latest %s: %s' % (package, version))
+    return version
 
 @functools.lru_cache()
 def get_packagist_version(package):
@@ -49,3 +53,8 @@ def update_submodules_and_stuff(path):
     subprocess.check_call(['git', 'pull'])
     subprocess.check_call(['git', 'submodule', 'update', '--init'])
     os.chdir(cwd)
+
+def json_load(path):
+    with codecs.open(path, 'r', 'utf-8') as f:
+        info = json.loads(f.read())
+    return info

@@ -19,30 +19,29 @@ NPM = OrderedDict([
     ('jscs', 'grunt-jscs'),
 ])
 
-lib.update_submodules_and_stuff(lib.EXTENSIONS_DIR)
+if lib.EXTENSIONS_DIR.startswith('/data/project/ci'):
+    lib.update_submodules_and_stuff(lib.EXTENSIONS_DIR)
 
 data = defaultdict(dict)
 composers = glob.glob(lib.EXTENSIONS_DIR + '/*/composer.json')
 for composer in composers:
     ext_name = composer.split('/')[-2]
-    with open(composer) as f:
-        info = json.load(f)
-        if 'require-dev' in info:
-            for job in COMPOSER.values():
-                version = info['require-dev'].get(job)
-                if version:
-                    data[ext_name][job] = version
+    info = lib.json_load(composer)
+    if 'require-dev' in info:
+        for job in COMPOSER.values():
+            version = info['require-dev'].get(job)
+            if version:
+                data[ext_name][job] = version
 
 packages = glob.glob(lib.EXTENSIONS_DIR + '/*/package.json')
 for package in packages:
     ext_name = package.split('/')[-2]
-    with open(package) as f:
-        info = json.load(f)
-        if 'devDependencies' in info:
-            for job in NPM.values():
-                version = info['devDependencies'].get(job)
-                if version:
-                    data[ext_name][job] = version
+    info = lib.json_load(package)
+    if 'devDependencies' in info:
+        for job in NPM.values():
+            version = info['devDependencies'].get(job)
+            if version:
+                data[ext_name][job] = version
 
 
 # print(data)
