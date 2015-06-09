@@ -19,10 +19,8 @@ NPM = OrderedDict([
     ('jscs', 'grunt-jscs'),
 ])
 
-EXTENSIONS_DIR = '/home/km/projects/vagrant/mediawiki/extensions'
-
 data = defaultdict(dict)
-composers = glob.glob(EXTENSIONS_DIR + '/*/composer.json')
+composers = glob.glob(lib.EXTENSIONS_DIR + '/*/composer.json')
 for composer in composers:
     ext_name = composer.split('/')[-2]
     with open(composer) as f:
@@ -33,7 +31,7 @@ for composer in composers:
                 if version:
                     data[ext_name][job] = version
 
-packages = glob.glob(EXTENSIONS_DIR + '/*/package.json')
+packages = glob.glob(lib.EXTENSIONS_DIR + '/*/package.json')
 for package in packages:
     ext_name = package.split('/')[-2]
     with open(package) as f:
@@ -73,10 +71,10 @@ for ext_name in sorted(list(data)):
         else:
             add = 'n/a'
         text += '|%s\n' % add
-text += '|}\n'
+text += '|}'
 
 #print(text)
 site = pywikibot.Site('mediawiki', 'mediawiki')
 page = pywikibot.Page(site, 'User:Legoktm/ci')
 pywikibot.showDiff(page.text, text)
-#page.put(text, 'Updating table')
+page.put(text, 'Updating table')

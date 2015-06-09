@@ -34,3 +34,10 @@ def commit_and_push(files, msg, branch, topic):
     subprocess.check_call(['git', 'commit', '-F', f.name])
     subprocess.check_call(['git', 'push', 'gerrit', 'HEAD:refs/for/{0}%topic={1}'.format(branch, topic)])
     os.unlink(f.name)
+
+if os.path.isdir('/data/project/ci'):
+    # Running on Tool labs
+    EXTENSIONS_DIR = '/data/project/ci/src/extensions'
+else:
+    # Legoktm's laptop
+    EXTENSIONS_DIR = '/home/km/projects/vagrant/mediawiki/extensions'
