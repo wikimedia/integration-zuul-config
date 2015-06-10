@@ -23,7 +23,11 @@ env.use_ssh_config = True
 def deploy_zuul():
     with cd('/etc/zuul/wikimedia'):
         sudo('git remote update')
-        sudo('git --no-pager log -p HEAD..origin/master zuul')
+        log_out = sudo('git --no-pager log -p HEAD..origin/master zuul')
+        if log_out == '':
+            if confirm("No changes made to /zuul/. It is safe to rebase"):
+                sudo('git rebase')
+            return
         if confirm('Does the diff look good?') and confirm(
                 'Log your reload in #wikimedia-releng (e.g. "!log Reloading' +
                 ' Zuul to deploy [hash]")'):
