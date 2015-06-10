@@ -29,3 +29,10 @@ def deploy_zuul():
                 ' Zuul to deploy [hash]")'):
             sudo('git rebase')
             sudo('/etc/init.d/zuul reload')
+
+
+@task(default=True)
+def help():
+    """Usage and list of commands"""
+    from fabric.main import show_commands
+    show_commands(__doc__, 'normal')
