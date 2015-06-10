@@ -2,7 +2,6 @@
 
 from collections import defaultdict, OrderedDict
 import glob
-import json
 
 import lib
 import pywikibot
@@ -22,28 +21,38 @@ NPM = OrderedDict([
 if lib.EXTENSIONS_DIR.startswith('/data/project/ci'):
     lib.update_submodules_and_stuff(lib.EXTENSIONS_DIR)
 
-data = defaultdict(dict)
+class Reader:
+    def __init__(self):
+        self.data = defaultdict(dict)
+
+    def read_composer(self, repo_name, path):
+        info = lib.json_load(path)
+        if 'require-dev' in info:
+            for job in COMPOSER.values():
+                version = info['require-dev'].get(job)
+                if version:
+                    self.data[repo_name][job] = version
+
+    def read_npm(self, repo_name, path):
+        info = lib.json_load(path)
+        if 'devDependencies' in info:
+            for job in NPM.values():
+                version = info['devDependencies'].get(job)
+                if version:
+                    self.data[repo_name][job] = version
+
+reader = Reader()
 composers = glob.glob(lib.EXTENSIONS_DIR + '/*/composer.json')
 for composer in composers:
     ext_name = composer.split('/')[-2]
-    info = lib.json_load(composer)
-    if 'require-dev' in info:
-        for job in COMPOSER.values():
-            version = info['require-dev'].get(job)
-            if version:
-                data[ext_name][job] = version
+    reader.read_composer(ext_name, composer)
 
 packages = glob.glob(lib.EXTENSIONS_DIR + '/*/package.json')
 for package in packages:
     ext_name = package.split('/')[-2]
-    info = lib.json_load(package)
-    if 'devDependencies' in info:
-        for job in NPM.values():
-            version = info['devDependencies'].get(job)
-            if version:
-                data[ext_name][job] = version
+    reader.read_npm(ext_name, package)
 
-
+data = reader.data
 # print(data)
 
 header = """
@@ -78,4 +87,4 @@ text += '|}'
 site = pywikibot.Site('mediawiki', 'mediawiki')
 page = pywikibot.Page(site, 'User:Legoktm/ci')
 pywikibot.showDiff(page.text, text)
-page.put(text, 'Updating table')
+#page.put(text, 'Updating table')
