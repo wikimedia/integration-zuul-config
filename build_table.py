@@ -100,4 +100,5 @@ text += '|}'
 site = pywikibot.Site('mediawiki', 'mediawiki')
 page = pywikibot.Page(site, 'User:Legoktm/ci')
 pywikibot.showDiff(page.text, text)
-#page.put(text, 'Updating table')
+if lib.EXTENSIONS_DIR.startswith('/data/project/ci'):
+    page.put(text, 'Updating table')
