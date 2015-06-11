@@ -6,7 +6,8 @@
 - job-template:
     name: 'operations-dns-lint'
     # Depends on production GeoIP T98737
-    node: productionSlaves && UbuntuPrecise
+    # Manual workaround has been applied though
+    node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul
     concurrent: true
     triggers:
