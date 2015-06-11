@@ -237,6 +237,19 @@
             - hhvm
             - zend
 
+- job:
+    name: 'mwext-Flow-jsduck-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'Flow/$ZUUL_BRANCH'
+
 - job-template:
     name: 'mwext-GuidedTour-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
