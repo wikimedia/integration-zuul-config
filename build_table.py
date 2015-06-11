@@ -19,7 +19,7 @@ NPM = OrderedDict([
     ('jscs', 'grunt-jscs'),
 ])
 
-if lib.EXTENSIONS_DIR.startswith('/data/project/ci'):
+if lib.ON_LABS:
     lib.update_submodules_and_stuff(lib.EXTENSIONS_DIR)
 
 class Reader:
@@ -103,5 +103,5 @@ text += '|}'
 site = pywikibot.Site('mediawiki', 'mediawiki')
 page = pywikibot.Page(site, 'User:Legoktm/ci')
 pywikibot.showDiff(page.text, text)
-if lib.EXTENSIONS_DIR.startswith('/data/project/ci'):
+if lib.ON_LABS:
     page.put(text, 'Updating table')

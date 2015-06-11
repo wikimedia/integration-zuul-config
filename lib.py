@@ -41,9 +41,11 @@ def commit_and_push(files, msg, branch, topic):
 
 if os.path.isdir('/data/project/ci'):
     # Running on Tool labs
+    ON_LABS = True
     EXTENSIONS_DIR = '/data/project/ci/src/extensions'
 else:
     # Legoktm's laptop
+    ON_LABS = False
     EXTENSIONS_DIR = '/home/km/projects/vagrant/mediawiki/extensions'
 
 
