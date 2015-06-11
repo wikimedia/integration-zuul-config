@@ -43,17 +43,22 @@ if os.path.isdir('/data/project/ci'):
     # Running on Tool labs
     ON_LABS = True
     EXTENSIONS_DIR = '/data/project/ci/src/extensions'
+    SRC = '/data/project/ci/src'
+    MEDIAWIKI_DIR = '/data/project/ci/src/mediawiki'
 else:
     # Legoktm's laptop
     ON_LABS = False
     EXTENSIONS_DIR = '/home/km/projects/vagrant/mediawiki/extensions'
+    SRC = '/home/km/projects'
+    MEDIAWIKI_DIR = '/home/km/projects/vagrant/mediawiki'
 
 
-def update_submodules_and_stuff(path):
+def git_pull(path, update_submodule=False):
     cwd = os.getcwd()
     os.chdir(path)
     subprocess.check_call(['git', 'pull'])
-    subprocess.check_call(['git', 'submodule', 'update', '--init'])
+    if update_submodule:
+        subprocess.check_call(['git', 'submodule', 'update', '--init'])
     os.chdir(cwd)
 
 def json_load(path):
