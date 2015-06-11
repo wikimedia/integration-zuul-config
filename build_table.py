@@ -2,6 +2,7 @@
 
 from collections import defaultdict, OrderedDict
 import glob
+import os
 
 import lib
 import pywikibot
@@ -24,33 +25,45 @@ if lib.EXTENSIONS_DIR.startswith('/data/project/ci'):
 class Reader:
     def __init__(self):
         self.data = defaultdict(dict)
+        self.repos = {}
 
-    def read_composer(self, repo_name, path):
+    def add_repo(self, path, display_name, github_name):
+        self.repos[path] = {
+            'display': display_name,
+            'github': github_name
+        }
+
+    def display_repo_name(self, path):
+        return '[https://github.com/wikimedia/{github} {display}]'.format(**self.repos[path])
+
+    def read_composer(self, path):
         info = lib.json_load(path)
         if 'require-dev' in info:
             for job in COMPOSER.values():
                 version = info['require-dev'].get(job)
                 if version:
-                    self.data[repo_name][job] = version
+                    self.data[os.path.dirname(path)][job] = version
 
-    def read_npm(self, repo_name, path):
+    def read_npm(self, path):
         info = lib.json_load(path)
         if 'devDependencies' in info:
             for job in NPM.values():
                 version = info['devDependencies'].get(job)
                 if version:
-                    self.data[repo_name][job] = version
+                    self.data[os.path.dirname(path)][job] = version
 
 reader = Reader()
 composers = glob.glob(lib.EXTENSIONS_DIR + '/*/composer.json')
 for composer in composers:
     ext_name = composer.split('/')[-2]
-    reader.read_composer(ext_name, composer)
+    reader.add_repo(os.path.dirname(composer), 'Extension:%s' % ext_name, 'mediawiki-extensions-%s' % ext_name)
+    reader.read_composer(composer)
 
 packages = glob.glob(lib.EXTENSIONS_DIR + '/*/package.json')
 for package in packages:
     ext_name = package.split('/')[-2]
-    reader.read_npm(ext_name, package)
+    reader.add_repo(os.path.dirname(package), 'Extension:%s' % ext_name, 'mediawiki-extensions-%s' % ext_name)
+    reader.read_npm(package)
 
 data = reader.data
 # print(data)
@@ -62,9 +75,9 @@ header = """
 for abbr in list(COMPOSER) + list(NPM):
     header += '! %s\n' % abbr
 text = header
-for ext_name in sorted(list(data)):
-    info = data[ext_name]
-    text += '|-\n|%s\n' % ext_name
+for repo_path in sorted(list(data)):
+    info = data[repo_path]
+    text += '|-\n|%s\n' % reader.display_repo_name(repo_path)
     for job in COMPOSER.values():
         if job in info:
             add = info[job]
