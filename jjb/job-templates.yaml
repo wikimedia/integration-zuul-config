@@ -221,6 +221,7 @@
      - zuul
     builders:
      - shell: |
+        puppet --version
         /srv/deployment/integration/slave-scripts/bin/git-changed-in-head pp \
         | xargs -n1 -t puppet parser validate
 
