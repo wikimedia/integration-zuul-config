@@ -70,8 +70,11 @@ data = reader.data
 
 header = """
 {|class="wikitable"
-! Extension
-"""
+! rowspan="2" |Extension
+! colspan="%s" |composer
+! colspan="%s" |npm
+|-
+""" % (len(COMPOSER), len(NPM))
 for abbr in list(COMPOSER) + list(NPM):
     header += '! %s\n' % abbr
 text = header
