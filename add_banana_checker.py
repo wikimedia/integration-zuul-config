@@ -24,12 +24,17 @@ grunt_file = """/*!
 /*jshint node:true */
 module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
+	grunt.loadNpmTasks( 'grunt-jsonlint' );
+
 	var conf = grunt.file.readJSON( 'extension.json' );
 	grunt.initConfig( {
-		banana: conf.MessagesDirs
+		banana: conf.MessagesDirs,
+		jsonlint: {
+			all: [ '!(node_modules)/**/*.json' ]
+		}
 	} );
 
-	grunt.registerTask( 'test', [ 'banana' ] );
+	grunt.registerTask( 'test', [ 'jsonlint', 'banana' ] );
 	grunt.registerTask( 'default', 'test' );
 };
 """
@@ -49,7 +54,7 @@ package_data = OrderedDict([
     ('scripts', {'test': 'grunt test'}),
     ('devDependencies', OrderedDict())
 ])
-for i in ['grunt', 'grunt-cli', 'grunt-banana-checker']:
+for i in ['grunt', 'grunt-cli', 'grunt-banana-checker', 'grunt-jsonlint']:
     package_data['devDependencies'][i] = lib.get_npm_version(i)
 with open('package.json', 'w') as f:
     f.write(json.dumps(package_data, indent='  ') + '\n')
@@ -76,10 +81,9 @@ else:
     with open('.gitignore', 'w') as f:
         f.write('node_modules/\n')
         print('Created .gitignore with "node_modules/"')
-msg = 'build: Configuring banana-checker for i18n messages'
+msg = 'build: Configuring banana-checker and jsonlint'
 if len(sys.argv) > 1:
     msg += '\n\nChange-Id: %s' % sys.argv[1]
 lib.commit_and_push(files=['package.json', 'Gruntfile.js', '.gitignore'], msg=msg, branch='master', topic='banana')
 sha1 = subprocess.check_output(['git', 'log', '--oneline', '-n', '1']).decode().split(' ', 1)[0]
 subprocess.call(['ssh', '-p' , '29418', 'gerrit.wikimedia.org', 'gerrit', 'review', '-m', '"check experimental"', sha1])
-
