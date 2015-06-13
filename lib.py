@@ -30,13 +30,17 @@ def get_packagist_version(package):
     print('Latest %s: %s' % (package, version))
     return version
 
-def commit_and_push(files, msg, branch, topic):
+def commit_and_push(files, msg, branch, topic, push=True):
     f = tempfile.NamedTemporaryFile(delete=False)
     f.write(bytes(msg, 'utf-8'))
     f.close()
     subprocess.check_call(['git', 'add'] + files)
     subprocess.check_call(['git', 'commit', '-F', f.name])
-    subprocess.check_call(['git', 'push', 'gerrit', 'HEAD:refs/for/{0}%topic={1}'.format(branch, topic)])
+    push_cmd = ['git', 'push', 'gerrit', 'HEAD:refs/for/{0}%topic={1}'.format(branch, topic)]
+    if push:
+        subprocess.check_call(push_cmd)
+    else:
+        print(' '.join(push_cmd))
     os.unlink(f.name)
 
 if os.path.isdir('/data/project/ci'):
