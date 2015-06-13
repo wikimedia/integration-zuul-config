@@ -2306,18 +2306,17 @@ projects:
      - labs-tools-wikibugs2-autopull
 
   - name: integration/docroot
-    check-voter:
-     - phplint
+    test:
+     - php-composer-test
      - jshint
      - jsonlint
     gate-and-submit:
-     - phplint
+     - php-composer-test
      - jshint
      - jsonlint
     postmerge:
      - integration-docroot-deploy
     experimental:
-     - php-composer-test
 
   - name: mediawiki/ruby/api
     check:
