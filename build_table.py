@@ -10,6 +10,7 @@ import pywikibot
 
 COMPOSER = OrderedDict([
     ('phplint', 'jakub-onderka/php-parallel-lint'),
+    ('phpunit', 'phpunit/phpunit'),
     ('MW-CS', 'mediawiki/mediawiki-codesniffer'),
 ])
 NPM = OrderedDict([
@@ -25,8 +26,8 @@ class Reader:
         self.data = defaultdict(dict)
         self.repos = {}
 
-    def add_repo(self, path, display_name, github_name):
-        self.repos[path] = {
+    def add_repo(self, display_name, github_name):
+        self.repos[github_name] = {
             'display': display_name,
             'github': github_name
         }
@@ -34,21 +35,21 @@ class Reader:
     def display_repo_name(self, path):
         return '[https://github.com/wikimedia/{github} {display}]'.format(**self.repos[path])
 
-    def read_composer(self, path):
+    def read_composer(self, path, github_name):
         info = lib.json_load(path)
         if 'require-dev' in info:
             for job in COMPOSER.values():
                 version = info['require-dev'].get(job)
                 if version:
-                    self.data[os.path.dirname(path)][job] = version
+                    self.data[github_name][job] = version
 
-    def read_npm(self, path):
+    def read_npm(self, path, github_name):
         info = lib.json_load(path)
         if 'devDependencies' in info:
             for job in NPM.values():
                 version = info['devDependencies'].get(job)
                 if version:
-                    self.data[os.path.dirname(path)][job] = version
+                    self.data[github_name][job] = version
 
 reader = Reader()
 
@@ -59,39 +60,43 @@ if lib.ON_LABS:
     lib.git_pull(lib.EXTENSIONS_DIR, update_submodule=True)
     lib.git_pull(lib.MEDIAWIKI_DIR)
 
-reader.add_repo(lib.MEDIAWIKI_DIR, 'MediaWiki core', 'mediawiki')
+reader.add_repo('MediaWiki core', 'mediawiki')
 
-composer_paths = {lib.MEDIAWIKI_DIR + '/' + 'composer.json'}
-package_paths = {lib.MEDIAWIKI_DIR + '/' + 'package.json'}
+composer_paths = {'mediawiki': lib.MEDIAWIKI_DIR + '/' + 'composer.json'}
+package_paths = {'mediawiki': lib.MEDIAWIKI_DIR + '/' + 'package.json'}
 
 for repo in OTHER_STUFF:
     path = lib.SRC + '/' + repo
     if lib.ON_LABS:
         lib.git_pull(path)
-    reader.add_repo(path, repo, repo)
+    reader.add_repo(repo, repo)
     composer = path + '/' + 'composer.json'
     package = path + '/' + 'package.json'
     if os.path.exists(composer):
-        composer_paths.add(composer)
+        composer_paths[repo] = composer
     if os.path.exists(package):
-        package_paths.add(package)
+        package_paths[repo] = package
 
 
 composers = glob.glob(lib.EXTENSIONS_DIR + '/*/composer.json')
 for composer in composers:
     ext_name = composer.split('/')[-2]
-    reader.add_repo(os.path.dirname(composer), 'Extension:%s' % ext_name, 'mediawiki-extensions-%s' % ext_name)
+    repo = 'mediawiki-extensions-%s' % ext_name
+    reader.add_repo('Extension:%s' % ext_name, repo)
+    composer_paths[repo] = composer
 
-for path in itertools.chain(composers, composer_paths):
-    reader.read_composer(path)
+for repo, path in composer_paths.items():
+    reader.read_composer(path, repo)
 
 packages = glob.glob(lib.EXTENSIONS_DIR + '/*/package.json')
 for package in packages:
     ext_name = package.split('/')[-2]
-    reader.add_repo(os.path.dirname(package), 'Extension:%s' % ext_name, 'mediawiki-extensions-%s' % ext_name)
+    repo = 'mediawiki-extensions-%s' % ext_name
+    reader.add_repo('Extension:%s' % ext_name, repo)
+    package_paths[repo] = package
 
-for path in itertools.chain(packages, package_paths):
-    reader.read_npm(path)
+for repo, path in package_paths.items():
+    reader.read_npm(path, repo)
 
 data = reader.data
 # print(data)
@@ -108,8 +113,8 @@ for abbr in list(COMPOSER) + list(NPM):
 text = header
 # hack to make MediaWiki come first
 paths = list(sorted(data))
-paths.remove(lib.MEDIAWIKI_DIR)
-paths = [lib.MEDIAWIKI_DIR] + paths
+paths.remove('mediawiki')
+paths = ['mediawiki'] + paths
 for repo_path in paths:
     info = data[repo_path]
     text += '|-\n|%s\n' % reader.display_repo_name(repo_path)
