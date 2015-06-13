@@ -53,7 +53,7 @@ class Reader:
 reader = Reader()
 
 
-OTHER_STUFF = ['oojs', 'oojs-ui', 'VisualEditor']
+OTHER_STUFF = ['at-ease', 'cdb', 'oojs', 'oojs-ui', 'utfnormal', 'VisualEditor']
 
 if lib.ON_LABS:
     lib.git_pull(lib.EXTENSIONS_DIR, update_submodule=True)
