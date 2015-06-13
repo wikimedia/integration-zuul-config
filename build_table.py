@@ -7,6 +7,7 @@ import os
 
 import lib
 import pywikibot
+import zuul_output_reader
 
 COMPOSER = OrderedDict([
     ('phplint', 'jakub-onderka/php-parallel-lint'),
@@ -23,7 +24,7 @@ NPM = OrderedDict([
 
 class Reader:
     def __init__(self):
-        self.data = defaultdict(dict)
+        self.data = defaultdict(lambda: defaultdict(dict))
         self.repos = {}
 
     def add_repo(self, display_name, github_name):
@@ -41,7 +42,7 @@ class Reader:
             for job in COMPOSER.values():
                 version = info['require-dev'].get(job)
                 if version:
-                    self.data[github_name][job] = version
+                    self.data[github_name][job]['version'] = version
 
     def read_npm(self, path, github_name):
         info = lib.json_load(path)
@@ -49,7 +50,39 @@ class Reader:
             for job in NPM.values():
                 version = info['devDependencies'].get(job)
                 if version:
-                    self.data[github_name][job] = version
+                    self.data[github_name][job]['version'] = version
+
+    def read_zuul(self, info, github_name):
+#        if github_name != 'mediawiki-extensions-Echo':
+#            return
+        if any(info.get(x) if x.endswith('npm') else False for x in info):
+            for job_name in list(NPM.values()):
+                #print(job_name)
+                if job_name in self.data[github_name]:
+                    #print('found')
+                    self.data[github_name][job_name]['color'] = 'lightgreen'
+        if any(info.get(x) if x.startswith('php-composer-test') else False for x in info):
+            for job_name in list(COMPOSER.values()):
+                #print(job_name)
+                if job_name in self.data[github_name]:
+                    #print('found')
+                    self.data[github_name][job_name]['color'] = 'lightgreen'
+        for job, voting in info.items():
+            color = 'lightgreen' if voting else 'red'
+            if job in COMPOSER:
+                real_job = COMPOSER[job]
+            elif job in NPM:
+                real_job = NPM[job]
+            elif 'testextension' in job:
+                real_job = COMPOSER['phpunit']
+            else:
+                continue
+            if real_job not in self.data[github_name]:
+                self.data[github_name][real_job] = {
+                    'version': 'Jenkins',
+                    'color': color
+                }
+
 
 reader = Reader()
 
@@ -98,10 +131,16 @@ for package in packages:
 for repo, path in package_paths.items():
     reader.read_npm(path, repo)
 
+zuul_data = zuul_output_reader.main()
+for repo, info in zuul_data.items():
+    reader.add_repo('Extension:' + repo.split('-')[-1], repo)
+    reader.read_zuul(info, repo)
+
 data = reader.data
 # print(data)
 
 header = """
+{{/Header}}
 {|class="wikitable"
 ! rowspan="2" |Extension
 ! colspan="%s" |composer
@@ -116,29 +155,44 @@ paths = list(sorted(data))
 paths.remove('mediawiki')
 paths = ['mediawiki'] + paths
 for repo_path in paths:
+#    if repo_path != 'mediawiki-extensions-Echo':
+#        continue
     info = data[repo_path]
     text += '|-\n|%s\n' % reader.display_repo_name(repo_path)
     for job in COMPOSER.values():
+        color = ''
         if job in info:
-            add = info[job]
+            color = info[job].get('color')
+            if color:
+                color = 'style="background-color: %s" |' % color
+            else:
+                color = ''
+            add = info[job]['version']
             if add == lib.get_packagist_version(job):
                 add += '&#x2713;'
         else:
             add = 'n/a'
-        text += '|%s\n' % add
+        text += '|%s\n' % (color + add)
+
     for job in NPM.values():
+        color = ''
         if job in info:
-            add = info[job]
+            color = info[job].get('color')
+            if color:
+                color = 'style="background-color: %s" |' % color
+            else:
+                color = ''
+            add = info[job]['version']
             if add == lib.get_npm_version(job):
                 add += '&#x2713;'
         else:
             add = 'n/a'
-        text += '|%s\n' % add
+        text += '|%s\n' % (color + add)
 text += '|}'
 
 #print(text)
 site = pywikibot.Site('mediawiki', 'mediawiki')
 page = pywikibot.Page(site, 'User:Legoktm/ci')
 pywikibot.showDiff(page.text, text)
-if lib.ON_LABS:
+if lib.ON_LABS or True:
     page.put(text, 'Updating table')
