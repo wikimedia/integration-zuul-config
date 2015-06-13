@@ -70,18 +70,21 @@ class Reader:
         for job, voting in info.items():
             color = 'lightgreen' if voting else 'red'
             if job in COMPOSER:
-                real_job = COMPOSER[job]
+                real_jobs = [COMPOSER[job]]
             elif job in NPM:
-                real_job = NPM[job]
+                real_jobs = [NPM[job]]
             elif 'testextension' in job:
-                real_job = COMPOSER['phpunit']
+                real_jobs = [COMPOSER['phpunit']]
+            elif job.endswith('-jslint'):
+                real_jobs = [NPM['jshint'], NPM['jsonlint']]
             else:
                 continue
-            if real_job not in self.data[github_name]:
-                self.data[github_name][real_job] = {
-                    'version': 'Jenkins',
-                    'color': color
-                }
+            for job in real_jobs:
+                if job not in self.data[github_name]:
+                    self.data[github_name][job] = {
+                        'version': 'Jenkins',
+                        'color': color
+                    }
 
 
 reader = Reader()
