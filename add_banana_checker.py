@@ -30,7 +30,10 @@ module.exports = function ( grunt ) {
 	grunt.initConfig( {
 		banana: conf.MessagesDirs,
 		jsonlint: {
-			all: [ '!(node_modules)/**/*.json' ]
+			all: [
+				'**/*.json',
+				'!node_modules/**'
+			]
 		}
 	} );
 
@@ -81,7 +84,7 @@ else:
     with open('.gitignore', 'w') as f:
         f.write('node_modules/\n')
         print('Created .gitignore with "node_modules/"')
-msg = 'build: Configuring banana-checker and jsonlint'
+msg = 'build: Configure banana-checker and jsonlint'
 if len(sys.argv) > 1:
     msg += '\n\nChange-Id: %s' % sys.argv[1]
 lib.commit_and_push(files=['package.json', 'Gruntfile.js', '.gitignore'], msg=msg, branch='master', topic='banana')
