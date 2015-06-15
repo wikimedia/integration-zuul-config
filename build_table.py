@@ -144,7 +144,7 @@ data = reader.data
 
 header = """
 {{/Header}}
-{|class="wikitable"
+{|class="wikitable sortable"
 ! rowspan="2" |Extension
 ! colspan="%s" |composer
 ! colspan="%s" |npm
