@@ -15,7 +15,7 @@ if os.path.exists('package.json'):
 ext = os.getcwd().split('/')[-1]
 print('Configuring banana checker for %s extension...' % ext)
 
-grunt_file = """/*!
+grunt_file_for_ext_json = """/*!
  * Grunt file
  *
  * @package %s
@@ -42,12 +42,47 @@ module.exports = function ( grunt ) {
 };
 """
 
-if not os.path.exists('extension.json'):
-    print('No extension.json, cannot add banana-checker')
-    sys.exit(1)
+grunt_file_for_php_eww = """/*!
+ * Grunt file
+ *
+ * @package %s
+ */
+
+/*jshint node:true */
+module.exports = function ( grunt ) {
+	grunt.loadNpmTasks( 'grunt-banana-checker' );
+	grunt.loadNpmTasks( 'grunt-jsonlint' );
+
+	grunt.initConfig( {
+		banana: {
+			all: 'i18n/'
+		},
+		jsonlint: {
+			all: [
+				'**/*.json',
+				'!node_modules/**'
+			]
+		}
+	} );
+
+	grunt.registerTask( 'test', [ 'jsonlint', 'banana' ] );
+	grunt.registerTask( 'default', 'test' );
+};
+"""
+
+grunt_file = grunt_file_for_ext_json if os.path.exists('extension.json') else grunt_file_for_php_eww
+if os.path.exists('extension.json'):
+    with open('extension.json') as f:
+        data = json.load(f)
+        if not 'MessagesDirs' in data:
+            print('No MessagesDirs set.')
+            sys.exit(1)
+else:
+    if not os.path.isdir('i18n'):
+        print('i18n directory does not exist')
+        sys.exit(1)
 with open('Gruntfile.js', 'w') as f:
     f.write(grunt_file % ext)
-
 
 package_data = OrderedDict([
     ('name', ext.lower()),
