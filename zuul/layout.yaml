@@ -1748,11 +1748,6 @@ jobs:
     # FlaggablePageTest::testPageDataFromTitle triggers an uncommitted
     # transaction.
     voting: false
-  # Fail because of HHVM bug, see T95864
-  - name: mwext-WikidataQuality-repo-tests-sqlite-hhvm
-    voting: false
-  - name: mwext-WikidataQuality-repo-tests-mysql-hhvm
-    voting: false
 
   # Job to ease reviews of MW-CS changes
   - name: mw-tools-codesniffer-mwcore-testrun
@@ -5762,11 +5757,12 @@ projects:
     test:
       - phplint
       - php-composer-package-validate
-      - mwext-WikidataQuality-repo-tests-sqlite-zend
-      - mwext-WikidataQuality-repo-tests-mysql-zend
       - mwext-WikidataQuality-repo-tests-sqlite-hhvm
       - mwext-WikidataQuality-repo-tests-mysql-hhvm
       - mwext-WikidataQuality-qunit
+    zend:
+      - mwext-WikidataQuality-repo-tests-sqlite-zend
+      - mwext-WikidataQuality-repo-tests-mysql-zend
     gate-and-submit:
       - phplint
       - php-composer-package-validate
