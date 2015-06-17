@@ -1,18 +1,7 @@
-- job:
-    name: 'cdb-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - global-setup
-     - doxygen
-     - doc-publish:
-        docsrc: 'doc/html'
-        docdest: 'cdb/$DOC_SUBPATH'
-    publishers:
-     - global-teardown
+- project:
+    name: cdb
+    jobs:
+        - '{name}-doxygen-publish'
 
 - job:
     name: 'cdb-coverage'
