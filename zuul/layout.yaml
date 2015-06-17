@@ -2913,6 +2913,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/ActiveAbstract
     template:
@@ -2958,6 +2959,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/ApprovedRevs
     template:
@@ -3051,6 +3053,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Capiunto
     template:
@@ -3125,6 +3128,7 @@ projects:
       - name: lint-js
       - name: extension-unittests-generic
       - name: extension-rubylint
+      - name: npm
 
   - name: mediawiki/extensions/CentralNotice
     template:
@@ -3255,6 +3259,7 @@ projects:
       - name: composer-test
       - name: extension-rubylint
       - name: lint-js
+      - name: npm
     check:
       - phplint
       - yamllint
@@ -3359,11 +3364,13 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Disambiguator
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/DiscussionThreading
     template:
@@ -3374,6 +3381,7 @@ projects:
     template:
       - name: extension-jslint
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/DonationInterface
     template:
@@ -3384,6 +3392,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Drafts
     template:
@@ -3394,6 +3403,7 @@ projects:
     template:
       - name: extension-jslint
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/DumpHTML
     template:
@@ -3538,11 +3548,13 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Gadgets
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Gather
     template:
@@ -3558,16 +3570,19 @@ projects:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
       - name: extension-rubylint
+      - name: npm
 
   - name: mediawiki/extensions/GeoCrumbs
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/GeoData
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/GeoGebra
     template:
@@ -3615,6 +3630,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/GlobalUserPage
     template:
@@ -3655,6 +3671,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/GoogleSiteSearch
     template:
@@ -3675,6 +3692,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests
+      - name: npm
     test:
      - mwext-GuidedTour-qunit
      - jsduck
@@ -3703,29 +3721,35 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/InputBox
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Insider
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Interwiki
-    check-only:
+    template:
+      - name: lint-js
+      - name: npm
+    check:
       - mwext-Interwiki-phpcs-HEAD
-      - jshint
-      - jsonlint
+      - phplint
+      - php-composer-validate
+    test:
+      - mwext-Interwiki-phpcs-HEAD
       - phplint
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - mwext-Interwiki-phpcs-HEAD
-      - jshint
-      - jsonlint
       - phplint
       - php-composer-validate
     experimental:
@@ -3741,16 +3765,19 @@ projects:
       - name: extension-gate
       - name: lint-js
       - name: extension-unittests
+      - name: npm
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/LandingCheck
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/LastModified
     template:
@@ -3761,6 +3788,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Lingo
     template:
@@ -3786,6 +3814,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Mantle
     template:
@@ -4075,6 +4104,7 @@ projects:
   - name: mediawiki/extensions/AbsenteeLandlord
     template:
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/AccessControl
     template:
@@ -4109,6 +4139,7 @@ projects:
     template:
       - name: extension-jslint
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/AkismetKlik
     template:
@@ -4131,6 +4162,7 @@ projects:
     template:
       - name: lint-js
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/ApiSVGProxy
     template:
@@ -4675,6 +4707,7 @@ projects:
     template:
       - name: extension-jslint
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/JSBreadCrumbs
     template:
