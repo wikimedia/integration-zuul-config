@@ -69,3 +69,18 @@ def json_load(path):
     with codecs.open(path, 'r', 'utf-8') as f:
         info = json.loads(f.read())
     return info
+
+@functools.lru_cache()
+def get_wmf_deployed_list():
+    r = requests.get('https://phabricator.wikimedia.org/diffusion/MREL/browse/master/make-wmf-branch/config.json?view=raw')
+    conf = r.json()
+    repos = set()
+    for ext in conf['extensions']:
+        repos.add('mediawiki-extensions-' + ext)
+    for skin in conf['skins']:
+        repos.add('mediawiki-skins-' + skin)
+    # Intentionally ignore special_extensions because they're special
+    return repos
+
+def is_wmf_deployed(github_name):
+    return github_name in get_wmf_deployed_list()

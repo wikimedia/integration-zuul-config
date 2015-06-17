@@ -34,7 +34,11 @@ class Reader:
         }
 
     def display_repo_name(self, path):
-        return '[https://github.com/wikimedia/{github} {display}]'.format(**self.repos[path])
+        info = self.repos[path]
+        text = '[https://github.com/wikimedia/{github} {display}]'.format(**info)
+        if lib.is_wmf_deployed(info['github']):
+            text += ' (WMF-deployed)'
+        return text
 
     def read_composer(self, path, github_name):
         info = lib.json_load(path)
