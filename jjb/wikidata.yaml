@@ -195,7 +195,7 @@
       - wikidata-query-rdf
 
 - project:
-    name: WikidataQuality
+    name: WikibaseQuality
     # By default we do not need any other extensions:
     dependencies: ""
 
@@ -209,7 +209,7 @@
     jobs:
 
      - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
-        ext-name: 'WikidataQuality'
+        ext-name: 'WikibaseQuality'
         kind: repo
         repoorclient: 'repo'
         dependencies: 'Wikibase'
@@ -219,14 +219,14 @@
         phpflavor:
           - zend
           - hhvm
-        phpunit-params: '--group WikibaseQuality,WikidataQuality'
+        phpunit-params: '--group WikibaseQuality'
 
      - 'mwext-{ext-name}-qunit':
-        ext-name: 'WikidataQuality'
+        ext-name: 'WikibaseQuality'
         dependencies: 'Wikibase'
 
 - project:
-    name: WikidataQualityConstraints
+    name: WikibaseQualityConstraints
     # By default we do not need any other extensions:
     dependencies: ""
 
@@ -239,29 +239,25 @@
 
     jobs:
 
-     - '{name}-{ext-name}-npm':
-        name: 'mwext'
-        ext-name: 'WikidataQualityConstraints'
-
      - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
-        ext-name: 'WikidataQualityConstraints'
+        ext-name: 'WikibaseQualityConstraints'
         kind: repo
         repoorclient: 'repo'
-        dependencies: 'Wikibase WikidataQuality'
+        dependencies: 'Wikibase WikibaseQuality'
         dbflavor:
           - mysql
           - sqlite
         phpflavor:
           - zend
           - hhvm
-        phpunit-params: '--group WikidataQuality'
+        phpunit-params: '--group WikibaseQuality'
 
      - 'mwext-{ext-name}-qunit':
-        ext-name: 'WikidataQualityConstraints'
-        dependencies: 'Wikibase WikidataQuality'
+        ext-name: 'WikibaseQualityConstraints'
+        dependencies: 'Wikibase WikibaseQuality'
 
 - project:
-    name: WikidataQualityExternalValidation
+    name: WikibaseQualityExternalValidation
     # By default we do not need any other extensions:
     dependencies: ""
 
@@ -274,24 +270,19 @@
 
     jobs:
 
-     - '{name}-{ext-name}-npm':
-        name: 'mwext'
-        ext-name: 'WikidataQualityExternalValidation'
-
      - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
-        ext-name: 'WikidataQualityExternalValidation'
+        ext-name: 'WikibaseQualityExternalValidation'
         kind: repo
         repoorclient: 'repo'
-        dependencies: 'Wikibase WikidataQuality'
+        dependencies: 'Wikibase WikibaseQuality'
         dbflavor:
           - mysql
           - sqlite
         phpflavor:
           - zend
           - hhvm
-        phpunit-params: '--group WikidataQuality'
+        phpunit-params: '--group WikibaseQuality'
 
      - 'mwext-{ext-name}-qunit':
-        ext-name: 'WikidataQualityExternalValidation'
-        dependencies: 'Wikibase WikidataQuality'
-
+        ext-name: 'WikibaseQualityExternalValidation'
+        dependencies: 'Wikibase WikibaseQuality'
