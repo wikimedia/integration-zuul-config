@@ -5780,14 +5780,15 @@ projects:
       - name: extension-unittests-generic
       - name: npm
 
-  - name: mediawiki/extensions/WikidataQuality
+  - name: mediawiki/extensions/WikibaseQuality
     template:
-      - name: lint-js
       - name: npm
     check:
+      - jsonlint
       - phplint
       - php-composer-package-validate
     test:
+      - jsonlint
       - phplint
       - php-composer-package-validate
       - mwext-WikidataQuality-repo-tests-sqlite-hhvm
@@ -5797,6 +5798,7 @@ projects:
       - mwext-WikidataQuality-repo-tests-sqlite-zend
       - mwext-WikidataQuality-repo-tests-mysql-zend
     gate-and-submit:
+      - jsonlint
       - phplint
       - php-composer-package-validate
       - mwext-WikidataQuality-repo-tests-sqlite-zend
@@ -5805,14 +5807,15 @@ projects:
       - mwext-WikidataQuality-repo-tests-mysql-hhvm
       - mwext-WikidataQuality-qunit
 
-  - name: mediawiki/extensions/WikidataQualityConstraints
+  - name: mediawiki/extensions/WikibaseQualityConstraints
     template:
-      - name: lint-js
       - name: npm
     check:
+      - jsonlint
       - phplint
       - php-composer-package-validate
     test:
+      - jsonlint
       - phplint
       - php-composer-package-validate
       - mwext-WikidataQualityConstraints-repo-tests-sqlite-hhvm
@@ -5822,6 +5825,7 @@ projects:
       - mwext-WikidataQualityConstraints-repo-tests-sqlite-zend
       - mwext-WikidataQualityConstraints-repo-tests-mysql-zend
     gate-and-submit:
+      - jsonlint
       - phplint
       - php-composer-package-validate
       - mwext-WikidataQualityConstraints-repo-tests-sqlite-zend
@@ -5830,14 +5834,15 @@ projects:
       - mwext-WikidataQualityConstraints-repo-tests-mysql-hhvm
       - mwext-WikidataQualityConstraints-qunit
 
-  - name: mediawiki/extensions/WikidataQualityExternalValidation
+  - name: mediawiki/extensions/WikibaseQualityExternalValidation
     template:
-      - name: lint-js
       - name: npm
     check:
+      - jsonlint
       - phplint
       - php-composer-package-validate
     test:
+      - jsonlint
       - phplint
       - php-composer-package-validate
       - mwext-WikidataQualityExternalValidation-repo-tests-sqlite-hhvm
@@ -5848,6 +5853,7 @@ projects:
       - mwext-WikidataQualityExternalValidation-repo-tests-sqlite-zend
       - mwext-WikidataQualityExternalValidation-repo-tests-mysql-zend
     gate-and-submit:
+      - jsonlint
       - phplint
       - php-composer-package-validate
       - mwext-WikidataQualityExternalValidation-repo-tests-sqlite-zend
