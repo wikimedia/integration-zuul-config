@@ -334,6 +334,22 @@
     publishers:
      - global-teardown
 
+- job:
+    name: 'mwext-MobileFrontend-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - npm-install
+     - npm-run-doc
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'MobileFrontend/$ZUUL_BRANCH'
+    publishers:
+     - global-teardown
+
 - job-template:
     name: 'mwext-VisualEditor-sync-gerrit'  # bug 49846
     node: gallium  # needs 'jenkins' user which has the 'jenkins-bot' SSH credentials
@@ -639,9 +655,9 @@
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
 
-     - 'mwext-GuidedTour-jsduck-publish':
-
-     - 'mwext-MultimediaViewer-jsduck-publish':
+     - 'mwext-MobileFrontend-publish'
+     - 'mwext-GuidedTour-jsduck-publish'
+     - 'mwext-MultimediaViewer-jsduck-publish'
 
      - 'mwext-TemplateData-jsduck-publish':
         ext-name: TemplateData

@@ -1675,17 +1675,17 @@ jobs:
   - name: 'mwext-CirrusSearch-whitespaces'
     branch: ^master$
 
+  - name: 'mwext-MobileFrontend-publish'
+    branch: ^master$
   - name: 'mwext-GuidedTour-jsduck-publish'
     branch: ^master$
-
   - name: 'mwext-MultimediaViewer-jsduck-publish'
     branch: ^master$
-
   - name: 'mwext-TemplateData-jsduck-publish'
     branch: ^master$
-
   - name: 'mwext-VisualEditor-publish'
     branch: ^master$
+
   - name: 'mwext-VisualEditor-sync-gerrit'
     branch: ^master$
 
@@ -4052,6 +4052,8 @@ projects:
       - mediawiki-gate
       #- mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-zend
+    postmerge:
+      - mwext-MobileFrontend-publish
     experimental:
       - mwext-MobileFrontend-testextension-hhvm
 
