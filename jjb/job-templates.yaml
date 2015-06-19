@@ -389,19 +389,3 @@
      - zuul
     builders:
      - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
-
-- job-template:
-    name: '{name}-doxygen-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - global-setup
-     - doxygen
-     - doc-publish:
-        docsrc: 'doc/html'
-        docdest: '{name}/$DOC_SUBPATH'
-    publishers:
-     - global-teardown

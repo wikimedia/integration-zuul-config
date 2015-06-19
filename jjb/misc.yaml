@@ -1,17 +1,22 @@
-- project:
-    name: cdb
-    jobs:
-        - '{name}-doxygen-publish'
 
-- project:
-    name: utfnormal
-    jobs:
-        - '{name}-doxygen-publish'
-
-- project:
-    name: at-ease
-    jobs:
-        - '{name}-doxygen-publish'
+# Doxygen Publish job for PHP packages
+# The doc.wm.o subdirectory must be the same
+# as the git repository name
+- job:
+    name: 'doxygen-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - global-setup
+     - doxygen
+     - doc-publish:
+        docsrc: 'doc/html'
+        docdest: '$ZUUL_PROJECT/$DOC_SUBPATH'
+    publishers:
+     - global-teardown
 
 - job:
     name: 'cdb-coverage'
