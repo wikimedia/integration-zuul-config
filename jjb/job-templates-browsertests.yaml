@@ -122,6 +122,18 @@
       - archive:
           artifacts: 'log/*.log, log/junit/*.xml, log/report.html, log/*.png'
 
+      - postbuildscript:
+          builders:
+           - shell: |
+               set +e
+               set +x
+               echo "Removing potential png screenshots under /log/"
+               rm -v -f log/*.png || :
+               echo "Done"
+          # Postbuild options are confusing, setting both to false ensures the script always runs.
+          onsuccess: False
+          onfailure: False
+
     wrappers:
       - ansicolor
       - timeout:
