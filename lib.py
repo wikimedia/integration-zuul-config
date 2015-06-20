@@ -8,16 +8,18 @@ import requests
 import subprocess
 import tempfile
 
+s = requests.session()
+
 @functools.lru_cache()
 def get_npm_version(package):
-    r = requests.get('https://registry.npmjs.org/%s' % package)
+    r = s.get('https://registry.npmjs.org/%s' % package)
     version = r.json()['dist-tags']['latest']
     print('Latest %s: %s' % (package, version))
     return version
 
 @functools.lru_cache()
 def get_packagist_version(package):
-    r = requests.get('https://packagist.org/packages/%s.json' % package)
+    r = s.get('https://packagist.org/packages/%s.json' % package)
     resp = r.json()['package']['versions']
     normalized = set()
     for ver in resp:
