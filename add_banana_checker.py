@@ -15,13 +15,7 @@ if os.path.exists('package.json'):
 ext = os.getcwd().split('/')[-1]
 print('Configuring banana checker for %s extension...' % ext)
 
-grunt_file_for_ext_json = """/*!
- * Grunt file
- *
- * @package %s
- */
-
-/*jshint node:true */
+grunt_file_for_ext_json = """/*jshint node:true */
 module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-jsonlint' );
@@ -42,13 +36,7 @@ module.exports = function ( grunt ) {
 };
 """
 
-grunt_file_for_php_eww = """/*!
- * Grunt file
- *
- * @package %s
- */
-
-/*jshint node:true */
+grunt_file_for_php_eww = """/*jshint node:true */
 module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-jsonlint' );
@@ -82,13 +70,10 @@ else:
         print('i18n directory does not exist')
         sys.exit(1)
 with open('Gruntfile.js', 'w') as f:
-    f.write(grunt_file % ext)
+    f.write(grunt_file)
 
 package_data = OrderedDict([
-    ('name', ext.lower()),
-    ('version', '0.0.0'),
     ('private', True),
-    ('description', 'Build tools for the %s extension.' % ext),
     ('scripts', {'test': 'grunt test'}),
     ('devDependencies', OrderedDict())
 ])
