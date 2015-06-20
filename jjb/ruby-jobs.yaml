@@ -2,6 +2,11 @@
     name: bundle
     builders:
      - shell: |
+         # Source any given initialization script
+         if [ -x '{initialization}' ]; then
+           . '{initialization}'
+         fi
+
          # Shared cache of gems to avoid hitting rubygems all the time
          # See https://github.com/bundler/bundler/issues/2856
          export GEM_HOME="$WORKSPACE/../gems/2.0.0"
@@ -12,6 +17,9 @@
          else
            version=()
          fi
+
+         # Change to the given working directory
+         cd '{dir}'
 
          mkdir -p vendor
          gem2.0 install --env-shebang -i vendor --no-document "${{version[@]}}" bundler
@@ -33,7 +41,9 @@
      - zuul
     builders:
      - bundle:
+         initialization: ''
          command: "{bundlecommand}"
+         dir: '.'
          bundler-version: ''
 
 # Generic bundle job-template.
@@ -46,7 +56,9 @@
      - zuul
     builders:
      - bundle:
+         initialization: ''
          command: "{bundlecommand}"
+         dir: '.'
          bundler-version: ''
 
 - project:
@@ -68,7 +80,9 @@
      - zuul
     builders:
      - bundle:
+         initialization: ''
          command: "{bundlecommand}"
+         dir: '.'
          bundler-version: '< 1.8.0'
 
 - project:
@@ -90,7 +104,9 @@
      - zuul
     builders:
      - bundle:
+         initialization: ''
          command: 'yard'
+         dir: '.'
          bundler-version: ''
      - doc-publish:
          docsrc: 'doc'
@@ -104,8 +120,32 @@
      - zuul
     builders:
      - bundle:
+         initialization: ''
          command: 'yard'
+         dir: '.'
          bundler-version: '< 1.8.0'
      - doc-publish:
          docsrc: 'doc'
          docdest: 'rubygems/{name}'
+
+# General MW-Selenium job used to dogfood the builder against MW core.
+- job:
+    name: 'mediawiki-selenium-integration'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-selenium:
+         tests-dir: '.'
+    publishers:
+     - mw-selenium-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
