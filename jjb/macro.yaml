@@ -353,6 +353,57 @@
          onsuccess: False
          onfailure: False
 
+# mw-selenium
+#
+# Uses qunit and bundler builders to run MW-Selenium tests that are marked
+# with the @integration tag. All setup of intial state for these kinds of
+# tests should be done by the test suite via the API, including creation of
+# the test user.
+#
+- builder:
+    name: mw-selenium
+    builders:
+     - mw-selenium-prepare-localhost
+     - bundle:
+        initialization: '/srv/deployment/integration/slave-scripts/bin/mw-set-env-mw-selenium.sh'
+        command: 'cucumber --tags @integration --tags ~@skip'
+        dir: '{tests-dir}'
+        bundler-version: ''
+
+- builder:
+    name: mw-selenium-prepare-localhost
+    builders:
+     - shell: |
+        # Load context (e.g. MW_INSTALL_PATH, MW_SERVER, MW_SCRIPT_PATH)
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-mw-selenium.sh
+
+        # Configure MediaWiki
+        echo -e \
+         "<?php\n\$wgServer = '${MW_SERVER}';\n"\
+         "\$wgScriptPath = '${MW_SCRIPT_PATH}';\n"\
+         "\$wgScript = \$wgStylePath = \$wgLogo = false;\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
+
+        # The location is free or we make it free
+        PUBLIC_DIR="/mnt/localhost-browsertests$MW_SCRIPT_PATH"
+        test ! -e "$PUBLIC_DIR" || rm "$PUBLIC_DIR";
+
+        # Publish our install in the server document root for browser tests
+        ln -s "$MW_INSTALL_PATH" "$PUBLIC_DIR"
+
+        # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
+        curl --include "$MW_SERVER/$MW_SCRIPT_PATH/index.php?title=Special:BlankPage" | head -n42
+
+- publisher:
+    name: mw-selenium-cleanup
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: |
+             rm -f "/mnt/localhost-browsertests/$BUILD_TAG"
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
 # - version: (usually branch name) - will be escaped
