@@ -351,6 +351,39 @@
          onsuccess: False
          onfailure: False
 
+# mw-selenium
+#
+# Uses qunit and bundler builders to run MW-Selenium tests that are marked
+# with the @integration tag. All setup of intial state for these kinds of
+# tests should be done by the test suite via the API, including creation of
+# the test user.
+#
+- builder:
+    name: mw-selenium
+    builders:
+     - mw-selenium-prepare-localhost
+     - bundle:
+        initialization: '/srv/deployment/integration/slave-scripts/bin/mw-set-env-mw-selenium.sh'
+        command: 'cucumber --tags @integration --tags ~@skip'
+        dir: '{tests-dir}'
+        bundler-version: ''
+
+- builder:
+    name: mw-selenium-prepare-localhost
+    builders:
+     - prepare-qunit-localhost
+
+- publisher:
+    name: mw-selenium-cleanup
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: |
+             rm -f "/srv/localhost/qunit/$BUILD_TAG"
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
 # - version: (usually branch name) - will be escaped
