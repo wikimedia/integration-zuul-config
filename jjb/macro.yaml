@@ -593,7 +593,7 @@
     name: composer-validate
     builders:
      - shell: |
-        /srv/deployment/integration/composer/vendor/bin/composer --ansi validate --no-check-publish
+        if test -f "composer.json"; then /srv/deployment/integration/composer/vendor/bin/composer --ansi validate --no-check-publish;fi
 
 # Validate a composer.json so it can be published on packagist.org
 - builder:
