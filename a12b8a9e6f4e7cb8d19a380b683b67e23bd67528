@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ec42329_bdf5244f",
+        "filename": "jjb/ruby-jobs.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2015-06-25T07:49:01Z",
+      "side": 1,
+      "message": "Document what \u0027initialization\u0027 and \u0027dir\u0027 are for. Looks like there aren\u0027t set anywhere (yet). If it\u0027s for a future case/exception, consider a macro that wraps this builder, e.g.\n\n   - builder:\n -     name: bundle\n +     name: bundle-options\n   ..\n + - builder:\n +     name: bundle:\n +     builders: \n +       - bundle-options:\n +         - initialization: \u0027\u0027\n +         - dir: \u0027.\u0027\n\nThen the common jobs can use it without redeclaring the defaults.",
+      "revId": "a12b8a9e6f4e7cb8d19a380b683b67e23bd67528",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
