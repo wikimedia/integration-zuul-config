@@ -74,6 +74,19 @@
         npm install
         npm test
 
+
+# ALWAYS pair with 'global-teardown'
+# Variant of 'npm' which only runs if a package.json file exists
+- builder:
+    name: npm-check
+    builders:
+    - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
+        node --version
+        npm --version
+        rm -rf node_modules
+        if test -f "package.json"; then npm install && npm test;fi
+
 # The npm-run-* macros are intended to be used when multiple are used
 # together (e.g. 'doc' and later 'test'). If you simply need to run
 # npm-install and npm-run-test, use the plain 'npm' macro instead.
@@ -612,3 +625,11 @@
     builders:
      - shell: |
         /srv/deployment/integration/composer/vendor/bin/composer update --no-progress --prefer-dist --profile
+
+# Runs "composer update && composer test if a composer.json file is present"
+- builder:
+    name: composer-check
+    builders:
+     - shell: |
+        export COMPOSER="/srv/deployment/integration/composer/vendor/bin/composer"
+        if test -f "composer.json"; then $COMPOSER update --no-progress --prefer-dist --profile && $COMPOSER test;fi

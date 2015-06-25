@@ -389,3 +389,19 @@
      - zuul
     builders:
      - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
+
+# Very generic 'test' job that is a combined 'npm' and 'php-composer-test' job
+# if they are configured in the repo.
+- job:
+    name: 'test'
+    defaults: use-remote-zuul-shallow-clone
+    node: contintLabsSlave && UbuntuPrecise
+    triggers:
+     - zuul
+    builders:
+     - npm-check
+     - composer-validate
+     - composer-check
+    publishers:
+     - global-teardown
+
