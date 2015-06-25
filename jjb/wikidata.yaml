@@ -5,10 +5,10 @@
             set -eu
             composer=/srv/deployment/integration/composer/vendor/bin/composer
             cd "$WORKSPACE/src/"
-            php -r '$c = json_decode( file_get_contents( "composer.json" ) );
-                       $m="merge-plugin";
-                       $c->extra->$m->include[] = "extensions/*/composer.json";
-                       file_put_contents( "composer.json", json_encode( $c ) );'
+            cat ../deps.txt | perl -ne '
+              BEGIN { print "{ \"extra\": { \"merge-plugin\": { \"include\": ["; $lineend=""; };
+              if ( /^mediawiki\/extensions/ ) { s/\n/\/composer.json/; $print="$lineend\n\"$_\""; $lineend=","; print $print }
+              END{ print "\n] } } }\n" };' > composer.local.json
             timeout 300 $composer update --prefer-source -vvv
             # FIXME BUG the first run just exits without error without finishing especially in a clean working copy
             timeout 300 $composer update --prefer-source -vvv
