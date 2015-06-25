@@ -1,7 +1,7 @@
 
-# Doxygen Publish job for PHP packages
-# The doc.wm.o subdirectory must be the same
-# as the git repository name
+# Publish Doxygen-generated docs to doc.wikimedia.org
+# NOTE: Only use this generic job if the desired public directory name
+# matches the Git repository name.
 - job:
     name: 'doxygen-publish'
     node: contintLabsSlave && UbuntuTrusty
@@ -19,7 +19,7 @@
      - global-teardown
 
 - job:
-    name: 'cdb-coverage'
+    name: 'phpunit-coverage-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
@@ -31,7 +31,7 @@
      - phpunit-coverage
      - cover-publish:
         src: 'coverage'
-        dest: 'cdb'
+        dest: '$ZUUL_PROJECT'
     publishers:
      - global-teardown
 
