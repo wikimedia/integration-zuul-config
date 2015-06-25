@@ -17,7 +17,7 @@ def main():
         config = '/home/km/projects/integration-config/zuul/layout.yaml'
 
     ZUUL_OUTPUT = '/home/km/projects/integration-config/zuul/output'
-    PROJECTS = ('mediawiki/extensions/',)
+    PROJECTS = ('mediawiki/extensions/', 'mediawiki/skins/')
 
     f = tempfile.NamedTemporaryFile(delete=False)
     subprocess.call([zuul_server, '-t', '-l', config], stderr=f)
@@ -48,4 +48,4 @@ def main():
 
 
 if __name__ == '__main__':
-    print(main()['mediawiki-extensions-MassMessage'])
+    print(main()['mediawiki-skins-CologneBlue'])

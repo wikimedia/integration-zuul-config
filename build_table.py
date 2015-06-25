@@ -141,7 +141,8 @@ for repo_type, glob_path in {'Extension': lib.EXTENSIONS_DIR, 'Skin': lib.SKINS_
 
 zuul_data = zuul_output_reader.main()
 for repo, info in zuul_data.items():
-    reader.add_repo('Extension:' + repo.split('-')[-1], repo)
+    prefix = 'Extension:' if repo.startswith('mediawiki-extensions') else 'Skin:'
+    reader.add_repo(prefix + repo.split('-')[-1], repo)
     reader.read_zuul(info, repo)
 
 data = reader.data
