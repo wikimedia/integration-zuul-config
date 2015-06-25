@@ -117,8 +117,8 @@ for repo in OTHER_STUFF:
     if os.path.exists(package):
         package_paths[repo] = package
 
-for repo_type, path in {'Extension': lib.EXTENSIONS_DIR, 'Skin': lib.SKINS_DIR}.items():
-    composers = glob.glob(path + '/*/composer.json')
+for repo_type, glob_path in {'Extension': lib.EXTENSIONS_DIR, 'Skin': lib.SKINS_DIR}.items():
+    composers = glob.glob(glob_path + '/*/composer.json')
     repo_name = lambda x: 'mediawiki-%s-%s' % (repo_type.lower() + 's', x)
     for composer in composers:
         ext_name = composer.split('/')[-2]
@@ -129,7 +129,7 @@ for repo_type, path in {'Extension': lib.EXTENSIONS_DIR, 'Skin': lib.SKINS_DIR}.
     for repo, path in composer_paths.items():
         reader.read_composer(path, repo)
 
-    packages = glob.glob(path + '/*/package.json')
+    packages = glob.glob(glob_path + '/*/package.json')
     for package in packages:
         ext_name = package.split('/')[-2]
         repo = repo_name(ext_name)
