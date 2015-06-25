@@ -286,7 +286,7 @@
     builders:
      - shell: |
         # Load context (e.g. MW_INSTALL_PATH, MW_SERVER, MW_SCRIPT_PATH)
-        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-qunit.sh
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
 
         # Configure MediaWiki
         echo -e \
@@ -333,7 +333,7 @@
     builders:
      - prepare-qunit-localhost
      - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-qunit.sh
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
         cd $MW_INSTALL_PATH
         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         rm -rf node_modules
