@@ -9,7 +9,7 @@ import lib
 
 def main():
     if lib.ON_LABS:
-        zuul_server = '/data/project/ci/py2-venv/bin/zuul-server'
+        zuul_server = '/data/project/ci/py2-venv2/bin/zuul-server'
         lib.git_pull('/data/project/ci/src/integration-config')
         config = '/data/project/ci/src/integration-config/zuul/layout.yaml'
     else:
