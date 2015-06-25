@@ -280,40 +280,14 @@
         echo "Running JSDuck..."
         jsduck
 
-# ALWAYS pair with 'qunit-cleanup'
-- builder:
-    name: prepare-qunit-localhost
-    builders:
-     - shell: |
-        # Load context (e.g. MW_INSTALL_PATH, MW_SERVER, MW_SCRIPT_PATH)
-        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
-
-        # Configure MediaWiki
-        echo -e \
-         "<?php\n\$wgServer = '${MW_SERVER}';\n"\
-         "\$wgScriptPath = '${MW_SCRIPT_PATH}';\n"\
-         "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
-         "\$wgEnableJavaScriptTest = true;\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
-
-        # The location is free or we make it free
-        PUBLIC_DIR="/srv/localhost/qunit$MW_SCRIPT_PATH"
-        test ! -e "$PUBLIC_DIR" || rm "$PUBLIC_DIR";
-
-        # Publish our install in the QUnit server document root
-        ln -s "$MW_INSTALL_PATH" "$PUBLIC_DIR"
-
-        # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
-        curl --include "$MW_SERVER/$MW_SCRIPT_PATH/index.php?title=Special:BlankPage" | head -n42
-        curl --include "$MW_SERVER/$MW_SCRIPT_PATH/load.php?debug=true&modules=startup&only=scripts" | head -n42
-
 # qunit
 #
-# ALWAYS pair with 'qunit-cleanup'
+# ALWAYS pair with 'mw-localhost-cleanup'
 # ALWAYS pair with 'global-teardown' (for npm-setup)
 - builder:
     name: qunit-querystring
     builders:
-     - prepare-qunit-localhost
+     - mw-localhost-prepare
      - shell: |
         # Run Special:JavaScriptTest/qunit via grunt-contrib-qunit in PhantomJS
         /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --qunit-url="http://localhost:9412/$BUILD_TAG/index.php?title=Special:JavaScriptTest/qunit{querystring}"
@@ -331,7 +305,7 @@
     name: qunit-karma
     builders:
     builders:
-     - prepare-qunit-localhost
+     - mw-localhost-prepare
      - shell: |
         . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
         cd $MW_INSTALL_PATH
@@ -339,17 +313,6 @@
         rm -rf node_modules
         npm install
         grunt karma:main
-
-- publisher:
-    name: qunit-cleanup
-    publishers:
-     - postbuildscript:
-         builders:
-           - shell: |
-               rm -f "/srv/localhost/qunit/$BUILD_TAG"
-         # Postbuild options are confusing, setting both to false ensures the script always runs.
-         onsuccess: False
-         onfailure: False
 
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
@@ -460,6 +423,46 @@
      - postbuildscript:
          builders:
           - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown-mysql.sh"
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
+# Expose MediaWiki at http://localhost:9412 for integration and end-to-end
+# testing.
+#
+# ALWAYS pair with 'mw-localhost-cleanup'
+- builder:
+    name: mw-localhost-prepare
+    builders:
+     - shell: |
+        # Load context (e.g. MW_INSTALL_PATH, MW_SERVER, MW_SCRIPT_PATH)
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
+
+        # Configure MediaWiki
+        echo -e \
+         "<?php\n\$wgServer = '${MW_SERVER}';\n"\
+         "\$wgScriptPath = '${MW_SCRIPT_PATH}';\n"\
+         "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
+         "\$wgEnableJavaScriptTest = true;\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
+
+        # The location is free or we make it free
+        PUBLIC_DIR="/srv/localhost/mediawiki$MW_SCRIPT_PATH"
+        test ! -e "$PUBLIC_DIR" || rm "$PUBLIC_DIR";
+
+        # Publish our install in the server document root
+        ln -s "$MW_INSTALL_PATH" "$PUBLIC_DIR"
+
+        # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
+        curl --include "$MW_SERVER/$MW_SCRIPT_PATH/index.php?title=Special:BlankPage" | head -n42
+        curl --include "$MW_SERVER/$MW_SCRIPT_PATH/load.php?debug=true&modules=startup&only=scripts" | head -n42
+
+- publisher:
+    name: mw-localhost-cleanup
+    publishers:
+     - postbuildscript:
+         builders:
+           - shell: |
+               rm -f "/srv/localhost/mediawiki/$BUILD_TAG"
          # Postbuild options are confusing, setting both to false ensures the script always runs.
          onsuccess: False
          onfailure: False
