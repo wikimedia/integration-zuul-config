@@ -7639,16 +7639,20 @@ projects:
      - name: composer-test-package
     postmerge:
       - doxygen-publish
+      - phpunit-coverage-publish
 
   - name: at-ease
     template:
      - name: composer-test-package
     postmerge:
       - doxygen-publish
+      - phpunit-coverage-publish
 
   - name: AhoCorasick
     template:
-     - name: composer-test-package
+      - name: composer-test-package
+    postmerge:
+      - phpunit-coverage-publish
 
   - name: IPSet
     template:
