@@ -117,26 +117,27 @@ for repo in OTHER_STUFF:
     if os.path.exists(package):
         package_paths[repo] = package
 
+for repo_type, path in {'Extension': lib.EXTENSIONS_DIR, 'Skin': lib.SKINS_DIR}.items():
+    composers = glob.glob(path + '/*/composer.json')
+    repo_name = lambda x: 'mediawiki-%s-%s' % (repo_type.lower() + 's', x)
+    for composer in composers:
+        ext_name = composer.split('/')[-2]
+        repo = repo_name(ext_name)
+        reader.add_repo(repo_type + ':%s' % ext_name, repo)
+        composer_paths[repo] = composer
 
-composers = glob.glob(lib.EXTENSIONS_DIR + '/*/composer.json')
-for composer in composers:
-    ext_name = composer.split('/')[-2]
-    repo = 'mediawiki-extensions-%s' % ext_name
-    reader.add_repo('Extension:%s' % ext_name, repo)
-    composer_paths[repo] = composer
+    for repo, path in composer_paths.items():
+        reader.read_composer(path, repo)
 
-for repo, path in composer_paths.items():
-    reader.read_composer(path, repo)
+    packages = glob.glob(path + '/*/package.json')
+    for package in packages:
+        ext_name = package.split('/')[-2]
+        repo = repo_name(ext_name)
+        reader.add_repo(repo_type + ':%s' % ext_name, repo)
+        package_paths[repo] = package
 
-packages = glob.glob(lib.EXTENSIONS_DIR + '/*/package.json')
-for package in packages:
-    ext_name = package.split('/')[-2]
-    repo = 'mediawiki-extensions-%s' % ext_name
-    reader.add_repo('Extension:%s' % ext_name, repo)
-    package_paths[repo] = package
-
-for repo, path in package_paths.items():
-    reader.read_npm(path, repo)
+    for repo, path in package_paths.items():
+        reader.read_npm(path, repo)
 
 zuul_data = zuul_output_reader.main()
 for repo, info in zuul_data.items():
@@ -201,5 +202,5 @@ text += '|}'
 site = pywikibot.Site('mediawiki', 'mediawiki')
 page = pywikibot.Page(site, 'User:Legoktm/ci')
 pywikibot.showDiff(page.text, text)
-if lib.ON_LABS or True:
+if lib.ON_LABS:
     page.put(text, 'Updating table')

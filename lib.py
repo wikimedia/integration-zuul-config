@@ -49,12 +49,14 @@ if os.path.isdir('/data/project/ci'):
     # Running on Tool labs
     ON_LABS = True
     EXTENSIONS_DIR = '/data/project/ci/src/extensions'
+    SKINS_DIR = '/data/project/ci/src/skins'
     SRC = '/data/project/ci/src'
     MEDIAWIKI_DIR = '/data/project/ci/src/mediawiki'
 else:
     # Legoktm's laptop
     ON_LABS = False
     EXTENSIONS_DIR = '/home/km/projects/vagrant/mediawiki/extensions'
+    SKINS_DIR = '/home/km/projects/vagrant/mediawiki/skins'
     SRC = '/home/km/projects'
     MEDIAWIKI_DIR = '/home/km/projects/vagrant/mediawiki'
 
