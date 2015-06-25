@@ -1891,6 +1891,22 @@ project-templates:
      - jsonlint
      - php-composer-validate
 
+    # Similar to above, but uses a check/test pipeline
+  - name: mw-checks-test
+    check:
+     - phplint
+     - jsonlint
+     - php-composer-validate
+    test:
+     - phplint
+     - jsonlint
+     - php-composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - phplint
+     - jsonlint
+     - php-composer-validate
+
   - name: composer-test
     check:
       - phplint
@@ -2391,7 +2407,8 @@ projects:
 
   - name: mediawiki/skins/CologneBlue
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: npm
 
   - name: mediawiki/skins/Daddio
     template:
@@ -2447,11 +2464,13 @@ projects:
 
   - name: mediawiki/skins/Modern
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: npm
 
   - name: mediawiki/skins/MonoBook
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: npm
 
   - name: mediawiki/skins/Nimbus
     template:
@@ -2500,6 +2519,7 @@ projects:
   - name: mediawiki/skins/Vector
     template:
      - name: composer-test
+     - name: npm
 
   - name: mediawiki/skins/webplatform
     template:
