@@ -31,7 +31,6 @@
             wikimedia/fundraising/crm
             wikimedia/fundraising/crm/civicrm
             wikimedia/fundraising/crm/drupal
-            wikimedia/fundraising/crm/vendor
       - shell: |
           $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-create-dbs.sh
           $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-populate-dbs.sh
@@ -41,7 +40,7 @@
     builders:
       - shell: |
           cd $WORKSPACE/src/wikimedia/fundraising/crm
-          $WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit/bin/phpunit \
+          $WORKSPACE/src/wikimedia/fundraising/crm/vendor/bin/phpunit \
             --log-junit $WORKSPACE/log/junit-phpunit.xml
 
 - publisher:
