@@ -138,3 +138,25 @@
      - doc-publish:
          docsrc: 'doc'
          docdest: 'rubygems/{name}'
+
+# General MW-Selenium job used to dogfood the builder against MW core.
+- job:
+    name: 'mediawiki-selenium-integration'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-selenium:
+         tests-dir: '.'
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
