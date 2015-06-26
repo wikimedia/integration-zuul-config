@@ -1,7 +1,19 @@
+# Executes a Gem command via Bundler, allowing for some additional options
+#
+# - initialization: Shell script to source before doing anything
+# - bundler-version: Version of Bundler to install/use. Defaults to the latest.
+# - dir: Working directory for Bundler execution
+# - command: Gem/Bundler command to run
+#
 - builder:
-    name: bundle
+    name: bundle-with-options
     builders:
      - shell: |
+         # Source any given initialization script
+         if [ ! -z '{initialization}' ]; then
+           . '{initialization}'
+         fi
+
          # Shared cache of gems to avoid hitting rubygems all the time
          # See https://github.com/bundler/bundler/issues/2856
          export GEM_HOME="$WORKSPACE/../gems/2.0.0"
@@ -13,6 +25,9 @@
            version=()
          fi
 
+         # Change to the given working directory
+         cd '{dir}'
+
          mkdir -p vendor
          gem2.0 install --env-shebang -i vendor --no-document "${{version[@]}}" bundler
 
@@ -22,6 +37,19 @@
          # Install dependencies
          vendor/bin/bundle install --verbose
          vendor/bin/bundle exec {command}
+
+# Executes a Gem command via Bundler
+#
+# - command: Gem/Bundler command to run
+#
+- builder:
+    name: bundle
+    builders:
+     - bundle-with-options:
+         initialization: ''
+         dir: '.'
+         bundler-version: ''
+         command: '{command}'
 
 # Deprecated non-generic job. See below.
 - job-template:
@@ -34,7 +62,6 @@
     builders:
      - bundle:
          command: "{bundlecommand}"
-         bundler-version: ''
 
 # Generic bundle job-template.
 - job-template:
@@ -47,7 +74,6 @@
     builders:
      - bundle:
          command: "{bundlecommand}"
-         bundler-version: ''
 
 - project:
     name: common-bundle-jobs
@@ -67,8 +93,10 @@
     triggers:
      - zuul
     builders:
-     - bundle:
+     - bundle-with-options:
+         initialization: ''
          command: "{bundlecommand}"
+         dir: '.'
          bundler-version: '< 1.8.0'
 
 - project:
@@ -91,7 +119,6 @@
     builders:
      - bundle:
          command: 'yard'
-         bundler-version: ''
      - doc-publish:
          docsrc: 'doc'
          docdest: 'rubygems/{name}'
@@ -103,8 +130,10 @@
     triggers:
      - zuul
     builders:
-     - bundle:
+     - bundle-with-options:
+         initialization: ''
          command: 'yard'
+         dir: '.'
          bundler-version: '< 1.8.0'
      - doc-publish:
          docsrc: 'doc'
