@@ -136,6 +136,23 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job-template:
+    name: '{name}-{ext-name}-mw-selenium'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki:
+         ext-name: '{ext-name}'
+         dependencies: '{dependencies}'
+     - mw-selenium:
+         tests-dir: 'tests/browser'
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
 # Generic qunit job for extensions. Can only be used by
 # those that currently don't have dependencies
 - job:
@@ -652,6 +669,14 @@
         name: mwext
         ext-name: Thanks
         dependencies: 'Echo,Flow,Mantle,MobileFrontend,VisualEditor,AbuseFilter,SpamBlacklist,CheckUser,EventLogging,ConfirmEdit'
+
+     # mw-selenium jobs for MediaWiki extensions
+     # Only extensions that have dependencies should be listed here.
+     # Others should use the generic 'mwext-qunit' job.
+     - '{name}-{ext-name}-mw-selenium':
+        name: mwext
+        ext-name: MobileFrontend
+        dependencies: Mantle
 
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor

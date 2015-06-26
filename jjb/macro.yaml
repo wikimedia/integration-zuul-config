@@ -353,6 +353,25 @@
          onsuccess: False
          onfailure: False
 
+# mw-selenium
+#
+# Uses qunit and bundler builders to run MW-Selenium tests that are marked
+# with the @integration tag. All setup of intial state for these kinds of
+# tests should be done by the test suite via the API, including creation of
+# the test user.
+#
+# - tests-dir: Parent of the `features` directory. Usually `tests/browser`.
+#
+- builder:
+    name: mw-selenium
+    builders:
+     - prepare-localhost
+     - bundle-with-options:
+        initialization: '/srv/deployment/integration/slave-scripts/bin/mw-set-env-mw-selenium.sh'
+        command: 'cucumber --tags @integration --tags ~@skip'
+        dir: '{tests-dir}'
+        bundler-version: ''
+
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
 # - version: (usually branch name) - will be escaped
