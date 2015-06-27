@@ -10,7 +10,7 @@ import lib
 
 if os.path.exists('package.json'):
     print('package.json already exists')
-    sys.exit(1)
+    sys.exit(0)
 
 ext = os.getcwd().split('/')[-1]
 print('Configuring banana checker for %s extension...' % ext)
@@ -68,7 +68,7 @@ if os.path.exists('extension.json'):
 else:
     if not os.path.isdir('i18n'):
         print('i18n directory does not exist')
-        sys.exit(1)
+        sys.exit(0)
 with open('Gruntfile.js', 'w') as f:
     f.write(grunt_file)
 
@@ -85,7 +85,7 @@ subprocess.call(['npm', 'install'])
 res = subprocess.call(['npm', 'test'])
 if res != 0:
     print('Error: npm test failed.')
-    sys.exit(1)
+    sys.exit(0)
 else:
     print('Yay, npm test passed!')
 # Add node_modules to gitignore...
@@ -110,3 +110,4 @@ if len(sys.argv) > 1:
 lib.commit_and_push(files=['package.json', 'Gruntfile.js', '.gitignore'], msg=msg, branch='master', topic='banana')
 sha1 = subprocess.check_output(['git', 'log', '--oneline', '-n', '1']).decode().split(' ', 1)[0]
 subprocess.call(['ssh', '-p' , '29418', 'gerrit.wikimedia.org', 'gerrit', 'review', '-m', '"check experimental"', sha1])
+sys.exit(0)
