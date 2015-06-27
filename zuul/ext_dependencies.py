@@ -19,6 +19,8 @@ dependencies = {
     'ImageMetrics': ['EventLogging'],
     'LifeWeb': ['LifeWebCore'],
     'MassMessage': ['LiquidThreads'],
+    'Math': ['VisualEditor'],
+    'MathSearch': ['Math'],
     'MobileFrontend': ['Echo', 'Mantle', 'VisualEditor'],
     'PronunciationRecording': ['UploadWizard'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
