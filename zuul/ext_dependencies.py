@@ -8,6 +8,7 @@ dependencies = {
     'CodeEditor': ['WikiEditor'],
     'Disambiguator': ['VisualEditor'],
     'EducationProgram': ['cldr'],
+    'FlaggedRevs': ['Scribunto'],
     'Flow': ['AbuseFilter', 'CheckUser', 'ConfirmEdit', 'Mantle',
              'SpamBlacklist', 'Echo', 'EventLogging', 'VisualEditor'],
     'Gather': ['PageImages', 'TextExtracts', 'MobileFrontend', 'Echo',
