@@ -120,7 +120,7 @@ dependencies = {
     'ImageMetrics': ['EventLogging'],
     'Kartographer': ['ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
     'LanguageTool': ['VisualEditor'],
-    'LifeWeb': ['LifeWebCore'],
+    'LifeWeb': ['LifeWebCore', 'Wikibase'],
     'LightweightRDFa': ['WikiEditor'],
     'Maps': ['Validator'],
     'MassMessage': ['LiquidThreads'],
