@@ -98,6 +98,7 @@ OTHER_STUFF = ['AhoCorasick', 'at-ease', 'cdb', 'IPSet', 'oojs', 'oojs-ui', 'utf
 
 if lib.ON_LABS:
     lib.git_pull(lib.EXTENSIONS_DIR, update_submodule=True)
+    lib.git_pull(lib.SKINS_DIR, update_submodule=True)
     lib.git_pull(lib.MEDIAWIKI_DIR)
 
 reader.add_repo('MediaWiki core', 'mediawiki')
