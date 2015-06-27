@@ -1019,8 +1019,6 @@ jobs:
     voting: false
   - name: mwext-Maintenance-jslint
     voting: false
-  - name: mwext-MaintenanceShell-jslint
-    voting: false
   - name: mwext-Maps-jslint
     voting: false
   - name: mwext-MassEditRegex-jslint
@@ -2318,10 +2316,8 @@ projects:
      - labs-tools-wikibugs2-autopull
 
   - name: performance/docroot
-    test:
-     - npm
-    gate-and-submit:
-     - npm
+    template:
+      - name: npm
 
   - name: integration/docroot
     test:
@@ -5080,7 +5076,6 @@ projects:
       - name: extension-jslint
       - name: extension-unittests
 
-
   - name: mediawiki/extensions/LiveTranslate
     template:
       - name: extension-jslint
@@ -5134,8 +5129,8 @@ projects:
 
   - name: mediawiki/extensions/MaintenanceShell
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
+      - name: npm
 
   - name: mediawiki/extensions/Maps
     template:
