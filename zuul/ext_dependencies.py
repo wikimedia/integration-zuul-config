@@ -13,6 +13,8 @@ dependencies = {
     'Gather': ['PageImages', 'TextExtracts', 'MobileFrontend', 'Echo',
                'Mantle', 'VisualEditor'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
+    'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
+    'MassMessage': ['LiquidThreads'],
     'MobileFrontend': ['Echo', 'Mantle', 'VisualEditor'],
     'PronunciationRecording': ['UploadWizard'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
