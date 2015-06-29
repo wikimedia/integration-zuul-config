@@ -683,11 +683,12 @@ jobs:
      - '^.*\.json$'
 
   # Don't run PHPUnit tests on deployment, because we've removed the class files.
+  # Nor on contrib - that branch doesn't have any of our patches.
   - name: mwext-DonationInterface-testextension-zend
-    branch: (?!^deployment$)
+    branch: (?!^deployment$|^contrib$)
 
   - name: wikimedia-fundraising-civicrm
-    branch: (?!^deployment$)
+    branch: (?!^deployment$|^contrib$)
 
   # Exceptions for projects not yet passing jshint (bug 60619)
   # https://bugzilla.wikimedia.org/showdependencytree.cgi?id=60619
