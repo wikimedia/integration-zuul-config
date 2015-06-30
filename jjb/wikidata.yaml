@@ -27,6 +27,11 @@
                --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
                {params}
 
+- builder:
+    name: wd-set-env
+        - shell: |
+           . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
 - job-template:
     name: 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}'
     node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
@@ -51,6 +56,7 @@
           experimental: 'true'
      - mw-apply-settings
      - mw-run-update-script
+     - wd-set-env
      - wd-runtests:
           params: '{phpunit-params}'
     publishers:
