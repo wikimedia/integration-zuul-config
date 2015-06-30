@@ -21,6 +21,7 @@
     name: wd-runtests
     builders:
         - shell: |
+            . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
             cd "$WORKSPACE/src/tests/phpunit"
             php phpunit.php \
                --log-junit "$WORKSPACE/log/junit-wikidata.xml" \
