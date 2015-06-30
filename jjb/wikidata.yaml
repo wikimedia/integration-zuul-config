@@ -225,6 +225,9 @@
           - zend
           - hhvm
         phpunit-params: '--group WikibaseQuality'
+        builders:
+         - shell: |
+            . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
      - 'mwext-{ext-name}-qunit':
         ext-name: 'WikibaseQuality'
@@ -256,6 +259,9 @@
           - zend
           - hhvm
         phpunit-params: '--group WikibaseQualityConstraints'
+        builders:
+         - shell: |
+            . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
      - 'mwext-{ext-name}-qunit':
         ext-name: 'WikibaseQualityConstraints'
@@ -287,6 +293,9 @@
           - zend
           - hhvm
         phpunit-params: '--group WikibaseQualityExternalValidation'
+        builders:
+         - shell: |
+            . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
      - 'mwext-{ext-name}-qunit':
         ext-name: 'WikibaseQualityExternalValidation'
