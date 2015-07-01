@@ -289,9 +289,25 @@
 # PHP CodeSniffer on changed files
 - job-template:
     name: '{name}-phpcs-HEAD'
-    node: hasSlaveScripts && UbuntuPrecise
+    node: contintLabsSlave && UbuntuPrecise
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - phpcs-HEAD
+    publishers:
+     - checkstyle-xml
+     - phpcs
+
+# mediawiki/core keeps workspace to avoid reclone
+- job-template:
+    name: 'mediawiki-core-phpcs-HEAD'
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
