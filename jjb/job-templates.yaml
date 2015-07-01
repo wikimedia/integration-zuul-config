@@ -16,7 +16,7 @@
 # below.
 - job-template:
     name: '{name}-jslint'
-    node: hasSlaveScripts && UbuntuPrecise
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     triggers:
@@ -27,7 +27,7 @@
 
 - job:
     name: 'jshint'
-    node: hasSlaveScripts && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -37,7 +37,7 @@
 
 - job:
     name: 'jsonlint'
-    node: hasSlaveScripts && UbuntuPrecise
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
