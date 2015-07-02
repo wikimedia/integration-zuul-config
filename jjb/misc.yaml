@@ -98,7 +98,7 @@
      - global-teardown
 
 - job:
-    name: 'oojs-ui-publish'
+    name: 'oojs-ui-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
@@ -125,6 +125,22 @@
      - cover-publish:
         src: 'coverage'
         dest: 'oojs-ui'
+    publishers:
+     - global-teardown
+
+- job:
+    name: 'oojs-ui-doxygen-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - global-setup
+     - doxygen
+     - doc-publish:
+        docsrc: 'docs/php'
+        docdest: 'oojs-ui/php/$DOC_SUBPATH'
     publishers:
      - global-teardown
 
