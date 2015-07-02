@@ -110,7 +110,11 @@
          node --version
          npm --version
          . npm-oid.env
-         cd "$NPM_SET_PATH"
+
+         echo "Injecting dev dependencies from source repo into deploy node_modules"
+         /srv/deployment/integration/slave-scripts/bin/npm-install-dev.py
+
+         cd "$NPM_SET_PATH"  # for deploy: ./src
          npm test
 
 # MUST run 'global-setup' before this
