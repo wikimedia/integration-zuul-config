@@ -54,19 +54,21 @@
     name: 'zuul-cloner-extdeps'
     builders:
      - shell: |
+         IFS=', ' read -ra REPOS <<< "{additional-repositories}"
+         IFS=', ' read -ra DEPS <<< "{dependencies}"
+
          # Build dependencies list
          rm -f deps.txt
          touch deps.txt
          echo "mediawiki/core" >> deps.txt
-         if [ "{additional-repositories}" != "" ]; then
-             echo -e "{additional-repositories}" >> deps.txt
-         fi
+
+         for dep in "${{REPOS[@]}}"; do echo $dep; done >> deps.txt
+
          if [ "{ext-name}" != "" ]; then
             echo "mediawiki/extensions/{ext-name}" >> deps.txt
          fi
-         if [ "{dependencies}" != "" ]; then
-             echo "$(IFS=', '; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
-         fi
+
+         for dep in "${{DEPS[@]}}"; do echo mediawiki/extensions/$dep; done >> deps.txt
      - zuul-cloner:
          projects: >
              $(cat deps.txt)
@@ -79,7 +81,7 @@
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
-         additional-repositories: 'mediawiki/vendor'
+         additional-repositories: 'mediawiki/vendor,mediawiki/skins/Vector'
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
@@ -187,25 +189,7 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# Generic mw-selenium job for extensions. Can only be used by those that
-# currently don't have dependencies or a non-standard tests directory.
-- job:
-    name: 'mwext-mw-selenium'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - prepare-mediawiki-zuul-project
-     - mw-selenium:
-         tests-dir: 'tests/browser'
-    publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-
-# mw-selenium template for extensions that have dependencies or a non-standard
-# test directory.
+# mw-selenium template for MediaWiki extensions.
 - job-template:
     name: '{name}-{ext-name}-mw-selenium'
     node: contintLabsSlave && UbuntuTrusty
@@ -217,7 +201,7 @@
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
      - mw-selenium:
-         tests-dir: 'tests/browser'
+         tests-dir: 'src/extensions/{ext-name}/tests/browser'
     publishers:
      - localhost-cleanup
      - mw-teardown-mysql

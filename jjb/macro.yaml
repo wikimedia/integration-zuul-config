@@ -373,7 +373,7 @@
      - prepare-localhost
      - bundle-with-options:
         initialization: '/srv/deployment/integration/slave-scripts/bin/mw-set-env-mw-selenium.sh'
-        command: 'cucumber --color --tags @integration --tags ~@skip'
+        command: 'cucumber --color --tags @integration --tags ~@skip --format pretty --format junit --out $WORKSPACE/log/junit'
         dir: '{tests-dir}'
         bundler-version: ''
 
