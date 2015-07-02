@@ -2772,8 +2772,11 @@ projects:
       - name: puppet
 
   - name: operations/software/conftool
-    experimental:
+    test:
       - tox-flake8
+    gate-and-submit:
+      - tox-flake8
+    experimental:
       - tox-py27-jessie
 
   - name: operations/software/ircyall
