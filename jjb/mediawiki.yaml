@@ -6,13 +6,11 @@
 
 - job-template:
     name: 'mediawiki-core-jslint'
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-zuul
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-no-submodules
     concurrent: true
     logrotate:
         daysToKeep: 15
-    scm:
-     - git-mwcore
     triggers:
      - zuul
     builders:
