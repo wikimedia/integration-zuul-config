@@ -2820,8 +2820,11 @@ projects:
       - name: puppet
 
   - name: operations/software/conftool
-    experimental:
+    test:
       - tox-flake8
+    gate-and-submit:
+      - tox-flake8
+    experimental:
       - tox-py27-trusty
 
   - name: operations/software/ircyall
