@@ -655,8 +655,6 @@ jobs:
     voting: false
   - name: mwext-UploadWizard-phpcs-HEAD
     voting: false
-  - name: mwext-Vector-phpcs-HEAD
-    voting: false
   - name: mwext-WebFonts-phpcs-HEAD
     voting: false
   - name: mwext-WhitelistPages-phpcs-HEAD
@@ -7284,19 +7282,10 @@ projects:
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Vector
-    check-only:
-      - jshint
-      - jsonlint
-      - mwext-Vector-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - jshint
-      - jsonlint
-      - mwext-Vector-phpcs-HEAD
-      - phplint
-      - php-composer-validate
+    template:
+      - name: jshint
+      - name: jsonlint
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/VectorBeta
     template:
