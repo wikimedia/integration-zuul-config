@@ -10,7 +10,7 @@
 # Runs MediaWiki core @master PHP parser tests
 - job-template:
     name: parsoidsvc-php-parsertests
-    node: hasSlaveScripts && UbuntuPrecise
+    node: contintLabsSlave && UbuntuPrecise
     concurrent: true
     wrappers:
         - timeout:
@@ -23,7 +23,6 @@
     scm:
         - git:
             url: '$ZUUL_URL/$ZUUL_PROJECT'
-            reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
             branches:
              - '$ZUUL_COMMIT'
             refspec: '$ZUUL_REF'
