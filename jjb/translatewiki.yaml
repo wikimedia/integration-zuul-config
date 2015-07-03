@@ -2,13 +2,15 @@
 - job-template:
     name: 'translatewiki-puppet-validate'
     defaults: use-remote-zuul
-    node: contintLabsSlave
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
 
     builders:
      - shell: |
+         echo -n "Puppet version: "
+         puppet --version
          find . -type f -name '*.pp' -print0 | xargs -t -n1 -0  puppet parser validate --verbose
 
 # Run bash on each file under /bin without actually executing the script (-n)
