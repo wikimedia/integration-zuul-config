@@ -1532,24 +1532,6 @@ jobs:
 
   # Exceptions for projects not yet passing pep8 or pyflakes
   #
-  - name: analytics-asana-stats-pep8
-    voting: false
-  - name: analytics-asana-stats-pyflakes
-    voting: false
-  - name: analytics-gerrit-stats-pep8
-    voting: false
-  - name: analytics-gerrit-stats-pyflakes
-    voting: false
-  - name: analytics-glass-pep8
-    voting: false
-  - name: analytics-glass-pyflakes
-    voting: false
-  - name: analytics-wp-zero-tox-flake8
-    voting: false
-  - name: analytics-reportcard-pep8
-    voting: false
-  - name: analytics-reportcard-pyflakes
-    voting: false
   - name: mwext-BlameMaps-pep8
     voting: false
   - name: mwext-BlameMaps-pyflakes
@@ -2123,11 +2105,6 @@ projects:
       - mediawiki-core-qunit
       - php-composer-validate
 
-  - name: analytics/asana-stats
-    template:
-      - name: 'python-lint'
-        prefix: 'analytics-asana-stats'
-
   - name: analytics/aggregator
     test:
      - tox-flake8
@@ -2152,16 +2129,6 @@ projects:
     gate-and-submit:
      - tox-flake8
 
-  - name: analytics/gerrit-stats
-    template:
-      - name: 'python-lint'
-        prefix: 'analytics-gerrit-stats'
-
-  - name: analytics/glass
-    template:
-      - name: 'python-lint'
-        prefix: 'analytics-glass'
-
   - name: analytics/quarry/web
     test:
       - tox-flake8
@@ -2171,11 +2138,6 @@ projects:
   - name: analytics/kraken
     test:
       - analytics-kraken
-
-  - name: analytics/reportcard
-    template:
-      - name: 'python-lint'
-        prefix: 'analytics-reportcard'
 
   - name: analytics/libanon
     test:
@@ -2232,12 +2194,6 @@ projects:
      - tox-flake8
     gate-and-submit:
      - tox-flake8
-
-  - name: analytics/wp-zero
-    test:
-     - analytics-wp-zero-tox-flake8
-    gate-and-submit:
-     - analytics-wp-zero-tox-flake8
 
   - name: apps/android/commons
     test:
