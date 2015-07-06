@@ -27,6 +27,13 @@ class TestExtDependencies(unittest.TestCase):
         set_ext_dependencies(None, job, params)
         return params
 
+    def test_ext_name(self):
+        params = self.fetch_dependencies(
+            project='mediawiki/extensions/Example')
+
+        self.assertIn('EXT_NAME', params)
+        self.assertEqual(params['EXT_NAME'], 'Example')
+
     def test_resolvable_dependencies(self):
         """verifies that we can resolve all of the dependencies"""
         for ext_name in dependencies:
@@ -36,6 +43,10 @@ class TestExtDependencies(unittest.TestCase):
     def test_job_name(self):
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-testextension-hhvm'))
+        self.assertHasDependencies(self.fetch_dependencies(
+            job_name='mwext-qunit'))
+        self.assertHasDependencies(self.fetch_dependencies(
+            job_name='mwext-mw-selenium'))
         self.assertMissingDependencies(self.fetch_dependencies(
             job_name='mediawiki-core-phplint'))
 
