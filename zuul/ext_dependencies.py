@@ -30,6 +30,9 @@ dependencies = {
     'VectorBeta': ['EventLogging'],
 }
 
+# Limit execution to these jobs
+jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')
+
 
 def set_ext_dependencies(item, job, params):
     """
@@ -38,7 +41,7 @@ def set_ext_dependencies(item, job, params):
     :type job: zuul.model.Job
     :type params: dict
     """
-    if not job.name.startswith(('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')):
+    if not job.name.startswith(jobs):
         return
 
     if not params['ZUUL_PROJECT'].startswith('mediawiki/extensions/'):
