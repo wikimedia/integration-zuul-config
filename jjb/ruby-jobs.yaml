@@ -26,7 +26,7 @@
          fi
 
          # Change to the given working directory
-         cd '{dir}'
+         cd "{dir}"
 
          mkdir -p vendor
          gem2.0 install --env-shebang -i vendor --no-document "${{version[@]}}" bundler
@@ -154,7 +154,7 @@
              mediawiki/vendor
      - mw-install-mysql
      - mw-apply-settings
-     - mw-selenium:
+     - mw-selenium-with-dir:
          tests-dir: '.'
     publishers:
      - localhost-cleanup

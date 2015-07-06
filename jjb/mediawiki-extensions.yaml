@@ -187,8 +187,7 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# Generic mw-selenium job for extensions. Can only be used by those that
-# currently don't have dependencies or a non-standard tests directory.
+# Generic mw-selenium job for extensions.
 - job:
     name: 'mwext-mw-selenium'
     node: contintLabsSlave && UbuntuTrusty
@@ -197,27 +196,9 @@
      - zuul
     builders:
      - prepare-mediawiki-zuul-project
-     - mw-selenium:
-         tests-dir: 'tests/browser'
-    publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-
-# mw-selenium template for extensions that have dependencies or a non-standard
-# test directory.
-- job-template:
-    name: '{name}-{ext-name}-mw-selenium'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - prepare-mediawiki:
-         ext-name: '{ext-name}'
-         dependencies: '{dependencies}'
-     - mw-selenium:
-         tests-dir: 'tests/browser'
+     - zuul-cloner:
+         projects: mediawiki/skins/Vector
+     - mw-selenium
     publishers:
      - localhost-cleanup
      - mw-teardown-mysql
@@ -663,14 +644,6 @@
         name: mwext
         ext-name: Thanks
         dependencies: 'Echo,Flow,Mantle,MobileFrontend,VisualEditor,AbuseFilter,SpamBlacklist,CheckUser,EventLogging,ConfirmEdit'
-
-     # mw-selenium jobs for MediaWiki extensions
-     # Only extensions that have dependencies should be listed here.
-     # Others should use the generic 'mwext-mw-selenium' job.
-     - '{name}-{ext-name}-mw-selenium':
-        name: mwext
-        ext-name: MobileFrontend
-        dependencies: Mantle
 
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
