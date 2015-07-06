@@ -378,14 +378,26 @@
 # - tests-dir: Parent of the `features` directory. Usually `tests/browser`.
 #
 - builder:
-    name: mw-selenium
+    name: mw-selenium-with-dir
     builders:
      - prepare-localhost
      - bundle-with-options:
         initialization: '/srv/deployment/integration/slave-scripts/bin/mw-set-env-mw-selenium.sh'
-        command: 'cucumber --color --tags @integration --tags ~@skip'
+        command: |
+          cucumber --color --tags @integration --tags ~@skip --format pretty \
+            --format junit --out $WORKSPACE/log/junit
         dir: '{tests-dir}'
         bundler-version: ''
+
+# Run MW-Selenium tests located in a standard location, `tests/browser` beneath
+# the MW extension directory. Note that EXT_NAME is set by
+# zuul/ext_dependencies.py
+#
+- builder:
+    name: mw-selenium
+    builders:
+     - mw-selenium-with-dir:
+        tests-dir: 'src/extensions/$EXT_NAME/tests/browser'
 
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
