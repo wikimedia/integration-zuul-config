@@ -544,7 +544,7 @@ jobs:
     files:
      - '^.*\.rb$'
   - name: '^(.*-)?bundle-rubocop$'
-    files:
+    files: &rubocop-file-filter
      # Matches:
      # - .rubocop.yml
      # - .rubocop_todo.yml
@@ -555,8 +555,7 @@ jobs:
      - '^(\.rubocop.*|\.gemspec|.*\.rb|Gemfile$|Gemfile\.lock$)'
 
   - name: mediawiki-core-bundle-rubocop
-    files:
-     - '^(\.rubocop.*|\.gemspec|.*\.rb|Gemfile$)'
+    files: *rubocop-file-filter
     branch: ^(?!REL1_23|REL1_24|fundraising/REL.*)$
 
   - name: ^php-composer-validate$
