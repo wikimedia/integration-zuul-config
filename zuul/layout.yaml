@@ -6172,9 +6172,13 @@ projects:
 
   - name: mediawiki/extensions/WikidataPageBanner
     template:
+      - name: composer-test
       - name: extension-qunit-generic
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/WikibaseQuality
     template:
