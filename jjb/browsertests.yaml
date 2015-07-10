@@ -33,7 +33,7 @@
         qa-alerts@lists.wikimedia.org reading-wmf@lists.wikimedia.org
 
      - ULS: &emails-ULS
-        aaharoni@wikimedia.org kmistry@wikimedia.org qa-alerts@lists.wikimedia.org
+        aaharoni@wikimedia.org qa-alerts@lists.wikimedia.org
 
      - UploadWizard: &emails-UploadWizard
         multimedia-alerts@lists.wikimedia.org qa-alerts@lists.wikimedia.org
@@ -394,22 +394,6 @@
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-
-# UniversalLanguageSelector
-- project:
-    name: UniversalLanguageSelector
-    defaults: browsertests
-    browser: firefox
-    folder: tests
-    headless: 'false'
-    platform: linux
-    recipients: *emails-ULS
-    repository: mediawiki/extensions/UniversalLanguageSelector
-
-    jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        mediawiki_credentials_id: Uls-at-beta.wmflabs.org
-        mediawiki_url: commons.wikimedia.beta.wmflabs.org
 
 # UploadWizard
 - project:
