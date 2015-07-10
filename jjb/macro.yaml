@@ -377,12 +377,15 @@
 #
 # - tests-dir: Parent of the `features` directory. Usually `tests/browser`.
 #
+# ALWAYS pair with 'localhost-cleanup'
+# ALWAYS pair with 'mw-selenium-cleanup'
+#
 - builder:
     name: mw-selenium-with-dir
     builders:
      - prepare-localhost
      - bundle-with-options:
-        initialization: '/srv/deployment/integration/slave-scripts/bin/mw-set-env-mw-selenium.sh'
+        initialization: '/srv/deployment/integration/slave-scripts/bin/mw-selenium-teardown.sh'
         command: |
           cucumber --color --tags @integration --tags ~@skip --format pretty \
             --format junit --out $WORKSPACE/log/junit
@@ -393,11 +396,29 @@
 # the MW extension directory. Note that EXT_NAME is set by
 # zuul/ext_dependencies.py
 #
+# ALWAYS pair with 'localhost-cleanup'
+# ALWAYS pair with 'mw-selenium-cleanup'
+#
 - builder:
     name: mw-selenium
     builders:
      - mw-selenium-with-dir:
         tests-dir: 'src/extensions/$EXT_NAME/tests/browser'
+
+# Cleans up anything left under /tmp/jenkins-$EXECUTOR_NUMBER
+#
+# Note that once the bug with Xvfb and TMPDIR is resolved, this can be
+# removed. See the bin/mw-set-env-mw-selenium.sh slave script for details.
+#
+- publisher:
+    name: mw-selenium-cleanup
+    publishers:
+     - postbuildscript:
+         builders:
+           - shell: '/srv/deployment/integration/slave-scripts/bin/mw-selenium-teardown.sh'
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
 
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
