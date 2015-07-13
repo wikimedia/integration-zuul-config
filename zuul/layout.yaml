@@ -3961,24 +3961,12 @@ projects:
 
   - name: mediawiki/extensions/Interwiki
     template:
-      - name: jshint
-      - name: npm
+	  - name: composer-test
+	  - name: extension-unittests-generic
+	  - name: npm
     check:
-      - mwext-Interwiki-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-      - jsonlint
-    test:
-      - mwext-Interwiki-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - mwext-Interwiki-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-    experimental:
-      - php-composer-test
+	  - jsonlint
+	  - jshint
 
   - name: mediawiki/extensions/intersection
     template:
