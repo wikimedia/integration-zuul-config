@@ -1763,6 +1763,32 @@ project-templates:
       - npm
       - php-composer-test
 
+  # Template for MediaWiki skins.
+  # Does run the unit tests on 'test' and 'gate-and-submit'
+  - name: skin-unittests
+    check:
+     - phplint
+     - php-composer-validate
+    test:
+     - phplint
+     # Skins tests with core+vendor
+     #- 'mwskin-{name}-testskin-hhvm'
+     - 'mwskin-{name}-testskin-zend'
+     - php-composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - phplint
+     # Skins tests with core+vendor
+     #- 'mwskin-{name}-testskin-hhvm'
+     - 'mwskin-{name}-testskin-zend'
+     - php-composer-validate
+    experimental:
+      - 'mediawiki-skins-hhvm'
+      - 'mwskin-{name}-testskin-hhvm'
+      - mwskin-testskin-hhvm
+      - npm
+      - php-composer-test
+
   - name: extension-unittests-generic
     check:
      - phplint
@@ -1782,6 +1808,27 @@ project-templates:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
       - mwext-testextension-hhvm
+      - npm
+      - php-composer-test
+
+  - name: skin-unittests-generic
+    check:
+     - phplint
+     - php-composer-validate
+    test:
+     - phplint
+     # Skins tests with core+vendor
+     - mwskin-testskin-zend
+     - php-composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - phplint
+     # Skins tests with core+vendor
+     - mwskin-testskin-zend
+     - php-composer-validate
+    experimental:
+      - mediawiki-skins-hhvm
+      - mwskin-testskin-hhvm
       - npm
       - php-composer-test
 
