@@ -4093,9 +4093,12 @@ projects:
 
   - name: mediawiki/extensions/MathSearch
     template:
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-generic
+      - name: composer-test
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/MapSources
     template:
