@@ -4037,7 +4037,7 @@ projects:
   - name: mediawiki/extensions/Math
     template:
       - name: jshint
-      - name: extension-unittests-generic
+      - name: extension-unittests
       - name: extension-rubylint
       - name: npm
     check:
@@ -4049,7 +4049,7 @@ projects:
     template:
       - name: jshint
       - name: jsonlint
-      - name: extension-unittests-generic
+      - name: extension-unittests
 
   - name: mediawiki/extensions/MapSources
     template:
@@ -6241,7 +6241,12 @@ projects:
 
   - name: mediawiki/extensions/Farmer
     template:
-     - name: mw-checks
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/Favorites
     template:
