@@ -818,8 +818,6 @@ jobs:
     voting: false
   - name: mwext-BreadCrumbs2-jslint
     voting: false
-  - name: mwext-Cargo-jslint
-    voting: false
   - name: mwext-Carp-jslint
     voting: false
   - name: mwext-CategorySlideShow-jslint
@@ -4591,8 +4589,12 @@ projects:
 
   - name: mediawiki/extensions/Cargo
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/CategorySlideShow
     template:
