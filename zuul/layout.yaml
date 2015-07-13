@@ -1050,8 +1050,6 @@ jobs:
     voting: false
   - name: mwext-MSSQLBackCompat-jslint
     voting: false
-  - name: mwext-MsUpload-jslint
-    voting: false
   - name: mwext-MultimediaPlayer-jslint
     voting: false
   - name: mwext-MultiUpload-jslint
@@ -1423,8 +1421,6 @@ jobs:
   - name: ^mwext-Maps-testextension.*
     voting: false
   - name: ^mwext-MsLinks-testextension.*
-    voting: false
-  - name: ^mwext-MsUpload-testextension.*
     voting: false
   - name: ^mwext-MultimediaPlayer-testextension.*
     voting: false
@@ -5095,6 +5091,7 @@ projects:
 
   - name: mediawiki/extensions/MaintenanceShell
     template:
+      - name: composer-test
       - name: extension-unittests-generic
       - name: npm
     check:
@@ -5157,9 +5154,12 @@ projects:
 
   - name: mediawiki/extensions/MsUpload
     template:
-      - name: extension-jslint
-      - name: extension-unittests
-
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/MultimediaPlayer
     template:
