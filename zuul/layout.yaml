@@ -6600,6 +6600,12 @@ projects:
       - name: jsonlint
       - name: extension-unittests
 
+  - name: mediawiki/extensions/PhpTagsStorage
+    template:
+      - name: jshint
+      - name: jsonlint
+      - name: extension-unittests
+
   - name: mediawiki/extensions/PhpTagsWidgets
     template:
       - name: jshint
@@ -7081,11 +7087,12 @@ projects:
 
   - name: mediawiki/extensions/TimedMediaHandler
     template:
-      - name: jshint
-      - name: extension-unittests
+      - name: composer-test
       - name: npm
     check:
       - jsonlint
+      - jshint
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/timeline
     template:
