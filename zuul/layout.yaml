@@ -6220,7 +6220,12 @@ projects:
 
   - name: mediawiki/extensions/Farmer
     template:
-     - name: mw-checks
+      - name: composer-test
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
+      - extension-unittests-generic
 
   - name: mediawiki/extensions/Favorites
     template:
@@ -6595,6 +6600,12 @@ projects:
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsFunctions
+    template:
+      - name: jshint
+      - name: jsonlint
+      - name: extension-unittests
+
+  - name: mediawiki/extensions/PhpTagsStorage
     template:
       - name: jshint
       - name: jsonlint
