@@ -130,11 +130,16 @@ class TestZuulLayout(unittest.TestCase):
             ],
         }
 
+        # Pre compile above regular expressions
+        repos_compiled = {}
+        for (regex, assertions) in repos.iteritems():
+            repos_compiled[re.compile(regex)] = assertions
+        del repos
+
         for pipeline in self.getPipelines():
-            for regex, assertions in repos.items():
-                regex_comp = re.compile(regex)
+            for regex_compiled, assertions in repos_compiled.items():
                 for name in self.getPipelineProjectsNames(pipeline.name):
-                    if regex_comp.match(name):
+                    if regex_compiled.match(name):
                         project_def = self.getProjectDef(name)
 
                         requirements = set()
