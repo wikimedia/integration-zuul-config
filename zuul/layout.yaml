@@ -790,8 +790,6 @@ jobs:
   - name: wikimedia-fundraising-crm-jslint
     voting: false
 # Start of new currently disabled extensions checks from mass extension import - Addshore
-  - name: mwext-AjaxLogin-jslint
-    voting: false
   - name: mwext-AJAXPoll-jslint
     voting: false
   - name: mwext-ApiExplorer-jslint
@@ -4395,8 +4393,12 @@ projects:
 
   - name: mediawiki/extensions/AjaxLogin
     template:
-      - name: extension-jslint
-      - name: extension-unittests-generic
+      - name: composer-test
+      - name: npm
+    check:
+      - jsonlint
+	  - jshint
+	  - extension-unittests-generic
 
   - name: mediawiki/extensions/AJAXPoll
     template:
