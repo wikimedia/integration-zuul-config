@@ -705,8 +705,6 @@ jobs:
     voting: false
   - name: mwext-ArticleFeedbackv5-jslint # bug 61588
     voting: false
-  - name: mwext-CheckUser-jslint # bug 61589
-    voting: false
   - name: mwext-ClickTracking-jslint # bug 61591
     voting: false
   - name: mwext-CodeReview-jslint # bug 61593
@@ -3148,10 +3146,12 @@ projects:
 
   - name: mediawiki/extensions/CheckUser
     template:
-      - name: extension-gate
-      - name: extension-jslint
-      - name: extension-unittests
+      - name: composer-test
       - name: npm
+    check:
+      - jsonlint
+      - jshint
+      - extension-unittests-generic
 
   - name: mediawiki/extensions/Cite
     template:
@@ -6595,6 +6595,12 @@ projects:
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsFunctions
+    template:
+      - name: jshint
+      - name: jsonlint
+      - name: extension-unittests
+
+  - name: mediawiki/extensions/PhpTagsStorage
     template:
       - name: jshint
       - name: jsonlint
