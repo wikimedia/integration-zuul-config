@@ -1249,8 +1249,6 @@ jobs:
     voting: false
   - name: mwext-ShoutBox-jslint
     voting: false
-  - name: mwext-ShoutWikiAds-jslint
-    voting: false
   - name: mwext-SidebarDonateBox-jslint
     voting: false
   - name: mwext-SignWritingMediaWikiPlugin-jslint
@@ -5803,8 +5801,12 @@ projects:
 
   - name: mediawiki/extensions/ShoutWikiAds
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/SidebarDonateBox
     template:
