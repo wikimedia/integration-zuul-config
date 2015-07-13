@@ -200,6 +200,60 @@ class TestZuulLayout(unittest.TestCase):
         prof.print_stats(sort='tottime')
         return
 
+    def test_projects_have_pipeline_gate_and_submit(self):
+        lacks_gate = []
+        for (project, pipelines) in self.getProjectsPipelines().iteritems():
+            if(
+                'gate-and-submit' in pipelines
+                # Zuul account cant merge for ops:
+                or project.startswith('operations/')
+                # Weird edge case:
+                or project == 'analytics/kraken'
+                # Some repos just have experimental:
+                or pipelines == ['experimental']
+            ):
+                continue
+            lacks_gate.append(project)
+
+        self.maxDiff = None
+        self.assertEqual([], lacks_gate)
+
+    def test_projects_have_only_one_check_pipeline(self):
+        dupe_check = {}
+        for (project, pipelines) in self.getProjectsPipelines().iteritems():
+            check_pipelines = [p for p in pipelines if p.startswith('check')]
+            if len(check_pipelines) > 1:
+                dupe_check[project] = check_pipelines
+
+        self.longMessage = True
+        self.maxDiff = None
+
+        self.assertEquals(
+            {}, dupe_check,
+            msg="Projects can only be in a single check pipeline")
+
+    def assertPipelinesDoNotOverlap(self, pipeline_name_1, pipeline_name_2,
+                                    msg=None):
+        first = set(self.getPipelineProjectsNames(pipeline_name_1))
+        second = set(self.getPipelineProjectsNames(pipeline_name_2))
+
+        self.longMessage = True
+        self.maxDiff = None
+        self.assertEqual(set(), first & second, msg)
+
+    def test_projects_in_check_only_are_not_in_test_pipeline(self):
+        self.assertPipelinesDoNotOverlap(
+            'check-only', 'test',
+            msg="check-only is only for projects not having entries in the "
+                "test pipeline. Move the jobs to 'check' pipeline instead.")
+
+    def test_projects_in_check_voter_are_not_in_test_pipeline(self):
+        self.assertPipelinesDoNotOverlap(
+            'check-voter', 'test',
+            msg="check-voter is only for projects not having entries in "
+                "the test pipeline and for which the repository lacks tests. "
+                "Move jobs from check-voter to check pipeline")
+
     @unittest.skip('Disabled per T94583, pending overhauling')
     def test_release_mediawiki_non_wmf_version_tags(self):
 
