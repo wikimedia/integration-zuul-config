@@ -4622,7 +4622,12 @@ projects:
 
   - name: mediawiki/extensions/BreadCrumbs
     template:
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jshint
+      - jsonlint
 
   - name: mediawiki/extensions/BreadCrumbs2
     template:
