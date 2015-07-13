@@ -1490,8 +1490,6 @@ jobs:
     voting: false
   - name: ^mwext-ThrottleOverride-testextension.*
     voting: false
-  - name: ^mwext-TwitterLogin-testextension.*
-    voting: false
   - name: ^mwext-UIFeedback-testextension.*
     voting: false
   - name: ^mwext-UnitTest-testextension.*
@@ -6054,8 +6052,12 @@ projects:
 
   - name: mediawiki/extensions/TwitterLogin
     template:
-      - name: jsonlint
-      - name: extension-unittests
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jshint
+      - jsonlint
 
   - name: mediawiki/extensions/TwoFactorAuthentication
     template:
