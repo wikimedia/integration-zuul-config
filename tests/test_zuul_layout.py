@@ -88,6 +88,15 @@ class TestZuulLayout(unittest.TestCase):
             ret[pipeline.name] = [job.name for job in tree[0].getJobs()]
         return ret
 
+    def getProjectsPipelines(self):
+        """Map of projects -> pipelines names"""
+        projects_pipelines = {}
+        for pipeline in self.getPipelines():
+            for project in self.getPipelineProjectsNames(pipeline.name):
+                projects_pipelines.setdefault(project, []) \
+                                  .append(pipeline.name)
+        return projects_pipelines
+
     # Tests
 
     def assertProjectHasComposerValidate(self, name, definition, pipeline):
@@ -167,6 +176,46 @@ class TestZuulLayout(unittest.TestCase):
                                  project_def[req_pipeline], req_pipeline)
 
         return
+
+    def test_projects_have_pipeline_gate_and_submit(self):
+        lacks_gate = []
+        for (project, pipelines) in self.getProjectsPipelines().iteritems():
+            if(
+                'gate-and-submit' in pipelines
+                # Zuul account cant merge for ops:
+                or project.startswith('operations/')
+                # Weird edge case:
+                or project == 'analytics/kraken'
+                # Some repos just have experimental:
+                or pipelines == ['experimental']
+            ):
+                continue
+            lacks_gate.append(project)
+
+        self.maxDiff = None
+        self.assertEqual([], lacks_gate)
+
+    def test_projects_in_check_only_are_not_in_test_pipeline(self):
+        check_only = set(self.getPipelineProjectsNames('check-only'))
+        test = set(self.getPipelineProjectsNames('test'))
+
+        self.longMessage = True
+        self.maxDiff = None
+        self.assertIsNone(
+            check_only & test,
+            msg="check-only is only for projects not having entries in the "
+                "test pipeline. Move the jobs to the 'check' pipeline "
+                "instead.")
+
+    def test_projects_in_check_only_are_not_in_check_pipeline(self):
+        check_only = set(self.getPipelineProjectsNames('check-only'))
+        check = set(self.getPipelineProjectsNames('check'))
+
+        self.longMessage = True
+        self.maxDiff = None
+        self.assertIsNone(
+            check_only & check,
+            msg="A project can't have jobs in both check-only and check")
 
     @unittest.skip('Disabled per T94583, pending overhauling')
     def test_release_mediawiki_non_wmf_version_tags(self):
