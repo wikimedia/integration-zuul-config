@@ -743,8 +743,6 @@ jobs:
     voting: false
   - name: mwext-MoodBar-jslint # bug 61612
     voting: false
-  - name: mwext-MwEmbedSupport-jslint # bug 61613
-    voting: false
   - name: mwext-Nonlinear-jslint # bug 61614
     voting: false
   - name: mwext-PageTriage-jslint # bug 61618
@@ -4158,11 +4156,12 @@ projects:
 
   - name: mediawiki/extensions/MwEmbedSupport
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
       - name: npm
     check:
       - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/MWSearch
     template:
