@@ -4047,9 +4047,12 @@ projects:
 
   - name: mediawiki/extensions/MathSearch
     template:
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-generic
+      - name: composer-test
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/MapSources
     template:
@@ -6241,7 +6244,12 @@ projects:
 
   - name: mediawiki/extensions/Farmer
     template:
-     - name: mw-checks
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/Favorites
     template:
