@@ -6471,7 +6471,29 @@ projects:
 
   - name: mediawiki/extensions/WikibaseRepository
     template:
-     - name: mw-checks
+      - name: npm
+      - name: composer-test
+    check:
+      - jsonlint
+      - jshint
+      - extension-unittests-generic
+    zend:  # 'check zend'
+      - mwext-Wikibase-repo-tests-mysql-zend
+      - mwext-Wikibase-repo-tests-sqlite-zend
+    test:
+      - phplint
+      - php-composer-validate
+      - mwext-Wikibase-repo-tests-mysql-hhvm
+      - mwext-Wikibase-repo-tests-sqlite-hhvm
+      - mwext-Wikibase-qunit
+    gate-and-submit:
+      - phplint
+      - php-composer-validate
+      - mwext-Wikibase-repo-tests-mysql-zend
+      - mwext-Wikibase-repo-tests-sqlite-zend
+      - mwext-Wikibase-repo-tests-mysql-hhvm
+      - mwext-Wikibase-repo-tests-sqlite-hhvm
+      - mwext-Wikibase-qunit
 
   - name: mediawiki/extensions/WikibaseView
     template:
@@ -6595,6 +6617,12 @@ projects:
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsFunctions
+    template:
+      - name: jshint
+      - name: jsonlint
+      - name: extension-unittests
+
+  - name: mediawiki/extensions/PhpTagsStorage
     template:
       - name: jshint
       - name: jsonlint
