@@ -3323,9 +3323,12 @@ projects:
 
   - name: mediawiki/extensions/ConfirmAccount
     template:
-      - name: jshint
-      - name: jsonlint
-      - name: extension-unittests-generic
+      - name: composer-test
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
+      - extension-unittests-generic
 
   - name: mediawiki/extensions/ConfirmEdit
     template:
