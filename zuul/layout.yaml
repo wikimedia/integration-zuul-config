@@ -3913,24 +3913,12 @@ projects:
 
   - name: mediawiki/extensions/Interwiki
     template:
-      - name: jshint
-      - name: npm
+	  - name: extension-unittests-generic
+	  - name: composer-test
+	  - name: npm
     check:
-      - mwext-Interwiki-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-      - jsonlint
-    test:
-      - mwext-Interwiki-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - mwext-Interwiki-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-    experimental:
-      - php-composer-test
+	  - jsonlint
+	  - jshint
 
   - name: mediawiki/extensions/intersection
     template:
@@ -6595,6 +6583,12 @@ projects:
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsFunctions
+    template:
+      - name: jshint
+      - name: jsonlint
+      - name: extension-unittests
+
+  - name: mediawiki/extensions/PhpTagsStorage
     template:
       - name: jshint
       - name: jsonlint
