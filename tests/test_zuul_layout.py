@@ -139,29 +139,32 @@ class TestZuulLayout(unittest.TestCase):
         for pipeline in self.getPipelines():
             for regex_compiled, assertions in repos_compiled.items():
                 for name in self.getPipelineProjectsNames(pipeline.name):
-                    if regex_compiled.match(name):
-                        project_def = self.getProjectDef(name)
 
-                        requirements = set()
-                        requirements.add('gate-and-submit')
+                    if not regex_compiled.match(name):
+                        continue
 
-                        if 'check-only' in project_def.keys():
-                            requirements.add('check-only')
-                        elif 'check-voter' in project_def.keys():
-                            # Skins uses a different check pipeline
-                            requirements.add('check-voter')
-                        else:
-                            requirements.add('check')
-                            requirements.add('test')
+                    project_def = self.getProjectDef(name)
 
-                        for req_pipeline in requirements:
-                            # Should be caught by another test:
-                            self.assertIn(req_pipeline, project_def.keys(),
-                                          'Project %s lacks %s pipeline' %
-                                          (name, req_pipeline))
-                            for func in assertions:
-                                func(name,
-                                     project_def[req_pipeline], req_pipeline)
+                    requirements = set()
+                    requirements.add('gate-and-submit')
+
+                    if 'check-only' in project_def.keys():
+                        requirements.add('check-only')
+                    elif 'check-voter' in project_def.keys():
+                        # Skins uses a different check pipeline
+                        requirements.add('check-voter')
+                    else:
+                        requirements.add('check')
+                        requirements.add('test')
+
+                    for req_pipeline in requirements:
+                        # Should be caught by another test:
+                        self.assertIn(req_pipeline, project_def.keys(),
+                                      'Project %s lacks %s pipeline' %
+                                      (name, req_pipeline))
+                        for func in assertions:
+                            func(name,
+                                 project_def[req_pipeline], req_pipeline)
 
         return
 
