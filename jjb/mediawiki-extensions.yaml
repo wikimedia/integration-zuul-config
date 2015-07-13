@@ -247,10 +247,57 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# Run skin tests via Zuul cloner
+#
+- job-template:
+    name: '{name}-{skin-name}-testskin-{phpflavor}'
+    # See mediawiki.yaml mediawiki-phpunit-{phpflavor}
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki:
+         skin-name: '{skin-name}'
+         dependencies: '{dependencies}'
+     - mw-run-phpunit-allexts
+    # TODO, find ways to additionaly run tests for core but
+    # without skins tests
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
 # Generic phpunit job for extensions. Can only be used by
 # those that currently don't have dependencies
 - job-template:
     name: 'mwext-testextension-{phpflavor}'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+	 
+# Generic phpunit job for skins. Can only be used by
+# those that currently don't have dependencies
+- job-template:
+    name: 'mwskin-testskin-{phpflavor}'
     node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
@@ -275,6 +322,7 @@
             - hhvm
             - zend
 
+			
 - job:
     name: 'mwext-Flow-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
@@ -674,7 +722,28 @@
      - 'mwext-TemplateData-jsduck-publish':
         ext-name: TemplateData
 
+# These are jobs we create for all of the skins
+# listed below. If a job should only be created
+# for a select number of skins or if it needs
+# custom parameters, add it below under "Extra jobs for specific skins"
+# at the bottom of this file.
+- job-group:
+    name: mwskin-check-jobs
+    jobs:
+     - '{name}-{skin-name}-testskin-{phpflavor}':
+         phpflavor:
+             - hhvm
+             - zend
 
+- project:
+    name: mwskin
+
+    # By default we do not need any other skins:
+    dependencies: ""
+
+    skin-name:
+     - Metrolook
+     - Vector
 
 # Deprecated, extensions should be converted
 # to use an npm entry point instead.
