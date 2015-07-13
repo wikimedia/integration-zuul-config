@@ -674,7 +674,28 @@
      - 'mwext-TemplateData-jsduck-publish':
         ext-name: TemplateData
 
+# These are jobs we create for all of the extensions
+# listed below. If a job should only be created
+# for a select number of extensions or if it needs
+# custom parameters, add it below under "Extra jobs for specific extensions"
+# at the bottom of this file.
+- job-group:
+    name: mwext-check-jobs
+    jobs:
+     - '{name}-{skin-name}-testskin-{phpflavor}':
+         phpflavor:
+             - hhvm
+             - zend
 
+- project:
+    name: mwskin
+
+    # By default we do not need any other extensions:
+    dependencies: ""
+
+    skin-name:
+     - Metrolook
+     - Vector
 
 # Deprecated, extensions should be converted
 # to use an npm entry point instead.
