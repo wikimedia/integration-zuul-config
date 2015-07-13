@@ -4524,6 +4524,8 @@ projects:
   - name: mediawiki/extensions/BreadCrumbs
     template:
       - name: extension-unittests-generic
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/BreadCrumbs2
     template:
@@ -6595,6 +6597,12 @@ projects:
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsFunctions
+    template:
+      - name: jshint
+      - name: jsonlint
+      - name: extension-unittests
+
+  - name: mediawiki/extensions/PhpTagsStorage
     template:
       - name: jshint
       - name: jsonlint
