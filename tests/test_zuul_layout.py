@@ -88,6 +88,24 @@ class TestZuulLayout(unittest.TestCase):
             ret[pipeline.name] = [job.name for job in tree[0].getJobs()]
         return ret
 
+    def getProjectsDefs(self):
+        """Map projects, pipelines and their jobs (as strings, not objects)"""
+        ret = {}
+        for pipeline in self.sched.layout.pipelines.values():
+            for (project, tree) in pipeline.job_trees.iteritems():
+                ret.setdefault(project.name, {})[pipeline.name] = \
+                    [job.name for job in tree.getJobs()]
+        return ret
+
+    def getProjectsPipelines(self):
+        """Map of projects -> pipelines names"""
+        projects_pipelines = {}
+        for pipeline in self.getPipelines():
+            for project in self.getPipelineProjectsNames(pipeline.name):
+                projects_pipelines.setdefault(project, []) \
+                                  .append(pipeline.name)
+        return projects_pipelines
+
     # Tests
 
     def assertProjectHasComposerValidate(self, name, definition, pipeline):
@@ -136,32 +154,44 @@ class TestZuulLayout(unittest.TestCase):
             repos_compiled[re.compile(regex)] = assertions
         del repos
 
-        for pipeline in self.getPipelines():
+        # Dict of projects -> assertions
+        mediawiki_projects = {}
+        for project_name in self.getProjectsPipelines().keys():
+            project_assertions = None
             for regex_compiled, assertions in repos_compiled.items():
-                for name in self.getPipelineProjectsNames(pipeline.name):
-                    if regex_compiled.match(name):
-                        project_def = self.getProjectDef(name)
+                if regex_compiled.match(project_name):
+                    project_assertions = assertions
+                    break
+            # Project did not match
+            if project_assertions is None:
+                continue
+            mediawiki_projects[project_name] = assertions
 
-                        requirements = set()
-                        requirements.add('gate-and-submit')
+        all_defs = self.getProjectsDefs()
+        for (project_name, assertions) in mediawiki_projects.iteritems():
 
-                        if 'check-only' in project_def.keys():
-                            requirements.add('check-only')
-                        elif 'check-voter' in project_def.keys():
-                            # Skins uses a different check pipeline
-                            requirements.add('check-voter')
-                        else:
-                            requirements.add('check')
-                            requirements.add('test')
+            project_def = all_defs[project_name]
 
-                        for req_pipeline in requirements:
-                            # Should be caught by another test:
-                            self.assertIn(req_pipeline, project_def.keys(),
-                                          'Project %s lacks %s pipeline' %
-                                          (name, req_pipeline))
-                            for func in assertions:
-                                func(name,
-                                     project_def[req_pipeline], req_pipeline)
+            # Pipelines that must be set
+            requirements = set()
+            requirements.add('gate-and-submit')
+            if 'check-only' in project_def.keys():
+                requirements.add('check-only')
+            elif 'check-voter' in project_def.keys():
+                # Skins uses a different check pipeline
+                requirements.add('check-voter')
+            else:
+                for default_requirement in ['check', 'test']:
+                    requirements.add(default_requirement)
+                    self.assertIn(default_requirement, project_def.keys(),
+                                  'Project %s must have a %s pipeline'
+                                  % (project_name, default_requirement))
+
+            # Validate the pipeline has the proper jobs
+            for req_pipeline in requirements:
+                for func in assertions:
+                    func(project_name,
+                         project_def[req_pipeline], req_pipeline)
 
         return
 
