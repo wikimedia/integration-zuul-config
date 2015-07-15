@@ -92,20 +92,6 @@
      - mw-teardown
 
 - job-template:
-    name: '{name}-whitespaces'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul
-    concurrent: true
-    logrotate:
-        daysToKeep: 15
-    scm:
-     - git-mwcore
-    triggers:
-     - zuul
-    builder:
-     - lint-whitespaces
-
-- job-template:
     name: 'mediawiki-gate'
     node: contintLabsSlave
     concurrent: true
@@ -338,7 +324,6 @@
       - '{name}-npm'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
-      - '{name}-whitespaces'
       - mediawiki-gate
       - mediawiki-core-phpcs-HEAD
       - '{name}-phplint'
