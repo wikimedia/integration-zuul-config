@@ -1,7 +1,7 @@
 - job-template:
     name: 'php-{name}-build'
     node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
@@ -14,7 +14,7 @@
 - job-template:
     name: 'php-{name}-hhvm-build'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
