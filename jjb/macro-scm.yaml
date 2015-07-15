@@ -13,31 +13,6 @@
             # XXX: Why only this one recursive?
             recursive: true
 
-# Same as git-localonly-zuul but fetches the Zuul changes using two repositories:
-#
-# a) $ZUUL_URL/*
-# Zuul maintained non-bare repository (ie does not ends with '.git')
-#
-# b) /srv/ssd/gerrit/*.git
-#
-# The latter is a local Gerrit replication destination (bare repository, ends
-# with '.git'). This saves network access and speed up the process by allowing
-# git to do a hardlink (the replicated repositories and the job workspace
-# are on the same device mounted as /srv/ssd).
-- scm:
-    name: git-remote-zuul
-    scm:
-     - git:
-        url: '$ZUUL_URL/$ZUUL_PROJECT'
-        reference-repo: '/srv/ssd/gerrit/$ZUUL_PROJECT.git'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        wipe-workspace: false
-        clean:
-            after: true
-        submodule: {}
-
 # This one doesn't rely on a local /srv/ssd/gerrit replication dest, this is to
 # be used for slaves hosted in labs (e.g. contintLabsSlave nodes).
 - scm:

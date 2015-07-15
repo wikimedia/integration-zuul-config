@@ -3,7 +3,7 @@
 - job-template:
     name: 'operations-puppet-test'
     node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
@@ -37,7 +37,7 @@
 - job-template:
     name: 'operations-puppet-doc'
     node: gallium  # webhost where doc is published
-    defaults: use-remote-zuul
+    defaults: use-remoteonly-zuul
     concurrent: false  # dont want to race doc creation!
 
     triggers:
