@@ -16,28 +16,6 @@
       - ansicolor
 
 - defaults:
-    name: use-zuul
-
-    description: |
-      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
-      <p>This job is triggered by Zuul</p>
-
-    project-type: freestyle
-
-    logrotate:
-        daysToKeep: 30
-
-    scm:
-     - git-localonly-zuul
-
-    wrappers:
-      - timeout:
-          timeout: 30
-          fail: true
-      - timestamps
-      - ansicolor
-
-- defaults:
     name: use-remoteonly-zuul
 
     description: |

@@ -1,18 +1,3 @@
-- scm:
-    name: git-localonly-zuul
-    scm:
-     - git:
-        url: '/srv/ssd/zuul/git/$ZUUL_PROJECT'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        wipe-workspace: false
-        clean:
-            after: true
-        submodule:
-            # XXX: Why only this one recursive?
-            recursive: true
-
 # This one doesn't rely on a local /srv/ssd/gerrit replication dest, this is to
 # be used for slaves hosted in labs (e.g. contintLabsSlave nodes).
 - scm:
