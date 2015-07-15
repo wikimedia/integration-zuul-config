@@ -1317,8 +1317,6 @@ jobs:
     voting: false
   - name: mwext-TemplateInfo-jslint
     voting: false
-  - name: mwext-Theme-jslint
-    voting: false
   - name: mwext-ThemeDesigner-jslint
     voting: false
   - name: mwext-ThrottleOverride-jslint
@@ -6005,8 +6003,12 @@ projects:
 
   - name: mediawiki/extensions/Theme
     template:
-      - name: extension-jslint
-      - name: extension-unittests-generic
+     - name: composer-test
+     - name: extension-unittests-generic
+     - name: npm
+    check:
+     - jsonlint
+     - jshint
 
   - name: mediawiki/extensions/ThemeDesigner
     template:
