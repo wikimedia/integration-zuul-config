@@ -363,11 +363,14 @@
           dependencies: *gatedextensions
 
 - job:
-    name: 'mediawiki-core-code-coverage'
-    node: gallium
+    name: 'mediawiki-core-code-coverage-2'
+    node: contintLabsSlave && UbuntuPrecise  # Zend PHP 5.3.x
     # Set env variables needed by zuul-cloner since job is not triggered by
     # Zuul but is timed using Jenkins own scheduler.
     parameters:
+     - string:
+         name: 'ZUUL_UUID'
+         default: 'mwcore-cover_not-very-random'
      - string:
          name: 'ZUUL_BRANCH'
          default: 'master'
@@ -414,18 +417,22 @@
         }
         trap compress_clover_log EXIT
 
+        rm -fR "$WORKSPACE/cover"
+        mkdir -p "$WORKSPACE/cover"
+
         nice -n 19 php $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
             --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
             --coverage-clover log/clover.xml \
-            --coverage-html /srv/org/wikimedia/integration/cover/mediawiki-core/master/php \
+            --coverage-html "$WORKSPACE/cover" \
             || :
+
         # PHP segfault (bug 43972) so ignore any error with '|| :' or the
         # Jenkins plugin will never generate the coverage report for us
         # https://issues.jenkins-ci.org/browse/JENKINS-21046
-
-        echo "Code coverage report is available at:"
-        echo "https://integration.wikimedia.org/cover/mediawiki-core/master/php"
+     - cover-publish:
+         src: 'cover'
+         dest: 'mediawiki-core/$ZUUL_BRANCH/php2'
     publishers:
      - archive:
          artifacts: 'log/clover.xml.bz2'
