@@ -16,6 +16,7 @@ if len(sys.argv) > 1:
 else:
     extension = None
 
+
 def update(package_json):
     os.chdir(os.path.dirname(package_json))
     print(package_json.split('/')[-2])
@@ -48,7 +49,8 @@ def update(package_json):
     for tup in updating:
         msg += '* %s: %s → %s\n' % tup
     print(msg)
-    lib.commit_and_push(files=['package.json'], msg=msg, branch='master', topic='bump-dev-deps')
+    lib.commit_and_push(files=['package.json'], msg=msg, branch='master',
+                        topic='bump-dev-deps')
 
 if extension == 'mediawiki':
     packages = ['/home/km/projects/vagrant/mediawiki/package.json']

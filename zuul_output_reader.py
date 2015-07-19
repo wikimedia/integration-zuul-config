@@ -7,6 +7,7 @@ import tempfile
 
 import lib
 
+
 def main():
     if lib.ON_LABS:
         zuul_server = '/data/project/ci/py2-venv2/bin/zuul-server'
@@ -16,7 +17,7 @@ def main():
         zuul_server = '/home/km/python/bin/zuul-server'
         config = '/home/km/projects/integration-config/zuul/layout.yaml'
 
-    ZUUL_OUTPUT = '/home/km/projects/integration-config/zuul/output'
+    ZUUL_OUTPUT = '/home/km/projects/integration-config/zuul/output'  # noqa
     PROJECTS = ('mediawiki/extensions/', 'mediawiki/skins/')
 
     f = tempfile.NamedTemporaryFile(delete=False)
