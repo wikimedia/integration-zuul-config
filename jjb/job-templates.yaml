@@ -344,7 +344,8 @@
 - job-template:
     name: '{name}-puppet-validate'
     defaults: use-remote-zuul-no-submodules
-    node: contintLabsSlave
+    # XXX should match operations puppetmaster distro
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
