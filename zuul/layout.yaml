@@ -446,7 +446,8 @@ pipelines:
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
-            - Code-Review: 2
+            # Zuul EventFilter normalizes approvals to lower case T106436
+            - code-review: 2
     start:
       gerrit:
         Verified: 0

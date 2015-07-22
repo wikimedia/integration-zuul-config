@@ -351,6 +351,23 @@ class TestZuulLayout(unittest.TestCase):
                           manager.pipeline.name)
          for manager in managers]
 
+    # Make sure Code-Review +2 approval is recognized by gate-and-submit
+    # The EventFilter does some normalization (T106436)
+    def test_code_review_2_matched_by_gate_and_submit(self):
+        gate = self.getPipeline('gate-and-submit').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.account = {'email': 'someone@wikimedia.org'}
+        event.approvals = [{'type': 'Code-Review',
+                            'description': 'Code-Review',
+                            'value': '2',
+                            'by': {'email': 'someone@wikimedia.org'},
+                            }]
+
+        self.assertTrue(gate.eventMatches(event, change))
+
     # Currently failing since we're ignoring l10n-bot until we can fix
     # issues with CI being overloaded (T91707)
     @unittest.expectedFailure
