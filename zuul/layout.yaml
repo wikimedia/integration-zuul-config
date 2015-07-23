@@ -2361,7 +2361,12 @@ projects:
 
   - name: mediawiki/skins/BlueSky
     template:
-     - name: mw-checks
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/skins/BlueSpiceSkin
     template:
