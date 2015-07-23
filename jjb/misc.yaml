@@ -161,22 +161,6 @@
      - global-teardown
 
 - job:
-    name: 'mwext-MobileFrontend-doxygen-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - global-setup
-     - doxygen
-     - doc-publish:
-        docsrc: 'docs/php'
-        docdest: 'MobileFrontend/$DOC_SUBPATH/php'
-    publishers:
-     - global-teardown
-
-- job:
     name: 'visualeditor-coverage'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
