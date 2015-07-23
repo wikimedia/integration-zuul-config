@@ -2380,7 +2380,11 @@ projects:
 
   - name: mediawiki/skins/Blueprint
     template:
-     - name: mw-checks
+      - name: composer-test
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/skins/BlueSky
     template:
