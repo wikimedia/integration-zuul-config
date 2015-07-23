@@ -2341,7 +2341,12 @@ projects:
 
   - name: mediawiki/skins/BlueSky
     template:
-     - name: mw-checks
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/skins/BlueSpiceSkin
     template:
@@ -2586,6 +2591,7 @@ projects:
     test:
       - bundle17-cucumber
       - bundle17-rspec
+      - bundle17-rubocop
       - mediawiki-vagrant-puppet-validate
       - erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
@@ -2593,6 +2599,7 @@ projects:
     gate-and-submit:
       - bundle17-cucumber
       - bundle17-rspec
+      - bundle17-rubocop
       - erblint-HEAD
       - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
@@ -2600,8 +2607,6 @@ projects:
     postmerge:
       - mediawiki-vagrant-puppet-doc-publish
       - mediawiki-vagrant-bundle17-yard-publish
-    experimental:
-      - bundle17-rubocop
 
   - name: operations/debs/adminbot
     template:
