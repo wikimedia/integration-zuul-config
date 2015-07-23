@@ -367,6 +367,11 @@
         docdest: 'MobileFrontend/$ZUUL_BRANCH/js'
     publishers:
      - global-teardown
+    parameters:
+     - string:
+        name: DOC_SUBPATH
+        default: 'master'
+        description: "The branch/tag name that is used as a subdirectory to be able to publish multiple versions of the documentation."
 
 - job-template:
     name: 'mwext-VisualEditor-sync-gerrit'  # bug 49846
