@@ -70,13 +70,49 @@
       - debian-glue-lintian
       - debian-glue-piuparts
 
-    publishers:
+    publishers: &debian-glue-publishers
       - junit:
           results: 'lintian-*.xml'
       - tap:
           results: piuparts.tap
       - archive:
           artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
+
+- job-template:
+    name: 'debian-glue'
+    defaults: use-remoteonly-zuul
+    node: DebianGlue && DebianJessie
+    concurrent: false
+    triggers:
+        - zuul
+
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        # Git plugin would set GIT_BRANCH=detached which confuses debian glue
+        # Will override it as a workaround
+        local-branch: $ZUUL_REF
+        basedir: 'source'
+    builders:
+        - shell: |
+            # GIT_BRANCH is set to 'detached' :-(
+            export GIT_BRANCH="$ZUUL_REF"
+            /usr/bin/generate-git-snapshot
+        - shell: |
+            # Skip repository setup
+            export BUILD_ONLY=yes
+            /usr/bin/build-and-provide-package
+        - debian-glue-lintian
+        - debian-glue-piuparts
+    publishers: *debian-glue-publishers
+
+- project:
+    name: 'debian-glue'
+    jobs:
+        - 'debian-glue'
 
 #
 # PROJECTS
