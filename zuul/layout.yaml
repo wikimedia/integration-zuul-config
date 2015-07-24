@@ -173,11 +173,11 @@ pipelines:
       # Only V+1 as these are not elaborate tests. This prevents a change from
       # being merged (requires V+2) before elaborate tests, which vote V+2, have run.
       gerrit:
-        Verified: 1
+        verified: 1
     failure-message: 'Basic test build failed.'
     failure:
       gerrit:
-        Verified: -1
+        verified: -1
 
   # Use this instead of 'check' for projects not having a separate 'test' pipeline. Those need to
   # be marked as 'check-only' instead of 'check', because 'check' has a reversed email filter to
@@ -195,11 +195,11 @@ pipelines:
     success-message: 'Basic test build succeeded.'
     success:
       gerrit:
-        Verified: 1
+        verified: 1
     failure-message: 'Basic test build failed.'
     failure:
       gerrit:
-        Verified: -1
+        verified: -1
 
   - name: check-voter
     description: >
@@ -215,11 +215,11 @@ pipelines:
     success-message: 'Basic test build succeeded.'
     success:
       gerrit:
-        Verified: 2
+        verified: 2
     failure-message: 'Basic test build failed.'
     failure:
       gerrit:
-        Verified: -1
+        verified: -1
 
   # Use this in combination with a check pipeline.
   - name: test
@@ -389,11 +389,11 @@ pipelines:
     success-message: 'Main test build succeeded.'
     success:
       gerrit:
-        Verified: 2
+        verified: 2
     failure-message: 'Main test build failed.'
     failure:
       gerrit:
-        Verified: -1
+        verified: -1
 
   - name: experimental
     description: >
@@ -446,21 +446,20 @@ pipelines:
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
-            # Zuul EventFilter normalizes approvals to lower case T106436
             - code-review: 2
     start:
       gerrit:
-        Verified: 0
+        verified: 0
     success-message: 'Gate pipeline build succeeded.'
     success:
       gerrit:
-        Verified: 2
+        verified: 2
         # Let Zuul merge the change \O/
         submit: true
     failure-message: 'Gate pipeline build failed.'
     failure:
       gerrit:
-        Verified: -1
+        verified: -1
 
   - name: postmerge
     description: Jobs triggered after a change has been merged.
@@ -473,11 +472,11 @@ pipelines:
     # Since Gerrit 2.8, we can vote on closed changes.
     success:
       gerrit:
-        Verified: 0
+        verified: 0
     failure-message: 'Post-merge build failed.'
     failure:
       gerrit:
-        Verified: 0
+        verified: 0
 
   # Pipeline reacting whenever a reference is updated
   - name: post
