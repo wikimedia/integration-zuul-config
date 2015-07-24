@@ -66,6 +66,19 @@
     publishers:
      - archive-log-dir
 
+# Same for Jessie
+- job-template:
+    name: 'tox-{toxenv}-jessie'
+    node: contintLabsSlave && DebianJessie
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: '{toxenv}'
+    publishers:
+     - archive-log-dir
 
 # Call tox env 'doc' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
@@ -134,3 +147,4 @@
     jobs:
      - 'tox-{toxenv}'
      - 'tox-{toxenv}-trusty'
+     - 'tox-{toxenv}-jessie'
