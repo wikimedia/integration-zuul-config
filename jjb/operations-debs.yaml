@@ -55,7 +55,7 @@
      - zuul
 
     # Clone into ./source
-    scm:
+    scm: &clone-to-dir-source
      - git:
         url: '$ZUUL_URL/$ZUUL_PROJECT'
         branches:
@@ -70,13 +70,37 @@
       - debian-glue-lintian
       - debian-glue-piuparts
 
-    publishers:
+    publishers: &debian-glue-publishers
       - junit:
           results: 'lintian-*.xml'
       - tap:
           results: piuparts.tap
       - archive:
           artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
+
+- job-template:
+    name: 'debian-glue'
+    defaults: use-remoteonly-zuul
+    node: DebianGlue && DebianJessie
+    concurrent: false
+    triggers:
+        - zuul
+
+    scm: *clone-to-dir-source
+    builders:
+        - debian-glue-generate-git-snapshot
+        - shell: |
+            # Skip repository setup
+            export BUILD_ONLY=yes
+            /usr/bin/build-and-provide-package
+        - debian-glue-lintian
+        - debian-glue-piuparts
+    publishers: *debian-glue-publishers
+
+- project:
+    name: 'debian-glue'
+    jobs:
+        - 'debian-glue'
 
 #
 # PROJECTS
