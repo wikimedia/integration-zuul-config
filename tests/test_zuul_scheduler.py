@@ -606,6 +606,56 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
+    def test_recheck_on_approved_change_triggers_gate(self):
+        user_comment = 'recheck'
+        gate_manager = self.getPipeline('gate-and-submit').manager
+
+        change = zuul.model.Change(self.sched.getProject('mediawiki/core'))
+        change.branch = 'master'
+        change.approvals = [{'type': 'Code-Review',
+                             'description': 'Code Review',
+                             'value': '2',
+                             'by': {'email': 'someone@wikimedia.org'},
+                             }]
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1:\n\n%s' % user_comment
+        event.branch = change.branch
+
+        self.assertTrue(
+            gate_manager.eventMatches(event, change),
+            "gate-and-submit must accepts '%s' on a change having CR+2" % (
+                user_comment)
+        )
+
+        indep_pipelines = [p for p in self.getPipelines()
+                           if p.manager.__class__.__name__ ==
+                           'IndependentPipelineManager']
+        self.assertGreater(len(indep_pipelines), 0)
+
+        errors = []
+
+        # Pipelines reacting to 'recheck'
+        recheck_pipelines = []
+        for p in indep_pipelines:
+            for ef in p.manager.event_filters:
+                if [c for c in ef._comments if 'recheck' in c]:
+                    recheck_pipelines.append(p)
+                    break
+        # They should reject CR+2 changes
+        for p in recheck_pipelines:
+            try:
+                self.assertFalse(
+                    p.manager.addChange(change),
+                    "Independent pipeline '%s' must not process "
+                    "'%s' on CR+2" % (p.name, user_comment)
+                )
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.assertListEqual([], errors, "\n" + "\n".join(errors))
+
     def test_pipelines_trustiness(self):
         check_manager = self.getPipeline('check').manager
         test_manager = self.getPipeline('test').manager

@@ -271,6 +271,9 @@ pipelines:
       Jobs restricted to trusted users. Will vote +2.
     manager: IndependentPipelineManager
     source: gerrit
+    reject:
+      approval:
+        - code-review: 2
     trigger:
       gerrit:
         - event: patchset-created
@@ -609,6 +612,11 @@ pipelines:
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
+            - code-review: 2
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+          email: *email_whitelist
+          require-approval:
             - code-review: 2
     start:
       gerrit:
