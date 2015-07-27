@@ -9,6 +9,8 @@
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
     concurrent: true
+    properties:
+     - throttle-one-per-node
     logrotate:
         daysToKeep: 15
     triggers:
@@ -21,6 +23,8 @@
     name: 'mediawiki-core-qunit'
     node: contintLabsSlave && UbuntuTrusty
     concurrent: true
+    properties:
+     - throttle-one-per-node
     logrotate:
         daysToKeep: 15
     triggers:
@@ -43,6 +47,8 @@
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
     concurrent: true
+    properties:
+     - throttle-one-per-node
     logrotate:
         daysToKeep: 15
     triggers:
@@ -120,6 +126,8 @@
     # matching the expression.
     node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
@@ -145,6 +153,8 @@
     name: 'mediawiki-phpunit-{phpflavor}-composer'
     node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
@@ -194,9 +204,10 @@
     name: 'mediawiki-extensions-{phpflavor}'
     node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
+    properties:
+     - throttle-one-per-node
     logrotate:
         daysToKeep: 15
-
     triggers:
      - zuul
     builders:
@@ -226,6 +237,8 @@
     name: 'mediawiki-extensions-qunit'
     node: contintLabsSlave && UbuntuTrusty
     concurrent: true
+    properties:
+     - throttle-one-per-node
     logrotate:
         daysToKeep: 15
 
@@ -257,6 +270,8 @@
     name: 'integration-phpunit-mediawiki-{mwbranch}'
     node: contintLabsSlave && UbuntuPrecise  # Zend PHP 5.3.x
     concurrent: true
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
