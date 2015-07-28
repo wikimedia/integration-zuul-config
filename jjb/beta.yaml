@@ -39,7 +39,7 @@
 - job-template:
     name: beta-recompile-math-texvc-eqiad
     defaults: beta
-    node: deployment-bastion-eqiad
+    node: BetaClusterBastion
     triggers:
      - zuul
     logrotate:
@@ -64,7 +64,7 @@
 - job-template:
     name: beta-update-databases-eqiad
     defaults: beta
-    node: deployment-bastion-eqiad
+    node: BetaClusterBastion
 
     builders:
       - global-setup
@@ -101,7 +101,7 @@
 - job-template:
     name: beta-mediawiki-config-update-eqiad
     defaults: beta
-    node: deployment-bastion-eqiad
+    node: BetaClusterBastion
 
     # Do not run concurrently with the downstream job
     block-downstream: true
@@ -134,7 +134,7 @@
 - job-template:
     name: beta-code-update-eqiad
     defaults: beta
-    node: deployment-bastion-eqiad
+    node: BetaClusterBastion
 
     # Do not run concurrently with the downstream job
     block-downstream: true
@@ -168,7 +168,7 @@
 - job-template:
     name: beta-scap-eqiad
     defaults: beta
-    node: deployment-bastion-eqiad
+    node: BetaClusterBastion
 
     # Do not run concurrently with upstream jobs
     block-upstream: true
