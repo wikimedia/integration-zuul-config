@@ -37,9 +37,9 @@
 # Should be triggered on post merge.
 #
 - job-template:
-    name: beta-recompile-math-texvc-{datacenter}
+    name: beta-recompile-math-texvc-eqiad
     defaults: beta
-    node: deployment-bastion-{datacenter}
+    node: deployment-bastion-eqiad
     triggers:
      - zuul
     logrotate:
@@ -62,9 +62,9 @@
 #
 # Set TMPDIR to point to the tmpfs if it exists.
 - job-template:
-    name: beta-update-databases-{datacenter}
+    name: beta-update-databases-eqiad
     defaults: beta
-    node: deployment-bastion-{datacenter}
+    node: deployment-bastion-eqiad
 
     builders:
       - global-setup
@@ -99,9 +99,9 @@
 # We simply update the repository on the beta host and do a git reset hard.
 #
 - job-template:
-    name: beta-mediawiki-config-update-{datacenter}
+    name: beta-mediawiki-config-update-eqiad
     defaults: beta
-    node: deployment-bastion-{datacenter}
+    node: deployment-bastion-eqiad
 
     # Do not run concurrently with the downstream job
     block-downstream: true
@@ -125,16 +125,16 @@
           failure: false
           fixed: true
       - trigger:
-          project: beta-scap-{datacenter}
+          project: beta-scap-eqiad
 
 # Job updating MediaWiki core+extensions code and refreshing the message
 #
 # This is the poor man auto updating script. We should probably split the
 # script in different part and have the jobs trigger each other.
 - job-template:
-    name: beta-code-update-{datacenter}
+    name: beta-code-update-eqiad
     defaults: beta
-    node: deployment-bastion-{datacenter}
+    node: deployment-bastion-eqiad
 
     # Do not run concurrently with the downstream job
     block-downstream: true
@@ -163,12 +163,12 @@
           failure: false
           fixed: true
       - trigger:
-          project: beta-scap-{datacenter}
+          project: beta-scap-eqiad
 
 - job-template:
-    name: beta-scap-{datacenter}
+    name: beta-scap-eqiad
     defaults: beta
-    node: deployment-bastion-{datacenter}
+    node: deployment-bastion-eqiad
 
     # Do not run concurrently with upstream jobs
     block-upstream: true
@@ -197,9 +197,9 @@
           fixed: true
 
 - job-template:
-    name: beta-parsoid-update-{datacenter}
+    name: beta-parsoid-update-eqiad
     defaults: beta
-    node: deployment-parsoid-{datacenter}
+    node: deployment-parsoid-eqiad
     triggers:
      - zuul
     logrotate:
@@ -220,9 +220,9 @@
       - beta-irc
 
 - job-template:
-    name: beta-cxserver-update-{datacenter}
+    name: beta-cxserver-update-eqiad
     defaults: beta
-    node: deployment-cxserver-{datacenter}
+    node: deployment-cxserver-eqiad
     triggers:
      - zuul
     logrotate:
@@ -262,13 +262,11 @@
 
 - project:
     name: beta
-    datacenter:
-     - eqiad
     jobs:
-     - beta-code-update-{datacenter}
-     - beta-mediawiki-config-update-{datacenter}
-     - beta-cxserver-update-{datacenter}
-     - beta-parsoid-update-{datacenter}
-     - beta-recompile-math-texvc-{datacenter}
-     - beta-scap-{datacenter}
-     - beta-update-databases-{datacenter}
+     - beta-code-update-eqiad
+     - beta-mediawiki-config-update-eqiad
+     - beta-cxserver-update-eqiad
+     - beta-parsoid-update-eqiad
+     - beta-recompile-math-texvc-eqiad
+     - beta-scap-eqiad
+     - beta-update-databases-eqiad
