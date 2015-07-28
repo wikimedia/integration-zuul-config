@@ -6259,7 +6259,12 @@ projects:
 
   - name: mediawiki/extensions/HitCounters
     template:
-     - name: mw-checks
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/Html2Wiki
     template:
