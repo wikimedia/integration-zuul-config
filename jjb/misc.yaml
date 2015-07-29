@@ -174,3 +174,13 @@
         dest: 'visualeditor'
     publishers:
      - global-teardown
+
+- job:
+    name: 'fail-archived-repositories'
+    node: contintLabsSlave
+    defaults: global
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - shell: "exit 1"
