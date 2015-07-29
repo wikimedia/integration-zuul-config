@@ -193,6 +193,13 @@ class TestZuulLayout(unittest.TestCase):
                                   'Project %s must have a %s pipeline'
                                   % (project_name, default_requirement))
 
+            # archived repositories only need to always fail
+            if {
+                    'check-only': ['fail-archived-repositories'],
+                    'gate-and-submit': ['fail-archived-repositories']
+                    } == project_def:
+                continue
+
             # Validate the pipeline has the proper jobs
             for req_pipeline in requirements:
                 for func in assertions:
