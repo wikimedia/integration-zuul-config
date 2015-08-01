@@ -1597,9 +1597,6 @@ jobs:
   - name: translatewiki-puppetlint-strict
     voting: false
 
-  - name: mediawiki-vagrant-puppetlint-strict
-    voting: false
-
   # Rejecting changes having trailing whitespaces cause too many false
   # positives. So only report the whitespace issues, but don't let it vote.
   - name: ^.*-whitespaces$
@@ -2584,7 +2581,6 @@ projects:
     check:
       - mediawiki-vagrant-puppet-validate
       - erblint-HEAD
-      - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
     test:
       - bundle17-cucumber
@@ -2592,14 +2588,12 @@ projects:
       - bundle17-rubocop
       - mediawiki-vagrant-puppet-validate
       - erblint-HEAD
-      - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
     gate-and-submit:
       - bundle17-cucumber
       - bundle17-rspec
       - bundle17-rubocop
       - erblint-HEAD
-      - mediawiki-vagrant-puppetlint-lenient
       - mediawiki-vagrant-puppetlint-strict
       - mediawiki-vagrant-puppet-validate
     postmerge:
