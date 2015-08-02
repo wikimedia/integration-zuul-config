@@ -651,8 +651,6 @@ jobs:
     voting: false
   - name: mwext-JSBreadCrumbs-phpcs-HEAD
     voting: false
-  - name: mwext-Mantle-phpcs-HEAD
-    voting: false
   - name: mwext-OnlineStatus-phpcs-HEAD
     voting: false
   - name: mwext-Sentry-phpcs-HEAD
@@ -4033,17 +4031,7 @@ projects:
 
   - name: mediawiki/extensions/Mantle
     template:
-      - name: extension-gate
-      - name: jshint
-      - name: jsonlint
-      - name: extension-unittests
-      - name: extension-phpcs
-    test:
-      - mwext-Mantle-qunit
-      - mwext-Mantle-qunit-mobile
-    gate-and-submit:
-      - mwext-Mantle-qunit
-      - mwext-Mantle-qunit-mobile
+      - name: archived
 
   - name: mediawiki/extensions/Math
     template:
@@ -7179,10 +7167,12 @@ projects:
   - name: mediawiki/extensions/Translate
     template:
       - name: extension-rubylint
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests
       - name: extension-phpcs
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
     experimental:
       - php-composer-test
 
