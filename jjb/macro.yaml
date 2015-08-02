@@ -662,7 +662,7 @@
     name: composer-validate
     builders:
      - shell: |
-        composer --ansi validate --no-check-publish
+        if [[ -f "composer.json" ]]; then composer --ansi validate --no-check-publish; fi
 
 # Validate a composer.json so it can be published on packagist.org
 - builder:
