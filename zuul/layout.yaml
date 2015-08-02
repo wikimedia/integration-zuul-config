@@ -1260,8 +1260,6 @@ jobs:
     voting: false
   - name: mwext-SiteSettings-jslint
     voting: false
-  - name: mwext-SkelJS-jslint
-    voting: false
   - name: mwext-SkinPerNamespace-jslint
     voting: false
   - name: mwext-SlimboxThumbs-jslint
@@ -5794,8 +5792,10 @@ projects:
 
   - name: mediawiki/extensions/SkelJS
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
+    check:
+      - jshint
+      - jsonlint
 
   - name: mediawiki/extensions/SkinPerNamespace
     template:
