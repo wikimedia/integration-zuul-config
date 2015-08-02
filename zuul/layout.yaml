@@ -1268,8 +1268,6 @@ jobs:
     voting: false
   - name: mwext-SiteSettings-jslint
     voting: false
-  - name: mwext-SkelJS-jslint
-    voting: false
   - name: mwext-SkinPerNamespace-jslint
     voting: false
   - name: mwext-SlimboxThumbs-jslint
@@ -5743,8 +5741,10 @@ projects:
 
   - name: mediawiki/extensions/SkelJS
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
+    check:
+      - jshint
+      - jsonlint
 
   - name: mediawiki/extensions/SkinPerNamespace
     template:
@@ -7745,11 +7745,18 @@ projects:
       - phpunit-coverage-publish
 
   - name: wikimedia/slimapp
-    template:
-     - name: composer-test-package
+    check:
+      - php-composer-package-validate
+      - phplint
+    test:
+      - php-composer-test-zend
+    gate-and-submit:
+      - php-composer-test-zend
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
+    experimental:
+      - php-composer-test-hhvm
 
   - name: search/extra
     test:
