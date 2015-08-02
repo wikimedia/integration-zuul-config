@@ -7003,6 +7003,15 @@ projects:
     check:
       - jsonlint
 
+  - name: mediawiki/extensions/SpamDiffTool
+    template:
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
+
   - name: mediawiki/extensions/Spreadsheet
     template:
       - name: extension-jslint
@@ -7745,11 +7754,18 @@ projects:
       - phpunit-coverage-publish
 
   - name: wikimedia/slimapp
-    template:
-     - name: composer-test-package
+    check:
+      - php-composer-package-validate
+      - phplint
+    test:
+      - php-composer-test-zend
+    gate-and-submit:
+      - php-composer-test-zend
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
+    experimental:
+      - php-composer-test-hhvm
 
   - name: search/extra
     test:
