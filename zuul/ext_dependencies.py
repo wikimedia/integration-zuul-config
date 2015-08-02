@@ -17,6 +17,7 @@ dependencies = {
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'ImageMetrics': ['EventLogging'],
+    'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore'],
     'MassMessage': ['LiquidThreads'],
     'Math': ['VisualEditor'],
