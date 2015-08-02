@@ -3,7 +3,7 @@ import unittest
 
 from fakes import FakeItemChange
 
-set_doc_subpath = None  # defined for flake8
+set_doc_variables = None  # defined for flake8
 # Import function
 execfile(os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -14,7 +14,7 @@ class TestDocFunctions(unittest.TestCase):
 
     def assertDocSubpath(self, expected, item):
         params = {}
-        set_doc_subpath(item, None, params)
+        set_doc_variables(item, None, params)
         self.assertIn(
             'DOC_SUBPATH', params,
             "Missing parameter: 'DOC_SUBPATH': %s" % expected)
@@ -22,7 +22,7 @@ class TestDocFunctions(unittest.TestCase):
 
     def assertNoDocSubpath(self, item):
         params = {}
-        set_doc_subpath(item, None, params)
+        set_doc_variables(item, None, params)
         self.assertNotIn('DOC_SUBPATH', params,
                          'DOC_SUBPATH should not be set')
 
@@ -44,3 +44,14 @@ class TestDocFunctions(unittest.TestCase):
         self.assertDocSubpath(
             '42.0',
             FakeItemChange('', ref='refs/tags/42.0'))
+
+    def test_set_doc_project(self):
+        projects = {
+            'oojs/ui': 'oojs-ui',
+            'wikimedia/slimapp': 'wikimedia-slimapp',
+            'cdb': 'cdb'
+        }
+        for project, expected in projects.items():
+            params = {'ZUUL_PROJECT': project}
+            set_doc_variables(FakeItemChange('', ref='master'), None, params)
+            self.assertEqual(params['DOC_PROJECT'], expected)

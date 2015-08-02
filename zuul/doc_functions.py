@@ -3,7 +3,7 @@ import re
 tag_re = r'^refs/tags/(.*)'
 
 
-def set_doc_subpath(item, job, params):
+def set_doc_variables(item, job, params):
     change = item.change
     doc_subpath = ''
 
@@ -22,3 +22,7 @@ def set_doc_subpath(item, job, params):
 
     if doc_subpath:
         params['DOC_SUBPATH'] = doc_subpath
+
+    # Normalize the project name by removing /'s
+    if 'ZUUL_PROJECT' in params:
+        params['DOC_PROJECT'] = params['ZUUL_PROJECT'].replace('/', '-')
