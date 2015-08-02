@@ -172,6 +172,12 @@ class TestZuulLayout(unittest.TestCase):
 
             project_def = all_defs[project_name]
 
+            # If the project is archived, skip it
+            if 'check-only' in project_def \
+                    and 'fail-archived-repositories' \
+                        in project_def['check-only']:
+                continue
+
             # Pipelines that must be set
             requirements = set()
             requirements.add('gate-and-submit')
@@ -298,6 +304,7 @@ class TestZuulLayout(unittest.TestCase):
             'noop',
             'php-composer-validate',
             'php-composer-package-validate',
+            'fail-archived-repositories',
         ]
         safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
 

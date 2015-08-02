@@ -1972,6 +1972,14 @@ project-templates:
      - 'bundle-rubocop'
      - 'ruby1.9.3lint'
 
+  - name: archived
+    check:
+     - fail-archived-repositories
+    test:
+     - fail-archived-repositories
+    gate-and-submit:
+     - fail-archived-repositories
+
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
@@ -6602,6 +6610,10 @@ projects:
       - tox-flake8
     gate-and-submit:
       - tox-flake8
+
+  - name: mediawiki/extensions/Parsoid
+    template:
+      - name: archived
 
   - name: mediawiki/extensions/PdfHandler
     template:
