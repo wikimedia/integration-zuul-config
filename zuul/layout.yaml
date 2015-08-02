@@ -6248,7 +6248,10 @@ projects:
 
   - name: mediawiki/extensions/EditSimilar
     template:
-     - name: mw-checks
+     - name: extension-unittests-generic
+     - name: jshint
+	check:
+     - jsonlint
 
   - name: mediawiki/extensions/Farmer
     template:
@@ -7745,11 +7748,18 @@ projects:
       - phpunit-coverage-publish
 
   - name: wikimedia/slimapp
-    template:
-     - name: composer-test-package
+    check:
+      - php-composer-package-validate
+      - phplint
+    test:
+      - php-composer-test-zend
+    gate-and-submit:
+      - php-composer-test-zend
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
+    experimental:
+      - php-composer-test-hhvm
 
   - name: search/extra
     test:
