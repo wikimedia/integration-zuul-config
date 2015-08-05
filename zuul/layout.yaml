@@ -1641,6 +1641,11 @@ jobs:
     success-message: 'Change has been deployed on the EQIAD beta cluster'
     failure-message: 'Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
 
+  - name: parsoidsvc-source-jsduck-publish
+    branch: ^master$
+    success-message: 'Documentation has been updated at https://doc.wikimedia.org/Parsoid/master'
+    failure-message: 'Failed documentation update :-/'
+
 
   - name: integration-docroot-deploy
     branch: ^master$
@@ -6603,6 +6608,7 @@ projects:
       - parsoidsvc-source-npm-0.10
     postmerge:
       - beta-parsoid-update-eqiad
+      - parsoidsvc-source-jsduck-publish
 
   - name: mediawiki/services/parsoid/deploy
     check:

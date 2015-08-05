@@ -135,6 +135,7 @@
         . npm-oid.env
         cd "$NPM_SET_PATH"
         npm test
+        npm run doc
     publishers:
      - global-teardown
 
@@ -162,6 +163,7 @@
         . npm-oid.env
         cd "$NPM_SET_PATH"
         npm test
+        npm run doc
     publishers:
      - global-teardown
 
@@ -178,6 +180,32 @@
     builders:
       - jshint
 
+# documentation builder (based on `oojs-ui-jsduck-publish` job)
+- job-template:
+    name: parsoidsvc-{repository}-jsduck-publish
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+    - assert-node-version-0.10
+    - setup-npm-oid:
+        repository: '{repository}'
+    - shell: |
+        node --version
+        npm --version
+        set -e
+        . npm-oid.env
+        ln -s "$NPM_SET_PATH/docs" generated-docs
+        cd "$NPM_SET_PATH"
+        npm run doc
+    - doc-publish:
+        docsrc: 'generated-docs'
+        docdest: 'Parsoid/$DOC_SUBPATH'
+    publishers:
+    - global-teardown
+
 - project:
     name: parsoidsvc
     # job templates are shared by both repositories
@@ -192,4 +220,5 @@
         - 'parsoidsvc-{repository}-roundtrip-test-check'
         - 'parsoidsvc-{repository}-npm-0.8'
         - 'parsoidsvc-{repository}-npm-0.10'
+        - 'parsoidsvc-{repository}-jsduck-publish'
         - parsoidsvc-php-parsertests
