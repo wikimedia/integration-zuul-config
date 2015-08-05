@@ -267,7 +267,6 @@
     mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.m.wikipedia.beta.wmflabs.org
     platform: linux
-    recipients: *emails-reading
     repository: mediawiki/extensions/MobileFrontend
 
     jobs:
@@ -278,6 +277,7 @@
         browser: chrome
         cucumber_tags: '@smoke'
         name: SmokeTests
+        recipients: *emails-reading
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
