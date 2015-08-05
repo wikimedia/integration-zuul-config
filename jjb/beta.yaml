@@ -30,34 +30,6 @@
       - timestamps
       - ansicolor
 
-# Job to recompile math texvc whenever the mediawiki/extensions/Math repository
-# is updated.  The job makes sure the submodule is up-to-date before triggering
-# the /usr/local/bin/scap-recompile script.
-#
-# Should be triggered on post merge.
-#
-- job-template:
-    name: beta-recompile-math-texvc-eqiad
-    defaults: beta
-    node: BetaClusterBastion
-    triggers:
-     - zuul
-    logrotate:
-        daysToKeep: 15
-    builders:
-     - shell: |
-         echo "Making sure the Math extension is up to date"
-         sudo -u mwdeploy -s /bin/bash -c '
-            set -ex ;
-            cd /srv/scap-stage-dir/php-master/extensions ;
-            git submodule Math ;
-            git submodule update --init Math ;
-            git submodule Math ;
-            '
-         echo "Recompiling texvc as user 'mwdeploy'"
-         sudo -u mwdeploy /bin/bash /usr/local/bin/scap-recompile
-
-
 # Job to run MediaWiki update.php script on all the beta wikis.
 #
 # Set TMPDIR to point to the tmpfs if it exists.
@@ -267,6 +239,5 @@
      - beta-mediawiki-config-update-eqiad
      - beta-cxserver-update-eqiad
      - beta-parsoid-update-eqiad
-     - beta-recompile-math-texvc-eqiad
      - beta-scap-eqiad
      - beta-update-databases-eqiad
