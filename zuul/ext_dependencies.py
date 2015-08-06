@@ -26,6 +26,7 @@ dependencies = {
     'NavigationTiming': ['EventLogging'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion'],
+    'QuickSurveys': ['EventLogging'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'VectorBeta': ['EventLogging'],
