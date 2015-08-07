@@ -1612,6 +1612,12 @@ jobs:
   - name: apps-android-commons-build
     voting: false
 
+  # This job does more than one thing. Point to the build page and let the user drill into details.
+  - name: apps-android-wikipedia-gradlew
+    voting: false
+    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
+    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
+
   # Lint not passing yet. The lintAlphaDebug will be integrated in the other
   # job later on.
   - name: apps-android-wikipedia-gradlew-lint
