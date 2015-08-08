@@ -8,18 +8,26 @@
 
 - job-template:
     name: 'apps-android-wikipedia-gradlew'
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && AndroidEmulator
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
+    wrappers:
+     - android-emulator:
+         os: android-15
+         target-abi: x86
+         wipe: true
+         delete: true
+         commandline-options: '-no-audio'
     builders:
      - shell: |
-         ./gradlew -q clean checkstyle assembleAlphaDebug
+         scripts/missing-qq.py
+         ./gradlew -q clean checkstyle testAllAlphaRelease
     publishers:
      - archive:
-         # Capture generated .apk and checkstyle.xml
-         artifacts: '**/build/outputs/**,**/build/reports/**'
+         # Capture generated .apk, ProGuard mappings, checkstyle.xml, and test results
+         artifacts: '**/build/outputs/**,**/build/reports/**,**/test-results/**/*.xml,**/androidTest-results/**/*.xml'
      - checkstyle:
          pattern: "**/build/reports/checkstyle/checkstyle.xml"
          can-run-on-failed: true
@@ -28,6 +36,8 @@
          thresholds:
            failed:
                total-all: 1
+     - junit:
+        results: '**/test-results/**/*.xml,**/androidTest-results/**/*.xml'
 
 # Additional lint check, not passing as of May 2015
 - job-template:
