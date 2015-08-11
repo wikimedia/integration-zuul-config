@@ -124,17 +124,28 @@
               cp "$WORKSPACE/tests/browser/config/config_ci.yml" "$WORKSPACE/tests/browser/config/config.yml"
           fi
 
-          # run tests
-          "$WORKSPACE"/vendor/bin/bundle exec cucumber \
-            --backtrace \
-            --color \
-            --verbose \
-            --format pretty \
-            --format Cucumber::Formatter::Sauce \
-            --out "$WORKSPACE/log/junit" \
+          CUCUMBER_CMD=(
+            "$WORKSPACE"/vendor/bin/bundle exec cucumber
+            --backtrace
+            --color
+            --verbose
+            --format pretty
+          )
+
+          # Run tests matching our tags and keep track of failures. Don't fail
+          # the build just yet
+          "${{CUCUMBER_CMD[@]}}" \
+            --format Cucumber::Formatter::Sauce --out "$WORKSPACE"/log/junit \
+            --format rerun --out rerun.log \
             --tags $CUCUMBER_PARAMETER \
-            --tags @$BROWSER_TAG \
-            || (echo -e "\nJob has failed (exit code: $?)."; false)
+            --tags @$BROWSER_TAG || true
+
+          # Retry failures once. Disable Raita logging for the second run to
+          # avoid duplicate builds
+          if [ -s "$RERUN_LOG" ]; then
+            unset RAITA_URL
+            "${{CUCUMBER_CMD[@]}}" @rerun.log
+          fi
 
           if [[ ! -z $LANGUAGE_SCREENSHOT_CODE ]]; then
             "$WORKSPACE"/vendor/bin/bundle exec upload
