@@ -7,7 +7,7 @@
       - '{name}-phplint'
 
 - job-template:
-    name: 'apps-android-wikipedia-gradlew'
+    name: 'apps-android-wikipedia-{type}'
     node: contintLabsSlave && AndroidEmulator
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -34,12 +34,14 @@
              vm.heapSize: 512
     builders:
      - shell: |
+         declare START_TIME="$(date +"%Y-%m-%dT%H:%M:%S.%N")"
          scripts/missing-qq.py
          ./gradlew -q clean checkstyle testAllAlphaRelease
+         echo "{{\"commit_hash\": \"$GIT_COMMIT\", \"completed_on\": \"$START_TIME\"}}" > meta.json
     publishers:
      - archive:
-         # Capture generated .apk, ProGuard mappings, checkstyle.xml, and test results
-         artifacts: '**/build/outputs/**,**/build/reports/**,**/test-results/**/*.xml,**/androidTest-results/**/*.xml'
+         # Capture generated .apk, ProGuard mappings, checkstyle.xml, test results, and meta.json
+         artifacts: '**/build/outputs/**,**/build/reports/**,**/test-results/**/*.xml,**/androidTest-results/**/*.xml,meta.json'
      - checkstyle:
          pattern: "**/build/reports/checkstyle/checkstyle.xml"
          can-run-on-failed: true
@@ -69,7 +71,10 @@
 - project:
     name: 'apps-android-wikipedia'
     jobs:
-      - 'apps-android-wikipedia-gradlew'
+      - 'apps-android-wikipedia-{type}':
+         type:
+           - test
+           - alpha
       - 'apps-android-wikipedia-gradlew-lint'
 
 # Build the mighty Commons application for Android Platforms
