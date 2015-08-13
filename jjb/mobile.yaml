@@ -7,7 +7,7 @@
       - '{name}-phplint'
 
 - job-template:
-    name: 'apps-android-wikipedia-gradlew'
+    name: 'apps-android-wikipedia-test'
     node: contintLabsSlave && AndroidEmulator
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -52,9 +52,32 @@
      - junit:
         results: '**/test-results/**/*.xml,**/androidTest-results/**/*.xml'
 
+- job-template:
+    name: 'apps-android-wikipedia-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    wrappers:
+     - timeout:
+         timeout: 30
+         fail: true
+     - timestamps
+     - ansicolor
+    builders:
+     - shell: |
+         declare START_TIME="$(date +"%Y-%m-%dT%H:%M:%S.%N")"
+         ./gradlew -q clean assembleAlphaRelease
+         echo "{{\"commit_hash\": \"$GIT_COMMIT\", \"completed_on\": \"$START_TIME\"}}" > meta.json
+    publishers:
+     - archive:
+         # Capture generated .apk and meta.json
+         artifacts: '**/build/outputs/**,meta.json'
+
 # Additional lint check, not passing as of May 2015
 - job-template:
-    name: 'apps-android-wikipedia-gradlew-lint'
+    name: 'apps-android-wikipedia-lint'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -70,8 +93,9 @@
 - project:
     name: 'apps-android-wikipedia'
     jobs:
-      - 'apps-android-wikipedia-gradlew'
-      - 'apps-android-wikipedia-gradlew-lint'
+      - 'apps-android-wikipedia-test'
+      - 'apps-android-wikipedia-publish'
+      - 'apps-android-wikipedia-lint'
 
 # Build the mighty Commons application for Android Platforms
 # Yuvi rocks (bug 20281).
