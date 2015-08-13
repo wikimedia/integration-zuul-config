@@ -1615,7 +1615,7 @@ jobs:
     voting: false
 
   # This job does more than one thing. Point to the build page and let the user drill into details.
-  - name: apps-android-wikipedia-gradlew
+  - name: apps-android-wikipedia-.+
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
 
@@ -2223,12 +2223,12 @@ projects:
     test:
       - apps-jslint
       - tox-flake8
-      - apps-android-wikipedia-gradlew
+      - apps-android-wikipedia-test
       - apps-android-wikipedia-gradlew-lint
     gate-and-submit:
       - apps-jslint
       - tox-flake8
-      - apps-android-wikipedia-gradlew
+      - apps-android-wikipedia-alpha
 
   - name: apps/ios/wikipedia
     check-voter:
