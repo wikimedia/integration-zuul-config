@@ -30,6 +30,7 @@ dependencies = {
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'VectorBeta': ['EventLogging'],
+    'WikidataPageBanner': ['Wikidata'],
 }
 
 # Limit execution to these jobs
