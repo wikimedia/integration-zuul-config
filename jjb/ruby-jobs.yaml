@@ -9,6 +9,9 @@
     name: bundle-with-options
     builders:
      - shell: |
+         # Change to the given working directory
+         cd "{dir}"
+
          # Source any given initialization script
          if [ ! -z '{initialization}' ]; then
            . '{initialization}'
@@ -24,9 +27,6 @@
          else
            version=()
          fi
-
-         # Change to the given working directory
-         cd "{dir}"
 
          mkdir -p vendor
          gem2.0 install --env-shebang -i vendor --no-document "${{version[@]}}" bundler
