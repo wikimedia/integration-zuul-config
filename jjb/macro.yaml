@@ -28,23 +28,41 @@
      - lint-whitespaces-in:
         dir: '$WORKSPACE'
 
+# Run jshint in directory {dir}. Usefull when the Git repository has
+# been fetched out in some subdirtory of the Workspace. Example:
+#
+#  builder:
+#    - jshint:
+#       dir: "src"
+#
 - builder:
     name: jshint
     builders:
      - shell: |
+        cd {dir}
         /srv/deployment/integration/slave-scripts/bin/jshint --version
         /srv/deployment/integration/slave-scripts/bin/jshint .
 
+# Run json-lint.php in directory {dir}. Usefull when the Git repository has
+# been fetched out in some subdirtory of the Workspace. Example:
+#
+#  builder:
+#    - jsonlint:
+#       dir: "src"
+#
 - builder:
     name: jsonlint
     builders:
-     - shell: /srv/deployment/integration/slave-scripts/bin/json-lint.php .
+     - shell: |
+        cd {dir}
+        /srv/deployment/integration/slave-scripts/bin/json-lint.php .
 
 # ALWAYS pair with 'global-teardown'
 - builder:
     name: npm-install
     builders:
     - shell: |
+        cd src
         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         node --version
         npm --version
@@ -56,6 +74,7 @@
     name: npm
     builders:
     - shell: |
+        cd src
         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         node --version
         npm --version
@@ -118,6 +137,7 @@
     builders:
      - shell: |
          . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
+         cd src
          rm -rf doc/html
          doxygen
 
@@ -281,6 +301,7 @@
     name: jsduck
     builders:
      - shell: |
+        cd src
         echo "Running JSDuck..."
         jsduck
 
@@ -578,7 +599,9 @@
 - builder:
     name: phpcs-HEAD
     builders:
-     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh HEAD
+     - shell: |
+        cd src
+        /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh HEAD
 
 - publisher:
     name: phpcs
@@ -596,12 +619,13 @@
     name: ruby-lint
     builders:
      - shell: |
-        find "$WORKSPACE" -type f -name '*.rb' -print0 | xargs -t -n1 -0 {interpreter} -c
+        find "$WORKSPACE/src" -type f -name '*.rb' -print0 | xargs -t -n1 -0 {interpreter} -c
 
 - builder:
     name: tox
     builders:
      - shell: |
+        cd src
         rm -fR log
         mkdir -p log
         set -o pipefail
@@ -620,13 +644,16 @@
     name: composer-validate
     builders:
      - shell: |
-        if [[ -f "composer.json" ]]; then composer --ansi validate --no-check-publish; fi
+        cd src
+        [[ -f "composer.json" ]] || exit 0
+        composer --ansi validate --no-check-publish
 
 # Validate a composer.json so it can be published on packagist.org
 - builder:
     name: composer-validate-package
     builders:
      - shell: |
+        cd src
         composer --ansi validate
 
 # Notes:
@@ -638,12 +665,14 @@
     name: composer-update
     builders:
      - shell: |
+        cd src
         composer update --ansi --no-progress --prefer-dist --profile
 
 - builder:
     name: composer-update-no-dev
     builders:
      - shell: |
+        cd src
         composer update --ansi --no-progress --prefer-dist --profile --no-dev
 
 # Runs "composer test"
@@ -651,4 +680,5 @@
     name: composer-test
     builders:
      - shell: |
+        cd src
         composer --ansi test

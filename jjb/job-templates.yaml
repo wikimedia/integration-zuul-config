@@ -22,8 +22,10 @@
     triggers:
      - zuul
     builders:
-     - jshint
-     - jsonlint
+     - jshint:
+        dir: '.'
+     - jsonlint:
+        dir: '.'
 
 - job:
     name: 'jshint'
@@ -33,7 +35,8 @@
     triggers:
      - zuul
     builders:
-     - jshint
+     - jshint:
+        dir: 'src'
 
 - job:
     name: 'jsonlint'
@@ -43,7 +46,8 @@
     triggers:
      - zuul
     builders:
-     - jsonlint
+     - jsonlint:
+        dir: 'src'
 
 - job:
     name: 'jsduck'
@@ -402,4 +406,4 @@
     triggers:
      - zuul
     builders:
-     - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'
+     - shell: /srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE/src"
