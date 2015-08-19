@@ -620,13 +620,16 @@
     name: composer-validate
     builders:
      - shell: |
-        if [[ -f "composer.json" ]]; then composer --ansi validate --no-check-publish; fi
+        cd src
+        [[ -f "composer.json" ]] || exit 0
+        composer --ansi validate --no-check-publish
 
 # Validate a composer.json so it can be published on packagist.org
 - builder:
     name: composer-validate-package
     builders:
      - shell: |
+        cd src
         composer --ansi validate
 
 # Notes:
@@ -638,12 +641,14 @@
     name: composer-update
     builders:
      - shell: |
+        cd src
         composer update --ansi --no-progress --prefer-dist --profile
 
 - builder:
     name: composer-update-no-dev
     builders:
      - shell: |
+        cd src
         composer update --ansi --no-progress --prefer-dist --profile --no-dev
 
 # Runs "composer test"
@@ -651,4 +656,5 @@
     name: composer-test
     builders:
      - shell: |
+        cd src
         composer --ansi test
