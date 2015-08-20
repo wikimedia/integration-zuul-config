@@ -6,6 +6,7 @@ dependencies = {
     'Capiunto': ['Scribunto'],
     'Citoid': ['VisualEditor'],
     'CodeEditor': ['WikiEditor'],
+    'ContentTranslation': ['EventLogging', 'UniversalLanguageSelector'],
     'Disambiguator': ['VisualEditor'],
     'EducationProgram': ['cldr'],
     'FlaggedRevs': ['Scribunto'],
