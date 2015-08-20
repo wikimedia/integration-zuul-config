@@ -678,8 +678,6 @@ jobs:
     voting: false
   - name: mwext-UploadWizard-phpcs-HEAD
     voting: false
-  - name: mwext-WebFonts-phpcs-HEAD
-    voting: false
   - name: mwext-WhitelistPages-phpcs-HEAD
     voting: false
 
@@ -787,8 +785,6 @@ jobs:
   - name: mwext-Survey-jslint # bug 61637
     voting: false
   - name: mwext-TocTree-jslint # bug 61640
-    voting: false
-  - name: mwext-WebFonts-jslint # bug 61644
     voting: false
   - name: mwext-WikiObjectModel-jslint # bug 66193 abandoned?
     voting: false
@@ -4275,13 +4271,6 @@ projects:
       - name: jsonlint
       - name: extension-unittests-generic
 
-  # TODO: add qunit
-  - name: mediawiki/extensions/Narayam
-    template:
-      - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
-
   - name: mediawiki/extensions/NaturalLanguageList
     template:
       - name: jshint
@@ -7522,22 +7511,6 @@ projects:
       - name: jshint
       - name: jsonlint
       - name: extension-unittests-generic
-
-  - name: mediawiki/extensions/WebFonts
-    check-only:
-      - mwext-WebFonts-jslint
-      - mwext-WebFonts-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - mwext-WebFonts-jslint
-      - mwext-WebFonts-phpcs-HEAD
-      - phplint
-      - php-composer-validate
-    experimental:
-      - mediawiki-extensions-hhvm
-      - mediawiki-extensions-qunit
 
   - name: mediawiki/extensions/WebPlatformAuth
     template:
