@@ -5492,8 +5492,12 @@ projects:
 
   - name: mediawiki/extensions/PronunciationRecording
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jshint
+      - jsonlint
 
   - name: mediawiki/extensions/ProtectSite
     template:
