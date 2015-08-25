@@ -34,9 +34,8 @@ class TestZuulLayout(unittest.TestCase):
     zuul_config = None
     sched = None
 
-    def __init__(self, *args, **kwargs):
-        super(TestZuulLayout, self).__init__(*args, **kwargs)
-
+    @classmethod
+    def setUpClass(cls):
         # Craft our own zuul.conf
         wmf_zuul_layout = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
@@ -44,15 +43,19 @@ class TestZuulLayout(unittest.TestCase):
         cfg = ConfigParser.ConfigParser()
         cfg.add_section('zuul')
         cfg.set('zuul', 'layout_config', wmf_zuul_layout)
-        self.zuul_config = cfg
+        cls.zuul_config = cfg
 
-        self.sched = zuul.scheduler.Scheduler()
+        cls.sched = zuul.scheduler.Scheduler()
         # Reporters and Triggers are registered by zuul-server, not the
         # Scheduler class:
-        self.sched.registerTrigger(FakeTrigger(), 'gerrit')
-        self.sched.registerTrigger(FakeTrigger(), 'timer')
-        self.sched.registerTrigger(FakeTrigger(), 'zuul')
-        self.sched._doReconfigureEvent(ReconfigureEvent(self.zuul_config))
+        cls.sched.registerTrigger(FakeTrigger(), 'gerrit')
+        cls.sched.registerTrigger(FakeTrigger(), 'timer')
+        cls.sched.registerTrigger(FakeTrigger(), 'zuul')
+        cls.sched._doReconfigureEvent(ReconfigureEvent(cls.zuul_config))
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.sched.exit()
 
     # Helpers
 
