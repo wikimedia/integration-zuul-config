@@ -31,7 +31,6 @@ class FakeTrigger(object):
 
 class TestZuulLayout(unittest.TestCase):
 
-    zuul_config = None
     sched = None
 
     @classmethod
@@ -43,7 +42,6 @@ class TestZuulLayout(unittest.TestCase):
         cfg = ConfigParser.ConfigParser()
         cfg.add_section('zuul')
         cfg.set('zuul', 'layout_config', wmf_zuul_layout)
-        cls.zuul_config = cfg
 
         cls.sched = zuul.scheduler.Scheduler()
         # Reporters and Triggers are registered by zuul-server, not the
@@ -51,7 +49,7 @@ class TestZuulLayout(unittest.TestCase):
         cls.sched.registerTrigger(FakeTrigger(), 'gerrit')
         cls.sched.registerTrigger(FakeTrigger(), 'timer')
         cls.sched.registerTrigger(FakeTrigger(), 'zuul')
-        cls.sched._doReconfigureEvent(ReconfigureEvent(cls.zuul_config))
+        cls.sched._doReconfigureEvent(ReconfigureEvent(cfg))
 
     @classmethod
     def tearDownClass(cls):
