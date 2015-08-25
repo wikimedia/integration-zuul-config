@@ -23,6 +23,8 @@
     concurrent: true
     logrotate:
         daysToKeep: 15
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
@@ -120,6 +122,8 @@
     # matching the expression.
     node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
@@ -145,6 +149,8 @@
     name: 'mediawiki-phpunit-{phpflavor}-composer'
     node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
@@ -197,6 +203,8 @@
     logrotate:
         daysToKeep: 15
 
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
@@ -229,6 +237,8 @@
     logrotate:
         daysToKeep: 15
 
+    properties:
+     - throttle-one-per-node
     triggers:
      - zuul
     builders:
