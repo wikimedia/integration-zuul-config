@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ec1af18_1ac6dc1a",
+        "filename": "jjb/mobile.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-08-26T15:34:38Z",
+      "side": 1,
+      "message": "Jenkins would run an instance of the job per executor, so potentially an instance might end up with all its executors running the emulator.\n\nSecret trick, we can tell the Jenkins scheduler to only run an instance of the job per node with:\n\n properties:\n     - throttle-one-per-node",
+      "revId": "81f24aa5bc9b21e748d0c4abc837c64228ff515f",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ec1af18_5af6a45b",
+        "filename": "jjb/mobile.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-08-26T15:34:38Z",
+      "side": 1,
+      "message": "The \"defaults: use-remoteonly-zuul\" adds a bunch of useful wrappers to the jobs, but as soon as you define a wrapper that override the default one.  Please add to the wrappers list:\n\n - timeout:\n   timeout: 30  # in minutes, feel free to tweak as needed\n - timestamps  # for console timestamping\n - ansicolor  # renders ANSI escape sequences for nice colorization in the console",
+      "revId": "81f24aa5bc9b21e748d0c4abc837c64228ff515f",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ec1af18_bafd4839",
+        "filename": "jjb/mobile.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-08-26T15:34:38Z",
+      "side": 1,
+      "message": "When I crafted the job definition on https://gerrit.wikimedia.org/r/#/c/233923/3/jjb/mobile.yaml I noticed a few more fields. Maybe you need them:\n\n screen-density: 240\n screen-resolution: WVGA\n locale: en_US\n hardware-properties:\n     vm.heapSize: 512   # or maybe 256\n\n\nMaybe we want delete: false, to keep the emulator around. That might speed up the startup time though that might cause side effects.",
+      "revId": "81f24aa5bc9b21e748d0c4abc837c64228ff515f",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
