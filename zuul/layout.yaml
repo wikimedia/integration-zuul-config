@@ -5532,12 +5532,18 @@ projects:
 
   - name: mediawiki/extensions/QuickSurveys
     template:
+      - name: extension-gate
       - name: composer-test
+      - name: extension-rubylint
       - name: extension-unittests-generic
       - name: npm
     check:
       - jshint
       - jsonlint
+    test:
+      - mwext-mw-selenium
+    gate-and-submit:
+       - mwext-mw-selenium
 
   - name: mediawiki/extensions/QuickSearchLookup
     template:
