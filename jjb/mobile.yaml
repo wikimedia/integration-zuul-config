@@ -44,11 +44,41 @@
      - archive:
          artifacts: '**/build/outputs/**'
 
+- job-template:
+    name: 'apps-android-wikipedia-emulator'
+    node: contintLabsSlave && AndroidEmulator
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builder:
+     - shell: |
+         scripts/missing-qq.py
+         ./gradlew -q clean testAllAlphaRelease
+    publisher:
+     - junit:
+         results: '**/test-results/**/*.xml,**/androidTest-results/**/*.xml'
+    wrappers:
+     - android-emulator:
+         os: android-15
+         screen-density: 240
+         screen-resolution: WVGA
+         locale: en_US
+         target-abi: x86
+         hardware-properties:
+             vm.heapSize: 512
+         wipe: true
+         delete: true
+         commandline-options: '-noaudio'
+
 - project:
     name: 'apps-android-wikipedia'
     jobs:
       - 'apps-android-wikipedia-gradlew'
       - 'apps-android-wikipedia-gradlew-lint'
+      - 'apps-android-wikipedia-emulator'
 
 # Build the mighty Commons application for Android Platforms
 # Yuvi rocks (bug 20281).
