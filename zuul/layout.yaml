@@ -1639,6 +1639,9 @@ jobs:
     failure-message: 'Failed to compare your patchset with the current configuration. FAILURE'
     files: '^jjb/.*'
 
+  - name: 'integration-config-tox-dib-trusty'
+    files: '^dib/.*'
+
   - name: 'integration-zuul-layoutdiff'
     voting: false
     success-message: 'No layout difference. Build'
@@ -1975,12 +1978,14 @@ projects:
     test:
       - tox-flake8
       - tox-py27
+      - integration-config-tox-dib-trusty
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
       - integration-zuul-layoutvalidation
     gate-and-submit:
       - tox-flake8
       - tox-py27
+      - integration-config-tox-dib-trusty
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
       - integration-zuul-layoutvalidation-gate
