@@ -477,11 +477,6 @@
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh"
 
 - builder:
-    name: mw-get-extensions
-    builders:
-        - shell: "/srv/deployment/integration/slave-scripts/tools/fetch-mw-ext {dependencies}"
-
-- builder:
     name: mw-run-update-script
     builders:
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
@@ -532,28 +527,6 @@
          # Postbuild options are confusing, setting both to false ensures the script always runs.
          onsuccess: False
          onfailure: False
-
-# This macro is OBSOLETE
-#
-# Instead one should use Zuul cloner:
-#
-# - zuul-cloner-extdeps:
-#    ext-name: '{ext-name}'
-#    dependencies: '{dependencies}'
-#    additional-repositories: 'mediawiki/vendor'
-# - mw-install-sqlite
-# - shell: "cp deps.txt src/extensions_load.txt"
-# - mw-apply-settings
-#
-- builder:
-    name: mw-setup-extension
-    builders:
-     - get-mw-core:
-          branch: '{mwbranch}'
-     - mw-install-sqlite
-     - mw-get-extensions:
-          dependencies: '{dependencies}'
-     - mw-apply-settings
 
 - builder:
     name: mw-phpunit

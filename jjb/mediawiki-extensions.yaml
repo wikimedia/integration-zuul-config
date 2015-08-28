@@ -14,36 +14,6 @@
     publishers:
      - global-teardown
 
-# Template to run browsertests for an extension
-# Parameters: dependencies
-#
-- job-template:
-    name: '{name}-{ext-name}-{browser}'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-zuul-for-mw-ext
-    triggers:
-     - zuul
-
-    builders:
-     # setup mediawiki master + extension dependencies
-     - mw-setup-extension:
-        mwbranch: 'master'
-        dependencies: '{dependencies}'
-     - mw-run-update-script
-     - browsertests:
-         tests-path: 'extensions/{ext-name}/tests/browser'
-         browser: '{browser}'
-
-    publishers:
-     - xunit:
-         types:
-          - junit:
-              pattern: 'log/*.xml'
-     - archive:
-         artifacts: 'log/report.html, log/*.png'
-     - mw-teardown
-     - archive-log-dir
-
 # Parameters:
 #
 # ext-name: extension basename. Set to '' to ignore
