@@ -1,0 +1,34 @@
+#!/bin/bash
+# vim: set et ts=4 sw=4:
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+DIB_WIKIMEDIA_PUPPET_DEST=${DIB_WIKIMEDIA_PUPPET_DEST:-/puppet}
+
+mkdir -v -p $(dirname $DIB_WIKIMEDIA_PUPPET_DEST)
+git clone /srv/git/operations/puppet.git "$DIB_WIKIMEDIA_PUPPET_DEST"
+
+echo "Changing remote from instance mirror to Gerrit..."
+git -C "$DIB_WIKIMEDIA_PUPPET_DEST" remote -v
+git -C "$DIB_WIKIMEDIA_PUPPET_DEST" remote set-url origin https://gerrit.wikimedia.org/r/p/operations/puppet
+git -C "$DIB_WIKIMEDIA_PUPPET_DEST" remote -v
+
+echo "Asserting puppet is installed..."
+which puppet
+
+echo "Preparing puppet links..."
+ln -s $DIB_WIKIMEDIA_PUPPET_DEST/files  /etc/puppet/files
+ln -s $DIB_WIKIMEDIA_PUPPET_DEST/manifests /etc/puppet/manifests
+ln -s $DIB_WIKIMEDIA_PUPPET_DEST/modules /etc/puppet/modules
+ln -s $DIB_WIKIMEDIA_PUPPET_DEST/hieradata /etc/puppet/hieradata
+
+echo "Applying puppet manifests ..."
+puppet-apply /tmp/in_target.d/wikimedia-puppet/bootstrap.pp
+puppet-apply /tmp/in_target.d/wikimedia-puppet/ciimage.pp
+
+echo "Performing apt-get dist-upgrade"
+install-packages -u
