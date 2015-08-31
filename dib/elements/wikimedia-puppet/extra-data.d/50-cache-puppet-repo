@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Populate git repositories on the building host
+#
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+DIB_GIT_CACHE=$DIB_IMAGE_CACHE/git-repos
+IMAGE_GIT_CACHE="/srv/git"
+REPO=operations/puppet.git
+
+if [ ! -e $DIB_GIT_CACHE ]; then
+	echo "Creating $REPO in host cache"
+	mkdir -v -p $(dirname "$DIB_GIT_CACHE/$REPO")
+	git clone --bare "https://gerrit.wikimedia.org/r/p/$REPO" "$DIB_GIT_CACHE/$REPO"
+else
+	echo "Refreshing $REPO in host cache"
+	git --git-dir="$DIB_GIT_CACHE/$REPO" remote set-url origin https://gerrit.wikimedia.org/r/p/operations/puppet.git
+	git --git-dir="$DIB_GIT_CACHE/$REPO" fetch --force --prune --tags --update-head-ok origin
+fi
+echo "Copying cached repo into image"
+sudo cp -a $DIB_GIT_CACHE/ $TMP_MOUNT_PATH/srv/git
