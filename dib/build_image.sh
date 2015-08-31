@@ -20,7 +20,6 @@ ELEMENTS=(
 	'vm'
 	'devuser'
 	# Custom
-	'wikimedia-networking'
 	'wikimedia-puppet'
 	'nodepool-base'
 	)
