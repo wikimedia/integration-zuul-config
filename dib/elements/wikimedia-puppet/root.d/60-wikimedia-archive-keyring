@@ -1,0 +1,17 @@
+#!/bin/bash
+# vim: set et ts=4 sw=4:
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+[ -n "$TARGET_ROOT" ]
+
+echo "Installing Wikimedia GPG keyring"
+KEY_FILE=wikimedia-archive-keyring.gpg
+wget -O $TARGET_ROOT/tmp/$KEY_FILE \
+    -o /dev/null \
+    http://apt.wikimedia.org/autoinstall/keyring/$KEY_FILE
+sudo install -o root -g root -m 0444 $TARGET_ROOT/tmp/$KEY_FILE $TARGET_ROOT/etc/apt/trusted.gpg.d/$KEY_FILE
