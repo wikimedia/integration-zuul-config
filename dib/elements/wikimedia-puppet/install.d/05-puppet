@@ -1,0 +1,56 @@
+#!/bin/bash
+# vim: set et ts=4 sw=4:
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -x
+set -eu
+set -o pipefail
+
+PUPPET_DIR=/puppet
+git clone /srv/git/operations/puppet.git "$PUPPET_DIR"
+
+echo "Asserting puppet is installed..."
+which puppet
+
+ln -s $PUPPET_DIR/files  /etc/puppet/files
+ln -s $PUPPET_DIR/manifests /etc/puppet/manifests
+ln -s $PUPPET_DIR/modules /etc/puppet/modules
+ln -s $PUPPET_DIR/hieradata /etc/puppet/hieradata
+
+function puppet_apply() {
+    # Puppet exit codes are handled manually
+    set +e
+    puppet apply --test --verbose --modulepath=$PUPPET_DIR/modules $@
+    local puppet_exit_code=$?
+    set -e
+
+    if [[ "$puppet_exit_code" == "0" || $puppet_exit_code == "2" ]]; then
+        echo "puppet apply successful. Exit code $puppet_exit_code"
+        return 0
+    else
+        >&2 echo "Puppet run failed. Exit code $puppet_exit_code"
+        return $puppet_exit_code
+    fi;
+}
+
+cat > /tmp/bootstrap.pp <<puppet
+class { '::puppetmaster::hiera':
+    source => 'puppet:///modules/puppetmaster/labs.hiera.yaml',
+}
+puppet
+
+puppet_apply /tmp/bootstrap.pp
+
+cat > /tmp/ciimage.pp <<puppet
+include apt
+include contint::packages::python
+puppet
+
+puppet_apply /tmp/ciimage.pp
+
+rm -f /tmp/*.pp
+
+echo "Performing apt-get dist-upgrade"
+install-packages -u
