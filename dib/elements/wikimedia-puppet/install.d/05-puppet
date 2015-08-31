@@ -1,0 +1,58 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+PUPPET_DIR=/puppet
+git clone /srv/git/operations/puppet.git "$PUPPET_DIR"
+
+echo "Asserting puppet is installed..."
+which puppet
+
+ln -s $PUPPET_DIR/files  /etc/puppet/files
+ln -s $PUPPET_DIR/manifests /etc/puppet/manifests
+ln -s $PUPPET_DIR/modules /etc/puppet/modules
+ln -s $PUPPET_DIR/hieradata /etc/puppet/hieradata
+
+# Required by ssh::userkey
+install -d /etc/ssh/userkeys -o root -g root -m 0444
+
+cat > /tmp/bootstrap.pp <<puppet
+package { 'puppetmaster-common': ensure => present }
+package { 'ruby-httpclient': ensure => present }
+class { '::puppetmaster::hiera':
+	source => 'puppet:///modules/puppetmaster/labs.hiera.yaml',
+}
+puppet
+
+puppet apply --test --verbose --modulepath=$PUPPET_DIR/modules /tmp/bootstrap.pp || :
+
+cat > /tmp/ciimage.pp <<puppet
+include apt
+
+# Should use LDAP instead
+class { 'admin': groups => ['contint-admins'], }
+
+include contint::packages::python
+puppet
+
+# Puppet exit codes are handled manually
+set +e
+puppet apply --test --verbose --modulepath=$PUPPET_DIR/modules /tmp/ciimage.pp
+PUPPET_EXIT_CODE=$?
+
+rm -f /tmp/*.pp
+
+if [[ "$PUPPET_EXIT_CODE" == "0" || $PUPPET_EXIT_CODE == "2" ]]; then
+	echo "puppet apply successful. Exit code $PUPPET_EXIT_CODE"
+else
+	>&2 echo "Puppet run failed. Exit code $PUPPET_EXIT_CODE"
+	exit $PUPPET_EXIT_CODE
+fi;
+set -e
+
+echo "Performing apt-get dist-upgrade"
+install-packages -u
