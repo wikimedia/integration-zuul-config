@@ -21,6 +21,7 @@ ELEMENTS=(
 	'devuser'
 	# Custom
 	'wikimedia-networking'
+	'wikimedia-puppet'
 	'nodepool-base'
 	)
 export DIB_COMMAND=${DIB_COMMAND:-'disk-image-create'}
