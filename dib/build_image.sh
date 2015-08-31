@@ -19,6 +19,8 @@ ELEMENTS=(
 	'cloud-init-datasources'
 	'vm'
 	'devuser'
+	# Custom
+	'wikimedia-puppet'
 	)
 export DIB_COMMAND=${DIB_COMMAND:-'disk-image-create'}
 export DIB_DISTRIBUTION_MIRROR=${DIB_DISTRUBITION_MIRROR:-'http://mirrors.wikimedia.org/debian/'}
@@ -32,6 +34,8 @@ export DIB_CLOUD_INIT_DATASOURCES='Ec2'
 
 export DIB_DEV_USER_USERNAME='jenkins'
 export DIB_DEV_USER_AUTHORIZED_KEYS='dib_jenkins_id_rsa.pub'
+
+export DIB_WIKIMEDIA_PUPPET_SOURCE='./puppet'
 
 export QEMU_IMG_OPTIONS='compat=0.10'  # XXX might not be needed
 
