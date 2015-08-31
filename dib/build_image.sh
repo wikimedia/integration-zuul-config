@@ -21,6 +21,7 @@ ELEMENTS=(
 	'devuser'
 	# Custom
 	'nodepool-base'
+	'wikimedia-puppet'
 	)
 export DIB_COMMAND=${DIB_COMMAND:-'disk-image-create'}
 export DIB_DISTRIBUTION_MIRROR=${DIB_DISTRUBITION_MIRROR:-'http://mirrors.wikimedia.org/debian/'}
