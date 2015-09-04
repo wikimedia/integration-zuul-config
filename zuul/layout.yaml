@@ -999,8 +999,6 @@ jobs:
     voting: false
   - name: mwext-InviteSignup-jslint
     voting: false
-  - name: mwext-Josa-jslint
-    voting: false
   - name: mwext-JSBreadCrumbs-jslint
     voting: false
   - name: mwext-LanguageSelector-jslint
@@ -5123,9 +5121,11 @@ projects:
 
   - name: mediawiki/extensions/Josa
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/JSBreadCrumbs
     template:
