@@ -28,17 +28,6 @@
      - lint-whitespaces-in:
         dir: '$WORKSPACE'
 
-# `get-mw-core` injects mediawiki/core@{requested branch} in $WORKSPACE
-# This should be used when testing extensions
-#
-# The aim is to get the very latest MediaWiki core version into the extension
-# workspace without having to fully clone the repository. We cant use git
-# archive with Gerrit so we get the code from the local replicated clone.
-- builder:
-    name: get-mw-core
-    builders:
-        - shell: "/srv/deployment/integration/slave-scripts/bin/mw-core-get.sh {branch}"
-
 - builder:
     name: jshint
     builders:
