@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ec1af18_6fa35297",
+        "filename": "jjb/mobile.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-09-04T08:58:12Z",
+      "side": 1,
+      "message": "Name it apps-android-wikipedia-test . See my comment in zuul/layout.yaml\n\nThen create a new job apps-android-wikipedia-test that just build the .apk . It will be triggered once the change is merged and you probably want to skip lint/tests and the emulator entirely to speed up the building.\n\nThat will create the .apk for you  AFTER the change has merged and you can then retrieve it from Jenkins :-}  The artifacts publisher would just copy the .apk / meta.json.\n\nLater we can have a look at publishing it under https://integration.wikimedia.org/ :-D",
+      "revId": "7b0a3cdbb88637e4ae94bd6116cd6f64904f8e88",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ec1af18_8fa23e94",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2223,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-09-04T08:58:12Z",
+      "side": 1,
+      "message": "Potentially one of the other jobs in gate-and-submit might fail and the change will not be merged.   Potentially apps-android-wikipedia-alpha might be successful and hence publish artifacts for a change which is not merged.\n\nWe have a postmerge pipeline, it is triggered when a change is merged and report back to Gerrit change once completed. That is where we put jobs publishing materials.\n\nSo here I would:\n\n test:\n  - apps-android-wikipedia-test\n gate-and-submit:\n  - apps-android-wikipedia-test\n postmerge:\n  - apps-android-wikipedia-publish",
+      "revId": "7b0a3cdbb88637e4ae94bd6116cd6f64904f8e88",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
