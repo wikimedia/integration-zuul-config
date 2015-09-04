@@ -67,3 +67,17 @@
                 --workspace src \
                 https://gerrit.wikimedia.org/r/p \
                 {projects}
+
+# Same as above, but uses a different clonemap, and root as workspace
+- builder:
+    name: zuul-parsoid-cloner
+    builders:
+        - shell: |
+            zuul-cloner --version
+            zuul-cloner \
+                --color \
+                --verbose \
+                --map /srv/deployment/integration/slave-scripts/etc/zuul-parsoid-clonemap.yaml \
+                --workspace . \
+                https://gerrit.wikimedia.org/r/p \
+                {projects}

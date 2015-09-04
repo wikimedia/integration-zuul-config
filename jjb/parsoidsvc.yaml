@@ -20,30 +20,19 @@
         - ansicolor
     triggers:
         - zuul
-    scm:
-        - git:
-            url: '$ZUUL_URL/$ZUUL_PROJECT'
-            branches:
-             - '$ZUUL_COMMIT'
-            refspec: '$ZUUL_REF'
-            submodule:
-                disable: true
-            basedir: parsoidsvc
     builders:
-        # Hack to get mediawiki/core installed in a different directory
+        - zuul-parsoid-cloner:
+             projects: >
+                mediawiki/core
+                mediawiki/services/parsoid
+
         - shell: |
-            rm -fR src/mediawiki/core
-            mkdir -p src/mediawiki/core
+            # Fetch external dependencies using composer
+            cd src/mediawiki/core
+            composer update
+            # Install MediaWiki in a different directory
             export MW_INSTALL_PATH='src/mediawiki/core'
-
-            # mw-core-get.sh only recognize $WORKSPACE so override it to point
-            # to MW_INSTALL_PATH
-            # Support added with https://gerrit.wikimedia.org/r/#/c/130662/
-            # which is pending merge.
-            WORKSPACE=$MW_INSTALL_PATH /srv/deployment/integration/slave-scripts/bin/mw-core-get.sh master
-
             /srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh
-
         - shell: |
            # record the versions of parsertests we're running, for debugging
            # if something goes wrong
