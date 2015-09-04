@@ -123,22 +123,6 @@
      - archive-log-dir
 
 - job-template:
-    name: '{name}-{ext-name}-qunit-mobile'
-    node: contintLabsSlave && UbuntuPrecise
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - prepare-mediawiki:
-         ext-name: '{ext-name}'
-         dependencies: '{dependencies}'
-     - qunit-mobile
-    publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-
-- job-template:
     # This is a copy of '{name}-{ext-name}-qunit', but with processes ve's submodule
     # since Zuul cloner does not support git submodules.
     name: 'mwext-VisualEditor-qunit'
@@ -610,14 +594,7 @@
      - '{name}-{ext-name}-qunit':
         name: mwext
         ext-name: MobileFrontend
-     - '{name}-{ext-name}-qunit-mobile':
-        name: mwext
-        ext-name: MobileFrontend
      - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: Thanks
-        dependencies: 'Echo,Flow,MobileFrontend,VisualEditor,GuidedTour,AbuseFilter,SpamBlacklist,CheckUser,EventLogging,ConfirmEdit'
-     - '{name}-{ext-name}-qunit-mobile':
         name: mwext
         ext-name: Thanks
         dependencies: 'Echo,Flow,MobileFrontend,VisualEditor,GuidedTour,AbuseFilter,SpamBlacklist,CheckUser,EventLogging,ConfirmEdit'
