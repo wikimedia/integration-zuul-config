@@ -106,6 +106,24 @@
       "revId": "091260fbdf2278293e0a286ff77b9669dc864803",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ec1af18_c547c77a",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4603,
+      "author": {
+        "id": 640
+      },
+      "writtenOn": "2015-09-04T15:32:57Z",
+      "side": 1,
+      "message": "There are multiple pipelines http://docs.openstack.org/infra/zuul/zuul.html#pipelines . Templates are explained a bit further down http://docs.openstack.org/infra/zuul/zuul.html#project-templates .\n\n\u003e Well i think they are both executed at the same time.\n\nThat is only true for the check pipeline now.\n\n\u003e I think when you merge a patch the check template shoulden block the merge from happening but not sure about that.\n\nAs done in this version, it won\u0027t block. (check is a pipeline not a template. Where it says jsonlint above that is using a job. Where it says jshint above that is using a template.) The gate-and-submit pipeline is independent of the check pipeline. When each pipeline gets started and what it does when it finishes is also configured in this file.",
+      "parentUuid": "6ec1af18_2ce0fd91",
+      "revId": "091260fbdf2278293e0a286ff77b9669dc864803",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
