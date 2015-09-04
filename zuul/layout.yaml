@@ -7137,8 +7137,13 @@ projects:
 
   - name: mediawiki/extensions/SpamDiffTool
     template:
+      - name: composer-test
       - name: jsonlint
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/Spreadsheet
     template:
