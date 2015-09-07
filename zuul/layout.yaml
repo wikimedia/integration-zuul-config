@@ -3953,20 +3953,18 @@ projects:
 
   - name: mediawiki/extensions/Interwiki
     template:
+      - name: composer-test
       - name: jshint
       - name: npm
     check:
-      - mwext-Interwiki-phpcs-HEAD
       - phplint
       - php-composer-validate
       - jsonlint
     test:
-      - mwext-Interwiki-phpcs-HEAD
       - phplint
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
-      - mwext-Interwiki-phpcs-HEAD
       - phplint
       - php-composer-validate
     experimental:
