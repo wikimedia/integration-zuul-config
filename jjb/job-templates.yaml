@@ -68,20 +68,6 @@
     builders:
      - jsduck
 
-# Deprecated non-generic npm job. Use the
-# generic 'npm' job below.
-- job-template:
-    name: '{name}-npm'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - npm
-    publishers:
-     - global-teardown
-
 - job:
     name: 'npm'
     node: contintLabsSlave && UbuntuTrusty

@@ -18,6 +18,19 @@
      - jsonlint
 
 - job-template:
+    name: 'mediawiki-core-npm'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - npm
+    publishers:
+     - global-teardown
+
+
+- job-template:
     name: 'mediawiki-core-qunit'
     node: contintLabsSlave && UbuntuTrusty
     concurrent: true
@@ -331,7 +344,7 @@
       - 'mediawiki-core-jslint'
       - 'mediawiki-core-qunit'
       - 'mediawiki-core-jsduck'
-      - '{name}-npm'
+      - 'mediawiki-core-npm'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
       - mediawiki-gate
