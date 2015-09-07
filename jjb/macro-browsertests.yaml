@@ -51,8 +51,10 @@
           if [ ! -f "{folder}/browser/environments.yml" ]; then
               export MEDIAWIKI_API_URL
               export MEDIAWIKI_URL
-              export MEDIAWIKI_USER
           fi
+
+          # T111510
+          export MEDIAWIKI_USER
 
           # Export the MW user password regardless, as passwords are not kept
           # in test suite configurations
