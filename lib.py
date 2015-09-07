@@ -62,12 +62,10 @@ else:
 
 
 def git_pull(path, update_submodule=False):
-    cwd = os.getcwd()
-    os.chdir(path)
-    subprocess.check_call(['git', 'pull'])
+    subprocess.check_call(['git', '-C', path, 'pull'])
     if update_submodule:
-        subprocess.check_call(['git', 'submodule', 'update', '--init'])
-    os.chdir(cwd)
+        subprocess.check_call(['git', '-C', path, 'submodule', 'update',
+                               '--init'])
 
 def json_load(path):
     with codecs.open(path, 'r', 'utf-8') as f:
