@@ -56,7 +56,7 @@ if extension == 'mediawiki':
     packages = ['/home/km/projects/vagrant/mediawiki/package.json']
 else:
     packages = glob.glob(EXTENSIONS + '/*/package.json')
-for package in packages:
+for package in sorted(packages):
     ext_name = package.split('/')[-2]
     if extension and extension != ext_name:
         continue

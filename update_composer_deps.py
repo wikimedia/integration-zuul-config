@@ -70,7 +70,7 @@ elif os.path.exists('/home/km/projects/' + extension + '/composer.json'):
     packages = ['/home/km/projects/' + extension + '/composer.json']
 else:
     packages = glob.glob(EXTENSIONS + '/*/composer.json')
-for package in packages:
+for package in sorted(packages):
     ext_name = package.split('/')[-2]
     if extension and extension != ext_name:
         continue
