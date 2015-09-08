@@ -9,5 +9,6 @@ fi;
 set -u
 
 HOSTNAME="$1"
-echo "Placeholder Nodepool setup script"
-echo "Hostname: $1"
+echo "Hostname: $HOSTNAME"
+sudo hostname $HOSTNAME
+echo "127.0.0.1 $HOSTNAME" >> /etc/hosts

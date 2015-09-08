@@ -31,8 +31,11 @@ export DIB_IMAGE_NAME=${DIB_IMAGE_NAME:-"image-${DIB_RELEASE}-${DATE}"}
 export IMAGE_TYPE="qcow2"
 
 export DIB_CLOUD_INIT_DATASOURCES='Ec2'
+
+# sudo rule is removed by /nodepool/scripts/ready.sh
 export DIB_DEV_USER_USERNAME='jenkins'
 export DIB_DEV_USER_AUTHORIZED_KEYS='dib_jenkins_id_rsa.pub'
+export DIB_DEV_USER_PWDLESS_SUDO='yes'
 
 export QEMU_IMG_OPTIONS='compat=0.10'  # XXX might not be needed
 
