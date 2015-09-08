@@ -10,12 +10,14 @@ import tempfile
 
 s = requests.session()
 
+
 @functools.lru_cache()
 def get_npm_version(package):
     r = s.get('https://registry.npmjs.org/%s' % package)
     version = r.json()['dist-tags']['latest']
     print('Latest %s: %s' % (package, version))
     return version
+
 
 @functools.lru_cache()
 def get_packagist_version(package):
@@ -32,13 +34,15 @@ def get_packagist_version(package):
     print('Latest %s: %s' % (package, version))
     return version
 
+
 def commit_and_push(files, msg, branch, topic, push=True):
     f = tempfile.NamedTemporaryFile(delete=False)
     f.write(bytes(msg, 'utf-8'))
     f.close()
     subprocess.check_call(['git', 'add'] + files)
     subprocess.check_call(['git', 'commit', '-F', f.name])
-    push_cmd = ['git', 'push', 'gerrit', 'HEAD:refs/for/{0}%topic={1}'.format(branch, topic)]
+    push_cmd = ['git', 'push', 'gerrit',
+                'HEAD:refs/for/{0}%topic={1}'.format(branch, topic)]
     if push:
         subprocess.check_call(push_cmd)
     else:
@@ -69,14 +73,18 @@ def git_pull(path, update_submodule=False):
         subprocess.check_call(['git', 'submodule', 'update', '--init'])
     os.chdir(cwd)
 
+
 def json_load(path):
     with codecs.open(path, 'r', 'utf-8') as f:
         info = json.loads(f.read())
     return info
 
+
 @functools.lru_cache()
 def get_wmf_deployed_list():
-    r = requests.get('https://phabricator.wikimedia.org/diffusion/MREL/browse/master/make-wmf-branch/config.json?view=raw')
+    r = requests.get(
+        'https://phabricator.wikimedia.org/'
+        'diffusion/MREL/browse/master/make-wmf-branch/config.json?view=raw')
     conf = r.json()
     repos = set()
     for ext in conf['extensions']:
@@ -85,6 +93,7 @@ def get_wmf_deployed_list():
         repos.add('mediawiki-skins-' + skin)
     # Intentionally ignore special_extensions because they're special
     return repos
+
 
 def is_wmf_deployed(github_name):
     return github_name in get_wmf_deployed_list()

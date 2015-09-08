@@ -10,12 +10,16 @@ import sys
 import lib
 
 EXTENSIONS = '/home/km/projects/vagrant/mediawiki/extensions'
-PACKAGES = ['jakub-onderka/php-parallel-lint', 'mediawiki/mediawiki-codesniffer']
+PACKAGES = [
+    'jakub-onderka/php-parallel-lint',
+    'mediawiki/mediawiki-codesniffer',
+]
 
 if len(sys.argv) > 1:
     extension = sys.argv[1]
 else:
     extension = None
+
 
 def update(composer_json):
     os.chdir(os.path.dirname(composer_json))
@@ -57,7 +61,8 @@ def update(composer_json):
     for tup in updating:
         msg += '* %s: %s → %s\n' % tup
     print(msg)
-    lib.commit_and_push(files=['composer.json'], msg=msg, branch='master', topic='bump-dev-deps')
+    lib.commit_and_push(files=['composer.json'], msg=msg,
+                        branch='master', topic='bump-dev-deps')
 
 if extension == 'mediawiki':
     packages = ['/home/km/projects/vagrant/mediawiki/composer.json']

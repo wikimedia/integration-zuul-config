@@ -2,7 +2,6 @@
 
 from collections import defaultdict, OrderedDict
 import glob
-import itertools
 import os
 
 import lib
@@ -22,6 +21,7 @@ NPM = OrderedDict([
     ('jscs', 'grunt-jscs'),
 ])
 
+
 class Reader:
     def __init__(self):
         self.data = defaultdict(lambda: defaultdict(dict))
@@ -35,7 +35,8 @@ class Reader:
 
     def display_repo_name(self, path):
         info = self.repos[path]
-        text = '[https://github.com/wikimedia/{github} {display}]'.format(**info)
+        text = '[https://github.com/wikimedia/{github} {display}]'.format(
+               **info)
         if lib.is_wmf_deployed(info['github']):
             text += ' (WMF-deployed)'
         return text
@@ -57,15 +58,15 @@ class Reader:
                     self.data[github_name][job]['version'] = version
 
     def read_zuul(self, info, github_name):
-#        if github_name != 'mediawiki-extensions-Echo':
-#            return
+        #if github_name != 'mediawiki-extensions-Echo':
+        #    return
         if any(info.get(x) if x.endswith('npm') else False for x in info):
             for job_name in list(NPM.values()):
                 #print(job_name)
                 if job_name in self.data[github_name]:
                     #print('found')
                     self.data[github_name][job_name]['color'] = 'lightgreen'
-        if any(info.get(x) if x.startswith('php-composer-test') else False for x in info):
+        if any(info.get(x) if x.startswith('php-composer-test') else False for x in info):  # noqa
             for job_name in list(COMPOSER.values()):
                 #print(job_name)
                 if job_name in self.data[github_name]:
@@ -94,7 +95,16 @@ class Reader:
 reader = Reader()
 
 
-OTHER_STUFF = ['AhoCorasick', 'at-ease', 'cdb', 'IPSet', 'oojs', 'oojs-ui', 'utfnormal', 'VisualEditor']
+OTHER_STUFF = [
+    'AhoCorasick',
+    'at-ease',
+    'cdb',
+    'IPSet',
+    'oojs',
+    'oojs-ui',
+    'utfnormal',
+    'VisualEditor',
+]
 
 if lib.ON_LABS:
     lib.git_pull(lib.EXTENSIONS_DIR, update_submodule=True)
@@ -118,7 +128,8 @@ for repo in OTHER_STUFF:
     if os.path.exists(package):
         package_paths[repo] = package
 
-for repo_type, glob_path in {'Extension': lib.EXTENSIONS_DIR, 'Skin': lib.SKINS_DIR}.items():
+for repo_type, glob_path in {'Extension': lib.EXTENSIONS_DIR,
+                             'Skin': lib.SKINS_DIR}.items():
     composers = glob.glob(glob_path + '/*/composer.json')
     repo_name = lambda x: 'mediawiki-%s-%s' % (repo_type.lower() + 's', x)
     for composer in composers:
@@ -142,7 +153,11 @@ for repo_type, glob_path in {'Extension': lib.EXTENSIONS_DIR, 'Skin': lib.SKINS_
 
 zuul_data = zuul_output_reader.main()
 for repo, info in zuul_data.items():
-    prefix = 'Extension:' if repo.startswith('mediawiki-extensions') else 'Skin:'
+    if repo.startswith('mediawiki-extensions'):
+        prefix = 'Extension:'
+    else:
+        prefix = 'Skin:'
+
     reader.add_repo(prefix + repo.split('-')[-1], repo)
     reader.read_zuul(info, repo)
 
@@ -165,8 +180,8 @@ paths = list(sorted(data))
 paths.remove('mediawiki')
 paths = ['mediawiki'] + paths
 for repo_path in paths:
-#    if repo_path != 'mediawiki-extensions-Echo':
-#        continue
+    #if repo_path != 'mediawiki-extensions-Echo':
+    #    continue
     info = data[repo_path]
     text += '|-\n|%s\n' % reader.display_repo_name(repo_path)
     for job in COMPOSER.values():

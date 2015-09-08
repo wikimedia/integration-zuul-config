@@ -34,7 +34,7 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'test', [ 'jsonlint', 'banana' ] );
 	grunt.registerTask( 'default', 'test' );
 };
-"""
+"""  # noqa
 
 grunt_file_for_php_eww = """/*jshint node:true */
 module.exports = function ( grunt ) {
@@ -56,13 +56,17 @@ module.exports = function ( grunt ) {
 	grunt.registerTask( 'test', [ 'jsonlint', 'banana' ] );
 	grunt.registerTask( 'default', 'test' );
 };
-"""
+"""  # noqa
 
-grunt_file = grunt_file_for_ext_json if os.path.exists('extension.json') else grunt_file_for_php_eww
+if os.path.exists('extension.json'):
+    grunt_file = grunt_file_for_ext_json
+else:
+    grunt_file = grunt_file_for_php_eww
+
 if os.path.exists('extension.json'):
     with open('extension.json') as f:
         data = json.load(f)
-        if not 'MessagesDirs' in data:
+        if 'MessagesDirs' not in data:
             print('No MessagesDirs set.')
             sys.exit(1)
 else:
@@ -107,7 +111,10 @@ else:
 msg = 'build: Configure banana-checker and jsonlint'
 if len(sys.argv) > 1:
     msg += '\n\nChange-Id: %s' % sys.argv[1]
-lib.commit_and_push(files=['package.json', 'Gruntfile.js', '.gitignore'], msg=msg, branch='master', topic='banana')
-sha1 = subprocess.check_output(['git', 'log', '--oneline', '-n', '1']).decode().split(' ', 1)[0]
-subprocess.call(['ssh', '-p' , '29418', 'gerrit.wikimedia.org', 'gerrit', 'review', '-m', '"check experimental"', sha1])
+lib.commit_and_push(files=['package.json', 'Gruntfile.js', '.gitignore'],
+                    msg=msg, branch='master', topic='banana')
+log1 = subprocess.check_output(['git', 'log', '--oneline', '-n', '1'])
+sha1 = log1.decode().split(' ', 1)[0]
+subprocess.call(['ssh', '-p', '29418', 'gerrit.wikimedia.org',
+                 'gerrit', 'review', '-m', '"check experimental"', sha1])
 sys.exit(0)
