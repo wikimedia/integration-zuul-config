@@ -5,7 +5,7 @@
             set -eu
             cd "$WORKSPACE/src/"
             /srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py ../deps.txt composer.local.json
-            timeout 300 composer update --prefer-source -vvv
+            timeout 300 composer --ansi update --prefer-source -vvv
 
 - builder:
     name: wd-wikibase-apply-settings

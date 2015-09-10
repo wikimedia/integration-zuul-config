@@ -638,17 +638,17 @@
     name: composer-update
     builders:
      - shell: |
-        composer update --no-progress --prefer-dist --profile
+        composer update --ansi --no-progress --prefer-dist --profile
 
 - builder:
     name: composer-update-no-dev
     builders:
      - shell: |
-        composer update --no-progress --prefer-dist --profile --no-dev
+        composer update --ansi --no-progress --prefer-dist --profile --no-dev
 
 # Runs "composer test"
 - builder:
     name: composer-test
     builders:
      - shell: |
-        composer test
+        composer --ansi test
