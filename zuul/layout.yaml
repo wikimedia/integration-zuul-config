@@ -2647,9 +2647,10 @@ projects:
       - ruby1.9.3lint
 
   - name: operations/debs/adminbot
-    template:
-      - name: 'python-lint'
-        prefix: 'operations-debs-adminbot'
+    test:
+     - tox-flake8
+    gate-and-submit:
+     - tox-flake8
 
   - name: operations/debs/archiva
     test:
