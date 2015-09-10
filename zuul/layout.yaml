@@ -2617,9 +2617,10 @@ projects:
       - mediawiki-vagrant-bundle17-yard-publish
 
   - name: operations/debs/adminbot
-    template:
-      - name: 'python-lint'
-        prefix: 'operations-debs-adminbot'
+    test:
+     - tox-flake8
+    gate-and-submit:
+     - tox-flake8
 
   - name: operations/debs/archiva
     test:
