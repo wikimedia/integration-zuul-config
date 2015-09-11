@@ -570,9 +570,6 @@ jobs:
     files:
      - '^.*\.pp$'
 
-  - name: '^(.*-)?ruby1.9.3lint$'
-    files:
-     - '^.*\.rb$'
   - name: '^ruby2.0lint$'
     files:
      - '^.*\.rb$'
@@ -1958,13 +1955,13 @@ project-templates:
   # Run Ruby linter.
   - name: extension-rubylint
     check:
-     - 'ruby1.9.3lint'
+     - ruby2.0lint
     test:
      - 'bundle-rubocop'
-     - 'ruby1.9.3lint'
+     - ruby2.0lint
     gate-and-submit:
      - 'bundle-rubocop'
-     - 'ruby1.9.3lint'
+     - ruby2.0lint
 
   - name: archived
     check:
@@ -2053,8 +2050,8 @@ projects:
     check:
       - mediawiki-core-jslint
       - mediawiki-core-phplint
-      - mediawiki-core-ruby1.9.3lint
       - php-composer-package-validate
+      - ruby2.0lint
     test:
       - mediawiki-core-phpcs
       - mediawiki-core-jsduck
@@ -2064,8 +2061,8 @@ projects:
       #- mediawiki-phpunit-zend (disabled, slow, Icac172b16)
       - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
-      - mediawiki-core-ruby1.9.3lint
       - php-composer-package-validate
+      - ruby2.0lint
     zend:
       # Comment "check zend" to manually run this
       - mediawiki-phpunit-zend
@@ -2080,8 +2077,8 @@ projects:
       - mediawiki-phpunit-zend
       - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
-      - mediawiki-core-ruby1.9.3lint
       - php-composer-package-validate
+      - ruby2.0lint
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
@@ -2327,16 +2324,16 @@ projects:
 
   - name: mediawiki/ruby/api
     check:
-     - ruby1.9.3lint
+     - ruby2.0lint
     test:
      - bundle-rubocop
-     - ruby1.9.3lint
+     - ruby2.0lint
      - bundle-rspec
      - mediawiki-ruby-api-gembuild
      - bundle-yard
     gate-and-submit:
      - bundle-rubocop
-     - ruby1.9.3lint
+     - ruby2.0lint
      - bundle-rspec
      - mediawiki-ruby-api-gembuild
      - bundle-yard
@@ -2346,17 +2343,17 @@ projects:
 
   - name: mediawiki/selenium
     check:
-     - ruby1.9.3lint
+     - ruby2.0lint
     test:
      - bundle-rubocop
-     - ruby1.9.3lint
+     - ruby2.0lint
      - mediawiki-selenium-gembuild
      - bundle-yard
      - bundle-rspec
      - mediawiki-selenium-integration
     gate-and-submit:
      - bundle-rubocop
-     - ruby1.9.3lint
+     - ruby2.0lint
      - mediawiki-selenium-gembuild
      - bundle-yard
      - bundle-rspec
