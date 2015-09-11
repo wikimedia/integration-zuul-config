@@ -629,8 +629,13 @@
      - shell: |
         composer --ansi validate
 
-# Notes:
+# Example:
 #
+# builder:
+#  - composer-update:
+#     dir: 'src'
+#
+# Notes:
 # `composer update` is being passed `--prefer-dist` to download cacheable
 # tarballs when possible.
 #
@@ -638,6 +643,8 @@
     name: composer-update
     builders:
      - shell: |
+        set -u
+        cd {dir}
         composer update --ansi --no-progress --prefer-dist --profile
 
 - builder:
