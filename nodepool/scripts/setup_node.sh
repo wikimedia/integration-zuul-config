@@ -12,3 +12,6 @@ HOSTNAME="$1"
 echo "Hostname: $HOSTNAME"
 sudo hostname $HOSTNAME
 echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts
+
+# https://review.openstack.org/#/c/222759/
+sudo mkdir -p /opt/nodepool-scripts
