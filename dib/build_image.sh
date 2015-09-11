@@ -19,8 +19,6 @@ ELEMENTS=(
 	'cloud-init-datasources'
 	'vm'
 	'devuser'
-	# Custom
-	'nodepool-base'
 	)
 export DIB_COMMAND=${DIB_COMMAND:-'disk-image-create'}
 export DIB_DISTRIBUTION_MIRROR=${DIB_DISTRUBITION_MIRROR:-'http://mirrors.wikimedia.org/debian/'}
