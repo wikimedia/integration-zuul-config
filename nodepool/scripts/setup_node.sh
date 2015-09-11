@@ -11,4 +11,4 @@ set -u
 HOSTNAME="$1"
 echo "Hostname: $HOSTNAME"
 sudo hostname $HOSTNAME
-echo "127.0.0.1 $HOSTNAME" >> /etc/hosts
+echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts
