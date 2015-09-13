@@ -57,3 +57,14 @@
          tox -e venv -- python setup.py nosetests --tests tests --verbosity=2 -a '"family=wpbeta,code=en"'
     triggers:
         - timed: "@midnight"
+
+- project:
+    name: pywikibot-wikibase
+    toxenv:
+     - flake8-py3
+     - nose
+     - nose34
+
+    jobs:
+     - '{name}-tox-{toxenv}'
+     - '{name}-tox-{toxenv}-trusty'
