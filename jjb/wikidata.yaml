@@ -1,10 +1,8 @@
 - builder:
     name: wd-mw-composer-merged-install
     builders:
-        - shell: |
-            set -u
-            cd "$WORKSPACE/src/"
-            /srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py ../deps.txt composer.local.json
+        - composer-local-create:
+            deps: '../deps.txt'
         - composer-update:
             dir: '$WORKSPACE/src/'
 

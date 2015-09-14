@@ -89,6 +89,29 @@
      - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
+# same except for use with composer instead of cloning vendor
+- builder:
+    name: prepare-mediawiki-zuul-project-no-vendor
+    builders:
+     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             $(cat extensions_load.txt)
+     - shell: "mv extensions_load.txt src/extensions_load.txt"
+     - shell: |
+         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
+            cd src/extensions/VisualEditor
+            git submodule update --init
+         fi
+     - composer-validate
+     - composer-local-create:
+         deps: 'extensions_load.txt'
+     - composer-update
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-run-update-script
 
 - job-template:
     name: '{name}-{ext-name}-qunit'
@@ -116,6 +139,21 @@
      - zuul
     builders:
      - prepare-mediawiki-zuul-project
+     - qunit-karma
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Generic qunit job for extensions with composer update.
+- job:
+    name: 'mwext-qunit-composer'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-zuul-project-no-vendor
      - qunit-karma
     publishers:
      - localhost-cleanup
@@ -220,11 +258,33 @@
         results: 'log/junit*.xml'
      - mw-teardown-mysql
      - archive-log-dir
+# same but with composer update instead of cloning vendor
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-composer'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
 
 - project:
     name: 'mwext-testextension-generic'
     jobs:
      - 'mwext-testextension-{phpflavor}':
+        phpflavor:
+            - hhvm
+            - zend
+     - 'mwext-testextension-{phpflavor}-composer':
         phpflavor:
             - hhvm
             - zend
