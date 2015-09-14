@@ -1796,7 +1796,6 @@ project-templates:
       - mwext-testextension-hhvm
       - mwext-testextension-zend-composer
       - mwext-testextension-hhvm-composer
-      - mwext-qunit-composer
       - npm
       - php-composer-test
 
@@ -1825,17 +1824,19 @@ project-templates:
   # Triggers qunit jobs
   - name: extension-qunit
     test:
-     - 'mwext-{name}-qunit'
+      - 'mwext-{name}-qunit'
     gate-and-submit:
-     - 'mwext-{name}-qunit'
+      - 'mwext-{name}-qunit'
 
   # Triggers the generic mwext-qunit job
   # which doesn't process dependencies
   - name: extension-qunit-generic
     test:
-     - 'mwext-qunit'
+      - mwext-qunit
     gate-and-submit:
-     - 'mwext-qunit'
+      - mwext-qunit
+    experimental:
+      - mwext-qunit-composer
 
   # Template for MediaWiki extensions.
   # Triggers phpcs jobs
