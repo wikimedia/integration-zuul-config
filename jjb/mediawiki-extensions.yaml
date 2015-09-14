@@ -106,8 +106,7 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# Generic qunit job for extensions. Can only be used by
-# those that currently don't have dependencies
+# Generic qunit job for extensions.
 - job:
     name: 'mwext-qunit'
     node: contintLabsSlave && UbuntuTrusty
@@ -201,8 +200,7 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# Generic phpunit job for extensions. Can only be used by
-# those that currently don't have dependencies
+# Generic phpunit job for extensions.
 - job-template:
     name: 'mwext-testextension-{phpflavor}'
     node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
@@ -583,9 +581,9 @@
     jobs:
      - mwext-check-jobs
 
-     # qunit jobs for MediaWiki extensions
-     # Only extensions that have dependencies should be listed here.
-     # Others should use the generic 'mwext-qunit' job.
+     # deprecated qunit jobs for MediaWiki extensions
+     # Should be migrated to use the generic 'mwext-qunit' job whith
+     # dependencies defined in zuul/ext_dependencies.py .
 
      - '{name}-{ext-name}-qunit':
         name: mwext
