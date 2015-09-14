@@ -1573,6 +1573,11 @@ jobs:
   - name: pywikibot-core-tox-flake8-docstrings
     voting: false
 
+  - name: wikibot-wikibase-tox-flake8-py3-trusty
+    voting: false
+  - name: pywikibot-wikibase-tox-nose34-trusty
+    voting: false
+
   # Exceptions for projects not yet passing pep8 or pyflakes
   #
   - name: operations-puppet-pep8
@@ -7769,15 +7774,15 @@ projects:
       - noop
     test:
       - 'tox-flake8'
-      - 'pywikibot-wikibase-tox-flake8-py3-trusty'
       - 'pywikibot-wikibase-tox-nose'
+      - 'pywikibot-wikibase-tox-flake8-py3-trusty'
       - 'pywikibot-wikibase-tox-nose34-trusty'
-      - 'tox-doc-trusty'
     gate-and-submit:
       - 'tox-flake8'
-      - 'pywikibot-wikibase-tox-flake8-py3-trusty'
-      - 'pywikibot-wikibase-tox-nose34-trusty'
-      - 'tox-doc-trusty'
+      - 'pywikibot-wikibase-tox-nose'
+      # Non voting for now:
+      #- 'pywikibot-wikibase-tox-flake8-py3-trusty'
+      #- 'pywikibot-wikibase-tox-nose34-trusty'
 
   - name: qrpedia
     check-voter:
