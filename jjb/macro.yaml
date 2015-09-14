@@ -620,7 +620,10 @@
     name: composer-validate
     builders:
      - shell: |
-        if [[ -f "composer.json" ]]; then composer --ansi validate --no-check-publish; fi
+        set -u
+        cd "{dir}"
+        [[ -f "composer.json" ]] || exit 0
+        composer --ansi validate --no-check-publish
 
 # Validate a composer.json so it can be published on packagist.org
 - builder:
@@ -652,6 +655,14 @@
     builders:
      - shell: |
         composer update --ansi --no-progress --prefer-dist --profile --no-dev
+
+- builder:
+    name: composer-local-create
+    builders:
+     - shell: |
+        set -u
+        cd src
+        /srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py "{deps}" composer.local.json
 
 # Runs "composer test"
 - builder:

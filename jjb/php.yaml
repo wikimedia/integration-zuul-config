@@ -26,7 +26,8 @@
     triggers:
      - zuul
     builders:
-     - composer-validate
+     - composer-validate:
+        dir: '.'
     logrotate:
         daysToKeep: 15
 
@@ -40,7 +41,8 @@
     triggers:
      - zuul
     builders:
-     - composer-validate
+     - composer-validate:
+        dir: '.'
      - composer-update:
         dir: '.'
      - composer-test
