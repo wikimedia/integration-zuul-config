@@ -245,6 +245,22 @@
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
 
+# QuickSurveys
+- project:
+    name: QuickSurveys
+    defaults: browsertests
+    folder: tests
+    headless: 'false'
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
+    mediawiki_url: en.m.wikipedia.beta.wmflabs.org
+    platform: linux
+    recipients: *emails-reading
+    repository: mediawiki/extensions/QuickSurveys
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+
 # Gather
 - project:
     name: Gather
