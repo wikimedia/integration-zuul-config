@@ -70,8 +70,10 @@
 
 - job-template:
     name: 'integration-jjb-config-diff'
-    node: contintLabsSlave && UbuntuPrecise
+    node: ci-jessie-wikimedia
     concurrent: true
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     scm:
