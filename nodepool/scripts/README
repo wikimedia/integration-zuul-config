@@ -1,1 +1,27 @@
 Hold scripts used by Nodepool to prepare an instance
+
+
+setup_node.sh
+
+The reference image created by DIB is booted and setup_node.sh is run to
+complete the base setup.  That is run once a day or automatically by Nodepool.
+It is a good place to refresh git mirrors, rerun puppet and do apt-get
+update/upgrade.
+
+Once completed, Nodepool asks OpenStack to snapshot the instance. It will then
+boot instance out of it.
+
+
+ready.sh
+
+Used to update the snapshoted instance (see above).  Last minutes changes that
+we want to complete before an instance is added to Jenkins node.
+
+Can be used for sanity check such as ensuring DNS works or quickly updating a
+setting file.
+
+
+The scripts need to be manually deployed on the Nodepool server
+(labnodepool1001.eqiad.wmnet) by git pulling in /etc/nodepool/wikimedia.
+
+See: https://wikitech.wikimedia.org/wiki/Nodepool
