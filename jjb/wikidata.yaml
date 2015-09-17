@@ -63,12 +63,13 @@
     properties:
      - throttle-one-per-node
     builders:
+     - hhvm-clear-hhbc
      - zuul-cloner-extdeps:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
          additional-repositories: ''
      - wd-mw-composer-merged-install
-     - mw-install-sqlite
+     - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - wd-wikibase-apply-settings:
           repoorclient: 'repo' # qunit tests are in lib so this can be either..
@@ -79,7 +80,7 @@
     publishers:
      - archive-log-dir
      - localhost-cleanup
-     - mw-teardown
+     - mw-teardown-mysql
 
 # This is a modified version of '{name}-{ext-name}-qunit'.
 # It runs "composer update" before the qunit tests.
