@@ -29,6 +29,7 @@ dependencies = {
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion'],
     'QuickSurveys': ['EventLogging'],
+    'Score': ['VisualEditor'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'VectorBeta': ['EventLogging'],
