@@ -34,6 +34,7 @@ export DIB_CLOUD_INIT_DATASOURCES='Ec2'
 
 export DIB_DEV_USER_USERNAME='jenkins'
 export DIB_DEV_USER_AUTHORIZED_KEYS='dib_jenkins_id_rsa.pub'
+export DIB_DEV_USER_SHELL='/bin/bash'
 
 export DIB_WIKIMEDIA_PUPPET_SOURCE='./puppet'
 
