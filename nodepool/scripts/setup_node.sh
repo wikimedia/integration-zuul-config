@@ -15,3 +15,11 @@ echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts
 
 # https://review.openstack.org/#/c/222759/
 sudo mkdir -p /opt/nodepool-scripts
+
+echo "Updating integration/config"
+git -C /opt/git/integration/config pull
+
+echo "Running puppet"
+git -C /puppet pull
+
+/usr/local/bin/puppet-apply /opt/git/integration/config/dib/puppet/ciimage.pp
