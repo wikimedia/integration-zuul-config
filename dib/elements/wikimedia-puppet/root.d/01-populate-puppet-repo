@@ -29,7 +29,9 @@ if [ ! -e $DIB_GIT_CACHE ]; then
 else
     echo "Refreshing $REPO in host cache"
     git --git-dir="$DIB_GIT_CACHE/$REPO" remote set-url origin https://gerrit.wikimedia.org/r/p/operations/puppet.git
-    git --git-dir="$DIB_GIT_CACHE/$REPO" fetch --force --prune --tags --update-head-ok origin
+    git --git-dir="$DIB_GIT_CACHE/$REPO" fetch --prune --update-head-ok \
+        origin +refs/heads/*:refs/heads/* +refs/tags/*:refs/tags/*
+    git --git-dir="$DIB_GIT_CACHE/$REPO" log -n 1 --format='%h %ci (%cr)%n>> %s' HEAD
 fi
 
 echo "Copying cached repo from host to image"
