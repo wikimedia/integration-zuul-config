@@ -16,11 +16,12 @@ echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts
 # https://review.openstack.org/#/c/222759/
 sudo mkdir -p /opt/nodepool-scripts
 
-echo "Cloning integration/config"
-sudo mkdir -p /opt/git/integration
-sudo git clone /srv/git/integration/config.git /opt/git/integration
-sudo git -C /opt/git/integration/config remote set-url origin https://gerrit.wikimedia.org/r/p/integration/config.git
-sudo git -C /opt/git/integration/config pull
+CI_CONFIG='integration/config'
+echo "Cloning $CI_CONFIG from image mirror"
+sudo git clone "/srv/git/${CI_CONFIG}.git" "/opt/git/${CI_CONFIG}"
+echo "Pulling from Gerrit"
+sudo git -C "/opt/git/${CI_CONFIG}" remote set-url origin "https://gerrit.wikimedia.org/r/p/${CI_CONFIG}.git"
+sudo git -C "/opt/git/${CI_CONFIG}" pull
 
 echo "Running puppet"
 sudo git -C /puppet pull
