@@ -17,12 +17,11 @@ echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts
 sudo mkdir -p /opt/nodepool-scripts
 
 echo "Cloning integration/config"
-mkdir -p /opt/git/integration
-git clone /srv/git/integration/config.git /opt/git/integration
-git -C /opt/git/integration/config remote set-url origin https://gerrit.wikimedia.org/r/p/integration/config.git
-git -C /opt/git/integration/config pull
+sudo mkdir -p /opt/git/integration
+sudo git clone /srv/git/integration/config.git /opt/git/integration
+sudo git -C /opt/git/integration/config remote set-url origin https://gerrit.wikimedia.org/r/p/integration/config.git
+sudo git -C /opt/git/integration/config pull
 
 echo "Running puppet"
-git -C /puppet pull
-
-/usr/local/bin/puppet-apply /opt/git/integration/config/dib/puppet/ciimage.pp
+sudo git -C /puppet pull
+sudo /usr/local/bin/puppet-apply /opt/git/integration/config/dib/puppet/ciimage.pp
