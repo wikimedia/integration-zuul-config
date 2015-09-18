@@ -19,21 +19,23 @@ DIB_GIT_CACHE=$DIB_IMAGE_CACHE/git-repos
 IMAGE_GIT_PATH="/srv/git"
 
 # Repository to clone
-REPO=operations/puppet.git
+REPOS=('operations/puppet.git' 'integration/config.git')
 
-# XXX handle DIB_OFFLINE to skip interactions with Gerrit
-if [ ! -e $DIB_GIT_CACHE ]; then
-    echo "Creating $REPO in host cache"
-    mkdir -v -p $(dirname "$DIB_GIT_CACHE/$REPO")
-    git clone --bare "https://gerrit.wikimedia.org/r/p/$REPO" "$DIB_GIT_CACHE/$REPO"
-else
-    echo "Refreshing $REPO in host cache"
-    git --git-dir="$DIB_GIT_CACHE/$REPO" remote set-url origin https://gerrit.wikimedia.org/r/p/operations/puppet.git
-    git --git-dir="$DIB_GIT_CACHE/$REPO" fetch --prune --update-head-ok \
-        origin +refs/heads/*:refs/heads/* +refs/tags/*:refs/tags/*
-    git --git-dir="$DIB_GIT_CACHE/$REPO" log -n 1 --format='%h %ci (%cr)%n>> %s' HEAD
-fi
+for REPO in ${REPOS[@]}; do
+    # XXX handle DIB_OFFLINE to skip interactions with Gerrit
+    if [ ! -e "$DIB_GIT_CACHE/$REPO" ]; then
+        echo "Creating host cache $DIB_GIT_CACHE/$REPO"
+        mkdir -v -p $(dirname "$DIB_GIT_CACHE/$REPO")
+        git clone --bare "https://gerrit.wikimedia.org/r/p/$REPO" "$DIB_GIT_CACHE/$REPO"
+    else
+        echo "Refreshing host cache $DIB_GIT_CACHE/$REPO"
+        git --git-dir="$DIB_GIT_CACHE/$REPO" remote set-url origin "https://gerrit.wikimedia.org/r/p/$REPO"
+        git --git-dir="$DIB_GIT_CACHE/$REPO" fetch --prune --update-head-ok \
+            origin +refs/heads/*:refs/heads/* +refs/tags/*:refs/tags/*
+        git --git-dir="$DIB_GIT_CACHE/$REPO" log -n 1 --format='%h %ci (%cr)%n>> %s' HEAD
+    fi
+done;
 
-echo "Copying cached repo from host to image"
+echo "Copying cached repos from host to image"
 sudo mkdir -p $TARGET_ROOT/$IMAGE_GIT_PATH
 sudo cp -a $DIB_GIT_CACHE/. $TARGET_ROOT/$IMAGE_GIT_PATH
