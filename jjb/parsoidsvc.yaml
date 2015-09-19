@@ -12,6 +12,8 @@
     name: parsoidsvc-php-parsertests
     node: contintLabsSlave && UbuntuPrecise
     concurrent: true
+    properties:
+        - throttle-one-per-node
     wrappers:
         - timeout:
             timeout: 10
@@ -48,6 +50,8 @@
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
+    properties:
+        - throttle-one-per-node
     wrappers:
         - timeout:
             timeout: 5
@@ -76,6 +80,8 @@
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
+    properties:
+        - throttle-one-per-node
     wrappers:
         - timeout:
             timeout: 10
@@ -103,6 +109,8 @@
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
+    properties:
+        - throttle-one-per-node
     wrappers:
         - timeout:
             timeout: 10
@@ -131,6 +139,8 @@
     node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: true
+    properties:
+        - throttle-one-per-node
     wrappers:
         - timeout:
             timeout: 10
@@ -162,6 +172,8 @@
     node: contintLabsSlave && UbuntuPrecise
     defaults: use-remote-zuul-no-submodules
     concurrent: true
+    properties:
+        - throttle-one-per-node
     triggers:
       - zuul
     builders:
