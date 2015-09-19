@@ -4404,17 +4404,13 @@ projects:
     template:
      - name: 'python-lint-checkonly'
        prefix: 'mwext-OpenStackManager'
-    check-only:
-      - jshint
-      - jsonlint
-      - phplint
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - jshint
-      - jsonlint
-      - phplint
-      - php-composer-validate
+     - name: composer-test
+     - name: jshint
+     - name: jsonlint
+    check:
+     - phplint
+    experimental:
+     - mwext-testextension-zend
 
   - name: mediawiki/extensions/ORES
     template:
