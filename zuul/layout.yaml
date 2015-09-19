@@ -4400,21 +4400,24 @@ projects:
     template:
       - name: archived
 
+  # FIXME: migrate pep8/pyflakes to tox
   - name: mediawiki/extensions/OpenStackManager
     template:
-     - name: 'python-lint-checkonly'
-       prefix: 'mwext-OpenStackManager'
-    check-only:
-      - jshint
-      - jsonlint
-      - phplint
-      - php-composer-validate
+     - name: composer-test
+     - name: jshint
+     - name: jsonlint
+    check:
+     - mwext-OpenStackManager-pep8
+     - mwext-OpenStackManager-pyflakes
+     - phplint
+    test:
+     - mwext-OpenStackManager-pep8
+     - mwext-OpenStackManager-pyflakes
     gate-and-submit:
-      - mediawiki-gate
-      - jshint
-      - jsonlint
-      - phplint
-      - php-composer-validate
+     - mwext-OpenStackManager-pep8
+     - mwext-OpenStackManager-pyflakes
+    experimental:
+     - mwext-testextension-zend
 
   - name: mediawiki/extensions/ORES
     template:
