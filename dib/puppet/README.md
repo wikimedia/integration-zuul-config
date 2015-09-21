@@ -1,1 +1,1 @@
-Puppet manifests used by wikimedia-puppet element
+Puppet manifests used by wikimedia dib element

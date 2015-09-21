@@ -20,7 +20,7 @@ ELEMENTS=(
 	'vm'
 	'devuser'
 	# Custom
-	'wikimedia-puppet'
+	'wikimedia'
 	)
 export DIB_COMMAND=${DIB_COMMAND:-'disk-image-create'}
 export DIB_DISTRIBUTION_MIRROR=${DIB_DISTRUBITION_MIRROR:-'http://mirrors.wikimedia.org/debian/'}
