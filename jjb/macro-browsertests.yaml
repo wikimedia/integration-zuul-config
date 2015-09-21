@@ -94,12 +94,6 @@
             CUCUMBER_PARAMETER="@{mediawiki_url}"
           fi
 
-          if [ $BROWSER == 'phantomjs' ]; then
-              npm install 'phantomjs@>=1.9.7-0 <1.9.8'
-              export PATH="`pwd`/node_modules/.bin:$PATH"
-              phantomjs --version
-          fi
-
           # provide config.yml
           if [ -e "$WORKSPACE/tests/browser/config/config_ci.yml" ] && [ ! -e "$WORKSPACE/tests/browser/config/config.yml" ]; then
               cp "$WORKSPACE/tests/browser/config/config_ci.yml" "$WORKSPACE/tests/browser/config/config.yml"
