@@ -9,19 +9,12 @@
 #
 - builder:
     name: doc-publish
-    docsrc: '{docsrc}'
-    docdest: '{docdest}'
     builders:
      # rsync folder to integration-publisher.eqiad.wmflabs
      - shell: |
-         if [ -z $ZUUL_UUID ]; then
-            echo "Error: ZUUL_UUID must be set, aborting."
-            exit 1
-         fi
-         if [ -z $DOC_SUBPATH ]; then
-            echo "Error: DOC_SUBPATH must be set, aborting."
-            exit 1
-         fi
+         set -u
+         echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {docdest}"
+         [ $ZUUL_UUID ]
          rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
          echo
          echo "Publishing to https://doc.wikimedia.org/{docdest}/"
@@ -44,15 +37,12 @@
 #
 - builder:
     name: cover-publish
-    docsrc: '{docsrc}'
-    docdest: '{docdest}'
     builders:
      # rsync folder to integration-publisher.eqiad.wmflabs
      - shell: |
-         if [ -z $ZUUL_UUID ]; then
-            echo "Error: ZUUL_UUID must be set, aborting."
-            exit 1
-         fi
+         set -u
+         echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {dest}"
+         [ $ZUUL_UUID ]
          rsync --recursive "{src}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
          echo
          echo "Publishing to https://integration.wikimedia.org/cover/{dest}/"
@@ -99,22 +89,12 @@
      - zuul
     builders:
      - shell: |
+         set -u
          echo "Publishing $ZUUL_PROJECT from labs to prod"
          echo "Zuul UUID: $ZUUL_UUID"
          echo "..."
-     - shell: |
-         if [ "$WMF_CI_PUB_DOCROOT" == "" ]; then
-            echo "Error: WMF_CI_PUB_DOCROOT must be set, aborting."
-            exit 1
-         fi
-         if [ "$WMF_CI_PUB_DEST" == "" ]; then
-            echo "Error: WMF_CI_PUB_DEST must be set, aborting."
-            exit 1
-         fi
-         if [ -z $ZUUL_UUID ]; then
-            echo "Error: ZUUL_UUID must be set, aborting."
-            exit 1
-         fi
+
+         [ $ZUUL_UUID ]
          LOCAL_DOCROOT="/srv/$WMF_CI_PUB_DOCROOT"
          if [ ! -d $LOCAL_DOCROOT ]; then
             echo "Error: Invalid docroot. Directory $LOCAL_DOCROOT must exist, aborting."
@@ -123,8 +103,7 @@
          LOCAL_DEST="$LOCAL_DOCROOT/$WMF_CI_PUB_DEST"
          mkdir -p "$LOCAL_DEST"
          rsync --recursive --delete-after "rsync://10.68.16.255/doc/$ZUUL_UUID"/ "$LOCAL_DEST"
-     - shell: |
-         set +x
+
          LOCAL_VHOST=$(echo $WMF_CI_PUB_DOCROOT | awk -F'/' '{ print $3"."$2"."$1 }')
          echo
          echo "Published to https://$LOCAL_VHOST/$WMF_CI_PUB_DEST/"
@@ -132,11 +111,8 @@
      - postbuildscript:
          builders:
           - shell: |
-              if [ -z $ZUUL_UUID ]; then
-                  # Avoid deleting all pending doc when ZUUL_UUID is not set
-                  echo "\$ZUUL_UUID is not set, skipping removal from publishing instance."
-                  exit 0
-              fi
+              set -u
+              [ $ZUUL_UUID ]
               echo "Removing directory from publishing instance..."
               rm -rf "$ZUUL_UUID"
               # The trick here is that the local side of the rsync does not
