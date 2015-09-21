@@ -9,19 +9,11 @@
 #
 - builder:
     name: doc-publish
-    docsrc: '{docsrc}'
-    docdest: '{docdest}'
     builders:
      # rsync folder to integration-publisher.eqiad.wmflabs
      - shell: |
-         if [ -z $ZUUL_UUID ]; then
-            echo "Error: ZUUL_UUID must be set, aborting."
-            exit 1
-         fi
-         if [ -z $DOC_SUBPATH ]; then
-            echo "Error: DOC_SUBPATH must be set, aborting."
-            exit 1
-         fi
+         set -u
+         echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {docdest}"
          rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
          echo
          echo "Publishing to https://doc.wikimedia.org/{docdest}/"
@@ -44,15 +36,11 @@
 #
 - builder:
     name: cover-publish
-    docsrc: '{docsrc}'
-    docdest: '{docdest}'
     builders:
      # rsync folder to integration-publisher.eqiad.wmflabs
      - shell: |
-         if [ -z $ZUUL_UUID ]; then
-            echo "Error: ZUUL_UUID must be set, aborting."
-            exit 1
-         fi
+         set -u
+         echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {dest}"
          rsync --recursive "{src}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
          echo
          echo "Publishing to https://integration.wikimedia.org/cover/{dest}/"
@@ -103,18 +91,7 @@
          echo "Zuul UUID: $ZUUL_UUID"
          echo "..."
      - shell: |
-         if [ "$WMF_CI_PUB_DOCROOT" == "" ]; then
-            echo "Error: WMF_CI_PUB_DOCROOT must be set, aborting."
-            exit 1
-         fi
-         if [ "$WMF_CI_PUB_DEST" == "" ]; then
-            echo "Error: WMF_CI_PUB_DEST must be set, aborting."
-            exit 1
-         fi
-         if [ -z $ZUUL_UUID ]; then
-            echo "Error: ZUUL_UUID must be set, aborting."
-            exit 1
-         fi
+         set -u
          LOCAL_DOCROOT="/srv/$WMF_CI_PUB_DOCROOT"
          if [ ! -d $LOCAL_DOCROOT ]; then
             echo "Error: Invalid docroot. Directory $LOCAL_DOCROOT must exist, aborting."
