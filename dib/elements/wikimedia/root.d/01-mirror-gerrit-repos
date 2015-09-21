@@ -18,7 +18,7 @@ DIB_GIT_CACHE=$DIB_IMAGE_CACHE/git-repos
 # Target directory in the image
 IMAGE_GIT_PATH="/srv/git"
 
-# Repository to clone
+# Repositories to clone
 REPOS=('operations/puppet.git' 'integration/config.git')
 
 for REPO in ${REPOS[@]}; do
@@ -29,10 +29,15 @@ for REPO in ${REPOS[@]}; do
         git clone --bare "https://gerrit.wikimedia.org/r/p/$REPO" "$DIB_GIT_CACHE/$REPO"
     else
         echo "Refreshing host cache $DIB_GIT_CACHE/$REPO"
-        git --git-dir="$DIB_GIT_CACHE/$REPO" remote set-url origin "https://gerrit.wikimedia.org/r/p/$REPO"
-        git --git-dir="$DIB_GIT_CACHE/$REPO" fetch --prune --update-head-ok \
+        pushd "$DIB_GIT_CACHE/$REPO"
+        git remote set-url origin "https://gerrit.wikimedia.org/r/p/$REPO"
+        git fetch --prune --update-head-ok \
             origin +refs/heads/*:refs/heads/* +refs/tags/*:refs/tags/*
-        git --git-dir="$DIB_GIT_CACHE/$REPO" log -n 1 --format='%h %ci (%cr)%n>> %s' HEAD
+        echo "House cleaning (repack && gc)"
+        git repack -A -d
+        git gc --prune=all
+        git log -n 1 --format='HEAD is at:%n%h %ci (%cr)%n>> %s' HEAD
+        popd
     fi
 done;
 
