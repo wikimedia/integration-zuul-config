@@ -9,18 +9,18 @@
           fi
           export CUCUMBER_TAGS={cucumber_tags}
           export HEADLESS={headless}
-
+          export MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
+          export MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
           export PLATFORM='{platform}'
           # Replace PLATFORM underscores (Jenkins) to spaces (SauceLabs)
           export PLATFORM=${{PLATFORM//_/ }}
-
           export SCREENSHOT_FAILURES=true
           export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
 
           # Log results to Raita
           export RAITA_URL=http://integration-raita.eqiad.wmflabs:9200/raita
 
-          # Set MEDIAWIKI_ENVIRONMENT for mw-selenium 1.x
+          # Set MEDIAWIKI_ENVIRONMENT for mediawiki-selenium >= 1.0.0
           case '{mediawiki_url}' in
             *.beta.wmflabs.org)
               export MEDIAWIKI_ENVIRONMENT=beta
@@ -31,33 +31,14 @@
           esac
 
           set +x
-
           if [ -z $MEDIAWIKI_CREDENTIALS ]; then
               echo "\$MEDIAWIKI_CREDENTIALS is empty. Check job configuration."
               exit 1
           fi
-
-          MEDIAWIKI_USER=`echo $MEDIAWIKI_CREDENTIALS | cut -f1 -d:`
-          MEDIAWIKI_PASSWORD=`echo $MEDIAWIKI_CREDENTIALS | cut -f2- -d:`
-
+          export MEDIAWIKI_USER=`echo $MEDIAWIKI_CREDENTIALS | cut -f1 -d:`
+          export MEDIAWIKI_PASSWORD=`echo $MEDIAWIKI_CREDENTIALS | cut -f2- -d:`
+          export MEDIAWIKI_PASSWORD_VARIABLE='MEDIAWIKI_PASSWORD'
           set -x
-
-          MEDIAWIKI_API_URL=http://{mediawiki_url}/w/api.php
-          MEDIAWIKI_URL=http://{mediawiki_url}/wiki/
-
-          # Let test suites running mw-selenium 1.x use their own
-          # configuration for URLs and users, but export our settings for
-          # versions 0.x
-          if [ ! -f "{folder}/browser/environments.yml" ]; then
-              export MEDIAWIKI_API_URL
-              export MEDIAWIKI_URL
-              export MEDIAWIKI_USER
-          fi
-
-          # Export the MW user password regardless, as passwords are not kept
-          # in test suite configurations
-          export MEDIAWIKI_PASSWORD
-
 
           # VERSION is used for SauceLabs
           export VERSION={version}
