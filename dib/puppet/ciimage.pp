@@ -5,3 +5,4 @@
 include apt
 include contint::packages::base
 include contint::packages::python
+include contint::packages::ops
