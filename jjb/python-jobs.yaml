@@ -69,9 +69,11 @@
 # Same for Jessie
 - job-template:
     name: 'tox-{toxenv}-jessie'
-    node: contintLabsSlave && DebianJessie
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
+    parameters:
+     - zeromq-event
     triggers:
      - zuul
     builders:
