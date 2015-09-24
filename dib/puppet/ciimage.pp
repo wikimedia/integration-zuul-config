@@ -13,3 +13,8 @@ class { '::apt':
 
 include contint::packages::base
 include contint::packages::python
+
+# Should be include contint::packages::ops once GeoIP is installable
+package { 'etcd':
+    ensure => present,
+}
