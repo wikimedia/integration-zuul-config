@@ -543,6 +543,8 @@ jobs:
     parameter-function: offline_when_complete
   - name: ^pywikibot-wikibase-tox-.*-jessie$
     parameter-function: offline_when_complete
+  - name: ^integration-config-tox-.*-jessie$
+    parameter-function: offline_when_complete
 
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
@@ -1656,7 +1658,7 @@ jobs:
     failure-message: 'Failed to compare your patchset with the current configuration. FAILURE'
     files: '^jjb/.*'
 
-  - name: 'integration-config-tox-dib-trusty'
+  - name: 'integration-config-tox-dib-jessie'
     files: '^dib/.*'
 
   - name: 'integration-zuul-layoutdiff'
@@ -1999,7 +2001,7 @@ projects:
       - tox-flake8
       - tox-py27
       - integration-config-puppet-validate
-      - integration-config-tox-dib-trusty
+      - integration-config-tox-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
       - integration-zuul-layoutvalidation
@@ -2007,7 +2009,7 @@ projects:
       - tox-flake8
       - tox-py27
       - integration-config-puppet-validate
-      - integration-config-tox-dib-trusty
+      - integration-config-tox-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
       - integration-zuul-layoutvalidation-gate
