@@ -609,17 +609,17 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc|xml)$'
 
-  - name: ^mediawiki.*-hhvm$
+  - name: ^mediawiki-phpunit-zend-composer$
+    # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
+    branch: (?!REL1_23)
+
+  - name: ^mediawiki.*-hhvm(-composer)?$
     # Release branches do not support hhvm. Hopefully REL1_25 will.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
   - name: ^mwext.*-hhvm$
     # Release branches do not support hhvm. Hopefully REL1_25 will.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
-
-  - name: ^mediawiki-phpunit-.*-composer$
-    # Release branch 1.23 does not support composer
-    branch: (?!REL1_23)
 
   # Jobs testing multiple extensions together
   #
