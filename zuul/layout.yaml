@@ -539,6 +539,10 @@ jobs:
     parameter-function: offline_when_complete
   - name: ^tox-.*-jessie$
     parameter-function: offline_when_complete
+  - name: ^pywikibot-core-tox-.*-jessie$
+    parameter-function: offline_when_complete
+  - name: ^pywikibot-wikibase-tox-.*-jessie$
+    parameter-function: offline_when_complete
 
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
@@ -7825,19 +7829,19 @@ projects:
       - noop
     test:
       - 'tox-flake8'
-      - 'pywikibot-core-tox-flake8-py3-trusty'
+      - 'pywikibot-core-tox-flake8-py3-jessie'
       - 'pywikibot-core-tox-flake8-docstrings'
       - 'pywikibot-core-tox-flake8-docstrings-mandatory'
       - 'pywikibot-core-tox-nose'
-      - 'pywikibot-core-tox-nose34-trusty'
-      - 'tox-doc-trusty'
+      - 'pywikibot-core-tox-nose34-jessie'
+      - 'tox-doc-jessie'
     gate-and-submit:
       - 'tox-flake8'
-      - 'pywikibot-core-tox-flake8-py3-trusty'
+      - 'pywikibot-core-tox-flake8-py3-jessie'
       - 'pywikibot-core-tox-flake8-docstrings-mandatory'
       - 'pywikibot-core-tox-nose'
-      - 'pywikibot-core-tox-nose34-trusty'
-      - 'tox-doc-trusty'
+      - 'pywikibot-core-tox-nose34-jessie'
+      - 'tox-doc-jessie'
     postmerge:
       - 'pywikibot-core-tox-doc-publish'
 
@@ -7863,13 +7867,13 @@ projects:
     test:
       - 'tox-flake8'
       - 'pywikibot-wikibase-tox-nose'
-      - 'pywikibot-wikibase-tox-flake8-py3-trusty'
-      - 'pywikibot-wikibase-tox-nose34-trusty'
+      - 'pywikibot-wikibase-tox-flake8-py3-jessie'
+      - 'pywikibot-wikibase-tox-nose34-jessie'
     gate-and-submit:
       - 'tox-flake8'
       - 'pywikibot-wikibase-tox-nose'
-      - 'pywikibot-wikibase-tox-flake8-py3-trusty'
-      - 'pywikibot-wikibase-tox-nose34-trusty'
+      - 'pywikibot-wikibase-tox-flake8-py3-jessie'
+      - 'pywikibot-wikibase-tox-nose34-jessie'
 
   - name: qrpedia
     check-voter:
