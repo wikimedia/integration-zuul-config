@@ -468,3 +468,21 @@
     wrappers:
      - ansicolor
      - timestamps
+
+# Special job to run MW-CS against MediaWiki core.
+# Can't run it through composer because it'll timeout.
+- job:
+    name: 'mediawiki-core-phpcs'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+     - composer-update:
+        dir: '$WORKSPACE/src'
+     - shell: |
+        cd $WORKSPACE/src
+        vendor/bin/phpcs -p .
