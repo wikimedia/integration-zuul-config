@@ -48,40 +48,6 @@
     publishers:
      - archive-log-dir
 
-# Invoke a tox environement on Trusty, non-generic
-#
-# Ubuntu Trusty provides:
-# python 2.7.6
-# python 3.4.0
-#
-# Parameter: {toxenv}
-- job-template:
-    name: '{name}-tox-{toxenv}-trusty'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - tox:
-         venv: '{toxenv}'
-    publishers:
-     - archive-log-dir
-
-# Generic version of above
-- job-template:
-    name: 'tox-{toxenv}-trusty'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - tox:
-         venv: '{toxenv}'
-    publishers:
-     - archive-log-dir
-
 # Same for Jessie
 - job-template:
     name: 'tox-{toxenv}-jessie'
@@ -164,5 +130,4 @@
 
     jobs:
      - 'tox-{toxenv}'
-     - 'tox-{toxenv}-trusty'
      - 'tox-{toxenv}-jessie'
