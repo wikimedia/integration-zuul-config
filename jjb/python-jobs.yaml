@@ -18,6 +18,22 @@
     publishers:
      - archive-log-dir
 
+- job-template:
+    name: '{name}-tox-{toxenv}-jessie'
+    node: ci-jessie-wikimedia
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - tox:
+         venv: '{toxenv}'
+    publishers:
+     - archive-log-dir
+
+
 # Generic version of above.
 - job-template:
     name: 'tox-{toxenv}'

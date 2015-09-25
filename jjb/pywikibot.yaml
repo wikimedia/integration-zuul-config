@@ -14,18 +14,18 @@
 - project:
     name: pywikibot-core
     toxenv:
-     - flake8-py3  # must only trigger the '-trusty' version
+     - flake8-py3  # must only trigger the '-jessie' version
      - flake8-docstrings
      - flake8-docstrings-mandatory
      - nose
-     - nose34  # must only trigger the '-trusty' version
+     - nose34  # must only trigger the '-jessie' version
 
     jobs:
      - '{name}-tox-doc-publish':
         docsrc: 'docs/_build/html'
         docdest: 'pywikibot'
      - '{name}-tox-{toxenv}'
-     - '{name}-tox-{toxenv}-trusty'
+     - '{name}-tox-{toxenv}-jessie'
 
 - project:
     name: pywikibot-i18n
@@ -67,4 +67,4 @@
 
     jobs:
      - '{name}-tox-{toxenv}'
-     - '{name}-tox-{toxenv}-trusty'
+     - '{name}-tox-{toxenv}-jessie'
