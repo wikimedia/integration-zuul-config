@@ -607,7 +607,7 @@ jobs:
 
   - name: ^.*-phpcs(-HEAD)?$
     files:
-     - '^.*\.(php|php5|phtml|inc|xml)$'
+     - '^.*\.(json|php|php5|phtml|inc|xml)$'
 
   - name: ^mediawiki.*-hhvm$
     # Release branches do not support hhvm. Hopefully REL1_25 will.
@@ -671,7 +671,9 @@ jobs:
     branch: ^(?!wmf/.*)$
 
   - name: mediawiki-core-phpcs
-    voting: false
+    # TODO: Remove wmf/ branch exclusion after 1.26wmf24 is no longer in use
+    branch: (?!^wmf/.*|^REL1_23|^REL1_24|^REL1_25|^fundraising/REL)
+
   - name: mwext-AutomaticBoardWelcome-phpcs-HEAD
     voting: false
   - name: mwext-JSBreadCrumbs-phpcs-HEAD
