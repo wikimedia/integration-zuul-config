@@ -1555,10 +1555,6 @@ jobs:
     voting: false
   - name: mwext-Offline-pyflakes
     voting: false
-  - name: mwext-OpenStackManager-pep8
-    voting: false
-  - name: mwext-OpenStackManager-pyflakes
-    voting: false
   - name: mwext-SemanticBundle-pep8
     voting: false
   - name: mwext-SemanticBundle-pyflakes
@@ -4409,7 +4405,6 @@ projects:
     template:
       - name: archived
 
-  # FIXME: migrate pep8/pyflakes to tox
   - name: mediawiki/extensions/OpenStackManager
     template:
      - name: composer-test
@@ -4417,15 +4412,7 @@ projects:
      - name: jsonlint
      - name: extension-unittests-generic
     check:
-     - mwext-OpenStackManager-pep8
-     - mwext-OpenStackManager-pyflakes
      - phplint
-    test:
-     - mwext-OpenStackManager-pep8
-     - mwext-OpenStackManager-pyflakes
-    gate-and-submit:
-     - mwext-OpenStackManager-pep8
-     - mwext-OpenStackManager-pyflakes
 
   - name: mediawiki/extensions/ORES
     template:
