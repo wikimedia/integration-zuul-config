@@ -4008,21 +4008,11 @@ projects:
   - name: mediawiki/extensions/Interwiki
     template:
       - name: composer-test
-      - name: jshint
+      - name: extension-unittests
       - name: npm
     check:
-      - phplint
-      - php-composer-validate
       - jsonlint
-    test:
-      - phplint
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - phplint
-      - php-composer-validate
-    experimental:
-      - php-composer-test
+      - jshint
 
   - name: mediawiki/extensions/intersection
     template:
