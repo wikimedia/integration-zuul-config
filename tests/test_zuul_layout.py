@@ -430,3 +430,9 @@ class TestZuulLayout(unittest.TestCase):
                                  }]
 
         self.assertTrue(gate.eventMatches(l10n_event, change))
+
+    def test_only_mediawiki_projects_in_mediawiki_gate(self):
+        gate = self.getPipeline('gate-and-submit')
+        mediawiki_queue = [q for q in gate.queues if q.name == 'mediawiki'][0]
+        self.maxDiff = None
+        self.assertEquals([], mediawiki_queue.projects)
