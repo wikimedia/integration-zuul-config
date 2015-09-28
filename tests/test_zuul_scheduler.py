@@ -11,6 +11,7 @@ import tempfile
 import os
 import unittest
 
+from nose.plugins.attrib import attr
 import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
 import zuul.model
@@ -778,3 +779,57 @@ class TestZuulScheduler(unittest.TestCase):
             'must be equals.\n'
             'In Zuul: apply the template extension-gate\n'
             'In JJB: add extension to "gatedextensions"')
+
+    @attr('qa')
+    def test_only_mediawiki_projects_in_mediawiki_gate(self):
+
+        def _mw_filter(zuul_project, is_mw):
+            p_name = zuul_project.name
+            if (
+                p_name.startswith('mediawiki/extensions/')
+                or p_name.startswith('mediawiki/skins/')
+                or p_name == 'mediawiki/vendor'
+                or p_name == 'mediawiki/core'
+            ):
+                return is_mw
+            return not is_mw
+
+        def isMediawiki(zuul_project):
+            return _mw_filter(zuul_project, is_mw=True)
+
+        def isNotMediawiki(zuul_project):
+            return _mw_filter(zuul_project, is_mw=False)
+
+        gate = self.getPipeline('gate-and-submit')
+        mw_queue = [q for q in gate.queues if q.name == 'mediawiki'][0]
+
+        # Gather a set of jobs for MediaWiki repositories as defined in the
+        # layout, ie before the projects are merged in the change queue.
+        mw_defined_jobs = set()
+        for project in filter(isMediawiki, mw_queue.projects):
+            mw_defined_jobs.update([
+                j.name for j in gate.getJobTree(project).getJobs()
+                ])
+
+        # noop job does not merge queues on Wikimedia setup
+        # https://review.openstack.org/#/c/361505/2
+        mw_defined_jobs.discard('noop')
+
+        errors = {}
+        # Projects that are not supposed to be in the 'mediawiki' queue. Either
+        # because they share a job with a mediawiki repository either directly
+        # or transitively.
+        unintended = filter(isNotMediawiki, mw_queue.projects)
+        for project in unintended:
+            project_jobs = {j.name for j in gate.getJobTree(project).getJobs()}
+            unintended_jobs = list(project_jobs.intersection(mw_defined_jobs))
+            if unintended_jobs:
+                errors[project.name] = unintended_jobs
+            # Else project got merged in the change queue transitively, ie
+            # because it shares jobs with an other unintended project.
+
+        self.maxDiff = None
+        self.longMessage = True
+        self.assertDictEqual(
+            {}, errors, "\nNon MediaWiki projects must not have jobs "
+                        "in common with the mediawiki queue.")
