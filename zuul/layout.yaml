@@ -6114,8 +6114,12 @@ projects:
 
   - name: mediawiki/extensions/UserGroups
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - name: jsonlint
+      - name: jshint
 
   - name: mediawiki/extensions/UserPageViewTracker
     template:
