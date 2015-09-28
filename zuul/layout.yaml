@@ -1533,10 +1533,6 @@ jobs:
 
   # Exceptions for projects not yet passing pep8 or pyflakes
   #
-  - name: mwext-BlameMaps-pep8
-    voting: false
-  - name: mwext-BlameMaps-pyflakes
-    voting: false
   - name: mwext-ConfirmEdit-pep8
     voting: false
   - name: mwext-ConfirmEdit-pyflakes
@@ -3122,21 +3118,8 @@ projects:
       - jsonlint
 
   - name: mediawiki/extensions/BlameMaps
-    check-only:
-      - jshint
-      - jsonlint
-      - phplint
-      - mwext-BlameMaps-pep8
-      - mwext-BlameMaps-pyflakes
-      - php-composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - jshint
-      - jsonlint
-      - phplint
-      - mwext-BlameMaps-pep8
-      - mwext-BlameMaps-pyflakes
-      - php-composer-validate
+    template:
+      - name: archived
 
   - name: mediawiki/extensions/BlogPage
     template:
