@@ -608,6 +608,16 @@
         PY_COLORS=1 tox -v -e "{venv}" | tee "log/{venv}.log"
         set +o pipefail
 
+- builder:
+    name: tox-all-envs
+    builders:
+     - shell: |
+         rm -fR log
+         mkdir -p log
+         set -o pipefail
+         PY_COLORS=1 tox -v | tee "log/stdout.log"
+         set +o pipefail
+
 - publisher:
     name: archive-log-dir
     publishers:

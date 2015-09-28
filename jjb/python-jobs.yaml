@@ -64,6 +64,20 @@
     publishers:
      - archive-log-dir
 
+- job-template:
+    name: 'tox-jessie'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - tox-all-envs
+    publishers:
+     - archive-log-dir
+
 # Call tox env 'doc' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
 - job-template:
@@ -129,5 +143,6 @@
      - py34
 
     jobs:
+     - 'tox-jessie'
      - 'tox-{toxenv}'
      - 'tox-{toxenv}-jessie'
