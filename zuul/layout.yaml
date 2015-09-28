@@ -1332,8 +1332,6 @@ jobs:
     voting: false
   - name: mwext-UrlShortener-jslint
     voting: false
-  - name: mwext-UserGroups-jslint
-    voting: false
   - name: mwext-UserStatus-jslint
     voting: false
   - name: mwext-Vine-jslint
@@ -6027,8 +6025,12 @@ projects:
 
   - name: mediawiki/extensions/UserGroups
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/UserPageViewTracker
     template:
