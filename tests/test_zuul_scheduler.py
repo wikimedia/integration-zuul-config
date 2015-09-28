@@ -700,3 +700,25 @@ class TestZuulScheduler(unittest.TestCase):
             'equals.\n'
             'In Zuul: apply the template extension-gate\n'
             'In JJB: add extension to "gatedextensions"')
+
+    def test_only_mediawiki_projects_in_mediawiki_gate(self):
+
+        def non_mediawiki_projects(zuul_project):
+            p_name = zuul_project.name
+            if (
+                p_name.startswith('mediawiki/extensions/')
+                or p_name.startswith('mediawiki/skins/')
+                or p_name == 'mediawiki/vendor'
+                or p_name == 'mediawiki/core'
+            ):
+                return False
+
+            return True
+
+        gate = self.getPipeline('gate-and-submit')
+        mediawiki_queue = [q for q in gate.queues if q.name == 'mediawiki'][0]
+
+        self.maxDiff = None
+        self.assertEquals(
+            [],
+            filter(non_mediawiki_projects, mediawiki_queue.projects))
