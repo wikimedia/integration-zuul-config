@@ -2283,13 +2283,17 @@ projects:
       - tox-flake8
 
   - name: labs/tools/grrrit
-    check-voter:
+    template:
+      - name: npm
+    check:
+     - jshint
+     - jsonlint
+    test:
      - jshint
      - jsonlint
     gate-and-submit:
      - jshint
      - jsonlint
-     - yamllint
 
   - name: labs/tools/heritage
     test:
