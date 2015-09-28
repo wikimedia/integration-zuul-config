@@ -2078,7 +2078,6 @@ projects:
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-hhvm-composer
       - mediawiki-phpunit-zend
-      - mediawiki-phpunit-zend-composer
       - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - mediawiki-core-ruby1.9.3lint
@@ -2094,6 +2093,11 @@ projects:
       #   test_release_mediawiki_non_wmf_version_tags
       #
       #- mediawiki-core-release
+    experimental:
+      # not in the test pipeline and only in gate-and-submit for performance reasons, is listed here to be able to manually trigger it
+      - mediawiki-phpunit-hhvm-composer
+      # will replace mediawiki-phpunit-zend for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
+      - mediawiki-phpunit-zend-composer
 
   - name: mediawiki/vendor
     template:
