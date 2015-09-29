@@ -1607,33 +1607,33 @@ jobs:
 
   - name: beta-mediawiki-config-update-eqiad
     branch: ^master$
-    success-message: 'Change has been deployed on the EQIAD beta cluster'
-    failure-message: 'Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to fixup the working directory on the destination server.'
+    success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
+    failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to fixup the working directory on the destination server.'
 
   - name: beta-cxserver-update-eqiad
     branch: ^master$
-    success-message: 'Change has been deployed on the EQIAD beta cluster'
-    failure-message: 'Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
+    success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
+    failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
 
   - name: beta-parsoid-update-eqiad
     branch: ^master$
-    success-message: 'Change has been deployed on the EQIAD beta cluster'
-    failure-message: 'Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
+    success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
+    failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
 
   - name: parsoidsvc-source-jsduck-publish
     branch: ^master$
-    success-message: 'Deployed documentation to https://doc.wikimedia.org/Parsoid/master/'
-    failure-message: 'Failed to deploy documentation :-/'
+    success-message: 'SUCCESS Deployed documentation to https://doc.wikimedia.org/Parsoid/master/'
+    failure-message: 'FAILURE Failed to deploy documentation :-/'
 
 
   - name: integration-docroot-deploy
     branch: ^master$
-    success-message: 'View https://integration.wikimedia.org/ or https://doc.wikimedia.org/. Deployed'
-    failure-message: 'Failed to deploy. Please contact a continuous integration team member to fixup the docroot on the destination server. FAILURE'
+    success-message: 'SUCCESS View https://integration.wikimedia.org/ or https://doc.wikimedia.org/. Deployed'
+    failure-message: 'FAILURE Failed to deploy. Please contact a continuous integration team member to fixup the docroot on the destination server.'
 
   - name: 'integration-jjb-config-diff'
-    success-message: 'Review the XML difference. Build'
-    failure-message: 'Failed to compare your patchset with the current configuration. FAILURE'
+    success-message: 'SUCCESS Review the XML difference.'
+    failure-message: 'FAILURE Failed to compare your patchset with the current configuration.'
     files: '^jjb/.*'
 
   - name: 'integration-config-tox-dib-jessie'
@@ -1641,8 +1641,9 @@ jobs:
 
   - name: 'integration-zuul-layoutdiff'
     voting: false
-    success-message: 'No layout difference. Build'
-    failure-message: 'Review the Zuul layout difference. Build'
+    # Note how the messages are mixed up. Gotta change the job exit code.
+    success-message: 'FAILURE No layout difference. Build'
+    failure-message: 'SUCCESS Review the Zuul layout difference. Build'
 
   - name: 'yamllint'
     success-message: 'SUCCESS This job is deprecated. Please lint YAML files with a test. T95890.'
