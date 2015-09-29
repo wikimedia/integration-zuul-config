@@ -1982,16 +1982,14 @@ projects:
     check:
       - noop
     test:
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
       - integration-config-puppet-validate
       - integration-config-tox-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
       - integration-zuul-layoutvalidation
     gate-and-submit:
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
       - integration-config-puppet-validate
       - integration-config-tox-dib-jessie
       - integration-jjb-config-diff
@@ -2000,21 +1998,19 @@ projects:
 
   - name: integration/dashboard
     test:
-      - tox-flake8-jessie
+      - tox-jessie
     gate-and-submit:
-      - tox-flake8-jessie
+      - tox-jessie
 
   - name: integration/jenkins
     check:
       - phplint
     test:
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
       - phplint
       - phpunit
     gate-and-submit:
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
       - phplint
       - phpunit
 
@@ -2262,11 +2258,9 @@ projects:
 
   - name: labs/tools/extdist
     test:
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
     gate-and-submit:
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
 
   - name: labs/tools/forrestbot
     test:
@@ -2278,9 +2272,9 @@ projects:
 
   - name: labs/tools/gblrenamemon
     test:
-      - tox-flake8-jessie
+      - tox-jessie
     gate-and-submit:
-      - tox-flake8-jessie
+      - tox-jessie
 
   - name: labs/tools/grrrit
     template:
@@ -2288,19 +2282,15 @@ projects:
 
   - name: labs/tools/heritage
     test:
-     - tox-flake8-jessie
-     - tox-py27-jessie
+     - tox-jessie
     gate-and-submit:
-     - tox-flake8-jessie
-     - tox-py27-jessie
+     - tox-jessie
 
   - name: labs/tools/wikibugs2
     test:
-     - tox-py34-jessie
-     - tox-flake8-jessie
+     - tox-jessie
     gate-and-submit:
-     - tox-py34-jessie
-     - tox-flake8-jessie
+     - tox-jessie
     postmerge:
      - labs-tools-wikibugs2-autopull
 
@@ -2597,12 +2587,10 @@ projects:
       - jsonlint
     test:
       - phplint
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
     gate-and-submit:
       - phplint
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
 
   - name: mediawiki/tools/releng
     test:
@@ -2614,13 +2602,9 @@ projects:
 
   - name: mediawiki/tools/scap
     test:
-     - tox-doc-jessie
-     - tox-flake8-jessie
-     - tox-py27-jessie
+     - tox-jessie
     gate-and-submit:
-     - tox-doc-jessie
-     - tox-flake8-jessie
-     - tox-py27-jessie
+     - tox-jessie
     postmerge:
      - mw-tools-scap-tox-doc-publish
 
@@ -8024,11 +8008,9 @@ projects:
 
   - name: wikimedia/bots/jouncebot
     test:
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
     gate-and-submit:
-      - tox-flake8-jessie
-      - tox-py27-jessie
+      - tox-jessie
 
   - name: avro-php
     template:
