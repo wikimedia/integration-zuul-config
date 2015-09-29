@@ -1352,8 +1352,6 @@ jobs:
 
   - name: ^mwext-AdManager-testextension.*
     voting: false
-  - name: ^mwext-Ads-testextension.*
-    voting: false
   - name: ^mwext-Auth_remoteuser-testextension.*
     voting: false
   - name: ^mwext-AWS-testextension.*
@@ -4381,7 +4379,11 @@ projects:
 
   - name: mediawiki/extensions/Ads
     template:
-      - name: extension-unittests
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/AdvancedMeta
     template:
