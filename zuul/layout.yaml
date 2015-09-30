@@ -1562,8 +1562,6 @@ jobs:
     voting: false
   - name: wikimedia-fundraising-SmashPig-pyflakes
     voting: false
-  - name: labs-migration-assistant-pyflakes
-    voting: false # being worked on
   - name: pywikibot-core-tox-flake8-docstrings
     voting: false
 
@@ -2242,9 +2240,10 @@ projects:
      - phplint
 
   - name: labs/migration-assistant
-    template:
-      - name: 'python-lint'
-        prefix: 'labs-migration-assistant'
+    test:
+     - tox-jessie
+    gate-and-submit:
+     - tox-jessie
 
   - name: labs/nagios-builder
     template:
