@@ -384,7 +384,7 @@ class TestZuulLayout(unittest.TestCase):
         event.type = 'patchset-created'
         event.account = {'email': 'johndoe@wikimedia.org'}
 
-        for allowed_branch in ['master', 'REL1_25']:
+        for allowed_branch in ['master', 'REL1_25', 'REL1_26']:
             change = change_for_branch(allowed_branch)
             self.assertTrue(test_manager.eventMatches(event, change))
             self.assertTrue(rubocop_job.changeMatches(change),

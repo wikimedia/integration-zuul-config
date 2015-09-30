@@ -615,11 +615,11 @@ jobs:
     branch: (?!REL1_23)
 
   - name: ^mediawiki.*-hhvm(-composer)?$
-    # Release branches do not support hhvm. Hopefully REL1_25 will.
+    # Release branches do not support hhvm.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
   - name: ^mwext.*-hhvm$
-    # Release branches do not support hhvm. Hopefully REL1_25 will.
+    # Release branches do not support hhvm.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
   # Jobs testing multiple extensions together
@@ -673,7 +673,7 @@ jobs:
 
   - name: mediawiki-core-phpcs
     # TODO: Remove wmf/ branch exclusion after 1.26wmf24 is no longer in use
-    branch: (?!^wmf/.*|^REL1_23|^REL1_24|^REL1_25|^fundraising/REL)
+    branch: (?!^wmf/.*|^REL1_23|^REL1_24|^REL1_25|^REL1_26|^fundraising/REL)
 
   - name: mwext-AutomaticBoardWelcome-phpcs-HEAD
     voting: false
@@ -2019,11 +2019,13 @@ projects:
       - integration-phpunit-mediawiki-REL1_23
       - integration-phpunit-mediawiki-REL1_24
       - integration-phpunit-mediawiki-REL1_25
+      - integration-phpunit-mediawiki-REL1_26
       - integration-phpunit-mediawiki-master
     gate-and-submit:
       - integration-phpunit-mediawiki-REL1_23
       - integration-phpunit-mediawiki-REL1_24
       - integration-phpunit-mediawiki-REL1_25
+      - integration-phpunit-mediawiki-REL1_26
       - integration-phpunit-mediawiki-master
       - mediawiki-gate
 
