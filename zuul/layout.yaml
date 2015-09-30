@@ -1102,8 +1102,6 @@ jobs:
     voting: false
   - name: mwext-OfflineImportLexicon-jslint
     voting: false
-  - name: mwext-OnlineStatus-jslint
-    voting: false
   - name: mwext-OnlineStatusBar-jslint
     voting: false
   - name: mwext-OnlyRecentRecentChanges-jslint
@@ -5367,9 +5365,12 @@ projects:
   - name: mediawiki/extensions/OnlineStatus
     template:
       - name: composer-test
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: extension-phpcs # bug 68816
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/OnlineStatusBar
     template:
