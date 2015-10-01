@@ -1524,10 +1524,6 @@ jobs:
 
   # Exceptions for projects not yet passing pep8 or pyflakes
   #
-  - name: mwext-Offline-pep8
-    voting: false
-  - name: mwext-Offline-pyflakes
-    voting: false
   - name: mwext-SemanticBundle-pep8
     voting: false
   - name: mwext-SemanticBundle-pyflakes
@@ -4295,26 +4291,29 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/Offline
-    template:
-     - name: 'python-lint-checkonly'
-       prefix: 'mwext-Offline'
-    check-only:
+    check:
       - jshint
       - jsonlint
       - phplint
       - php-composer-validate
+    test:
+      - jshint
+      - jsonlint
+      - phplint
+      - php-composer-validate
+      - tox-jessie
     gate-and-submit:
       - mediawiki-gate
       - jshint
       - jsonlint
       - phplint
       - php-composer-validate
+      - tox-jessie
     experimental:
       - mwext-testextension-hhvm
       - mwext-testextension-zend
       - npm
       - php-composer-test
-      - tox-jessie
 
   - name: mediawiki/extensions/OggHandler
     template:
