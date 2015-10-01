@@ -1528,8 +1528,6 @@ jobs:
     voting: false
   - name: operations-dumps-pyflakes
     voting: false
-  - name: pywikibot-compat-pyflakes
-    voting: false
   - name: wikimedia-fundraising-tools-pep8
     voting: false
   - name: wikimedia-fundraising-tools-pyflakes
@@ -7747,9 +7745,10 @@ projects:
       - phplint
 
   - name: pywikibot/compat
-    template:
-      - name: 'python-lint'
-        prefix: 'pywikibot-compat'
+    test:
+      - tox-jessie
+    gate-and-submit:
+      - tox-jessie
 
   - name: pywikibot/core
     test:
