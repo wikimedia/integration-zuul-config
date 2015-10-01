@@ -2,14 +2,8 @@
 - notification-emails:
     name: listofemails  # a 'name' is required by JJB.
     lists:
-     - CirrusSearch: &emails-CirrusSearch
-        neverett@wikimedia.org qa-alerts@lists.wikimedia.org
-
      - Collaboration: &emails-collaboration
-        qa-alerts@lists.wikimedia.org mflaschen@wikimedia.org mmullie@wikimedia.org sbisson@wikimedia.org
-
-     - ContentTranslation: &emails-ContentTranslation
-        aaharoni@wikimedia.org qa-alerts@lists.wikimedia.org
+        flaschen@wikimedia.org mmullie@wikimedia.org qa-alerts@lists.wikimedia.org msbisson@wikimedia.org
 
      - Fundraising: &emails-Fundraising
         fr-tech@wikimedia.org qa-alerts@lists.wikimedia.org
@@ -20,32 +14,23 @@
      - i18n: &emails-i18n
         aaharoni@wikimedia.org qa-alerts@lists.wikimedia.org
 
-     - MultimediaViewer: &emails-multimedia
+     - multimedia: &emails-multimedia
         multimedia-alerts@lists.wikimedia.org qa-alerts@lists.wikimedia.org
 
      - qa: &emails-qa
         qa-alerts@lists.wikimedia.org
 
-     - qa: &emails-qa-alerts
-        qa-alerts@lists.wikimedia.org
-
      - reading: &emails-reading
         qa-alerts@lists.wikimedia.org reading-wmf@lists.wikimedia.org
-
-     - ULS: &emails-ULS
-        aaharoni@wikimedia.org qa-alerts@lists.wikimedia.org
-
-     - UploadWizard: &emails-UploadWizard
-        multimedia-alerts@lists.wikimedia.org qa-alerts@lists.wikimedia.org
 
      - VisualEditor: &emails-VisualEditor
         jforrester@wikimedia.org qa-alerts@lists.wikimedia.org
 
      - Wikidata: &emails-Wikidata-qa
-        qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de christoph.fischer@wikimedia.de
+        christoph.fischer@wikimedia.de qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de
 
      - Wikidata-devs: &emails-Wikidata-devs
-        katie.filbert@wikimedia.de qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de christoph.fischer@wikimedia.de
+        christoph.fischer@wikimedia.de katie.filbert@wikimedia.de qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de
 
 # CentralAuth
 - project:
@@ -125,7 +110,7 @@
     folder: tests
     headless: 'false'
     platform: linux
-    recipients: *emails-CirrusSearch
+    recipients: *emails-qa
     repository: mediawiki/extensions/CirrusSearch
 
     jobs:
@@ -143,7 +128,7 @@
     mediawiki_credentials_id: LanguageScreenshotBot-at-beta.wmflabs.org
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     platform: 'os_x_10.10'
-    recipients: *emails-ContentTranslation
+    recipients: *emails-i18n
     repository: mediawiki/extensions/ContentTranslation
 
     jobs:
@@ -345,7 +330,7 @@
         # MultimediaViewer is known to be broken under IE 8.0. Restrict email
         # notifications while it is being worked on.
         # Bug 70932
-        recipients: *emails-qa-alerts
+        recipients: *emails-qa
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce':
         browser: internet_explorer
@@ -436,7 +421,7 @@
     mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: commons.wikimedia.beta.wmflabs.org
     platform: linux
-    recipients: *emails-UploadWizard
+    recipients: *emails-multimedia
     repository: mediawiki/extensions/UploadWizard
 
     jobs:
@@ -487,6 +472,7 @@
         browser: firefox
         mediawiki_credentials_id: LanguageScreenshotBot-at-beta.wmflabs.org
         platform: 'os_x_10.10'
+        recipients: *emails-i18n
 
 # Wikidata
 - project:
