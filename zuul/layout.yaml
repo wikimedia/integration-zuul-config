@@ -1524,14 +1524,6 @@ jobs:
 
   # Exceptions for projects not yet passing pep8 or pyflakes
   #
-  - name: wikimedia-fundraising-tools-pep8
-    voting: false
-  - name: wikimedia-fundraising-tools-pyflakes
-    voting: false
-  - name: wikimedia-fundraising-SmashPig-pep8
-    voting: false
-  - name: wikimedia-fundraising-SmashPig-pyflakes
-    voting: false
   - name: pywikibot-core-tox-flake8-docstrings
     voting: false
 
@@ -2830,9 +2822,6 @@ projects:
       - jsonlint
 
   - name: wikimedia/fundraising/tools
-    template:
-     - name: 'python-lint'
-       prefix: 'wikimedia-fundraising-tools'
     check-voter:
       - jshint
       - jsonlint
@@ -2888,20 +2877,20 @@ projects:
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/slander
-    template:
-     - name: python-lint
-       prefix: wikimedia-fundraising-slander
+    test:
+     - noop
+    gate-and-submit:
+     - noop
     experimental:
      - tox-jessie
 
   - name: wikimedia/fundraising/SmashPig
-    template:
-     - name: 'python-lint'
-       prefix: 'wikimedia-fundraising-SmashPig'
     check-voter:
       - phplint
     gate-and-submit:
       - phplint
+    experimental:
+     - tox-jessie
 
   - name: wikimedia/iegreview
     template:
