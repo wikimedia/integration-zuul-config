@@ -1524,10 +1524,6 @@ jobs:
 
   # Exceptions for projects not yet passing pep8 or pyflakes
   #
-  - name: operations-dumps-pep8
-    voting: false
-  - name: operations-dumps-pyflakes
-    voting: false
   - name: wikimedia-fundraising-tools-pep8
     voting: false
   - name: wikimedia-fundraising-tools-pyflakes
@@ -2691,9 +2687,10 @@ projects:
       - operations-dns-tabs
 
   - name: operations/dumps
-    template:
-      - name: 'python-lint'
-        prefix: 'operations-dumps'
+    test:
+      - noop
+    gate-and-submit:
+      - noop
     experimental:
       - tox-jessie
 
