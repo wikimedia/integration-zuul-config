@@ -177,6 +177,34 @@
      - global-teardown
 
 - job:
+    name: 'performance-webpagetest'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: false
+    scm:
+      - git:
+          url: 'https://gerrit.wikimedia.org/r/p/performance/WebPageTest.git'
+          branches:
+            - master
+          wipe-workspace: true
+    triggers:
+     - timed: 'H */3 * * *'
+     # TODO: timeout
+     # TODO: secrets
+    builders:
+     - shell: |
+        export FOO='bar'
+        node lib/index.js
+    wrappers:
+     - ansicolor
+     - timestamps
+      # Values from Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/webpagetest/
+      - credentials-binding:
+          - text:
+              credential-id: 'example_foo'
+              variable: EXAMPLE_FOOP
+-
+ job:
     name: 'fail-archived-repositories'
     node: contintLabsSlave
     defaults: global
