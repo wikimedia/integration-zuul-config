@@ -1514,22 +1514,12 @@ jobs:
 
 # End of new currently disabled extensions checks from mass extension import - Addshore
 
-  - name: ^.*-pep8$
-    files:
-     - '^(.*\.py|tox.ini|.pep8|setup.cfg)$'
-
-  - name: ^.*-pyflakes$
-    files:
-     - '^(.*\.py|tox.ini|setup.cfg)$'
-
-  # Exceptions for projects not yet passing pep8 or pyflakes
-  #
   - name: pywikibot-core-tox-flake8-docstrings
     voting: false
 
-  # Exceptions for projects not yet passing pep8 or pyflakes
-  #
   - name: operations-puppet-pep8
+    files:
+     - '^(.*\.py|tox.ini|.pep8|setup.cfg)$'
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
 
   - name: ^perllint$
@@ -1881,30 +1871,6 @@ project-templates:
       - npm
     gate-and-submit:
       - npm
-
-  - name: python
-    check-voter:
-      - '{prefix}-pep8'
-      - '{prefix}-pyflakes'
-    gate-and-submit:
-      - '{prefix}-pep8'
-      - '{prefix}-pyflakes'
-
-  - name: python-lint
-    check-voter:
-      - '{prefix}-pep8'
-      - '{prefix}-pyflakes'
-    gate-and-submit:
-      - '{prefix}-pep8'
-      - '{prefix}-pyflakes'
-
-  - name: python-lint-checkonly
-    check-only:
-      - '{prefix}-pep8'
-      - '{prefix}-pyflakes'
-    gate-and-submit:
-      - '{prefix}-pep8'
-      - '{prefix}-pyflakes'
 
   - name: puppet
     # FIXME add merge probably

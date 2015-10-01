@@ -96,43 +96,6 @@
     publishers:
      - archive-log-dir
 
-- job-template:
-    name: '{name}-pep8'
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    scm:
-     - git-remote-zuul-no-submodules
-    builders:
-     # Python pep8 builder - copied from OpenStack project
-     - shell: |
-         set +x
-         echo "Using pep8 version: `pep8 --version`"
-         set -x
-         set -o pipefail ; pep8 . | tee pep8.txt ; set +o pipefail
-    publishers:
-     - pep8
-
-- job-template:
-    name: '{name}-pyflakes'
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    scm:
-     - git-remote-zuul-no-submodules
-    builders:
-     - shell: "pyflakes ."
-
-- job-group:
-    name: python-jobs
-    jobs:
-     - '{name}-pep8'
-     - '{name}-pyflakes'
-
 - project:
     name: common-tox-jobs
     toxenv:

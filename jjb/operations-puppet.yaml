@@ -31,7 +31,12 @@
          set +o pipefail
 
     publishers:
-     - pep8
+     - violations:
+         pep8:
+             min: 0
+             max: 1
+             unstable: 1
+             pattern: '**/pep8.txt'
 
 # Documentation for our puppet repository
 - job-template:
