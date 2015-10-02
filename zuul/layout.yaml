@@ -990,8 +990,6 @@ jobs:
     voting: false
   - name: mwext-InterwikiMagic-jslint
     voting: false
-  - name: mwext-InviteSignup-jslint
-    voting: false
   - name: mwext-JSBreadCrumbs-jslint
     voting: false
   - name: mwext-LanguageSelector-jslint
@@ -3310,9 +3308,12 @@ projects:
 
   - name: mediawiki/extensions/ContributionScores
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/ContributionsList
     template:
@@ -4179,11 +4180,12 @@ projects:
 
   - name: mediawiki/extensions/Nuke
     template:
-      - name: jshint
+      - name: composer-test
       - name: extension-unittests-generic
       - name: npm
     check:
       - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/OATHAuth
     template:
@@ -4979,8 +4981,12 @@ projects:
 
   - name: mediawiki/extensions/InviteSignup
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/Josa
     template:
@@ -6789,11 +6795,12 @@ projects:
 
   - name: mediawiki/extensions/Renameuser
     template:
-      - name: jshint
+      - name: composer-test
       - name: extension-unittests-generic
       - name: npm
     check:
       - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/ReplaceSet
     template:
