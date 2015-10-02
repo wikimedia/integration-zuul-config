@@ -1525,7 +1525,8 @@ jobs:
       - '^.*\.(pl|pm)$'
 
   - name: operations-puppet-puppetlint-strict
-    voting: false
+    voting: true
+
   - name: translatewiki-puppetlint-strict
     voting: false
 
@@ -2653,7 +2654,7 @@ projects:
     check:
       - erblint-HEAD
       - pplint-HEAD
-      - operations-puppet-puppetlint-lenient
+      #- operations-puppet-puppetlint-lenient
       - operations-puppet-puppetlint-strict
       - operations-puppet-pep8
       - operations-puppet-typos
@@ -2665,7 +2666,7 @@ projects:
       # Same as `check` pipeline:
       - erblint-HEAD
       - pplint-HEAD
-      - operations-puppet-puppetlint-lenient
+      #- operations-puppet-puppetlint-lenient
       - operations-puppet-puppetlint-strict
       - operations-puppet-pep8
       - operations-puppet-typos
