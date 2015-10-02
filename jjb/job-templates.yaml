@@ -371,14 +371,3 @@
          set -x
          (grep --recursive -P '^\t' --exclude-dir='.git' --include='{fileselector}' .) && HAS_TAB=1 || HAS_TAB=0
          exit $HAS_TAB
-
-
-- job:
-    name: 'yamllint'
-    defaults: use-remote-zuul-shallow-clone
-    node: contintLabsSlave && UbuntuPrecise
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: '/srv/deployment/integration/slave-scripts/tools/yamllint.py "$WORKSPACE"'

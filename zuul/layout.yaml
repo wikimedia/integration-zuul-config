@@ -1594,10 +1594,6 @@ jobs:
     success-message: 'FAILURE No layout difference. Build'
     failure-message: 'SUCCESS Review the Zuul layout difference. Build'
 
-  - name: 'yamllint'
-    success-message: 'SUCCESS This job is deprecated. Please lint YAML files with a test. T95890.'
-    failure-message: 'FAILURE This job is deprecated. Please lint YAML files with a test. T95890.'
-
   - name: 'integration-zuul-layoutvalidation-gate'
     branch: (?!labs)
 
@@ -2775,11 +2771,9 @@ projects:
     check-voter:
       - jshint
       - jsonlint
-      - yamllint
     gate-and-submit:
       - jshint
       - jsonlint
-      - yamllint
     experimental:
       - tox-jessie
 
