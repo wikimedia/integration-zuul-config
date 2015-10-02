@@ -200,7 +200,9 @@
     logrotate:
         daysToKeep: 15
     builders:
-     - git-cxserver-and-deploy-repos
+     - shell: |
+        /srv/deployment/integration/slave-scripts/bin/multigit.sh \
+          mediawiki/services/cxserver mediawiki/services/cxserver/deploy
      - shell: |
          CXSERVER_TARGET=/srv/deployment/cxserver
          mkdir -p "$CXSERVER_TARGET"
