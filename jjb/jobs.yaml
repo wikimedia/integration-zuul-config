@@ -1,0 +1,52 @@
+# Runs phplint on a repository
+#
+# Parameters:
+# {queue} prefix for the job
+- job-template: &phplint
+    name: '{queue}-phplint'
+    queue: ''
+    builders:
+        - shell: "echo QUEUE [{queue}]"
+        - shell: "echo NAME [{name}]"
+
+# Generates 'phplint' for back compatibility
+#
+# Solely to get rid of the '{queue}-' prefix when queue='' or it would
+# generate a job named '-phplint'
+- job-template:
+    !!merge : *phplint
+    name: phplint
+
+# Jobs that are not suffixed with any queue name:
+- project:
+    name: 'generic-jobs'
+    jobs:
+        - 'phplint'
+
+# Generate per queue jobs to please Zuul dependent pipeline
+- project:
+    name: queues-jobs
+    queue:
+        - analytics
+        - integration
+        - mwgate
+    jobs:
+        - '{queue}-phplint'
+
+# Generates
+#
+# Job name:  analytics-phplint
+#       <command>echo QUEUE [analytics]</command>
+#       <command>echo NAME [queues-jobs]</command>
+#
+# Job name:  integration-phplint
+#       <command>echo QUEUE [integration]</command>
+#       <command>echo NAME [queues-jobs]</command>
+#
+# Job name:  mwgate-phplint
+#       <command>echo QUEUE [mwgate]</command>
+#       <command>echo NAME [queues-jobs]</command>
+#
+# Job name:  phplint
+#       <command>echo QUEUE []</command>
+#       <command>echo NAME [generic-jobs]</command>
