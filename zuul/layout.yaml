@@ -3141,11 +3141,14 @@ projects:
 
   - name: mediawiki/extensions/CentralNotice
     template:
+      - name: composer-test
       - name: extension-qunit-generic
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-generic
       - name: extension-rubylint
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/CirrusSearch
     template:
