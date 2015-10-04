@@ -7183,21 +7183,11 @@ projects:
 
   - name: mediawiki/extensions/timeline
     template:
+      - name: extension-unittests-generic
+      - name: jshint
       - name: npm
     check:
-      - jsonlint
-      - phplint
-      - perllint
-      - php-composer-validate
-    test:
-     - phplint
-     - perllint
-     - php-composer-validate
-    gate-and-submit:
-     - mediawiki-gate
-     - phplint
-     - perllint
-     - php-composer-validate
+      - name: jsonlint
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
