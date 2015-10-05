@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2ecb373e_4475742b",
+        "filename": "jjb/mobile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-10-05T11:37:06Z",
+      "side": 1,
+      "message": "I try removing the archive: stanza, and the Checkstyle does not seem to attach the raw .xml files.\n\nIn the workspace we have:\n\n /lib/build/checkstyle/checkstyle.xml\n /lib/build/checkstyle/main.xml\n /lib/build/checkstyle/test.xml\n\nSo maybe we want the checkstyle publisher to capture them all.\n\nThen there is /lib/build/reports/tests/ , which is an HTML report for the tests. Not sure how useful it is we can probably skip archiving it.\n\nFinally:\n\n   /lib/build/test-results/ \n\nThe Junit plugin craft a nice enough report. So maybe we can skip archiving them.\n\n\n---\n\nSo I think we want:\n\n* checkstyle to capture all .xml files\n* archive to capture: **/reports/checkstyle/*.xml,**/test-results/**/*.xml  (i.e. don\u0027t bother capture other reports under /reports/",
+      "parentUuid": "2ecb373e_48e7d53b",
+      "revId": "80983115eeaba4ec10d0af7e6ab84adfd20079b2",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2ecb373e_c8d2e55c",
         "filename": "jjb/mobile.yaml",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2015-10-02T14:34:52Z",
       "side": 1,
       "message": "Not new to this patch but I don\u0027t think this Checkstyle is needed.",
+      "revId": "80983115eeaba4ec10d0af7e6ab84adfd20079b2",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ecb373e_84983c7c",
+        "filename": "jjb/mobile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-10-05T11:37:06Z",
+      "side": 1,
+      "message": "Maybe it is listed there to be explicit?  That gives a hint we need the Job to capture the checkstyle report.",
+      "parentUuid": "2ecb373e_c8d2e55c",
       "revId": "80983115eeaba4ec10d0af7e6ab84adfd20079b2",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -64,6 +100,24 @@
       "writtenOn": "2015-10-02T14:34:52Z",
       "side": 1,
       "message": "This is a pure Java project with no Android dependencies. Can we run on parallel nodes instead?",
+      "revId": "80983115eeaba4ec10d0af7e6ab84adfd20079b2",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ecb373e_a4845810",
+        "filename": "jjb/mobile.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-10-05T11:37:06Z",
+      "side": 1,
+      "message": "The job is labeled with  UbuntuTrusty so it will be run on a pool  of slaves concurrently, but we restrict it to one job per node to avoid duplicate build workspaces on a given node.",
+      "parentUuid": "2ecb373e_e83481a9",
       "revId": "80983115eeaba4ec10d0af7e6ab84adfd20079b2",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
