@@ -7792,18 +7792,11 @@ projects:
       - phpunit-coverage-publish
 
   - name: wikimedia/slimapp
-    check:
-      - php-composer-package-validate
-      - phplint
-    test:
-      - php-composer-test-zend
-    gate-and-submit:
-      - php-composer-test-zend
+    template:
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
-    experimental:
-      - php-composer-test-hhvm
 
   - name: search/extra
     test:
