@@ -301,42 +301,6 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-- job-template:
-    name: 'mediawiki-core-release'
-    node: contintLabsSlave && UbuntuPrecise  # Zend PHP 5.3.x
-    concurrent: true
-
-    triggers:
-     - zuul-post
-
-    # Fetch latest version of the release script
-    scm:
-     - git:
-        url: '/srv/ssd/gerrit/mediawiki/tools/release'
-        wipe-workspace: true
-
-    builders:
-     - shell: |
-        VERSION=`echo "$ZUUL_REF"|sed 's%^refs/tags/%%'`
-        echo "From tag $ZUUL_REF, extracted version $VERSION"
-        python make-release/make-release.py \
-            --yes \
-            --git-root https://gerrit.wikimedia.org/r/p/mediawiki \
-            --conf 'make-release/make-release.yaml' \
-            --dont-sign \
-            "$VERSION"
-
-        mkdir -p "$WORKSPACE"/log
-        php /srv/deployment/integration/phpunit/vendor/bin/phpunit \
-          --configuration make-release/phpunit.xml \
-          --log-junit log/junit-phpunit.xml \
-          make-release/testReleaseTarball.php "$VERSION"
-
-    publishers:
-     - phpunit-junit
-     - archive:
-         artifacts: 'build/*.gz'
-
 - project:
     name: mediawiki-core
     phpflavor:
@@ -351,7 +315,6 @@
       - 'mediawiki-core-doxygen-publish'
       - mediawiki-gate
       - '{name}-phplint'
-      - mediawiki-core-release
       - '{name}-bundle-{bundlecommand}':
          bundlecommand:
           - rubocop
