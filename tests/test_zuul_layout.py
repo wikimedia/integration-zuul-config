@@ -256,32 +256,6 @@ class TestZuulLayout(unittest.TestCase):
                 "the test pipeline and for which the repository lacks tests. "
                 "Move jobs from check-voter to check pipeline")
 
-    @unittest.skip('Disabled per T94583, pending overhauling')
-    def test_release_mediawiki_non_wmf_version_tags(self):
-
-        # Get the mediawiki-core-release job
-        publish_trees = self.sched.layout.pipelines['publish'].job_trees
-        tree = [t for (p, t) in publish_trees.iteritems()
-                if p.name == 'mediawiki/core']
-        rel_job = [j for j in tree[0].getJobs()
-                   if j.name == 'mediawiki-core-release']
-        rel_job = rel_job[0]
-
-        # Zuul representaiton of a Gerrit ref-updated event
-        ref = zuul.model.Ref('mediawiki/core')
-
-        # We dont create mw releases on wmf tags
-        ref.ref = 'refs/tags/wmf/1.24wmf13'
-        self.assertFalse(rel_job.changeMatches(ref))
-
-        # We do create release for public versions
-        ref.ref = 'refs/tags/1.24.0'
-        self.assertTrue(rel_job.changeMatches(ref))
-        ref.ref = 'refs/tags/1.24.0-rc.0'
-        self.assertTrue(rel_job.changeMatches(ref))
-        ref.ref = 'refs/tags/2.0'
-        self.assertTrue(rel_job.changeMatches(ref))
-
     def test_valid_jobs_in_check_pipelines(self):
         check_pipelines = [p.name for p in self.getPipelines()
                            if p.name.startswith('check')]

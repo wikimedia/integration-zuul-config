@@ -1618,9 +1618,6 @@ jobs:
   - name: mediawiki-core-doxygen-publish
     branch: ^(master|REL.*|refs/tags/(?!wmf).*)$ # REL is bug 50325
 
-  - name: mediawiki-core-release
-    branch: ^(?!refs/tags/wmf/.*)
-
   - name: mediawiki-phpunit-hhvm
     queue-name: mediawiki
   - name: mediawiki-phpunit-zend
@@ -2000,12 +1997,6 @@ projects:
       - mediawiki-core-doxygen-publish
     publish:
       - mediawiki-core-doxygen-publish
-      # Disabled per T94583, pending overhauling
-      # Once reenabled, please reenable our integration test:
-      #   tests/test_zuul_layout.py
-      #   test_release_mediawiki_non_wmf_version_tags
-      #
-      #- mediawiki-core-release
     experimental:
       # not in the test pipeline and only in gate-and-submit for performance reasons, is listed here to be able to manually trigger it
       - mediawiki-phpunit-hhvm-composer
