@@ -450,6 +450,14 @@
         dir: '$WORKSPACE/src'
      - shell: |
         cd $WORKSPACE/src
-        vendor/bin/phpcs -p -s
+        rm -fR "$WORKSPACE/log"
+        mkdir -p "$WORKSPACE/log"
+        vendor/bin/phpcs -p -s --report-full --report-checkstyle=$WORKSPACE/log/checkstyle.xml
     publishers:
      - castor-save
+    publishers:
+     - checkstyle:
+        pattern: 'log/checkstyle.xml'
+        thresholds:
+          failed:
+            total-all: 1
