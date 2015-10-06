@@ -183,6 +183,13 @@
          /srv/deployment/integration/slave-scripts/bin/multigit.sh \
          mediawiki/services/parsoid mediawiki/services/parsoid/deploy
      - shell: |
+         cd parsoid
+         # Extra paranoia, multigit already does a git clean -xqdff
+         rm -fR node_modules
+         npm install
+         npm list
+
+     - shell: |
          PARSOID_TARGET=/srv/deployment/parsoid
          mkdir -p "$PARSOID_TARGET"
          # sync workspace and deployment target
