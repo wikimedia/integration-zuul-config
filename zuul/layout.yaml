@@ -679,13 +679,6 @@ jobs:
     # TODO: Remove wmf/ branch exclusion after 1.26wmf24 is no longer in use
     branch: (?!^wmf/.*|^REL1_23|^REL1_24|^REL1_25|^REL1_26|^fundraising/REL)
 
-  - name: mwext-JSBreadCrumbs-phpcs-HEAD
-    voting: false
-  - name: mwext-UploadWizard-phpcs-HEAD
-    voting: false
-  - name: mwext-WhitelistPages-phpcs-HEAD
-    voting: false
-
   - name: ^mediawiki-core-npm$
     files:
      - '^(\.js.*|.*\.(js|json)$)'
@@ -5010,7 +5003,6 @@ projects:
     template:
       - name: extension-jslint
       - name: extension-unittests-generic
-      - name: extension-phpcs # bug 68871
 
   - name: mediawiki/extensions/JsonData
     template:
@@ -6098,7 +6090,6 @@ projects:
   - name: mediawiki/extensions/WhitelistPages
     template:
       - name: extension-unittests-generic
-      - name: extension-phpcs # bug 68858
 
   - name: mediawiki/extensions/WhiteSpace
     template:
@@ -7330,7 +7321,6 @@ projects:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
       - name: extension-rubylint
-      - name: extension-phpcs
       - name: npm
     check:
       - jshint
