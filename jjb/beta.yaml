@@ -177,7 +177,11 @@
     logrotate:
         daysToKeep: 15
     builders:
-     - git-parsoid-and-deploy-repos
+     # Builder macro that uses multigit.sh to fetch parsoid and parsoid/deploy
+     # applying triggered change patch to the proper repository
+     - shell: |
+         /srv/deployment/integration/slave-scripts/bin/multigit.sh \
+         mediawiki/services/parsoid mediawiki/services/parsoid/deploy
      - shell: |
          PARSOID_TARGET=/srv/deployment/parsoid
          mkdir -p "$PARSOID_TARGET"

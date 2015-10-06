@@ -1,12 +1,3 @@
-# Builder macro that uses multigit.sh to fetch parsoid and parsoid/deploy
-# applying triggered change patch to the proper repository
-- builder:
-    name: git-parsoid-and-deploy-repos
-    builders:
-     - shell: |
-        /srv/deployment/integration/slave-scripts/bin/multigit.sh \
-          mediawiki/services/parsoid mediawiki/services/parsoid/deploy
-
 # Runs MediaWiki core @master PHP parser tests
 - job-template:
     name: parsoidsvc-php-parsertests
