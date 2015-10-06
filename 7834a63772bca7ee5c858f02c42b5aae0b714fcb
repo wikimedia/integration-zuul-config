@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ecb373e_13c6c71a",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-10-06T08:28:38Z",
+      "side": 1,
+      "message": "Maybe create /log/  and send the checkstyle report there, this way we can archive the xml output:\n\n rm -fR \"$WORKSPACE/log\"\n mkdir -p \"$WORKSPACE/log\"\n --report-checkstyle\u003d$WORKSPACE/log/checkstyle.xml",
+      "revId": "7834a63772bca7ee5c858f02c42b5aae0b714fcb",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ecb373e_734dcbc6",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-10-06T08:28:38Z",
+      "side": 1,
+      "message": "No need for a glob pattern.  Can be adjusted to:\n\n  pattern: \u0027/log/checkstyle.xml\u0027\n\nThat saves a file hierarchy traversal.",
+      "revId": "7834a63772bca7ee5c858f02c42b5aae0b714fcb",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ecb373e_336c232d",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-10-06T08:28:38Z",
+      "side": 1,
+      "message": "Just for sanity, you want to explicitly set the thresholds to fail the build, i.e. whenever there is at least one issue regardless of the priority:\n\n         thresholds:\n           failed:\n               total-all: 1\n\nCame to that in jjb/mobile.yaml",
+      "revId": "7834a63772bca7ee5c858f02c42b5aae0b714fcb",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
