@@ -483,4 +483,8 @@
         dir: '$WORKSPACE/src'
      - shell: |
         cd $WORKSPACE/src
-        vendor/bin/phpcs -p -s
+        vendor/bin/phpcs -p -s --report-full --report-checkstyle=$WORKSPACE/checkstyle.xml
+    publishers:
+     - checkstyle:
+        pattern: '**/checkstyle.xml'
+        can-run-on-failed: true
