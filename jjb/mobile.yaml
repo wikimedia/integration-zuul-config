@@ -162,7 +162,16 @@
      - zuul
 
     scm:
-     - git-remote-zuul-no-submodules
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: false
+        clean:
+            after: true
+        submodule:
+            disable: true
 
     wrappers:
       - timeout:

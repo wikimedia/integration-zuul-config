@@ -14,20 +14,6 @@
         submodule: {}
 
 - scm:
-    name: git-remote-zuul-no-submodules
-    scm:
-     - git:
-        url: '$ZUUL_URL/$ZUUL_PROJECT'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        wipe-workspace: false
-        clean:
-            after: true
-        submodule:
-            disable: true
-
-- scm:
     name: git-remote-zuul-shallow-clone
     scm:
      - git:
