@@ -51,7 +51,16 @@
         daysToKeep: 30
 
     scm:
-     - git-remote-zuul-no-submodules
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: false
+        clean:
+            after: true
+        submodule:
+            disable: true
 
     wrappers:
       - timeout:
@@ -73,7 +82,15 @@
         daysToKeep: 30
 
     scm:
-     - git-remote-zuul-shallow-clone
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: true
+        shallow-clone: true
+        submodule:
+            disable: true
 
     wrappers:
       - timeout:
