@@ -893,8 +893,6 @@ jobs:
     voting: false
   - name: mwext-EtherpadLite-jslint
     voting: false
-  - name: mwext-examples-jslint
-    voting: false
   - name: mwext-ExternalArticles-jslint
     voting: false
   - name: mwext-ExternalData-jslint
@@ -4753,8 +4751,12 @@ projects:
 
   - name: mediawiki/extensions/examples
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/ExternalArticles
     template:
