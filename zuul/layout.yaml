@@ -3059,6 +3059,22 @@ projects:
       - name: jsonlint
       - name: extension-unittests-generic
 
+  - name: mediawiki/extensions/Cards
+    template:
+      - name: composer-test
+      - name: extension-gate
+      - name: extension-unittests-generic
+    check:
+      - phplint
+      - php-composer-validate
+    test:
+      - phplint
+      - php-composer-validate
+    gate-and-submit:
+      - mediawiki-gate
+      - phplint
+      - php-composer-validate
+
   - name: mediawiki/extensions/CategoryTagSorter
     template:
       - name: jshint
