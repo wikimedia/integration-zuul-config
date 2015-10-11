@@ -4400,9 +4400,12 @@ projects:
 
   - name: mediawiki/extensions/AJAXPoll
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/AkismetKlik
     template:
