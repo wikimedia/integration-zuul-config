@@ -790,8 +790,6 @@ jobs:
 # Start of new currently disabled extensions checks from mass extension import - Addshore
   - name: mwext-AjaxLogin-jslint
     voting: false
-  - name: mwext-AJAXPoll-jslint
-    voting: false
   - name: mwext-ApiExplorer-jslint
     voting: false
   - name: mwext-ArticleCreationWorkflow-jslint
@@ -4399,9 +4397,12 @@ projects:
 
   - name: mediawiki/extensions/AJAXPoll
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/AkismetKlik
     template:
