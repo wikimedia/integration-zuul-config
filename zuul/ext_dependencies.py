@@ -31,7 +31,9 @@ dependencies = {
     'QuickSurveys': ['EventLogging'],
     'Score': ['VisualEditor'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
-    'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
+    'Thanks': ['Echo', 'Flow', 'MobileFrontend', 'VisualEditor',
+               'GuidedTour', 'AbuseFilter', 'SpamBlacklist',
+               'CheckUser', 'EventLogging', 'ConfirmEdit'],
     'VectorBeta': ['EventLogging'],
     'WikidataPageBanner': ['Wikidata'],
 }
