@@ -552,6 +552,9 @@ jobs:
   - name: ^integration-config-tox-.*-jessie$
     parameter-function: offline_when_complete
 
+  - name: ^rake-jessie$
+    parameter-function: offline_when_complete
+
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
     voting: false
@@ -2527,6 +2530,7 @@ projects:
       - mediawiki-vagrant-puppet-doc-publish
       - mediawiki-vagrant-bundle17-yard-publish
     experimental:
+      - rake-jessie
       - ruby1.9.3lint
 
   - name: operations/debs/adminbot
