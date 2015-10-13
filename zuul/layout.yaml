@@ -4217,29 +4217,15 @@ projects:
       - name: extension-unittests
 
   - name: mediawiki/extensions/Offline
-    check:
-      - jshint
-      - jsonlint
-      - phplint
-      - php-composer-validate
+    template:
+      - name: composer-test
+      - name: jshint
+      - name: jsonlint
+      - name: extension-unittests-generic
     test:
-      - jshint
-      - jsonlint
-      - phplint
-      - php-composer-validate
       - tox-jessie
     gate-and-submit:
-      - mediawiki-gate
-      - jshint
-      - jsonlint
-      - phplint
-      - php-composer-validate
       - tox-jessie
-    experimental:
-      - mwext-testextension-hhvm
-      - mwext-testextension-zend
-      - npm
-      - php-composer-test
 
   - name: mediawiki/extensions/OggHandler
     template:
