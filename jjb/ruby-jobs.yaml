@@ -75,6 +75,20 @@
      - bundle:
          command: "{bundlecommand}"
 
+# Run `bundle exec rake test` on Nodepool Jessie instances.
+- job-template:
+    name: 'rake-jessie'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        bundle exec rake test
+
 - project:
     name: common-bundle-jobs
     bundlecommand:
@@ -83,6 +97,7 @@
      - yard
     jobs:
      - 'bundle-{bundlecommand}'
+     - 'rake-jessie'
 
 
 - job-template:
