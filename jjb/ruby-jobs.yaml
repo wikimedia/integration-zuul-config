@@ -51,6 +51,16 @@
          bundler-version: ''
          command: '{command}'
 
+- builder:
+    name: bundler
+    builders:
+     - shell: |
+         ruby --version
+         gem --version
+         bundle --version
+         bundle install
+         bundle exec {bundlecommand}
+
 # Deprecated non-generic job. See below.
 - job-template:
     name: '{name}-bundle-{bundlecommand}'
@@ -75,6 +85,20 @@
      - bundle:
          command: "{bundlecommand}"
 
+# Generic bundle job-template for Nodepool Jessie instances.
+- job-template:
+    name: 'bundle-{bundlecommand}-jessie'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - bundler:
+         command: "{bundlecommand}"
+
 - project:
     name: common-bundle-jobs
     bundlecommand:
@@ -83,6 +107,7 @@
      - yard
     jobs:
      - 'bundle-{bundlecommand}'
+     - 'bundle-{bundlecommand}-jessie'
 
 
 - job-template:
