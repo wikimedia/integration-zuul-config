@@ -99,12 +99,17 @@
               cp "$WORKSPACE/tests/browser/config/config_ci.yml" "$WORKSPACE/tests/browser/config/config.yml"
           fi
 
+          # workaround for T110510
+          pretty="--format pretty"
+          if [ "wikidata.beta.wmflabs.org" != "{mediawiki_url}" ]; then
+            pretty=""
+          fi
           # run tests
           "$WORKSPACE"/vendor/bin/bundle exec cucumber \
             --backtrace \
             --color \
             --verbose \
-            --format pretty \
+            $pretty \
             --format Cucumber::Formatter::Sauce \
             --out "$WORKSPACE/log/junit" \
             --tags $CUCUMBER_PARAMETER \
