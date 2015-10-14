@@ -3608,6 +3608,7 @@ projects:
 
   - name: mediawiki/extensions/Flow
     template:
+     - name: composer-test
      - name: extension-gate
      - name: extension-rubylint
      - name: extension-unittests
@@ -3615,21 +3616,12 @@ projects:
     check:
      - jshint
      - jsonlint
-     - phplint
-     - php-composer-validate
     test:
-     - phplint
-     - php-composer-validate
      - jsduck
     gate-and-submit:
      - mediawiki-gate
-     - phplint
-     - php-composer-validate
      - jsduck
     experimental:
-      - mwext-Flow-testextension-hhvm
-      - mwext-testextension-hhvm
-      - mwext-testextension-zend
       - mwext-mw-selenium
     postmerge:
       - mwext-Flow-jsduck-publish
