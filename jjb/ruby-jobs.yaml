@@ -87,7 +87,12 @@
      - zuul
     builders:
      - shell: |
-        bundle install
+        # Bundle defaults to install to GEM_HOME which on Debian is the system
+        # directory. It thus attempt to sudo which is not available to the
+        # 'jenkins' user on Nodepool instances.
+        # To avoid injecting material in the source workspace, install material
+        # in the parent directory.
+        bundle install --path ../vendor/bundle
         bundle exec rake2.1 test
 
 - project:
