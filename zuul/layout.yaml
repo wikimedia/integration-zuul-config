@@ -1886,6 +1886,16 @@ project-templates:
     gate-and-submit:
      - fail-archived-repositories
 
+  - name: flake8-py27
+    test:
+      - tox-flake8
+      - tox-flake8-bin
+      - tox-py27-jessie
+    gate-and-submit:
+      - tox-flake8
+      - tox-flake8-bin
+      - tox-py27-jessie
+
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
