@@ -273,7 +273,7 @@ class TestZuulLayout(unittest.TestCase):
             '.*-phpcs-HEAD',
             '.*-puppet-validate',
             '.*-puppetlint-(strict|lenient)',
-            '(.*-)?ruby(2\.0|1\.9\.3)lint',
+            '(.*-)?ruby2\.0lint',
             '.*-whitespaces',
             'noop',
             'php-composer-validate',
