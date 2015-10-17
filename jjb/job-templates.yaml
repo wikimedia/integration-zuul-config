@@ -171,6 +171,24 @@
     triggers:
         - timed: "H 20 * * *"
 
+
+# Basic template for Maven jobs
+#
+# Parameters:
+# {target}: used to suffix the job name
+# {maven-goals}: string of space separated maven goals
+- job-template:
+    name: 'maven-{name}-{target}'
+    project-type: maven
+    node: contintLabsSlave && UbuntuTrusty
+    triggers:
+     - zuul
+    scm:
+     - git-remoteonly-zuul
+    maven:
+      goals: '{maven-goals}'
+
+
 - job-template:
     name: '{name}-puppetlint-lenient'
     node: contintLabsSlave && UbuntuTrusty

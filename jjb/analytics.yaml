@@ -1,4 +1,5 @@
 # Jobs for git repositories under analytics/*
+
 - job-template:
     name: 'analytics-kraken'
     project-type: maven
@@ -20,3 +21,13 @@
     name: 'analytics-kraken'
     jobs:
      - 'analytics-kraken'
+
+- project:
+    name: 'analytics-refinery'
+    target:
+      - package:
+          maven-goals: 'clean package'
+      - javadoc:
+          maven-goals: 'clean javadoc:javadoc'
+    jobs:
+        - 'maven-{name}-{target}'
