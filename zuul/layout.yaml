@@ -768,8 +768,6 @@ jobs:
     voting: false
   - name: mwext-MarkAsHelpful-jslint # bug 65894
     voting: false
-  - name: mwext-MoodBar-jslint # bug 61612
-    voting: false
   - name: mwext-Quiz-jslint # bug 61620
     voting: false
   - name: mwext-ReaderFeedback-jslint # bug 61622
@@ -4147,8 +4145,12 @@ projects:
 
   - name: mediawiki/extensions/MoodBar
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests
+      - name: npm
+    check:
+      - jsonlint
+      - jsonlint
 
   - name: mediawiki/extensions/MultiMaps
     template:
