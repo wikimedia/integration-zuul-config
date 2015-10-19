@@ -1801,9 +1801,18 @@ projects:
 
   - name: mediawiki/skins/BlueSky
     template:
-     - name: mw-checks
-    experimental:
+     - name: composer-test
+     - name: npm
+     - name: mw-checks-test
+    check:
+     - jsonlint
      - jshint
+     - php53lint
+    experimental:
+     - mwext-qunit-composer
+     - mwext-qunit
+     - mwext-testextension-hhvm
+     - mwext-testextension-hhvm-composer
 
   - name: mediawiki/skins/BlueSpiceSkin
     template:
