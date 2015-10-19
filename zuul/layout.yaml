@@ -2288,9 +2288,19 @@ projects:
 
   - name: mediawiki/skins/BlueSky
     template:
-     - name: mw-checks
-    experimental:
+     - name: composer-test
+     - name: npm
+    check:
+     - jsonlint
      - jshint
+    check-voter:
+     - phplint
+    gate-and-submit:
+     - mediawiki-gate
+     - phplint
+    experimental:
+     - mwext-qunit
+     - mwext-testextension-hhvm
 
   - name: mediawiki/skins/BlueSpiceSkin
     template:
