@@ -1588,6 +1588,8 @@ jobs:
   - name: 'mwext-CirrusSearch-whitespaces'
     branch: ^master$
 
+  - name: 'mwext-EventLogging-jsduck-publish'
+    branch: ^master$
   - name: 'mwext-MobileFrontend-publish'
     branch: ^master$
   - name: 'mwext-GuidedTour-jsduck-publish'
@@ -3580,8 +3582,12 @@ projects:
       - jsonlint
     test:
       - tox-jessie
+      - jsduck
     gate-and-submit:
       - tox-jessie
+      - jsduck
+    postmerge:
+      - mwext-EventLogging-jsduck-publish
 
   - name: mediawiki/extensions/ExpandTemplates
     template:
