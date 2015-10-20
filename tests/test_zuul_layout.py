@@ -279,6 +279,7 @@ class TestZuulLayout(unittest.TestCase):
             'php-composer-validate',
             'php-composer-package-validate',
             'fail-archived-repositories',
+            'tox-jessie',
         ]
         safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
 
