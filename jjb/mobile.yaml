@@ -50,10 +50,7 @@
          scripts/missing-qq.py
          ./gradlew clean checkstyle assembleAlphaRelease testAlphaRelease
          scripts/adb-setup.bash
-
-         # TODO: replace with connectedAlphaReleaseAndroidTest once
-         # https://gerrit.wikimedia.org/r/#/c/235859/ is merged
-         ./gradlew testAllAlphaRelease
+         ./gradlew connectedAlphaReleaseAndroidTest
     publishers:
      - archive:
          # Capture generated .apk, ProGuard mappings, checkstyle.xml, and test results
