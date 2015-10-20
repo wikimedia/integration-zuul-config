@@ -398,6 +398,30 @@
     repository: mediawiki/extensions/VisualEditor
 
     jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: firefox
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce':
+        browser: internet_explorer
+        platform: 'windows_8'
+        version: '10'
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: safari
+        platform: 'os_x_10.9'
+
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-{version}-sauce':
+        browser: internet_explorer
+        platform: 'windows_8.1'
+        version: '11'
+
+     - 'browsertests-{name}-production-{platform}-{browser}-sauce':
+        browser: firefox
+        cucumber_tags: '@production'
+
      - 'browsertests-{name}-language-screenshot-{platform}-{browser}':
         browser: firefox
         mediawiki_credentials_id: LanguageScreenshotBot-at-beta.wmflabs.org
