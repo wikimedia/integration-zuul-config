@@ -99,6 +99,10 @@
               cp "$WORKSPACE/tests/browser/config/config_ci.yml" "$WORKSPACE/tests/browser/config/config.yml"
           fi
 
+          sauce="--format Cucumber::Formatter::Sauce"
+          if [ "wikidata.beta.wmflabs.org" = "{mediawiki_url}" ]; then
+            sauce="--format junit"
+          fi
           # workaround for T110510
           pretty="--format pretty"
           if [ "wikidata.beta.wmflabs.org" = "{mediawiki_url}" ]; then
@@ -110,7 +114,7 @@
             --color \
             --verbose \
             $pretty \
-            --format Cucumber::Formatter::Sauce \
+            $sauce \
             --out "$WORKSPACE/log/junit" \
             --tags $CUCUMBER_PARAMETER \
             --tags @$BROWSER_TAG \
