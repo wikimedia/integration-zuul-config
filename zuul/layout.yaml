@@ -1640,8 +1640,6 @@ jobs:
     voting: false
   - name: ^mwext-NaturalLanguageList-testextension.* # bug 49881
     voting: false
-  - name: ^mwext-ParserHooks-testextension.* # Missing some dependency:
-    voting: false
   - name: ^mwext-SemanticMediaWiki-testextension.* # Not yet tested properly
     voting: false
   - name: ^mwext-SemanticResultFormats-testextension.*
@@ -4347,9 +4345,26 @@ projects:
 
   - name: mediawiki/extensions/ParserHooks
     template:
+      - name: composer-test
       - name: jshint
       - name: jsonlint
-      - name: extension-unittests
+    check:
+      - phplint
+    test:
+      - phplint
+      - mwext-testextension-zend-composer
+      - mwext-testextension-hhvm-composer
+    gate-and-submit:
+      - mediawiki-gate
+      - phplint
+      - mwext-testextension-zend-composer
+      - mwext-testextension-hhvm-composer
+    experimental:
+      - 'mediawiki-extensions-hhvm'
+      - mediawiki-extensions-qunit
+      - mwext-testextension-hhvm
+      - npm
+      - php-composer-test
 
   - name: mediawiki/extensions/Patroller
     template:
