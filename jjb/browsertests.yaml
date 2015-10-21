@@ -401,7 +401,7 @@
 
 # Wikidata
 - project:
-    name: WikidataTests
+    name: WikidataTestsSauce
     defaults: browsertests
     browser: firefox
     folder: tests
@@ -424,8 +424,32 @@
          browser_timeout: 360
          cucumber_tags: '@performance_testing'
          recipients: *emails-Wikidata-devs
-
       - 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce':
+         name: SmokeTests
+         cucumber_tags: '@smoke'
+         recipients: *emails-Wikidata-devs
+- project:
+    name: WikidataTestsHeadless
+    defaults: browsertests
+    browser: firefox
+    folder: tests
+    headless: 'true'
+    mediawiki_credentials_id: WikidataTester-at-beta.wmflabs.org
+    mediawiki_url: wikidata.beta.wmflabs.org
+    platform: linux
+    recipients: *emails-Wikidata-qa
+    repository: WikidataBrowserTests.git
+    repository_host: github.com/wmde
+
+    jobs:
+      - 'browsertests-Wikidata-{name}-{platform}-{browser}':
+         browsertest_job_timeout: '240'
+      - 'browsertests-Wikidata-{name}-{platform}-{browser}':
+         name: PerformanceTests
+         browser_timeout: 360
+         cucumber_tags: '@performance_testing'
+         recipients: *emails-Wikidata-devs
+      - 'browsertests-Wikidata-{name}-{platform}-{browser}':
          name: SmokeTests
          cucumber_tags: '@smoke'
          recipients: *emails-Wikidata-devs

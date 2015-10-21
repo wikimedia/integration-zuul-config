@@ -17,6 +17,12 @@
           export SCREENSHOT_FAILURES=true
           export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
 
+          # headless means local headless browser, thus disable saucelabs
+          if [ $HEADLESS = 'true' ]; then
+            unset SAUCE_ONDEMAND_ACCESS_KEY
+            unset SAUCE_ONDEMAND_USERNAME
+          fi
+
           # Log results to Raita
           export RAITA_URL=http://integration-raita.eqiad.wmflabs:9200/raita
 

@@ -56,7 +56,12 @@
 - job-template:
     name: 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce'
     defaults: browsertests
+    triggers:
+          - timed: "H 01 * * *"
 
+- job-template:
+    name: 'browsertests-Wikidata-{name}-{platform}-{browser}'
+    defaults: browsertests
     triggers:
           - timed: "H 01 * * *"
 
