@@ -1708,6 +1708,26 @@ project-templates:
       - npm
       - php-composer-test
 
+  - name: extension-unittests-composer
+    check:
+     - phplint
+     - php-composer-validate
+    test:
+     - phplint
+     - mwext-testextension-zend-composer
+     - mwext-testextension-hhvm-composer
+     - php-composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - phplint
+     - mwext-testextension-zend-composer
+     - mwext-testextension-hhvm-composer
+     - php-composer-validate
+    experimental:
+     - mwext-qunit-composer
+     - npm
+     - php-composer-test
+
   - name: extension-unittests-generic
     check:
      - phplint
