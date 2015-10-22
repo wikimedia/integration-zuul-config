@@ -191,6 +191,27 @@
           wipe-workspace: true
     triggers:
      - timed: 'H */3 * * *'
+    wrappers:
+      - timeout:
+          timeout: 150
+          abort: true
+      - timestamps
+      - ansicolor
+      # Values from Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/webpagetest/
+      - credentials-binding:
+          - text:
+              credential-id: 'd5ee743e-b2e4-43eb-bc16-0bf11bcdec43'
+              variable: WMF_WPT_KEY
+          - text:
+              credential-id: 'e0131e1d-c45a-468c-b163-439769f21a20'
+              variable: WPT_ORG_WPT_KEY
+          - text:
+              credential-id: 'f9a95f38-76cc-456d-bc8c-2cf126c604c3'
+              variable: WPT_USER
+          - text:
+              credential-id: '867612a5-40cd-4789-9cda-ebfc7da1ef33'
+              variable: WPT_USER_PASSWORD
     builders:
      - shell: |
         #!/bin/sh -e
@@ -210,27 +231,8 @@
         node ./lib/index.js --batch ./scripts/batch/second-view-desktop.txt
         # Run wpt-org last
         node ./lib/index.js --batch ./scripts/batch/mobile-wpt-org.txt
-    wrappers:
-      - timeout:
-          timeout: 150
-          fail: true
-      - timestamps
-      - ansicolor
-      # Values from Jenkins credentials store
-      # https://integration.wikimedia.org/ci/credential-store/domain/webpagetest/
-      - credentials-binding:
-          - text:
-              credential-id: 'd5ee743e-b2e4-43eb-bc16-0bf11bcdec43'
-              variable: WMF_WPT_KEY
-          - text:
-              credential-id: 'e0131e1d-c45a-468c-b163-439769f21a20'
-              variable: WPT_ORG_WPT_KEY
-          - text:
-              credential-id: 'f9a95f38-76cc-456d-bc8c-2cf126c604c3'
-              variable: WPT_USER
-          - text:
-              credential-id: '867612a5-40cd-4789-9cda-ebfc7da1ef33'
-              variable: WPT_USER_PASSWORD
+    publishers:
+      - workspace-cleanup
 
 -
  job:
