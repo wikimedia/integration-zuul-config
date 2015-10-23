@@ -204,6 +204,24 @@
          fi
 
 - builder:
+    name: inject-experimental-skin
+    builders:
+     - shell: |
+         # When triggered from the experimental pipeline, add the project to
+         # the list of dependencies. Used to inject an skin which is not
+         # yet part of the list above.
+         if [ "$ZUUL_PIPELINE" == 'experimental' ] && ! grep -q "$ZUUL_PROJECT" deps.txt; then
+            echo "$ZUUL_PROJECT" >> deps.txt
+            # Evil copy paste of `zuul-cloner` macro
+            # FIXME maybe we should always pass $ZUUL_PROJECT in the macro
+            zuul-cloner --color --verbose \
+                --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+                --workspace src \
+                https://gerrit.wikimedia.org/r/p \
+                "$ZUUL_PROJECT"
+         fi
+
+- builder:
     name: sort-deps-txt
     builders:
      - shell: |
@@ -242,6 +260,38 @@
      - junit:
         results: 'log/junit*.xml'
      - mw-teardown-mysql
+     - archive-log-dir
+
+# See 'mediawiki-phpunit-{phpflavor}'
+- job-template:
+    name: 'mediawiki-skins-{phpflavor}'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner-skindeps:
+         skin-name: ''
+         dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
+     - inject-experimental-skin
+     - sort-deps-txt
+     - shell: "cp deps.txt src/skins_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - mw-run-phpunit-allexts
+    #- shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
      - archive-log-dir
 
 # See 'mediawiki-phpunit-{phpflavor}'
@@ -351,6 +401,8 @@
               ZeroPortal
       - 'mediawiki-extensions-qunit':
           dependencies: *gatedextensions
+      - 'mediawiki-skins-{phpflavor}':
+          dependencies: &gatedskins |
 
 - job:
     name: 'mediawiki-core-code-coverage'
