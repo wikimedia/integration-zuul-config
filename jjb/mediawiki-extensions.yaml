@@ -42,6 +42,34 @@
              $(cat deps.txt)
      - ve-submodules-update
 
+# Parameters:
+#
+# skin-name: skin basename. Set to '' to ignore
+# dependencies: comma or spaces/newlines separated list of skins to clone
+# additional-dependencies: gets appended to dependencies, backslash escaping is applied, use \n to separate multiple
+#
+- builder:
+    name: 'zuul-cloner-skindeps'
+    builders:
+     - shell: |
+         # Build dependencies list
+         rm -f deps.txt
+         touch deps.txt
+         echo "mediawiki/core" >> deps.txt
+         if [ "{additional-repositories}" != "" ]; then
+             echo -e "{additional-repositories}" >> deps.txt
+         fi
+         if [ "{ext-name}" != "" ]; then
+            echo "mediawiki/skins/{skin-name}" >> deps.txt
+         fi
+         if [ "{dependencies}" != "" ]; then
+             echo "$(IFS=', '; for dep in `echo {dependencies}`; do echo mediawiki/skins/$dep; done;)" >> deps.txt
+         fi
+     - zuul-cloner:
+         projects: >
+             $(cat deps.txt)
+     - ve-submodules-update
+
 # ALWAYS pair with 'mw-teardown-mysql'
 - builder:
     name: prepare-mediawiki
@@ -52,6 +80,19 @@
          additional-repositories: 'mediawiki/vendor'
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+
+# ALWAYS pair with 'mw-teardown-mysql'
+- builder:
+    name: prepare-skin-mediawiki
+    builders:
+     - zuul-cloner-skindeps:
+         skin-name: '{skin-name}'
+         dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
+     - mw-install-mysql
+     - shell: "cp deps.txt src/skins_load.txt"
      - mw-apply-settings
      - mw-run-update-script
 
@@ -89,6 +130,25 @@
      - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
+
+# ALWAYS pair with 'mw-teardown-mysql'
+# Similar to prepare-skin-mediawiki, except gets
+# the skin name from $ZUUL_PROJECT
+- builder:
+    name: prepare-skin-mediawiki-zuul-project
+    builders:
+     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+             $(cat skin_load.txt)
+     - shell: "mv skin_load.txt src/skin_load.txt"
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-run-update-script
+
 # same except for use with composer instead of cloning vendor
 - builder:
     name: prepare-mediawiki-zuul-project-no-vendor
@@ -109,6 +169,26 @@
          dir: 'src'
      - composer-local-create:
          deps: 'extensions_load.txt'
+     - composer-update:
+         dir: 'src'
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-run-update-script
+
+# same except for use with composer instead of cloning vendor
+- builder:
+    name: prepare-skin-mediawiki-zuul-project-no-vendor
+    builders:
+     - shell: "echo $ZUUL_PROJECT > skins_load.txt"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             $(cat skins_load.txt)
+     - shell: "mv skins_load.txt src/skins_load.txt"
+     - composer-validate:
+         dir: 'src'
+     - composer-local-create:
+         deps: 'skins_load.txt'
      - composer-update:
          dir: 'src'
      - mw-install-mysql
@@ -240,6 +320,33 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# Run skin tests via Zuul cloner
+#
+- job-template:
+    name: '{name}-{skin-name}-testskin-{phpflavor}'
+    # See mediawiki.yaml mediawiki-phpunit-{phpflavor}
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-skin-mediawiki:
+         ext-name: '{skin-name}'
+         dependencies: '{dependencies}'
+     - mw-run-phpunit-allexts
+    # TODO, find ways to additionaly run tests for core but
+    # without skins tests
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
 # Generic phpunit job for extensions.
 - job-template:
     name: 'mwext-testextension-{phpflavor}'
@@ -258,6 +365,26 @@
         results: 'log/junit*.xml'
      - mw-teardown-mysql
      - archive-log-dir
+
+# Generic phpunit job for skins.
+- job-template:
+    name: 'mwext-testskin-{phpflavor}'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-skin-mediawiki-zuul-project
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
 # same but with composer update instead of cloning vendor
 - job-template:
     name: 'mwext-testextension-{phpflavor}-composer'
@@ -277,6 +404,25 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# same but with composer update instead of cloning vendor
+- job-template:
+    name: 'mwext-testskin-{phpflavor}-composer'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-skin-mediawiki-zuul-project-no-vendor
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
 - project:
     name: 'mwext-testextension-generic'
     jobs:
@@ -285,6 +431,18 @@
             - hhvm
             - zend
      - 'mwext-testextension-{phpflavor}-composer':
+        phpflavor:
+            - hhvm
+            - zend
+
+- project:
+    name: 'mwext-testskin-generic'
+    jobs:
+     - 'mwext-testskin-{phpflavor}':
+        phpflavor:
+            - hhvm
+            - zend
+     - 'mwext-testskin-{phpflavor}-composer':
         phpflavor:
             - hhvm
             - zend
@@ -656,7 +814,37 @@
      - 'mwext-TemplateData-jsduck-publish':
         ext-name: TemplateData
 
+# These are jobs we create for all of the skins
+# listed below. If a job should only be created
+# for a select number of skins or if it needs
+# custom parameters, add it below under "Extra jobs for specific skins"
+# at the bottom of this file.
+- job-group:
+    name: mwskin-check-jobs
+    jobs:
+     - '{name}-{skin-name}-testskin-{phpflavor}':
+         phpflavor:
+             - hhvm
+             - zend
 
+- project:
+    name: mwskin
+
+    # By default we do not need any other skins:
+    dependencies: ""
+
+    skin-name:
+     - Metrolook
+     - Vector
+
+    mwbranch:
+     - master
+# Commented out since they are not triggered for now.
+#     - REL1_23
+#     - REL1_19
+
+    jobs:
+     - mwskin-check-jobs
 
 # Deprecated, extensions should be converted
 # to use an npm entry point instead.
