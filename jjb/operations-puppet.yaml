@@ -41,20 +41,42 @@
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
-    node: gallium  # webhost where doc is published
+    node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
     concurrent: false  # dont want to race doc creation!
 
     triggers:
      - zuul
-    workspace: '/srv/org/wikimedia/doc/puppetsource'
+    scm:
+     - git:
+         url: '$ZUUL_URL/$ZUUL_PROJECT'
+         basedir: 'src'
+         branches:
+             - '$ZUUL_COMMIT'
+         refspec: '$ZUUL_REF'
+         wipe-workspace: false
+         clean:
+             after: true
+         submodule:
+             disable: false
+             recursive: true
     builders:
      - shell: |
+        rm -fR "$WORKSPACE/doc"
+        mkdir -p "$WORKSPACE/doc"
+        cd "$WORKSPACE/src"
         /usr/bin/puppet doc \
             --mode rdoc \
-            --outputdir /srv/org/wikimedia/doc/puppet \
-            --modulepath "$WORKSPACE/modules" \
-            --manifestdir "$WORKSPACE/manifests"
+            --outputdir "$WORKSPACE/doc" \
+            --modulepath "modules" \
+            --manifestdir "manifests"
+     - doc-publish:
+        docsrc: 'doc'
+        docdest: 'puppet'
+     # And publish the entire workspace as "puppetsource"
+     - doc-publish:
+        docsrc: 'src'
+        docdest: 'puppetsource'
 
 # Find out common typos in any files of ops/puppet
 - job-template:
