@@ -317,6 +317,35 @@ class TestZuulScheduler(unittest.TestCase):
         event.account = {'email': 'untrusted@example.org'}
         self.assertFalse(test_manager.eventMatches(event, change))
 
+    def test_recheck_on_approved_change_triggers_gate(self):
+        gate_manager = self.getPipeline('gate-and-submit').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.approvals = [{'type': 'Code-Review',
+                             'description': 'Code Review',
+                             'value': '2',
+                             'by': {'email': 'someone@wikimedia.org'},
+                             }]
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1:\n\nrecheck'
+
+        self.assertTrue(gate_manager.eventMatches(event, change),
+                        "gate-and-submit pipeline must process 'recheck' "
+                        "on CR+2")
+
+        indep_pipelines = [p for p in self.getPipelines()
+                           if p.manager.__class__.__name__ ==
+                           'IndependentPipelineManager']
+        self.assertGreater(len(indep_pipelines), 0)
+
+            # XXX need to bump our Zuul version to supports negative filters
+            self.assertFalse(pipeline.manager.eventMatches(event, change),
+                             "Independent pipeline %s must not process "
+                             "'recheck' on CR+2" % pipeline.name)
+        for pipeline in indep_pipelines:
+
     def test_pipelines_trustiness(self):
         check_manager = self.getPipeline('check').manager
         test_manager = self.getPipeline('test').manager
