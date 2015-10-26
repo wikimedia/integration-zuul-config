@@ -552,6 +552,11 @@ pipelines:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
             - code-review: 2
+        - event: comment-added
+          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(2)?)?\n\n\s*recheck gate\.?\s*$
+          email: *email_whitelist
+          require-approval:
+            - code-review: +2
     start:
       gerrit:
         verified: 0
