@@ -98,6 +98,21 @@ class TestZuulLayout(unittest.TestCase):
                     [job.name for job in tree.getJobs()]
         return ret
 
+    def test_only_voting_jobs_in_gate(self):
+        gate = self.getPipeline('gate-and-submit')
+        non_voting = list()
+        for gated_project in gate.getProjects():
+            for job in gate.getJobTree(gated_project).getJobs():
+                if not job.voting:
+                    non_voting.append(job.name)
+        self.assertListEqual([], non_voting)
+
+    def test_projects_have_gate_and_submit_pipeline(self):
+        self.maxDiff = None
+        all_projects = self.getProjectsNames()
+        gates = self.getPipelineProjectsNames('gate-and-submit')
+        self.assertListEqual(gates, all_projects)
+
     def getProjectsPipelines(self):
         """Map of projects -> pipelines names"""
         projects_pipelines = {}
