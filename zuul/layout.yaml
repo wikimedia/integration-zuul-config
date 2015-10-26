@@ -479,6 +479,10 @@ pipelines:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
             - code-review: 2
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+          require-approval:
+            - code-review: 2
     start:
       gerrit:
         verified: 0
