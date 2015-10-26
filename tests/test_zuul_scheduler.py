@@ -106,6 +106,18 @@ class TestZuulScheduler(unittest.TestCase):
                     [job.name for job in tree.getJobs()]
         return ret
 
+    def test_only_voting_jobs_in_gate(self):
+        gate = self.getPipeline('gate-and-submit')
+        non_voting = list()
+        for gated_project in gate.getProjects():
+            for job in gate.getJobTree(gated_project).getJobs():
+                if not job.voting:
+                    non_voting.append(job.name)
+        self.longMessage = True
+        self.assertListEqual(
+            [], non_voting,
+            'non voting jobs are not allowed in gate-and-submit')
+
     def getProjectsPipelines(self):
         """Map of projects -> pipelines names"""
         projects_pipelines = {}
