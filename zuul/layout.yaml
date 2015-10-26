@@ -418,6 +418,17 @@ pipelines:
           comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
           email: *email_whitelist
 
+        # Let whitelisted users CR+1 to trigger tests for an untested patch
+        # (Verified 0 or 1)
+        - event: comment-added
+          require-approval:
+            # hasn't been tested yet
+            - verified: [0, 1]
+              username: jenkins-bot
+          email: *email_whitelist
+          approval:
+            - code-review: +1
+
     success-message: 'Main test build succeeded.'
     success:
       gerrit:

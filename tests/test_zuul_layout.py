@@ -404,3 +404,42 @@ class TestZuulLayout(unittest.TestCase):
                                  }]
 
         self.assertTrue(gate.eventMatches(l10n_event, change))
+
+    def test_trusted_cr_vote_tests_untested_change(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        change.approvals = [
+            {'description': 'Verified',
+             'type': 'VRFY',
+             'value': '1',
+             'by': {'username': 'jenkins-bot'},
+             },
+            {'description': 'Code-Review',
+             'type': 'CRVW',
+             'value': '1',
+             'by': {'email': 'jdoe@wikimedia.org'},
+             },
+        ]
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.account = {'email': 'untrusted@example.org'}
+        event.approvals = [
+            {'description': 'Code-Review',
+             'type': 'CRVW',
+             'value': '1',
+             'by': {'email': 'unstrusted@example.org'},
+             },
+        ]
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.approvals = [
+            {'description': 'Code-Review',
+             'type': 'CRVW',
+             'value': '1',
+             },
+        ]
+        self.assertTrue(test_manager.eventMatches(event, change))
