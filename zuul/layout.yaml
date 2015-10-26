@@ -774,6 +774,9 @@ jobs:
     voting: false
 
   # Still being tested
+  #
+  # XXX when making it voting, make sure to uncomment the job from definition
+  # from gate-and-submit
   - name: commit-message-validator
     voting: false
 
@@ -1136,8 +1139,9 @@ project-templates:
      - commit-message-validator
     test:
      - commit-message-validator
-    gate-and-submit:
-     - commit-message-validator
+    # non-voting / under test
+    #gate-and-submit:
+    # - commit-message-validator
 
   - name: archived
     check:
@@ -2062,7 +2066,6 @@ projects:
      - debian-glue-non-voting
     gate-and-submit:
      - php55lint
-     - debian-glue-non-voting
 
   # Content translation related packages
   - { name: operations/debs/contenttranslation/apertium,           test: ['debian-glue'] }
@@ -2783,8 +2786,6 @@ projects:
       - jsonlint
       - jshint
     test:
-      - mwext-CirrusSearch-whitespaces
-    gate-and-submit:
       - mwext-CirrusSearch-whitespaces
 
   - name: mediawiki/extensions/CleanChanges
