@@ -16,6 +16,7 @@ dependencies = {
     'Gather': ['PageImages', 'TextExtracts', 'MobileFrontend', 'Echo',
                'VisualEditor'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
+    'GoogleLogin': ['GoogleAPIClient'],
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'ImageMetrics': ['EventLogging'],
