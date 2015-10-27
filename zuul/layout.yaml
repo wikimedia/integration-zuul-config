@@ -2527,28 +2527,19 @@ projects:
 
   - name: mediawiki/vagrant
     check:
-      - mediawiki-vagrant-puppet-validate
       - erblint-HEAD
-      - mediawiki-vagrant-puppetlint-strict
+      - mediawiki-vagrant-puppet-validate
     test:
-      - bundle17-cucumber
-      - bundle17-rspec
-      - bundle17-rubocop
+      - rake-jessie
+      - erblint-HEAD
       - mediawiki-vagrant-puppet-validate
-      - erblint-HEAD
-      - mediawiki-vagrant-puppetlint-strict
     gate-and-submit:
-      - bundle17-cucumber
-      - bundle17-rspec
-      - bundle17-rubocop
+      - rake-jessie
       - erblint-HEAD
-      - mediawiki-vagrant-puppetlint-strict
       - mediawiki-vagrant-puppet-validate
     postmerge:
       - mediawiki-vagrant-puppet-doc-publish
       - mediawiki-vagrant-bundle17-yard-publish
-    experimental:
-      - rake-jessie
 
   - name: operations/debs/adminbot
     test:
