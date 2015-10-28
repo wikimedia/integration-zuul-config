@@ -177,7 +177,53 @@
      - global-teardown
 
 - job:
-    name: 'performance-webpagetest'
+    name: 'performance-wpt-org-webpagetest'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: global
+    logrotate:
+        daysToKeep: 60
+    concurrent: false
+    scm:
+      - git:
+          url: 'https://gerrit.wikimedia.org/r/p/performance/WebPageTest.git'
+          branches:
+            - master
+          wipe-workspace: true
+    triggers:
+     - timed: 'H */4 * * *'
+    wrappers:
+      - timeout:
+          timeout: 60
+          abort: true
+      - timestamps
+      - ansicolor
+      # Values from Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/webpagetest/
+      - credentials-binding:
+          - text:
+              credential-id: 'e0131e1d-c45a-468c-b163-439769f21a20'
+              variable: WPT_ORG_WPT_KEY
+          - text:
+              credential-id: 'f9a95f38-76cc-456d-bc8c-2cf126c604c3'
+              variable: WPT_USER
+          - text:
+              credential-id: '867612a5-40cd-4789-9cda-ebfc7da1ef33'
+              variable: WPT_USER_PASSWORD
+    builders:
+     - shell: |
+        #!/bin/sh -e
+        # Securely set beforehand: WPT_ORG_WPT_KEY, WPT_USER, WPT_USER_PASSWORD
+        # These tests run on WebPageTest.org
+        # Note: We can make 1000 runs per day
+        export STATSV_ENDPOINT="https://www.wikimedia.org/beacon/statsv"
+        export WPT_ORG_MOBILE_RUNS="3"
+        export WPT_ORG_RUNS="11"
+        npm install --production
+        ./bin/index.js --batch ./scripts/batch/mobile-wpt-org.txt
+    publishers:
+      - workspace-cleanup
+- job:
+    name: 'performance-wmf-webpagetest'
     node: contintLabsSlave && UbuntuTrusty
     defaults: global
     logrotate:
@@ -204,9 +250,6 @@
               credential-id: 'd5ee743e-b2e4-43eb-bc16-0bf11bcdec43'
               variable: WMF_WPT_KEY
           - text:
-              credential-id: 'e0131e1d-c45a-468c-b163-439769f21a20'
-              variable: WPT_ORG_WPT_KEY
-          - text:
               credential-id: 'f9a95f38-76cc-456d-bc8c-2cf126c604c3'
               variable: WPT_USER
           - text:
@@ -215,12 +258,11 @@
     builders:
      - shell: |
         #!/bin/sh -e
-        # Securely set beforehand: WMF_WPT_KEY, WPT_ORG_WPT_KEY, WPT_USER, WPT_USER_PASSWORD
+        # These tests runs on our own WebPageTest instance
+        # Securely set beforehand: WMF_WPT_KEY, WPT_USER, WPT_USER_PASSWORD
         export STATSV_ENDPOINT="https://www.wikimedia.org/beacon/statsv"
         export WPT_RUNS="11"
         export WPT_MOBILE_RUNS="7"
-        export WPT_ORG_MOBILE_RUNS="3"
-        export WPT_ORG_RUNS="11"
         export WMF_WPT_LOCATION="us-east-1"
         npm install --production
         ./bin/index.js --batch ./scripts/batch/mobile.txt
@@ -229,11 +271,8 @@
         ./bin/index.js --batch ./scripts/batch/login-desktop.txt
         ./bin/index.js --batch ./scripts/batch/second-view-mobile.txt
         ./bin/index.js --batch ./scripts/batch/second-view-desktop.txt
-        # Run wpt-org last
-        ./bin/index.js --batch ./scripts/batch/mobile-wpt-org.txt
     publishers:
       - workspace-cleanup
-
 -
  job:
     name: 'fail-archived-repositories'
