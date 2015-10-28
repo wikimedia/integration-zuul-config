@@ -3839,13 +3839,14 @@ projects:
 
   - name: mediawiki/extensions/GuidedTour
     template:
-      - name: jshint
+      - name: composer-test
       - name: extension-unittests-generic
       - name: extension-qunit-generic
       - name: npm
       - name: extension-gate
     check:
       - jsonlint
+      - jshint
     test:
      - jsduck
     gate-and-submit:
