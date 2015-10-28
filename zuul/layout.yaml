@@ -1787,6 +1787,12 @@ project-templates:
      - phplint
      - php-composer-validate
 
+  - name: jsduck
+    test:
+     - jsduck
+    gate-and-submit:
+     - jsduck
+
     # Similar to above, but no jslint.
   - name: mw-checks
     check-voter:
@@ -1954,14 +1960,11 @@ projects:
 
   - name: integration/raita
     template:
+      - name: jsduck
       - name: npm
     check:
       - jshint
       - jsonlint
-    test:
-      - jsduck
-    gate-and-submit:
-      - jsduck
 
   - name: integration/zuul
     experimental:
@@ -3612,6 +3615,7 @@ projects:
      - name: extension-gate
      - name: extension-rubylint
      - name: extension-unittests
+     - name: jsduck
      - name: npm
     check:
      - jshint
@@ -3621,12 +3625,10 @@ projects:
     test:
      - phplint
      - php-composer-validate
-     - jsduck
     gate-and-submit:
      - mediawiki-gate
      - phplint
      - php-composer-validate
-     - jsduck
     experimental:
       - mwext-Flow-testextension-hhvm
       - mwext-testextension-hhvm
@@ -3846,14 +3848,11 @@ projects:
       - name: jshint
       - name: extension-unittests-generic
       - name: extension-qunit-generic
+      - name: jsduck
       - name: npm
       - name: extension-gate
     check:
       - jsonlint
-    test:
-     - jsduck
-    gate-and-submit:
-     - jsduck
     postmerge:
      - mwext-GuidedTour-jsduck-publish
 
@@ -4124,6 +4123,7 @@ projects:
       - name: extension-qunit-generic
       - name: extension-rubylint
       - name: jshint
+      - name: jsduck
       - name: npm
     check:
       - phplint
@@ -4131,12 +4131,10 @@ projects:
       - jsonlint
     test:
       - phplint
-      - jsduck
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
       - phplint
-      - jsduck
       - php-composer-validate
     postmerge:
       - mwext-MultimediaViewer-jsduck-publish
@@ -6451,15 +6449,13 @@ projects:
       - name: extension-qunit-generic
       - name: extension-unittests-generic
       - name: composer-test
+      - name: jsduck
       - name: npm
     check:
       - jshint
       - jsonlint
-    test:
-      - jsduck
     gate-and-submit:
       - mediawiki-gate
-      - jsduck
 
   - name: mediawiki/extensions/PagesList
     template:
@@ -7208,14 +7204,12 @@ projects:
       - name: extension-qunit-generic
       - name: extension-unittests-generic
       - name: composer-test
+      - name: jsduck
       - name: npm
     check:
       - jsonlint
-    test:
-      - jsduck
     gate-and-submit:
       - mediawiki-gate
-      - jsduck
     postmerge:
       - mwext-TemplateData-jsduck-publish
 
