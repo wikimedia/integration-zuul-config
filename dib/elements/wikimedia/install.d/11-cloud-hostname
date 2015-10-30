@@ -1,0 +1,16 @@
+#!/bin/bash
+# vim: set et ts=4 sw=4:
+
+# Must happens after:
+# elements/debian/install.d/10-cloud-opinions
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Hardcoded hostname bypass cloud meta-data
+# Patch proposed upstream https://review.openstack.org/#/c/240614/
+# T117283
+rm -v -f /etc/cloud/cloud.cfg.d/01_hostname.cfg
