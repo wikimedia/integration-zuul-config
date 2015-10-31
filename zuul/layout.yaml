@@ -3810,10 +3810,12 @@ projects:
 
   - name: mediawiki/extensions/GoogleLogin
     template:
-      - name: jshint
-      - name: jsonlint
-      - name: extension-unittests-generic
       - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/GoogleNewsSitemap
     template:
