@@ -580,6 +580,22 @@
             unstable: 1
             pattern: '**/checkstyle-phpcs.xml'
 
+- builder:
+    name: puppet-doc
+    # Directory where 'modules' and 'manifests' directories are
+    puppet: '{puppet}'
+    builders:
+     - shell: |
+        # Destination dir must not exist or 'puppet doc' complains
+        rm -fR "$WORKSPACE/doc"
+
+        cd "$WORKSPACE/src"
+        /usr/bin/puppet doc \
+            --mode rdoc \
+            --outputdir "$WORKSPACE/doc" \
+            --modulepath "{puppet}/modules" \
+            --manifestdir "{puppet}/manifests"
+
 # Run ruby syntax check against any file named '.rb' under the workspace.
 # The ruby interpreter is passed using 'interpreter'
 - builder:
