@@ -20,12 +20,8 @@
     triggers:
      - zuul
     builders:
-     - shell: |
-        /usr/bin/puppet doc \
-            --mode rdoc \
-            --outputdir "$WORKSPACE/doc" \
-            --modulepath "$WORKSPACE/puppet/modules" \
-            --manifestdir "$WORKSPACE/puppet/manifests"
+     - puppet-doc:
+        puppet: "$WORKSPACE/puppet"
      - doc-publish:
         docsrc: 'doc'
         docdest: 'mediawiki-vagrant'
