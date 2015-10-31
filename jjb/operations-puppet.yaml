@@ -61,16 +61,8 @@
              disable: false
              recursive: true
     builders:
-     - shell: |
-        # Destination dir must not exist or 'puppet doc' complains
-        rm -fR "$WORKSPACE/doc"
-
-        cd "$WORKSPACE/src"
-        /usr/bin/puppet doc \
-            --mode rdoc \
-            --outputdir "$WORKSPACE/doc" \
-            --modulepath "modules" \
-            --manifestdir "manifests"
+     - puppet-doc:
+        puppet: "$WORKSPACE"
      - doc-publish:
         docsrc: 'doc'
         docdest: 'puppet'
