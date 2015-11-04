@@ -1602,6 +1602,8 @@ jobs:
     branch: ^master$
   - name: 'mwext-VisualEditor-publish'
     branch: ^master$
+  - name: 'mwext-EventLogging-publish'
+    branch: ^master$
 
   - name: 'mwext-VisualEditor-sync-gerrit'
     branch: ^master$
@@ -3581,12 +3583,15 @@ projects:
       - name: extension-unittests
       - name: extension-qunit-generic
       - name: npm
+      - name: jsduck
     check:
       - jsonlint
     test:
       - tox-jessie
     gate-and-submit:
       - tox-jessie
+    postmerge:
+      - mwext-EventLogging-jsduck-publish
 
   - name: mediawiki/extensions/ExpandTemplates
     template:

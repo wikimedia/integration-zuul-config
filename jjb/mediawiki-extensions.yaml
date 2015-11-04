@@ -342,6 +342,19 @@
         docdest: 'MultimediaViewer/$ZUUL_BRANCH'
 
 - job-template:
+    name: 'mwext-EventLogging-jsduck-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'EventLogging/$ZUUL_BRANCH'
+
+- job-template:
     name: 'mwext-TemplateData-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
