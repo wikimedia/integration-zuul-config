@@ -387,6 +387,19 @@
      - global-teardown
 
 - job:
+    name: 'mwext-EventLogging-jsduck-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - jsduck
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'EventLogging/$ZUUL_BRANCH'
+
+- job:
     name: 'mwext-MobileFrontend-doxygen-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
