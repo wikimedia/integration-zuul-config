@@ -5,12 +5,26 @@
         docsrc: 'html'
         docdest: 'mw-tools-releng'
 
-- project:
-    name: 'mw-tools-scap'
-    jobs:
-     - '{name}-tox-doc-publish':
-        docsrc: 'docs/_build/html'
-        docdest: 'mw-tools-scap'
+# Job that updates scap docs on doc.wikimedia.org hourly
+- job:
+    name: 'mw-tools-scap-tox-doc-publish'
+    node: contintLabsSlave && UbuntuPrecise
+    triggers:
+      - pollscm:
+          cron: '@hourly'
+          ignore-post-commit-hooks: True
+    scm:
+      - git:
+          url: 'https://phabricator.wikimedia.org/diffusion/MSCA/scap'
+          branches:
+            - 'origin/master'
+          wipe-workspace: true
+    builders:
+      - tox:
+          venv: doc
+      - doc-publish:
+          docsrc: 'docs/_build/html'
+          docdest: 'mw-tools-scap'
 
 # Job to run MW-CS patchsets against
 # mediwiki/core's includes/ directory for easier
