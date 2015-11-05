@@ -10,6 +10,13 @@
           export distribution={distribution}
           export REPOSITORY=/data/project/debianrepo
           export REPOS=jenkins-debian-glue
+
+          # Use Wikimedia hooks provided by puppet ::package_builder
+          # See below for more detailled explanations
+          export PBUILDER_CONFIG=/etc/pbuilderrc
+          . /etc/pbuilderrc
+          export COWBUILDER_BASE="$BASEPATH"
+
           /usr/bin/build-and-provide-package
 
 - builder:
@@ -111,6 +118,18 @@
 
             export distribution=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
             echo "Distribution set from debian/changelog to $distribution"
+
+            # Use Wikimedia hooks provided by puppet ::package_builder
+            export PBUILDER_CONFIG=/etc/pbuilderrc
+
+            # We set DIST which is used by pbuilderrc to determine whether it a
+            # Wikimedia flavor.  We point jenkins-debian-glue cowbuilder path
+            # to the canonical image, ie have jessie-wikimedia to point to
+            # base-jessie-amd64.cow and init hook
+            # Since $WIKIMEDIA is set, the hook will inject apt.wikimedia.org
+            export DIST=$distribution
+            . /etc/pbuilderrc
+            export COWBUILDER_BASE="$BASEPATH"
 
             /usr/bin/build-and-provide-package
         - debian-glue-lintian
