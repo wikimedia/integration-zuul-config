@@ -1896,6 +1896,12 @@ project-templates:
     experimental:
       - rake-jessie
 
+  - name: tox-jessie
+    test:
+     - tox-jessie
+    gate-and-submit:
+     - tox-jessie
+
   - name: archived
     check:
      - fail-archived-repositories
@@ -2039,28 +2045,20 @@ projects:
       - php-composer-validate
 
   - name: analytics/aggregator
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: analytics/blog
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: analytics/geowiki
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: analytics/quarry/web
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: analytics/kraken
     test:
@@ -2075,10 +2073,8 @@ projects:
      - analytics-libanon
 
   - name: analytics/limn-mobile-data
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: analytics/limn-language-data
     test:
@@ -2093,10 +2089,8 @@ projects:
      - phplint
 
   - name: analytics/multimedia
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: analytics/udp-filters
     test:
@@ -2170,10 +2164,8 @@ projects:
      - phplint
 
   - name: labs/migration-assistant
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: labs/nagios-builder
     template:
@@ -2187,38 +2179,28 @@ projects:
      - phplint
 
   - name: labs/tools/extdist
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: labs/tools/forrestbot
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: labs/tools/gblrenamemon
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: labs/tools/grrrit
     template:
       - name: npm
 
   - name: labs/tools/heritage
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: labs/tools/wikibugs2
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
     postmerge:
      - labs-tools-wikibugs2-autopull
 
@@ -2510,14 +2492,13 @@ projects:
   - name: mediawiki/tools/release
     template:
       - name: composer-test
+      - name: tox-jessie
     check:
       - jsonlint
     test:
       - phplint
-      - tox-jessie
     gate-and-submit:
       - phplint
-      - tox-jessie
 
   - name: mediawiki/tools/releng
     test:
@@ -2528,10 +2509,8 @@ projects:
       - mw-tools-releng-tox-doc-publish
 
   - name: mediawiki/tools/scap
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
     publish:
      - mw-tools-scap-tox-doc-publish
 
@@ -2552,10 +2531,8 @@ projects:
       - mediawiki-vagrant-bundle17-yard-publish
 
   - name: operations/debs/adminbot
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: operations/debs/archiva
     test:
@@ -2610,11 +2587,10 @@ projects:
      - debian-glue
 
   - name: operations/debs/pybal
+    template:
+      - name: tox-jessie
     test:
      - operations-debs-pybal-debian-glue
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
 
   - name: operations/debs/varnish
     test:
@@ -2730,34 +2706,24 @@ projects:
       - tox-py27-jessie
 
   - name: operations/software/ircyall
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: operations/software/labsdb-auditor
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: operations/software/puppet-compiler
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: operations/software/tools-manifest
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: operations/software/tools-webservice
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: translatewiki
     check-only:
@@ -2774,10 +2740,8 @@ projects:
       - translatewiki-shelllint
 
   - name: wikimedia/discovery/relevancylab
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: wikimedia/fundraising/dash
     template:
@@ -2841,10 +2805,8 @@ projects:
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/slander
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: wikimedia/fundraising/SmashPig
     test:
@@ -3595,12 +3557,9 @@ projects:
       - name: extension-qunit-generic
       - name: jsduck
       - name: npm
+      - name: tox-jessie
     check:
       - jsonlint
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
     postmerge:
       - mwext-EventLogging-jsduck-publish
 
@@ -4261,10 +4220,7 @@ projects:
       - name: jshint
       - name: jsonlint
       - name: extension-unittests-generic
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+      - name: tox-jessie
 
   - name: mediawiki/extensions/OggHandler
     template:
@@ -6703,10 +6659,8 @@ projects:
       - beta-parsoid-update-eqiad
 
   - name: mediawiki/services/rcstream
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: mediawiki/extensions/Parsoid
     template:
@@ -7367,13 +7321,10 @@ projects:
       - name: extension-qunit-generic
       - name: extension-rubylint
       - name: npm
+      - name: tox-jessie
     check:
       - jshint
       - jsonlint
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
 
   - name: mediawiki/extensions/UserDailyContribs
     template:
@@ -7745,12 +7696,12 @@ projects:
       - phplint
 
   - name: pywikibot/compat
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: pywikibot/core
+    template:
+      - name: tox-jessie
     check:
       - tox-jessie
     test:
@@ -7758,12 +7709,10 @@ projects:
       - pywikibot-core-tox-nose
       - pywikibot-core-tox-nose34-jessie
       - tox-doc-jessie
-      - tox-jessie
     gate-and-submit:
       - pywikibot-core-tox-nose
       - pywikibot-core-tox-nose34-jessie
       - tox-doc-jessie
-      - tox-jessie
     postmerge:
       - pywikibot-core-tox-doc-publish
 
@@ -7982,10 +7931,8 @@ projects:
       - wikidata-query-rdf
 
   - name: wikimedia/bots/jouncebot
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
+    template:
+      - name: tox-jessie
 
   - name: avro-php
     template:
