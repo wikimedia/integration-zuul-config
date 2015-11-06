@@ -3160,14 +3160,13 @@ projects:
 
   - name: mediawiki/extensions/cldr
     template:
+      - name: composer-test
       - name: extension-gate
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests
-      - name: extension-phpcs
       - name: npm
-    experimental:
-      - php-composer-test
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/CentralAuth
     template:
