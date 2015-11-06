@@ -1561,6 +1561,10 @@ jobs:
     success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
     failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
 
+  - name: ^debian-glue$
+    # Point directly to artifacts
+    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
+
   - name: parsoidsvc-source-jsduck-publish
     branch: ^master$
     success-message: 'SUCCESS Deployed documentation to https://doc.wikimedia.org/Parsoid/master/'
