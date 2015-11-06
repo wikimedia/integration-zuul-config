@@ -14,8 +14,7 @@
      - shell: |
          set -u
          echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {docdest}"
-         [ $ZUUL_UUID ]
-         rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
+         rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$JOB_NAME-$BUILD_NUMBER"
          echo
          echo "Publishing to https://doc.wikimedia.org/{docdest}/"
      - trigger-builds:
@@ -25,6 +24,7 @@
          predefined-parameters: |
            WMF_CI_PUB_DOCROOT=org/wikimedia/doc
            WMF_CI_PUB_DEST={docdest}
+           PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
 
 # Sync files from a Jenkins slave in labs to a central rsync server from which
 # another job (executing on gallium) can pull in the files and publish them
@@ -42,8 +42,7 @@
      - shell: |
          set -u
          echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {dest}"
-         [ $ZUUL_UUID ]
-         rsync --recursive "{src}/" "rsync://10.68.16.255/doc/$ZUUL_UUID"
+         rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$JOB_NAME-$BUILD_NUMBER"
          echo
          echo "Publishing to https://integration.wikimedia.org/cover/{dest}/"
      - trigger-builds:
@@ -53,6 +52,7 @@
          predefined-parameters: |
            WMF_CI_PUB_DOCROOT=org/wikimedia/integration
            WMF_CI_PUB_DEST=cover/{dest}
+           PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
 
 # rsync a directory from integration-publisher.eqiad.wmflabs to a website on gallium.
 #
@@ -66,35 +66,37 @@
 #   * docroot: org/wikimedia/integration
 #   * dest: cover/PROJECT
 #
-# Uses $ZUUL_UUID as a unique identifier.
+# Uses $PUBLISHER_PATH as a unique identifier.
 - job:
     name: publish-on-gallium
     node: gallium
-
     parameters:
-     - string:
+      - string:
+         # MUST exist on integration-publisher
+         # Should have been created/passed by upstream job
+         name: 'PUBLISHER_PATH'
+         description: 'Unique path under which to publish docs'
+      - string:
          # MUST NOT have leading slash.
          # MUST NOT have trailing slash.
          # MUST exist on gallium.
          name: 'WMF_CI_PUB_DOCROOT'
          description: 'A document root under /srv, such as "org/wikimedia/doc"'
-     - string:
+      - string:
          # MUST NOT have leading slash.
          # MUST NOT have trailing slash.
          # WILL be auto-created if non-existent.
          name: 'WMF_CI_PUB_DEST'
          description: 'Sub directory path under the chosen document root, such as "mediawiki-core/DOC_SUBPATH/js"'
-
     triggers:
      - zuul
     builders:
      - shell: |
          set -u
-         echo "Publishing $ZUUL_PROJECT from labs to prod"
-         echo "Zuul UUID: $ZUUL_UUID"
+         echo "Publishing $WMF_CI_PUB_DEST from labs to prod"
+         echo "Publisher Path: $PUBLISHER_PATH"
          echo "..."
 
-         [ $ZUUL_UUID ]
          LOCAL_DOCROOT="/srv/$WMF_CI_PUB_DOCROOT"
          if [ ! -d $LOCAL_DOCROOT ]; then
             echo "Error: Invalid docroot. Directory $LOCAL_DOCROOT must exist, aborting."
@@ -102,7 +104,7 @@
          fi
          LOCAL_DEST="$LOCAL_DOCROOT/$WMF_CI_PUB_DEST"
          mkdir -p "$LOCAL_DEST"
-         rsync --recursive --delete-after "rsync://10.68.16.255/doc/$ZUUL_UUID"/ "$LOCAL_DEST"
+         rsync --recursive --delete-after "rsync://10.68.16.255/doc/$PUBLISHER_PATH/." "$LOCAL_DEST/."
 
          LOCAL_VHOST=$(echo $WMF_CI_PUB_DOCROOT | awk -F'/' '{ print $3"."$2"."$1 }')
          echo
@@ -112,23 +114,21 @@
          builders:
           - shell: |
               set -u
-              [ $ZUUL_UUID ]
               echo "Removing directory from publishing instance..."
-              rm -rf "$ZUUL_UUID"
+              rm -rf "$PUBLISHER_PATH"
               # The trick here is that the local side of the rsync does not
               # have the content at all at the time of sync. Rsync expands
-              # `--include="$ZUUL_UUID/***"` to mean the directory and all of
+              # `--include="$PUBLISHER_PATH/***"` to mean the directory and all of
               # it's contents followed by the exclusion of all files not
               # explicitly included. Without the three wildcards rsync will not
               # touch the named directory itself.
               #
               # -- Bryan "bd808" Davis
-              rsync --delete --recursive --include="$ZUUL_UUID/***" --exclude="*" . rsync://10.68.16.255/doc
+              rsync --delete --recursive --include="$PUBLISHER_PATH/***" --exclude="*" . rsync://10.68.16.255/doc
 
          # Options are confusing, setting them both to false ensures the
          # postbuildscript is ALWAYS run.
          onsuccess: False
          onfailure: False
-
     logrotate:
         daysToKeep: 15
