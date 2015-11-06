@@ -111,6 +111,9 @@
         - shell: |
             # GIT_BRANCH is set to 'detached' :-(
             export GIT_BRANCH="$ZUUL_REF"
+            if [ "$ZUUL_PIPELINE" == "gate-and-submit" ]; then
+                export SKIP_DCH=true
+            fi
             /usr/bin/generate-git-snapshot
         - shell: |
             # Skip repository setup
