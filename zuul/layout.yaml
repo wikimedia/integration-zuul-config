@@ -7255,14 +7255,16 @@ projects:
 
   - name: mediawiki/extensions/Translate
     template:
-      - name: composer-test
       - name: extension-qunit-generic
       - name: extension-rubylint
       - name: extension-unittests
       - name: npm
+      - name: extension-phpcs
     check:
       - jshint
       - jsonlint
+    experimental:
+      - php-composer-test
 
   - name: mediawiki/extensions/TranslationNotifications
     template:
