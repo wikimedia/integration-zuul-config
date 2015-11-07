@@ -1743,15 +1743,25 @@ project-templates:
       - 'mwext-{name}-jslint'
 
   - name: extension-gate
+    check:
+      - phplint
+      - php-composer-validate
     test:
+      - phplint
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+      - php-composer-validate
     zend:
       - mediawiki-extensions-zend
     gate-and-submit:
+      - phplint
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-zend
       - mediawiki-extensions-qunit
+      - php-composer-validate
+    experimental:
+      - npm
+      - php-composer-test
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
@@ -2362,8 +2372,9 @@ projects:
 
   - name: mediawiki/skins/Example
     template:
-     - name: composer-test
+     - name: mw-checks-test
      - name: npm
+     - name: composer-test
     check:
      - jsonlint
 
@@ -2461,23 +2472,6 @@ projects:
      - name: npm
     check:
      - jsonlint
-
-  - name: mediawiki/skins/Timeless
-    template:
-     - name: npm
-    check:
-     - jsonlint
-     - jshint
-     - phplint
-     - php-composer-validate
-    test:
-     - phplint
-     - php-composer-validate
-    gate-and-submit:
-     - phplint
-     - php-composer-validate
-    experimental:
-     - php-composer-test
 
   - name: mediawiki/skins/Tomas
     template:
