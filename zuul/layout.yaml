@@ -1909,15 +1909,9 @@ project-templates:
   # Template for MediaWiki extensions.
   # Run Ruby linter.
   - name: extension-rubylint
-    check:
-     - ruby2.0lint
     test:
-     - 'bundle-rubocop'
-     - ruby2.0lint
+      - rake-jessie
     gate-and-submit:
-     - 'bundle-rubocop'
-     - ruby2.0lint
-    experimental:
       - rake-jessie
 
   - name: tox-jessie
