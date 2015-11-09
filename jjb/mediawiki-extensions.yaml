@@ -161,25 +161,6 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-- job-template:
-    # This is a copy of '{name}-{ext-name}-qunit', but with processes ve's submodule
-    # since Zuul cloner does not support git submodules.
-    name: 'mwext-VisualEditor-qunit'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - prepare-mediawiki:
-         ext-name: 'VisualEditor'
-         dependencies: ''
-     - ve-submodules-update
-     - qunit-karma
-    publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-
 # Generic mw-selenium job for extensions.
 - job:
     name: 'mwext-mw-selenium'
@@ -1017,4 +998,3 @@
     jobs:
      - '{name}-jsduck'
      - 'mwext-VisualEditor-sync-gerrit'
-     - 'mwext-VisualEditor-qunit'
