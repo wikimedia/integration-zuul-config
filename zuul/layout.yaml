@@ -562,6 +562,9 @@ jobs:
 
   - name: ^rake-jessie$
     parameter-function: offline_when_complete
+    # Rake entry points have not been backported to wmf branches yet
+    # -- hashar Nov 10th 2015
+    branch: (?!^wmf/1\.27\.0-wmf\.[45])
 
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
