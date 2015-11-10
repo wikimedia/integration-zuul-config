@@ -201,6 +201,27 @@
       daysToKeep: 15
       artifactDaysToKeep: 3
 
+# Generic mw-selenium job for extensions.
+- job:
+    name: 'mwext-mw-selenium-composer'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-zuul-project-no-vendor
+     - zuul-cloner:
+         projects: mediawiki/skins/Vector
+     - mw-selenium
+    publishers:
+     - mw-selenium-cleanup
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+    logrotate:
+      daysToKeep: 15
+      artifactDaysToKeep: 3
+
 - job-template:
     name: 'mwext-{name}-whitespaces'
     node: contintLabsSlave && UbuntuTrusty
