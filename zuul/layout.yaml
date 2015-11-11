@@ -3000,11 +3000,18 @@ projects:
 
   - name: mediawiki/extensions/ArticlePlaceholder
     template:
-      - name: extension-unittests-generic
+      - name: composer-test
+      - name: extension-unittests-composer
       - name: npm
     check:
       - jsonlint
       - jshint
+    test:
+      - mwext-qunit-composer
+    gate-and-submit:
+      - mwext-qunit-composer
+    experimental:
+      - mwext-mw-selenium-composer
 
   - name: mediawiki/extensions/ApiSandbox
     template:

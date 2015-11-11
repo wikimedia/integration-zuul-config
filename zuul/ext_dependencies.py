@@ -3,6 +3,7 @@
 dependencies = {
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
+    'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
     'Capiunto': ['Scribunto'],
     'Citoid': ['VisualEditor'],
     'CodeEditor': ['WikiEditor'],
