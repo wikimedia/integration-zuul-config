@@ -2007,7 +2007,6 @@ projects:
       - mediawiki-core-jslint
       - mediawiki-core-phplint
       - php-composer-package-validate
-      - ruby2.0lint
     test:
       - mediawiki-core-phpcs
       - mediawiki-core-jsduck
@@ -2018,7 +2017,7 @@ projects:
       - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - php-composer-package-validate
-      - ruby2.0lint
+      - rake-jessie
     zend:
       # Comment "check zend" to manually run this
       - mediawiki-phpunit-zend
@@ -2034,7 +2033,7 @@ projects:
       - mediawiki-core-qunit
       - mediawiki-core-bundle-rubocop
       - php-composer-package-validate
-      - ruby2.0lint
+      - rake-jessie
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
@@ -2255,45 +2254,19 @@ projects:
      - integration-docroot-deploy
 
   - name: mediawiki/ruby/api
-    check:
-     - ruby2.0lint
     test:
-     - bundle-rubocop
-     - ruby2.0lint
-     - bundle-rspec
-     - mediawiki-ruby-api-gembuild
-     - bundle-yard
+     - rake-jessie
     gate-and-submit:
-     - bundle-rubocop
-     - ruby2.0lint
-     - bundle-rspec
-     - mediawiki-ruby-api-gembuild
-     - bundle-yard
-    experimental:
-      - rake-jessie
+     - rake-jessie
     postmerge:
      - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard-publish
 
   - name: mediawiki/selenium
-    check:
-     - ruby2.0lint
     test:
-     - bundle-rubocop
-     - ruby2.0lint
-     - mediawiki-selenium-gembuild
-     - bundle-yard
-     - bundle-rspec
-     - mediawiki-selenium-integration
+     - rake-jessie
     gate-and-submit:
-     - bundle-rubocop
-     - ruby2.0lint
-     - mediawiki-selenium-gembuild
-     - bundle-yard
-     - bundle-rspec
-     - mediawiki-selenium-integration
-    experimental:
-      - rake-jessie
+     - rake-jessie
     postmerge:
      - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard-publish
@@ -7929,17 +7902,14 @@ projects:
     check:
       - jshint
       - jsonlint
-      - ruby2.0lint
     test:
-      - bundle-rubocop
       - npm-run-doc
       - npm-run-demos
-      - ruby2.0lint
+      - rake-jessie
     gate-and-submit:
-      - bundle-rubocop
       - npm-run-doc
       - npm-run-demos
-      - ruby2.0lint
+      - rake-jessie
     postmerge:
       - oojs-ui-jsduck-publish
       - oojs-ui-doxygen-publish
