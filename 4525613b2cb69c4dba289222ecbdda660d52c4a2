@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ebaf39b_e0b62285",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2020,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-11-13T09:41:34Z",
+      "side": 1,
+      "message": "Do mediawiki/core in a different patch. That is going to run the job on all REL branches and wmf branches we do not have the Rakefile.\n\nWhen adding rake-jessie on extensions I added a branch filter on Zuul to prevent it from running on some wmf branches:\n\n   - name: ^rake-jessie$\n    parameter-function: offline_when_complete\n    # Rake entry points have not been backported to wmf branches yet\n    # -- hashar Nov 10th 2015\n    branch: (?!^wmf/1\\.27\\.0-wmf\\.[45])\n\nThat will catch mediawiki/core but we still need to cherry pick the Rakefile introduction to all release branches and hope they pass.\n\nThough maybe we can filter out the old release branches as well.",
+      "revId": "4525613b2cb69c4dba289222ecbdda660d52c4a2",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ebaf39b_c0b19e8e",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2262,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-11-13T09:41:34Z",
+      "side": 1,
+      "message": "Can drop mediawiki-ruby-api-gembuild from postmerge",
+      "revId": "4525613b2cb69c4dba289222ecbdda660d52c4a2",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ebaf39b_00b81673",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2265,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-11-13T09:41:34Z",
+      "side": 1,
+      "message": "We need to keep mediawiki-selenium-integration which tests mediawiki_selenium against a local mediawiki/core @ master install.",
+      "revId": "4525613b2cb69c4dba289222ecbdda660d52c4a2",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ebaf39b_20bd1a64",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2271,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-11-13T09:41:34Z",
+      "side": 1,
+      "message": "Can drop mediawiki-ruby-api-gembuild from postmerge.",
+      "revId": "4525613b2cb69c4dba289222ecbdda660d52c4a2",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
