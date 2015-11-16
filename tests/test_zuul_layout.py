@@ -336,15 +336,15 @@ class TestZuulLayout(unittest.TestCase):
         self.assertFalse(check_manager.eventMatches(trusted_event, change))
         self.assertTrue(test_manager.eventMatches(trusted_event, change))
 
-    # Make sure mediawiki-core-bundle-rubocop is properly filtered
+    # Make sure rake-jessie is properly filtered
     # https://phabricator.wikimedia.org/T105178
-    def test_mediawiki_core_rubocop_filters(self):
+    def test_mediawiki_core_rake_filters(self):
         test_manager = self.getPipeline('test').manager
         jobs_tree = [t for (p, t) in
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'mediawiki/core'][0]
-        rubocop_job = [j for j in jobs_tree.getJobs()
-                       if j.name == 'mediawiki-core-bundle-rubocop'][0]
+        rake_job = [j for j in jobs_tree.getJobs()
+                       if j.name == 'rake-jessie'][0]
 
         def change_for_branch(branch_name):
             """Return a change against branch_name branch"""
@@ -360,16 +360,16 @@ class TestZuulLayout(unittest.TestCase):
         for allowed_branch in ['master', 'REL1_25', 'REL1_26']:
             change = change_for_branch(allowed_branch)
             self.assertTrue(test_manager.eventMatches(event, change))
-            self.assertTrue(rubocop_job.changeMatches(change),
-                            'mediawiki/core rubocop job must run on %s'
+            self.assertTrue(rake_job.changeMatches(change),
+                            'mediawiki/core rake job must run on %s'
                             % allowed_branch)
 
         for blacklisted_branch in ['REL1_23', 'REL1_24',
                                    'fundraising/REL1_42']:
             change = change_for_branch(blacklisted_branch)
             self.assertTrue(test_manager.eventMatches(event, change))
-            self.assertFalse(rubocop_job.changeMatches(change),
-                             'mediawiki/core rubocop job must NOT run on %s'
+            self.assertFalse(rake_job.changeMatches(change),
+                             'mediawiki/core rake job must NOT run on %s'
                              % blacklisted_branch)
 
     def test_l10nbot_patchets_are_ignored(self):
