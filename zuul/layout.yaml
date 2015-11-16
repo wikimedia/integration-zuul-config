@@ -3620,11 +3620,37 @@ projects:
     postmerge:
       - mwext-EventLogging-jsduck-publish
 
-  - name: mediawiki/extensions/ExpandTemplates
+  - name: mediawiki/extensions/EventLogging
     template:
+      - name: extension-gate
       - name: jshint
-      - name: jsonlint
-      - name: extension-unittests-generic
+      - name: extension-unittests
+      - name: extension-qunit-generic
+      - name: npm
+    check:
+      - jsonlint
+    test:
+      - tox-flake8
+      - tox-flake8-bin
+      - tox-py27-jessie
+    gate-and-submit:
+      - tox-flake8
+      - tox-flake8-bin
+      - tox-py27-jessie
+
+  - name: eventlogging
+    check:
+      - jsonlint
+    test:
+      - tox-flake8
+      - tox-flake8-bin
+      - tox-py27-jessie
+      - tox-py34-jessie
+    gate-and-submit:
+      - tox-flake8
+      - tox-flake8-bin
+      - tox-py27-jessie
+      - tox-py34-jessie
 
   - name: mediawiki/extensions/ExtensionDistributor
     template:
