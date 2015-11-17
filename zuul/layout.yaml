@@ -2264,21 +2264,47 @@ projects:
      - integration-docroot-deploy
 
   - name: mediawiki/ruby/api
+    check:
+     - ruby2.0lint
     test:
-     - rake-jessie
+     - bundle-rubocop
+     - ruby2.0lint
+     - bundle-rspec
+     - mediawiki-ruby-api-gembuild
+     - bundle-yard
     gate-and-submit:
-     - rake-jessie
+     - bundle-rubocop
+     - ruby2.0lint
+     - bundle-rspec
+     - mediawiki-ruby-api-gembuild
+     - bundle-yard
+    experimental:
+      - rake-jessie
     postmerge:
+     - mediawiki-ruby-api-gembuild
      - mediawiki-ruby-api-bundle-yard-publish
 
   - name: mediawiki/selenium
+    check:
+     - ruby2.0lint
     test:
+     - bundle-rubocop
+     - ruby2.0lint
+     - mediawiki-selenium-gembuild
+     - bundle-yard
+     - bundle-rspec
      - mediawiki-selenium-integration
-     - rake-jessie
     gate-and-submit:
+     - bundle-rubocop
+     - ruby2.0lint
+     - mediawiki-selenium-gembuild
+     - bundle-yard
+     - bundle-rspec
      - mediawiki-selenium-integration
-     - rake-jessie
+    experimental:
+      - rake-jessie
     postmerge:
+     - mediawiki-selenium-gembuild
      - mediawiki-selenium-bundle-yard-publish
 
   - name: mediawiki/skins/apex
@@ -7927,14 +7953,17 @@ projects:
     check:
       - jshint
       - jsonlint
+      - ruby2.0lint
     test:
+      - bundle-rubocop
       - npm-run-doc
       - npm-run-demos
-      - rake-jessie
+      - ruby2.0lint
     gate-and-submit:
+      - bundle-rubocop
       - npm-run-doc
       - npm-run-demos
-      - rake-jessie
+      - ruby2.0lint
     postmerge:
       - oojs-ui-jsduck-publish
       - oojs-ui-doxygen-publish
