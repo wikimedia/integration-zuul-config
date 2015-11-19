@@ -740,8 +740,6 @@ jobs:
   #
   - name: mwext-ArticleFeedback-jslint # obsolete - bug 63669
     voting: false
-  - name: mwext-CodeReview-jslint # bug 61593
-    voting: false
   - name: mwext-CommunityVoice-jslint # bug 61595
     voting: false
   - name: mwext-Configure-jslint # bug 61596
@@ -3244,9 +3242,12 @@ projects:
 
   - name: mediawiki/extensions/CodeReview
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/CollapsibleVector
     template:
