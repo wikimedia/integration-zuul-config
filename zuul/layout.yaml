@@ -1393,8 +1393,6 @@ jobs:
     voting: false
   - name: ^mwext-NewsBox-testextension.*
     voting: false
-  - name: ^mwext-OAuthAuthentication-testextension.*
-    voting: false
   - name: ^mwext-OnlineStatusBar-testextension.*
     voting: false
   - name: ^mwext-OpenIDConnect-testextension.*
@@ -4240,10 +4238,12 @@ projects:
 
   - name: mediawiki/extensions/OAuthAuthentication
     template:
-      - name: jshint
       - name: composer-test
       - name: npm
       - name: extension-unittests
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/Offline
     template:
