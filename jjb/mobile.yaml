@@ -61,11 +61,7 @@
 
 - job-template:
     name: 'apps-android-wikipedia-publish'
-    # TODO: replace AndroidEmulator node label with UbuntuTrusty and remove the
-    #       android-emulator wrapper when
-    #       https://github.com/JakeWharton/sdk-manager-plugin/issues/57 is
-    #       merged.
-    node: contintLabsSlave && AndroidEmulator
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -76,22 +72,6 @@
          fail: true
      - timestamps
      - ansicolor
-     # TODO: replace AndroidEmulator node label with UbuntuTrusty and remove
-     #       the android-emulator wrapper when
-     #       https://github.com/JakeWharton/sdk-manager-plugin/issues/57 is
-     #       merged.
-     - android-emulator:
-         os: android-15
-         target-abi: x86
-         wipe: false
-         delete: false
-         snapshot: true
-         commandline-options: '-noaudio'
-         screen-density: 240
-         screen-resolution: WVGA
-         locale: en_US
-         hardware-properties:
-             vm.heapSize: 512
     builders:
      - shell: |
          declare START_TIME="$(date +"%Y-%m-%dT%H:%M:%S.%N")"
