@@ -69,6 +69,18 @@
      - jsduck
 
 - job:
+    name: 'maven'
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 7'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    maven:
+      goals: clean package
+
+- job:
     name: 'npm'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
