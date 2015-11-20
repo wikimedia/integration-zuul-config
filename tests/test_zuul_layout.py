@@ -270,7 +270,6 @@ class TestZuulLayout(unittest.TestCase):
             '(pp|erb)lint-HEAD',
             '.*-(tabs|typos)',
             'operations-puppet-pep8',
-            '.*-phpcs-HEAD',
             '.*-puppet-validate',
             '.*-puppetlint-(strict|lenient)',
             '(.*-)?ruby2\.0lint',

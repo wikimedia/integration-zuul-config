@@ -436,27 +436,6 @@
         # Publish it (trailing slash is important!)
         rsync --recursive --delete-after --force {src}/ "$DEST_DIR/$DEST_PROJECTDIR/$DEST_VERSIONDIR/$DEST_EXTRAPATH"
 
-# Has to be named something other than 'checkstyle' or python will
-# go into infinite recursion when generating the jobs.
-# JSHint considers all errors to be "high" priority except those
-# suppressed via options in jshintrc (those become "normal").
-# So we need to make sure we don't count warnings that are intentionally
-# ignored by style or convention of the repository.
-- publisher:
-    name: checkstyle-xml
-    publishers:
-     - checkstyle:
-        pattern: '**/checkstyle-*.xml'
-        canRunOnFailed: true
-        healthy: 0
-        unHealthy: 100
-        healthThreshold: 'high'
-        thresholds:
-            unstable:
-                totalHigh: 10
-            failed:
-                totalHigh: 1
-
 - builder:
     name: mw-apply-settings
     builders:
@@ -555,30 +534,6 @@
      - shell: |
         /srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc phtml module install \
         | xargs -n1 -t php -l
-
-# run phpcs on any .php and .inc files in the workspace
-# Except for Messages* and *.i18n.php (such as in installer)
-- builder:
-    name: phpcs
-    builders:
-     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh
-
-# run phpcs on files changed in HEAD.
-# Except for Messages* and *.i18n.php (such as in installer)
-- builder:
-    name: phpcs-HEAD
-    builders:
-     - shell: /srv/deployment/integration/slave-scripts/bin/run-phpcs-mw.sh HEAD
-
-- publisher:
-    name: phpcs
-    publishers:
-     - violations:
-        checkstyle:
-            min: 0
-            max: 1
-            unstable: 1
-            pattern: '**/checkstyle-phpcs.xml'
 
 # Run ruby syntax check against any file named '.rb' under the workspace.
 # The ruby interpreter is passed using 'interpreter'

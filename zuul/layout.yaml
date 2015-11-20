@@ -635,10 +635,6 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
-  - name: ^.*-phpcs(-HEAD)?$
-    files:
-     - '^.*\.(json|php|php5|phtml|inc|xml)$'
-
   - name: ^mediawiki-phpunit-zend-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
     branch: (?!REL1_23)
@@ -696,12 +692,11 @@ jobs:
   - name: ^mwext-ZeroPortal-testextension-zend$
     branch: (REL1_23|REL1_24|fundraising/REL.*)
 
-  # meta definition for all phpcs-HEAD jobs
-  - name: ^.*-phpcs-HEAD$
-    branch: ^(?!wmf/.*)$
-
   - name: mediawiki-core-phpcs
     branch: (?!^REL1_23|^REL1_24|^REL1_25|^REL1_26|^fundraising/REL)
+    files:
+     - '^.*\.(json|php|php5|phtml|inc|xml)$'
+
 
   - name: ^mediawiki-core-npm$
     files:
@@ -1795,16 +1790,6 @@ project-templates:
       - mwext-qunit
     experimental:
       - mwext-qunit-composer
-
-  # Template for MediaWiki extensions.
-  # Triggers phpcs jobs
-  - name: extension-phpcs
-    check:
-      - 'mwext-{name}-phpcs-HEAD'
-    test:
-      - 'mwext-{name}-phpcs-HEAD'
-    gate-and-submit:
-      - 'mwext-{name}-phpcs-HEAD'
 
   # Template for MediaWiki extensions.
   # No unit tests but vote on linting.
