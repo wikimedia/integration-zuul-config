@@ -21,7 +21,9 @@ DIB_GIT_BARE_MIRRORS=${DIB_GIT_BARE_MIRRORS:-/srv/git}
 # Repositories to clone
 REPOS=('mediawiki/core.git' 'operations/puppet.git' 'integration/config.git')
 
+echo "Creating git bare mirrors on build host"
 for REPO in ${REPOS[@]}; do
+    echo "..mirroring $REPO"
     # XXX handle DIB_OFFLINE to skip interactions with Gerrit
     if [ ! -e "$DIB_GIT_CACHE/$REPO" ]; then
         echo "Creating host cache $DIB_GIT_CACHE/$REPO"
@@ -39,8 +41,9 @@ for REPO in ${REPOS[@]}; do
         git log -n 1 --format='HEAD is at:%n%h %ci (%cr)%n>> %s' HEAD
         popd
     fi
+    echo "..mirrored $REPO"
 done;
 
-echo "Copying cached repos from host to image"
+echo "Copying cached repos from build host to image"
 sudo mkdir -p $TARGET_ROOT/$DIB_GIT_BARE_MIRRORS
 sudo cp -a $DIB_GIT_CACHE/. $TARGET_ROOT/$DIB_GIT_BARE_MIRRORS
