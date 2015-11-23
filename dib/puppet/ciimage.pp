@@ -15,6 +15,10 @@ include contint::packages::base
 include contint::packages::python
 include contint::packages::ruby
 
+package { 'zuul':
+  ensure => present,
+}
+
 # Should be include contint::packages::ops once GeoIP is installable
 package { 'etcd':
     ensure => present,
