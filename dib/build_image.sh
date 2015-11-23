@@ -28,6 +28,8 @@ export DIB_RELEASE=${DIB_RELEASE:-jessie}
 export DIB_IMAGE_CACHE=${DIB_IMAGE_CACHE:-/srv/dib/cache}  # XXX should be unset by default
 DATE=`date -u +'%Y%m%dT%H%M%SZ'`
 export DIB_IMAGE_NAME=${DIB_IMAGE_NAME:-"image-${DIB_RELEASE}-${DATE}"}
+export DIB_GIT_BARE_MIRRORS='/srv/git'
+
 export IMAGE_TYPE="qcow2"
 
 export DIB_CLOUD_INIT_DATASOURCES='Ec2'

@@ -1,0 +1,14 @@
+#!/bin/bash
+# vim: set et ts=4 sw=4:
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# The git bare mirror repositories must belong to jenkins or git clone would
+# not hardlink from them.
+#
+# User added by devuser/install.d/50-devuser
+chown -R $DIB_DEV_USER_USERNAME:$DIB_DEV_USER_USERNAME $DIB_GIT_BARE_MIRRORS
