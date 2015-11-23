@@ -18,13 +18,20 @@
            failed:
                total-all: 1
 
+- publisher:
+    name: irc-android-ci
+    publishers:
+     - ircbot:
+         message-type: summary-scm-fail
+         channels:
+             - name: '#wikimedia-android-ci'
+               notify-only: true
+
 - job-template:
     name: 'apps-android-wikipedia-test'
-    node: contintLabsSlave && AndroidEmulator
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
-    properties:
-     - throttle-one-per-node
     triggers:
      - zuul
     wrappers:
@@ -33,6 +40,38 @@
          fail: true
      - timestamps
      - ansicolor
+    builders:
+     - shell: |
+         scripts/missing-qq.py
+         ./gradlew clean checkstyle assembleAlphaRelease testAlphaRelease
+    publishers:
+     - archive:
+         # Capture generated .apk, ProGuard mappings, checkstyle.xml, and test results
+         artifacts: '**/build/outputs/**,**/build/reports/**,**/test-results/**/*.xml'
+     - gradle-reports-checkstyle
+     - junit:
+        results: '**/test-results/**/*.xml'
+
+- job-template:
+    name: 'apps-android-wikipedia-periodic-test'
+    node: contintLabsSlave && AndroidEmulator
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    parameters:
+     - string:
+         name: COMMIT # Seam for manual one-offs.
+         default: $GIT_COMMIT # Trigger commit
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - pollscm:
+        cron: '@hourly'
+    scm:
+     - git:
+        url: https://phabricator.wikimedia.org/diffusion/APAW
+        branches:
+          - ${{COMMIT}}
+    wrappers:
      - android-emulator:
          os: android-15
          target-abi: x86
@@ -47,17 +86,16 @@
              vm.heapSize: 512
     builders:
      - shell: |
-         scripts/missing-qq.py
-         ./gradlew clean checkstyle assembleAlphaRelease testAlphaRelease
+         ./gradlew clean assembleAlphaRelease packageAlphaReleaseAndroidTest
          scripts/adb-setup.bash
          ./gradlew connectedAlphaReleaseAndroidTest
     publishers:
      - archive:
-         # Capture generated .apk, ProGuard mappings, checkstyle.xml, and test results
-         artifacts: '**/build/outputs/**,**/build/reports/**,**/test-results/**/*.xml,**/androidTest-results/**/*.xml'
-     - gradle-reports-checkstyle
+         # Capture generated .apk, ProGuard mappings, and test results
+         artifacts: '**/build/outputs/**,**/androidTest-results/**/*.xml'
      - junit:
-        results: '**/test-results/**/*.xml,**/androidTest-results/**/*.xml'
+         results: '**/androidTest-results/**/*.xml'
+     - irc-android-ci
 
 - job-template:
     name: 'apps-android-wikipedia-publish'
@@ -101,6 +139,7 @@
     name: 'apps-android-wikipedia'
     jobs:
       - 'apps-android-wikipedia-test'
+      - 'apps-android-wikipedia-periodic-test'
       - 'apps-android-wikipedia-publish'
       - 'apps-android-wikipedia-lint'
 
