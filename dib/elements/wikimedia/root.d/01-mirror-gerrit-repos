@@ -16,7 +16,7 @@ set -o pipefail
 DIB_GIT_CACHE=$DIB_IMAGE_CACHE/git-repos
 
 # Target directory in the image
-IMAGE_GIT_PATH="/srv/git"
+DIB_GIT_BARE_MIRRORS=${DIB_GIT_BARE_MIRRORS:-/srv/git}
 
 # Repositories to clone
 REPOS=('operations/puppet.git' 'integration/config.git')
@@ -42,5 +42,5 @@ for REPO in ${REPOS[@]}; do
 done;
 
 echo "Copying cached repos from host to image"
-sudo mkdir -p $TARGET_ROOT/$IMAGE_GIT_PATH
-sudo cp -a $DIB_GIT_CACHE/. $TARGET_ROOT/$IMAGE_GIT_PATH
+sudo mkdir -p $TARGET_ROOT/$DIB_GIT_BARE_MIRRORS
+sudo cp -a $DIB_GIT_CACHE/. $TARGET_ROOT/$DIB_GIT_BARE_MIRRORS
