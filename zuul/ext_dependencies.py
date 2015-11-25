@@ -4,6 +4,7 @@ dependencies = {
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
+    'BlueSpiceExtensions': ['BlueSpiceFoundation'],
     'Capiunto': ['Scribunto'],
     'Citoid': ['VisualEditor'],
     'CodeEditor': ['WikiEditor'],
