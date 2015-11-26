@@ -1,18 +1,4 @@
 - job-template:
-    name: '{name}-gembuild'
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remoteonly-zuul
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-         gem --version
-         gem build *.gemspec
-    publishers:
-     - archive:
-         artifacts: '*.gem'
-
-- job-template:
     name: 'mediawiki-vagrant-puppet-doc-publish'
     node: contintLabsSlave && UbuntuPrecise
     defaults: use-remoteonly-zuul
@@ -35,13 +21,11 @@
     bundlecommand:
      - yard
     jobs:
-     - '{name}-gembuild'
      - '{name}-bundle-yard-publish'
 
 - project:
     name: 'mediawiki-selenium'
     jobs:
-     - '{name}-gembuild'
      - '{name}-bundle-yard-publish'
 
 - project:
