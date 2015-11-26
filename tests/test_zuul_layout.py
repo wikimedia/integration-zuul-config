@@ -272,7 +272,6 @@ class TestZuulLayout(unittest.TestCase):
             'operations-puppet-pep8',
             '.*-puppet-validate',
             '.*-puppetlint-(strict|lenient)',
-            '(.*-)?ruby2\.0lint',
             '.*-whitespaces',
             'noop',
             'php-composer-validate',
