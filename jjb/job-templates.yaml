@@ -308,17 +308,6 @@
      - shell: |
         find . -type f -name '*.pp' -print0 | xargs -0 puppet parser validate
 
-- job:
-    name: 'ruby2.0lint'
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    node: contintLabsSlave && UbuntuTrusty
-    triggers:
-     - zuul
-    builders:
-     - ruby-lint:
-        interpreter: 'ruby2.0'
-
 # Verify whether there is any leading tabs in files matching 'fileselector'.
 #
 # 'fileselector': the parameter is passed to grep --include= option and is

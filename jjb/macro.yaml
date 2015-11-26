@@ -535,14 +535,6 @@
         /srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc phtml module install \
         | xargs -n1 -t php -l
 
-# Run ruby syntax check against any file named '.rb' under the workspace.
-# The ruby interpreter is passed using 'interpreter'
-- builder:
-    name: ruby-lint
-    builders:
-     - shell: |
-        find "$WORKSPACE" -type f -name '*.rb' -print0 | xargs -t -n1 -0 {interpreter} -c
-
 - builder:
     name: tox
     builders:
