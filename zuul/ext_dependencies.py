@@ -35,6 +35,8 @@ dependencies = {
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'VectorBeta': ['EventLogging'],
+    'VikiSemanticTitle': ['VIKI'],
+    'VikiTitleIcon': ['VIKI'],
     'WikidataPageBanner': ['Wikidata'],
 }
 
