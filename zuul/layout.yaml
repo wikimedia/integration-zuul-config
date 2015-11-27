@@ -6898,17 +6898,13 @@ projects:
       - name: jsonlint
 
   - name: mediawiki/extensions/SemanticBundle
-    check-only:
+    check: &semanticbundle_jobs
      - jshint
      - jsonlint
      - phplint
      - php-composer-validate
-    gate-and-submit:
-     - mediawiki-gate
-     - jshint
-     - jsonlint
-     - phplint
-     - php-composer-validate
+    test: *semanticbundle_jobs
+    gate-and-submit: *semanticbundle_jobs
 
   - name: mediawiki/extensions/SemanticCompoundQueries
     template:
