@@ -1882,9 +1882,7 @@ project-templates:
       - 'erblint-HEAD'
       - 'pplint-HEAD'
 
-  # Template for MediaWiki extensions.
-  # Run Ruby linter.
-  - name: extension-rubylint
+  - name: rake
     test:
       - rake-jessie
     gate-and-submit:
@@ -1976,6 +1974,7 @@ projects:
   - name: mediawiki/core
     template:
       - name: extension-gate
+      - name: rake
     check:
       - mediawiki-core-jslint
       - mediawiki-core-phplint
@@ -1989,7 +1988,6 @@ projects:
       #- mediawiki-phpunit-zend (disabled, slow, Icac172b16)
       - mediawiki-core-qunit
       - php-composer-package-validate
-      - rake-jessie
     zend:
       # Comment "check zend" to manually run this
       - mediawiki-phpunit-zend
@@ -2004,7 +2002,6 @@ projects:
       - mediawiki-phpunit-zend
       - mediawiki-core-qunit
       - php-composer-package-validate
-      - rake-jessie
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
@@ -2015,7 +2012,6 @@ projects:
       - mediawiki-phpunit-hhvm-composer
       # will replace mediawiki-phpunit-zend for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
       - mediawiki-phpunit-zend-composer
-      - rake-jessie
 
   - name: mediawiki/vendor
     template:
@@ -2248,20 +2244,18 @@ projects:
      - integration-docroot-deploy
 
   - name: mediawiki/ruby/api
-    test:
-     - rake-jessie
-    gate-and-submit:
-     - rake-jessie
+    template:
+      - name: rake
     postmerge:
      - mediawiki-ruby-api-bundle-yard-publish
 
   - name: mediawiki/selenium
+    template:
+      - name: rake
     test:
      - mediawiki-selenium-integration
-     - rake-jessie
     gate-and-submit:
      - mediawiki-selenium-integration
-     - rake-jessie
     postmerge:
      - mediawiki-selenium-bundle-yard-publish
 
@@ -2523,15 +2517,15 @@ projects:
      - mw-tools-scap-tox-doc-publish
 
   - name: mediawiki/vagrant
+    template:
+      - name: rake
     check:
       - erblint-HEAD
       - mediawiki-vagrant-puppet-validate
     test:
-      - rake-jessie
       - erblint-HEAD
       - mediawiki-vagrant-puppet-validate
     gate-and-submit:
-      - rake-jessie
       - erblint-HEAD
       - mediawiki-vagrant-puppet-validate
     postmerge:
@@ -2957,7 +2951,7 @@ projects:
   - name: mediawiki/extensions/ArticleFeedbackv5
     template:
       - name: extension-unittests-generic
-      - name: extension-rubylint
+      - name: rake
 
   - name: mediawiki/extensions/ArticlePlaceholder
     template:
@@ -3157,7 +3151,7 @@ projects:
     template:
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: extension-rubylint
+      - name: rake
       - name: npm
     check:
       - jsonlint
@@ -3167,7 +3161,7 @@ projects:
       - name: composer-test
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: extension-rubylint
+      - name: rake
       - name: npm
     check:
       - jsonlint
@@ -3177,7 +3171,7 @@ projects:
     template:
       - name: jshint
       - name: extension-gate
-      - name: extension-rubylint
+      - name: rake
       - name: mw-checks-test
       - name: npm
     test:
@@ -3307,7 +3301,7 @@ projects:
   - name: mediawiki/extensions/ContentTranslation
     template:
       - name: composer-test
-      - name: extension-rubylint
+      - name: rake
       - name: jshint
       - name: npm
       - name: extension-unittests-generic
@@ -3507,7 +3501,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests
       - name: extension-qunit-generic
-      - name: extension-rubylint
+      - name: rake
       - name: npm
     check:
       - jsonlint
@@ -3627,7 +3621,7 @@ projects:
   - name: mediawiki/extensions/Flow
     template:
      - name: extension-gate
-     - name: extension-rubylint
+     - name: rake
      - name: extension-unittests
      - name: jsduck
      - name: npm
@@ -3684,7 +3678,7 @@ projects:
       - name: composer-test
       - name: extension-gate
       - name: extension-qunit-generic
-      - name: extension-rubylint
+      - name: rake
       - name: extension-unittests-generic
       - name: npm
     test:
@@ -3697,7 +3691,7 @@ projects:
       - name: jshint
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: extension-rubylint
+      - name: rake
       - name: npm
     check:
       - jsonlint
@@ -4041,7 +4035,7 @@ projects:
     template:
       - name: composer-test
       - name: extension-unittests-generic
-      - name: extension-rubylint
+      - name: rake
       - name: npm
     check:
       - jshint
@@ -4093,7 +4087,7 @@ projects:
     template:
       - name: extension-gate
       - name: extension-qunit
-      - name: extension-rubylint
+      - name: rake
       - name: composer-test
       - name: npm
     check:
@@ -4148,7 +4142,7 @@ projects:
   - name: mediawiki/extensions/MultimediaViewer
     template:
       - name: extension-qunit-generic
-      - name: extension-rubylint
+      - name: rake
       - name: extension-unittests
       - name: jshint
       - name: jsduck
@@ -4335,7 +4329,7 @@ projects:
   - name: mediawiki/extensions/PageTriage
     template:
       - name: extension-unittests-generic
-      - name: extension-rubylint
+      - name: rake
       - name: composer-test
       - name: npm
     check:
@@ -5559,7 +5553,7 @@ projects:
   - name: mediawiki/extensions/QuickSurveys
     template:
       - name: composer-test
-      - name: extension-rubylint
+      - name: rake
       - name: extension-unittests-generic
       - name: npm
     check:
@@ -6735,7 +6729,7 @@ projects:
     template:
       - name: composer-test
       - name: extension-gate
-      - name: extension-rubylint
+      - name: rake
       - name: jshint
       - name: npm
 
@@ -6786,7 +6780,7 @@ projects:
 
   - name: mediawiki/extensions/PoolCounter
     template:
-      - name: extension-rubylint
+      - name: rake
       - name: jshint
       - name: mw-checks-test
       - name: npm
@@ -7306,7 +7300,7 @@ projects:
     template:
       - name: composer-test
       - name: extension-qunit-generic
-      - name: extension-rubylint
+      - name: rake
       - name: extension-unittests
       - name: npm
     check:
@@ -7339,7 +7333,7 @@ projects:
   - name: mediawiki/extensions/TwnMainPage
     template:
       - name: composer-test
-      - name: extension-rubylint
+      - name: rake
       - name: extension-unittests
       - name: npm
     check:
@@ -7364,7 +7358,7 @@ projects:
     template:
       - name: composer-test
       - name: extension-gate
-      - name: extension-rubylint
+      - name: rake
       - name: extension-unittests
       - name: npm
     check:
@@ -7382,7 +7376,7 @@ projects:
       - name: composer-test
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: extension-rubylint
+      - name: rake
       - name: npm
       - name: tox-jessie
     check:
@@ -7458,7 +7452,7 @@ projects:
   - name: mediawiki/extensions/VisualEditor
     template:
       - name: extension-gate
-      - name: extension-rubylint
+      - name: rake
       - name: composer-test
     check:
       - jshint
@@ -7576,7 +7570,7 @@ projects:
       - name: jshint
       - name: jsonlint
       - name: extension-unittests-generic
-      - name: extension-rubylint
+      - name: rake
 
   - name: mediawiki/extensions/wikihiero
     template:
@@ -7651,7 +7645,7 @@ projects:
       - name: extension-gate
       - name: extension-jslint
       - name: extension-unittests
-      - name: extension-rubylint
+      - name: rake
 
 #### PHP Extensions ###################################################
 
@@ -7936,17 +7930,16 @@ projects:
     template:
       - name: composer-test-package
       - name: npm
+      - name: rake
     check:
       - jshint
       - jsonlint
     test:
       - npm-run-doc
       - npm-run-demos
-      - rake-jessie
     gate-and-submit:
       - npm-run-doc
       - npm-run-demos
-      - rake-jessie
     postmerge:
       - oojs-ui-jsduck-publish
       - oojs-ui-doxygen-publish
@@ -7969,7 +7962,7 @@ projects:
   - name: VisualEditor/VisualEditor
     template:
       - name: npm
-      - name: extension-rubylint
+      - name: rake
     check:
       - jshint
       - jsonlint
