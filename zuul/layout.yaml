@@ -2731,18 +2731,14 @@ projects:
       - name: tox-jessie
 
   - name: translatewiki
-    check-only:
+    check: &translatewiki_jobs
       - phplint
       - translatewiki-puppet-validate
       - translatewiki-puppetlint-lenient
       - translatewiki-puppetlint-strict
       - translatewiki-shelllint
-    gate-and-submit:
-      - phplint
-      - translatewiki-puppet-validate
-      - translatewiki-puppetlint-lenient
-      - translatewiki-puppetlint-strict
-      - translatewiki-shelllint
+    test: *translatewiki_jobs
+    gate-and-submit: *translatewiki_jobs
 
   - name: wikimedia/discovery/relevancylab
     template:
