@@ -803,8 +803,6 @@ jobs:
     voting: false
   - name: mwext-BibManager-jslint
     voting: false
-  - name: mwext-BlueSpiceExtensions-jslint
-    voting: false
   - name: mwext-BlueSpiceFoundation-jslint
     voting: false
   - name: mwext-Bootstrap-jslint
@@ -1355,8 +1353,6 @@ jobs:
   - name: ^mwext-BayesianFilter-testextension.*
     voting: false
   - name: ^mwext-BlockAndNuke-testextension.*
-    voting: false
-  - name: ^mwext-BlueSpiceExtensions-testextension.*
     voting: false
   - name: ^mwext-Bootstrap-testextension.*
     voting: false
@@ -4540,10 +4536,11 @@ projects:
     template:
       - name: extension-unittests
 
+  # meta repo containing a bunch of extensions. Would need one day a proper job
+  # that loads all of them and run test suite.
   - name: mediawiki/extensions/BlueSpiceExtensions
     template:
-      - name: extension-jslint
-      - name: extension-unittests
+      - name: mw-checks
 
   - name: mediawiki/extensions/BlueSpiceFoundation
     template:
