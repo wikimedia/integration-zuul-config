@@ -149,13 +149,38 @@
              mediawiki/vendor
      - mw-install-mysql
      - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+     # ParserTests tests are run via 'mediawiki-phpunit-parsertests-{phpflavor}'
+     - shell: "PHPUNIT_EXCLUDE_GROUP=ParserTests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - mw-teardown-mysql
      - archive-log-dir
 
-# Same as above, except uses composer instead of mediawiki/vendor.
+- job-template:
+    name: 'mediawiki-phpunit-parsertests-{phpflavor}'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - shell: "PHPUNIT_TESTSUITE=parsertests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Same as mediawiki-phpunit-{phpflavor}, except uses composer instead of mediawiki/vendor.
 # Currently experimental, will eventually be used for `master`, and
 # wmf/ branches will use mediawiki/vendor. See T90303.
 - job-template:
@@ -317,6 +342,7 @@
       - '{name}-phplint'
       - 'mediawiki-phpunit-{phpflavor}'
       - 'mediawiki-phpunit-{phpflavor}-composer'
+      - 'mediawiki-phpunit-parsertests-{phpflavor}'
       - 'mediawiki-extensions-{phpflavor}':
           dependencies: &gatedextensions |
               AbuseFilter
