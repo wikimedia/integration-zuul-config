@@ -117,23 +117,10 @@
          #!/bin/bash -e
          echo "Noop job, meant to gate jobs properly"
 
-# Use hhvm or zend
+# Runs all MediaWiki tests under hhvm
 - job-template:
-    name: 'mediawiki-phpunit-{phpflavor}'
-    # Select runnable node based on the phpflavor (hhvm or zend)
-    #
-    # We want to reuse the same job template for both PHP flavor:
-    # - HHVM flavor runs on Trusty CI labs slaves with HHVM
-    # - Zend flavor runs on Precise CI labs slaves with Zend PHP 5.3
-    #
-    # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
-    # definition based on the job name.
-    #
-    # If you want to verify the slaves, head to the job configuration page,
-    # search for 'Restrict where this project can be run', below the input box
-    # is a text: Slaves in [label]: X . Clicking [label] will list nodes
-    # matching the expression.
-    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    name: 'mediawiki-phpunit-hhvm'
+    node: 'contintLabsSlave && UbuntuTrusty && phpflavor-hhvm'
     concurrent: true
     properties:
      - throttle-one-per-node
@@ -141,7 +128,7 @@
      - zuul
     builders:
      - assert-phpflavor:
-         phpflavor: '{phpflavor}'
+         phpflavor: 'hhvm'
      - hhvm-clear-hhbc
      - zuul-cloner:
          projects: >
@@ -155,7 +142,64 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# Same as above, except uses composer instead of mediawiki/vendor.
+# Runs subset of MediaWiki tests under Zend
+#
+# Excludes '@group ParserTests' tests which are run in parallel via
+# mediawiki-phpunit-parsertests-zend
+- job-template:
+    name: 'mediawiki-phpunit-zend'
+    node: 'contintLabsSlave && UbuntuPrecise && phpflavor-zend'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: 'zend'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     # ParserTests tests are run via 'mediawiki-phpunit-parsertests-zend'
+     - shell: "PHPUNIT_EXCLUDE_GROUP=ParserTests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# mediawiki-phpunit-parsertests-zend
+#
+# Only runs the 'parsertests' MediaWiki testsuite.
+# Complements 'mediawiki-phpunit-parsertests-zend'.
+- job-template:
+    name: 'mediawiki-phpunit-parsertests-zend'
+    node: 'contintLabsSlave && UbuntuPrecise && phpflavor-zend'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: 'zend'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - shell: "PHPUNIT_TESTSUITE=parsertests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Same as mediawiki-phpunit-{phpflavor}, except uses composer instead of mediawiki/vendor.
 # Currently experimental, will eventually be used for `master`, and
 # wmf/ branches will use mediawiki/vendor. See T90303.
 - job-template:
@@ -210,9 +254,21 @@
          # Ensure consitent loading
          sort -o deps.txt deps.txt
 
-# See 'mediawiki-phpunit-{phpflavor}'
 - job-template:
     name: 'mediawiki-extensions-{phpflavor}'
+    # Select runnable node based on the phpflavor (hhvm or zend)
+    #
+    # We want to reuse the same job template for both PHP flavor:
+    # - HHVM flavor runs on Trusty CI labs slaves with HHVM
+    # - Zend flavor runs on Precise CI labs slaves with Zend PHP 5.3
+    #
+    # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
+    # definition based on the job name.
+    #
+    # If you want to verify the slaves, head to the job configuration page,
+    # search for 'Restrict where this project can be run', below the input box
+    # is a text: Slaves in [label]: X . Clicking [label] will list nodes
+    # matching the expression.
     node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
     logrotate:
@@ -313,7 +369,9 @@
       - 'mediawiki-core-doxygen-publish'
       - mediawiki-gate
       - '{name}-phplint'
-      - 'mediawiki-phpunit-{phpflavor}'
+      - 'mediawiki-phpunit-hhvm'
+      - 'mediawiki-phpunit-zend'
+      - 'mediawiki-phpunit-parsertests-zend'
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}':
           dependencies: &gatedextensions |
