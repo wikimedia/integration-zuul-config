@@ -54,6 +54,25 @@
      - archive-log-dir
 
 - job-template:
+    name: 'mediawiki-core-zuul-cloner-cached'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+        - zuul
+    logrotate:
+        daysToKeep: 15
+    builders:
+        - shell: |
+            zuul-cloner --version
+            zuul-cloner \
+                --color \
+                --verbose \
+                --workspace src \
+                --cache-dir /srv/git \
+                https://gerrit.wikimedia.org/r/p \
+                mediawiki/core
+
+- job-template:
     name: 'mediawiki-core-jsduck'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
@@ -307,6 +326,7 @@
         - hhvm
         - zend
     jobs:
+      - 'mediawiki-core-zuul-cloner-cached'
       - 'mediawiki-core-jslint'
       - 'mediawiki-core-qunit'
       - 'mediawiki-core-jsduck'
