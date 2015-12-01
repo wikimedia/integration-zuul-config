@@ -1661,6 +1661,10 @@ jobs:
 
 project-templates:
 
+  - name: mediawiki-gate
+    gate-and-submit:
+     - mediawiki-gate
+
   # Template for MediaWiki extensions.
   # Does run the unit tests on 'test' and 'gate-and-submit'
   - name: extension-unittests
@@ -1940,6 +1944,8 @@ projects:
       - phpunit
 
   - name: integration/phpunit
+    template:
+      - name: mediawiki-gate
     test:
       - integration-phpunit-mediawiki-REL1_23
       - integration-phpunit-mediawiki-REL1_24
@@ -1952,7 +1958,6 @@ projects:
       - integration-phpunit-mediawiki-REL1_25
       - integration-phpunit-mediawiki-REL1_26
       - integration-phpunit-mediawiki-master
-      - mediawiki-gate
 
   - name: integration/raita
     template:
@@ -1971,6 +1976,7 @@ projects:
     template:
       - name: extension-gate
       - name: rake
+      - name: mediawiki-gate
     check:
       - mediawiki-core-jslint
       - mediawiki-core-phplint
@@ -1989,7 +1995,6 @@ projects:
       - mediawiki-phpunit-zend
       - mediawiki-phpunit-parsertests-zend
     gate-and-submit:
-      - mediawiki-gate
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-phplint
@@ -3116,6 +3121,7 @@ projects:
     template:
       - name: npm
       - name: extension-unittests-generic
+      - name: mediawiki-gate
     check:
       - jsonlint
       - phplint
@@ -3124,7 +3130,6 @@ projects:
       - phplint
       - php-composer-validate
     gate-and-submit:
-      - mediawiki-gate
       - phplint
       - php-composer-validate
     experimental:
@@ -3234,32 +3239,27 @@ projects:
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
       - name: npm
-    gate-and-submit:
-      - mediawiki-gate
+      - name: mediawiki-gate
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     template:
       - name: npm
-    gate-and-submit:
-      - mediawiki-gate
+      - name: mediawiki-gate
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
     template:
       - name: npm
-    gate-and-submit:
-      - mediawiki-gate
+      - name: mediawiki-gate
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/text_renderer
     template:
       - name: npm
-    gate-and-submit:
-      - mediawiki-gate
+      - name: mediawiki-gate
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/zim_renderer
     template:
       - name: npm
-    gate-and-submit:
-      - mediawiki-gate
+      - name: mediawiki-gate
 
   - name: mediawiki/extensions/CommonsMetadata
     template:
@@ -3301,11 +3301,10 @@ projects:
       - name: npm
       - name: extension-unittests-generic
       - name: extension-qunit-generic
+      - name: mediawiki-gate
     check:
       - phplint
       - jsonlint
-    gate-and-submit:
-      - mediawiki-gate
 
   - name: mediawiki/extensions/ContributionScores
     template:
@@ -3613,6 +3612,7 @@ projects:
      - name: extension-unittests
      - name: jsduck
      - name: npm
+     - name: mediawiki-gate
     check:
      - jshint
      - jsonlint
@@ -3622,7 +3622,6 @@ projects:
      - phplint
      - php-composer-validate
     gate-and-submit:
-     - mediawiki-gate
      - phplint
      - php-composer-validate
     experimental:
@@ -4078,6 +4077,7 @@ projects:
       - name: rake
       - name: composer-test
       - name: npm
+      - name: mediawiki-gate
     check:
       - jshint
       - jsonlint
@@ -4087,7 +4087,6 @@ projects:
       - mwext-MobileFrontend-testextension-zend
       - mwext-mw-selenium
     gate-and-submit:
-      - mediawiki-gate
       #- mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-zend
     postmerge:
@@ -6480,11 +6479,10 @@ projects:
       - name: composer-test
       - name: jsduck
       - name: npm
+      - name: mediawiki-gate
     check:
       - jshint
       - jsonlint
-    gate-and-submit:
-      - mediawiki-gate
 
   - name: mediawiki/extensions/PagesList
     template:
@@ -6841,12 +6839,12 @@ projects:
       - name: jshint
       - name: mw-checks-test
       - name: npm
+      - name: mediawiki-gate
     check:
       - jsonlint
     test:
       - mwext-PoolCounter-build
     gate-and-submit:
-      - mediawiki-gate
       - mwext-PoolCounter-build
 
   - name: mediawiki/extensions/Popups
@@ -7274,10 +7272,9 @@ projects:
       - name: composer-test
       - name: jsduck
       - name: npm
+      - name: mediawiki-gate
     check:
       - jsonlint
-    gate-and-submit:
-      - mediawiki-gate
     postmerge:
       - mwext-TemplateData-jsduck-publish
 
@@ -7305,6 +7302,7 @@ projects:
   - name: mediawiki/extensions/timeline
     template:
       - name: npm
+      - name: mediawiki-gate
     check:
       - jsonlint
       - phplint
@@ -7315,7 +7313,6 @@ projects:
      - perllint
      - php-composer-validate
     gate-and-submit:
-     - mediawiki-gate
      - phplint
      - perllint
      - php-composer-validate
@@ -7507,6 +7504,7 @@ projects:
       - name: extension-gate
       - name: rake
       - name: composer-test
+      - name: mediawiki-gate
     check:
       - jshint
       - jsonlint
@@ -7515,7 +7513,6 @@ projects:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-jsduck
     gate-and-submit:
-      - mediawiki-gate
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-jsduck
     postmerge:
