@@ -786,8 +786,6 @@ jobs:
     voting: false
   - name: mwext-ZeroBanner-jslint # bug 65817
     voting: false
-  - name: mwext-ZeroPortal-jslint # bug 65818
-    voting: false
   - name: wikimedia-fundraising-crm-jslint
     voting: false
 # Start of new currently disabled extensions checks from mass extension import - Addshore
@@ -7695,10 +7693,14 @@ projects:
 
   - name: mediawiki/extensions/ZeroPortal
     template:
+      - name: composer-test
       - name: extension-gate
-      - name: extension-jslint
       - name: extension-unittests
       - name: rake
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
 #### PHP Extensions ###################################################
 
