@@ -3606,6 +3606,7 @@ projects:
 
   - name: mediawiki/extensions/Flow
     template:
+     - name: composer-test
      - name: extension-gate
      - name: rake
      - name: extension-unittests
@@ -3614,22 +3615,12 @@ projects:
     check:
      - jshint
      - jsonlint
-     - phplint
-     - php-composer-validate
-    test:
-     - phplint
-     - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - phplint
-     - php-composer-validate
     experimental:
-      - mwext-Flow-testextension-hhvm
-      - mwext-testextension-hhvm
-      - mwext-testextension-zend
-      - mwext-mw-selenium
+     - mwext-mw-selenium
     postmerge:
-      - mwext-Flow-jsduck-publish
+     - mwext-Flow-jsduck-publish
 
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
