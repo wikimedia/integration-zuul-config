@@ -149,7 +149,7 @@
              mediawiki/vendor
      - mw-install-mysql
      - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - mw-teardown-mysql
@@ -179,7 +179,7 @@
          dir: 'src'
      - mw-install-mysql
      - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - mw-teardown-mysql
@@ -237,7 +237,6 @@
      - mw-apply-settings
      - mw-run-update-script
      - mw-run-phpunit-allexts
-    #- shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
     publishers:
      - junit:
         results: 'log/junit*.xml'
@@ -268,7 +267,6 @@
      - mw-apply-settings
      - mw-run-update-script
      - qunit-karma
-    #- shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh"
     publishers:
      - localhost-cleanup
      - mw-teardown-mysql
@@ -295,7 +293,7 @@
      - mw-apply-settings
      - shell: |
          export PHPUNIT_DIR="$WORKSPACE/src/integration/phpunit/vendor/phpunit/phpunit"
-         /srv/deployment/integration/slave-scripts/bin/mw-run-phpunit.sh
+         /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh
     publishers:
      - phpunit-junit-2
      - mw-teardown-mysql
@@ -386,7 +384,7 @@
              mediawiki/vendor
      - mw-install-sqlite
      - mw-apply-settings
-     # FIXME should use the mw-run-phpunit.sh wrapper
+     # FIXME should use the mw-phpunit.sh wrapper
      - shell: |
         . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
