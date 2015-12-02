@@ -57,10 +57,6 @@
     node: contintLabsSlave && AndroidEmulator
     defaults: use-remoteonly-zuul
     concurrent: true
-    parameters:
-     - string:
-         name: COMMIT # Seam for manual one-offs.
-         default: $GIT_COMMIT # Trigger commit
     properties:
      - throttle-one-per-node
     triggers:
@@ -70,7 +66,7 @@
      - git:
         url: https://phabricator.wikimedia.org/diffusion/APAW
         branches:
-          - ${{COMMIT}}
+          - origin/master # Hardcode to branch so pollscm works properly.
     wrappers:
      - android-emulator:
          os: android-15
