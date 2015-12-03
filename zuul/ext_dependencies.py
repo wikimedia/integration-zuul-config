@@ -6,6 +6,8 @@ dependencies = {
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
     'Capiunto': ['Scribunto'],
     'Citoid': ['VisualEditor'],
+    'CirrusSearch': ['MwEmbedSupport', 'TimedMediaHandler', 'PdfHandler',
+                     'Cite'],
     'CodeEditor': ['WikiEditor'],
     'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
                            'UniversalLanguageSelector', 'Wikidata'],
