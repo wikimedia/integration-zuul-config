@@ -37,6 +37,8 @@ dependencies = {
     'VectorBeta': ['EventLogging'],
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
+    'Wikibase': ['CirrusSearch', 'cldr', 'Elastica', 'GeoData', 'Scribunto', 'Capiunto'],
+    'Wikidata': ['CirrusSearch', 'cldr', 'Elastica', 'GeoData', 'Scribunto'],
     'WikidataPageBanner': ['Wikidata'],
 }
 
