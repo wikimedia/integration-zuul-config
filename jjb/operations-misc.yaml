@@ -41,3 +41,14 @@
     publishers:
      - phpunit-junit
      - archive-log-dir
+    scm:
+     # Override to wipe workspace/shallow clone and process submodules
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: true
+        shallow-clone: true
+        submodule:
+            disable: false
