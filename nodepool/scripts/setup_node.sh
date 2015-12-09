@@ -26,3 +26,6 @@ sudo git -C "/opt/git/${CI_CONFIG}" pull
 echo "Running puppet"
 sudo git -C /puppet pull
 sudo /usr/local/bin/puppet-apply /opt/git/integration/config/dib/puppet/ciimage.pp
+
+echo "apt-get upgrade"
+sudo apt-get -V -q -y upgrade
