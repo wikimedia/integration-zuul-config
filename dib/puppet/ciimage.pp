@@ -20,6 +20,6 @@ package { 'zuul':
 }
 
 # Should be include contint::packages::ops once GeoIP is installable
-package { 'etcd':
+package { ['etcd', 'python-etcd']:
     ensure => present,
 }
