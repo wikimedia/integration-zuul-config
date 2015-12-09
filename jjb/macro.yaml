@@ -319,18 +319,6 @@
 # ALWAYS pair with 'localhost-cleanup'
 # ALWAYS pair with 'global-teardown' (for npm-setup)
 - builder:
-    name: qunit-querystring
-    builders:
-     - prepare-localhost
-     - shell: |
-        # Run Special:JavaScriptTest/qunit via grunt-contrib-qunit in PhantomJS
-        /srv/deployment/integration/slave-scripts/bin/wmfgrunt qunit --qunit-url="http://localhost:9412/$BUILD_TAG/index.php?title=Special:JavaScriptTest/qunit{querystring}"
-- builder:
-    name: qunit
-    builders:
-     - qunit-querystring:
-        querystring: ''
-- builder:
     name: qunit-karma
     builders:
     builders:
