@@ -14,6 +14,7 @@ class { '::apt':
 }
 
 include contint::packages::base
+include contint::packages::javascript
 include contint::packages::python
 include contint::packages::ruby
 
