@@ -38,12 +38,12 @@ for REPO in ${REPOS[@]}; do
         echo "House cleaning (repack && gc)"
         git repack -A -d
         git gc --prune=all
-        git log -n 1 --format='HEAD is at:%n%h %ci (%cr)%n>> %s' HEAD
+        git log -n 1 --format='Host cache HEAD is at: %h%n>> %ci (%cr)%n>> %s' HEAD
         popd
     fi
     echo "..mirrored $REPO"
 done;
 
-echo "Copying cached repos from build host to image"
+echo "Copying cached repos from build host cache to image"
 sudo mkdir -p $TARGET_ROOT/$DIB_GIT_BARE_MIRRORS
 sudo cp -a $DIB_GIT_CACHE/. $TARGET_ROOT/$DIB_GIT_BARE_MIRRORS
