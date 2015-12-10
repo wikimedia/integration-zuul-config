@@ -10,6 +10,7 @@ set -o pipefail
 DIB_WIKIMEDIA_PUPPET_DEST=${DIB_WIKIMEDIA_PUPPET_DEST:-/puppet}
 
 mkdir -v -p $(dirname $DIB_WIKIMEDIA_PUPPET_DEST)
+echo "Cloning puppet.git from instance bare mirror"
 git clone /srv/git/operations/puppet.git "$DIB_WIKIMEDIA_PUPPET_DEST"
 
 echo "Changing remote from instance mirror to Gerrit..."
@@ -21,10 +22,10 @@ echo "Asserting puppet is installed..."
 which puppet
 
 echo "Preparing puppet links..."
-ln -s $DIB_WIKIMEDIA_PUPPET_DEST/files  /etc/puppet/files
-ln -s $DIB_WIKIMEDIA_PUPPET_DEST/manifests /etc/puppet/manifests
-ln -s $DIB_WIKIMEDIA_PUPPET_DEST/modules /etc/puppet/modules
-ln -s $DIB_WIKIMEDIA_PUPPET_DEST/hieradata /etc/puppet/hieradata
+for dir in files hieradata manifests modules templates; do
+    rm -f -R -v "/etc/puppet/$dir"
+    ln -v -s $DIB_WIKIMEDIA_PUPPET_DEST/$dir  /etc/puppet/$dir
+done;
 
 echo "Applying puppet manifests ..."
 puppet-apply /tmp/in_target.d/wikimedia-puppet/bootstrap.pp
