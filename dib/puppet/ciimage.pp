@@ -2,6 +2,8 @@
 #
 # Use operations/puppet.git classes to build our CI image.
 
+$realm = 'labs'
+
 # Needs ::apt first so we get jessie-wikimedia and jessie-backports configured
 # and pinned. Else our packages are not up-to-date / not found.
 stage { 'first':
