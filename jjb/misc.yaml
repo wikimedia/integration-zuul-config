@@ -211,7 +211,8 @@
               variable: WPT_USER_PASSWORD
     builders:
      - shell: |
-        #!/bin/sh -e
+        #!/bin/sh
+        declare -i RESULT=0
         # These tests runs on our own WebPageTest instance
         # Securely set beforehand: WMF_WPT_KEY, WPT_USER, WPT_USER_PASSWORD
         export STATSV_ENDPOINT="https://www.wikimedia.org/beacon/statsv"
@@ -220,11 +221,18 @@
         export WMF_WPT_LOCATION="us-east-1"
         npm install --production
         ./bin/index.js --batch ./scripts/batch/mobile.txt
+        RESULT+=$?
         ./bin/index.js --batch ./scripts/batch/desktop.txt
+        RESULT+=$?
         ./bin/index.js --batch ./scripts/batch/login-mobile.txt
+        RESULT+=$?
         ./bin/index.js --batch ./scripts/batch/login-desktop.txt
+        RESULT+=$?
         ./bin/index.js --batch ./scripts/batch/second-view-mobile.txt
+        RESULT+=$?
         ./bin/index.js --batch ./scripts/batch/second-view-desktop.txt
+        RESULT+=$?
+        exit $RESULT
     publishers:
       - workspace-cleanup
 
@@ -263,7 +271,8 @@
               variable: WPT_USER_PASSWORD
     builders:
      - shell: |
-        #!/bin/sh -e
+        #!/bin/sh
+        declare -i RESULT=0
         # Securely set beforehand: WPT_ORG_WPT_KEY, WPT_USER, WPT_USER_PASSWORD
         # These tests run on WebPageTest.org
         # Note: We can make 1000 runs per day
@@ -272,7 +281,10 @@
         export WPT_ORG_RUNS="5"
         npm install --production
         ./bin/index.js --batch ./scripts/batch/mobile-wpt-org.txt
+        RESULT+=$?
         ./bin/index.js --batch ./scripts/batch/desktop-wpt-org.txt
+        RESULT+=$?
+        exit $RESULT
     publishers:
       - workspace-cleanup
 -
