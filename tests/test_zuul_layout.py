@@ -8,6 +8,7 @@ import re
 import os
 import unittest
 
+import yaml
 import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
 import zuul.model
@@ -441,3 +442,39 @@ class TestZuulLayout(unittest.TestCase):
              },
         ]
         self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_gated_extensions_are_both_in_jjb_and_zuul(self):
+        self.longMessage = True
+
+        # Grab deps from the JJB template mediawiki-extensions-{phpflavor}
+        jjb_mw_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '../jjb/mediawiki.yaml')
+        with open(jjb_mw_file, 'r') as f:
+            jjb = yaml.load(f)
+
+        mw_project = next(entry['project'] for entry in jjb
+                          if 'project' in entry
+                          and entry['project'].get('name') == 'mediawiki-core')
+        jjb_gate_template = next(
+            job['mediawiki-extensions-{phpflavor}']
+            for job in mw_project['jobs']
+            if isinstance(job, dict)
+            and job.keys()[0] == 'mediawiki-extensions-{phpflavor}')
+        # List of extensions basenames
+        jjb_deps = set(jjb_gate_template['dependencies'].splitlines())
+
+        # Grab projects having the gate job 'mediawiki-extensions-hhvm'
+        gated_in_zuul = set([
+            ext_name[len('mediawiki/extensions/'):]  # extension basename
+            for (ext_name, pipelines) in self.getProjectsDefs().iteritems()
+            if ext_name.startswith('mediawiki/extensions/')
+            and 'mediawiki-extensions-hhvm' in pipelines.get('test', {})
+            ])
+
+        self.assertSetEqual(
+            gated_in_zuul, jjb_deps, msg='Zuul projects triggering gate jobs '
+            '(first set) and dependencies list in JJB (second set) must be '
+            'equals.\n'
+            'In Zuul: apply the template extension-gate\n'
+            'In JJB: add extension to "gatedextensions"')
