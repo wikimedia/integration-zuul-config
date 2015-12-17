@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6eaa8f54_ba47eb21",
+        "filename": "jjb/misc.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2015-12-17T21:48:03Z",
+      "side": 1,
+      "message": "That is the culprit.  FOO+\u003d$BAR is a bashes apparently.\n\n\nThe job runs on Ubuntu Trusty and /bin/sh is really dash. Not bash.\n\nTest file:\n\n $ cat gerrit259783.sh \n #!/bin/sh\n declare -i RESULT\u003d0\n false\n RESULT+\u003d$?\n \n echo \"Result: $RESULT\"\n\nWith dash invoked as /bin/sh:\n\n $ /bin/sh gerrit259783.sh \n gerrit259783.sh: 2: gerrit259783.sh: declare: not found\n gerrit259783.sh: 4: gerrit259783.sh: RESULT+\u003d1: not found\n Result: \n\nWith bash:\n\n $ /bin/bash gerrit259783.sh \n Result: 1\n\n\nBefore I did CR+2 on the previous change, I did test the script on Trusty but used bash :-(\n\n\nSo just change /bin/sh by /bin/bash and it should be fine :-)  Then you can refresh the job with JJB and rerun it.",
+      "revId": "a3436e9fa78698995ea74469b6ae9853d234feb1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
