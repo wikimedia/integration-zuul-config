@@ -8,6 +8,7 @@ import re
 import os
 import unittest
 
+import yaml
 import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
 import zuul.model
@@ -441,3 +442,55 @@ class TestZuulLayout(unittest.TestCase):
              },
         ]
         self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_gated_extensions_are_both_in_jjb_and_zuul(self):
+        self.longMessage = True
+
+        # Grab dependencies for the mediawiki-extensions-{phpflavor} JJB template
+        jjb_mw_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '../jjb/mediawiki.yaml')
+        with open(jjb_mw_file, 'r') as f:
+            jjb = yaml.load(f)
+        mw_project = next(entry['project'] for entry in jjb
+                          if 'project' in entry
+                          and entry['project'].get('name') == 'mediawiki-core')
+        gate_template = next(
+            job['mediawiki-extensions-{phpflavor}']
+            for job in mw_project['jobs']
+            if isinstance(job, dict)
+            and job.keys()[0] == 'mediawiki-extensions-{phpflavor}')
+        # List of extensions basenames
+        exts = set(gate_template['dependencies'].splitlines())
+
+        # assert Zuul projects triggering gate jobs are in the JJB dependencies
+        gated_in_zuul = set([
+            ext_name[len('mediawiki/extensions/'):]  # extension basename
+            for (ext_name, pipelines) in self.getProjectsDefs().iteritems()
+            if ext_name.startswith('mediawiki/extensions/')
+            and 'mediawiki-extensions-hhvm' in pipelines.get('test', {})
+            ])
+        self.assertSetEqual(gated_in_zuul, exts, msg='Zuul projects '
+            'triggering gate jobs must be defined as dependencies in jjb')
+
+
+        # FIXME below is obsolete.  The set comparaison above is both ways?
+
+        # Gate job that should be in test/gate-and-submit
+        gatejobs_in_test = set([
+            'mediawiki-extensions-hhvm',
+            'mediawiki-extensions-qunit',
+        ])
+        gatejobs_in_gateandsubmit = \
+            set(gatejobs_in_test) | set(['mediawiki-extensions-zend'])
+
+        # assert JJB dependencies are triggering gate jobs in Zuul
+        for ext in exts:
+            zuul_def = self.getProjectDef('mediawiki/extensions/%s' % ext)
+            msg = 'Extension %s misses gate jobs for pipeline %%s' % ext
+            self.assertGreater(set(zuul_def['test']),
+                               gatejobs_in_test,
+                               msg % 'test')
+            self.assertGreater(set(zuul_def['gate-and-submit']),
+                               gatejobs_in_gateandsubmit,
+                               msg % 'gate-and-submit')
