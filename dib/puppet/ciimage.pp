@@ -10,9 +10,7 @@ stage { 'first':
     before => Stage['main'],
 }
 class { '::apt':
-    stage  => first,
-    # Refreshing a snapshot should update repos as well
-    notify => Exec['apt-get update'],
+    stage => first,
 }
 
 include contint::packages::base
