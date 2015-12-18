@@ -164,7 +164,11 @@
 # Generic mw-selenium job for extensions.
 - job:
     name: 'mwext-mw-selenium'
-    node: contintLabsSlave && UbuntuTrusty
+
+    # To help diagnose T120824 TMPDIR owned by www-data
+    #node: contintLabsSlave && UbuntuTrusty
+    node: integration-slave-trusty-1017
+
     concurrent: true
     triggers:
      - zuul
@@ -185,7 +189,11 @@
 # Generic mw-selenium job for extensions.
 - job:
     name: 'mwext-mw-selenium-composer'
-    node: contintLabsSlave && UbuntuTrusty
+
+    # To help diagnose T120824 TMPDIR owned by www-data
+    #node: contintLabsSlave && UbuntuTrusty
+    node: integration-slave-trusty-1016
+
     concurrent: true
     triggers:
      - zuul
