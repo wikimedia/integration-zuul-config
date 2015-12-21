@@ -30,6 +30,7 @@ dependencies = {
     'MathSearch': ['Math'],
     'MobileFrontend': ['Echo', 'VisualEditor'],
     'NavigationTiming': ['EventLogging'],
+    'NSFileRepo': ['Lockdown'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion'],
     'QuickSurveys': ['EventLogging'],
