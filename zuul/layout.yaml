@@ -1071,8 +1071,6 @@ jobs:
     voting: false
   - name: mwext-NewSignupPage-jslint
     voting: false
-  - name: mwext-Newsletter-jslint
-    voting: false
   - name: mwext-NewUsersList-jslint
     voting: false
   - name: mwext-NoTitle-jslint
@@ -5340,8 +5338,12 @@ projects:
 
   - name: mediawiki/extensions/Newsletter
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/NewUsersList
     template:
