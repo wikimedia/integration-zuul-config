@@ -33,6 +33,7 @@ dependencies = {
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion'],
     'QuickSurveys': ['EventLogging'],
+    'RelatedArticles': ['BetaFeatures', 'MobileFrontend'],
     'Score': ['VisualEditor'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
