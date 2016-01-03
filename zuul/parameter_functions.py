@@ -88,6 +88,7 @@ dependencies = {
     'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
     'Score': ['VisualEditor'],
     'SemanticFormsInputs': ['SemanticForms'],
+    'SemanticGenealogy': ['SemanticMediaWiki'],
     'SimpleSurvey': ['PrefSwitch'],
     'SolrStore': ['SemanticMediaWiki'],
     'Spreadsheet': ['PHPExcel'],
