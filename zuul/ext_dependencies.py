@@ -20,6 +20,7 @@ dependencies = {
                'VisualEditor'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'GoogleLogin': ['GoogleAPIClient'],
+    'Graph': ['JsonConfig','CodeEditor'],
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'ImageMetrics': ['EventLogging'],
