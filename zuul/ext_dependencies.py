@@ -26,7 +26,7 @@ dependencies = {
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore'],
     'MassMessage': ['LiquidThreads'],
-    'Math': ['VisualEditor'],
+    'Math': ['Wikidata', 'VisualEditor'],
     'MathSearch': ['Math'],
     'MobileFrontend': ['Echo', 'VisualEditor'],
     'NavigationTiming': ['EventLogging'],
