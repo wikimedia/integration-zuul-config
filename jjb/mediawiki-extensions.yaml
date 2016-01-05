@@ -65,9 +65,9 @@
      - shell: |
          if grep -q mediawiki/extensions/VisualEditor deps.txt; then
             cd src/extensions/VisualEditor
+            git submodule foreach git clean -xdff -q
             git submodule update --init
             git submodule status
-            git submodule foreach git clean -xdff -q
          fi
 
 # ALWAYS pair with 'mw-teardown-mysql'
@@ -81,12 +81,8 @@
              mediawiki/core
              mediawiki/vendor
              $(cat deps.txt)
+     - ve-submodules-update
      - shell: "mv deps.txt src/extensions_load.txt"
-     - shell: |
-         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
-            cd src/extensions/VisualEditor
-            git submodule update --init
-         fi
      - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
@@ -100,12 +96,8 @@
          projects: >
              mediawiki/core
              $(cat deps.txt)
+     - ve-submodules-update
      - shell: "mv deps.txt src/extensions_load.txt"
-     - shell: |
-         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
-            cd src/extensions/VisualEditor
-            git submodule update --init
-         fi
      - composer-validate:
          dir: 'src'
      - composer-local-create:
