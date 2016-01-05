@@ -23,6 +23,7 @@ dependencies = {
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'ImageMetrics': ['EventLogging'],
+    'Kartographer': ['VisualEditor'],
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore'],
     'MassMessage': ['LiquidThreads'],
