@@ -85,6 +85,8 @@
          if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
             cd src/extensions/VisualEditor
             git submodule update --init
+            git submodule status
+            git submodule foreach git clean -xdff -q
          fi
      - mw-install-mysql
      - mw-apply-settings
@@ -104,6 +106,8 @@
          if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
             cd src/extensions/VisualEditor
             git submodule update --init
+            git submodule status
+            git submodule foreach git clean -xdff -q
          fi
      - composer-validate:
          dir: 'src'
