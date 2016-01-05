@@ -58,18 +58,19 @@
      - zuul-cloner:
          projects: >
              $(cat deps.txt)
-     - ve-submodules-update
+     - ve-submodules-update:
+         repository-list-file: 'deps.txt'
 
 # Workaround zuul-cloner not processing submodules
 - builder:
     name: ve-submodules-update
     builders:
      - shell: |
-         if grep -q mediawiki/extensions/VisualEditor deps.txt; then
+         if grep -q mediawiki/extensions/VisualEditor "{repository-list-file}"; then
             cd src/extensions/VisualEditor
+            git submodule foreach git clean -xdff -q
             git submodule update --init
             git submodule status
-            git submodule foreach git clean -xdff -q
          fi
 
 # ALWAYS pair with 'mw-teardown-mysql'
@@ -86,11 +87,8 @@
              mediawiki/vendor
              $(cat extensions_load.txt)
      - shell: "mv extensions_load.txt src/extensions_load.txt"
-     - shell: |
-         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
-            cd src/extensions/VisualEditor
-            git submodule update --init
-         fi
+     - ve-submodules-update:
+         repository-list-file: 'src/extensions_load.txt'
      - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
@@ -105,11 +103,8 @@
              mediawiki/core
              $(cat extensions_load.txt)
      - shell: "mv extensions_load.txt src/extensions_load.txt"
-     - shell: |
-         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
-            cd src/extensions/VisualEditor
-            git submodule update --init
-         fi
+     - ve-submodules-update:
+         repository-list-file: 'src/extensions_load.txt'
      - composer-validate:
          dir: 'src'
      - composer-local-create:
