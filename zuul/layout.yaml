@@ -758,8 +758,6 @@ jobs:
     voting: false
   - name: mwext-CommunityVoice-jslint # bug 61595
     voting: false
-  - name: mwext-ContributionTracking-jslint # bug 61599
-    voting: false
   - name: mwext-CustomUserSignup-jslint # bug 61600
     voting: false
   - name: mwext-Drafts-jslint # bug 61603
@@ -771,8 +769,6 @@ jobs:
   - name: mwext-JsonData-jslint # bug 61607
     voting: false
   - name: mwext-LastModified-jslint # bug 61608
-    voting: false
-  - name: mwext-Quiz-jslint # bug 61620
     voting: false
   - name: mwext-SVGEdit-jslint # bug 61625
     voting: false
@@ -2948,9 +2944,11 @@ projects:
 
   - name: mediawiki/extensions/ContributionTracking
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/ConventionExtension
     template:
@@ -3020,9 +3018,11 @@ projects:
 
   - name: mediawiki/extensions/DismissableSiteNotice
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/DonationInterface
     template:
@@ -3047,9 +3047,11 @@ projects:
 
   - name: mediawiki/extensions/DynamicSidebar
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/DumpHTML
     template:
@@ -4001,9 +4003,11 @@ projects:
   - name: mediawiki/extensions/AjaxLogin
     template:
       - name: composer-test
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/AJAXPoll
     template:
@@ -6500,11 +6504,11 @@ projects:
 
   - name: mediawiki/extensions/Quiz
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: npm
     check:
       - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/RandomRootPage
     template:
@@ -6975,9 +6979,11 @@ projects:
 
   - name: mediawiki/extensions/TocTree
     template:
-      - name: extension-jslint
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/TorBlock
     template:
@@ -7334,11 +7340,11 @@ projects:
   - name: mediawiki/extensions/ZeroBanner
     template:
       - name: extension-gate
-      - name: extension-jslint
       - name: extension-unittests
       - name: npm
     check:
       - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/ZeroPortal
     template:
