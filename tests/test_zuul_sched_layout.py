@@ -30,7 +30,7 @@ class FakeTrigger(object):
         return
 
 
-class TestZuulLayout(unittest.TestCase):
+class TestZuulSchedLayout(unittest.TestCase):
 
     sched = None
 
