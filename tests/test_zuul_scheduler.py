@@ -1,4 +1,4 @@
-# Verify Wikimedia Zuul layout functionalities
+# Verify Wikimedia Zuul scheduler functionalities
 #
 # Copyright (c) 2014 - Antoine "hashar" Musso
 # Copyright (c) 2014 - Wikimedia Foundation Inc.
@@ -30,7 +30,7 @@ class FakeTrigger(object):
         return
 
 
-class TestZuulLayout(unittest.TestCase):
+class TestZuulScheduler(unittest.TestCase):
 
     sched = None
 
