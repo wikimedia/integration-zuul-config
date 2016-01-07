@@ -772,8 +772,6 @@ jobs:
     voting: false
   - name: mwext-SecurePoll-jslint # bug 61626
     voting: false
-  - name: mwext-SemanticDrilldown-jslint # bug 61628
-    voting: false
   - name: mwext-SemanticExpressiveness-jslint # bug 61629
     voting: false
   - name: mwext-SemanticImageInput-jslint # bug 61632
@@ -6633,7 +6631,9 @@ projects:
 
   - name: mediawiki/extensions/SemanticDrilldown
     template:
-      - name: extension-checks
+      - name: mw-checks-test
+      - name: jshint
+      - name: jsonlint
 
   - name: mediawiki/extensions/SemanticDummyEditor
     template:
