@@ -51,18 +51,6 @@
          bundler-version: ''
          command: '{command}'
 
-# Generic bundle job-template.
-- job-template:
-    name: 'bundle-{bundlecommand}'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - bundle:
-         command: "{bundlecommand}"
-
 # Run `bundle exec rake test` on Nodepool Jessie instances.
 - job-template:
     name: 'rake-jessie'
@@ -82,15 +70,6 @@
         # in the parent directory.
         bundle install --path ../vendor/bundle
         bundle exec rake test
-
-- project:
-    name: common-bundle-jobs
-    bundlecommand:
-     - rspec
-     - yard
-    jobs:
-     - 'bundle-{bundlecommand}'
-     - 'rake-jessie'
 
 # Call bundle 'yard' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
