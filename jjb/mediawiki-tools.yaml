@@ -9,7 +9,8 @@
     name: 'mw-tools-scap-tox-doc-publish'
     node: contintLabsSlave && UbuntuTrusty
     triggers:
-      - pollscm: '@hourly'
+      - pollscm:
+          cron: '@hourly'
     scm:
       - git:
           url: 'https://phabricator.wikimedia.org/diffusion/MSCA/scap'
