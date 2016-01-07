@@ -51,18 +51,6 @@
          bundler-version: ''
          command: '{command}'
 
-# Deprecated non-generic job. See below.
-- job-template:
-    name: '{name}-bundle-{bundlecommand}'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - bundle:
-         command: "{bundlecommand}"
-
 # Generic bundle job-template.
 - job-template:
     name: 'bundle-{bundlecommand}'
