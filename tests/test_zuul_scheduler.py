@@ -386,9 +386,6 @@ class TestZuulScheduler(unittest.TestCase):
                           manager.pipeline.name)
          for manager in managers]
 
-    # Currently failing since we're ignoring l10n-bot until we can fix
-    # issues with CI being overloaded (T91707)
-    @unittest.expectedFailure
     def test_l10nbot_allowed_in_gate_and_submit(self):
         gate = self.getPipeline('gate-and-submit').manager
         change = zuul.model.Change('mediawiki/core')
