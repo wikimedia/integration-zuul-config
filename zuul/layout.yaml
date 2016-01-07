@@ -750,8 +750,6 @@ jobs:
     voting: false
   - name: mwext-CommunityVoice-jslint # bug 61595
     voting: false
-  - name: mwext-Configure-jslint # bug 61596
-    voting: false
   - name: mwext-ContributionTracking-jslint # bug 61599
     voting: false
   - name: mwext-CustomUserSignup-jslint # bug 61600
@@ -2874,8 +2872,12 @@ projects:
 
   - name: mediawiki/extensions/Configure
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/ConfirmAccount
     template:
