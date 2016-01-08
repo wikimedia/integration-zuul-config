@@ -2368,6 +2368,11 @@ projects:
       - wikimedia-fundraising-crm-jslint
       - phplint
       - wikimedia-fundraising-civicrm
+      # Since jobs above might not trigger due to file filtering and
+      # wikimedia-fundraising-civicrm is not run on deployment branch, we still
+      # need a job to run for Zuul to gate-and-submit
+      # T120881
+      - noop
 
   - name: wikimedia/fundraising/crm/civicrm
     check:
