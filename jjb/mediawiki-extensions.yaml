@@ -429,19 +429,6 @@
      - shell: /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve.sh
      - shell: sudo -u jenkins /srv/deployment/integration/slave-scripts/bin/gerrit-sync-ve-push.sh
 
-# These are jobs we create for all of the extensions
-# listed below. If a job should only be created
-# for a select number of extensions or if it needs
-# custom parameters, add it below under "Extra jobs for specific extensions"
-# at the bottom of this file.
-- job-group:
-    name: mwext-check-jobs
-    jobs:
-     - '{name}-{ext-name}-testextension-{phpflavor}':
-         phpflavor:
-             - hhvm
-             - zend
-
 - project:
     name: mwext
 
@@ -634,7 +621,10 @@
 #     - REL1_19
 
     jobs:
-     - mwext-check-jobs
+     - '{name}-{ext-name}-testextension-{phpflavor}':
+         phpflavor:
+             - hhvm
+             - zend
 
      # deprecated qunit jobs for MediaWiki extensions
      # Should be migrated to use the generic 'mwext-qunit' job whith
