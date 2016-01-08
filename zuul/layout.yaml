@@ -782,8 +782,6 @@ jobs:
     voting: false
   - name: mwext-SideBarMenu-jslint # bug 61636
     voting: false
-  - name: mwext-Spreadsheet-jslint # bug 63668
-    voting: false
   - name: mwext-Survey-jslint # bug 61637
     voting: false
   - name: wikimedia-fundraising-crm-jslint
@@ -6827,8 +6825,12 @@ projects:
 
   - name: mediawiki/extensions/Spreadsheet
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/StickToThatLanguage
     template:
