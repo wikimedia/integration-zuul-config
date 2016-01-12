@@ -1019,6 +1019,9 @@ jobs:
      - '^(.*\.py|tox.ini|.pep8|setup.cfg)$'
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
 
+  - name: ^operations-puppet-tox-pep8$
+    voting: false
+
   - name: ^perllint$
     files:
       - '^.*\.(pl|pm)$'
@@ -2189,6 +2192,7 @@ projects:
     # Same for trusted user
     test:
       # testing
+      - operations-puppet-tox-pep8
       - operations-puppet-tox-py27
       # Same as `check` pipeline:
       - erblint-HEAD
