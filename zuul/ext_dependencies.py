@@ -46,6 +46,7 @@ dependencies = {
                  'Capiunto'],
     'Wikidata': ['cldr', 'Elastica', 'GeoData', 'Scribunto'],
     'WikidataPageBanner': ['Wikidata'],
+    'WikimediaPageViewInfo': ['Graph'],
 }
 
 # Limit execution to these jobs
