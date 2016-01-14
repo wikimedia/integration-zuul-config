@@ -37,6 +37,7 @@ dependencies = {
     'QuickSurveys': ['EventLogging'],
     'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
     'Score': ['VisualEditor'],
+    'SemanticFormsInputs': ['SemanticForms'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'VectorBeta': ['EventLogging'],
