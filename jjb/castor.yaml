@@ -1,0 +1,77 @@
+- publisher:
+    name: castor-save
+    publishers:
+     - postbuildscript:
+         script-only-if-succeeded: True
+         builders:
+          - trigger-builds:
+              - project: castor-save
+                # Pass ZUUL and others
+                current-parameters: True
+                predefined-parameters: |
+                    TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
+                # Must be blocking or the instance might be disposed
+                block: true
+                # And ignore any error
+                block-thresholds:
+                    build-step-failure-threshold: 'never'
+                    unstable-threshold: 'never'
+                    failure-threshold: 'never'
+
+- job:
+    name: castor-save
+    node: castor
+    concurrent: true
+    parameters:
+        - string:
+            name: TRIGGERED_SSH_CONNECTION
+            description: 'SSH_CONNECTION of upstream job (contains IP of remote instance)'
+        - string:
+            name: ZUUL_PIPELINE
+            description: 'Name of Zuul pipeline'
+    wrappers:
+        - ansicolor
+        - timeout:
+            timeout: 1  # minutes
+            abort: false
+            fail: false
+        - timestamps
+        - ssh-agent-credentials:
+            users:
+             - 'nodepool-dib-jenkins'
+
+    builders:
+        - shell: |
+            set -eu +x
+            ssh_config=($TRIGGERED_SSH_CONNECTION)
+            REMOTE_INSTANCE="${ssh_config[2]}"
+
+            # Replace slashes with dashes:
+            ZUUL_PROJECT=${ZUUL_PROJECT////-}
+            ZUUL_BRANCH=${ZUUL_BRANCH////-}
+            # Ex: mediawiki-core/REL1_26/tox-jessie
+            CASTOR_NAMESPACE="${ZUUL_PROJECT}/${ZUUL_BRANCH}/${JOB_NAME}"
+
+            DEST="/mnt/jenkins-workspace/caches/${CASTOR_NAMESPACE}"
+
+            echo "Ensure cache directories exist on remote $REMOTE_INSTANCE"
+            ssh -q -a -T \
+              -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
+              jenkins@"${REMOTE_INSTANCE}" \
+              'mkdir -v -p .cache/pip .npm workspace/vendor/bundle'
+
+            echo "Creating directory holding cache:"
+            mkdir -v -p "${DEST}"
+
+            echo "Syncing to ${DEST}"
+            rsync \
+              --archive \
+              --compress \
+              --progress \
+              --verbose \
+              --rsh="ssh -a -T  -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
+              --delete-delay \
+              --relative \
+              jenkins@"${REMOTE_INSTANCE}":.cache/pip :.npm :workspace/vendor/bundle "${DEST}/"
+
+            echo -e "Done"
