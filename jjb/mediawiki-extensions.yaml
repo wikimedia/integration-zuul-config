@@ -80,13 +80,13 @@
              mediawiki/core
              mediawiki/vendor
              $(cat extensions_load.txt)
+     - mw-install-mysql
      - shell: "mv extensions_load.txt src/extensions_load.txt"
      - shell: |
          if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
             cd src/extensions/VisualEditor
             git submodule update --init
          fi
-     - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
 # same except for use with composer instead of cloning vendor
@@ -99,19 +99,19 @@
          projects: >
              mediawiki/core
              $(cat extensions_load.txt)
+     - composer-validate:
+         dir: 'src'
+     - mw-install-mysql
      - shell: "mv extensions_load.txt src/extensions_load.txt"
      - shell: |
          if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
             cd src/extensions/VisualEditor
             git submodule update --init
          fi
-     - composer-validate:
-         dir: 'src'
      - composer-local-create:
          deps: 'extensions_load.txt'
      - composer-update:
          dir: 'src'
-     - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
 
