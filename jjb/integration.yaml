@@ -95,7 +95,10 @@
           wipe-workspace: false
           clean:
               after: true
+    publishers:
+     - castor-save
     builders:
+     - castor-load
      - shell: |
         echo "Cleaning out previous output directories"
         rm -fR "output-parent" output-proposed
