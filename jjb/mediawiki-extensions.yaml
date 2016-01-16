@@ -245,7 +245,7 @@
 # Generic phpunit job for extensions.
 - job-template:
     name: 'mwext-testextension-{phpflavor}'
-    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
      - zuul
@@ -263,7 +263,7 @@
 # same but with composer update instead of cloning vendor
 - job-template:
     name: 'mwext-testextension-{phpflavor}-composer'
-    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
      - zuul
@@ -285,11 +285,11 @@
      - 'mwext-testextension-{phpflavor}':
         phpflavor:
             - hhvm
-            - zend
+            - php53
      - 'mwext-testextension-{phpflavor}-composer':
         phpflavor:
             - hhvm
-            - zend
+            - php53
 
 - job:
     name: 'mwext-Flow-jsduck-publish'
