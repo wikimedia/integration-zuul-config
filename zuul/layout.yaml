@@ -644,7 +644,7 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
-  - name: ^mediawiki-phpunit-zend-composer$
+  - name: ^mediawiki-phpunit-php53-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
     branch: (?!REL1_23)
 
@@ -658,10 +658,10 @@ jobs:
 
   # Jobs testing multiple extensions together
   #
-  # TODO stop triggering zend jobs for the wmf branches
+  # TODO stop triggering php53 jobs for the wmf branches
 
   # Extensions tested together, since 1.25alpha ...
-  - name: ^mediawiki-extensions-(qunit|hhvm|zend)$
+  - name: ^mediawiki-extensions-(qunit|hhvm|php53)$
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
     queue-name: mediawiki
 
@@ -1137,7 +1137,7 @@ jobs:
 
   - name: mediawiki-phpunit-hhvm
     queue-name: mediawiki
-  - name: mediawiki-phpunit-zend
+  - name: mediawiki-phpunit-php53
     queue-name: mediawiki
 
   - name: mediawiki-core-qunit
@@ -1280,10 +1280,10 @@ project-templates:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
     zend:
-      - mediawiki-extensions-zend
+      - mediawiki-extensions-php53
     gate-and-submit:
       - mediawiki-extensions-hhvm
-      - mediawiki-extensions-zend
+      - mediawiki-extensions-php53
       - mediawiki-extensions-qunit
 
   # Template for MediaWiki extensions.
@@ -1516,13 +1516,13 @@ projects:
       - mediawiki-core-npm
       - mediawiki-core-php53lint
       - mediawiki-phpunit-hhvm
-      #- mediawiki-phpunit-zend (disabled, slow, Icac172b16)
+      #- mediawiki-phpunit-php53 (disabled, slow, Icac172b16)
       - mediawiki-core-qunit
       - php-composer-package-validate
     zend:
       # Comment "check zend" to manually run this
-      - mediawiki-phpunit-zend
-      - mediawiki-phpunit-parsertests-zend
+      - mediawiki-phpunit-php53
+      - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
       - mediawiki-gate
       - mediawiki-core-jsduck
@@ -1531,8 +1531,8 @@ projects:
       - mediawiki-core-phpcs
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-hhvm-composer
-      - mediawiki-phpunit-zend
-      - mediawiki-phpunit-parsertests-zend
+      - mediawiki-phpunit-php53
+      - mediawiki-phpunit-parsertests-php53
       - mediawiki-core-qunit
       - php-composer-package-validate
     postmerge:
@@ -1543,8 +1543,8 @@ projects:
     experimental:
       # not in the test pipeline and only in gate-and-submit for performance reasons, is listed here to be able to manually trigger it
       - mediawiki-phpunit-hhvm-composer
-      # will replace mediawiki-phpunit-zend for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
-      - mediawiki-phpunit-zend-composer
+      # will replace mediawiki-phpunit-php53 for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
+      - mediawiki-phpunit-php53-composer
 
   - name: mediawiki/debian
     experimental:
@@ -1562,13 +1562,13 @@ projects:
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
     zend:
-      - mediawiki-phpunit-zend
-      - mediawiki-phpunit-parsertests-zend
+      - mediawiki-phpunit-php53
+      - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
       - php53lint
       - mediawiki-phpunit-hhvm
-      - mediawiki-phpunit-zend
-      - mediawiki-phpunit-parsertests-zend
+      - mediawiki-phpunit-php53
+      - mediawiki-phpunit-parsertests-php53
       - mediawiki-core-qunit
       - php-composer-validate
 

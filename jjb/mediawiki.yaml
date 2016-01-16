@@ -142,13 +142,13 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# Runs subset of MediaWiki tests under Zend
+# Runs subset of MediaWiki tests under PHP 5.3
 #
 # Excludes '@group ParserTests' tests which are run in parallel via
-# mediawiki-phpunit-parsertests-zend
+# mediawiki-phpunit-parsertests-php53
 - job-template:
-    name: 'mediawiki-phpunit-zend'
-    node: 'contintLabsSlave && UbuntuPrecise && phpflavor-zend'
+    name: 'mediawiki-phpunit-php53'
+    node: 'contintLabsSlave && UbuntuPrecise && phpflavor-php53'
     concurrent: true
     properties:
      - throttle-one-per-node
@@ -156,7 +156,7 @@
      - zuul
     builders:
      - assert-phpflavor:
-         phpflavor: 'zend'
+         phpflavor: 'php53'
      - hhvm-clear-hhbc
      - zuul-cloner:
          projects: >
@@ -164,20 +164,20 @@
              mediawiki/vendor
      - mw-install-mysql
      - mw-apply-settings
-     # ParserTests tests are run via 'mediawiki-phpunit-parsertests-zend'
+     # ParserTests tests are run via 'mediawiki-phpunit-parsertests-php53'
      - shell: "PHPUNIT_EXCLUDE_GROUP=ParserTests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - mw-teardown-mysql
      - archive-log-dir
 
-# mediawiki-phpunit-parsertests-zend
+# mediawiki-phpunit-parsertests-php53
 #
 # Only runs the 'parsertests' MediaWiki testsuite.
-# Complements 'mediawiki-phpunit-parsertests-zend'.
+# Complements 'mediawiki-phpunit-parsertests-php53'.
 - job-template:
-    name: 'mediawiki-phpunit-parsertests-zend'
-    node: 'contintLabsSlave && UbuntuPrecise && phpflavor-zend'
+    name: 'mediawiki-phpunit-parsertests-php53'
+    node: 'contintLabsSlave && UbuntuPrecise && phpflavor-php53'
     concurrent: true
     properties:
      - throttle-one-per-node
@@ -185,7 +185,7 @@
      - zuul
     builders:
      - assert-phpflavor:
-         phpflavor: 'zend'
+         phpflavor: 'php53'
      - hhvm-clear-hhbc
      - zuul-cloner:
          projects: >
@@ -204,7 +204,7 @@
 # wmf/ branches will use mediawiki/vendor. See T90303.
 - job-template:
     name: 'mediawiki-phpunit-{phpflavor}-composer'
-    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
     properties:
      - throttle-one-per-node
@@ -256,11 +256,11 @@
 
 - job-template:
     name: 'mediawiki-extensions-{phpflavor}'
-    # Select runnable node based on the phpflavor (hhvm or zend)
+    # Select runnable node based on the phpflavor (hhvm or php53)
     #
     # We want to reuse the same job template for both PHP flavor:
     # - HHVM flavor runs on Trusty CI labs slaves with HHVM
-    # - Zend flavor runs on Precise CI labs slaves with Zend PHP 5.3
+    # - PHP53 flavor runs on Precise CI labs slaves with Zend PHP 5.3
     #
     # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
     # definition based on the job name.
@@ -269,7 +269,7 @@
     # search for 'Restrict where this project can be run', below the input box
     # is a text: Slaves in [label]: X . Clicking [label] will list nodes
     # matching the expression.
-    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     concurrent: true
     logrotate:
         daysToKeep: 15
@@ -359,7 +359,7 @@
     name: mediawiki-core
     phpflavor:
         - hhvm
-        - zend
+        - php53
     jobs:
       - 'mediawiki-core-jslint'
       - 'mediawiki-core-qunit'
@@ -370,8 +370,8 @@
       - mediawiki-gate
       - '{name}-php53lint'
       - 'mediawiki-phpunit-hhvm'
-      - 'mediawiki-phpunit-zend'
-      - 'mediawiki-phpunit-parsertests-zend'
+      - 'mediawiki-phpunit-php53'
+      - 'mediawiki-phpunit-parsertests-php53'
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}':
           dependencies: &gatedextensions |
