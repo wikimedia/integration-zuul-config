@@ -636,11 +636,11 @@ jobs:
     files:
      - '^composer.json$'
 
-  - name: ^.*-phplint$
+  - name: ^.*-php53lint$
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
-  - name: phplint
+  - name: php53lint
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
@@ -1198,17 +1198,17 @@ project-templates:
   # Does run the unit tests on 'test' and 'gate-and-submit'
   - name: extension-unittests
     check:
-     - phplint
+     - php53lint
      - php-composer-validate
     test:
-     - phplint
+     - php53lint
      # Extensions tests with core+vendor
      #- 'mwext-{name}-testextension-hhvm'
      - 'mwext-{name}-testextension-zend'
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - phplint
+     - php53lint
      # Extensions tests with core+vendor
      #- 'mwext-{name}-testextension-hhvm'
      - 'mwext-{name}-testextension-zend'
@@ -1225,16 +1225,16 @@ project-templates:
 
   - name: extension-unittests-composer
     check:
-     - phplint
+     - php53lint
      - php-composer-validate
     test:
-     - phplint
+     - php53lint
      - mwext-testextension-zend-composer
      - mwext-testextension-hhvm-composer
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - phplint
+     - php53lint
      - mwext-testextension-zend-composer
      - mwext-testextension-hhvm-composer
      - php-composer-validate
@@ -1245,16 +1245,16 @@ project-templates:
 
   - name: extension-unittests-generic
     check:
-     - phplint
+     - php53lint
      - php-composer-validate
     test:
-     - phplint
+     - php53lint
      # Extensions tests with core+vendor
      - mwext-testextension-zend
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - phplint
+     - php53lint
      # Extensions tests with core+vendor
      - mwext-testextension-zend
      - php-composer-validate
@@ -1310,12 +1310,12 @@ project-templates:
   - name: extension-checks
     check-only:
      - 'mwext-{name}-jslint'
-     - phplint
+     - php53lint
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - 'mwext-{name}-jslint'
-     - phplint
+     - php53lint
      - php-composer-validate
 
   - name: jsduck
@@ -1327,12 +1327,12 @@ project-templates:
     # Similar to above, but no jslint.
   - name: mw-checks
     check-voter:
-     - phplint
+     - php53lint
      - jsonlint
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - phplint
+     - php53lint
      - jsonlint
      - php-composer-validate
     experimental:
@@ -1346,16 +1346,16 @@ project-templates:
     # Similar to above, but uses a check/test pipeline
   - name: mw-checks-test
     check:
-     - phplint
+     - php53lint
      - jsonlint
      - php-composer-validate
     test:
-     - phplint
+     - php53lint
      - jsonlint
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - phplint
+     - php53lint
      - jsonlint
      - php-composer-validate
     experimental:
@@ -1368,7 +1368,7 @@ project-templates:
 
   - name: composer-test
     check:
-      - phplint
+      - php53lint
       - php-composer-validate
     test:
       - php-composer-test
@@ -1394,7 +1394,7 @@ project-templates:
   - name: composer-test-package
     check:
       - php-composer-package-validate
-      - phplint
+      - php53lint
     test:
       - php-composer-test-hhvm
       - php-composer-test-php53
@@ -1466,14 +1466,14 @@ projects:
 
   - name: integration/jenkins
     check:
-      - phplint
+      - php53lint
     test:
       - tox-jessie
-      - phplint
+      - php53lint
       - phpunit
     gate-and-submit:
       - tox-jessie
-      - phplint
+      - php53lint
       - phpunit
 
   - name: integration/phpunit
@@ -1510,13 +1510,13 @@ projects:
       - name: rake
     check:
       - mediawiki-core-jslint
-      - mediawiki-core-phplint
+      - mediawiki-core-php53lint
       - php-composer-package-validate
     test:
       - mediawiki-core-phpcs
       - mediawiki-core-jsduck
       - mediawiki-core-npm
-      - mediawiki-core-phplint
+      - mediawiki-core-php53lint
       - mediawiki-phpunit-hhvm
       #- mediawiki-phpunit-zend (disabled, slow, Icac172b16)
       - mediawiki-core-qunit
@@ -1529,7 +1529,7 @@ projects:
       - mediawiki-gate
       - mediawiki-core-jsduck
       - mediawiki-core-npm
-      - mediawiki-core-phplint
+      - mediawiki-core-php53lint
       - mediawiki-core-phpcs
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-hhvm-composer
@@ -1556,10 +1556,10 @@ projects:
     template:
       - name: extension-gate
     check:
-      - phplint
+      - php53lint
       - php-composer-validate
     test:
-      - phplint
+      - php53lint
       - php-composer-validate
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
@@ -1567,7 +1567,7 @@ projects:
       - mediawiki-phpunit-zend
       - mediawiki-phpunit-parsertests-zend
     gate-and-submit:
-      - phplint
+      - php53lint
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-zend
       - mediawiki-phpunit-parsertests-zend
@@ -1614,9 +1614,9 @@ projects:
 
   - name: analytics/limn-wikidata-data
     check-voter:
-     - phplint
+     - php53lint
     gate-and-submit:
-     - phplint
+     - php53lint
 
   - name: analytics/multimedia
     template:
@@ -1688,16 +1688,16 @@ projects:
   - name: apps/ios/wikipedia
     check-voter:
       - apps-jslint
-      - apps-phplint
+      - apps-php53lint
     gate-and-submit:
       - apps-jslint
-      - apps-phplint
+      - apps-php53lint
 
   - name: labs/incubator
     check-voter:
-     - phplint
+     - php53lint
     gate-and-submit:
-     - phplint
+     - php53lint
 
   - name: labs/migration-assistant
     template:
@@ -1710,9 +1710,9 @@ projects:
   - name: labs/toollabs
     test:
      - debian-glue
-     - phplint
+     - php53lint
     gate-and-submit:
-     - phplint
+     - php53lint
 
   - name: labs/tools/extdist
     template:
@@ -1796,7 +1796,7 @@ projects:
     check:
      - jsonlint
      - jshint
-     - phplint
+     - php53lint
 
   - name: mediawiki/skins/Blueprint
     template:
@@ -1906,7 +1906,7 @@ projects:
     check:
      - jsonlint
      - jshint
-     - phplint
+     - php53lint
 
   - name: mediawiki/skins/Modern
     template:
@@ -1954,7 +1954,7 @@ projects:
     check:
      - jsonlint
      - jshint
-     - phplint
+     - php53lint
 
   - name: mediawiki/skins/Splash
     template:
@@ -1981,7 +1981,7 @@ projects:
     check:
      - jsonlint
      - jshint
-     - phplint
+     - php53lint
 
   - name: mediawiki/skins/Tomas
     template:
@@ -2005,9 +2005,9 @@ projects:
 
   - name: mediawiki/tools/code-utils
     check-voter:
-     - phplint
+     - php53lint
     gate-and-submit:
-     - phplint
+     - php53lint
 
   - name: mediawiki/tools/codesniffer
     template:
@@ -2017,9 +2017,9 @@ projects:
 
   - name: mediawiki/tools/dippybird
     check-voter:
-     - phplint
+     - php53lint
     gate-and-submit:
-     - phplint
+     - php53lint
 
   - name: mediawiki/tools/release
     template:
@@ -2028,9 +2028,9 @@ projects:
     check:
       - jsonlint
     test:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: mediawiki/tools/releng
     test:
@@ -2138,12 +2138,12 @@ projects:
 
   - name: operations/debs/wikistats
     check:
-      - phplint
+      - php53lint
     test:
-     - phplint
+     - php53lint
      - operations-debs-wikistats-debian-glue
     gate-and-submit:
-     - phplint
+     - php53lint
      - operations-debs-wikistats-debian-glue
 
   - name: operations/dns
@@ -2161,13 +2161,13 @@ projects:
 
   - name: operations/mediawiki-config
     check:
-      - operations-mw-config-phplint
+      - operations-mw-config-php53lint
       - php-composer-validate
     test:
-      - operations-mw-config-phplint
+      - operations-mw-config-php53lint
       - operations-mw-config-phpunit
     gate-and-submit:
-      - operations-mw-config-phplint
+      - operations-mw-config-php53lint
       - operations-mw-config-phpunit
     experimental:
       - php-composer-test
@@ -2263,7 +2263,7 @@ projects:
 
   - name: translatewiki
     check: &translatewiki_jobs
-      - phplint
+      - php53lint
       - translatewiki-puppet-validate
       - translatewiki-puppetlint-lenient
       - translatewiki-puppetlint-strict
@@ -2300,44 +2300,44 @@ projects:
   - name: wikimedia/fundraising/crm
     check:
       - wikimedia-fundraising-crm-jslint
-      - phplint
+      - php53lint
     test:
       - wikimedia-fundraising-crm-jslint
-      - phplint
+      - php53lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
       - wikimedia-fundraising-crm-jslint
-      - phplint
+      - php53lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/civicrm
     check:
-      - phplint
+      - php53lint
     test:
-      - phplint
+      - php53lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - phplint
+      - php53lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/drupal
     check:
-      - phplint
+      - php53lint
     test:
-      - phplint
+      - php53lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - phplint
+      - php53lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/vendor
     check:
-      - phplint
+      - php53lint
     test:
-      - phplint
+      - php53lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - phplint
+      - php53lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/slander
@@ -2357,12 +2357,12 @@ projects:
      - name: jshint
      - name: jsonlint
     check:
-     - phplint
+     - php53lint
     test:
-     - phplint
+     - php53lint
      - phpunit
     gate-and-submit:
-     - phplint
+     - php53lint
      - phpunit
 
   - name: wikimedia/wikimania-scholarships
@@ -2370,14 +2370,14 @@ projects:
      - name: jshint
      - name: jsonlint
     check:
-     - phplint
+     - php53lint
      - php-composer-validate
     test:
-     - phplint
+     - php53lint
      - phpunit
      - php-composer-validate
     gate-and-submit:
-     - phplint
+     - php53lint
      - phpunit
      - php-composer-validate
 
@@ -2658,14 +2658,14 @@ projects:
       - name: extension-unittests-generic
     check:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-validate
     test:
-      - phplint
+      - php53lint
       - php-composer-validate
     gate-and-submit:
       - mediawiki-gate
-      - phplint
+      - php53lint
       - php-composer-validate
     experimental:
       - mediawiki-extensions-hhvm
@@ -2845,7 +2845,7 @@ projects:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
     check:
-      - phplint
+      - php53lint
       - jsonlint
       - jshint
     gate-and-submit:
@@ -3626,7 +3626,7 @@ projects:
     check:
       - jshint
       - jsonlint
-      - phplint
+      - php53lint
     test:
       #- mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-zend
@@ -3829,7 +3829,7 @@ projects:
      - name: jsonlint
      - name: extension-unittests-generic
     check:
-     - phplint
+     - php53lint
 
   - name: mediawiki/extensions/ORES
     template:
@@ -5750,11 +5750,11 @@ projects:
       - name: npm
     check:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
     test:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
       - mwext-WikibaseQuality-repo-tests-sqlite-hhvm
       - mwext-WikibaseQuality-repo-tests-mysql-hhvm
@@ -5764,7 +5764,7 @@ projects:
       - mwext-WikibaseQuality-repo-tests-mysql-zend
     gate-and-submit:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
       - mwext-WikibaseQuality-repo-tests-sqlite-zend
       - mwext-WikibaseQuality-repo-tests-mysql-zend
@@ -5777,11 +5777,11 @@ projects:
       - name: npm
     check:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
     test:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
       - mwext-WikibaseQualityConstraints-repo-tests-sqlite-hhvm
       - mwext-WikibaseQualityConstraints-repo-tests-mysql-hhvm
@@ -5791,7 +5791,7 @@ projects:
       - mwext-WikibaseQualityConstraints-repo-tests-mysql-zend
     gate-and-submit:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
       - mwext-WikibaseQualityConstraints-repo-tests-sqlite-zend
       - mwext-WikibaseQualityConstraints-repo-tests-mysql-zend
@@ -5804,11 +5804,11 @@ projects:
       - name: npm
     check:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
     test:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
       - mwext-WikibaseQualityExternalValidation-repo-tests-sqlite-hhvm
       - mwext-WikibaseQualityExternalValidation-repo-tests-mysql-hhvm
@@ -5818,7 +5818,7 @@ projects:
       - mwext-WikibaseQualityExternalValidation-repo-tests-mysql-zend
     gate-and-submit:
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-package-validate
       - mwext-WikibaseQualityExternalValidation-repo-tests-sqlite-zend
       - mwext-WikibaseQualityExternalValidation-repo-tests-mysql-zend
@@ -6564,7 +6564,7 @@ projects:
     check: &semanticbundle_jobs
      - jshint
      - jsonlint
-     - phplint
+     - php53lint
      - php-composer-validate
     test: *semanticbundle_jobs
     gate-and-submit: *semanticbundle_jobs
@@ -6909,16 +6909,16 @@ projects:
       - name: npm
     check:
       - jsonlint
-      - phplint
+      - php53lint
       - perllint
       - php-composer-validate
     test:
-     - phplint
+     - php53lint
      - perllint
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - phplint
+     - php53lint
      - perllint
      - php-composer-validate
     experimental:
@@ -7115,7 +7115,7 @@ projects:
     check:
       - jshint
       - jsonlint
-      - phplint
+      - php53lint
     test:
       - mwext-VisualEditor-npm
       - mwext-VisualEditor-jsduck
@@ -7156,7 +7156,7 @@ projects:
     check:
       - jshint
       - jsonlint
-      - phplint
+      - php53lint
       - php-composer-validate
     zend:  # 'check zend'
       - mwext-Wikibase-repo-tests-mysql-zend
@@ -7164,7 +7164,7 @@ projects:
       - mwext-Wikibase-client-tests-mysql-zend
       - mwext-Wikibase-client-tests-sqlite-zend
     test:
-      - phplint
+      - php53lint
       - php-composer-validate
       - mwext-mw-selenium-composer
       - mwext-Wikibase-repo-tests-mysql-hhvm
@@ -7173,7 +7173,7 @@ projects:
       - mwext-Wikibase-client-tests-sqlite-hhvm
       - mwext-Wikibase-qunit
     gate-and-submit:
-      - phplint
+      - php53lint
       - php-composer-validate
       - mwext-mw-selenium-composer
       - mwext-Wikibase-repo-tests-mysql-zend
@@ -7372,57 +7372,57 @@ projects:
 
   - name: phabricator/arcanist
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: phabricator/extensions
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: phabricator/extensions/BurnDownCharts
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: phabricator/extensions/Sprint
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: phabricator/extensions/security
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: phabricator/libphutil
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: phabricator/phabricator
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: phabricator/test
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: phabricator/tools
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: pywikibot/compat
     template:
@@ -7464,9 +7464,9 @@ projects:
 
   - name: qrpedia
     check-voter:
-      - phplint
+      - php53lint
     gate-and-submit:
-      - phplint
+      - php53lint
 
   - name: cdb
     template:

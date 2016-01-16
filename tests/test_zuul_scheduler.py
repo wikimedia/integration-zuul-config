@@ -124,7 +124,7 @@ class TestZuulScheduler(unittest.TestCase):
     def assertProjectHasPhplint(self, name, definition, pipeline):
         self.assertTrue(
             any([job for job in definition
-                 if job.endswith('phplint') or
+                 if job.endswith('php53lint') or
                  job.startswith('php-composer-test')]),
             'Project %s pipeline %s must have either '
             'phplint or a php-composer-test-* job'
@@ -265,9 +265,9 @@ class TestZuulScheduler(unittest.TestCase):
         actual = {}
         # List of jobs allowed in check* pipelines
         safe_jobs = [
-            '(php|perl|json|yaml)lint',
+            '(php53|perl|json|yaml)lint',
             'jshint',
-            '.*-(js|perl|shell|php|)lint',
+            '.*-(js|perl|shell|php53|)lint',
             '(pp|erb)lint-HEAD',
             '.*-(tabs|typos)',
             'operations-puppet-pep8',
