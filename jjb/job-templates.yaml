@@ -135,7 +135,7 @@
 # Intended for libraries that are published as composer packages
 - job-template:
     name: 'php-composer-test-{phpflavor}'
-    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
