@@ -479,20 +479,21 @@ pipelines:
     failure:
       gerrit: {}
 
-  - name: zend
+  - name: php53
     description: >
-      Jobs manually triggered by whitelisted users commenting 'check zend'.
-      Useful for running zend tests that are only part of gate-and-submit.
+      Jobs manually triggered by whitelisted users commenting 'check php53'.
+      Useful for running PHP5.3 tests that are only part of gate-and-submit.
+      This queue was formerly called "zend", so 'check zend' also works.
     manager: IndependentPipelineManager
     trigger:
       gerrit:
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:\n\n\s*check zend\.?\s*$
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*check (php53|zend)\.?\s*$
           email: *email_whitelist
-    success-message: 'Zend build succeeded.'
+    success-message: 'PHP5.3 build succeeded.'
     success:
       gerrit: {}
-    failure-message: 'Zend build failed.'
+    failure-message: 'PHP5.3 build failed.'
     failure:
       gerrit: {}
 
@@ -1279,7 +1280,7 @@ project-templates:
     test:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
-    zend:
+    php53:
       - mediawiki-extensions-php53
     gate-and-submit:
       - mediawiki-extensions-hhvm
@@ -1519,8 +1520,8 @@ projects:
       #- mediawiki-phpunit-php53 (disabled, slow, Icac172b16)
       - mediawiki-core-qunit
       - php-composer-package-validate
-    zend:
-      # Comment "check zend" to manually run this
+    php53:
+      # Comment "check php53" to manually run this
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
@@ -1561,7 +1562,7 @@ projects:
       - php-composer-validate
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
-    zend:
+    php53:
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
@@ -5753,7 +5754,7 @@ projects:
       - mwext-WikibaseQuality-repo-tests-sqlite-hhvm
       - mwext-WikibaseQuality-repo-tests-mysql-hhvm
       - mwext-WikibaseQuality-qunit
-    zend:
+    php53:
       - mwext-WikibaseQuality-repo-tests-sqlite-php53
       - mwext-WikibaseQuality-repo-tests-mysql-php53
     gate-and-submit:
@@ -5780,7 +5781,7 @@ projects:
       - mwext-WikibaseQualityConstraints-repo-tests-sqlite-hhvm
       - mwext-WikibaseQualityConstraints-repo-tests-mysql-hhvm
       - mwext-WikibaseQualityConstraints-qunit
-    zend:
+    php53:
       - mwext-WikibaseQualityConstraints-repo-tests-sqlite-php53
       - mwext-WikibaseQualityConstraints-repo-tests-mysql-php53
     gate-and-submit:
@@ -5807,7 +5808,7 @@ projects:
       - mwext-WikibaseQualityExternalValidation-repo-tests-sqlite-hhvm
       - mwext-WikibaseQualityExternalValidation-repo-tests-mysql-hhvm
       - mwext-WikibaseQualityExternalValidation-qunit
-    zend:
+    php53:
       - mwext-WikibaseQualityExternalValidation-repo-tests-sqlite-php53
       - mwext-WikibaseQualityExternalValidation-repo-tests-mysql-php53
     gate-and-submit:
@@ -7152,7 +7153,7 @@ projects:
       - jsonlint
       - php53lint
       - php-composer-validate
-    zend:  # 'check zend'
+    php53:  # 'check php53'
       - mwext-Wikibase-repo-tests-mysql-php53
       - mwext-Wikibase-repo-tests-sqlite-php53
       - mwext-Wikibase-client-tests-mysql-php53
