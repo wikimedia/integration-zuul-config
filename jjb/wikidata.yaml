@@ -24,7 +24,7 @@
 
 - job-template:
     name: 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}'
-    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-zend && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
      - zuul
@@ -130,7 +130,7 @@
           - mysql
           - sqlite
         phpflavor:
-          - zend
+          - php53
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
      - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
@@ -142,7 +142,7 @@
           - mysql
           - sqlite
         phpflavor:
-          - zend
+          - php53
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseClient'
 
@@ -218,7 +218,7 @@
           - mysql
           - sqlite
         phpflavor:
-          - zend
+          - php53
           - hhvm
         phpunit-params: '--group WikibaseQuality'
 
@@ -249,7 +249,7 @@
           - mysql
           - sqlite
         phpflavor:
-          - zend
+          - php53
           - hhvm
         phpunit-params: '--group WikibaseQualityConstraints'
 
@@ -280,7 +280,7 @@
           - mysql
           - sqlite
         phpflavor:
-          - zend
+          - php53
           - hhvm
         phpunit-params: '--group WikibaseQualityExternalValidation'
 
