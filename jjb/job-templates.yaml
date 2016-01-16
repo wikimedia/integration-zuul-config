@@ -259,8 +259,8 @@
         fi;
 
 - job:
-    name: 'phplint'
-    node: contintLabsSlave && UbuntuPrecise
+    name: 'php53lint'
+    node: contintLabsSlave && phpflavor-php53
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -274,8 +274,8 @@
 # kept around for large repositories that need to have their
 # own workspace.
 - job-template:
-    name: '{name}-phplint'
-    node: contintLabsSlave && UbuntuPrecise
+    name: '{name}-php53lint'
+    node: contintLabsSlave && phpflavor-php53
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     properties:
