@@ -47,6 +47,7 @@ dependencies = {
                  'Capiunto'],
     'Wikidata': ['cldr', 'Elastica', 'GeoData', 'Scribunto'],
     'WikidataPageBanner': ['Wikidata'],
+    'WikimediaBadges': ['Wikibase'],
     'WikimediaPageViewInfo': ['Graph'],
 }
 
