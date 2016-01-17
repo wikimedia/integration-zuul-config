@@ -897,8 +897,6 @@ jobs:
     voting: false
   - name: ^mwext-AWS-testextension.*
     voting: false
-  - name: ^mwext-BlockAndNuke-testextension.*
-    voting: false
   - name: ^mwext-Contest-testextension.*
     voting: false
   - name: ^mwext-CryoKey-testextension.*
@@ -4092,7 +4090,8 @@ projects:
 
   - name: mediawiki/extensions/BlockAndNuke
     template:
-      - name: extension-unittests
+      - name: jsonlint
+      - name: extension-unittests-generic
 
   # meta repo containing a bunch of extensions. Would need one day a proper job
   # that loads all of them and run test suite.
@@ -4233,7 +4232,8 @@ projects:
 
   - name: mediawiki/extensions/CreateRedirect
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/CreditTab
