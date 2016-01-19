@@ -586,6 +586,7 @@
      - shell: |
         set -u
         cd "{dir}"
+        [[ -f "composer.json" ]] || exit 0
         composer update --ansi --no-progress --prefer-dist --profile -v
 
 - builder:
@@ -607,4 +608,5 @@
     name: composer-test
     builders:
      - shell: |
+        [[ -f "composer.json" ]] || exit 0
         COMPOSER_PROCESS_TIMEOUT=600 composer --ansi test
