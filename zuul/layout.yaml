@@ -5488,8 +5488,12 @@ projects:
 
   - name: mediawiki/extensions/SocialProfile
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/SoftwareVersion
     template:
