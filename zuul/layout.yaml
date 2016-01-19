@@ -871,8 +871,6 @@ jobs:
     voting: false
   - name: mwext-SlimboxThumbs-jslint
     voting: false
-  - name: mwext-SocialLogin-jslint
-    voting: false
   - name: mwext-SoundManager2Button-jslint
     voting: false
   - name: mwext-SportsTeams-jslint
@@ -5450,8 +5448,12 @@ projects:
 
   - name: mediawiki/extensions/SocialLogin
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/SocialProfile
     template:
