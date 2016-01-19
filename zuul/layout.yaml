@@ -1266,6 +1266,14 @@ project-templates:
       - npm
       - php-composer-test
 
+  # Template to run per-patch selenium browser test
+  # Intentionally not in gate because it's super slow
+  - name: extension-selenium
+    test:
+      - mwext-mw-selenium
+    postmerge:
+      - mwext-mw-selenium
+
   # Template to run jslint
   - name: extension-jslint
     check:
@@ -3035,13 +3043,10 @@ projects:
       - name: extension-qunit-generic
       - name: rake
       - name: npm
+      - name: extension-selenium
     check:
       - jsonlint
       - jshint
-    test:
-      - mwext-mw-selenium
-    postmerge:
-      - mwext-mw-selenium
 
   - name: mediawiki/extensions/EditAccount
     template:
@@ -3206,10 +3211,7 @@ projects:
       - name: rake
       - name: extension-unittests-generic
       - name: npm
-    test:
-      - mwext-mw-selenium
-    postmerge:
-      - mwext-mw-selenium
+      - name: extension-selenium
 
   - name: mediawiki/extensions/GettingStarted
     template:
@@ -3624,6 +3626,7 @@ projects:
       - name: rake
       - name: composer-test
       - name: npm
+      - name: extension-selenium
     check:
       - jshint
       - jsonlint
@@ -3631,7 +3634,6 @@ projects:
     test:
       #- mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-php53
-      - mwext-mw-selenium
     gate-and-submit:
       - mediawiki-gate
       #- mwext-MobileFrontend-testextension-hhvm
@@ -3639,7 +3641,6 @@ projects:
     postmerge:
       - mwext-MobileFrontend-publish
       - mwext-MobileFrontend-doxygen-publish
-      - mwext-mw-selenium
     experimental:
       - mwext-MobileFrontend-testextension-hhvm
 
@@ -3681,12 +3682,10 @@ projects:
       - name: jshint
       - name: jsduck
       - name: npm
+      - name: extension-selenium
     check:
       - jsonlint
-    test:
-      - mwext-mw-selenium
     postmerge:
-      - mwext-mw-selenium
       - mwext-MultimediaViewer-jsduck-publish
 
   - name: mediawiki/extensions/MwEmbedSupport
@@ -5110,13 +5109,10 @@ projects:
       - name: rake
       - name: extension-unittests-generic
       - name: npm
+      - name: extension-selenium
     check:
       - jshint
       - jsonlint
-    test:
-      - mwext-mw-selenium
-    postmerge:
-      - mwext-mw-selenium
 
   - name: mediawiki/extensions/QuickSearchLookup
     template:
@@ -6488,12 +6484,8 @@ projects:
       - jsonlint
       - jshint
     experimental:
+      # T120715
       - mwext-mw-selenium
-    # T120715
-    #test:
-    #  - mwext-mw-selenium
-    #postmerge:
-    #  - mwext-mw-selenium
 
   - name: mediawiki/extensions/RelatedSites
     template:
