@@ -87,8 +87,8 @@
          ./gradlew spoonAlphaReleaseAndroidTest
     publishers:
      - archive:
-         # Capture generated .apk, ProGuard mappings, and test results
-         artifacts: '**/build/outputs/**,**/androidTest-results/**/*.xml'
+         # Capture generated .apk, ProGuard mappings, test results, and Spoon results
+         artifacts: '**/build/outputs/**,**/androidTest-results/**/*.xml,**/build/spoon/**'
      - junit:
          results: '**/androidTest-results/**/*.xml'
      - irc-android-ci
