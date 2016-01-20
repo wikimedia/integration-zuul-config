@@ -5382,8 +5382,12 @@ projects:
 
   - name: mediawiki/extensions/SiteSettings
     template:
-      - name: extension-jslint
+      - name: composer-test
       - name: extension-unittests
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/SkelJS
     template:
