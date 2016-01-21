@@ -724,8 +724,8 @@ jobs:
 
   - name: ^.*jsonlint$
     files:
-     # Matches: *.json
-     - '^.*\.json$'
+     # Matches: *.json and *.avsc
+     - '^.*\.(json|avsc)$'
 
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
@@ -7871,6 +7871,14 @@ projects:
     check:
       - jsonlint
       - jshint
+
+  - name: mediawiki/event-schemas
+    check:
+      - jsonlint
+    test:
+      - jsonlint
+    gate-and-submit:
+      - jsonlint
 
 #### PHP Extensions ###################################################
 
