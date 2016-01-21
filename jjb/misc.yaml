@@ -234,6 +234,7 @@
         RESULT+=$?
         exit $RESULT
     publishers:
+      - webpagetest-irc
       - workspace-cleanup
 
 - job:
@@ -286,7 +287,25 @@
         RESULT+=$?
         exit $RESULT
     publishers:
+      - webpagetest-irc
       - workspace-cleanup
+
+- publisher:
+    name: webpagetest-irc
+    publishers:
+      - ircbot:
+          strategy: new-failure-and-fixed
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: 'summary'
+          matrix-notifier: only-parent
+          channels:
+            - name: '#wikimedia-perf'
+              notify-only: true
+
 -
  job:
     name: 'fail-archived-repositories'
