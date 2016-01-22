@@ -1199,6 +1199,7 @@ project-templates:
      #- 'mwext-{name}-testextension-hhvm'
      - 'mwext-{name}-testextension-php53'
      - php-composer-validate
+     - php-composer-test
     gate-and-submit:
      - mediawiki-gate
      - php53lint
@@ -1206,6 +1207,7 @@ project-templates:
      #- 'mwext-{name}-testextension-hhvm'
      - 'mwext-{name}-testextension-php53'
      - php-composer-validate
+     - php-composer-test
     experimental:
       - 'mediawiki-extensions-hhvm'
       - mediawiki-extensions-qunit
@@ -1225,12 +1227,14 @@ project-templates:
      - mwext-testextension-php53-composer
      - mwext-testextension-hhvm-composer
      - php-composer-validate
+     - php-composer-test
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - mwext-testextension-php53-composer
      - mwext-testextension-hhvm-composer
      - php-composer-validate
+     - php-composer-test
     experimental:
      - mwext-qunit-composer
      - npm
@@ -1245,12 +1249,14 @@ project-templates:
      # Extensions tests with core+vendor
      - mwext-testextension-php53
      - php-composer-validate
+     - php-composer-test
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      # Extensions tests with core+vendor
      - mwext-testextension-php53
      - php-composer-validate
+     - php-composer-test
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
@@ -1282,8 +1288,10 @@ project-templates:
     test:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+      - php-composer-test
     php53:
       - mediawiki-extensions-php53
+      - php-composer-test
     gate-and-submit:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-php53
@@ -1322,8 +1330,10 @@ project-templates:
   - name: jsduck
     test:
      - jsduck
+     - php-composer-validate
     gate-and-submit:
      - jsduck
+     - php-composer-validate
 
     # Similar to above, but no jslint.
   - name: mw-checks
@@ -1342,7 +1352,6 @@ project-templates:
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
      - npm
-     - php-composer-test
 
     # Similar to above, but uses a check/test pipeline
   - name: mw-checks-test
@@ -1354,18 +1363,19 @@ project-templates:
      - php53lint
      - jsonlint
      - php-composer-validate
+     - php-composer-test
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - jsonlint
      - php-composer-validate
+     - php-composer-test
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
      - npm
-     - php-composer-test
 
   - name: composer-test
     check:
@@ -1381,16 +1391,20 @@ project-templates:
       - jshint
     test:
       - jshint
+      - php-composer-test
     gate-and-submit:
       - jshint
+      - php-composer-test
 
   - name: jsonlint
     check:
       - jsonlint
     test:
       - jsonlint
+      - php-composer-test
     gate-and-submit:
       - jsonlint
+      - php-composer-test
 
   - name: composer-test-package
     check:
@@ -1406,8 +1420,10 @@ project-templates:
   - name: npm
     test:
       - npm
+      - php-composer-test
     gate-and-submit:
       - npm
+      - php-composer-test
 
   - name: puppet
     # FIXME add merge probably
