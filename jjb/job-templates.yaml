@@ -93,6 +93,28 @@
      - global-teardown
 
 - job:
+    name: 'npm-node-4-2'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - assert-node-version-4.2
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         node --version
+         npm --version
+         npm install
+         npm test
+    publishers:
+     - archive-log-dir
+     - castor-save
+
+- job:
     name: 'npm-run-doc'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
