@@ -27,7 +27,7 @@ echo "Running puppet"
 sudo git -C /puppet pull
 sudo /usr/local/bin/puppet-apply /opt/git/integration/config/dib/puppet/ciimage.pp
 
-echo "apt-get upgrade && clean"
+echo "apt-get dist-upgrade && clean"
 sudo apt-get -q update
-sudo apt-get -V -q -y upgrade
+sudo apt-get -V -q -y dist-upgrade
 sudo apt-get clean
