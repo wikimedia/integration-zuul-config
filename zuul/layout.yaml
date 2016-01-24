@@ -20,6 +20,7 @@ includes:
   - python-file: 'doc_functions.py'
   - python-file: 'ext_dependencies.py'
   - python-file: 'nodepool.py'
+  - python-file: 'php_version.py'
 
 
 pipelines:
@@ -582,6 +583,8 @@ jobs:
     parameter-function: set_doc_variables
   - name: ^mwext-(testextension|qunit|mw-selenium)
     parameter-function: set_ext_dependencies
+  - name: ^.*php55.*$
+    parameter-function: set_php_bin
 
   - name: ^integration-jjb-config-diff$
     parameter-function: offline_when_complete
@@ -1552,6 +1555,9 @@ projects:
       - mediawiki-phpunit-hhvm-composer
       # will replace mediawiki-phpunit-php53 for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
       - mediawiki-phpunit-php53-composer
+      - mediawiki-phpunit-php55
+      - mediawiki-phpunit-parsertests-php55
+      - mediawiki-extensions-php55
 
   - name: mediawiki/debian
     experimental:

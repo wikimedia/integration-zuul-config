@@ -261,6 +261,7 @@
     # We want to reuse the same job template for both PHP flavor:
     # - HHVM flavor runs on Trusty CI labs slaves with HHVM
     # - PHP53 flavor runs on Precise CI labs slaves with Zend PHP 5.3
+    # - PHP55 flavor runs on Trusty CI labs slaves with Zend PHP 5.5
     #
     # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
     # definition based on the job name.
@@ -360,6 +361,7 @@
     phpflavor:
         - hhvm
         - php53
+        - php55
     jobs:
       - 'mediawiki-core-jslint'
       - 'mediawiki-core-qunit'
