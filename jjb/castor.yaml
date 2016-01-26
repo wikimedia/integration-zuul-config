@@ -54,7 +54,6 @@
             echo "Syncing..."
             rsync \
               --archive \
-              --verbose \
               --compress \
               --contimeout 3 \
               rsync://castor.integration.eqiad.wmflabs:/caches/${CASTOR_NAMESPACE}/ $HOME \
@@ -128,7 +127,6 @@
             echo -e "Syncing cache\nFrom.. ${REMOTE_INSTANCE}\nTo.... ${DEST}"
             rsync \
               --archive \
-              --verbose \
               --compress \
               --rsh="ssh -a -T  -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
               --delete-delay \
