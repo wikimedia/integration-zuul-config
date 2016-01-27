@@ -890,8 +890,6 @@ jobs:
 
   - name: ^mwext-Auth_remoteuser-testextension.*
     voting: false
-  - name: ^mwext-AWS-testextension.*
-    voting: false
   - name: ^mwext-Contest-testextension.*
     voting: false
   - name: ^mwext-CryoKey-testextension.*
@@ -4094,7 +4092,10 @@ projects:
 
   - name: mediawiki/extensions/AWS
     template:
-      - name: extension-unittests
+      - name: composer-test
+      - name: extension-unittests-composer
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/AWSSDK
     template:
