@@ -66,3 +66,49 @@
       - fundraising-crm-clean
       - phpunit-junit
       - archive-log-dir
+
+- project:
+    name: donation-interface-125
+    jobs:
+        - mwext-donationinterfacecore125-testextension-php53
+
+- job:
+    name: 'mwext-donationinterfacecore125-testextension-php53'
+    # See mediawiki.yaml mediawiki-phpunit-{phpflavor}
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53) || (UbuntuTrusty && phpflavor-php53))'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: 'php53'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-125
+     - mw-run-phpunit-allexts
+    # TODO, find ways to additionaly run tests for core but
+    # without extensions tests
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- builder:
+    name: prepare-mediawiki-125
+    builders:
+        - shell: |
+            zuul-cloner --version
+            zuul-cloner \
+                --color \
+                --verbose \
+                --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+                --workspace src \
+                --project-branch mediawiki/core=fundraising/REL1_25 \
+                  https://gerrit.wikimedia.org/r/p \
+                  extensions/DonationInterface extensions/ContributionTracking extensions/ParserFunctions extensions/DonationEmailUnsubscribe extensions/cldr skins/Vector vendor
+        - mw-install-mysql
+        - shell: "cp deps.txt src/extensions_load.txt"
+        - mw-apply-settings
+        - mw-run-update-script
