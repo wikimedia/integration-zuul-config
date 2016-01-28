@@ -32,6 +32,7 @@ dependencies = {
     'MathSearch': ['Math'],
     'MobileFrontend': ['Echo', 'VisualEditor'],
     'NavigationTiming': ['EventLogging'],
+    'OpenStackManager': ['LdapAuthentication'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion'],
     'QuickSurveys': ['EventLogging'],
