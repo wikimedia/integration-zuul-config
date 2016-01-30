@@ -6753,10 +6753,19 @@ projects:
   - name: mediawiki/extensions/Scribunto
     template:
       - name: jshint
-      - name: extension-unittests-generic
+      - name: extension-gate
       - name: npm
     check:
       - jsonlint
+      - php53lint
+      - php-composer-validate
+    test:
+      - php53lint
+      - php-composer-validate
+    experimental:
+      - mwext-testextension-php53-composer
+      - mwext-testextension-hhvm-composer
+      - php-composer-test
 
   - name: mediawiki/extensions/ShortUrl
     template:
