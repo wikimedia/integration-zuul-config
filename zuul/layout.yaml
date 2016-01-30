@@ -1276,15 +1276,27 @@ project-templates:
       - 'mwext-{name}-jslint'
 
   - name: extension-gate
+    check:
+      - php53lint
+      - php-composer-validate
     test:
+      - php53lint
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+      - php-composer-validate
     php53:
       - mediawiki-extensions-php53
     gate-and-submit:
+      - php53lint
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-php53
       - mediawiki-extensions-qunit
+      - php-composer-validate
+    experimental:
+      - mwext-testextension-php53-composer
+      - mwext-testextension-hhvm-composer
+      - npm
+      - php-composer-test
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
