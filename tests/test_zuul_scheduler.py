@@ -317,6 +317,106 @@ class TestZuulScheduler(unittest.TestCase):
         event.account = {'email': 'untrusted@example.org'}
         self.assertFalse(test_manager.eventMatches(event, change))
 
+    def test_recheck_comment_untrusted_user_with_code_review(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: -Code-Review\n\nrecheck'
+        event.account = {'email': 'untrusted@example.org'}
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_code_review_vote_removed(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: -Code-Review\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_verified_vote_removed(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: -Verified\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_code_review_vote_plus_one(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Code-Review+1\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_code_review_vote_plus_two(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Code-Review+2\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_code_review_vote_minus_one(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Code-Review-1\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_code_review_vote_minus_two(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Code-Review-2\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_verified_vote_minus_two(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Verified-2\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_verified_vote_minus_one(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Verified-1\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_verified_vote_plus_one(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Verified+1\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_verified_vote_plus_2(self):
+        test_manager = self.getPipeline('test').manager
+        change = zuul.model.Change('mediawiki/core')
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Verified+2\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        self.assertFalse(test_manager.eventMatches(event, change))
+
     def test_pipelines_trustiness(self):
         check_manager = self.getPipeline('check').manager
         test_manager = self.getPipeline('test').manager
