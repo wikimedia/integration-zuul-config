@@ -492,6 +492,23 @@
      - ansicolor
      - timestamps
 
+- job:
+    name: 'mediawiki-core-parallel-lint'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - composer-update:
+        dir: '$WORKSPACE/src'
+     - shell: |
+        cd $WORKSPACE/src
+        vendor/bin/parallel-lint . --exclude vendor
+
 # Special job to run MW-CS against MediaWiki core.
 # Can't run it through composer because it'll timeout.
 - job:
