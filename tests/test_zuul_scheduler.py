@@ -133,8 +133,7 @@ class TestZuulScheduler(unittest.TestCase):
     def test_repos_have_required_jobs(self):
         repos = {
             'mediawiki/core$': [
-                self.assertProjectHasComposerValidate,
-                self.assertProjectHasPhplint
+                self.assertProjectHasComposerValidate
             ],
             'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
