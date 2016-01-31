@@ -221,7 +221,7 @@ pipelines:
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+          comment_filter: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
     success-message: 'Basic test build succeeded.'
     success:
       gerrit:
@@ -241,7 +241,7 @@ pipelines:
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+          comment_filter: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
     success-message: 'Basic test build succeeded.'
     success:
       gerrit:
@@ -442,7 +442,7 @@ pipelines:
         # Let whitelisted users the ability to reenqueue a change in the test
         # pipeline by simply commenting 'recheck' on a change.
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:\n\n\s*recheck\.?\s*$
+          comment_filter: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
           email: *email_whitelist
 
         # Let whitelisted users CR+1 to trigger tests for an untested patch
