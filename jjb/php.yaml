@@ -41,10 +41,14 @@
     triggers:
      - zuul
     builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
      - composer-validate:
-        dir: '.'
+        dir: '$WORKSPACE/src'
      - composer-update:
-        dir: '.'
+        dir: '$WORKSPACE/src'
      - composer-test
     logrotate:
         daysToKeep: 15
