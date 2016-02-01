@@ -288,7 +288,23 @@
     triggers:
      - zuul
     builders:
+     - global-setup
      - phplint
+    publishers:
+     - global-teardown
+
+- job:
+    name: 'php55lint'
+    node: contintLabsSlave && phpflavor-php55
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - global-setup
+     - phplint
+    publishers:
+     - global-teardown
 
 # Deprecated non-generic phplint job. You should
 # use the above 'phplint' job. Due to a performance issue
@@ -305,7 +321,25 @@
     triggers:
      - zuul
     builders:
+     - global-setup
      - phplint
+    publishers:
+     - global-teardown
+
+- job-template:
+    name: '{name}-php55lint'
+    node: contintLabsSlave && phpflavor-php55
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - global-setup
+     - phplint
+    publishers:
+     - global-teardown
 
 - job:
     name: 'phpunit'
