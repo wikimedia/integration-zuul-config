@@ -14,9 +14,27 @@ class { '::apt':
 }
 
 include contint::packages::base
-include contint::packages::javascript
 include contint::packages::python
 include contint::packages::ruby
+
+# Broken beyond repair
+#include contint::packages::javascript
+
+package { [
+    'nodejs',
+    'nodejs-legacy',
+    'npm',
+    ]:
+    ensure => present,
+}
+exec { 'install grunt-cli':
+    command => '/usr/bin/npm install -g grunt-cli@0.1.13',
+    require => Package['npm'],
+}
+file { '/usr/bin/grunt':
+    ensure => link,
+    target => '/usr/local/bin/grunt',
+}
 
 package { 'zuul':
   ensure => present,
