@@ -743,6 +743,12 @@ jobs:
   # Nor on contrib - that branch doesn't have any of our patches.
   - name: mwext-DonationInterface-testextension-php53
     branch: (?!^deployment$|^contrib$)
+    # This job tests DonationInterface/master against the master branches of
+    # core and the other submodules. That is not a good test of payments wiki
+    # as it runs old/forked versions of a lot of things. It is however a good
+    # advisory role to keep the scope of upgrading apparent. The voting job is
+    # mwext-donationinterfacecore125-testextension-php53 (naming things is hard)
+    voting: false
 
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
@@ -3039,6 +3045,8 @@ projects:
     check:
       - jsonlint
       - jshint
+    experimental:
+      - mwext-donationinterfacecore125-testextension-php53
 
   - name: mediawiki/extensions/DoubleWiki
     template:
