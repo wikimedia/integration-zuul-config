@@ -1168,9 +1168,11 @@ project-templates:
   - name: extension-unittests
     check:
      - php53lint
+     - php55lint
      - php-composer-validate
     test:
      - php53lint
+     - php55lint
      # Extensions tests with core+vendor
      #- 'mwext-{name}-testextension-hhvm'
      - 'mwext-{name}-testextension-php53'
@@ -1178,6 +1180,7 @@ project-templates:
     gate-and-submit:
      - mediawiki-gate
      - php53lint
+     - php55lint
      # Extensions tests with core+vendor
      #- 'mwext-{name}-testextension-hhvm'
      - 'mwext-{name}-testextension-php53'
@@ -1195,15 +1198,18 @@ project-templates:
   - name: extension-unittests-composer
     check:
      - php53lint
+     - php55lint
      - php-composer-validate
     test:
      - php53lint
+     - php55lint
      - mwext-testextension-php53-composer
      - mwext-testextension-hhvm-composer
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
+     - php55lint
      - mwext-testextension-php53-composer
      - mwext-testextension-hhvm-composer
      - php-composer-validate
@@ -1215,15 +1221,18 @@ project-templates:
   - name: extension-unittests-generic
     check:
      - php53lint
+     - php55lint
      - php-composer-validate
     test:
      - php53lint
+     - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-php53
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
+     - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-php53
      - php-composer-validate
@@ -1288,11 +1297,13 @@ project-templates:
     check-only:
      - 'mwext-{name}-jslint'
      - php53lint
+     - php55lint
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - 'mwext-{name}-jslint'
      - php53lint
+     - php55lint
      - php-composer-validate
 
   - name: jsduck
@@ -1305,11 +1316,13 @@ project-templates:
   - name: mw-checks
     check-voter:
      - php53lint
+     - php55lint
      - jsonlint
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
+     - php55lint
      - jsonlint
      - php-composer-validate
     experimental:
@@ -1324,15 +1337,18 @@ project-templates:
   - name: mw-checks-test
     check:
      - php53lint
+     - php55lint
      - jsonlint
      - php-composer-validate
     test:
      - php53lint
+     - php55lint
      - jsonlint
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
+     - php55lint
      - jsonlint
      - php-composer-validate
     experimental:
@@ -1346,6 +1362,7 @@ project-templates:
   - name: composer-test
     check:
       - php53lint
+      - php55lint
       - php-composer-validate
     test:
       - php-composer-test
@@ -1372,6 +1389,7 @@ project-templates:
     check:
       - php-composer-package-validate
       - php53lint
+      - php55lint
     test:
       - php-composer-test-hhvm
       - php-composer-test-php53
@@ -1488,12 +1506,14 @@ projects:
     check:
       - mediawiki-core-jslint
       - mediawiki-core-php53lint
+      - mediawiki-core-php55lint
       - php-composer-package-validate
     test:
       - mediawiki-core-phpcs
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-php53lint
+      - mediawiki-core-php55lint
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
       #- mediawiki-phpunit-php53 (disabled, slow, Icac172b16)
@@ -1508,6 +1528,7 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm
       - mediawiki-core-php53lint
+      - mediawiki-core-php55lint
       - mediawiki-core-phpcs
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
@@ -1539,9 +1560,11 @@ projects:
       - name: extension-gate
     check:
       - php53lint
+      - php55lint
       - php-composer-validate
     test:
       - php53lint
+      - php55lint
       - php-composer-validate
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
@@ -1551,6 +1574,7 @@ projects:
       - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
       - php53lint
+      - php55lint
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
       - mediawiki-phpunit-php53
