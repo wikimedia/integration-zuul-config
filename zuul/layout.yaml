@@ -1456,6 +1456,18 @@ projects:
       - integration-zuul-layoutdiff
       - integration-zuul-layoutvalidation-gate
 
+  - name: integration/composer
+    template:
+     - name: npm
+    check:
+     - php-composer-validate
+     - jsonlint
+    test:
+     - php-composer-validate
+    gate-and-submit:
+     - php-composer-validate
+
+
   - name: integration/dashboard
     test:
       - tox-jessie
