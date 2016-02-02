@@ -533,10 +533,8 @@
     name: phplint
     builders:
      - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
-        $PHP_BIN -v
         /srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc phtml module install \
-        | xargs -n1 -t $PHP_BIN -l
+        | xargs -n1 -t php -l
 
 - builder:
     name: tox
