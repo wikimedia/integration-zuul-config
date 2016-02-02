@@ -663,14 +663,14 @@ jobs:
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
   # PHP 5.3 builds are only triggered on REL1_23-26
-  - name: ^.*php53.*$
+  - name: ^(.*?)php53(.*?)$
     branch: (?:^REL1_2[3-6]$)
 
   - name: php53lint
     branch: (?:^REL1_2[3-6]$)
 
   # PHP 5.5 builds not triggered on REL1_23-26
-  - name: ^.*php55.*$
+  - name: ^(.*?)php55(.*?)$
     branch: (?!REL1_2[3-6]$)
     parameter-function: set_php_bin
 
