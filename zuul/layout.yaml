@@ -641,11 +641,11 @@ jobs:
     files:
      - '^composer.json$'
 
-  - name: ^.*-php53lint$
+  - name: ^.*-php5[35]lint$
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
-  - name: php53lint
+  - name: ^php5[35]lint$
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
@@ -666,8 +666,15 @@ jobs:
   - name: ^.*php53.*$
     branch: (?:^REL1_2[3-6]$)
 
+  - name: php53lint
+    branch: (?:^REL1_2[3-6]$)
+
   # PHP 5.5 builds not triggered on REL1_23-26
   - name: ^.*php55.*$
+    branch: (?!REL1_2[3-6]$)
+    parameter-function: set_php_bin
+
+  - name: php55lint
     branch: (?!REL1_2[3-6]$)
     parameter-function: set_php_bin
 
@@ -1614,6 +1621,7 @@ projects:
       - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
       - php53lint
+      - php55lint
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
       - mediawiki-phpunit-php53
