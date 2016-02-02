@@ -478,3 +478,28 @@ class TestZuulScheduler(unittest.TestCase):
             'equals.\n'
             'In Zuul: apply the template extension-gate\n'
             'In JJB: add extension to "gatedextensions"')
+
+    def test_parameter_functions(self):
+        jobs_tree = [t for (p, t) in
+                     self.getPipeline('test').job_trees.iteritems()
+                     if p.name == 'mediawiki/core'][0]
+        mwcore_jobs = jobs_tree.getJobs()
+
+        self.longMessage = True
+
+        job = [j for j in mwcore_jobs
+               if j.name == 'mediawiki-core-php55lint'][0]
+        self.assertEquals(
+            'set_php_bin',
+            job.parameter_function.func_name,
+            'php55lint job must have parameter function set_php_bin'
+        )
+
+        job = [j for j in mwcore_jobs
+               if j.name == 'mediawiki-extensions-php55'][0]
+        self.assertEquals(
+            'set_ext_dependencies',
+            job.parameter_function.func_name,
+            'Generic job mediawiki-extensions-php55 must have parameter '
+            'function set_ext_dependencies'
+        )
