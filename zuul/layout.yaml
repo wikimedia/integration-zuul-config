@@ -1014,6 +1014,14 @@ jobs:
   - name: ^operations-puppet-tox-pep8-jessie$
     voting: false
 
+  - name: operations-software-pep8
+    files:
+     - '^(.*\.py|tox.ini|.pep8|setup.cfg)$'
+    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
+
+  - name: ^operations-software-tox-pep8-jessie$
+    voting: false
+
   - name: ^perllint$
     files:
       - '^.*\.(pl|pm)$'
@@ -2255,6 +2263,13 @@ projects:
   - name: operations/puppet/zookeeper
     template:
       - name: puppet
+
+  - name: operations/software
+    check:
+      - operations-software-pep8
+    # Same for trusted user
+    test:
+      - operations-software-tox-pep8-jessie
 
   - name: operations/software/conftool
     test:
