@@ -2256,6 +2256,14 @@ projects:
     template:
       - name: puppet
 
+  - name: operations/software
+    check:
+      - operations-puppet-pep8
+    # Same for trusted user
+    test:
+      - operations-puppet-tox-pep8-jessie
+      - operations-puppet-pep8
+
   - name: operations/software/conftool
     test:
       - tox-flake8
