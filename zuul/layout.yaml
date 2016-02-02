@@ -745,6 +745,11 @@ jobs:
   # Nor on contrib - that branch doesn't have any of our patches.
   - name: mwext-DonationInterface-testextension-php53
     branch: (?!^deployment$|^contrib$)
+    # Running DI against MW master is not a good test as payments wiki runs on
+    # old versions of core and vendor. However it is a good advisory build for
+    # scoping upgrades.
+    # The voting job is "mwext-donationinterfacecore125-testextension-php53"
+    voting: false
 
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
@@ -3041,7 +3046,9 @@ projects:
     check:
       - jsonlint
       - jshint
-    experimental:
+    test:
+      - mwext-donationinterfacecore125-testextension-php53
+    gate-and-submit:
       - mwext-donationinterfacecore125-testextension-php53
 
   - name: mediawiki/extensions/DoubleWiki
