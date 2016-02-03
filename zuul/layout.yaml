@@ -17,10 +17,7 @@
 # - http://ci.openstack.org/zuul/zuul.html#configuration
 
 includes:
-  - python-file: 'doc_functions.py'
-  - python-file: 'ext_dependencies.py'
-  - python-file: 'nodepool.py'
-  - python-file: 'php_version.py'
+  - python-file: 'parameter_functions.py'
 
 
 pipelines:
@@ -581,28 +578,10 @@ jobs:
   #
   # See: http://docs.python.org/2/library/re.html#search-vs-match
 
-  - name: ^.*-publish$
-    parameter-function: set_doc_variables
-  - name: ^mwext-(testextension|qunit|mw-selenium)
-    parameter-function: set_ext_dependencies
-  - name: ^.*php55.*$
-    parameter-function: set_php_bin
-
-  - name: ^integration-jjb-config-diff$
-    parameter-function: offline_when_complete
-  - name: ^tox-.*-jessie$
-    parameter-function: offline_when_complete
-  - name: ^tox-jessie$
-    parameter-function: offline_when_complete
-  - name: ^pywikibot-core-tox-.*-jessie$
-    parameter-function: offline_when_complete
-  - name: ^pywikibot-wikibase-tox-.*-jessie$
-    parameter-function: offline_when_complete
-  - name: ^integration-config-tox-.*-jessie$
-    parameter-function: offline_when_complete
+  - name: ^.*$
+    parameter-function: set_parameters
 
   - name: ^rake-jessie$
-    parameter-function: offline_when_complete
     # Rake entry points have not been backported to wmf branches yet
     # -- hashar Nov 10th 2015
     branch: (?!^wmf/1\.27\.0-wmf\.[45])
