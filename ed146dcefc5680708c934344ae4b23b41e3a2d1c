@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ea78b8a_0b785ebe",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-03T12:59:34Z",
+      "side": 1,
+      "message": "Zuul behave differently when the regex starts with ^  I don\u0027t have the details but might be better to use:  ^.*$ which is what OpenStack infra has.\n\nThat is internally known to Zuul has \"metajobs\" though I have no clue what is the difference.\n\nLooking at the code:\n\n        # A metajob should only supply values for attributes that have\n        # been explicitly provided, so avoid setting boolean defaults.\n        if self.is_metajob:\n            self.hold_following_changes \u003d None\n            self.voting \u003d None\n        else:\n            self.hold_following_changes \u003d False\n            self.voting \u003d True\n\nI think that prevent it from overriding settings set by other jobs.",
+      "range": {
+        "startLine": 579,
+        "startChar": 10,
+        "endLine": 579,
+        "endChar": 12
+      },
+      "revId": "ed146dcefc5680708c934344ae4b23b41e3a2d1c",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4ea78b8a_eb286298",
+        "filename": "zuul/parameter_functions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-03T12:59:34Z",
+      "side": 1,
+      "message": "re.search() matches anywhere in the target. I would harness it with ^ and $ just in case :-}",
+      "revId": "ed146dcefc5680708c934344ae4b23b41e3a2d1c",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4ea78b8a_2b167a5b",
+        "filename": "zuul/parameter_functions.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-03T12:59:34Z",
+      "side": 1,
+      "message": "I guess set_php_bin() can now be inlined directly in set_parameters() as:\n\n if \u0027php55\u0027 in job.name:\n     params[\u0027PHP_BIN\u0027] \u003d \u0027php5\u0027\n\nLate we will want to set ZUUL_NODE has well to override the label the job is running on. Ie mark it as UbuntuTrusty .  But that is a different story entirely.",
+      "revId": "ed146dcefc5680708c934344ae4b23b41e3a2d1c",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
