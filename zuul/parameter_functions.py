@@ -1,4 +1,45 @@
-#!/usr/bin/env python2
+"""
+Parameter functions for zuul jobs
+
+Combined into one Python function due to T125498
+"""
+
+import re
+
+
+def set_parameters(item, job, params):
+    """
+    :type item: zuul.model.QueueItem
+    :type job: zuul.model.Job
+    :type params: dict
+    """
+    if 'php55' in job.name:
+        set_php_bin(item, job, params)
+
+    ext_deps_jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')
+    if job.name.startswith(ext_deps_jobs):
+        set_ext_dependencies(item, job, params)
+
+    if job.name in ['tox-jessie', 'rake-jessie',
+                    'integration-jjb-config-diff']:
+        offline_when_complete(item, job, params)
+    elif re.search('tox-.*-jessie', job.name):
+        offline_when_complete(item, job, params)
+
+    if job.name.endswith('-publish'):
+        set_doc_variables(item, job, params)
+
+
+def set_php_bin(item, job, params):
+    """
+    Sets a $PHP_BIN variable based on the job name
+    :type item: zuul.model.QueueItem
+    :type job: zuul.model.Job
+    :type params: dict
+    """
+    if 'php55' in job.name:
+        params['PHP_BIN'] = 'php5'
+
 
 dependencies = {
     'AbuseFilter': ['AntiSpoof'],
@@ -52,9 +93,6 @@ dependencies = {
     'WikimediaPageViewInfo': ['Graph'],
 }
 
-# Limit execution to these jobs
-jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')
-
 
 def set_ext_dependencies(item, job, params):
     """
@@ -63,9 +101,6 @@ def set_ext_dependencies(item, job, params):
     :type job: zuul.model.Job
     :type params: dict
     """
-    if not job.name.startswith(jobs):
-        return
-
     if not params['ZUUL_PROJECT'].startswith('mediawiki/extensions/'):
         return
     # mediawiki/extensions/FooBar
@@ -101,3 +136,34 @@ def get_dependencies(ext_name, mapping):
             # TODO: Max recursion limit?
             deps = deps.union(get_dependencies(dep, mapping))
     return deps
+
+
+# Instruct Jenkins Gearman plugin to put a node offline on job completion.
+# Ie for nodepool
+def offline_when_complete(item, job, params):
+    params['OFFLINE_NODE_WHEN_COMPLETE'] = '1'
+
+
+def set_doc_variables(item, job, params):
+    change = item.change
+    doc_subpath = ''
+
+    # ref-updated
+    # Tags: 'refs/tags/foo'
+    # Branch: 'master'
+    if hasattr(change, 'ref'):
+        tag = re.match(r'^refs/tags/(.*)', change.ref)
+        if tag:
+            doc_subpath = tag.group(1)
+        else:
+            doc_subpath = change.ref
+    # Changes
+    elif hasattr(change, 'refspec'):
+        doc_subpath = change.branch
+
+    if doc_subpath:
+        params['DOC_SUBPATH'] = doc_subpath
+
+    # Normalize the project name by removing /'s
+    if 'ZUUL_PROJECT' in params:
+        params['DOC_PROJECT'] = params['ZUUL_PROJECT'].replace('/', '-')
