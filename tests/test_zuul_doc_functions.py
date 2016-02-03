@@ -7,7 +7,7 @@ set_doc_variables = None  # defined for flake8
 # Import function
 execfile(os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    '../zuul/doc_functions.py'))
+    '../zuul/parameter_functions.py'))
 
 
 class TestDocFunctions(unittest.TestCase):

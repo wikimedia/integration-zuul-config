@@ -4,13 +4,12 @@ import unittest
 from fakes import FakeJob
 
 dependencies = {}  # defined for flake8
-set_ext_dependencies = None  # defined for flake8
 get_dependencies = None  # defined for flake8
-
+set_parameters = None  # defined for flake8
 # Import function
 execfile(os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    '../zuul/ext_dependencies.py'))
+    '../zuul/parameter_functions.py'))
 
 
 class TestExtDependencies(unittest.TestCase):
@@ -26,7 +25,7 @@ class TestExtDependencies(unittest.TestCase):
         else:
             params = {'ZUUL_PROJECT': 'mediawiki/extensions/Example'}
         job = FakeJob(job_name if job_name else 'mwext-testextension-hhvm')
-        set_ext_dependencies(None, job, params)
+        set_parameters(None, job, params)
         return params
 
     def test_ext_name(self):
