@@ -7707,7 +7707,7 @@ projects:
     gate-and-submit:
       - npm-run-doc
     postmerge:
-      - visualeditor-coverage
+      -  visualeditor-coverage
 
   - name: wikidata/gremlin
     test:
@@ -7741,8 +7741,10 @@ projects:
      - mwext-qunit-composer
 
   - name: wikidata/build-resources
-    check-voter:
-     - noop
+    template:
+      - name: npm
+    test:
+     - npm
     gate-and-submit:
-     - noop
+     - npm
 
