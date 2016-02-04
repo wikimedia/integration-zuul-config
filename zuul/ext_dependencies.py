@@ -5,7 +5,7 @@ dependencies = {
     'ApiFeatureUsage': ['Elastica'],
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
     'Capiunto': ['Scribunto'],
-    'Citoid': ['VisualEditor'],
+    'Citoid': ['Cite', 'VisualEditor'],
     'CirrusSearch': ['MwEmbedSupport', 'TimedMediaHandler', 'PdfHandler',
                      'Cite'],
     'CodeEditor': ['WikiEditor'],
