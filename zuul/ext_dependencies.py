@@ -94,10 +94,22 @@ def get_dependencies(ext_name, mapping):
     :param mapping: mapping of extensions to their dependencies
     :return: set of dependencies, recursively processed
     """
-    deps = set()
-    if ext_name in mapping:
-        for dep in mapping[ext_name]:
-            deps.add(dep)
-            # TODO: Max recursion limit?
-            deps = deps.union(get_dependencies(dep, mapping))
-    return deps
+    resolved = set()
+
+    def resolve_deps(ext):
+        if ext in resolved:
+            return
+
+        resolved.add(ext)
+        deps = set()
+
+        if ext in mapping:
+            for dep in mapping[ext]:
+                deps.add(dep)
+
+                if dep not in resolved:
+                    deps = deps.union(resolve_deps(dep))
+
+        return deps
+
+    return resolve_deps(ext_name)
