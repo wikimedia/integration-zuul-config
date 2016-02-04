@@ -610,6 +610,9 @@ jobs:
       - project: '^mediawiki/core$'
         branch: (?:^REL1_23$|^REL1_24$|^fundraising/REL.*)
 
+  - name: ^.*-rake-jessie$
+    parameter-function: offline_when_complete
+
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
     voting: false
@@ -1112,6 +1115,8 @@ jobs:
 
   - name: 'mwext-EventLogging-jsduck-publish'
     branch: ^master$
+  - name: 'mwext-Flow-jsduck-publish'
+    branch: ^master$
   - name: 'mwext-MobileFrontend-publish'
     branch: ^master$
   - name: 'mwext-GuidedTour-jsduck-publish'
@@ -1148,8 +1153,14 @@ jobs:
   - name: mediawiki-core-jsduck
     branch: ^(REL1_23|REL1_24|master)$
 
+  - name: flow-jsduck
+    branch: !REL1_25
+
   - name: mediawiki-core-jsduck-publish
     branch: ^(REL1_23|REL1_24|master)$
+	
+  - name: flow-rake-jessie
+    branch: !REL1_25
 
 
   # Exceptions for projects not yet passing phpunit tests
@@ -3210,13 +3221,17 @@ projects:
      - name: extension-gate
      - name: rake
      - name: extension-unittests
-     - name: jsduck
      - name: npm
     check:
      - jshint
      - jsonlint
+    test:
+     - flow-jsduck
+     - flow-rake-jessie
     gate-and-submit:
      - mediawiki-gate
+     - flow-jsduck
+     - flow-rake-jessie
     experimental:
      - mwext-mw-selenium
     postmerge:
