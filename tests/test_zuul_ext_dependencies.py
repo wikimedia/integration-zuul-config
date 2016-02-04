@@ -34,6 +34,13 @@ class TestExtDependencies(unittest.TestCase):
         self.assertIn('EXT_NAME', params)
         self.assertEqual(params['EXT_NAME'], 'Example')
 
+    def test_cyclical_dependencies(self):
+        """verifies that cyclical dependencies are possible"""
+
+        mapping = {'Foo': ['Bar'], 'Bar': ['Foo']}
+
+        self.assertEqual(get_dependencies('Foo', mapping), set(['Foo', 'Bar']))
+
     def test_resolvable_dependencies(self):
         """verifies that we can resolve all of the dependencies"""
         for ext_name in dependencies:
