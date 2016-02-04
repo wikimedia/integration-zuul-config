@@ -470,7 +470,7 @@ class TestZuulScheduler(unittest.TestCase):
             for (ext_name, pipelines) in self.getProjectsDefs().iteritems()
             if ext_name.startswith('mediawiki/extensions/')
             and 'mediawiki-extensions-hhvm' in pipelines.get('test', {})
-            ])
+        ])
 
         self.assertSetEqual(
             gated_in_zuul, jjb_deps, msg='Zuul projects triggering gate jobs '

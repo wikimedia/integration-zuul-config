@@ -5,6 +5,8 @@ from fakes import FakeJob
 
 dependencies = {}  # defined for flake8
 set_ext_dependencies = None  # defined for flake8
+get_dependencies = None  # defined for flake8
+
 # Import function
 execfile(os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -33,6 +35,13 @@ class TestExtDependencies(unittest.TestCase):
 
         self.assertIn('EXT_NAME', params)
         self.assertEqual(params['EXT_NAME'], 'Example')
+
+    def test_cyclical_dependencies(self):
+        """verifies that cyclical dependencies are possible"""
+
+        mapping = {'Foo': ['Bar'], 'Bar': ['Foo']}
+
+        self.assertEqual(get_dependencies('Foo', mapping), set(['Foo', 'Bar']))
 
     def test_resolvable_dependencies(self):
         """verifies that we can resolve all of the dependencies"""

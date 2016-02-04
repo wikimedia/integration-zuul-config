@@ -28,7 +28,7 @@ class TestZuulLayout(unittest.TestCase):
             if p['name'].startswith('mediawiki/extensions/')
             and {'name': 'npm'} in p.get('template', [])
             and {'name': 'extension-jslint'} in p.get('template', [])
-            ])
+        ])
 
         self.maxDiff = None
         self.longMessage = True
