@@ -617,6 +617,11 @@ jobs:
       - project: '^mediawiki/extensions/Flow$'
         branch: (?:^REL1_25$)
 
+  - name: ^extension-qunit-generic$
+    skip-if:
+      - project: '^mediawiki/extensions/Wikidata$'
+        branch: (?:^REL1_25$)
+
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
     voting: false
