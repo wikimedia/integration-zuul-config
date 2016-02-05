@@ -47,7 +47,7 @@
 - job:
     name: wikimedia-fundraising-civicrm
     # Run on isolated boxes because of messy MySQL behavior and unsafe fetches.
-    node: contintLabsSlave && UbuntuTrusty
+    node: 'contintLabsSlave && phpflavor-php53 && (UbuntuPrecise || UbuntuTrusty)'
     concurrent: true
     triggers:
       - zuul
