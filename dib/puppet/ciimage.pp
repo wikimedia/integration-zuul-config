@@ -27,14 +27,6 @@ package { [
     ]:
     ensure => present,
 }
-exec { 'install grunt-cli':
-    command => '/usr/bin/npm install -g grunt-cli@0.1.13',
-    require => Package['npm'],
-}
-file { '/usr/bin/grunt':
-    ensure => link,
-    target => '/usr/local/bin/grunt',
-}
 
 package { 'zuul':
   ensure => present,
