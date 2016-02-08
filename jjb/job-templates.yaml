@@ -106,12 +106,15 @@
      # FIXME: we should save node_modules and run npm prune
      - castor-load
      - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+
          node --version
          npm --version
          npm install
          npm test
     publishers:
-     - archive-log-dir
+     - archive-log-allow-empty
      - castor-save
 
 - job:
