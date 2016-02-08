@@ -156,8 +156,8 @@
 # Run composer update and composer test
 # Intended for libraries that are published as composer packages
 - job-template:
-    name: 'php-composer-test-{phpflavor}'
-    node: 'contintLabsSlave && (UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor})'
+    name: 'composer-package-{phpflavor}'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -169,9 +169,9 @@
      - composer-test
 
 - project:
-    name: 'php-composer-test-flavored'
+    name: 'composer-package-flavored'
     jobs:
-     - 'php-composer-test-{phpflavor}':
+     - 'composer-package-{phpflavor}':
         phpflavor:
             - hhvm
             - php53
