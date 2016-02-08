@@ -499,6 +499,24 @@ pipelines:
     failure:
       gerrit: {}
 
+  - name: php55
+    description: >
+      Jobs manually triggered by whitelisted users commenting 'check php55'.
+      Useful for running PHP5.5 tests that are only part of gate-and-submit.
+      This queue was formerly called "zend", so 'check zend' also works.
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*check (php55|zend)\.?\s*$
+          email: *email_whitelist
+    success-message: 'PHP5.5 build succeeded.'
+    success:
+      gerrit: {}
+    failure-message: 'PHP5.5 build failed.'
+    failure:
+      gerrit: {}
+
   # Actual gate (report/vote in Gerrit)
   # Will auto-submit change on success!
   #
