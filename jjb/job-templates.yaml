@@ -156,6 +156,31 @@
     publishers:
      - global-teardown
 
+# Similar to '{name}-{repository}-npm' but:
+# - runs on Nodepool instances
+# - uses nodejs 4.3 as a result
+- job-template:
+    name: '{name}-{repository}-npm-node-4.3'
+    node: ci-jessie-wikimedia
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - assert-node-version-4.3
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+     - npm-oid:
+         repository: '{repository}'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save
+
 # Run composer update and composer test
 # Intended for libraries that are published as composer packages
 - job-template:
