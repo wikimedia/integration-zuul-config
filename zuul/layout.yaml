@@ -6344,12 +6344,16 @@ projects:
   - name: mediawiki/services/citoid
     template:
       - name: npm
+    experimental:
+      - npm-node-4.2
 
   - name: mediawiki/services/cxserver
     template:
       - name: npm
     postmerge:
       - beta-cxserver-update-eqiad
+    experimental:
+      - npm-node-4.2
 
   - name: mediawiki/services/cxserver/deploy
     test:
@@ -6361,7 +6365,7 @@ projects:
 
   - name: mediawiki/services/graphoid
     experimental:
-      - npm
+      - npm-node-4.2
 
   - name: mediawiki/services/jobrunner
     template:
@@ -6382,6 +6386,8 @@ projects:
   - name: mediawiki/services/mobileapps
     template:
       - name: npm
+    experimental:
+      - npm-node-4.2
 
   - name: mediawiki/services/parsoid
     check:
@@ -6393,7 +6399,6 @@ projects:
       - parsoidsvc-source-roundtrip-test-check
       - parsoidsvc-source-npm-0.8
       - parsoidsvc-source-npm-0.10
-
     gate-and-submit:
       - parsoidsvc-jslint
       - parsoidsvc-php-parsertests
