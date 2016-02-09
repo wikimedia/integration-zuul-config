@@ -19,6 +19,9 @@ def set_parameters(item, job, params):
         params['PHP_BIN'] = 'php5'
     elif 'hhvm' in job.name:
         params['PHP_BIN'] = 'hhvm'
+    elif job.name == 'mediawiki-core-phpcs':
+        # T126394: This should always be HHVM
+        params['PHP_BIN'] = 'hhvm'
 
     ext_deps_jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')
     if job.name.startswith(ext_deps_jobs):
