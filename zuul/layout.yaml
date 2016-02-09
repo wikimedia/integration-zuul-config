@@ -1209,7 +1209,7 @@ project-templates:
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm
-      - composer-php53
+      - php-composer-test
 
   - name: extension-unittests-composer
     check:
@@ -1232,7 +1232,7 @@ project-templates:
     experimental:
      - mwext-qunit-composer
      - npm
-     - composer-php53
+     - php-composer-test
 
   - name: extension-unittests-generic
     check:
@@ -1259,7 +1259,7 @@ project-templates:
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm
-      - composer-php53
+      - php-composer-test
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1347,7 +1347,7 @@ project-templates:
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
      - npm
-     - composer-php53
+     - php-composer-test
 
     # Similar to above, but uses a check/test pipeline
   - name: mw-checks-test
@@ -1373,7 +1373,7 @@ project-templates:
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
      - npm
-     - composer-php53
+     - php-composer-test
 
   - name: composer-test
     check:
@@ -1381,9 +1381,9 @@ project-templates:
       - php55lint
       - php-composer-validate
     test:
-      - composer-php53
+      - php-composer-test
     gate-and-submit:
-      - composer-php53
+      - php-composer-test
 
   - name: jshint
     check:
@@ -1799,11 +1799,11 @@ projects:
 
   - name: integration/docroot
     test:
-     - composer-php53
+     - php-composer-test
      - jshint
      - jsonlint
     gate-and-submit:
-     - composer-php53
+     - php-composer-test
      - jshint
      - jsonlint
     postmerge:
@@ -2210,7 +2210,7 @@ projects:
       - operations-mw-config-php53lint
       - operations-mw-config-phpunit
     experimental:
-      - composer-php53
+      - php-composer-test
     postmerge:
       - beta-mediawiki-config-update-eqiad
 
@@ -2404,9 +2404,9 @@ projects:
 
   - name: wikimedia/fundraising/SmashPig
     test:
-     - composer-php53
+     - php-composer-test
     gate-and-submit:
-     - composer-php53
+     - php-composer-test
     experimental:
      - tox-jessie
 
@@ -7011,7 +7011,7 @@ projects:
      - mwext-testextension-hhvm
      - mwext-testextension-php53-composer
      - mwext-testextension-hhvm-composer
-     - composer-php53
+     - php-composer-test
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
