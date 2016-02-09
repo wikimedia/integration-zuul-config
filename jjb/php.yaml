@@ -32,9 +32,9 @@
         daysToKeep: 15
 
 # Generic job that runs "composer update" and "composer test"
-- job:
-    name: php-composer-test
-    node: contintLabsSlave && UbuntuPrecise
+- job-template:
+    name: 'composer-{phpflavor}'
+    node: 'contintLabsSlave && php-{phpflavor}'
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
 
@@ -48,3 +48,12 @@
      - composer-test
     logrotate:
         daysToKeep: 15
+
+- project:
+    name: 'composer-flavored'
+    jobs:
+     - 'composer-{phpflavor}':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55

@@ -116,18 +116,18 @@ class TestZuulScheduler(unittest.TestCase):
         # php-composer-test-(zend|hhvm)
         self.assertTrue(
             any([job for job in definition
-                 if job.startswith('php-composer')]),
+                 if job.startswith(('php-composer', 'composer-'))]),
             'Project %s pipeline %s must have either '
-            'php-composer-validate or a php-composer-test-* job'
+            'php-composer-validate or a composer-* job'
             % (name, pipeline))
 
     def assertProjectHasPhplint(self, name, definition, pipeline):
         self.assertTrue(
             any([job for job in definition
                  if job.endswith('php53lint') or
-                 job.startswith('php-composer-test')]),
+                 job.startswith('composer-')]),
             'Project %s pipeline %s must have either '
-            'phplint or a php-composer-test-* job'
+            'phplint or a composer-* job'
             % (name, pipeline))
 
     def test_repos_have_required_jobs(self):
