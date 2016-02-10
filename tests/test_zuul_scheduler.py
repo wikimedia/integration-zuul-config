@@ -130,6 +130,23 @@ class TestZuulScheduler(unittest.TestCase):
             'phplint or a composer-* job'
             % (name, pipeline))
 
+    def assertProjectHasPhp53TestAnd55(self, name, definition, pipeline):
+        has_53 = False
+        for job in definition:
+            if 'testextension-php53' in job:
+                has_53 = True
+                break
+        if not has_53:
+            self.assertFalse(has_53)
+            return
+        for job in definition:
+            if 'testextension-php55' in job:
+                self.assertTrue(True)
+                return
+
+        self.assertTrue(False, 'Project %s pipeline %s must have a '
+                        'php55 test job' % (name, pipeline))
+
     def test_repos_have_required_jobs(self):
         repos = {
             'mediawiki/core$': [
@@ -138,7 +155,8 @@ class TestZuulScheduler(unittest.TestCase):
             ],
             'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
-                self.assertProjectHasPhplint
+                self.assertProjectHasPhplint,
+                self.assertProjectHasPhp53TestAnd55
             ],
             'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,

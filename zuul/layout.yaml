@@ -1193,21 +1193,22 @@ project-templates:
      - php53lint
      - php55lint
      # Extensions tests with core+vendor
-     #- 'mwext-{name}-testextension-hhvm'
      - 'mwext-{name}-testextension-php53'
+     - 'mwext-{name}-testextension-php55'
+     - 'mwext-{name}-testextension-hhvm'
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - php55lint
      # Extensions tests with core+vendor
-     #- 'mwext-{name}-testextension-hhvm'
      - 'mwext-{name}-testextension-php53'
+     - 'mwext-{name}-testextension-php55'
+     - 'mwext-{name}-testextension-hhvm'
      - php-composer-validate
     experimental:
       - 'mediawiki-extensions-hhvm'
       - mediawiki-extensions-qunit
-      - 'mwext-{name}-testextension-hhvm'
       - mwext-testextension-hhvm
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
@@ -1223,6 +1224,7 @@ project-templates:
      - php53lint
      - php55lint
      - mwext-testextension-php53-composer
+     - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
      - php-composer-validate
     gate-and-submit:
@@ -1230,6 +1232,7 @@ project-templates:
      - php53lint
      - php55lint
      - mwext-testextension-php53-composer
+     - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
      - php-composer-validate
     experimental:
@@ -1247,6 +1250,8 @@ project-templates:
      - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-php53
+     - mwext-testextension-php55
+     - mwext-testextension-hhvm
      - php-composer-validate
     gate-and-submit:
      - mediawiki-gate
@@ -1254,11 +1259,12 @@ project-templates:
      - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-php53
+     - mwext-testextension-php55
+     - mwext-testextension-hhvm
      - php-composer-validate
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
-      - mwext-testextension-hhvm
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm
@@ -3707,12 +3713,14 @@ projects:
       - jsonlint
       - php53lint
     test:
-      #- mwext-MobileFrontend-testextension-hhvm
+      - mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-php53
+      - mwext-MobileFrontend-testextension-php55
     gate-and-submit:
       - mediawiki-gate
-      #- mwext-MobileFrontend-testextension-hhvm
+      - mwext-MobileFrontend-testextension-hhvm
       - mwext-MobileFrontend-testextension-php53
+      - mwext-MobileFrontend-testextension-php55
     postmerge:
       - mwext-MobileFrontend-publish
       - mwext-MobileFrontend-doxygen-publish
