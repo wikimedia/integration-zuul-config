@@ -596,6 +596,16 @@ jobs:
       - project: '^mediawiki/extensions/Flow$'
         branch: (?:^REL1_25$)
 
+  - name: ^php53lint$
+    skip-if:
+      - project: '^mediawiki/.*$'
+        branch: (?:^master$)
+
+  - name: ^php55lint$
+    skip-if:
+      - project: '^mediawiki/.*$'
+        branch: (?:^REL1_23$|^REL1_24$|^REL1_25$|^REL1_26$)
+
   # Experiment for analytics/kraken repository
   - name: analytics-kraken
     voting: false
@@ -644,7 +654,9 @@ jobs:
   - name: php55lint
     files:
      - '^.*\.(php|php5|phtml|inc)$'
-    branch: (?!REL1_2[3-6]$)
+    skip-if:
+     - project: '^mediawiki/.*$'
+       branch: (?!REL1_2[3-6]$)
 
   - name: ^mediawiki-phpunit-php53-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
@@ -660,11 +672,6 @@ jobs:
 
   - name: ^.*php55.*$
     branch: (?!REL1_2[3-6]$)
-
-  - name: ^.*php53.*$
-    skip-if:
-      - project: '^mediawiki/.*$'
-        branch: (?!REL1_2[3-6]$)
 
   # Jobs testing multiple extensions together
   #
