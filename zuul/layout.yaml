@@ -650,6 +650,9 @@ jobs:
     # Release branches do not support hhvm.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
+  - name: ^.*php55.*$
+    branch: (?!REL1_2[3-6]$)
+
   # Jobs testing multiple extensions together
   #
   # TODO stop triggering php53 jobs for the wmf branches
@@ -1283,11 +1286,13 @@ project-templates:
     test:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+      - mediawiki-extensions-php55
     php53:
       - mediawiki-extensions-php53
     gate-and-submit:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-php53
+      - mediawiki-extensions-php55
       - mediawiki-extensions-qunit
 
   # Template for MediaWiki extensions.
@@ -1542,7 +1547,8 @@ projects:
       - mediawiki-core-php55lint
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
-      #- mediawiki-phpunit-php53 (disabled, slow, Icac172b16)
+      - mediawiki-phpunit-php55
+      - mediawiki-phpunit-parsertests-php55
       - mediawiki-core-qunit
       - php-composer-package-validate
     php53:
@@ -1561,6 +1567,8 @@ projects:
       - mediawiki-phpunit-hhvm-composer
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
+      - mediawiki-phpunit-php55
+      - mediawiki-phpunit-parsertests-php55
       - mediawiki-core-qunit
       - php-composer-package-validate
     postmerge:
@@ -1573,9 +1581,6 @@ projects:
       - mediawiki-phpunit-hhvm-composer
       # will replace mediawiki-phpunit-php53 for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
       - mediawiki-phpunit-php53-composer
-      - mediawiki-phpunit-php55
-      - mediawiki-phpunit-parsertests-php55
-      - mediawiki-extensions-php55
 
   - name: mediawiki/debian
     experimental:
