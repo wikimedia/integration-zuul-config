@@ -7240,32 +7240,23 @@ projects:
     template:
       - name: npm
       - name: composer-test
+      - name: extension-unittests-composer
       - name: extension-qunit-composer
     check:
       - jshint
       - jsonlint
-      - php53lint
-      - composer-validate
     php53:  # 'check php53'
-      - mwext-Wikibase-repo-tests-mysql-php53
       - mwext-Wikibase-repo-tests-sqlite-php53
       - mwext-Wikibase-client-tests-mysql-php53
       - mwext-Wikibase-client-tests-sqlite-php53
     test:
-      - php53lint
-      - composer-validate
       - mwext-mw-selenium-composer
-      - mwext-Wikibase-repo-tests-mysql-hhvm
       - mwext-Wikibase-repo-tests-sqlite-hhvm
       - mwext-Wikibase-client-tests-mysql-hhvm
       - mwext-Wikibase-client-tests-sqlite-hhvm
     gate-and-submit:
-      - php53lint
-      - composer-validate
       - mwext-mw-selenium-composer
-      - mwext-Wikibase-repo-tests-mysql-php53
       - mwext-Wikibase-repo-tests-sqlite-php53
-      - mwext-Wikibase-repo-tests-mysql-hhvm
       - mwext-Wikibase-repo-tests-sqlite-hhvm
       - mwext-Wikibase-client-tests-mysql-php53
       - mwext-Wikibase-client-tests-sqlite-php53
