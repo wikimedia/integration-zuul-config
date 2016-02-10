@@ -54,33 +54,6 @@
         results: 'log/junit*.xml'
      - 'mw-teardown-{dbflavor}'
 
-- job-template:
-    name: 'mwext-{ext-name}-qunit'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - throttle-one-per-node
-    builders:
-     - zuul-cloner-extdeps:
-         ext-name: '{ext-name}'
-         dependencies: '{dependencies}'
-         additional-repositories: ''
-     - wd-mw-composer-merged-install
-     - mw-install-sqlite
-     - shell: "cp deps.txt src/extensions_load.txt"
-     - wd-wikibase-apply-settings:
-          repoorclient: 'repo' # qunit tests are in lib so this can be either..
-          experimental: 'true'
-     - mw-apply-settings
-     - mw-run-update-script
-     - qunit-karma
-    publishers:
-     - archive-log-dir
-     - localhost-cleanup
-     - mw-teardown
-
 # This is a modified version of '{name}-{ext-name}-qunit'.
 # It runs "composer update" before the qunit tests.
 - job:
@@ -145,9 +118,6 @@
           - php53
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseClient'
-
-     - 'mwext-{ext-name}-qunit':
-        ext-name: 'Wikibase'
 
 - job:
     name: wikidata-gremlin
