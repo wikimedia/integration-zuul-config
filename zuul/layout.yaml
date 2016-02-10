@@ -1324,6 +1324,12 @@ project-templates:
     experimental:
       - mwext-qunit-composer
 
+  - name: extension-qunit-composer
+    test:
+      - mwext-qunit-composer
+    gate-and-submit:
+      - mwext-qunit-composer
+
   # Template for MediaWiki extensions.
   # No unit tests but vote on linting.
   - name: extension-checks
@@ -2571,14 +2577,11 @@ projects:
     template:
       - name: composer-test
       - name: extension-unittests-composer
+      - name: extension-qunit-composer
       - name: npm
     check:
       - jsonlint
       - jshint
-    test:
-      - mwext-qunit-composer
-    gate-and-submit:
-      - mwext-qunit-composer
     experimental:
       - mwext-mw-selenium-composer
 
@@ -7792,11 +7795,8 @@ projects:
   - name: data-values/value-view
     template:
      - name: composer-test
+     - name: extension-qunit-composer
      - name: npm
-    test:
-     - mwext-qunit-composer
-    gate-and-submit:
-     - mwext-qunit-composer
 
   - name: wikidata/build-resources
     template:
