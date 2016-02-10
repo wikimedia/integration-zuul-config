@@ -637,6 +637,14 @@ jobs:
   - name: php53lint
     files:
      - '^.*\.(php|php5|phtml|inc)$'
+    skip-if:
+     - project: '^mediawiki/.*$'
+       branch: (?!REL1_2[3-6]$)
+
+  - name: php55lint
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+    branch: (?!REL1_2[3-6]$)
 
   - name: ^mediawiki-phpunit-php53-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
