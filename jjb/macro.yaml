@@ -246,6 +246,31 @@
                 exit 1
             fi
 
+# Assert 'php' is dbflavor
+#
+# Parameter:
+# * dbflavor: 'mysql' or 'sqlite'
+#
+- builder:
+    name: assert-dbflavor
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+
+            case "{dbflavor}" in
+                ( 'mysql' )
+                    MATCHER='^MySQl'
+                ;;
+                ( 'sqlite' )
+                    MATCHER='^SQLite'
+                ;;
+                ( * )
+                    echo "Invalid dbflavor '{dbflavor}' for JJB macro 'assert-dbflavor'"
+                    echo "Must be either 'mysql' or 'sqlite'"
+                    exit 1
+                ;;
+            esac
+
 - builder:
     name: 'hhvm-clear-hhbc'
     builders:
