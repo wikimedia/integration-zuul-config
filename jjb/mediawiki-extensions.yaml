@@ -111,7 +111,7 @@
          deps: 'extensions_load.txt'
      - composer-update:
          dir: 'src'
-     - mw-install-mysql
+     - mw-install-{dbflavor}
      - mw-apply-settings
      - mw-run-update-script
 
@@ -148,13 +148,33 @@
 
 # Generic qunit job for extensions with composer update.
 - job:
-    name: 'mwext-qunit-composer'
+    name: 'mwext-qunit-{phpflavor}-composer'
     node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
     builders:
      - prepare-mediawiki-zuul-project-no-vendor
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - qunit-karma
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- job:
+    name: 'mwext-qunit-{phpflavor}-{dbflavor}-composer'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-zuul-project-no-vendor
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - assert-dbflavor:
+         dbflavor: '{dbflavor}'
      - qunit-karma
     publishers:
      - localhost-cleanup
@@ -184,13 +204,39 @@
 
 # Generic mw-selenium job for extensions.
 - job:
-    name: 'mwext-mw-selenium-composer'
+    name: 'mwext-mw-selenium-{phpflavor}composer'
     node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
     builders:
      - prepare-mediawiki-zuul-project-no-vendor
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - zuul-cloner:
+         projects: mediawiki/skins/Vector
+     - mw-selenium
+    publishers:
+     - mw-selenium-cleanup
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+    logrotate:
+      daysToKeep: 15
+      artifactDaysToKeep: 3
+
+- job:
+    name: 'mwext-mw-selenium-{phpflavor}-{dbflavor}-composer'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-zuul-project-no-vendor
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - assert-dbflavor:
+         dbflavor: '{dbflavor}'
      - zuul-cloner:
          projects: mediawiki/skins/Vector
      - mw-selenium
@@ -279,6 +325,114 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# same but with composer update instead of cloning vendor and choise between mysql and sqlite
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-{dbflavor}-composer'
+    node: 'contintLabsSlave && phpflavor-{phpflavor} && dbflavor-{dbflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - assert-dbflavor:
+         dbflavor:
+            - mysql
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- job-template:
+    name: 'mwext-qunit-{phpflavor}-composer'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- job-template:
+    name: 'mwext-qunit-{phpflavor}-{dbflavor}-composer'
+    node: 'contintLabsSlave && phpflavor-{phpflavor} && dbflavor-{dbflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - assert-dbflavor:
+         dbflavor:
+            - mysql
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- job-template:
+    name: 'mwext-mw-selenium-{phpflavor}-composer'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- job-template:
+    name: 'mwext-mw-selenium-{phpflavor}-{dbflavor}-composer'
+    node: 'contintLabsSlave && phpflavor-{phpflavor} && dbflavor-{dbflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - assert-dbflavor:
+         dbflavor:
+            - mysql
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
 - project:
     name: 'mwext-testextension-generic'
     jobs:
@@ -292,6 +446,13 @@
             - hhvm
             - php53
             - php55
+     - 'mwext-testextension-{phpflavor}-{dbflavor}-composer':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+        dbflavor:
+            - mysql
 
 - job:
     name: 'mwext-Flow-jsduck-publish'
