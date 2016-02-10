@@ -220,7 +220,7 @@
 - job-template:
     name: '{name}-{ext-name}-testextension-{phpflavor}'
     # See mediawiki.yaml mediawiki-phpunit-{phpflavor}
-    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     properties:
      - throttle-one-per-node
@@ -245,7 +245,7 @@
 # Generic phpunit job for extensions.
 - job-template:
     name: 'mwext-testextension-{phpflavor}'
-    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
      - zuul
@@ -263,7 +263,7 @@
 # same but with composer update instead of cloning vendor
 - job-template:
     name: 'mwext-testextension-{phpflavor}-composer'
-    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
     concurrent: true
     triggers:
      - zuul
@@ -286,10 +286,12 @@
         phpflavor:
             - hhvm
             - php53
+            - php55
      - 'mwext-testextension-{phpflavor}-composer':
         phpflavor:
             - hhvm
             - php53
+            - php55
 
 - job:
     name: 'mwext-Flow-jsduck-publish'
