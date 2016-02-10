@@ -653,6 +653,11 @@ jobs:
   - name: ^.*php55.*$
     branch: (?!REL1_2[3-6]$)
 
+  - name: ^.*php53.*$
+    skip-if:
+      - project: '^mediawiki/.*$'
+        branch: (REL1_2[3-6])
+
   # Jobs testing multiple extensions together
   #
   # TODO stop triggering php53 jobs for the wmf branches
