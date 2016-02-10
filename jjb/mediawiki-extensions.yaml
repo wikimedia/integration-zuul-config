@@ -89,6 +89,27 @@
      - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
+
+- builder:
+    name: prepare-mediawiki-zuul-project-dbflavor
+    builders:
+     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+             $(cat extensions_load.txt)
+     - shell: "mv extensions_load.txt src/extensions_load.txt"
+     - shell: |
+         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
+            cd src/extensions/VisualEditor
+            git submodule update --init
+         fi
+     - 'mw-install-{dbflavor}'
+     - mw-apply-settings
+     - mw-run-update-script
+
 # same except for use with composer instead of cloning vendor
 - builder:
     name: prepare-mediawiki-zuul-project-no-vendor
@@ -112,6 +133,31 @@
      - composer-update:
          dir: 'src'
      - mw-install-mysql
+     - mw-apply-settings
+     - mw-run-update-script
+
+- builder:
+    name: prepare-mediawiki-zuul-project-no-vendor-dbflavor
+    builders:
+     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             $(cat extensions_load.txt)
+     - shell: "mv extensions_load.txt src/extensions_load.txt"
+     - shell: |
+         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
+            cd src/extensions/VisualEditor
+            git submodule update --init
+         fi
+     - composer-validate:
+         dir: 'src'
+     - composer-local-create:
+         deps: 'extensions_load.txt'
+     - composer-update:
+         dir: 'src'
+     - 'mw-install-{dbflavor}'
      - mw-apply-settings
      - mw-run-update-script
 
@@ -247,6 +293,25 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-{dbflavor}'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-dbflavor
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - 'mw-teardown-{dbflavor}'
+     - archive-log-dir
+
 # Same as above, but with non-voting suffix because it's non-voting
 - job-template:
     name: 'mwext-testextension-{phpflavor}-non-voting'
@@ -267,6 +332,24 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-{dbflavor}-non-voting'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-dbflavor
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - 'mw-teardown-{dbflavor}'
+     - archive-log-dir
 
 # same but with composer update instead of cloning vendor
 - job-template:
@@ -287,6 +370,24 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-{dbflavor}-composer'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor-dbflavor
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - 'mw-teardown-{dbflavor}'
+     - archive-log-dir
+
 - project:
     name: 'mwext-testextension-generic'
     jobs:
@@ -295,16 +396,40 @@
             - hhvm
             - php53
             - php55
+     - 'mwext-testextension-{phpflavor}-{dbflavor}':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+        dbflavor:
+            - mysql
+            - sqlite
      - 'mwext-testextension-{phpflavor}-non-voting':
         phpflavor:
             - hhvm
             - php53
             - php55
+     - 'mwext-testextension-{phpflavor}-{dbflavor}-non-voting':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+        dbflavor:
+            - mysql
+            - sqlite
      - 'mwext-testextension-{phpflavor}-composer':
         phpflavor:
             - hhvm
             - php53
             - php55
+     - 'mwext-testextension-{phpflavor}-{dbflavor}-composer':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+        dbflavor:
+            - mysql
+            - sqlite
 
 - job:
     name: 'mwext-jsduck-publish'
