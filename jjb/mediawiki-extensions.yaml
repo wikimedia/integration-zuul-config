@@ -111,7 +111,7 @@
          deps: 'extensions_load.txt'
      - composer-update:
          dir: 'src'
-     - mw-install-mysql
+     - mw-install-{dbflavor}
      - mw-apply-settings
      - mw-run-update-script
 
@@ -155,6 +155,7 @@
      - zuul
     builders:
      - prepare-mediawiki-zuul-project-no-vendor
+         dbflavor: 'mysql'
      - qunit-karma
     publishers:
      - localhost-cleanup
@@ -191,6 +192,7 @@
      - zuul
     builders:
      - prepare-mediawiki-zuul-project-no-vendor
+         dbflavor: 'mysql'
      - zuul-cloner:
          projects: mediawiki/skins/Vector
      - mw-selenium
@@ -272,6 +274,26 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project-no-vendor
+         dbflavor: 'mysql'
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+# same but with composer update instead of cloning vendor and choise between mysql and sqlite
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-{dbflavor}-composer'
+    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+         dbflavor: '{dbflavor}'
      - mw-run-phpunit-allexts
     publishers:
      - junit:
