@@ -622,11 +622,11 @@ jobs:
     files:
      - '^.*\.pp$'
 
-  - name: ^php-composer-validate$
+  - name: ^composer-validate$
     files:
      - '^composer.json$'
 
-  - name: ^php-composer-package-validate$
+  - name: ^composer-package-validate$
     files:
      - '^composer.json$'
 
@@ -1193,7 +1193,7 @@ project-templates:
     check:
      - php53lint
      - php55lint
-     - php-composer-validate
+     - composer-validate
     test:
      - php53lint
      - php55lint
@@ -1201,7 +1201,7 @@ project-templates:
      - 'mwext-{name}-testextension-php53'
      - 'mwext-{name}-testextension-php55'
      - 'mwext-{name}-testextension-hhvm'
-     - php-composer-validate
+     - composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
@@ -1210,7 +1210,7 @@ project-templates:
      - 'mwext-{name}-testextension-php53'
      - 'mwext-{name}-testextension-php55'
      - 'mwext-{name}-testextension-hhvm'
-     - php-composer-validate
+     - composer-validate
     experimental:
       - 'mediawiki-extensions-hhvm'
       - mediawiki-extensions-qunit
@@ -1224,14 +1224,14 @@ project-templates:
     check:
      - php53lint
      - php55lint
-     - php-composer-validate
+     - composer-validate
     test:
      - php53lint
      - php55lint
      - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
-     - php-composer-validate
+     - composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
@@ -1239,7 +1239,7 @@ project-templates:
      - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
-     - php-composer-validate
+     - composer-validate
     experimental:
      - mwext-qunit-composer
      - npm
@@ -1249,7 +1249,7 @@ project-templates:
     check:
      - php53lint
      - php55lint
-     - php-composer-validate
+     - composer-validate
     test:
      - php53lint
      - php55lint
@@ -1257,7 +1257,7 @@ project-templates:
      - mwext-testextension-php53
      - mwext-testextension-php55
      - mwext-testextension-hhvm
-     - php-composer-validate
+     - composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
@@ -1266,7 +1266,7 @@ project-templates:
      - mwext-testextension-php53
      - mwext-testextension-php55
      - mwext-testextension-hhvm
-     - php-composer-validate
+     - composer-validate
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
@@ -1330,13 +1330,13 @@ project-templates:
      - 'mwext-{name}-jslint'
      - php53lint
      - php55lint
-     - php-composer-validate
+     - composer-validate
     gate-and-submit:
      - mediawiki-gate
      - 'mwext-{name}-jslint'
      - php53lint
      - php55lint
-     - php-composer-validate
+     - composer-validate
 
   - name: jsduck
     test:
@@ -1350,13 +1350,13 @@ project-templates:
      - php53lint
      - php55lint
      - jsonlint
-     - php-composer-validate
+     - composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - php55lint
      - jsonlint
-     - php-composer-validate
+     - composer-validate
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
@@ -1371,18 +1371,18 @@ project-templates:
      - php53lint
      - php55lint
      - jsonlint
-     - php-composer-validate
+     - composer-validate
     test:
      - php53lint
      - php55lint
      - jsonlint
-     - php-composer-validate
+     - composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - php55lint
      - jsonlint
-     - php-composer-validate
+     - composer-validate
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
@@ -1395,7 +1395,7 @@ project-templates:
     check:
       - php53lint
       - php55lint
-      - php-composer-validate
+      - composer-validate
     test:
       - composer-php53
     gate-and-submit:
@@ -1419,7 +1419,7 @@ project-templates:
 
   - name: composer-test-package
     check:
-      - php-composer-package-validate
+      - composer-package-validate
       - php53lint
       - php55lint
     test:
@@ -1549,7 +1549,7 @@ projects:
       - mediawiki-core-jslint
       - mediawiki-core-php53lint
       - mediawiki-core-php55lint
-      - php-composer-package-validate
+      - composer-package-validate
     test:
       - mediawiki-core-phpcs
       - mediawiki-core-jsduck
@@ -1561,7 +1561,7 @@ projects:
       - mediawiki-phpunit-php55
       - mediawiki-phpunit-parsertests-php55
       - mediawiki-core-qunit
-      - php-composer-package-validate
+      - composer-package-validate
     php53:
       # Comment "check php53" to manually run this
       - mediawiki-phpunit-php53
@@ -1581,7 +1581,7 @@ projects:
       - mediawiki-phpunit-php55
       - mediawiki-phpunit-parsertests-php55
       - mediawiki-core-qunit
-      - php-composer-package-validate
+      - composer-package-validate
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
@@ -1603,11 +1603,11 @@ projects:
     check:
       - php53lint
       - php55lint
-      - php-composer-validate
+      - composer-validate
     test:
       - php53lint
       - php55lint
-      - php-composer-validate
+      - composer-validate
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
@@ -1622,7 +1622,7 @@ projects:
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
       - mediawiki-core-qunit
-      - php-composer-validate
+      - composer-validate
 
   - name: analytics/aggregator
     template:
@@ -2218,7 +2218,7 @@ projects:
   - name: operations/mediawiki-config
     check:
       - operations-mw-config-php53lint
-      - php-composer-validate
+      - composer-validate
     test:
       - operations-mw-config-php53lint
       - operations-mw-config-phpunit
@@ -2445,15 +2445,15 @@ projects:
      - name: jsonlint
     check:
      - php53lint
-     - php-composer-validate
+     - composer-validate
     test:
      - php53lint
      - phpunit
-     - php-composer-validate
+     - composer-validate
     gate-and-submit:
      - php53lint
      - phpunit
-     - php-composer-validate
+     - composer-validate
 
   - name: wikimedia/textcat
     template:
@@ -2733,14 +2733,14 @@ projects:
     check:
       - jsonlint
       - php53lint
-      - php-composer-validate
+      - composer-validate
     test:
       - php53lint
-      - php-composer-validate
+      - composer-validate
     gate-and-submit:
       - mediawiki-gate
       - php53lint
-      - php-composer-validate
+      - composer-validate
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
@@ -5852,11 +5852,11 @@ projects:
     check:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
     test:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
       - mwext-WikibaseQuality-repo-tests-sqlite-hhvm
       - mwext-WikibaseQuality-repo-tests-mysql-hhvm
       - mwext-WikibaseQuality-qunit
@@ -5866,7 +5866,7 @@ projects:
     gate-and-submit:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
       - mwext-WikibaseQuality-repo-tests-sqlite-php53
       - mwext-WikibaseQuality-repo-tests-mysql-php53
       - mwext-WikibaseQuality-repo-tests-sqlite-hhvm
@@ -5879,11 +5879,11 @@ projects:
     check:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
     test:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
       - mwext-WikibaseQualityConstraints-repo-tests-sqlite-hhvm
       - mwext-WikibaseQualityConstraints-repo-tests-mysql-hhvm
       - mwext-WikibaseQualityConstraints-qunit
@@ -5893,7 +5893,7 @@ projects:
     gate-and-submit:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
       - mwext-WikibaseQualityConstraints-repo-tests-sqlite-php53
       - mwext-WikibaseQualityConstraints-repo-tests-mysql-php53
       - mwext-WikibaseQualityConstraints-repo-tests-sqlite-hhvm
@@ -5906,11 +5906,11 @@ projects:
     check:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
     test:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
       - mwext-WikibaseQualityExternalValidation-repo-tests-sqlite-hhvm
       - mwext-WikibaseQualityExternalValidation-repo-tests-mysql-hhvm
       - mwext-WikibaseQualityExternalValidation-qunit
@@ -5920,7 +5920,7 @@ projects:
     gate-and-submit:
       - jsonlint
       - php53lint
-      - php-composer-package-validate
+      - composer-package-validate
       - mwext-WikibaseQualityExternalValidation-repo-tests-sqlite-php53
       - mwext-WikibaseQualityExternalValidation-repo-tests-mysql-php53
       - mwext-WikibaseQualityExternalValidation-repo-tests-sqlite-hhvm
@@ -6667,7 +6667,7 @@ projects:
      - jshint
      - jsonlint
      - php53lint
-     - php-composer-validate
+     - composer-validate
     test: *semanticbundle_jobs
     gate-and-submit: *semanticbundle_jobs
 
@@ -7013,16 +7013,16 @@ projects:
       - jsonlint
       - php53lint
       - perllint
-      - php-composer-validate
+      - composer-validate
     test:
      - php53lint
      - perllint
-     - php-composer-validate
+     - composer-validate
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - perllint
-     - php-composer-validate
+     - composer-validate
     experimental:
      - mediawiki-extensions-hhvm
      - mediawiki-extensions-qunit
@@ -7270,7 +7270,7 @@ projects:
       - jshint
       - jsonlint
       - php53lint
-      - php-composer-validate
+      - composer-validate
     php53:  # 'check php53'
       - mwext-Wikibase-repo-tests-mysql-php53
       - mwext-Wikibase-repo-tests-sqlite-php53
@@ -7278,7 +7278,7 @@ projects:
       - mwext-Wikibase-client-tests-sqlite-php53
     test:
       - php53lint
-      - php-composer-validate
+      - composer-validate
       - mwext-mw-selenium-composer
       - mwext-Wikibase-repo-tests-mysql-hhvm
       - mwext-Wikibase-repo-tests-sqlite-hhvm
@@ -7287,7 +7287,7 @@ projects:
       - mwext-Wikibase-qunit
     gate-and-submit:
       - php53lint
-      - php-composer-validate
+      - composer-validate
       - mwext-mw-selenium-composer
       - mwext-Wikibase-repo-tests-mysql-php53
       - mwext-Wikibase-repo-tests-sqlite-php53

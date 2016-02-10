@@ -3,8 +3,8 @@
 # Job for libraries that are published as composer packages.
 # Includes full validation that packagist.org requires.
 - job:
-    name: php-composer-package-validate
-    node: contintLabsSlave && UbuntuPrecise
+    name: composer-package-validate
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
 
@@ -18,8 +18,8 @@
 # Job for anything with a composer.json, but *isn't* going to be
 # published on packagist.org.
 - job:
-    name: php-composer-validate
-    node: contintLabsSlave && UbuntuPrecise
+    name: composer-validate
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
 
