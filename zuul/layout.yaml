@@ -1450,6 +1450,17 @@ project-templates:
       - composer-package-php53
       - composer-package-php55
 
+  - name: composer-test-package55
+    check:
+      - composer-package-validate
+      - php55lint
+    test:
+      - composer-package-hhvm
+      - composer-package-php55
+    gate-and-submit:
+      - composer-package-hhvm
+      - composer-package-php55
+
   - name: npm
     test:
       - npm
@@ -7621,7 +7632,7 @@ projects:
 
   - name: HtmlFormatter
     template:
-     - name: composer-test-package
+     - name: composer-test-package55
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
