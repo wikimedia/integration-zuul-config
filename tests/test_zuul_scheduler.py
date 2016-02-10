@@ -147,6 +147,14 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(False, 'Project %s pipeline %s must have a '
                         'php55 test job' % (name, pipeline))
 
+    def assertProjectHasNoExtensionTests(self, name, definition, pipeline):
+        self.assertFalse(
+            all([job for job in definition
+                 if 'testextension' in job]),
+            'Project %s pipeline %s cannot have "testextension" jobs'
+            % (name, pipeline)
+        )
+
     def test_repos_have_required_jobs(self):
         repos = {
             'mediawiki/core$': [
@@ -160,7 +168,8 @@ class TestZuulScheduler(unittest.TestCase):
             ],
             'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,
-                self.assertProjectHasPhplint
+                self.assertProjectHasPhplint,
+                self.assertProjectHasNoExtensionTests
             ],
             'mediawiki/vendor$': [
                 self.assertProjectHasComposerValidate,
