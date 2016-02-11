@@ -481,21 +481,21 @@ pipelines:
     failure:
       gerrit: {}
 
-  - name: php53
+  - name: php5
     description: >
-      Jobs manually triggered by whitelisted users commenting 'check php53'.
-      Useful for running PHP5.3 tests that are only part of gate-and-submit.
+      Jobs manually triggered by whitelisted users commenting 'check php5'.
+      Useful for running PHP5 tests that are only part of gate-and-submit.
       This queue was formerly called "zend", so 'check zend' also works.
     manager: IndependentPipelineManager
     trigger:
       gerrit:
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:\n\n\s*check (php53|zend)\.?\s*$
+          comment_filter: (?im)^Patch Set \d+:\n\n\s*check (php53?|zend)\.?\s*$
           email: *email_whitelist
-    success-message: 'PHP5.3 build succeeded.'
+    success-message: 'PHP5 build succeeded.'
     success:
       gerrit: {}
-    failure-message: 'PHP5.3 build failed.'
+    failure-message: 'PHP5 build failed.'
     failure:
       gerrit: {}
 
@@ -1306,8 +1306,8 @@ project-templates:
     test:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+    php5:
       - mediawiki-extensions-php55
-    php53:
       - mediawiki-extensions-php53
     gate-and-submit:
       - mediawiki-extensions-hhvm
@@ -1587,12 +1587,12 @@ projects:
       - mediawiki-core-php55lint
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
-      - mediawiki-phpunit-php55
-      - mediawiki-phpunit-parsertests-php55
       - mediawiki-core-qunit
       - composer-package-validate
-    php53:
-      # Comment "check php53" to manually run this
+    php5:
+      # Comment "check php5" to manually run this
+      - mediawiki-phpunit-php55
+      - mediawiki-phpunit-parsertests-php55
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
@@ -1640,7 +1640,9 @@ projects:
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
-    php53:
+    php5:
+      - mediawiki-phpunit-php55
+      - mediawiki-phpunit-parsertests-php55
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
@@ -1648,6 +1650,8 @@ projects:
       - php55lint
       - mediawiki-phpunit-hhvm
       - mediawiki-phpunit-parsertests-hhvm
+      - mediawiki-phpunit-php55
+      - mediawiki-phpunit-parsertests-php55
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
       - mediawiki-core-qunit
@@ -7255,7 +7259,7 @@ projects:
     check:
       - jshint
       - jsonlint
-    php53:  # 'check php53'
+    php5:  # 'check php5'
       - mwext-Wikibase-repo-tests-sqlite-php53
       - mwext-Wikibase-client-tests-mysql-php53
       - mwext-Wikibase-client-tests-sqlite-php53
