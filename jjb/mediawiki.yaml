@@ -5,19 +5,6 @@
 # submodules we do not care about. See bug 42455.
 
 - job-template:
-    name: 'mediawiki-core-jslint'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    logrotate:
-        daysToKeep: 15
-    triggers:
-     - zuul
-    builders:
-     - jshint
-     - jsonlint
-
-- job-template:
     name: 'mediawiki-core-npm'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
@@ -363,7 +350,6 @@
         - php53
         - php55
     jobs:
-      - 'mediawiki-core-jslint'
       - 'mediawiki-core-qunit'
       - 'mediawiki-core-jsduck'
       - 'mediawiki-core-npm'
