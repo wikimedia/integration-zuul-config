@@ -24,7 +24,7 @@
 
 - job-template:
     name: 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}'
-    node: 'contintLabsSlave && ((UbuntuPrecise && phpflavor-php53 && phpflavor-{phpflavor}) || (UbuntuTrusty && phpflavor-hhvm && phpflavor-{phpflavor}))'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
     concurrent: true
     triggers:
      - zuul
