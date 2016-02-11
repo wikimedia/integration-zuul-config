@@ -124,7 +124,7 @@ class TestZuulScheduler(unittest.TestCase):
     def assertProjectHasPhplint(self, name, definition, pipeline):
         self.assertTrue(
             any([job for job in definition
-                 if job.endswith(('php53lint', 'php55lint')) or
+                 if job.endswith(('php53lint', 'php55lint', 'parallel-lint')) or
                  job.startswith('composer-')]),
             'Project %s pipeline %s must have either '
             'phplint or a composer-* job'
