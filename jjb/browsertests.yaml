@@ -351,6 +351,7 @@
 - project:
     name: RelatedArticles
     defaults: browsertests
+    browser: chrome
     folder: tests
     headless: 'false'
     mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
@@ -361,7 +362,8 @@
 
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: chrome
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        mediawiki_url: en.wikipedia.beta.wmflabs.org
 
 # UploadWizard
 - project:
