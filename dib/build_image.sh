@@ -34,6 +34,8 @@ export IMAGE_TYPE="qcow2"
 
 export DIB_CLOUD_INIT_DATASOURCES='Ec2'
 
+export DIB_DEBIAN_COMPONENTS='main,non-free,contrib'
+
 export DIB_DEV_USER_USERNAME='jenkins'
 export DIB_DEV_USER_AUTHORIZED_KEYS='dib_jenkins_id_rsa.pub'
 export DIB_DEV_USER_SHELL='/bin/bash'
