@@ -398,10 +398,13 @@
 
 - job:
     name: 'mediawiki-core-code-coverage'
-    node: contintLabsSlave && UbuntuPrecise  # Zend PHP 5.3.x
+    node: contintLabsSlave && UbuntuTrusty
     # Set env variables needed by zuul-cloner since job is not triggered by
     # Zuul but is timed using Jenkins own scheduler.
     parameters:
+     - string:
+         name: 'PHP_BIN'
+         default: '/usr/bin/php5'
      - string:
          name: 'ZUUL_UUID'
          default: 'mwcore-cover_not-very-random'
