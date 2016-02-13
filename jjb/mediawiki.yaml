@@ -461,7 +461,6 @@
         mkdir -p "$WORKSPACE/cover"
 
         nice -n 19 php $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
-            --with-phpunitdir /srv/deployment/integration/phpunit/vendor/phpunit/phpunit \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
             --coverage-clover log/clover.xml \
             --coverage-html "$WORKSPACE/cover" \
