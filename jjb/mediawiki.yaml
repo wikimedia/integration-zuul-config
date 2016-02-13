@@ -123,6 +123,7 @@
              mediawiki/vendor
      - mw-install-mysql
      - mw-apply-settings
+     - mw-fetch-composer-dev
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
@@ -151,6 +152,7 @@
              mediawiki/vendor
      - mw-install-mysql
      - mw-apply-settings
+     - mw-fetch-composer-dev
      # ParserTests tests are run via 'mediawiki-phpunit-parsertests-phpflavor'
      - shell: "PHPUNIT_EXCLUDE_GROUP=ParserTests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
@@ -180,6 +182,7 @@
              mediawiki/vendor
      - mw-install-mysql
      - mw-apply-settings
+     - mw-fetch-composer-dev
      - shell: "PHPUNIT_TESTSUITE=parsertests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
@@ -280,6 +283,7 @@
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
      - mw-run-update-script
+     - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
     publishers:
      - junit:
@@ -335,6 +339,7 @@
              integration/phpunit
      - mw-install-mysql
      - mw-apply-settings
+     - mw-fetch-composer-dev
      - shell: |
          export PHPUNIT_DIR="$WORKSPACE/src/integration/phpunit/vendor/phpunit/phpunit"
          /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh
@@ -433,6 +438,7 @@
              mediawiki/vendor
      - mw-install-sqlite
      - mw-apply-settings
+     - mw-fetch-composer-dev
      # FIXME should use the mw-phpunit.sh wrapper
      - shell: |
         . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
