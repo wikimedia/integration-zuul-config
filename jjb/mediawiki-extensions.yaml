@@ -615,18 +615,6 @@
              - php53
              - php55
 
-     # deprecated qunit jobs for MediaWiki extensions
-     # Should be migrated to use the generic 'mwext-qunit' job whith
-     # dependencies defined in zuul/ext_dependencies.py .
-
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: MobileFrontend
-     - '{name}-{ext-name}-qunit':
-        name: mwext
-        ext-name: Thanks
-        dependencies: 'Echo,Flow,MobileFrontend,VisualEditor,GuidedTour,AbuseFilter,SpamBlacklist,CheckUser,EventLogging,ConfirmEdit'
-
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
 
