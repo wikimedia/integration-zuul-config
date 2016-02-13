@@ -3739,6 +3739,7 @@ projects:
     template:
       - name: extension-gate
       - name: extension-qunit
+      - name: extension-unittests
       - name: rake
       - name: composer-test
       - name: npm
@@ -3746,21 +3747,9 @@ projects:
     check:
       - jshint
       - jsonlint
-      - php53lint
-    test:
-      - mwext-MobileFrontend-testextension-hhvm
-      - mwext-MobileFrontend-testextension-php53
-      - mwext-MobileFrontend-testextension-php55
-    gate-and-submit:
-      - mediawiki-gate
-      - mwext-MobileFrontend-testextension-hhvm
-      - mwext-MobileFrontend-testextension-php53
-      - mwext-MobileFrontend-testextension-php55
     postmerge:
       - mwext-MobileFrontend-publish
       - mwext-MobileFrontend-doxygen-publish
-    experimental:
-      - mwext-MobileFrontend-testextension-hhvm
 
   - name: mediawiki/extensions/MobileApp
     template:
