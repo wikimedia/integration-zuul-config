@@ -123,6 +123,34 @@
              mediawiki/vendor
      - mw-install-mysql
      - mw-apply-settings
+     - mw-fetch-composer-dev
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Experimental version for T112895
+- job-template:
+    name: 'krinkle-mediawiki-phpunit-hhvm-composer-dev'
+    node: 'contintLabsSlave && UbuntuTrusty && phpflavor-hhvm'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: 'hhvm'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     # +
+     - mw-fetch-composer-dev
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
@@ -359,6 +387,7 @@
       - '{name}-php53lint'
       - '{name}-php55lint'
       - 'mediawiki-phpunit-{phpflavor}'
+      - 'krinkle-mediawiki-phpunit-hhvm-composer-dev'
       - 'mediawiki-phpunit-parsertests-{phpflavor}'
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}':

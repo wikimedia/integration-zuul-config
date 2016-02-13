@@ -443,6 +443,17 @@
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh"
 
 - builder:
+    name: mw-fetch-composer-dev
+    builders:
+    # MOVE TO:- shell: "/srv/deployment/integration/slave-scripts/bin/mw-fetch-composer-dev.sh"
+     - shell: |
+        #!/bin/bash -eu
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
+        cd "$MW_INSTALL_PATH/vendor"
+        # Load require-dev packages on top of mediawiki/vendor (T112895)
+        jq -r '.["require-dev"]|to_entries|map([.key,.value])[]|join("=")' ../composer.json | xargs composer require --ansi --no-progress --prefer-dist -v
+
+- builder:
     name: mw-run-update-script
     builders:
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
