@@ -260,6 +260,27 @@
         results: 'log/junit*.xml'
      - mw-teardown-mysql
      - archive-log-dir
+
+# Same as above, but with non-voting suffix because it's non-voting
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-non-voting'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+
 # same but with composer update instead of cloning vendor
 - job-template:
     name: 'mwext-testextension-{phpflavor}-composer'
@@ -283,6 +304,11 @@
     name: 'mwext-testextension-generic'
     jobs:
      - 'mwext-testextension-{phpflavor}':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - 'mwext-testextension-{phpflavor}-non-voting':
         phpflavor:
             - hhvm
             - php53
@@ -438,10 +464,8 @@
     dependencies: ""
 
     ext-name:
-     - Auth_remoteuser
      - AWS
      - Babel
-     - BookManager
      - CheckUser
      - CiteThisPage
      - cldr

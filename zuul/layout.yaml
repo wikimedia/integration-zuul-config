@@ -581,6 +581,9 @@ jobs:
   - name: ^.*$
     parameter-function: set_parameters
 
+  - name: ^.*-non-voting$
+    voting: false
+
   - name: ^rake-jessie$
     # Rake entry points have not been backported to wmf branches yet
     # -- hashar Nov 10th 2015
@@ -1275,6 +1278,36 @@ project-templates:
      - mwext-testextension-php53
      - mwext-testextension-php55
      - mwext-testextension-hhvm
+     - composer-validate
+    experimental:
+      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-qunit
+      - mwext-testextension-php53-composer
+      - mwext-testextension-hhvm-composer
+      - npm
+      - composer-php53
+
+  - name: extension-unittests-non-voting
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     # Extensions tests with core+vendor
+     - mwext-testextension-php53-non-voting
+     - mwext-testextension-php55-non-voting
+     - mwext-testextension-hhvm-non-voting
+     - composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - php53lint
+     - php55lint
+     # Extensions tests with core+vendor
+     - mwext-testextension-php53-non-voting
+     - mwext-testextension-php55-non-voting
+     - mwext-testextension-hhvm-non-voting
      - composer-validate
     experimental:
       - mediawiki-extensions-hhvm
@@ -2668,7 +2701,7 @@ projects:
     template:
       - name: jshint
       - name: jsonlint
-      - name: extension-unittests
+      - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/BookManagerv2
     template:
@@ -4167,7 +4200,7 @@ projects:
 
   - name: mediawiki/extensions/Auth_remoteuser
     template:
-      - name: extension-unittests
+      - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/AuthorProtect
     template:
