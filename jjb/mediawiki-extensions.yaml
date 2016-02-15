@@ -80,6 +80,10 @@
              mediawiki/core
              mediawiki/vendor
              $(cat extensions_load.txt)
+     - shell: |
+         cd src/skins/
+         git clean -xdff -d -x -q
+         cd ../../
      - shell: "mv extensions_load.txt src/extensions_load.txt"
      - shell: |
          if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
@@ -99,6 +103,10 @@
          projects: >
              mediawiki/core
              $(cat extensions_load.txt)
+     - shell: |
+         cd src/skins/
+         git clean -xdff -d -x -q
+         cd ../../
      - shell: "mv extensions_load.txt src/extensions_load.txt"
      - shell: |
          if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
@@ -124,6 +132,10 @@
      - zuul
     builders:
      - prepare-mediawiki-zuul-project
+     - shell: |
+         cd src/skins/
+         git clean -xdff -d -x -q
+         cd ../../
      - qunit-karma
     publishers:
      - localhost-cleanup
@@ -139,6 +151,10 @@
      - zuul
     builders:
      - prepare-mediawiki-zuul-project-no-vendor
+     - shell: |
+         cd src/skins/
+         git clean -xdff -d -x -q
+         cd ../../
      - qunit-karma
     publishers:
      - localhost-cleanup
@@ -217,6 +233,10 @@
      - prepare-mediawiki:
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
+     - shell: |
+         cd src/skins/
+         git clean -xdff -d -x -q
+         cd ../../
      - mw-run-phpunit-allexts
     # TODO, find ways to additionaly run tests for core but
     # without extensions tests
@@ -238,6 +258,10 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project
+     - shell: |
+         cd src/skins/
+         git clean -xdff -d -x -q
+         cd ../../
      - mw-run-phpunit-allexts
     publishers:
      - junit:
@@ -257,6 +281,10 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project
+     - shell: |
+         cd src/skins/
+         git clean -xdff -d -x -q
+         cd ../../
      - mw-run-phpunit-allexts
     publishers:
      - junit:
@@ -277,6 +305,10 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project-no-vendor
+     - shell: |
+         cd src/skins/
+         git clean -xdff -d -x -q
+         cd ../../
      - mw-run-phpunit-allexts
     publishers:
      - junit:
