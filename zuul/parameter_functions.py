@@ -29,6 +29,8 @@ def set_parameters(item, job, params):
 
     if job.name.endswith('-jessie'):
         offline_when_complete(item, job, params)
+    elif job.name.endswith('npm-node-4.3'):
+        offline_when_complete(item, job, params)
     elif job.name in ['integration-jjb-config-diff']:
         offline_when_complete(item, job, params)
 
