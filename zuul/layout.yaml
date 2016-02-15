@@ -1230,6 +1230,39 @@ project-templates:
       - npm
       - composer-php53
 
+  # Template for MediaWiki skins.
+  # Does run the unit tests on 'test' and 'gate-and-submit'
+  - name: skin-unittests
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     # Extensions tests with core+vendor
+     - 'mwskin-{name}-testskin-php53'
+     - 'mwskin-{name}-testskin-php55'
+     - 'mwskin-{name}-testskin-hhvm'
+     - composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - php53lint
+     - php55lint
+     # Extensions tests with core+vendor
+     - 'mwskin-{name}-testskin-php53'
+     - 'mwskin-{name}-testskin-php55'
+     - 'mwskin-{name}-testskin-hhvm'
+     - composer-validate
+    experimental:
+      - 'mediawiki-skins-hhvm'
+      - mediawiki-skins-qunit
+      - mwskin-testskin-hhvm
+      - mwskin-testskin-php53-composer
+      - mwskin-testskin-hhvm-composer
+      - npm
+      - composer-php53
+
   - name: extension-unittests-composer
     check:
      - php53lint
@@ -1252,6 +1285,31 @@ project-templates:
      - composer-validate
     experimental:
      - mwext-qunit-composer
+     - npm
+     - composer-php53
+
+  - name: skin-unittests-composer
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     - mwskin-testskin-php53-composer
+     - mwskin-testskin-php55-composer
+     - mwskin-testskin-hhvm-composer
+     - composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - php53lint
+     - php55lint
+     - mwskin-testskin-php53-composer
+     - mwskin-testskin-php55-composer
+     - mwskin-testskin-hhvm-composer
+     - composer-validate
+    experimental:
+     - mwskin-qunit-skin-composer
      - npm
      - composer-php53
 
@@ -1285,6 +1343,36 @@ project-templates:
       - npm
       - composer-php53
 
+  - name: skin-unittests-generic
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     # Extensions tests with core+vendor
+     - mwskin-testskin-php53
+     - mwskin-testskin-php55
+     - mwskin-testskin-hhvm
+     - composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - php53lint
+     - php55lint
+     # Extensions tests with core+vendor
+     - mwskin-testskin-php53
+     - mwskin-testskin-php55
+     - mwskin-testskin-hhvm
+     - composer-validate
+    experimental:
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-qunit
+      - mwskin-testskin-php53-composer
+      - mwskin-testskin-hhvm-composer
+      - npm
+      - composer-php53
+
   - name: extension-unittests-non-voting
     check:
      - php53lint
@@ -1312,6 +1400,36 @@ project-templates:
       - mediawiki-extensions-qunit
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
+      - npm
+      - composer-php53
+
+  - name: skin-unittests-non-voting
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     # Extensions tests with core+vendor
+     - mwskin-testskin-php53-non-voting
+     - mwskin-testskin-php55-non-voting
+     - mwskin-testskin-hhvm-non-voting
+     - composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - php53lint
+     - php55lint
+     # Extensions tests with core+vendor
+     - mwskin-testskin-php53-non-voting
+     - mwskin-testskin-php55-non-voting
+     - mwskin-testskin-hhvm-non-voting
+     - composer-validate
+    experimental:
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-qunit
+      - mwskin-testskin-php53-composer
+      - mwskin-testskin-hhvm-composer
       - npm
       - composer-php53
 
@@ -1346,6 +1464,19 @@ project-templates:
       - mediawiki-extensions-php55
       - mediawiki-extensions-qunit
 
+  - name: skin-gate
+    test:
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-qunit
+    php5:
+      - mediawiki-skins-php55
+      - mediawiki-skins-php53
+    gate-and-submit:
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-php53
+      - mediawiki-skins-php55
+      - mediawiki-skins-qunit
+
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
   - name: extension-qunit
@@ -1363,11 +1494,26 @@ project-templates:
     experimental:
       - mwext-qunit-composer
 
+  # Triggers the generic mwskin-qunit job
+  - name: skin-qunit-generic
+    test:
+      - mwskin-qunit-skin
+    gate-and-submit:
+      - mwskin-qunit-skin
+    experimental:
+      - mwskin-qunit-skin-composer
+
   - name: extension-qunit-composer
     test:
       - mwext-qunit-composer
     gate-and-submit:
       - mwext-qunit-composer
+
+  - name: skin-qunit-composer
+    test:
+      - mwskin-qunit-skin-composer
+    gate-and-submit:
+      - mwskin-qunit-skin-composer
 
   # Template for MediaWiki extensions.
   # No unit tests but vote on linting.
