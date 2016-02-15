@@ -105,7 +105,9 @@ dependencies = {
     'Wikidata': ['cldr', 'Elastica', 'GeoData', 'Scribunto'],
     'WikidataPageBanner': ['Wikidata'],
     'WikimediaBadges': ['Wikibase'],
+    'WikimediaEvents': ['EventLogging'],
     'WikimediaPageViewInfo': ['Graph'],
+    'wikihiero': ['VisualEditor'],
 }
 
 
