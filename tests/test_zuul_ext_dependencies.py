@@ -16,8 +16,14 @@ class TestExtDependencies(unittest.TestCase):
     def assertHasDependencies(self, params):
         self.assertIn('EXT_DEPENDENCIES', params)
 
+    def assertHasSkinDependencies(self, params):
+        self.assertIn('SKIN_DEPENDENCIES', params)
+
     def assertMissingDependencies(self, params):
         self.assertNotIn('EXT_DEPENDENCIES', params)
+
+    def assertMissingSkinDependencies(self, params):
+        self.assertNotIn('SKIN_DEPENDENCIES', params)
 
     def fetch_dependencies(self, job_name=None, project=None):
         if project:
@@ -28,12 +34,28 @@ class TestExtDependencies(unittest.TestCase):
         set_parameters(None, job, params)
         return params
 
+    def fetch_skin_dependencies(self, job_name=None, project=None):
+        if project:
+            params = {'ZUUL_PROJECT_SKIN': project}
+        else:
+            params = {'ZUUL_PROJECT_SKIN': 'mediawiki/skins/Example'}
+        job = FakeJob(job_name if job_name else 'mwskin-testskin-hhvm')
+        set_parameters(None, job, params)
+        return params
+
     def test_ext_name(self):
         params = self.fetch_dependencies(
             project='mediawiki/extensions/Example')
 
         self.assertIn('EXT_NAME', params)
         self.assertEqual(params['EXT_NAME'], 'Example')
+
+    def test_skin_name(self):
+        params = self.fetch_skin_dependencies(
+            project='mediawiki/skins/Example')
+
+        self.assertIn('SKIN_NAME', params)
+        self.assertEqual(params['SKIN_NAME'], 'Example')
 
     def test_cyclical_dependencies(self):
         """verifies that cyclical dependencies are possible"""
@@ -57,13 +79,23 @@ class TestExtDependencies(unittest.TestCase):
             job_name='mwext-mw-selenium'))
         self.assertMissingDependencies(self.fetch_dependencies(
             job_name='mediawiki-core-phplint'))
+        self.assertHasSkinDependencies(self.fetch_dependencies(
+            job_name='mwskin-testskin-hhvm'))
+        self.assertHasSkinDependencies(self.fetch_dependencies(
+            job_name='mwskin-qunit-skin'))
 
     def test_zuul_project_name(self):
         self.assertHasDependencies(self.fetch_dependencies(
             project='mediawiki/extensions/Example'))
+        self.assertHasSkinDependencies(self.fetch_skin_dependencies(
+            project='mediawiki/skins/Example'))
         self.assertMissingDependencies(self.fetch_dependencies(
             project='mediawiki/extensions'))
         self.assertMissingDependencies(self.fetch_dependencies(
             project='mediawiki/extensions/Example/vendor'))
         self.assertMissingDependencies(self.fetch_dependencies(
             project='foo/bar/baz'))
+        self.assertMissingSkinDependencies(self.fetch_skin_dependencies(
+            project='mediawiki/skins'))
+        self.assertMissingSkinDependencies(self.fetch_skin_dependencies(
+            project='mediawiki/skins/Example/vendor'))
