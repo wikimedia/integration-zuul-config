@@ -27,10 +27,9 @@ def set_parameters(item, job, params):
     if job.name.startswith(ext_deps_jobs):
         set_ext_dependencies(item, job, params)
 
-    if job.name in ['tox-jessie', 'rake-jessie',
-                    'integration-jjb-config-diff']:
+    if job.name.endswith('-jessie'):
         offline_when_complete(item, job, params)
-    elif re.search('^tox-.*-jessie$', job.name):
+    elif job.name in ['integration-jjb-config-diff']:
         offline_when_complete(item, job, params)
 
     if job.name.endswith('-publish'):
