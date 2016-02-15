@@ -375,24 +375,6 @@
         mediawiki_url: commons.wikimedia.beta.wmflabs.org
         pollscm: '* * * * *'
 
-- project:
-    name: UploadWizard
-    defaults: browsertests
-    folder: tests
-    headless: 'false'
-    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
-    mediawiki_url: commons.wikimedia.beta.wmflabs.org
-    platform: linux
-    recipients: *emails-multimedia
-    repository: mediawiki/extensions/UploadWizard
-
-    jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: chrome
-
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: firefox
-
 # VisualEditor
 - project:
     name: VisualEditor
