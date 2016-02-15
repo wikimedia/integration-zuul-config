@@ -235,6 +235,24 @@
          fi
 
 - builder:
+    name: inject-experimental-skin
+    builders:
+     - shell: |
+         # When triggered from the experimental pipeline, add the project to
+         # the list of dependencies. Used to inject an extension which is not
+         # yet part of the list above.
+         if [ "$ZUUL_PIPELINE" == 'experimental' ] && ! grep -q "$ZUUL_PROJECT_SKIN" deps.txt; then
+            echo "$ZUUL_PROJECT_SKIN" >> deps.txt
+            # Evil copy paste of `zuul-cloner` macro
+            # FIXME maybe we should always pass $ZUUL_PROJECT in the macro
+            zuul-cloner --color --verbose \
+                --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+                --workspace src \
+                https://gerrit.wikimedia.org/r/p \
+                "$ZUUL_PROJECT_SKIN"
+         fi
+
+- builder:
     name: sort-deps-txt
     builders:
      - shell: |
@@ -287,6 +305,52 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job-template:
+    name: 'mediawiki-skins-{phpflavor}'
+    # Select runnable node based on the phpflavor (hhvm or php53)
+    #
+    # We want to reuse the same job template for both PHP flavor:
+    # - HHVM flavor runs on Trusty CI labs slaves with HHVM
+    # - PHP53 flavor runs on Precise CI labs slaves with Zend PHP 5.3
+    # - PHP55 flavor runs on Trusty CI labs slaves with Zend PHP 5.5
+    #
+    # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
+    # definition based on the job name.
+    #
+    # If you want to verify the slaves, head to the job configuration page,
+    # search for 'Restrict where this project can be run', below the input box
+    # is a text: Slaves in [label]: X . Clicking [label] will list nodes
+    # matching the expression.
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner-skindeps:
+         skin-name: ''
+         skin_dependencies: '{skin_dependencies}'
+         additional-repositories: 'mediawiki/vendor'
+     - inject-experimental-skin
+     - sort-deps-txt
+     - mw-install-mysql
+     - shell: "cp deps.txt src/skins_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
 # See 'mediawiki-phpunit-{phpflavor}'
 - job-template:
     name: 'mediawiki-extensions-qunit'
@@ -308,6 +372,35 @@
      - sort-deps-txt
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - qunit-karma
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# See 'mediawiki-phpunit-{phpflavor}'
+- job-template:
+    name: 'mediawiki-skins-qunit'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner-skindeps:
+         skin-name: ''
+         skin_dependencies: '{skin_dependencies}'
+         additional-repositories: 'mediawiki/vendor'
+     - inject-experimental-skin
+     - sort-deps-txt
+     - mw-install-mysql
+     - shell: "cp deps.txt src/skin_load.txt"
      - mw-apply-settings
      - mw-run-update-script
      - qunit-karma
@@ -393,8 +486,12 @@
               Wikidata
               ZeroBanner
               ZeroPortal
+      - 'mediawiki-skins-{phpflavor}':
+          skin_dependencies: &gatedskins |
       - 'mediawiki-extensions-qunit':
           dependencies: *gatedextensions
+      - 'mediawiki-skins-qunit':
+          skin_dependencies: *gatedskins
 
 - job:
     name: 'mediawiki-core-code-coverage'
