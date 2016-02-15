@@ -13,6 +13,10 @@ class { '::apt':
     stage => first,
 }
 
+# Jenkins provision jre by itself but it sounds better to have it already in
+# the  image. T126246.
+include jenkins::slave::requisites
+
 include contint::packages::base
 include contint::packages::python
 include contint::packages::ruby
@@ -27,6 +31,8 @@ package { [
     ]:
     ensure => present,
 }
+
+ensure_packages(['openjdk-7-jre-headless'])
 
 package { 'zuul':
   ensure => present,
