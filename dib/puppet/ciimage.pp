@@ -35,6 +35,7 @@ git::clone { 'jenkins CI slave scripts':
     directory          => '/srv/deployment/integration/slave-scripts',
     origin             => 'https://gerrit.wikimedia.org/r/p/integration/jenkins.git',
     recurse_submodules => true,
+    require            => Exec['recursive mkdir of /srv/deployment/integration'],
 }
 
 include contint::packages::base
