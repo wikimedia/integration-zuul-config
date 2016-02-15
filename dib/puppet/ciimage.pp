@@ -32,6 +32,13 @@ package { [
     ensure => present,
 }
 
+# FIXME should be upstreamed to operations/puppet.git as contint::packages::dev
+package { [
+    'pkg-config',
+    ]:
+    ensure => present,
+}
+
 ensure_packages(['openjdk-7-jre-headless'])
 
 package { 'zuul':
