@@ -115,22 +115,6 @@
      - mw-apply-settings
      - mw-run-update-script
 
-- job-template:
-    name: '{name}-{ext-name}-qunit'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - prepare-mediawiki:
-         ext-name: '{ext-name}'
-         dependencies: '{dependencies}'
-     - qunit-karma
-    publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-
 # Generic qunit job for extensions.
 - job:
     name: 'mwext-qunit'
@@ -503,10 +487,6 @@
              - hhvm
              - php53
              - php55
-
-     # deprecated qunit jobs for MediaWiki extensions
-     # Should be migrated to use the generic 'mwext-qunit' job whith
-     # dependencies defined in zuul/ext_dependencies.py .
 
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
