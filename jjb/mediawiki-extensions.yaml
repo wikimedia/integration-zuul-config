@@ -233,7 +233,7 @@
 
 
 # same but with composer update instead of cloning vendor
-- job-template:
+- job-template: &job_mwext-testextension-composer
     name: 'mwext-testextension-{phpflavor}-composer'
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
     concurrent: true
@@ -251,6 +251,14 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# Same as above, but with non-voting suffix because it's non-voting
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-composer-non-voting'
+    !!merge : *job_mwext-testextension-composer
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 - project:
     name: 'mwext-testextension-generic'
     jobs:
@@ -265,6 +273,11 @@
             - php53
             - php55
      - 'mwext-testextension-{phpflavor}-composer':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - 'mwext-testextension-{phpflavor}-composer-non-voting':
         phpflavor:
             - hhvm
             - php53

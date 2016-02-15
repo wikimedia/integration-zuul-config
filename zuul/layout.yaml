@@ -897,6 +897,30 @@ project-templates:
      - composer-php55
      - composer-hhvm
 
+  - name: extension-unittests-composer-non-voting
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     - mwext-testextension-php53-composer-non-voting
+     - mwext-testextension-php55-composer-non-voting
+     - mwext-testextension-hhvm-composer-non-voting
+     - composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - php53lint
+     - php55lint
+     - composer-validate
+    experimental:
+     - mwext-qunit-composer
+     - npm
+     - composer-php53
+     - composer-php55
+     - composer-hhvm
+
   - name: extension-unittests-generic
     check:
      - php53lint
