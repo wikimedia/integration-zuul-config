@@ -10,7 +10,9 @@ stage { 'first':
     before => Stage['main'],
 }
 class { '::apt':
-    stage => first,
+    stage                       => first,
+    components                  => 'main',
+    debian_backports_components => 'main',
 }
 
 # Jenkins provision jre by itself but it sounds better to have it already in
