@@ -29,6 +29,7 @@ exec { 'recursive mkdir of /srv/deployment/integration':
 # symlink composer.
 # This is done via puppet rather than in dib so new snapshot images get
 # slave-scripts refreshed.
+require_package('git')
 git::clone { 'jenkins CI slave scripts':
     ensure             => 'latest',
     directory          => '/srv/deployment/integration/slave-scripts',
