@@ -17,6 +17,25 @@ class { '::apt':
 # the  image. T126246.
 include jenkins::slave::requisites
 
+# Slave scripts
+exec { 'recursive mkdir of /srv/deployment/integration':
+    command => '/bin/mkdir -p /srv/deployment/integration',
+    creates => '/srv/deployment/integration',
+}
+
+# Inject slave scripts
+#
+# We can't reuse contint::slave_scripts which grab unrelated repositories and
+# symlink composer.
+# This is done via puppet rather than in dib so new snapshot images get
+# slave-scripts refreshed.
+git::clone { 'jenkins CI slave scripts':
+    ensure             => 'latest',
+    directory          => '/srv/deployment/integration/slave-scripts',
+    origin             => 'https://gerrit.wikimedia.org/r/p/integration/jenkins.git',
+    recurse_submodules => true,
+}
+
 include contint::packages::base
 include contint::packages::python
 include contint::packages::ruby
