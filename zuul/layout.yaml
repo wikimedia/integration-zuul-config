@@ -4224,7 +4224,10 @@ projects:
 
   - name: mediawiki/extensions/AWS
     template:
-      - name: extension-unittests-generic
+      - name: composer-test
+      - name: extension-unittests-composer
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/AWSSDK
     template:
