@@ -251,6 +251,25 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# Same as above, but with non-voting suffix because it's non-voting 
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-non-voting-composer'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
 - project:
     name: 'mwext-testextension-generic'
     jobs:
@@ -265,6 +284,11 @@
             - php53
             - php55
      - 'mwext-testextension-{phpflavor}-composer':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - 'mwext-testextension-{phpflavor}-non-voting-composer':
         phpflavor:
             - hhvm
             - php53

@@ -596,6 +596,9 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
+  - name: ^.*-non-voting-composer$
+    voting: false
+
   - name: ^rake-jessie$
     # Rake entry points have not been backported to wmf branches yet
     # -- hashar Nov 10th 2015
@@ -893,6 +896,33 @@ project-templates:
      - mwext-qunit-composer
      - npm
      - npm-node-4.3
+     - composer-php53
+     - composer-php55
+     - composer-hhvm
+
+  - name: extension-unittests-non-voting-composer
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     - mwext-testextension-php53-non-voting-composer
+     - mwext-testextension-php55-non-voting-composer
+     - mwext-testextension-hhvm-non-voting-composer
+     - composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - php53lint
+     - php55lint
+     - mwext-testextension-php53-non-voting-composer
+     - mwext-testextension-php55-non-voting-composer
+     - mwext-testextension-hhvm-non-voting-composer
+     - composer-validate
+    experimental:
+     - mwext-qunit-composer
+     - npm
      - composer-php53
      - composer-php55
      - composer-hhvm
