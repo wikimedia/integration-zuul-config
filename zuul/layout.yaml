@@ -1113,17 +1113,7 @@ jobs:
   - name: 'mwext-CirrusSearch-whitespaces'
     branch: ^master$
 
-  - name: 'mwext-EventLogging-jsduck-publish'
-    branch: ^master$
-  - name: 'mwext-Flow-jsduck-publish'
-    branch: ^(REL1_26|master)$
-  - name: 'mwext-MobileFrontend-publish'
-    branch: ^master$
-  - name: 'mwext-GuidedTour-jsduck-publish'
-    branch: ^master$
-  - name: 'mwext-MultimediaViewer-jsduck-publish'
-    branch: ^master$
-  - name: 'mwext-TemplateData-jsduck-publish'
+  - name: 'mwext-jsduck-publish'
     branch: ^master$
   - name: 'mwext-VisualEditor-publish'
     branch: ^master$
@@ -3269,7 +3259,7 @@ projects:
     check:
       - jsonlint
     postmerge:
-      - mwext-EventLogging-jsduck-publish
+      - mwext-jsduck-publish
 
   - name: eventlogging
     template:
@@ -3328,7 +3318,7 @@ projects:
     experimental:
      - mwext-mw-selenium
     postmerge:
-     - mwext-Flow-jsduck-publish
+     - mwext-jsduck-publish
 
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
@@ -3551,7 +3541,7 @@ projects:
       - jsonlint
       - jshint
     postmerge:
-     - mwext-GuidedTour-jsduck-publish
+     - mwext-jsduck-publish
 
   - name: mediawiki/extensions/GWToolset
     template:
@@ -3834,7 +3824,7 @@ projects:
     check:
       - jsonlint
     postmerge:
-      - mwext-MultimediaViewer-jsduck-publish
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/MwEmbedSupport
     template:
@@ -7001,7 +6991,7 @@ projects:
     gate-and-submit:
       - mediawiki-gate
     postmerge:
-      - mwext-TemplateData-jsduck-publish
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/Thanks
     template:

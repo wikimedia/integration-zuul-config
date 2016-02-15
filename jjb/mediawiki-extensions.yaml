@@ -304,9 +304,9 @@
             - php55
 
 - job:
-    name: 'mwext-Flow-jsduck-publish'
+    name: 'mwext-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
+    defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
@@ -314,20 +314,7 @@
      - jsduck
      - doc-publish:
         docsrc: 'docs'
-        docdest: 'Flow/$ZUUL_BRANCH/js'
-
-- job-template:
-    name: 'mwext-GuidedTour-jsduck-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-     - doc-publish:
-        docsrc: 'docs'
-        docdest: 'GuidedTour/$ZUUL_BRANCH/js'
+        docdest: '$DOC_BASENAME/$ZUUL_BRANCH/js'
 
 - job-template:
     name: 'mwext-PoolCounter-build'
@@ -339,32 +326,6 @@
      - shell: |
         cd daemon
         make
-
-- job-template:
-    name: 'mwext-MultimediaViewer-jsduck-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-     - doc-publish:
-        docsrc: 'docs'
-        docdest: 'MultimediaViewer/$ZUUL_BRANCH/js'
-
-- job-template:
-    name: 'mwext-TemplateData-jsduck-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-     - doc-publish:
-        docsrc: 'docs'
-        docdest: 'TemplateData/$ZUUL_BRANCH/js'
 
 - job:
     name: 'mwext-VisualEditor-publish'
@@ -381,35 +342,6 @@
         docdest: 'VisualEditor/$ZUUL_BRANCH'
     publishers:
      - global-teardown
-
-- job:
-    name: 'mwext-MobileFrontend-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - npm-install
-     - npm-run-doc
-     - doc-publish:
-        docsrc: 'docs'
-        docdest: 'MobileFrontend/$ZUUL_BRANCH/js'
-    publishers:
-     - global-teardown
-
-- job:
-    name: 'mwext-EventLogging-jsduck-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-     - doc-publish:
-        docsrc: 'docs'
-        docdest: 'EventLogging/$ZUUL_BRANCH/js'
 
 - job:
     name: 'mwext-MobileFrontend-doxygen-publish'
@@ -488,14 +420,6 @@
 
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
-
-     - 'mwext-MobileFrontend-publish'
-     - 'mwext-GuidedTour-jsduck-publish'
-     - 'mwext-MultimediaViewer-jsduck-publish'
-
-     - 'mwext-TemplateData-jsduck-publish':
-        ext-name: TemplateData
-
 
 
 # Deprecated, extensions should be converted

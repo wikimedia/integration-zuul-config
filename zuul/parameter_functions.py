@@ -193,3 +193,4 @@ def set_doc_variables(item, job, params):
     # Normalize the project name by removing /'s
     if 'ZUUL_PROJECT' in params:
         params['DOC_PROJECT'] = params['ZUUL_PROJECT'].replace('/', '-')
+        params['DOC_BASENAME'] = params['ZUUL_PROJECT'].split('/')[-1]
