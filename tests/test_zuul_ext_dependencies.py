@@ -35,6 +35,13 @@ class TestExtDependencies(unittest.TestCase):
         self.assertIn('EXT_NAME', params)
         self.assertEqual(params['EXT_NAME'], 'Example')
 
+    def test_skin_name(self):
+        params = self.fetch_dependencies(
+            project='mediawiki/skins/Example')
+
+        self.assertIn('SKIN_NAME', params)
+        self.assertEqual(params['SKIN_NAME'], 'Example')
+
     def test_cyclical_dependencies(self):
         """verifies that cyclical dependencies are possible"""
 
@@ -57,6 +64,10 @@ class TestExtDependencies(unittest.TestCase):
             job_name='mwext-mw-selenium'))
         self.assertMissingDependencies(self.fetch_dependencies(
             job_name='mediawiki-core-phplint'))
+        self.assertHasDependencies(self.fetch_dependencies(
+            job_name='mwskin-testskin-hhvm'))
+        self.assertHasDependencies(self.fetch_dependencies(
+            job_name='mwskin-qunit-skin'))
 
     def test_zuul_project_name(self):
         self.assertHasDependencies(self.fetch_dependencies(
@@ -67,3 +78,10 @@ class TestExtDependencies(unittest.TestCase):
             project='mediawiki/extensions/Example/vendor'))
         self.assertMissingDependencies(self.fetch_dependencies(
             project='foo/bar/baz'))
+        self.assertHasDependencies(self.fetch_dependencies(
+            project='mediawiki/skins/Example'))
+        self.assertMissingDependencies(self.fetch_dependencies(
+            project='mediawiki/skins'))
+        self.assertMissingDependencies(self.fetch_dependencies(
+            project='mediawiki/skins/Example/vendor'))
+
