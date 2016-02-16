@@ -1032,7 +1032,7 @@ jobs:
     voting: true
 
   - name: translatewiki-puppetlint-strict
-    voting: false
+    voting: true
 
   # Rejecting changes having trailing whitespaces cause too many false
   # positives. So only report the whitespace issues, but don't let it vote.
@@ -2404,10 +2404,11 @@ projects:
       - name: tox-jessie
 
   - name: translatewiki
+    template:
+      - name: composer-test
     check: &translatewiki_jobs
-      - php53lint
+      - php55lint
       - translatewiki-puppet-validate
-      - translatewiki-puppetlint-lenient
       - translatewiki-puppetlint-strict
       - translatewiki-shelllint
     test: *translatewiki_jobs
