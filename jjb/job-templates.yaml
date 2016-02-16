@@ -329,6 +329,16 @@
     builders:
      - phplint
 
+- job:
+    name: 'hhvmlint'
+    node: contintLabsSlave && phpflavor-hhvm
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - hhvmlint
+
 # Deprecated non-generic phplint job. You should
 # use the above 'phplint' job. Due to a performance issue
 # with Git on Ubuntu Precise (details on T92042), this is
@@ -357,6 +367,18 @@
      - zuul
     builders:
      - phplint
+
+- job-template:
+    name: '{name}-hhvmlint'
+    node: contintLabsSlave && phpflavor-hhvm
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - hhvmlint
 
 - job:
     name: 'phpunit'
