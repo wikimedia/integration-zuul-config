@@ -248,6 +248,7 @@
          set -o pipefail
          puppet-lint \
             --error-level error \
+            --no-80chars-check \
             --log-format '%{{path}}:%{{line}} %{{KIND}} %{{message}} (%{{check}})' \
             . | tee puppet-lint.log
          set +o pipefail
@@ -267,6 +268,7 @@
          puppet-lint --version
          set -o pipefail
          puppet-lint \
+            --no-80chars-check \
             --log-format '%{{path}}:%{{line}} %{{KIND}} %{{message}} (%{{check}})' \
             --fail-on-warnings \
             . | tee puppet-lint.log
