@@ -346,22 +346,6 @@
      - global-teardown
 
 - job:
-    name: 'mwext-MobileFrontend-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - npm-install
-     - npm-run-doc
-     - doc-publish:
-        docsrc: 'docs'
-        docdest: 'MobileFrontend/$ZUUL_BRANCH/js'
-    publishers:
-     - global-teardown
-
-- job:
     name: 'mwext-MobileFrontend-doxygen-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
@@ -438,7 +422,6 @@
 
      - '{name}-{ext-name}-npm':
         ext-name: VisualEditor
-     - 'mwext-MobileFrontend-publish'
 
 
 # Deprecated, extensions should be converted
