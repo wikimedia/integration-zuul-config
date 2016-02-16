@@ -54,32 +54,6 @@
         results: 'log/junit*.xml'
      - 'mw-teardown-{dbflavor}'
 
-# This is a modified version of '{name}-{ext-name}-qunit'.
-# It runs "composer update" before the qunit tests.
-- job:
-    name: 'mwext-WikibaseJavaScriptApi-qunit'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - throttle-one-per-node
-    builders:
-     - zuul-cloner-extdeps:
-         ext-name: 'WikibaseJavaScriptApi'
-         dependencies: ''
-         additional-repositories: ''
-     - wd-mw-composer-merged-install
-     - mw-install-mysql
-     - shell: "cp deps.txt src/extensions_load.txt"
-     - mw-apply-settings
-     - mw-run-update-script
-     - qunit-karma
-    publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-
 - project:
     name: wikidata
     # By default we do not need any other extensions:
