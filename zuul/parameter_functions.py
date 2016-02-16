@@ -87,6 +87,7 @@ dependencies = {
     'Score': ['VisualEditor'],
     'SemanticFormsInputs': ['SemanticForms'],
     'SimpleSurvey': ['PrefSwitch'],
+    'SolrStore': ['SemanticMediaWiki'],
     'Spreadsheet': ['PHPExcel'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
