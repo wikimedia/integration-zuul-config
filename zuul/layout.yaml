@@ -2408,7 +2408,10 @@ projects:
       - name: tox-jessie
 
   - name: translatewiki
+    template:
+      - composer-test
     check: &translatewiki_jobs
+      - php55lint
       - php53lint
       - translatewiki-puppet-validate
       - translatewiki-puppetlint-lenient
