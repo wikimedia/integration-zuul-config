@@ -649,6 +649,10 @@ jobs:
      - '^.*\.(php|php5|phtml|inc)$'
     branch: (?!REL1_2[3-6]$)
 
+  - name: hhvmlint
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+
   - name: ^mediawiki-phpunit-php53-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
     branch: (?!REL1_23)
@@ -2263,6 +2267,7 @@ projects:
     template:
       - name: composer-test55
     check: &translatewiki_jobs
+      - hhvmlint
       - translatewiki-puppet-validate
       - translatewiki-puppetlint-strict
       - translatewiki-shelllint
