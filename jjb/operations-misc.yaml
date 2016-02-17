@@ -23,14 +23,14 @@
 - project:
     name: 'operations-mw-config'
     jobs:
-     - '{name}-php53lint'
+     - '{name}-php55lint'
 
 # Runs 'phpunit' and 'composer validate', for the
 # operations/mediawiki-config repo to get it out of
 # the MediaWiki gate-and-submit queue (T101908)
 - job:
     name: 'operations-mw-config-phpunit'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     triggers:
      - zuul
