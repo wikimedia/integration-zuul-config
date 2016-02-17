@@ -641,7 +641,7 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
     skip-if:
-     - project: '^(mediawiki/.*/|translatewiki)$'
+     - project: '^mediawiki/.*$'
        branch: (?!REL1_2[3-6]$)
 
   - name: php55lint
@@ -666,7 +666,7 @@ jobs:
 
   - name: ^.*php53.*$
     skip-if:
-      - project: '^(mediawiki/.*|translatewiki)$'
+      - project: '^mediawiki/.*$'
         branch: (?!REL1_2[3-6]$)
 
   # Jobs testing multiple extensions together
@@ -1449,6 +1449,17 @@ project-templates:
       - composer-hhvm
     gate-and-submit:
       - composer-php53
+      - composer-php55
+      - composer-hhvm
+
+  - name: composer-test55
+    check:
+      - php55lint
+      - composer-validate
+    test:
+      - composer-php55
+      - composer-hhvm
+    gate-and-submit:
       - composer-php55
       - composer-hhvm
 
@@ -2405,9 +2416,8 @@ projects:
 
   - name: translatewiki
     template:
-      - name: composer-test
+      - name: composer-test55
     check: &translatewiki_jobs
-      - php55lint
       - translatewiki-puppet-validate
       - translatewiki-puppetlint-strict
       - translatewiki-shelllint
