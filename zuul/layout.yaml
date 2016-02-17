@@ -641,7 +641,7 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
     skip-if:
-     - project: '^mediawiki/.*$'
+     - project: '^(mediawiki/.*/|translatewiki)$'
        branch: (?!REL1_2[3-6]$)
 
   - name: php55lint
@@ -666,7 +666,7 @@ jobs:
 
   - name: ^.*php53.*$
     skip-if:
-      - project: '^mediawiki/.*$'
+      - project: '^(mediawiki/.*|translatewiki)$'
         branch: (?!REL1_2[3-6]$)
 
   # Jobs testing multiple extensions together
