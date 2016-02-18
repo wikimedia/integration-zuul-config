@@ -780,8 +780,6 @@ jobs:
     voting: false
   - name: mwext-JsonData-jslint # bug 61607
     voting: false
-  - name: mwext-LastModified-jslint # bug 61608
-    voting: false
   - name: mwext-SVGEdit-jslint # bug 61625
     voting: false
   - name: mwext-SemanticExpressiveness-jslint # bug 61629
@@ -3527,7 +3525,8 @@ projects:
 
   - name: mediawiki/extensions/LastModified
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/LdapAuthentication
