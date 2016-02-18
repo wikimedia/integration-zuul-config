@@ -778,8 +778,6 @@ jobs:
     voting: false
   - name: mwext-FundraisingChart-jslint # bug 66192
     voting: false
-  - name: mwext-JsonData-jslint # bug 61607
-    voting: false
   - name: mwext-LastModified-jslint # bug 61608
     voting: false
   - name: mwext-SVGEdit-jslint # bug 61625
@@ -4077,10 +4075,7 @@ projects:
 
   - name: mediawiki/extensions/AWS
     template:
-      - name: composer-test
-      - name: extension-unittests-composer
-    check:
-      - jsonlint
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AWSSDK
     template:
@@ -4621,7 +4616,8 @@ projects:
 
   - name: mediawiki/extensions/JsonData
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/LanguageSelector
