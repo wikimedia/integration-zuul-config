@@ -1649,12 +1649,14 @@ projects:
 
   - name: apps/android/wikipedia
     test:
-      - apps-jslint
+      - apps-jsonlint
+      - apps-jshint
       - tox-jessie
       - apps-android-wikipedia-test
       - apps-android-wikipedia-lint
     gate-and-submit:
-      - apps-jslint
+      - apps-jsonlint
+      - apps-jshint
       - tox-jessie
       - apps-android-wikipedia-test
       # TODO: uncomment once this job votes.
@@ -1664,11 +1666,15 @@ projects:
 
   - name: apps/ios/wikipedia
     check-voter:
-      - apps-jslint
+      - apps-jsonlint
+      - apps-jshint
       - apps-php53lint
+      - apps-php55lint
     gate-and-submit:
-      - apps-jslint
+      - apps-jsonlint
+      - apps-jshint
       - apps-php53lint
+      - apps-php55lint
 
   - name: labs/incubator
     check-voter:
