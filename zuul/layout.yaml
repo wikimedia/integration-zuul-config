@@ -780,8 +780,6 @@ jobs:
     voting: false
   - name: mwext-JsonData-jslint # bug 61607
     voting: false
-  - name: mwext-LastModified-jslint # bug 61608
-    voting: false
   - name: mwext-SVGEdit-jslint # bug 61625
     voting: false
   - name: mwext-SemanticExpressiveness-jslint # bug 61629
@@ -892,8 +890,6 @@ jobs:
   - name: mwext-WikivoteMapsYandex-jslint
     voting: false
   - name: mwext-WYSIWYG-jslint
-    voting: false
-  - name: mwext-XMLContentExtension-jslint
     voting: false
 
 # End of new currently disabled extensions checks from mass extension import - Addshore
@@ -2925,7 +2921,8 @@ projects:
 
   - name: mediawiki/extensions/ContributionReporting
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ContributionTracking
@@ -3526,7 +3523,8 @@ projects:
 
   - name: mediawiki/extensions/LastModified
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/LdapAuthentication
@@ -3754,7 +3752,8 @@ projects:
 
   - name: mediawiki/extensions/Nonlinear
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Nostalgia
@@ -4042,7 +4041,8 @@ projects:
 
   - name: mediawiki/extensions/ArticleIndex
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AssertEdit
@@ -4149,7 +4149,8 @@ projects:
 
   - name: mediawiki/extensions/Carp
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Cargo
@@ -4162,22 +4163,26 @@ projects:
 
   - name: mediawiki/extensions/CategorySlideShow
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/CategorySortHeaders
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/CategoryTests
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/CentralLogging
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/CharRangeSpan
@@ -4187,17 +4192,20 @@ projects:
 
   - name: mediawiki/extensions/Checkpoint
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/CloseWikis
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Commentbox
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/CommentPages
@@ -4372,7 +4380,8 @@ projects:
 
   - name: mediawiki/extensions/examples
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ExternalArticles
@@ -4533,7 +4542,8 @@ projects:
 
   - name: mediawiki/extensions/HSTS
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/HTMLets
@@ -4756,7 +4766,8 @@ projects:
 
   - name: mediawiki/extensions/MediaWikiAuth
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/MediaWikiChat
@@ -5580,7 +5591,8 @@ projects:
 
   - name: mediawiki/extensions/ThrottleOverride
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ThumbParser
@@ -5767,7 +5779,8 @@ projects:
 
   - name: mediawiki/extensions/WikidataEntitySuggester
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/WikidataPageBanner
@@ -5871,7 +5884,8 @@ projects:
 
   - name: mediawiki/extensions/XMLContentExtension
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/YetAnotherKeywords
@@ -6512,7 +6526,8 @@ projects:
 
   - name: mediawiki/extensions/ReplaceSet
     template:
-      - name: extension-jslint
+      - name: jsonlint
+      - name: jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ReplaceText
