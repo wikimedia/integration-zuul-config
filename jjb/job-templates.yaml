@@ -36,6 +36,16 @@
      - jshint
 
 - job:
+    name: 'jshint-non-voting'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jshint
+
+- job:
     name: 'jsonlint'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
