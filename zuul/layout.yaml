@@ -6279,17 +6279,15 @@ projects:
 
   - name: mediawiki/services/cxserver
     template:
-      - name: npm
+      - name: npm-node-4.3
     postmerge:
       - beta-cxserver-update-eqiad
-    experimental:
-      - npm-node-4.3
 
   - name: mediawiki/services/cxserver/deploy
     test:
-      - cxserver-deploy-npm
+      - cxserver-deploy-npm-node-4.3
     gate-and-submit:
-      - cxserver-deploy-npm
+      - cxserver-deploy-npm-node-4.3
     postmerge:
       - beta-cxserver-update-eqiad
 
