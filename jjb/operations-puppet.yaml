@@ -2,7 +2,7 @@
 # See the shell wrapper in integration/jenkins.git
 - job-template:
     name: 'operations-puppet-test'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -15,7 +15,7 @@
 #  can specify their own .pep8 rules
 - job-template:
     name: 'operations-puppet-pep8'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     # Dont process other puppet submodules
     defaults: use-remote-zuul-no-submodules
     concurrent: true
@@ -41,7 +41,7 @@
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: false  # dont want to race doc creation!
 
