@@ -2,7 +2,7 @@
 
 - job:
     name: 'erblint-HEAD'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -211,7 +211,7 @@
 # have reported security issues. See also T74193.
 - job-template:
     name: '{name}-composer-security'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     scm:
       - git:
@@ -276,7 +276,7 @@
 
 - job:
     name: 'pplint-HEAD'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -289,7 +289,7 @@
 
 - job:
     name: 'perllint'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -360,7 +360,7 @@
 
 - job:
     name: 'phpunit'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     triggers:
      - zuul
