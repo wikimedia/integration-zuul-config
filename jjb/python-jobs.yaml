@@ -13,7 +13,7 @@
 # Parameter: {toxenv}
 - job-template:
     name: '{name}-tox-{toxenv}'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -44,7 +44,7 @@
 # Generic version of above.
 - job-template:
     name: 'tox-{toxenv}'
-    node: contintLabsSlave && UbuntuPrecise
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
