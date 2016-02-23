@@ -73,8 +73,8 @@
 - builder:
     name: prepare-mediawiki-zuul-project
     builders:
-     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
      - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
+     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
      - zuul-cloner:
          projects: >
              mediawiki/core
@@ -93,8 +93,8 @@
 - builder:
     name: prepare-mediawiki-zuul-project-no-vendor
     builders:
-     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
      - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
+     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
      - zuul-cloner:
          projects: >
              mediawiki/core
