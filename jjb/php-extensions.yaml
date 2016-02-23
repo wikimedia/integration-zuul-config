@@ -1,18 +1,18 @@
 - job-template:
-    name: 'php-{name}-build'
-    node: contintLabsSlave && UbuntuPrecise
+    name: 'php55-{name}-build'
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
      - shell: |
-        phpize
+        /usr/bin/phpize5
         ./configure
         make
         make test
 
 - job-template:
-    name: 'php-{name}-hhvm-build'
+    name: 'php55-{name}-hhvm-build'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     triggers:
@@ -27,37 +27,37 @@
 - project:
     name: 'FastStringSearch'
     jobs:
-     - 'php-{name}-build'
-     - 'php-{name}-hhvm-build'
+     - 'php55-{name}-build'
+     - 'php55-{name}-hhvm-build'
 
 # NativePreprocessor PHP extension
 - project:
     name: 'NativePreprocessor'
     jobs:
-     - 'php-{name}-build'
+     - 'php55-{name}-build'
 
 # luasandbox PHP extension
 - project:
     name: 'luasandbox'
     jobs:
-     - 'php-{name}-build'
-     - 'php-{name}-hhvm-build'
+     - 'php55-{name}-build'
+     - 'php55-{name}-hhvm-build'
 
 # wikidiff PHP extension
 - project:
     name: 'wikidiff'
     jobs:
-     - 'php-{name}-build'
+     - 'php55-{name}-build'
 
 # wikidiff2 PHP extension
 - project:
     name: 'wikidiff2'
     jobs:
-     - 'php-{name}-build'
-     - 'php-{name}-hhvm-build'
+     - 'php55-{name}-build'
+     - 'php55-{name}-hhvm-build'
 
 # wmerrors PHP extension
 - project:
     name: 'wmerrors'
     jobs:
-     - 'php-{name}-build'
+     - 'php55-{name}-build'
