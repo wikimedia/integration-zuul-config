@@ -134,7 +134,7 @@ def set_ext_dependencies(item, job, params):
     ext_name = split[-1]
     params['EXT_NAME'] = ext_name
 
-    deps = get_dependencies(ext_name, dependencies)
+    deps = get_dependencies(dependencies, ext_name)
 
     # Export with a literal \n character and have bash expand it later
     params['EXT_DEPENDENCIES'] = '\\n'.join(
