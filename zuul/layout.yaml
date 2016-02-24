@@ -1642,31 +1642,29 @@ projects:
       - apps-android-java-mwapi
 
   - name: apps/android/wikipedia
+    template:
+      - name: npm-node-4.3
     test:
-      - apps-jslint
       - tox-jessie
       - apps-android-wikipedia-test
       - apps-android-wikipedia-lint
     gate-and-submit:
-      - apps-jslint
       - tox-jessie
       - apps-android-wikipedia-test
       # TODO: uncomment once this job votes.
       # - apps-android-wikipedia-lint
     postmerge:
       - apps-android-wikipedia-publish
-    experimental:
-      - npm-node-4.3
 
   - name: apps/ios/wikipedia
-    check-voter:
-      - apps-jslint
+    template:
+      - name: npm-node-4.3
+    check:
+      - apps-php53lint
+    test:
       - apps-php53lint
     gate-and-submit:
-      - apps-jslint
       - apps-php53lint
-    experimental:
-      - npm-node-4.3
 
   - name: labs/incubator
     check-voter:
