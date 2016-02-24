@@ -80,6 +80,7 @@ dependencies = {
     'PhpTagsWidgets': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki'],
     'PhpTagsWiki': ['PhpTags', 'PhpTagsFunctions'],
     'PictureGame': ['SocialProfile'],
+    'PollNY': ['SocialProfile'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion'],
     'QuickSurveys': ['EventLogging'],
