@@ -766,15 +766,11 @@ jobs:
   # Exceptions for projects not yet passing jshint (bug 60619)
   # https://bugzilla.wikimedia.org/showdependencytree.cgi?id=60619
   #
-  - name: mwext-ArticleFeedback-jslint # obsolete - bug 63669
-    voting: false
   - name: mwext-CommunityVoice-jslint # bug 61595
     voting: false
   - name: mwext-CustomUserSignup-jslint # bug 61600
     voting: false
   - name: mwext-Drafts-jslint # bug 61603
-    voting: false
-  - name: mwext-DumpHTML-jslint # bug 61604
     voting: false
   - name: mwext-FundraisingChart-jslint # bug 66192
     voting: false
@@ -782,13 +778,7 @@ jobs:
     voting: false
   - name: mwext-SVGEdit-jslint # bug 61625
     voting: false
-  - name: mwext-SemanticExpressiveness-jslint # bug 61629
-    voting: false
-  - name: mwext-SemanticImageInput-jslint # bug 61632
-    voting: false
   - name: mwext-SemanticResultFormats-jslint # bug 61634
-    voting: false
-  - name: mwext-SemanticWatchlist-jslint # bug 61635
     voting: false
   - name: mwext-Survey-jslint # bug 61637
     voting: false
@@ -1214,21 +1204,6 @@ project-templates:
       - mwext-qunit-composer
     gate-and-submit:
       - mwext-qunit-composer
-
-  # Template for MediaWiki extensions.
-  # No unit tests but vote on linting.
-  - name: extension-checks
-    check-only:
-     - 'mwext-{name}-jslint'
-     - php53lint
-     - php55lint
-     - composer-validate
-    gate-and-submit:
-     - mediawiki-gate
-     - 'mwext-{name}-jslint'
-     - php53lint
-     - php55lint
-     - composer-validate
 
   - name: jsduck
     test:
@@ -2491,7 +2466,8 @@ projects:
 
   - name: mediawiki/extensions/ArticleFeedback
     template:
-      - name: extension-checks
+      - name: jsonlint
+      - name: mw-checks-test
 
   - name: mediawiki/extensions/ArticleFeedbackv5
     template:
@@ -3046,7 +3022,8 @@ projects:
 
   - name: mediawiki/extensions/DumpHTML
     template:
-      - name: extension-checks
+      - name: jsonlint
+      - name: mw-checks-test
 
   - name: mediawiki/extensions/E3Experiments
     template:
@@ -6744,7 +6721,8 @@ projects:
 
   - name: mediawiki/extensions/SemanticExpressiveness
     template:
-      - name: extension-checks
+      - name: jsonlint
+      - name: mw-checks-test
 
   - name: mediawiki/extensions/SemanticExtraSpecialProperties
     template:
@@ -6786,7 +6764,8 @@ projects:
 
   - name: mediawiki/extensions/SemanticImageInput
     template:
-      - name: extension-checks
+      - name: jsonlint
+      - name: mw-checks-test
 
   - name: mediawiki/extensions/SemanticInternalObjects
     template:
@@ -6796,7 +6775,9 @@ projects:
 
   - name: mediawiki/extensions/SemanticMaps
     template:
-      - name: extension-checks
+      - name: jshint
+      - name: jsonlint
+      - name: mw-checks-test
 
   - name: mediawiki/extensions/SemanticMediaWiki
     template:
@@ -6853,7 +6834,8 @@ projects:
 
   - name: mediawiki/extensions/SemanticWatchlist
     template:
-      - name: extension-checks
+      - name: jsonlint
+      - name: mw-checks-test
 
   - name: mediawiki/extensions/Sentry
     template:
