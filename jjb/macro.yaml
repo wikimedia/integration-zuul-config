@@ -63,6 +63,19 @@
         npm install
         npm test
 
+# ALWAYS pair with 'global-teardown'
+- builder:
+    name: oojs-ui-npm
+    builders:
+    - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
+        node --version
+        npm --version
+        rm -rf node_modules
+        npm install
+        npm test-exec
+
+
 # The npm-run-* macros are intended to be used when multiple are used
 # together (e.g. 'doc' and later 'test'). If you simply need to run
 # npm-install and npm-run-test, use the plain 'npm' macro instead.

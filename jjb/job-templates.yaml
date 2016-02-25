@@ -118,6 +118,18 @@
      - castor-save
 
 - job:
+    name: 'oojs-ui-npm'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - oojs-ui-npm
+    publishers:
+     - global-teardown
+
+- job:
     name: 'npm-run-doc'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
