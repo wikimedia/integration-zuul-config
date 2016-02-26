@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ea41786_456053a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-26T15:32:35Z",
+      "side": 1,
+      "message": "Better wording:\n\n  Migrate some job templates to UbuntuTrusty\n\nPlease list the list of jobs being modified which help figure out what the patch is about ;-)",
+      "revId": "3dea330480d6d4e12f0a3dcbf5a6a8f43f33a0ce",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ea41786_05d49b47",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-26T15:32:35Z",
+      "side": 1,
+      "message": "erblint-HEAD is still tied to Precise because it lint the erb  templates with ruby 1.8.7. It is available on Trusty but not installed so we will need a puppet patch to have it installed and then lint with /usr/bin/ruby18  maybe.\n\nI would recommend to have this in an independent patch so we can revert easily.",
+      "revId": "3dea330480d6d4e12f0a3dcbf5a6a8f43f33a0ce",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ea41786_6551cfdc",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-26T15:32:35Z",
+      "side": 1,
+      "message": "puppet is the same version on Precise/Trusty so pplint-HEAD is fine",
+      "revId": "3dea330480d6d4e12f0a3dcbf5a6a8f43f33a0ce",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ea41786_c544431f",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-26T15:32:35Z",
+      "side": 1,
+      "message": "perllint is only used for the timeline extension. That one is fine.",
+      "revId": "3dea330480d6d4e12f0a3dcbf5a6a8f43f33a0ce",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ea41786_e53dbf8b",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-26T15:32:35Z",
+      "side": 1,
+      "message": "phpunit needs to be run on Zend 5.3 still. For example it is used for integration/jenkins which has PHP files injected for MediaWiki releases branches that still claim to support Zend 5.3.\n\nWe should probably phase it out in favor of using composer. That is a good idea for a different change ;-}",
+      "revId": "3dea330480d6d4e12f0a3dcbf5a6a8f43f33a0ce",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
