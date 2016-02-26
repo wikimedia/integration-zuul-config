@@ -5,16 +5,32 @@
 # submodules we do not care about. See bug 42455.
 
 - job-template:
-    name: 'mediawiki-core-npm'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-no-submodules
+    name: 'mediawiki-core-npm-node-4.3'
+    node: ci-jessie-wikimedia
     concurrent: true
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
-     - npm
+     - castor-load
+     - shell: |
+         zuul-cloner --version
+         zuul-cloner --color \
+           --verbose \
+           --workspace src \
+           --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+           --cache-dir /srv/git \
+           https://gerrit.wikimedia.org/r/p \
+           mediawiki/core
+     - shell: |
+         node --version
+         npm --version
+         cd src/
+         npm install
+         npm test
     publishers:
-     - global-teardown
+     - castor-save
 
 
 - job-template:
@@ -358,6 +374,7 @@
       - 'mediawiki-core-qunit'
       - 'mediawiki-core-jsduck'
       - 'mediawiki-core-npm'
+      - 'mediawiki-core-npm-node-4.3'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
       - mediawiki-gate
