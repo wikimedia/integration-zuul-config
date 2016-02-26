@@ -166,8 +166,6 @@
 - project:
     name: Math
     defaults: browsertests
-    folder: tests
-    headless: 'false'
     mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
     mediawiki_url: en.wikipedia.beta.wmflabs.org
     platform: linux
@@ -177,6 +175,7 @@
     jobs:
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: chrome
+        target: beta_chrome
 
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
