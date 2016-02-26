@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ea41786_6ee1b196",
+        "filename": "jjb/macro-browsertests.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-26T09:40:01Z",
+      "side": 1,
+      "message": "RelatedArticles has the two different environments beta-desktop and beta-mobile. But other extensions do have a mediawiki_url set to the .m. mobile entry, yet do not have a beta-mobile.  An example is QuickSurveys which has in JJB:\n\n  mediawiki_url: en.m.wikipedia.beta.wmflabs.org\n\nBut in its environments.yml file:\n\n beta:\n    mediawiki_url: http://en.m.wikipedia.beta.wmflabs.org/wiki/\n\nSo for QuickSurveys (and other extensions), the patch will change to an environment that does not exist.\n\n\nSince all repositories now define the mediawiki url in an environment. I would refactor the browser tests to no more rely on URL and instead use an environment name to be defined by the developers.\n\nNamely in JJB replace {mediawiki_url}  by maybe {environment} and export it as MEDIAWIKI_ENVIRONMENT.  Then phase out that whole case statement.\n\nIdeally we would to rename jobs as we conduct the change to keep the history of previous builds.",
+      "revId": "94b58f911bffb7cff90c79f5ba8a42cf4378fbad",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
