@@ -13,14 +13,16 @@ Usage:
 from fabric.api import *  # noqa
 from fabric.contrib.console import confirm
 
-env.hosts = ['gallium.wikimedia.org']
-env.sudo_user = 'zuul'
 env.sudo_prefix = 'sudo -ni '
 env.use_ssh_config = True
 
 
 @task
 def deploy_zuul():
+    """Deploy a Zuul layout change"""
+    env.sudo_user = 'zuul'
+    env.host_string = 'gallium.wikimedia.org'
+
     with cd('/etc/zuul/wikimedia'):
         sudo('git remote update')
         sudo('git --no-pager log -p HEAD..origin/master zuul')
@@ -29,6 +31,15 @@ def deploy_zuul():
                 ' Zuul to deploy [hash]")'):
             sudo('git rebase')
             sudo('/etc/init.d/zuul reload')
+
+
+@task
+def deploy_slave_scripts():
+    """Pull integration/config on CI labs slaves"""
+    env.sudo_user = 'root'
+    env.host_string = 'integration-saltmaster.integration.eqiad.wmflabs'
+    sudo("salt -v '*slave*' cmd.run "
+         "'cd /srv/deployment/integration/slave-scripts && git pull'")
 
 
 @task(default=True)
