@@ -108,7 +108,9 @@
      - shell: |
          # For archiving build artifacts
          mkdir -p "$WORKSPACE/log"
-
+         if grep -q $WORKSPACE/apps-android-wikipedia; then
+            cd $WORKSPACE/apps-android-wikipedia/www
+         fi
          node --version
          npm --version
          npm install
