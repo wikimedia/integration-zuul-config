@@ -14,6 +14,10 @@ def set_parameters(item, job, params):
     :type params: dict
     """
 
+    # Sets a DISPLAY and CHROME_BIN variable
+    params['DISPLAY'] = ':94'
+    params['CHROME_BIN'] = 'which chromium-browser'
+
     # Sets a $PHP_BIN variable based on the job name
     if 'php55' in job.name:
         params['PHP_BIN'] = 'php5'
