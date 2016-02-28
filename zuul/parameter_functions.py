@@ -14,6 +14,9 @@ def set_parameters(item, job, params):
     :type params: dict
     """
 
+    # Xvfb display provided via puppet
+    params['DISPLAY'] = ':94'
+
     # Sets a $PHP_BIN variable based on the job name
     if 'php55' in job.name:
         params['PHP_BIN'] = 'php5'
