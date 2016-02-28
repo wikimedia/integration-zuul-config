@@ -741,7 +741,17 @@ jobs:
      # Matches: .jscsrc, .jshintrc, .jshintignore, and *.js
      - '^(\.js.*|.*\.js$)'
 
+  - name: ^*-jshint$
+    files:
+     # Matches: .jscsrc, .jshintrc, .jshintignore, and *.js
+     - '^(\.js.*|.*\.js$)'
+
   - name: ^jsonlint
+    files:
+     # Matches: *.json
+     - '^.*\.json$'
+
+  - name: ^*-jsonlint
     files:
      # Matches: *.json
      - '^.*\.json$'
@@ -1651,12 +1661,14 @@ projects:
 
   - name: apps/android/wikipedia
     test:
-      - apps-jslint
+      - apps-jshint
+      - apps-jsonlint
       - tox-jessie
       - apps-android-wikipedia-test
       - apps-android-wikipedia-lint
     gate-and-submit:
-      - apps-jslint
+      - apps-jshint
+      - apps-jsonlint
       - tox-jessie
       - apps-android-wikipedia-test
       # TODO: uncomment once this job votes.
@@ -4318,12 +4330,14 @@ projects:
 
   - name: mediawiki/extensions/DeviceMapLogCapture
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Diagnosis
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Dice
@@ -4333,7 +4347,8 @@ projects:
 
   - name: mediawiki/extensions/DidYouKnow
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/DidYouMean
@@ -4353,7 +4368,8 @@ projects:
 
   - name: mediawiki/extensions/DownloadCounter
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/DPLforum
@@ -4376,7 +4392,8 @@ projects:
 
   - name: mediawiki/extensions/EditSubpages
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/EnhanceContactForm
@@ -4387,7 +4404,8 @@ projects:
 
   - name: mediawiki/extensions/ErrorHandler
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/EtherpadLite
@@ -4410,7 +4428,8 @@ projects:
 
   - name: mediawiki/extensions/ExternalData
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ExtraLanguageLink
@@ -4438,7 +4457,8 @@ projects:
 
   - name: mediawiki/extensions/FilterListUsers
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/FirstSteps
@@ -4467,12 +4487,14 @@ projects:
 
   - name: mediawiki/extensions/FormatNum
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/FormelApplet
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Foxway
@@ -4495,7 +4517,8 @@ projects:
 
   - name: mediawiki/extensions/GlobalNotice
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/GlobalUserGroups
@@ -4547,7 +4570,8 @@ projects:
 
   - name: mediawiki/extensions/HashTables
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/HeaderTabs
@@ -4586,7 +4610,8 @@ projects:
 
   - name: mediawiki/extensions/HTMLets
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/HTMLTags
@@ -4597,7 +4622,8 @@ projects:
 
   - name: mediawiki/extensions/IframePage
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/IfTemplates
@@ -4608,7 +4634,8 @@ projects:
 
   - name: mediawiki/extensions/ImageLink
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ImageMetrics
@@ -4762,12 +4789,14 @@ projects:
 
   - name: mediawiki/extensions/LookupUser
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/LoopFunctions
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Loops
@@ -4778,7 +4807,8 @@ projects:
 
   - name: mediawiki/extensions/MagicNoCache
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
 
@@ -4833,12 +4863,14 @@ projects:
 
   - name: mediawiki/extensions/Model
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Moodle
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Mpdf
@@ -4869,12 +4901,14 @@ projects:
 
   - name: mediawiki/extensions/MultimediaPlayer
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/MultiUpload
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/MyVariables
@@ -5015,12 +5049,14 @@ projects:
 
   - name: mediawiki/extensions/OnlyRecentRecentChanges
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OpenGraphMeta
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OpenStreetMapSlippyMap
@@ -5030,7 +5066,8 @@ projects:
 
   - name: mediawiki/extensions/OracleTextSearch
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Oversight
@@ -5058,7 +5095,8 @@ projects:
 
   - name: mediawiki/extensions/PageLanguage
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PageNotice
@@ -5092,12 +5130,14 @@ projects:
 
   - name: mediawiki/extensions/PdfExport
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PerPageLicense
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Persona
@@ -5120,7 +5160,8 @@ projects:
 
   - name: mediawiki/extensions/PhpHighlight
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsMaps
@@ -5177,12 +5218,14 @@ projects:
 
   - name: mediawiki/extensions/Premoderation
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PrivateDomains
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PronunciationRecording
@@ -5219,12 +5262,14 @@ projects:
 
   - name: mediawiki/extensions/PushToWatch
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Quantcast
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/QuickResponse
@@ -5262,7 +5307,8 @@ projects:
 
   - name: mediawiki/extensions/RandomFeaturedUser
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RandomGameUnit
@@ -5285,12 +5331,14 @@ projects:
 
   - name: mediawiki/extensions/RandomInCategory
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RandomUsersWithAvatars
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Ratings
@@ -5300,9 +5348,9 @@ projects:
 
   - name: mediawiki/extensions/RDFIO
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-non-voting
-
 
   - name: mediawiki/extensions/ReassignEdits
     template:
@@ -5327,7 +5375,8 @@ projects:
 
   - name: mediawiki/extensions/RegexFun
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/RegexFunctions
@@ -5352,7 +5401,8 @@ projects:
 
   - name: mediawiki/extensions/RevisionCommentSupplement
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RightFunctions
@@ -5363,7 +5413,8 @@ projects:
 
   - name: mediawiki/extensions/RT
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SafeDelete
@@ -5382,7 +5433,8 @@ projects:
 
   - name: mediawiki/extensions/Sarcasm
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/ScanSet
@@ -5399,7 +5451,8 @@ projects:
 
   - name: mediawiki/extensions/SearchRealnames
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SectionDisqus
@@ -5421,7 +5474,8 @@ projects:
 
   - name: mediawiki/extensions/SecureSessions
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SelectCategory
@@ -5465,7 +5519,8 @@ projects:
 
   - name: mediawiki/extensions/SharedCssJs
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ShortUrlApi
@@ -5499,7 +5554,8 @@ projects:
 
   - name: mediawiki/extensions/SidebarDonateBox
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SignWritingMediaWikiPlugin
@@ -5515,7 +5571,8 @@ projects:
 
   - name: mediawiki/extensions/SimpleSecurity
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SimpleSurvey
@@ -5612,12 +5669,14 @@ projects:
 
   - name: mediawiki/extensions/Special404
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SpellingApi
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SphinxSearch
@@ -5633,7 +5692,8 @@ projects:
 
   - name: mediawiki/extensions/SSLClientAuthentication
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/StaffEdits
@@ -5692,13 +5752,14 @@ projects:
 
   - name: mediawiki/extensions/Tabs
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-non-voting
-
 
   - name: mediawiki/extensions/TemplateInfo
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Theme
@@ -5849,7 +5910,8 @@ projects:
 
   - name: mediawiki/extensions/Vine
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/VisualChat
@@ -5912,7 +5974,8 @@ projects:
 
   - name: mediawiki/extensions/WikiCategoryTagCloud
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikidataEntitySuggester
@@ -6471,16 +6534,16 @@ projects:
 
   - name: mediawiki/services/parsoid
     check:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
     test:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
       - parsoidsvc-php-parsertests
       - parsoidsvc-source-parse-tool-check
       - parsoidsvc-source-roundtrip-test-check
       - parsoidsvc-source-npm-0.8
       - parsoidsvc-source-npm-0.10
     gate-and-submit:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
       - parsoidsvc-php-parsertests
       - parsoidsvc-source-parse-tool-check
       - parsoidsvc-source-roundtrip-test-check
@@ -6492,16 +6555,16 @@ projects:
 
   - name: mediawiki/services/parsoid/deploy
     check:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
     test:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
       - parsoidsvc-debian-glue
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
       - parsoidsvc-deploy-npm-0.10
     gate-and-submit:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
@@ -6675,7 +6738,8 @@ projects:
 
   - name: mediawiki/extensions/ReplaceText
     template:
-      - name: extension-jslint
+      - name: jshint
+      - name: jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RSS
