@@ -93,6 +93,18 @@
      - global-teardown
 
 - job:
+    name: 'npm-old'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - npm-old
+    publishers:
+     - global-teardown
+
+- job:
     name: 'npm-node-4.3'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
