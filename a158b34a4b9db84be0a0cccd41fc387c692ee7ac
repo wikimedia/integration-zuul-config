@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ea41786_543eba88",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-28T14:02:54Z",
+      "side": 1,
+      "message": "The npm macro loads /srv/deployment/integration/slave-scripts/bin/npm-setup.sh and does a rm -rf node_modules . Both are unneeded on Nodepool instances which come up with a clear workspace.",
+      "revId": "a158b34a4b9db84be0a0cccd41fc387c692ee7ac",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ea41786_d4514ade",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-02-28T14:02:54Z",
+      "side": 1,
+      "message": "This is not needed on Nodepool instances. The only bits we would need are the ones from bin/global-set-env.sh :\n\n export DISPLAY\u003d\u0027:94\u0027\n export CHROME_BIN\u003d`which chromium-browser`\n\nThey are used by the qunit jobs, the MediaWiki karma runner and maybe a few other npm based jobs that happen to run karma.\n\nDISPLAY and CHROME_BIN should instead be injected as parameter to the build using zuul/parameter_functions.py",
+      "revId": "a158b34a4b9db84be0a0cccd41fc387c692ee7ac",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
