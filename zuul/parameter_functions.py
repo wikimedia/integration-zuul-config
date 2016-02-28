@@ -14,6 +14,14 @@ def set_parameters(item, job, params):
     :type params: dict
     """
 
+    # Sets a DISPLAY and CHROME_BIN variable based on the job name
+    if 'npm-node-4.3' in job.name:
+        params['DISPLAY'] = ':94'
+        params['CHROME_BIN'] = `which chromium-browser`
+    elif job.name == 'mediawiki-core-npm-node-4.3':
+        params['DISPLAY'] = ':94'
+        params['CHROME_BIN'] = `which chromium-browser`
+
     # Sets a $PHP_BIN variable based on the job name
     if 'php55' in job.name:
         params['PHP_BIN'] = 'php5'
