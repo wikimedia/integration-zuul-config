@@ -285,7 +285,8 @@ class TestZuulScheduler(unittest.TestCase):
         safe_jobs = [
             '(php5[35]|perl|json|yaml)lint',
             'jshint',
-            '.*-(js|perl|shell|php5[35]|)lint',
+            '.*-(jsh|jsonl)int',
+            '.*-(js|perl|shell|php5[35])lint',
             '(pp|erb)lint-HEAD',
             '.*-(tabs|typos)',
             'operations-puppet-pep8',
