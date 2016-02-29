@@ -731,11 +731,6 @@ jobs:
     files:
      - '^.*\.(js|json|css)$'
 
-  - name: ^.*-jslint$
-    files:
-     # Matches: .jscsrc, .jshintrc, .jshintignore, *.js and *.json
-     - '^(\.js.*|.*\.(js|json)$)'
-
   - name: ^.*jshint$
     files:
      # Matches: .jscsrc, .jshintrc, .jshintignore, and *.js
@@ -758,12 +753,6 @@ jobs:
 
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
-
-  # Exceptions for projects not yet passing jshint (bug 60619)
-  # https://bugzilla.wikimedia.org/showdependencytree.cgi?id=60619
-  #
-  - name: wikimedia-fundraising-crm-jslint
-    voting: false
 
   - name: operations-puppet-pep8
     files:
@@ -1084,7 +1073,6 @@ project-templates:
     gate-and-submit:
      - jsduck
 
-    # Similar to above, but no jslint.
   - name: mw-checks
     check-voter:
      - php53lint
@@ -1509,12 +1497,14 @@ projects:
 
   - name: apps/android/wikipedia
     test:
-      - apps-jslint
+      - apps-jshint
+      - apps-jsonlint
       - tox-jessie
       - apps-android-wikipedia-test
       - apps-android-wikipedia-lint
     gate-and-submit:
-      - apps-jslint
+      - apps-jshint
+      - apps-jsonlint
       - tox-jessie
       - apps-android-wikipedia-test
       # TODO: uncomment once this job votes.
@@ -2161,15 +2151,15 @@ projects:
 
   - name: wikimedia/fundraising/crm
     check:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
     test:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
       - wikimedia-fundraising-civicrm
       - noop
     gate-and-submit:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
       - wikimedia-fundraising-civicrm
       # Since jobs above might not trigger due to file filtering and
@@ -6412,17 +6402,17 @@ projects:
       - mobileapps-deploy-npm-node-4.3
 
   - name: mediawiki/services/parsoid
-    check:
-      - parsoidsvc-jslint
     test:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
+      - parsoidsvc-jsonlint
       - parsoidsvc-php-parsertests
       - parsoidsvc-source-parse-tool-check
       - parsoidsvc-source-roundtrip-test-check
       - parsoidsvc-source-npm-0.8
       - parsoidsvc-source-npm-0.10
     gate-and-submit:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
+      - parsoidsvc-jsonlint
       - parsoidsvc-php-parsertests
       - parsoidsvc-source-parse-tool-check
       - parsoidsvc-source-roundtrip-test-check
@@ -6433,17 +6423,13 @@ projects:
       - parsoidsvc-source-jsduck-publish
 
   - name: mediawiki/services/parsoid/deploy
-    check:
-      - parsoidsvc-jslint
     test:
-      - parsoidsvc-jslint
       - parsoidsvc-debian-glue
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
       - parsoidsvc-deploy-npm-0.10
     gate-and-submit:
-      - parsoidsvc-jslint
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
