@@ -1,8 +1,28 @@
 - project:
     name: wikimedia-fundraising-crm
-
     jobs:
-      - '{name}-jslint'
+      - 'wikimedia-fundraising-crm-jshint'
+      - 'wikimedia-fundraising-crm-jsonlint'
+
+- job-template:
+    name: 'wikimedia-fundraising-crm-jshint'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jshint
+
+- job-template:
+    name: 'wikimedia-fundraising-crm-jsonlint'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsonlint
 
 - builder:
     name: fundraising-crm-install

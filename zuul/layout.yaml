@@ -762,7 +762,7 @@ jobs:
   # Exceptions for projects not yet passing jshint (bug 60619)
   # https://bugzilla.wikimedia.org/showdependencytree.cgi?id=60619
   #
-  - name: wikimedia-fundraising-crm-jslint
+  - name: wikimedia-fundraising-crm-jshint
     voting: false
 
   - name: operations-puppet-pep8
@@ -2151,15 +2151,18 @@ projects:
 
   - name: wikimedia/fundraising/crm
     check:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jshint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
     test:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jshint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
       - wikimedia-fundraising-civicrm
       - noop
     gate-and-submit:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jshint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
       - wikimedia-fundraising-civicrm
       # Since jobs above might not trigger due to file filtering and
