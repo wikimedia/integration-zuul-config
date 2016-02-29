@@ -95,7 +95,7 @@ dependencies = {
     'Thanks': ['Echo', 'Flow', 'MobileFrontend', 'VisualEditor',
                'GuidedTour', 'AbuseFilter', 'SpamBlacklist',
                'CheckUser', 'EventLogging', 'ConfirmEdit'],
-    'Translate': ['UniversalLanguageSelector', 'EventLogging'],
+    'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
     'TwnMainPage': ['Translate'],
