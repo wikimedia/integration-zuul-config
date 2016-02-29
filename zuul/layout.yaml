@@ -723,10 +723,10 @@ jobs:
   - name: ^mediawiki-core-npm-node-4.3$
     files:
      - '^(\.js.*|.*\.(js|json)$)'
-
   - name: jsduck
     files:
      - '^.*\.(js|json|css)$'
+
   - name: ^.*-jsduck$
     files:
      - '^.*\.(js|json|css)$'
@@ -741,7 +741,17 @@ jobs:
      # Matches: .jscsrc, .jshintrc, .jshintignore, and *.js
      - '^(\.js.*|.*\.js$)'
 
+  - name: ^.*-jshint$
+    files:
+     # Matches: .jscsrc, .jshintrc, .jshintignore, and *.js
+     - '^(\.js.*|.*\.js$)'
+
   - name: ^jsonlint
+    files:
+     # Matches: *.json
+     - '^.*\.json$'
+
+  - name: ^.*-jsonlint$
     files:
      # Matches: *.json
      - '^.*\.json$'
@@ -792,7 +802,7 @@ jobs:
     voting: false
   - name: mwext-Survey-jslint # bug 61637
     voting: false
-  - name: wikimedia-fundraising-crm-jslint
+  - name: wikimedia-fundraising-crm-jshint
     voting: false
 # Start of new currently disabled extensions checks from mass extension import - Addshore
   - name: mwext-ApiExplorer-jslint
@@ -1651,12 +1661,14 @@ projects:
 
   - name: apps/android/wikipedia
     test:
-      - apps-jslint
+      - apps-jshint
+      - apps-jsonlint
       - tox-jessie
       - apps-android-wikipedia-test
       - apps-android-wikipedia-lint
     gate-and-submit:
-      - apps-jslint
+      - apps-jshint
+      - apps-jsonlint
       - tox-jessie
       - apps-android-wikipedia-test
       # TODO: uncomment once this job votes.
@@ -2303,15 +2315,18 @@ projects:
 
   - name: wikimedia/fundraising/crm
     check:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jshint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
     test:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jshint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
       - wikimedia-fundraising-civicrm
       - noop
     gate-and-submit:
-      - wikimedia-fundraising-crm-jslint
+      - wikimedia-fundraising-crm-jshint
+      - wikimedia-fundraising-crm-jsonlint
       - php53lint
       - wikimedia-fundraising-civicrm
       # Since jobs above might not trigger due to file filtering and
@@ -6522,16 +6537,16 @@ projects:
 
   - name: mediawiki/services/parsoid
     check:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
     test:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
       - parsoidsvc-php-parsertests
       - parsoidsvc-source-parse-tool-check
       - parsoidsvc-source-roundtrip-test-check
       - parsoidsvc-source-npm-0.8
       - parsoidsvc-source-npm-0.10
     gate-and-submit:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
       - parsoidsvc-php-parsertests
       - parsoidsvc-source-parse-tool-check
       - parsoidsvc-source-roundtrip-test-check
@@ -6543,16 +6558,16 @@ projects:
 
   - name: mediawiki/services/parsoid/deploy
     check:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
     test:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
       - parsoidsvc-debian-glue
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
       - parsoidsvc-deploy-npm-0.10
     gate-and-submit:
-      - parsoidsvc-jslint
+      - parsoidsvc-jshint
       - parsoidsvc-deploy-parse-tool-check
       - parsoidsvc-deploy-roundtrip-test-check
       - parsoidsvc-deploy-npm-0.8
