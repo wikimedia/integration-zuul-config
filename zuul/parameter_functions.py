@@ -93,7 +93,7 @@ dependencies = {
     'Spreadsheet': ['PHPExcel'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
-    'Translate': ['UniversalLanguageSelector', 'EventLogging'],
+    'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
     'TwnMainPage': ['Translate'],
