@@ -3,8 +3,28 @@
 - project:
     name: apps
     jobs:
-      - '{name}-jslint'
-      - '{name}-php53lint'
+      - 'apps-jshint'
+      - 'apps-jsonlint'
+
+- job-template:
+    name: 'apps-jshint'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jshint
+
+- job-template:
+    name: 'apps-jsonlint'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsonlint
 
 - publisher:
     name: gradle-reports-checkstyle
