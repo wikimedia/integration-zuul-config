@@ -1,0 +1,15 @@
+#!/bin/bash
+# vim: set et ts=4 sw=4:
+
+# Must happens after:
+# elements/base/install.d/00-baseline-environment
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Remove the open-iscsi package installed by base. Seems to delay instance boot
+echo "Removing unneeded open-iscsi package..."
+apt-get -y remove --purge open-iscsi
