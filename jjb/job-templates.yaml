@@ -12,18 +12,15 @@
         /srv/deployment/integration/slave-scripts/bin/git-changed-in-head erb \
         | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
 
-# Non-generic version of "jshint" and "jsonlint"
-# below.
 - job-template:
-    name: '{name}-jslint'
+    name: '{name}-jshint'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-no-submodules
+    defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
     builders:
      - jshint
-     - jsonlint
 
 - job:
     name: 'jshint'
@@ -34,6 +31,16 @@
      - zuul
     builders:
      - jshint
+
+- job-template:
+    name: '{name}-jsonlint'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - jsonlint
 
 - job:
     name: 'jsonlint'
