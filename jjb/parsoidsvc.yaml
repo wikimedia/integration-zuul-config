@@ -155,21 +155,6 @@
     publishers:
      - global-teardown
 
-# slightly customized version of jshint job, since we have a package.json
-# which is a symlink inside a submodule, and so fails jsonlint under the
-# usual use-remote-zuul-no-submodules defaults for the {name}-jslint job
-- job-template:
-    name: parsoidsvc-jslint
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    properties:
-        - throttle-one-per-node
-    triggers:
-      - zuul
-    builders:
-      - jshint
-
 # documentation builder (based on `oojs-ui-jsduck-publish` job)
 - job-template:
     name: parsoidsvc-{repository}-jsduck-publish
@@ -203,7 +188,8 @@
      - source  # mediawiki/services/parsoid
      - deploy  # mediawiki/services/parsoid/deploy
     jobs:
-        - 'parsoidsvc-jslint'
+        - '{name}-jshint'
+        - '{name}-jsonlint'
         - '{name}-debian-glue':
             distribution: trusty
         - 'parsoidsvc-{repository}-parse-tool-check'
