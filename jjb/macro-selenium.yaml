@@ -1,0 +1,19 @@
+- builder:
+    name: selenium-builder
+    builders:
+      - shell: |
+          # T128190
+          git fetch https://gerrit.wikimedia.org/r/mediawiki/extensions/Math refs/changes/09/273909/7 && git checkout FETCH_HEAD
+          # T128190
+
+          # install dependencies
+          export GEM_HOME="$HOME/.gem/2.0.0"
+          mkdir -p vendor
+          gem2.0 install --env-shebang -i vendor bundler --no-ri --no-rdoc
+          export GEM_PATH="`pwd`/vendor"
+          "$WORKSPACE"/vendor/bin/bundle install --verbose
+
+          # run the tests
+          export SAUCE_ONDEMAND_USERNAME=wikimedia-jenkins
+          export MEDIAWIKI_ENVIRONMENT=$jenkins
+          "$WORKSPACE"/vendor/bin/bundle exec rake selenium

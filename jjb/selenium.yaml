@@ -1,0 +1,17 @@
+# YAML structure to define email recipients aliases
+- notification-emails:
+    name: selenium-emails # a 'name' is required by JJB.
+    lists:
+     - qa: &emails-qa
+        qa-alerts@lists.wikimedia.org
+
+# Math
+- project:
+    name: Math
+    defaults: selenium
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
+    recipients: *emails-qa
+    repository: mediawiki/extensions/Math
+
+    jobs:
+     - 'selenium-{name}'
