@@ -2281,10 +2281,12 @@ projects:
 
   - name: mediawiki/extensions/ActivityMonitor
     template:
-      - name: extension-unittests-generic
-      - name: jshint
-      - name: jsonlint
       - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/AddMessages
     template:
