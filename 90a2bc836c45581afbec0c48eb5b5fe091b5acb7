@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2ea41786_b7e91ea9",
+        "filename": "tests/test_zuul_scheduler.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-03-01T22:06:58Z",
+      "side": 1,
+      "message": "I would change the capture group to something easier to read:\n\n  \u0027.*-(jshint|jsonlint),\n\nNot important anyway. Can stay as is.",
+      "range": {
+        "startLine": 288,
+        "startChar": 13,
+        "endLine": 288,
+        "endChar": 30
+      },
+      "revId": "90a2bc836c45581afbec0c48eb5b5fe091b5acb7",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ea41786_d7cdba63",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-03-01T22:06:58Z",
+      "side": 1,
+      "message": "That is a copy paste of the previous rule ^jshint$ which match the job \u0027jshint\u0027.  That is also matched by the rule you are introducing ^.*-jshint$\n\nSo just change the regex from ^jshint$  to ^.*jshint$  and that will cover it. No need to specify the - imho.",
+      "revId": "90a2bc836c45581afbec0c48eb5b5fe091b5acb7",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ea41786_97d742f2",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-03-01T22:06:58Z",
+      "side": 1,
+      "message": "Ditto just amend the existing rule:\n\n ^jsonlint$  --\u003e ^.*jsonlint$",
+      "revId": "90a2bc836c45581afbec0c48eb5b5fe091b5acb7",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
