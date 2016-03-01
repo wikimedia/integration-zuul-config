@@ -1,0 +1,131 @@
+# YAML structure to define email recipients aliases
+- notification-emails:
+    name: selenium-emails # a 'name' is required by JJB.
+    lists:
+     - default: &emails-default
+        qa-alerts@lists.wikimedia.org zfilipin@wikimedia.org
+
+     - collaboration: &emails-collaboration
+        mflaschen@wikimedia.org mmullie@wikimedia.org qa-alerts@lists.wikimedia.org sbisson@wikimedia.org
+
+     - fundraising: &emails-fundraising
+        fr-tech@wikimedia.org qa-alerts@lists.wikimedia.org
+
+     - growth: &emails-growth
+        mflaschen@wikimedia.org qa-alerts@lists.wikimedia.org rmoen@wikimedia.org samsmith@wikimedia.org
+
+     - visualeditor: &emails-visualeditor
+        jforrester@wikimedia.org qa-alerts@lists.wikimedia.org
+
+- project:
+    name: CentralAuth
+    recipients: *emails-default
+    repository: mediawiki/extensions/CentralAuth
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: CentralNotice
+    recipients: *emails-fundraising
+    repository: mediawiki/extensions/CentralNotice
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: CirrusSearch
+    recipients: *emails-default
+    repository: mediawiki/extensions/CirrusSearch
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: Core
+    recipients: *emails-default
+    repository: mediawiki/core
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: Echo
+    recipients: *emails-collaboration
+    repository: mediawiki/extensions/Echo
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: Gather
+    recipients: *emails-default
+    repository: mediawiki/extensions/Gather
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: GettingStarted
+    recipients: *emails-growth
+    repository: mediawiki/extensions/GettingStarted
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: Math
+    recipients: *emails-default
+    repository: mediawiki/extensions/Math
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: PageTriage
+    recipients: *emails-collaboration
+    repository: mediawiki/extensions/PageTriage
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: PdfHandler
+    recipients: *emails-default
+    repository: mediawiki/extensions/PdfHandler
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: QuickSurveys
+    recipients: *emails-default
+    repository: mediawiki/extensions/QuickSurveys
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: RelatedArticles
+    recipients: *emails-default
+    repository: mediawiki/extensions/RelatedArticles
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: WikiLove
+    recipients: *emails-collaboration
+    repository: mediawiki/extensions/WikiLove
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: VisualEditor
+    path_to_ci_yml: modules/ve-mw/tests/browser/ci.yml
+    recipients: *emails-visualeditor
+    repository: mediawiki/extensions/VisualEditor
+
+    jobs:
+     - 'selenium-{name}'
