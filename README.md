@@ -18,9 +18,9 @@ Generate XML files for Jenkins jobs from YAML files:
 
     $ jenkins-jobs test config/jjb/ -o output/
 
-Update Jenkins jobs which name starts with "browsertests":
+Update Jenkins jobs which name starts with "selenium":
 
-    $ jenkins-jobs --conf etc/jenkins_jobs.ini update config/jjb/ browsertests*
+    $ jenkins-jobs --conf etc/jenkins_jobs.ini update config/jjb/ selenium*
 
 ## Running tests
 
