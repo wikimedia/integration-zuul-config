@@ -50,6 +50,13 @@
          ext-name: '{ext-name}'
          dependencies: '{dependencies}'
          additional-repositories: 'mediawiki/vendor'
+     - shell: |
+         cd "mediawiki/extensions/{ext-name}"
+         git submodule update --init
+         cd "../../"
+         cd "mediawiki/extensions/{dependencies}"
+         git submodule update --init
+         cd "../../"
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
      - mw-apply-settings
@@ -86,9 +93,17 @@
             cd src/extensions/VisualEditor
             git submodule update --init
          fi
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule update --init
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule update --init
+         cd "../../"
      - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
+
 # same except for use with composer instead of cloning vendor
 - builder:
     name: prepare-mediawiki-zuul-project-no-vendor
@@ -105,6 +120,13 @@
             cd src/extensions/VisualEditor
             git submodule update --init
          fi
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule update --init
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule update --init
+         cd "../../"
      - composer-validate:
          dir: 'src'
      - composer-local-create:
@@ -125,6 +147,15 @@
     builders:
      - prepare-mediawiki-zuul-project
      - qunit-karma
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
     publishers:
      - localhost-cleanup
      - mw-teardown-mysql
@@ -140,6 +171,15 @@
     builders:
      - prepare-mediawiki-zuul-project-no-vendor
      - qunit-karma
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
     publishers:
      - localhost-cleanup
      - mw-teardown-mysql
@@ -157,6 +197,15 @@
      - zuul-cloner:
          projects: mediawiki/skins/Vector
      - mw-selenium
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
     publishers:
      - mw-selenium-cleanup
      - localhost-cleanup
@@ -178,6 +227,15 @@
      - zuul-cloner:
          projects: mediawiki/skins/Vector
      - mw-selenium
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
     publishers:
      - mw-selenium-cleanup
      - localhost-cleanup
@@ -219,6 +277,15 @@
          dependencies: '{dependencies}'
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
+     - shell: |
+         cd "mediawiki/extensions/{ext-name}"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
+         cd "mediawiki/extensions/{dependencies}"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
     # TODO, find ways to additionaly run tests for core but
     # without extensions tests
     publishers:
@@ -241,6 +308,15 @@
      - prepare-mediawiki-zuul-project
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
     publishers:
      - junit:
         results: 'log/junit*.xml'
@@ -261,6 +337,15 @@
      - prepare-mediawiki-zuul-project
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
     publishers:
      - junit:
         results: 'log/junit*.xml'
@@ -281,6 +366,15 @@
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project-no-vendor
      - mw-run-phpunit-allexts
+     - shell: |
+         cd "src/extensions/$ZUUL_PROJECT"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
+         cd "src/extensions/$EXT_DEPENDENCIES"
+         git submodule status
+         git submodule foreach git clean -xdff -q
+         cd "../../"
     publishers:
      - junit:
         results: 'log/junit*.xml'
