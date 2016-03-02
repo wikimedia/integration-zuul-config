@@ -14,6 +14,31 @@
     publishers:
      - global-teardown
 
+- job-template:
+    name: '{name}-{ext-name}-npm-node-4.3'
+    node: ci-jessie-wikimedia
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - assert-node-version-4.3
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+
+         node --version
+         npm --version
+         npm install
+         npm test
+    publishers:
+     - archive-log-allow-empty
+     - castor-save
+
 # Parameters:
 #
 # ext-name: extension basename. Set to '' to ignore
@@ -421,6 +446,9 @@
              - php55
 
      - '{name}-{ext-name}-npm':
+        ext-name: VisualEditor
+
+     - '{name}-{ext-name}-npm-node-4.3':
         ext-name: VisualEditor
 
 - project:
