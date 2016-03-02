@@ -140,7 +140,7 @@ def set_ext_dependencies(item, job, params):
 
     # Export with a literal \n character and have bash expand it later
     params['EXT_DEPENDENCIES'] = '\\n'.join(
-        'mediawiki/extensions/' + dep for dep in sorted(deps)
+        'mediawiki/extensions/' + dep for dep in deps
     )
 
 
