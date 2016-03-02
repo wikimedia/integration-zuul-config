@@ -5888,6 +5888,21 @@ projects:
     gate-and-submit:
       - composer-package-validate
 
+  - name: mediawiki/extensions/WikibaseMediaInfo
+    template:
+      - name: composer-test
+      - name: extension-unittests-composer
+      - name: extension-qunit-composer
+      - name: npm
+    check:
+      - composer-package-validate
+    test:
+      - composer-package-validate
+    gate-and-submit:
+      - composer-package-validate
+    experimental:
+      - mwext-mw-selenium-composer
+
   - name: mediawiki/extensions/WikiLabels
     template:
       - name: composer-test

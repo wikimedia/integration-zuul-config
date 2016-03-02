@@ -103,6 +103,7 @@ dependencies = {
     'VisualEditor': ['Cite'],
     'Wikibase': ['CirrusSearch', 'cldr', 'Elastica', 'GeoData',
                  'Scribunto', 'Capiunto'],
+    'WikibaseMediaInfo': ['Wikibase'],
     'WikibaseQuality': ['Wikibase'],
     'WikibaseQualityConstraints': ['Wikibase', 'WikibaseQuality'],
     'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
