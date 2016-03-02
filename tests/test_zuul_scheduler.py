@@ -580,8 +580,8 @@ class TestZuulScheduler(unittest.TestCase):
             for job in mw_project['jobs']
             if isinstance(job, dict)
             and job.keys()[0] == 'mediawiki-extensions-{phpflavor}')
-        # List of extensions basenames
-        jjb_deps = set(jjb_gate_template['dependencies'].splitlines())
+        # List of extensions basenames. Space separted in the YAML definition.
+        jjb_deps = set(jjb_gate_template['dependencies'].rstrip().split(' '))
 
         # Grab projects having the gate job 'mediawiki-extensions-hhvm'
         gated_in_zuul = set([
