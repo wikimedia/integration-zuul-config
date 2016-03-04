@@ -664,7 +664,7 @@ jobs:
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
   - name: ^.*php55.*$
-    branch: (?!REL1_2[3-6]$)
+    branch: (?!REL1_2[3-6]$|fundraising/REL.*)
 
   - name: ^.*php53.*$
     skip-if:
@@ -678,10 +678,6 @@ jobs:
   # Extensions tested together, since 1.25alpha ...
   - name: ^mediawiki-extensions-(qunit|hhvm|php53)$
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
-    queue-name: mediawiki
-
-  - name: ^mediawiki-extensions-php55$
-    branch: (?!REL1_23|REL1_24|REL1_25|REL1_26|fundraising/REL.*)
     queue-name: mediawiki
 
   # ... older branches get the legacy job
