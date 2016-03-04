@@ -517,6 +517,13 @@ pipelines:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
             - code-review: 2
+        # Let whitelisted users the ability to reenqueue a change in the test
+        # pipeline by simply commenting 'recheck' on a change.
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:( -?Code\-Review(\+)?(2)?)?\n\n\s*recheck gate\.?\s*$
+          email: *email_whitelist
+          approval:
+            - code-review: 2
     start:
       gerrit:
         verified: 0
