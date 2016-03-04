@@ -2520,22 +2520,11 @@ projects:
 
   - name: mediawiki/extensions/Citoid
     template:
-      - name: npm
       - name: extension-unittests-generic
+      - name: npm
     check:
       - jsonlint
-      - php53lint
-      - composer-validate
-    test:
-      - php53lint
-      - composer-validate
-    gate-and-submit:
-      - mediawiki-gate
-      - php53lint
-      - composer-validate
-    experimental:
-      - mediawiki-extensions-hhvm
-      - mediawiki-extensions-qunit
+      - jshint
 
   - name: mediawiki/extensions/cldr
     template:
