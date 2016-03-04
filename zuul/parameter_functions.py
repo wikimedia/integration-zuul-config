@@ -50,6 +50,7 @@ dependencies = {
     'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
                            'UniversalLanguageSelector', 'Wikidata'],
     'Disambiguator': ['VisualEditor'],
+    'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr'],
     'FlaggedRevs': ['Scribunto'],
     'Flow': ['AbuseFilter', 'CheckUser', 'ConfirmEdit', 'SpamBlacklist',
