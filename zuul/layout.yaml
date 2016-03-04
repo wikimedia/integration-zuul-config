@@ -2569,11 +2569,13 @@ projects:
 
   - name: mediawiki/extensions/CirrusSearch
     template:
-      - name: jshint
       - name: extension-gate
       - name: rake
       - name: mw-checks-test
       - name: npm
+    check:
+      - jsonlint
+      - jshint
     test:
       - mwext-CirrusSearch-whitespaces
     gate-and-submit:
