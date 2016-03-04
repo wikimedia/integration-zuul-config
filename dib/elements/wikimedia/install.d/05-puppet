@@ -11,7 +11,9 @@ DIB_WIKIMEDIA_PUPPET_DEST=${DIB_WIKIMEDIA_PUPPET_DEST:-/puppet}
 
 mkdir -v -p $(dirname $DIB_WIKIMEDIA_PUPPET_DEST)
 echo "Cloning puppet.git from instance bare mirror"
-git clone /srv/git/operations/puppet.git "$DIB_WIKIMEDIA_PUPPET_DEST"
+# --no-hardlinks since the mirror is later chowned to jenkins while /puppet is
+# owned by root. That mess hardlinks and future git pull. T128846
+git clone --no-hardlinks /srv/git/operations/puppet.git "$DIB_WIKIMEDIA_PUPPET_DEST"
 
 echo "Changing remote from instance mirror to Gerrit..."
 git -C "$DIB_WIKIMEDIA_PUPPET_DEST" remote -v
