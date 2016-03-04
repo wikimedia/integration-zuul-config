@@ -9,7 +9,7 @@ fi;
 set -u
 
 HOSTNAME="$1"
-echo "Hostname: $HOSTNAME"
+echo "${0} (hostname $HOSTNAME)"
 sudo hostname $HOSTNAME
 echo "127.0.0.1 $HOSTNAME" | sudo tee -a /etc/hosts
 
@@ -31,3 +31,4 @@ echo "apt-get dist-upgrade && clean"
 sudo apt-get -q update
 sudo apt-get -V -q -y dist-upgrade
 sudo apt-get clean
+echo "${0} complete (hostname: ${HOSTNAME})"
