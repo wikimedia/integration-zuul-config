@@ -23,7 +23,10 @@
         - shell: |
             # Install MediaWiki in a different directory
             export MW_INSTALL_PATH='src/mediawiki/core'
+            # Keep these consistent with `prepare-mediawiki-zuul-project-no-vendor`
             /srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh
+            /srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh
+            /srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh
         - shell: |
            # record the versions of parsertests we're running, for debugging
            # if something goes wrong
