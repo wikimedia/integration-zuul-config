@@ -31,4 +31,8 @@ echo "apt-get dist-upgrade && clean"
 sudo apt-get -q update
 sudo apt-get -V -q -y dist-upgrade
 sudo apt-get clean
+
+echo "Syncing filesystem"
+sync
+
 echo "${0} complete (hostname: ${HOSTNAME})"
