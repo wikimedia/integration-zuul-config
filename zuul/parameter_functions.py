@@ -40,6 +40,7 @@ def set_parameters(item, job, params):
 dependencies = {
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
+    'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
     'Capiunto': ['Scribunto'],
     'Cite': ['VisualEditor'],
