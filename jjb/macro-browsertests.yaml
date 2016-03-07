@@ -23,9 +23,6 @@
             unset SAUCE_ONDEMAND_USERNAME
           fi
 
-          # Log results to Raita
-          export RAITA_URL=http://integration-raita.eqiad.wmflabs:9200/raita
-
           # Set MEDIAWIKI_ENVIRONMENT for mediawiki-selenium >= 1.0.0
           case '{mediawiki_url}' in
             *.beta.wmflabs.org)
@@ -107,9 +104,6 @@
 
           # workaround for T110510
           pretty="--format pretty"
-          if [ "wikidata.beta.wmflabs.org" = "{mediawiki_url}" ]; then
-            pretty=""
-          fi
           # run tests
           "$WORKSPACE"/vendor/bin/bundle exec cucumber \
             --backtrace \
