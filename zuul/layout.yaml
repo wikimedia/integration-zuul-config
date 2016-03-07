@@ -2383,11 +2383,12 @@ projects:
 
   - name: mediawiki/extensions/Babel
     template:
+      - name: composer-test
       - name: extension-gate
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/BetaFeatures
     template:
@@ -2419,15 +2420,19 @@ projects:
 
   - name: mediawiki/extensions/BookManager
     template:
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-non-voting
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/BookManagerv2
     template:
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/BounceHandler
     template:
@@ -2462,21 +2467,26 @@ projects:
 
   - name: mediawiki/extensions/Capiunto
     template:
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/Cards
     template:
       - name: composer-test
       - name: extension-gate
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/CategoryTagSorter
     template:
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/CategoryTree
     template:
@@ -2509,6 +2519,9 @@ projects:
       - name: composer-test
       - name: extension-gate
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/CiteThisPage
     template:
@@ -2520,22 +2533,13 @@ projects:
 
   - name: mediawiki/extensions/Citoid
     template:
-      - name: npm
       - name: extension-unittests-generic
+      - name: npm
     check:
       - jsonlint
-      - php53lint
-      - composer-validate
-    test:
-      - php53lint
-      - composer-validate
+      - jshint
     gate-and-submit:
       - mediawiki-gate
-      - php53lint
-      - composer-validate
-    experimental:
-      - mediawiki-extensions-hhvm
-      - mediawiki-extensions-qunit
 
   - name: mediawiki/extensions/cldr
     template:
@@ -2581,10 +2585,12 @@ projects:
 
   - name: mediawiki/extensions/CleanChanges
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: composer-test
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/ClickTracking
     template:
@@ -2592,9 +2598,10 @@ projects:
 
   - name: mediawiki/extensions/ClientSide
     template:
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/CodeEditor
     template:
