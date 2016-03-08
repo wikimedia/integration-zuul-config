@@ -42,6 +42,7 @@ git::clone { 'jenkins CI slave scripts':
 include contint::packages::base
 include contint::packages::python
 include contint::packages::ruby
+include contint::browsers
 
 # Broken beyond repair
 #include contint::packages::javascript
