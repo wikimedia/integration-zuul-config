@@ -938,6 +938,7 @@ project-templates:
       - composer-php53
       - composer-php55
       - composer-hhvm
+      - mediawiki-extensions-qunit-4.3
 
   - name: extension-unittests-composer
     check:
@@ -966,6 +967,7 @@ project-templates:
      - composer-php53
      - composer-php55
      - composer-hhvm
+     - mediawiki-extensions-qunit-4.3
 
   - name: extension-unittests-generic
     check:
@@ -999,6 +1001,7 @@ project-templates:
       - composer-php53
       - composer-php55
       - composer-hhvm
+      - mediawiki-extensions-qunit-4.3
 
   - name: extension-unittests-non-voting
     check:
@@ -1028,6 +1031,7 @@ project-templates:
       - composer-php53
       - composer-php55
       - composer-hhvm
+      - mediawiki-extensions-qunit-4.3
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1057,6 +1061,9 @@ project-templates:
       - 'mwext-{name}-qunit'
     gate-and-submit:
       - 'mwext-{name}-qunit'
+    experimental:
+      - mwext-qunit-4.3
+      - mwext-qunit-composer-4.3
 
   # Triggers the generic mwext-qunit job
   - name: extension-qunit-generic
@@ -1065,13 +1072,17 @@ project-templates:
     gate-and-submit:
       - mwext-qunit
     experimental:
-      - mwext-qunit-composer
+      - mwext-qunit-4.3
+      - mwext-qunit-composer-4.3
 
   - name: extension-qunit-composer
     test:
       - mwext-qunit-composer
     gate-and-submit:
       - mwext-qunit-composer
+    experimental:
+      - mwext-qunit-composer-4.3
+      - mwext-qunit-4.3
 
   - name: jsduck
     test:
@@ -1359,6 +1370,8 @@ projects:
       - mediawiki-phpunit-hhvm-composer
       # will replace mediawiki-phpunit-php53 for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
       - mediawiki-phpunit-php53-composer
+      - mediawiki-core-qunit-4.3
+      - mediawiki-extensions-qunit-4.3
 
   - name: mediawiki/debian
     experimental:

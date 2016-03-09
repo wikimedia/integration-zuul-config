@@ -32,7 +32,6 @@
     publishers:
      - castor-save
 
-
 - job-template:
     name: 'mediawiki-core-qunit'
     node: contintLabsSlave && UbuntuTrusty
@@ -55,6 +54,34 @@
      - localhost-cleanup
      - mw-teardown-mysql
      - archive-log-dir
+
+- job-template:
+    name: 'mediawiki-core-qunit-4.3'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - shell: |
+         zuul-cloner --version
+         zuul-cloner --color \
+           --verbose \
+           --workspace src \
+           --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+           --cache-dir /srv/git \
+           https://gerrit.wikimedia.org/r/p \
+           mediawiki/core \
+           mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - qunit-karma-4.3
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - castor-save
 
 - job-template:
     name: 'mediawiki-core-jsduck'
@@ -335,6 +362,32 @@
      - localhost-cleanup
      - mw-teardown-mysql
      - archive-log-dir
+
+- job-template:
+    name: 'mediawiki-extensions-qunit-4.3'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - zuul-cloner-extdeps:
+         ext-name: ''
+         dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
+     - inject-experimental-extension
+     - sort-deps-txt
+     - mw-install-mysql
+     - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - qunit-karma-4.3
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - castor-save
 
 # Test out our PHPUnit against various MediaWiki branches
 #
