@@ -130,6 +130,25 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job:
+    name: 'mwext-qunit-4.3'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+    triggers:
+     - prepare-mediawiki-zuul-project
+     - qunit-karma-4.3
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - castor-save
+
 # Generic qunit job for extensions with composer update.
 - job:
     name: 'mwext-qunit-composer'
@@ -144,6 +163,23 @@
      - localhost-cleanup
      - mw-teardown-mysql
      - archive-log-dir
+
+- job:
+    name: 'mwext-qunit-composer-4.3'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - prepare-mediawiki-zuul-project-no-vendor
+     - qunit-karma-4.3
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - castor-save
 
 # Generic mw-selenium job for extensions.
 - job:
