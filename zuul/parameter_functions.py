@@ -26,7 +26,8 @@ def set_parameters(item, job, params):
         # T126394: This should always be HHVM
         params['PHP_BIN'] = 'hhvm'
 
-    ext_deps_jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')
+    ext_deps_jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium'
+                     'mediawiki-extensions-qunit-generic')
     if job.name.startswith(ext_deps_jobs):
         set_ext_dependencies(item, job, params)
 
