@@ -307,6 +307,55 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job-template:
+    name: 'mediawiki-extensions-{phpflavor}-generic'
+    # Select runnable node based on the phpflavor (hhvm or php53)
+    #
+    # We want to reuse the same job template for both PHP flavor:
+    # - HHVM flavor runs on Trusty CI labs slaves with HHVM
+    # - PHP53 flavor runs on Precise CI labs slaves with Zend PHP 5.3
+    # - PHP55 flavor runs on Trusty CI labs slaves with Zend PHP 5.5
+    #
+    # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
+    # definition based on the job name.
+    #
+    # If you want to verify the slaves, head to the job configuration page,
+    # search for 'Restrict where this project can be run', below the input box
+    # is a text: Slaves in [label]: X . Clicking [label] will list nodes
+    # matching the expression.
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+             $(cat extensions_load.txt)
+     - inject-experimental-extension
+     - sort-deps-txt
+     - mw-install-mysql
+     - shell: "mv extensions_load.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
 # See 'mediawiki-phpunit-{phpflavor}'
 - job-template:
     name: 'mediawiki-extensions-qunit'
@@ -414,6 +463,8 @@
               Wikidata
               ZeroBanner
               ZeroPortal
+      - 'mediawiki-extensions-{phpflavor}-generic':
+          dependencies: *gatedextensions
       - 'mediawiki-extensions-qunit':
           dependencies: *gatedextensions
 
