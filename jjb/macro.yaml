@@ -334,13 +334,22 @@
 - builder:
     name: qunit-karma
     builders:
-    builders:
      - prepare-localhost
      - shell: |
         . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
         cd $MW_INSTALL_PATH
         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         rm -rf node_modules
+        npm install
+        grunt karma:main
+
+- builder:
+    name: qunit-karma-4.3
+    builders:
+     - prepare-localhost
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
+        cd $MW_INSTALL_PATH
         npm install
         grunt karma:main
 
