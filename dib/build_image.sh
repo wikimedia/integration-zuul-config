@@ -40,6 +40,11 @@ export DIB_DEV_USER_USERNAME='jenkins'
 export DIB_DEV_USER_AUTHORIZED_KEYS='dib_jenkins_id_rsa.pub'
 export DIB_DEV_USER_SHELL='/bin/bash'
 
+# systemd is not running in the chroot causing our initsystem fact to misbehave
+# and consider we use an unknown init. That prevents base::service_unit from
+# installing services. T129320
+export FACTER_initsystem='systemd'
+
 export DIB_WIKIMEDIA_PUPPET_SOURCE='./puppet'
 
 export QEMU_IMG_OPTIONS='compat=0.10'  # XXX might not be needed
