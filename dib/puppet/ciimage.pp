@@ -44,6 +44,11 @@ include contint::packages::python
 include contint::packages::ruby
 include contint::browsers
 
+# services packages and -dev packages for npm modules compilation and test run
+# NOTE: hiera must have: service::configuration::use_dev_pkgs: true
+include graphoid::packages
+include mathoid::packages
+
 # Broken beyond repair
 #include contint::packages::javascript
 
