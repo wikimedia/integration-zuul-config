@@ -70,7 +70,14 @@ package { 'zuul':
   ensure => present,
 }
 
-# Should be include contint::packages::ops once GeoIP is installable
+# Following should later be included in contint::packages::ops once GeoIP is
+# installable.
 package { ['etcd', 'python-etcd']:
     ensure => present,
 }
+
+# We run varnishtest
+package { 'varnish':
+    ensure => present,
+}
+# end contint::packages::ops
