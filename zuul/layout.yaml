@@ -1502,15 +1502,16 @@ projects:
       - apps-android-java-mwapi
 
   - name: apps/android/wikipedia
-    test:
+    template:
+      - npm-node-4.3
+    check:
       - apps-jshint
       - apps-jsonlint
+    test:
       - tox-jessie
       - apps-android-wikipedia-test
       - apps-android-wikipedia-lint
     gate-and-submit:
-      - apps-jshint
-      - apps-jsonlint
       - tox-jessie
       - apps-android-wikipedia-test
       # TODO: uncomment once this job votes.
