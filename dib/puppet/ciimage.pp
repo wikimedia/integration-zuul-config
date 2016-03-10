@@ -49,9 +49,6 @@ include contint::browsers
 include graphoid::packages
 include mathoid::packages
 
-# Broken beyond repair
-#include contint::packages::javascript
-
 package { [
     'nodejs',
     'nodejs-legacy',
