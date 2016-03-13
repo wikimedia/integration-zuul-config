@@ -3943,8 +3943,11 @@ projects:
 
   - name: mediawiki/extensions/AdManager
     template:
-      - name: extension-unittests-generic
       - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/Ads
     template:
