@@ -108,3 +108,7 @@
         - mw-apply-settings
         - mw-run-update-script
         - mw-fetch-composer-dev
+        - shell: |
+            /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
+            cd $MW_INSTALL_PATH/extensions/DonationInterface
+            composer install
