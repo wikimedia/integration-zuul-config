@@ -103,8 +103,11 @@
                   https://gerrit.wikimedia.org/r/p \
                     $(cat deps.txt)
 
-        - mw-install-mysql
         - shell: "cp deps.txt src/extensions_load.txt"
+        - shell: |
+            cd $WORKSPACE/src/extensions/DonationInterface
+            composer install
+        - mw-install-mysql
         - mw-apply-settings
         - mw-run-update-script
         - mw-fetch-composer-dev
