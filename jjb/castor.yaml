@@ -30,6 +30,25 @@
                     unstable-threshold: 'never'
                     failure-threshold: 'never'
 
+
+- builder:
+    name: castor-define-namespace
+    builders:
+        - shell: |
+            set -eu
+            # castor-env
+            # Forge castor environement
+
+            # Replace slashes with dashes:
+            ZUUL_PROJECT=${ZUUL_PROJECT////-}
+            ZUUL_BRANCH=${ZUUL_BRANCH////-}
+
+            # Ex: mediawiki-core/REL1_26/tox-jessie
+            CASTOR_NAMESPACE="${ZUUL_PROJECT}/${ZUUL_BRANCH}/${JOB_NAME}"
+
+            # Ex: mediawiki-core/REL1_26/tox-jessie
+            echo "declare -x CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\"" > castor-set-namespace.env
+
 # Entry point to load cache from central cache
 #
 # Forge the namespace and rsync from central place.
@@ -40,16 +59,12 @@
 - builder:
     name: castor-load
     builders:
+        - castor-define-namespace
         - shell: |
             # castor-load
             # Load cache from central repository
 
-            # WARN: copy pasted in castor-save
-            # Replace slashes with dashes:
-            ZUUL_PROJECT=${ZUUL_PROJECT////-}
-            ZUUL_BRANCH=${ZUUL_BRANCH////-}
-            # Ex: mediawiki-core/REL1_26/tox-jessie
-            CASTOR_NAMESPACE="${ZUUL_PROJECT}/${ZUUL_BRANCH}/${JOB_NAME}"
+            . castor-set-namespace.env
 
             echo "Syncing..."
             rsync \
@@ -99,18 +114,13 @@
                 echo "Only saving cache for gate-and-submit pipeline"
                 exit 1
             fi
+        - castor-define-namespace
         - shell: |
             set -eu +x
+            . castor-set-namespace.env
 
             ssh_config=($TRIGGERED_SSH_CONNECTION)
             REMOTE_INSTANCE="${ssh_config[2]}"
-
-            # WARN: copy pasted in castor-load
-            # Replace slashes with dashes:
-            ZUUL_PROJECT=${ZUUL_PROJECT////-}
-            ZUUL_BRANCH=${ZUUL_BRANCH////-}
-            # Ex: mediawiki-core/REL1_26/tox-jessie
-            CASTOR_NAMESPACE="${ZUUL_PROJECT}/${ZUUL_BRANCH}/${TRIGGERED_JOB_NAME}"
 
             # Destination in the central cache
             DEST="/mnt/jenkins-workspace/caches/${CASTOR_NAMESPACE}"
