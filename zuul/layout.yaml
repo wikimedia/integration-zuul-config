@@ -2146,6 +2146,7 @@ projects:
 
   - name: wikimedia/fundraising/dash
     template:
+      # Depends on node-syslog@1.1.7 which does not work on Node 4.3
       - name: npm
     check:
       - jshint
@@ -7724,6 +7725,8 @@ projects:
 
   - name: pywikibot/i18n
     template:
+      # Cant switch to node-4.3 because we create a /log/ dir in the source
+      # tree and banana complains it can not read /log/qqq.json
       - name: npm
     check:
       - jsonlint
@@ -7840,7 +7843,7 @@ projects:
 
   - name: wikimedia/portals
     template:
-      - name: npm
+      - name: npm-node-4.3
 
   - name: search/extra
     test:
@@ -7866,7 +7869,7 @@ projects:
 
   - name: generator-wikimedia-php-library
     template:
-      - name: npm
+      - name: npm-node-4.3
 
   - name: oojs/core
     template:
@@ -7904,7 +7907,7 @@ projects:
 
   - name: unicodejs
     template:
-      - name: npm
+      - name: npm-node-4.3
     test:
       - npm-run-doc
     gate-and-submit:
@@ -7937,7 +7940,7 @@ projects:
 
   - name: wikidata/query/rdf
     template:
-      - name: npm
+      - name: npm-node-4.3
     test:
       - wikidata-query-rdf
     gate-and-submit:
@@ -7945,7 +7948,7 @@ projects:
 
   - name: wikidata/query/gui
     template:
-      - name: npm
+      - name: npm-node-4.3
 
   - name: wikimedia/bots/jouncebot
     template:
@@ -7959,8 +7962,8 @@ projects:
     template:
      - name: composer-test
      - name: extension-qunit-composer
-     - name: npm
+     - name: npm-node-4.3
 
   - name: wikidata/build-resources
     template:
-      - name: npm
+      - name: npm-node-4.3
