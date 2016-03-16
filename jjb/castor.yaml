@@ -44,7 +44,8 @@
             ZUUL_BRANCH=${ZUUL_BRANCH////-}
 
             # Ex: mediawiki-core/REL1_26/tox-jessie
-            CASTOR_NAMESPACE="${ZUUL_PROJECT}/${ZUUL_BRANCH}/${JOB_NAME}"
+            # Prefer TRIGGERED_JOB_NAME when it is set
+            CASTOR_NAMESPACE="${ZUUL_PROJECT}/${ZUUL_BRANCH}/${TRIGGERED_JOB_NAME:-$JOB_NAME}"
 
             # Ex: mediawiki-core/REL1_26/tox-jessie
             echo "declare -x CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\"" > castor-set-namespace.env
