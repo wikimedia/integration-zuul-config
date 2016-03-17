@@ -1219,12 +1219,6 @@ project-templates:
     experimental:
       - npm-node-4.3
 
-  - name: npm-node-4.3
-    test:
-      - npm-node-4.3
-    gate-and-submit:
-      - npm-node-4.3
-
   - name: puppet
     # FIXME add merge probably
     # voting since we usually do not have any unit tests
@@ -1313,7 +1307,7 @@ projects:
   - name: integration/raita
     template:
       - name: jsduck
-      - name: npm-node-4.3
+      - name: npm
     check:
       - jshint
       - jsonlint
@@ -1517,7 +1511,7 @@ projects:
 
   - name: apps/android/wikipedia
     template:
-      - name: npm-node-4.3
+      - name: npm
     check:
       - apps-jshint
       - apps-jsonlint
@@ -1532,8 +1526,6 @@ projects:
       # - apps-android-wikipedia-lint
     postmerge:
       - apps-android-wikipedia-publish
-    experimental:
-      - npm-node-4.3
 
   - name: apps/ios/wikipedia
     template:
@@ -1580,7 +1572,7 @@ projects:
 
   - name: labs/tools/grrrit
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: labs/tools/heritage
     template:
@@ -1602,16 +1594,16 @@ projects:
 
   - name: labs/tools/wikidata-slicer
     template:
-      - name: npm-node-4.3
+      - name: npm
       - name: tox-jessie
 
   - name: performance/docroot
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: performance/WebPageTest
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: integration/docroot
     test:
@@ -1644,7 +1636,7 @@ projects:
   - name: mediawiki/skins/apex
     template:
      - name: composer-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
      - jshint
@@ -1653,7 +1645,7 @@ projects:
   - name: mediawiki/skins/Blueprint
     template:
       - name: composer-test
-      - name: npm-node-4.3
+      - name: npm
     check:
       - jsonlint
       - jshint
@@ -1667,7 +1659,7 @@ projects:
   - name: mediawiki/skins/BlueSpiceSkin
     template:
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
@@ -1687,14 +1679,14 @@ projects:
     template:
      - name: composer-test
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
   - name: mediawiki/skins/Daddio
     template:
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
@@ -1725,7 +1717,7 @@ projects:
   - name: mediawiki/skins/Example
     template:
      - name: composer-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
@@ -1736,14 +1728,14 @@ projects:
   - name: mediawiki/skins/GreyStuff
     template:
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
   - name: mediawiki/skins/Mask
     template:
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
@@ -1754,7 +1746,7 @@ projects:
   - name: mediawiki/skins/Metrolook
     template:
      - name: composer-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
      - jshint
@@ -1763,7 +1755,7 @@ projects:
   - name: mediawiki/skins/MinervaNeue
     template:
      - name: composer-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
      - jshint
@@ -1773,7 +1765,7 @@ projects:
     template:
      - name: composer-test
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
@@ -1781,7 +1773,7 @@ projects:
     template:
      - name: composer-test
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
@@ -1796,7 +1788,7 @@ projects:
   - name: mediawiki/skins/Nostalgia
     template:
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
@@ -1811,7 +1803,7 @@ projects:
   - name: mediawiki/skins/Slate
     template:
      - name: composer-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
      - jshint
@@ -1820,7 +1812,7 @@ projects:
   - name: mediawiki/skins/Splash
     template:
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
@@ -1831,14 +1823,14 @@ projects:
   - name: mediawiki/skins/Tempo
     template:
      - name: mw-checks-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
 
   - name: mediawiki/skins/Timeless
     template:
      - name: composer-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jsonlint
      - jshint
@@ -1855,7 +1847,7 @@ projects:
   - name: mediawiki/skins/Vector
     template:
      - name: composer-test
-     - name: npm-node-4.3
+     - name: npm
     check:
      - jshint
      - jsonlint
@@ -6526,7 +6518,7 @@ projects:
 
   - name: mediawiki/services/citoid
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: mediawiki/services/citoid/deploy
     test:
@@ -6536,7 +6528,7 @@ projects:
 
   - name: mediawiki/services/cxserver
     template:
-      - name: npm-node-4.3
+      - name: npm
     postmerge:
       - beta-cxserver-update-eqiad
 
@@ -6550,7 +6542,7 @@ projects:
 
   - name: mediawiki/services/graphoid
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: mediawiki/services/graphoid/deploy
     test:
@@ -6564,7 +6556,7 @@ projects:
 
   - name: mediawiki/services/mathoid
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: mediawiki/services/mathoid/deploy
     test:
@@ -6574,7 +6566,7 @@ projects:
 
   - name: mediawiki/services/mobileapps
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: mediawiki/services/mobileapps/deploy
     test:
@@ -7844,7 +7836,7 @@ projects:
 
   - name: rcstream
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: wikimedia/slimapp
     template:
@@ -7883,7 +7875,7 @@ projects:
 
   - name: generator-wikimedia-php-library
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: oojs/core
     template:
@@ -7921,7 +7913,7 @@ projects:
 
   - name: unicodejs
     template:
-      - name: npm-node-4.3
+      - name: npm
     test:
       - npm-run-doc
     gate-and-submit:
@@ -7934,7 +7926,7 @@ projects:
 
   - name: VisualEditor/VisualEditor
     template:
-      - name: npm-node-4.3
+      - name: npm
       - name: rake
     check:
       - jshint
@@ -7960,7 +7952,7 @@ projects:
 
   - name: wikidata/query/gui
     template:
-      - name: npm-node-4.3
+      - name: npm
 
   - name: wikimedia/bots/jouncebot
     template:
@@ -7974,8 +7966,8 @@ projects:
     template:
      - name: composer-test
      - name: extension-qunit-composer
-     - name: npm-node-4.3
+     - name: npm
 
   - name: wikidata/build-resources
     template:
-      - name: npm-node-4.3
+      - name: npm
