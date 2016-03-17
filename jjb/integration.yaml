@@ -62,12 +62,17 @@
     builders:
      - shell: |
         set +e
+        rm -fR log
+        mkdir -p log
+
         # FIXME change path whenever we have zuul packaged.
-        /usr/bin/zuul-server -c <(echo '[zuul]') -t -l "$WORKSPACE"/zuul/layout.yaml 2>current.txt
+        /usr/bin/zuul-server -c <(echo '[zuul]') -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/current.txt
         git checkout HEAD^
-        /usr/bin/zuul-server -c <(echo '[zuul]') -t -l "$WORKSPACE"/zuul/layout.yaml 2>before.txt
-        sed -i -e 's/^INFO:zuul.IndependentPipelineManager:Configured Pipeline Manager /Pipeline: /' current.txt before.txt
-        colordiff --show-function-line='^Pipeline: ' -u before.txt current.txt
+        /usr/bin/zuul-server -c <(echo '[zuul]') -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/before.txt
+        sed -i -e 's/^INFO:zuul.IndependentPipelineManager:Configured Pipeline Manager /Pipeline: /' log/current.txt log/before.txt
+        colordiff --show-function-line='^Pipeline: ' -u log/before.txt log/current.txt
+    publisher:
+     - archive-log-dir
 
 - job-template:
     name: 'integration-jjb-config-diff'
