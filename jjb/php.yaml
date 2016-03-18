@@ -49,6 +49,24 @@
     logrotate:
         daysToKeep: 15
 
+# Same as above but is a non voting test
+- job-template:
+    name: 'composer-{phpflavor}-non-voting'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+
+    triggers:
+     - zuul
+    builders:
+     - composer-validate:
+        dir: '.'
+     - composer-update:
+        dir: '.'
+     - composer-test
+    logrotate:
+        daysToKeep: 15
+
 - project:
     name: 'composer-flavored'
     jobs:
