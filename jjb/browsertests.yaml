@@ -410,11 +410,7 @@
          name: WikidataTests
          browser: chrome
          browsertest_job_timeout: '240'
-      - 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce':
-         name: PerformanceTests
-         browser_timeout: 360
-         cucumber_tags: '@performance_testing'
-         recipients: *emails-Wikidata-devs
+
       - 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce':
          name: SmokeTests
          cucumber_tags: '@smoke'
@@ -436,11 +432,6 @@
       - 'browsertests-Wikidata-{name}-{platform}-{browser}':
          name: WikidataTests
          browsertest_job_timeout: '240'
-      - 'browsertests-Wikidata-{name}-{platform}-{browser}':
-         name: PerformanceTests
-         browser_timeout: 360
-         cucumber_tags: '@performance_testing'
-         recipients: *emails-Wikidata-devs
       - 'browsertests-Wikidata-{name}-{platform}-{browser}':
          name: SmokeTests
          cucumber_tags: '@smoke'
