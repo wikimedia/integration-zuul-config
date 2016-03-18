@@ -924,6 +924,9 @@ project-templates:
      - 'mwext-{name}-testextension-php55'
      - 'mwext-{name}-testextension-hhvm'
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     gate-and-submit:
      - mediawiki-gate
      - php53lint
@@ -933,6 +936,9 @@ project-templates:
      - 'mwext-{name}-testextension-php55'
      - 'mwext-{name}-testextension-hhvm'
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     experimental:
       - 'mediawiki-extensions-hhvm'
       - mediawiki-extensions-qunit
@@ -942,9 +948,6 @@ project-templates:
       - mwext-testextension-hhvm-composer
       - npm
       - npm-node-4.3
-      - composer-php53
-      - composer-php55
-      - composer-hhvm
 
   - name: extension-unittests-composer
     check:
@@ -958,6 +961,9 @@ project-templates:
      - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     gate-and-submit:
      - mediawiki-gate
      - php53lint
@@ -966,13 +972,13 @@ project-templates:
      - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     experimental:
      - mwext-qunit-composer
      - npm
      - npm-node-4.3
-     - composer-php53
-     - composer-php55
-     - composer-hhvm
 
   - name: extension-unittests-generic
     check:
@@ -987,6 +993,9 @@ project-templates:
      - mwext-testextension-php55
      - mwext-testextension-hhvm
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     gate-and-submit:
      - mediawiki-gate
      - php53lint
@@ -996,6 +1005,9 @@ project-templates:
      - mwext-testextension-php55
      - mwext-testextension-hhvm
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
@@ -1003,9 +1015,6 @@ project-templates:
       - mwext-testextension-hhvm-composer
       - npm
       - npm-node-4.3
-      - composer-php53
-      - composer-php55
-      - composer-hhvm
 
   - name: extension-unittests-non-voting
     check:
@@ -1018,6 +1027,9 @@ project-templates:
      # Extensions tests with core+vendor
      - mwext-testextension-hhvm-non-voting
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     php5:
      - mwext-testextension-php53-non-voting
      - mwext-testextension-php55-non-voting
@@ -1026,6 +1038,9 @@ project-templates:
      - php53lint
      - php55lint
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
@@ -1033,9 +1048,6 @@ project-templates:
       - mwext-testextension-hhvm-composer
       - npm
       - npm-node-4.3
-      - composer-php53
-      - composer-php55
-      - composer-hhvm
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1049,6 +1061,9 @@ project-templates:
     test:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     php5:
       - mediawiki-extensions-php55
       - mediawiki-extensions-php53
@@ -1057,29 +1072,50 @@ project-templates:
       - mediawiki-extensions-php53
       - mediawiki-extensions-php55
       - mediawiki-extensions-qunit
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
   - name: extension-qunit
     test:
       - 'mwext-{name}-qunit'
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     gate-and-submit:
       - 'mwext-{name}-qunit'
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
 
   # Triggers the generic mwext-qunit job
   - name: extension-qunit-generic
     test:
       - mwext-qunit
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     gate-and-submit:
       - mwext-qunit
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     experimental:
       - mwext-qunit-composer
 
   - name: extension-qunit-composer
     test:
       - mwext-qunit-composer
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     gate-and-submit:
       - mwext-qunit-composer
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
 
   - name: jsduck
     test:
@@ -1093,12 +1129,18 @@ project-templates:
      - php55lint
      - jsonlint
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - php55lint
      - jsonlint
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
@@ -1106,9 +1148,6 @@ project-templates:
      - mwext-testextension-hhvm-composer
      - npm
      - npm-node-4.3
-     - composer-php53
-     - composer-php55
-     - composer-hhvm
 
     # Similar to above, but uses a check/test pipeline
   - name: mw-checks-test
@@ -1122,12 +1161,18 @@ project-templates:
      - php55lint
      - jsonlint
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - php55lint
      - jsonlint
      - composer-validate
+     - composer-php53-non-voting
+     - composer-php55-non-voting
+     - composer-hhvm-non-voting
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
@@ -1135,9 +1180,6 @@ project-templates:
      - mwext-testextension-hhvm-composer
      - npm
      - npm-node-4.3
-     - composer-php53
-     - composer-php55
-     - composer-hhvm
 
   - name: composer-test
     check:
@@ -1152,6 +1194,20 @@ project-templates:
       - composer-php53
       - composer-php55
       - composer-hhvm
+
+  - name: composer-test-non-voting
+    check:
+      - php53lint
+      - php55lint
+      - composer-validate
+    test:
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
+    gate-and-submit:
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
 
   - name: composer-test55
     check:
@@ -1208,24 +1264,42 @@ project-templates:
   - name: npm
     test:
       - npm
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     gate-and-submit:
       - npm
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     experimental:
       - npm-node-4.3
 
   - name: npm-legacy
     test:
       - npm
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     gate-and-submit:
       - npm
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     experimental:
       - npm-node-4.3
 
   - name: npm-node-4.3
     test:
       - npm-node-4.3
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
     gate-and-submit:
       - npm-node-4.3
+      - composer-php53-non-voting
+      - composer-php55-non-voting
+      - composer-hhvm-non-voting
 
   - name: puppet
     # FIXME add merge probably
