@@ -4298,8 +4298,12 @@ projects:
 
   - name: mediawiki/extensions/Convert2Wiki
     template:
-      - name: jsonlint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/CopyToClipboard
     template:
