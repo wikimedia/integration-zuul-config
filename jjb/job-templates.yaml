@@ -99,7 +99,7 @@
     publishers:
      - global-teardown
 
-- job:
+- job: &job_npm-node-4_3
     name: 'npm-node-4.3'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
@@ -123,6 +123,13 @@
     publishers:
      - archive-log-allow-empty
      - castor-save
+
+- job-template:
+    !!merge : *job_npm-node-4_3
+    name: '{name}-npm-node-4.3'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - job:
     name: 'npm-run-doc'
