@@ -4,6 +4,7 @@
 # Copyright (c) 2014 - Wikimedia Foundation Inc.
 
 import ConfigParser
+import copy
 import re
 import os
 import unittest
@@ -279,8 +280,11 @@ class TestZuulScheduler(unittest.TestCase):
         check_pipelines = [p.name for p in self.getPipelines()
                            if p.name.startswith('check')]
 
-        # Uniq list of projects having a check* pipeline defined
-        actual = {}
+        # We expect check pipelines to have no unsafe jobs
+        expected = {k: {} for k in check_pipelines}
+        # Map of pipelines -> projects -> unsafe jobs
+        actual = copy.deepcopy(expected)
+
         # List of jobs allowed in check* pipelines
         safe_jobs = [
             '(php5[35]|perl|json|yaml)lint',
@@ -301,20 +305,21 @@ class TestZuulScheduler(unittest.TestCase):
         ]
         safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
 
-        for check_pipeline in check_pipelines:
-            actual[check_pipeline] = {}
-            for project in self.getPipelineProjectsNames(check_pipeline):
-                jobs = self.getProjectDef(project)[check_pipeline]
+        all_defs = self.getProjectsDefs()
+        for (project_name, defs) in all_defs.iteritems():
+            for (pipeline, jobs) in defs.iteritems():
+                if not pipeline.startswith('check'):
+                    continue
                 unsafe_jobs = [j for j in jobs
                                if not re.match(safe_jobs_re, j)]
                 if unsafe_jobs:
-                    actual[check_pipeline][project] = unsafe_jobs
+                    actual[pipeline].update({project_name: unsafe_jobs})
 
         self.maxDiff = None
+        self.longMessage = True
 
-        # We expect check pipelines to have no unsafe jobs
-        expected = {k: {} for k in check_pipelines}
-        self.assertEquals(expected, actual)
+        self.assertEquals(expected, actual,
+                          "No project have unsafe jobs in check* pipelines")
 
     def test_recheck_comment_trusted_user(self):
         test_manager = self.getPipeline('test').manager
