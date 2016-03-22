@@ -3198,8 +3198,6 @@ projects:
 
   - name: mediawiki/extensions/GitHub
     template:
-      - name: jshint
-      - name: jsonlint
       - name: extension-unittests-composer
       - name: npm
     check:
@@ -3397,11 +3395,11 @@ projects:
   - name: mediawiki/extensions/InputBox
     template:
       - name: composer-test
-      - name: jshint
       - name: extension-unittests-generic
       - name: npm
     check:
       - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/Insider
     template:
@@ -3441,6 +3439,9 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
@@ -3911,6 +3912,8 @@ projects:
       - name: composer-test
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/AccessControl
     template:
@@ -3969,6 +3972,8 @@ projects:
       - name: composer-test
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/AjaxLogin
     template:
@@ -3993,12 +3998,16 @@ projects:
       - name: composer-test
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/AllTimeZones
     template:
       - name: composer-test
       - name: extension-unittests-generic
       - name: npm
+    check:
+      - jsonlint
 
   - name: mediawiki/extensions/AnchorHandler
     template:
