@@ -17,6 +17,8 @@ def set_parameters(item, job, params):
     # Xvfb display provided via puppet
     params['DISPLAY'] = ':94'
 
+    params['PHANTOMJS_CDNURL'] = 'https://cnpmjs.org/downloads'
+
     # Sets a $PHP_BIN variable based on the job name
     if 'php55' in job.name:
         params['PHP_BIN'] = 'php5'
