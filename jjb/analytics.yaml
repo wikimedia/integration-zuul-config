@@ -3,7 +3,74 @@
     jobs:
      - '{name}-maven'
 
+- job-template:
+    name: '{name}-release'
+    project-type: maven
+    parameters:
+      - string:
+          name: 'GIT_URL'
+          default: 'ssh://{git-user}@gerrit.wikimedia.org:29418'
+      - string:
+          name: 'GIT_PROJECT'
+          default: '{release-project}'
+      - string:
+          name: 'GIT_BRANCH'
+          default: '{release-branch}'
+      - string:
+          name: 'GIT_REF'
+          default: '{release-branch}'
+      - string:
+          name: 'GIT_COMMIT'
+          default: '{release-branch}'
+
+    jdk: 'Ubuntu - OpenJdk 7'
+    node: contintLabsSlave && UbuntuTrusty
+    scm:
+      - git:
+          url: '$GIT_URL/$GIT_PROJECT'
+          branches:
+            - '$GIT_BRANCH'
+          local-branch: '$GIT_BRANCH'
+          shallow-clone: false
+          git-config-name: '{git-user}'
+          git-config-email: '{git-user-email}'
+
+    wrappers:
+      - maven-release:
+          release-goals:
+            -Dresume=false -Duser.name='{git-user}' release:prepare release:perform
+          dry-run-goals:
+            -Dresume=false -Duser.name='{git-user}' -DdryRun=true release:prepare
+          num-successful-builds: 1
+      - ssh-agent-credentials:
+          users:
+            - '{git-user-id}'
+
+    maven:
+      goals: clean package
+      settings:
+        'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig.ArchivaCredentialsSettings'
+
+    publishers:
+      - email-ext:
+          recipients: '{recipient-emails}'
+          reply-to: '{replyto-emails}'
+          always: true
+          content-type: text
+          subject: Update on build $BUILD_TAG
+          body: |
+            The build $BUILD_NUMBER for $GIT_PROJECT has finished.
+            See $BUILD_URL for details.
+
 - project:
     name: 'analytics-refinery'
+    git-user: maven-release-user
+    git-user-email: maven-release-user@wikimedia.org
+    git-user-id: maven-release-user
+    release-project: analytics/refinery/source
+    release-branch: master
+    recipient-emails: analytics-alerts@wikimedia.org
+    replyto-emails: analytics-alerts@wikimedia.org
     jobs:
+     - '{name}-release'
      - '{name}-maven'
