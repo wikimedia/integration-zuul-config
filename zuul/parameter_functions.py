@@ -118,6 +118,7 @@ dependencies = {
     'WikimediaEvents': ['EventLogging'],
     'WikimediaPageViewInfo': ['Graph'],
     'wikihiero': ['VisualEditor'],
+    'ZeroPortal': ['Scribunto'],
 }
 
 
