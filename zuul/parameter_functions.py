@@ -118,6 +118,9 @@ dependencies = {
     'WikimediaEvents': ['EventLogging'],
     'WikimediaPageViewInfo': ['Graph'],
     'wikihiero': ['VisualEditor'],
+    'ZeroBanner': ['Echo', 'JsonConfig', 'MobileFrontend', 'VisualEditor'],
+    'ZeroPortal': ['Echo', 'JsonConfig', 'MobileFrontend', 'Scribunto',
+                   'VisualEditor', 'ZeroBanner'],
 }
 
 
