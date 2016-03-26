@@ -2,8 +2,8 @@
 # should just need to add "npm" in their zuul config.
 # Only VisualEditor uses this as it needs to checkout
 # submodules.
-- job-template:
-    name: '{name}-{ext-name}-npm'
+- job:
+    name: 'mwext-VisualEditor-npm'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -402,7 +402,10 @@
         dependencies: 'UniversalLanguageSelector,EventLogging,cldr'
      - UniversalLanguageSelector:
         dependencies: 'EventLogging'
-     - VisualEditor
+     - ZeroBanner:
+        dependencies: 'Echo,JsonConfig,MobileFrontend,VisualEditor'
+     - ZeroPortal:
+        dependencies: 'Echo,JsonConfig,MobileFrontend,VisualEditor,ZeroBanner'
 
     jobs:
      - '{name}-{ext-name}-testextension-{phpflavor}':
@@ -410,9 +413,6 @@
              - hhvm
              - php53
              - php55
-
-     - '{name}-{ext-name}-npm':
-        ext-name: VisualEditor
 
 - project:
     name: 'mwext-CirrusSearch'
