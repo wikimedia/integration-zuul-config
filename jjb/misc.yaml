@@ -177,6 +177,22 @@
      - global-teardown
 
 - job:
+    name: 'visualeditor-demos-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        . bin/sync-gh-pages.sh
+     - doc-publish:
+        docsrc: ''
+        docdest: 'visualeditor/$DOC_SUBPATH/demos'
+    publishers:
+     - global-teardown
+
+- job:
     name: 'performance-webpagetest-wmf'
     node: contintLabsSlave && UbuntuTrusty
     defaults: global
