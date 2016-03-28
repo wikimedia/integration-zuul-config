@@ -4498,8 +4498,12 @@ projects:
 
   - name: mediawiki/extensions/ExtTab
     template:
-      - name: jsonlint
-      - name: extension-unittests-non-voting
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/FanBoxes
     template:
