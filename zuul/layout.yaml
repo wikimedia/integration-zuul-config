@@ -4541,9 +4541,12 @@ projects:
 
   - name: mediawiki/extensions/FanBoxes
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: composer-test
       - name: extension-unittests-non-voting
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/FeedsFromPrivateWikis
     template:
