@@ -690,40 +690,6 @@ jobs:
     branch: (?!REL1_23|REL1_24|REL1_25|REL1_26|fundraising/REL.*)
     queue-name: mediawiki
 
-  # ... older branches get the legacy job
-  - name: ^mwext-AbuseFilter-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-Babel-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-CheckUser-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-cldr-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-ConfirmEdit-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-Echo-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-EventLogging-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-Gather-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-JsonConfig-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-MobileApp-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-MobileFrontend-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-SpamBlacklist-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-UniversalLanguageSelector-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-VisualEditor-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-ZeroBanner-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-  - name: ^mwext-ZeroPortal-testextension-php53$
-    branch: (REL1_23|REL1_24|fundraising/REL.*)
-
   - name: mediawiki-core-phpcs
     branch: (?!^REL1_23|^REL1_24|^REL1_25|^REL1_26|^fundraising/REL)
     files:
@@ -896,43 +862,6 @@ jobs:
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
 
 project-templates:
-
-  # Template for MediaWiki extensions.
-  # Does run the unit tests on 'test' and 'gate-and-submit'
-  - name: extension-unittests
-    check:
-     - php53lint
-     - php55lint
-     - composer-validate
-    test:
-     - php53lint
-     - php55lint
-     # Extensions tests with core+vendor
-     - 'mwext-{name}-testextension-php53'
-     - 'mwext-{name}-testextension-php55'
-     - 'mwext-{name}-testextension-hhvm'
-     - composer-validate
-    gate-and-submit:
-     - mediawiki-gate
-     - php53lint
-     - php55lint
-     # Extensions tests with core+vendor
-     - 'mwext-{name}-testextension-php53'
-     - 'mwext-{name}-testextension-php55'
-     - 'mwext-{name}-testextension-hhvm'
-     - composer-validate
-    experimental:
-      - 'mediawiki-extensions-hhvm'
-      - mediawiki-extensions-qunit
-      - mwext-testextension-hhvm
-      - mwext-testextension-php53
-      - mwext-testextension-php53-composer
-      - mwext-testextension-hhvm-composer
-      - npm
-      - npm-node-4.3
-      - composer-php53
-      - composer-php55
-      - composer-hhvm
 
   - name: extension-unittests-composer
     check:
