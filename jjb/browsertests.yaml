@@ -436,6 +436,23 @@
          name: SmokeTests
          cucumber_tags: '@smoke'
          recipients: *emails-Wikidata-devs
+- project:
+    name: Wikibase-Beta
+    defaults: browsertests
+    folder: tests
+    headless: 'false'
+    mediawiki_credentials_id: WikidataTester-at-beta.wmflabs.org
+    mediawiki_url: wikidata.beta.wmflabs.org
+    platform: linux
+    recipients: *emails-Wikidata-qa
+    repository: mediawiki/extensions/Wikibase
+    browsertest_job_timeout: '240'
+
+    jobs:
+      - 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce':
+         browser:
+           - firefox
+           - chrome
 
 # WikiLove
 - project:
