@@ -416,6 +416,30 @@
          cucumber_tags: '@smoke'
          recipients: *emails-Wikidata-devs
 - project:
+    name: WikidataTests-Group0
+    defaults: browsertests
+    folder: tests
+    headless: 'false'
+    mediawiki_credentials_id: WikidataTester-at-test.wikidata.org
+    mediawiki_url: test.wikidata.org
+    platform: linux
+    recipients: *emails-Wikidata-qa
+    repository: WikidataBrowserTests.git
+    repository_host: github.com/wmde
+    browsertest_job_timeout: '240'
+    # TODO
+    cucumber_tags: '@wikidata.beta.wmflabs.org'
+
+    jobs:
+      - 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce':
+         browser:
+           - firefox
+           - chrome
+      - 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce':
+         name: WikidataTests-Group0-SmokeTests
+         browser: firefox
+         cucumber_tags: '@smoke'
+- project:
     name: WikidataTestsHeadless
     defaults: browsertests
     browser: firefox
@@ -447,6 +471,25 @@
     recipients: *emails-Wikidata-qa
     repository: mediawiki/extensions/Wikibase
     browsertest_job_timeout: '240'
+
+    jobs:
+      - 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce':
+         browser:
+           - firefox
+           - chrome
+- project:
+    name: Wikibase-Group0
+    defaults: browsertests
+    folder: tests
+    headless: 'false'
+    mediawiki_credentials_id: WikidataTester-at-test.wikidata.org
+    mediawiki_url: test.wikidata.org
+    platform: linux
+    recipients: *emails-Wikidata-qa
+    repository: mediawiki/extensions/Wikibase
+    browsertest_job_timeout: '240'
+    # TODO
+    cucumber_tags: '@wikidata.beta.wmflabs.org'
 
     jobs:
       - 'browsertests-Wikidata-{name}-{platform}-{browser}-sauce':
