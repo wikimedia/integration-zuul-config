@@ -4669,8 +4669,12 @@ projects:
 
   - name: mediawiki/extensions/GoogleMaps
     template:
-      - name: jsonlint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/GooglePlusOne
     template:
