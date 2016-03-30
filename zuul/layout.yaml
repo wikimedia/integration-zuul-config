@@ -4724,8 +4724,12 @@ projects:
 
   - name: mediawiki/extensions/HeaderTabs
     template:
-      - name: jsonlint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/HelpCommons
     template:
