@@ -4757,9 +4757,12 @@ projects:
 
   - name: mediawiki/extensions/IndexFunction
     template:
-      - name: jshint
-      - name: jsonlint
-      - name: extension-unittests-non-voting
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/InlineCategorizer
     template:
