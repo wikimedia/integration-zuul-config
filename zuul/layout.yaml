@@ -4745,8 +4745,12 @@ projects:
 
   - name: mediawiki/extensions/InlineCategorizer
     template:
-      - name: jsonlint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/InteractiveBlockMessage
     template:
