@@ -154,6 +154,7 @@ dependencies = {
     'RevisionSlider': ['BetaFeatures'],
     'Score': ['VisualEditor'],
     'SemanticFormsInputs': ['SemanticForms'],
+    'SemanticImageInput': ['SemanticMediaWiki'],
     'SemanticSifter': ['SemanticMediaWiki'],
     'SimpleSurvey': ['PrefSwitch'],
     'SolrStore': ['SemanticMediaWiki'],
