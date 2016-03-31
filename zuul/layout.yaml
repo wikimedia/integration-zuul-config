@@ -6980,8 +6980,12 @@ projects:
 
   - name: mediawiki/extensions/SemanticImageInput
     template:
-      - name: jsonlint
+      - name: composer-test
       - name: mw-checks-test
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/SemanticInternalObjects
     template:
