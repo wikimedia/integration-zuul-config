@@ -30,6 +30,17 @@ def set_parameters(item, job, params):
     if job.name.startswith(ext_deps_jobs):
         set_ext_dependencies(item, job, params)
 
+    if job.name.endswith(('npm', 'npm-0.10')):
+        # Bundle defaults to install to GEM_HOME which on Debian is the system
+        # directory. It thus attempt to sudo which is not available to the
+        # 'jenkins' user on Nodepool instances.
+        #
+        # To avoid injecting material in the source workspace, install material
+        # in the parent directory.
+        #
+        # If changing this: DO UPDATE castor-save as well!!!
+        params['BUNDLE_PATH'] = '~/workspace/vendor/bundle'
+
     if job.name.endswith('-jessie'):
         nodepool_params(item, job, params)
     elif job.name.endswith('npm-node-4.3'):
