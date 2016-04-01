@@ -31,11 +31,11 @@ def set_parameters(item, job, params):
         set_ext_dependencies(item, job, params)
 
     if job.name.endswith('-jessie'):
-        offline_when_complete(item, job, params)
+        nodepool_params(item, job, params)
     elif job.name.endswith('npm-node-4.3'):
-        offline_when_complete(item, job, params)
+        nodepool_params(item, job, params)
     elif job.name in ['integration-jjb-config-diff']:
-        offline_when_complete(item, job, params)
+        nodepool_params(item, job, params)
 
     if job.name.endswith('-publish'):
         set_doc_variables(item, job, params)
@@ -179,10 +179,19 @@ def get_dependencies(ext_name, mapping):
     return resolve_deps(ext_name)
 
 
-# Instruct Jenkins Gearman plugin to put a node offline on job completion.
-# Ie for nodepool
-def offline_when_complete(item, job, params):
+def nodepool_params(item, job, params):
+    # Instruct Jenkins Gearman plugin to put a node offline on job completion.
     params['OFFLINE_NODE_WHEN_COMPLETE'] = '1'
+
+    # Bundle defaults to install to GEM_HOME which on Debian is the system
+    # directory. It thus attempt to sudo which is not available to the
+    # 'jenkins' user on Nodepool instances.
+    #
+    # To avoid injecting material in the source workspace, install material
+    # in the parent directory.
+    #
+    # If changing this: DO UPDATE castor-save as well!!!
+    params['BUNDLE_PATH'] = '~/workspace/vendor/bundle'
 
 
 def set_doc_variables(item, job, params):
