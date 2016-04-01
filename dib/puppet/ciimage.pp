@@ -40,6 +40,7 @@ git::clone { 'jenkins CI slave scripts':
 }
 
 include contint::packages::base
+include contint::packages::javascript
 include contint::packages::python
 include contint::packages::ruby
 include contint::browsers
@@ -49,13 +50,6 @@ include contint::browsers
 include graphoid::packages
 include mathoid::packages
 
-package { [
-    'nodejs',
-    'nodejs-legacy',
-    'npm',
-    ]:
-    ensure => present,
-}
 
 # FIXME should be upstreamed to operations/puppet.git as contint::packages::dev
 package { [
