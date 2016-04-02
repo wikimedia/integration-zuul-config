@@ -1505,8 +1505,15 @@ projects:
       - name: npm-node-4.3
 
   - name: labs/tools/heritage
-    template:
-      - name: tox-jessie
+    check:
+      - tox-flake8
+    test:
+      - tox-jessie
+    gate-and-submit:
+      - tox-jessie
+    experimental:
+      - jsonlint
+      - php55lint
 
   - name: labs/tools/ptable
     template:
