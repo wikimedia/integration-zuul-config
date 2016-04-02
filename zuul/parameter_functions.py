@@ -86,7 +86,7 @@ dependencies = {
     'PictureGame': ['SocialProfile'],
     'PollNY': ['SocialProfile'],
     'PronunciationRecording': ['UploadWizard'],
-    'ProofreadPage': ['LabeledSectionTransclusion'],
+    'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
     'QuickSurveys': ['EventLogging'],
     'Ratings': ['Validator'],
     'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
