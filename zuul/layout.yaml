@@ -1102,6 +1102,14 @@ project-templates:
     gate-and-submit:
       - jsonlint
 
+  - name: php55lint
+    check:
+      - php55lint
+    test:
+      - php55lint
+    gate-and-submit:
+      - php55lint
+
   - name: composer-test-package
     check:
       - composer-package-validate
@@ -1507,9 +1515,8 @@ projects:
   - name: labs/tools/heritage
     template:
       - name: tox-jessie
-    experimental:
-      - jsonlint
-      - php55lint
+      - name: php55lint
+      - name: jsonlint
 
   - name: labs/tools/ptable
     template:
