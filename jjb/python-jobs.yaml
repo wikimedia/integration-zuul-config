@@ -73,7 +73,7 @@
      - archive-log-dir
      - castor-save
 
-- job-template:
+- job-template: &job_tox-jessie
     name: 'tox-jessie'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
@@ -89,6 +89,13 @@
      - archive-log-dir
      - archive-tox-logs
      - castor-save
+
+- job-template:
+    !!merge : *job_tox-jessie
+    name: '{name}-tox-jessie'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 # Call tox env 'doc' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
