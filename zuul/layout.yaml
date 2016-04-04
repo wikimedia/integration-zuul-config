@@ -4797,8 +4797,12 @@ projects:
 
   - name: mediawiki/extensions/LanguageSelector
     template:
-      - name: jsonlint
+      - name: composer-test
       - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
 
   - name: mediawiki/extensions/LanguageTag
     template:
