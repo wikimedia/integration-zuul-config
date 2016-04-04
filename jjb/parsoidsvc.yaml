@@ -162,14 +162,20 @@
 
 # documentation builder (based on `oojs-ui-jsduck-publish` job)
 - job-template:
-    name: parsoidsvc-{repository}-jsduck-publish
-    node: contintLabsSlave && UbuntuTrusty
+    name: parsoidsvc-{repository}-jsduck-publish-4.3
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: false
+    properties:
+        - zeromq-event
     triggers:
      - zuul
     builders:
-    - assert-node-version-0.10
+    - assert-node-version-4.3
+    - castor-load
+    - shell: |
+        # For archiving build artifacts
+        mkdir -p "$WORKSPACE/log"
     - setup-npm-oid:
         repository: '{repository}'
     - shell: |
@@ -184,7 +190,8 @@
         docsrc: 'generated-docs'
         docdest: 'Parsoid/$DOC_SUBPATH'
     publishers:
-    - global-teardown
+     - archive-log-allow-empty
+     - castor-save
 
 - project:
     name: parsoidsvc
@@ -201,5 +208,5 @@
         - 'parsoidsvc-{repository}-roundtrip-test-check'
         - 'parsoidsvc-{repository}-npm-0.10'
         - 'parsoidsvc-{repository}-npm-node-4.3'
-        - 'parsoidsvc-{repository}-jsduck-publish'
+        - 'parsoidsvc-{repository}-jsduck-publish-4.3'
         - parsoidsvc-php-parsertests
