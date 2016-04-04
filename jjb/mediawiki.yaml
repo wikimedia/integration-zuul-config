@@ -109,17 +109,6 @@
     publishers:
      - mw-teardown
 
-- job-template:
-    name: 'mediawiki-gate'
-    node: contintLabsSlave
-    concurrent: true
-    logrotate:
-        daysToKeep: 7
-    builders:
-     - shell: |
-         #!/bin/bash -e
-         echo "Noop job, meant to gate jobs properly"
-
 # Runs all MediaWiki tests under hhvm
 - job-template:
     name: 'mediawiki-phpunit-hhvm'
@@ -376,7 +365,6 @@
       - 'mediawiki-core-npm-node-4.3'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
-      - mediawiki-gate
       - '{name}-php53lint'
       - '{name}-php55lint'
       - 'mediawiki-phpunit-{phpflavor}'
