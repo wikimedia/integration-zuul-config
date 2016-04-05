@@ -27,10 +27,11 @@
     builders:
      - shell: |
          export PYWIKIBOT2_DIR=$WORKSPACE
+         tox -e venv -- pip install --upgrade ndg-httpsclient
          tox -e venv -- python -m generate_family_file 'http://en.wikipedia.beta.wmflabs.org/' 'wpbeta' 'y'
          tox -e venv -- python -m generate_user_files -dir:$WORKSPACE -family:wpbeta -lang:en -v
          echo "console_encoding='utf8'" >> $WORKSPACE/user-config.py
-         tox -e venv pip install nose
+         tox -e venv -- pip install -rdev-requirements.txt
          tox -e venv -- python setup.py nosetests --tests tests --verbosity=2 -a '"family=wpbeta,code=en"'
     triggers:
         - timed: "@midnight"
