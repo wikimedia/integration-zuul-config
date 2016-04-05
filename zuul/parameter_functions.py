@@ -68,6 +68,7 @@ dependencies = {
     'Kartographer': ['VisualEditor'],
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore'],
+    'LightweightRDFa': ['WikiEditor'],
     'Maps': ['Validator'],
     'MassMessage': ['LiquidThreads'],
     'Math': ['VisualEditor', 'Wikidata'],
