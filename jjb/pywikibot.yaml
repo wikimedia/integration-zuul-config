@@ -37,11 +37,9 @@
 
 - project:
     name: pywikibot-wikibase
-    toxenv:
-     - flake8-py3
-     - nose
-     - nose34
 
     jobs:
-     - '{name}-tox-{toxenv}'
-     - '{name}-tox-{toxenv}-jessie'
+     - '{name}-tox-{toxenv}-jessie':
+         toxenv:
+          - nose
+          - nose34
