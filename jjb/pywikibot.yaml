@@ -1,15 +1,14 @@
 - project:
     name: pywikibot-core
-    toxenv:
-     - nose
-     - nose34  # must only trigger the '-jessie' version
 
     jobs:
      - '{name}-tox-doc-publish':
         docsrc: 'docs/_build/html'
         docdest: 'pywikibot'
-     - '{name}-tox-{toxenv}'
-     - '{name}-tox-{toxenv}-jessie'
+     - '{name}-tox-{toxenv}-jessie':
+         toxenv:
+          - nose
+          - nose34
 
 - job:
     name: pywikibot-tests-beta-cluster
