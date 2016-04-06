@@ -1201,16 +1201,9 @@ projects:
       - tox-jessie
 
   - name: integration/jenkins
-    check:
-      - php53lint
-    test:
-      - tox-jessie
-      - php53lint
-      - phpunit
-    gate-and-submit:
-      - tox-jessie
-      - php53lint
-      - phpunit
+    template:
+      - name: composer-test
+      - name: tox-jessie
 
   - name: integration/phpunit
     test:
