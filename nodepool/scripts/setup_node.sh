@@ -23,12 +23,20 @@ echo "Pulling from Gerrit"
 sudo git -C "/opt/git/${CI_CONFIG}" remote set-url origin "https://gerrit.wikimedia.org/r/p/${CI_CONFIG}.git"
 sudo git -C "/opt/git/${CI_CONFIG}" pull
 
-echo "Running puppet"
+echo "Refresh /puppet repo"
 sudo git -C /puppet pull
+
+echo "Setting up apt configuration"
+# Needs ::apt first so we get jessie-wikimedia and jessie-backports configured
+# and pinned. Else our packages are not up-to-date / not found.
+sudo /usr/local/bin/puppet-apply /opt/git/integration/config/dib/puppet/aptconf.pp
+echo "apt-get update and dist-upgrade"
+sudo apt-get -q update
+
+echo "Running puppet"
 sudo /usr/local/bin/puppet-apply /opt/git/integration/config/dib/puppet/ciimage.pp
 
 echo "apt-get dist-upgrade && clean"
-sudo apt-get -q update
 sudo apt-get -V -q -y dist-upgrade
 sudo apt-get clean
 

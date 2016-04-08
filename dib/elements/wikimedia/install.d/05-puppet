@@ -29,6 +29,8 @@ done;
 
 echo "Applying puppet manifests ..."
 puppet-apply /tmp/in_target.d/wikimedia-puppet/bootstrap.pp
+puppet-apply /tmp/in_target.d/wikimedia-puppet/aptconf.pp
+apt-get -q update
 puppet-apply /tmp/in_target.d/wikimedia-puppet/ciimage.pp
 
 echo "Performing apt-get dist-upgrade"

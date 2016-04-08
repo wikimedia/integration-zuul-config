@@ -5,20 +5,7 @@
 $realm = 'labs'
 $labsproject = 'contintcloud'
 
-# Needs ::apt first so we get jessie-wikimedia and jessie-backports configured
-# and pinned. Else our packages are not up-to-date / not found.
-stage { 'first':
-    before => Stage['main'],
-}
-class { '::apt':
-    stage  => first,
-}
-exec { 'force run apt-get update':
-  stage   => first,
-  cwd     => '/bin/true',
-  notify  => Exec['apt-get update'],
-  require => Class['::apt'],
-}
+# Should have run aptconf.pp first.
 
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
