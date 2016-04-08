@@ -52,7 +52,7 @@ package { [
 }
 
 # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
-ensure_packages(['zip'])
+ensure_packages(['zip', 'unzip'])
 
 ensure_packages(['openjdk-7-jre-headless'])
 
