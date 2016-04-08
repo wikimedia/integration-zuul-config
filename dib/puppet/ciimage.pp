@@ -12,7 +12,11 @@ stage { 'first':
 }
 class { '::apt':
     stage  => first,
+    before => Notify['force apt-get update'],
+}
+notify { 'force apt-get update':
     notify => Exec['apt-get update'],
+    after  => Class['::apt'],
 }
 
 # Jenkins provision jre by itself but it sounds better to have it already in
@@ -60,9 +64,7 @@ package { [
 }
 
 # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
-package { 'zip':
-  ensure => present,
-}
+ensure_packages(['zip'])
 
 ensure_packages(['openjdk-7-jre-headless'])
 
