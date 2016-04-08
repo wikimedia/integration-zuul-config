@@ -12,11 +12,12 @@ stage { 'first':
 }
 class { '::apt':
     stage  => first,
-    before => Notify['force apt-get update'],
 }
-notify { 'force apt-get update':
-    notify => Exec['apt-get update'],
-    after  => Class['::apt'],
+exec { 'force run apt-get update':
+  stage   => first,
+  cwd     => '/bin/true',
+  notify  => Exec['apt-get update'],
+  require => Class['::apt'],
 }
 
 # Jenkins provision jre by itself but it sounds better to have it already in
