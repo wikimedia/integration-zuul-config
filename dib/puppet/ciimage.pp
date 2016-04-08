@@ -58,6 +58,9 @@ package { [
     ensure => present,
 }
 
+# For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
+require_package('zip')
+
 ensure_packages(['openjdk-7-jre-headless'])
 
 package { 'zuul':
