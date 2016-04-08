@@ -11,7 +11,8 @@ stage { 'first':
     before => Stage['main'],
 }
 class { '::apt':
-    stage => first,
+    stage  => first,
+    notify => Exec['apt-get update'],
 }
 
 # Jenkins provision jre by itself but it sounds better to have it already in
