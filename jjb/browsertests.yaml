@@ -181,6 +181,22 @@
      - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
         browser: firefox
 
+# Popups
+- project:
+    name: Popups
+    defaults: browsertests
+    folder: tests
+    headless: 'false'
+    mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
+    mediawiki_url: en.wikipedia.beta.wmflabs.org
+    platform: linux
+    recipients: *emails-qa
+    repository: mediawiki/extensions/Popups
+
+    jobs:
+     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
+        browser: chrome
+
 # QuickSurveys
 - project:
     name: QuickSurveys
