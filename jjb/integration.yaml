@@ -131,6 +131,19 @@
         echo "Done."
         echo "Carefully review the diff above before deploying the jobs and merging the patch"
 
+# Super basic sanity check for integration/composer repo
+- job-template:
+    name: 'integration-composer-check'
+    node: contintLabsSlave && phpflavor-php53
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        ./vendor/bin/composer --version
+
 
 - project:
     name: 'integration-config'
@@ -166,3 +179,9 @@
     jobs:
      - '{name}-debian-glue':
          distribution: trusty
+
+- project:
+    name: 'integration-composer'
+    jobs:
+     - 'integration-composer-check'
+
