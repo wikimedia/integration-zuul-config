@@ -133,11 +133,21 @@
 
 # Super basic sanity check for integration/composer repo
 - job-template:
-    name: 'integration-composer-check'
+    name: 'integration-composer-check-php53'
     node: contintLabsSlave && phpflavor-php53
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        ./vendor/bin/composer --version
 
+- job-template:
+    name: 'integration-composer-check-php55'
+    node: contintLabsSlave && phpflavor-php55
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
     triggers:
      - zuul
     builders:
@@ -183,5 +193,6 @@
 - project:
     name: 'integration-composer'
     jobs:
-     - 'integration-composer-check'
+     - 'integration-composer-check-php53'
+     - 'integration-composer-check-php55'
 
