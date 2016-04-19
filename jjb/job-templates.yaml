@@ -372,20 +372,6 @@
     builders:
      - phplint
 
-# Legacy job do not use. Should instead use 'composer test'
-# T131917
-- job:
-    name: 'phpunit'
-    node: contintLabsSlave && UbuntuPrecise
-    defaults: use-remote-zuul-shallow-clone
-    triggers:
-     - zuul
-    builders:
-     - phpunit-junit
-    publishers:
-     - phpunit-junit
-     - archive-log-dir
-
 - job-template:
     name: '{name}-puppet-validate'
     defaults: use-remote-zuul-no-submodules
