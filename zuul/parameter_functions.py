@@ -86,7 +86,7 @@ dependencies = {
     'PhpTagsWiki': ['PhpTags', 'PhpTagsFunctions'],
     'PictureGame': ['SocialProfile'],
     'PollNY': ['SocialProfile'],
-    'Popups': ['BetaFeatures'],
+    'Popups': ['BetaFeatures', 'TextExtracts', 'PageImages'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
     'QuickSurveys': ['EventLogging'],
