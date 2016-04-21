@@ -111,3 +111,18 @@
         - mw-apply-settings
         - mw-run-update-script
         - mw-fetch-composer-dev
+
+- job:
+    name: wikimedia-fundraising-SmashPig-phpunit
+    node: contintLabsSlave && phpflavor-php53
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: php53
+     - phpunit-junit
+    publishers:
+     - phpunit-junit
