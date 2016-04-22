@@ -12,7 +12,8 @@ PUPPET_DIR=${PUPPET_DIR:-/puppet}
 function puppet_apply() {
     # Puppet exit codes are handled manually
     set +e
-    puppet apply --test --verbose --modulepath=$PUPPET_DIR/modules $@
+    # puppet 3.4.x 'apply' command does not have '--test'
+    puppet apply --verbose --detailed-exitcodes --show_diff --modulepath=$PUPPET_DIR/modules $@
     local puppet_exit_code=$?
     set -e
 

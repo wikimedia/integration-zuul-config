@@ -33,16 +33,18 @@ git::clone { 'jenkins CI slave scripts':
 }
 
 include contint::packages::base
-include contint::packages::javascript
-include contint::packages::python
-include contint::packages::ruby
-include contint::browsers
 
-# services packages and -dev packages for npm modules compilation and test run
-# NOTE: hiera must have: service::configuration::use_dev_pkgs: true
-include graphoid::packages
-include mathoid::packages
+if os_version('debian >= jessie') {
+    include contint::packages::javascript
+    include contint::packages::python
+    include contint::packages::ruby
+    include contint::browsers
 
+    # services packages and -dev packages for npm modules compilation and test
+    # run. NOTE: hiera must have: service::configuration::use_dev_pkgs: true
+    include graphoid::packages
+    include mathoid::packages
+}
 
 # FIXME should be upstreamed to operations/puppet.git as contint::packages::dev
 package { [
@@ -60,14 +62,16 @@ package { 'zuul':
   ensure => present,
 }
 
-# Following should later be included in contint::packages::ops once GeoIP is
-# installable.
-package { ['etcd', 'python-etcd']:
-    ensure => present,
-}
+if os_version('debian >= jessie') {
+    # Following should later be included in contint::packages::ops once GeoIP
+    # is installable.
+    package { ['etcd', 'python-etcd']:
+        ensure => present,
+    }
 
-# We run varnishtest
-package { 'varnish':
-    ensure => present,
+    # We run varnishtest
+    package { 'varnish':
+        ensure => present,
+    }
 }
 # end contint::packages::ops
