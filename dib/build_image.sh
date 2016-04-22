@@ -12,10 +12,29 @@ fi
 set -eu
 set -o pipefail
 
+case "${1:0}" in
+	debian)
+		DIB_DISTRIBUTION_ELEMENTS=('debian', 'debian-systemd')
+		DIB_RELEASE='jessie'
+		# systemd is not running in the chroot causing our initsystem fact to
+		# misbehave and consider we use an unknown init. That prevents
+		# base::service_unit from installing services. T129320
+		export FACTER_initsystem='systemd'
+	;;
+	ubuntu)
+		DIB_DISTRIBUTION_ELEMENTS=('ubuntu-minimal')
+		DIB_RELEASE='trusty'
+	;;
+	* | 0)
+		echo "Fatal: Linux distribution not recognized."
+		echo "Usage: $0 <debian|ubuntu>"
+		exit 1
+esac
+DIB_DISTRIBUTION=$1
+export DIB_DISTRIBUTION_MIRROR=${DIB_DISTRUBITION_MIRROR:-"http://mirrors.wikimedia.org//$DIB_DISTRIBUTION"}
+
 ELEMENTS=(
-	# Built-in
-	'debian'
-	'debian-systemd'
+	"${DIB_DISTRIBUTION_ELEMENTS[*]}"
 	'cloud-init-datasources'
 	'vm'
 	'devuser'
@@ -23,8 +42,6 @@ ELEMENTS=(
 	'wikimedia'
 	)
 export DIB_COMMAND=${DIB_COMMAND:-'disk-image-create'}
-export DIB_DISTRIBUTION_MIRROR=${DIB_DISTRUBITION_MIRROR:-'http://mirrors.wikimedia.org/debian/'}
-export DIB_RELEASE=${DIB_RELEASE:-jessie}
 export DIB_IMAGE_CACHE=${DIB_IMAGE_CACHE:-/srv/dib/cache}  # XXX should be unset by default
 DATE=`date -u +'%Y%m%dT%H%M%SZ'`
 export DIB_IMAGE_NAME=${DIB_IMAGE_NAME:-"image-${DIB_RELEASE}-${DATE}"}
@@ -39,11 +56,6 @@ export DIB_DEBIAN_COMPONENTS='main,contrib,non-free'
 export DIB_DEV_USER_USERNAME='jenkins'
 export DIB_DEV_USER_AUTHORIZED_KEYS='dib_jenkins_id_rsa.pub'
 export DIB_DEV_USER_SHELL='/bin/bash'
-
-# systemd is not running in the chroot causing our initsystem fact to misbehave
-# and consider we use an unknown init. That prevents base::service_unit from
-# installing services. T129320
-export FACTER_initsystem='systemd'
 
 export DIB_WIKIMEDIA_PUPPET_SOURCE='./puppet'
 
