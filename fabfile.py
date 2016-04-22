@@ -35,7 +35,7 @@ def deploy_zuul():
 
 @task
 def deploy_slave_scripts():
-    """Pull integration/config on CI labs slaves"""
+    """Pull integration/jenkins on CI labs slaves"""
     env.sudo_user = 'root'
     env.host_string = 'integration-saltmaster.integration.eqiad.wmflabs'
     sudo("salt -v '*slave*' cmd.run "
