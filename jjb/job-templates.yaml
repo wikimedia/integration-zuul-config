@@ -131,6 +131,27 @@
     triggers:
      - zuul
 
+# Same as {name}-npm-node-4.3, but npm is executed inside the test directory
+- job-template:
+    !!merge : *job_npm-node-4_3
+    name: '{name}-npm-node-4.3-test'
+    builders:
+     - assert-node-version-4.3
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+
+         cd "$WORKSPACE/test"
+         node --version
+         npm --version
+         npm install
+         npm test
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 - job:
     name: 'npm-run-doc'
     node: contintLabsSlave && UbuntuTrusty
