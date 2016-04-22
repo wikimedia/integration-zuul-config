@@ -1321,14 +1321,8 @@ projects:
       - debian-glue
 
   - name: mediawiki/event-schemas
-    # Dummy definition.
-    # If a change on another repo mark a dependency on a non defined project,
-    # that causes Zuul to be caught in a death loop.
-    # T128569
-    test:
-      - noop
-    gate-and-submit:
-      - noop
+    template:
+      - name: npm
 
   - name: mediawiki/vendor
     template:
