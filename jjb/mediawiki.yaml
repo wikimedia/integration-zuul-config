@@ -325,34 +325,6 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# Test out our PHPUnit against various MediaWiki branches
-#
-# Essentially a copy paste of mediawiki-phpunit-{phpflavor}
-# FIXME: support HHVM
-- job-template:
-    name: 'integration-phpunit-mediawiki-{mwbranch}'
-    node: contintLabsSlave && UbuntuPrecise  # Zend PHP 5.3.x
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - zuul-cloner:
-         projects: >
-             --branch {mwbranch}
-             mediawiki/core
-             mediawiki/vendor
-             integration/phpunit
-     - mw-install-mysql
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     - shell: |
-         export PHPUNIT_DIR="$WORKSPACE/src/integration/phpunit/vendor/phpunit/phpunit"
-         /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh
-    publishers:
-     - phpunit-junit-2
-     - mw-teardown-mysql
-     - archive-log-dir
-
 - project:
     name: mediawiki-core
     phpflavor:
