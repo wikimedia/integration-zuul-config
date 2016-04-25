@@ -34,6 +34,13 @@ git::clone { 'jenkins CI slave scripts':
 
 include contint::packages::base
 
+if os_version('ubuntu >= trusty') {
+    # We dont run PHP based jobs on Jessie yet since we match Wikimedia
+    # production which has MediaWiki running on Trusty.
+    include contint::composer
+    include mediawiki::packages::php5
+}
+
 if os_version('debian >= jessie') {
     include contint::packages::javascript
     include contint::packages::python
