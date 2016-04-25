@@ -22,7 +22,7 @@ case "${1:-0}" in
 		export FACTER_initsystem='systemd'
 	;;
 	ubuntu)
-		distribution_elements=('ubuntu-minimal' 'simple-init')
+		distribution_elements=('ubuntu')
 		export DIB_RELEASE=${DIB_RELEASE:-trusty}
 		export FACTER_initsystem='upstart'
 	;;
