@@ -34,4 +34,8 @@ apt-get -q update
 puppet-apply /tmp/in_target.d/wikimedia-puppet/ciimage.pp
 
 echo "Performing apt-get dist-upgrade"
-install-packages -u
+# Hack to allow downgrading T133528
+APT_CONFIG=`mktemp`
+echo 'APT::Get::force-yes "true";' > $APT_CONFIG
+APT_CONFIG=$APT_CONFIG install-packages -u
+rm $APT_CONFIG
