@@ -33,6 +33,7 @@ git::clone { 'jenkins CI slave scripts':
 }
 
 include contint::packages::base
+include contint::composer
 
 if os_version('debian >= jessie') {
     include contint::packages::javascript
