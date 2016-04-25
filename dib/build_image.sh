@@ -4,7 +4,7 @@
 #
 # XXX add a switch to be able to set either of:
 # DIB_OFFLINE=1
-# DIB_DEBIAN_USE_DEBOOTSTRAP_CACHE=1
+# DIB_DEBIAN_USE_DEBOOTSTRAP_CACHE=1 DIB_DEBOOTSTRAP_CACHE=1
 
 if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
 	set -x

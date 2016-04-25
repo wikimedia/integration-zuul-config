@@ -6,7 +6,7 @@ Usage on labs instance:
 
 You can speed it up next run by reusing debootstrap cache:
 
-   DIB_DEBIAN_USE_DEBOOTSTRAP_CACHE=1 ./build_image.sh debian
+   DIB_DEBOOTSTRAP_CACHE=1 DIB_DEBIAN_USE_DEBOOTSTRAP_CACHE=1 ./build_image.sh debian
 
 More aggressively:
 
