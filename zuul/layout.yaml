@@ -2172,6 +2172,14 @@ projects:
       - php53lint
       - wikimedia-fundraising-civicrm
 
+  - name: wikimedia/fundraising/php-queue
+    test:
+     - composer-php53
+     - composer-hhvm
+    gate-and-submit:
+     - composer-php53
+     - composer-hhvm
+
   - name: wikimedia/fundraising/slander
     template:
       - name: tox-jessie
@@ -2179,10 +2187,10 @@ projects:
   - name: wikimedia/fundraising/SmashPig
     test:
      - composer-php53
+     - composer-hhvm
     gate-and-submit:
      - composer-php53
-    experimental:
-     - tox-jessie
+     - composer-hhvm
 
   - name: wikimedia/iegreview
     template:
