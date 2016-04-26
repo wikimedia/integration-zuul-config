@@ -40,6 +40,10 @@ if os_version('ubuntu >= trusty') {
     # production which has MediaWiki running on Trusty.
     include mediawiki::packages::php5
 } elsif os_version('debian >= jessie') {
+    package { 'cron':
+        ensure => present,
+        before => Class['contint::hhvm'],
+    }
     # Lack php5-fss T95002. Provide PHP via HHVM for now.
     include contint::hhvm
 }
