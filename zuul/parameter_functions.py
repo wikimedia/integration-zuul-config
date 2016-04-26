@@ -46,7 +46,7 @@ dependencies = {
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
-    'ArticlePlaceholder': ['Wikibase', 'Scribunto', 'ContentTranslation'],
+    'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
     'Capiunto': ['Scribunto'],
     'Cite': ['VisualEditor'],
     'Citoid': ['Cite', 'VisualEditor'],
