@@ -40,7 +40,7 @@ if os_version('ubuntu >= trusty') {
     # production which has MediaWiki running on Trusty.
     include mediawiki::packages::php5
 } elsif os_version('debian >= jessie') {
-    package { [ 'cron', 'rsyslog', 'logrotate' ]:
+    package { 'cron':
         ensure => present,
         before => Class['contint::hhvm'],
     }
