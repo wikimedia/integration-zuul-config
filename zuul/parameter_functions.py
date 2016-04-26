@@ -117,7 +117,7 @@ dependencies = {
     'WikibaseQuality': ['Wikibase'],
     'WikibaseQualityConstraints': ['Wikibase', 'WikibaseQuality'],
     'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
-    'Wikidata': ['cldr', 'ContentTranslation', 'Echo', 'Elastica',
+    'Wikidata': ['cldr', 'ContentTranslation', 'Elastica',
                  'GeoData', 'Scribunto'],
     'Wikidata.org': ['Wikibase'],
     'WikidataPageBanner': ['Wikidata'],
