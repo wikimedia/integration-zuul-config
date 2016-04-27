@@ -111,7 +111,7 @@ dependencies = {
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite'],
-    'Wikibase': ['CirrusSearch', 'cldr', 'Echo', 'Elastica', 'GeoData',
+    'Wikibase': ['CirrusSearch', 'cldr', 'Elastica', 'GeoData',
                  'Scribunto', 'Capiunto'],
     'WikibaseMediaInfo': ['Wikibase'],
     'WikibaseQuality': ['Wikibase'],
