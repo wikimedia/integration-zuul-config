@@ -57,3 +57,42 @@
             - hhvm
             - php53
             - php55
+
+# Same as 'composer-{phpflavor}'. Runs "composer update" and "composer test"
+# but on disposable instances maintained by Nodepool.
+- job-template:
+    name: 'composer-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - castor-load
+     - composer-validate:
+        dir: '.'
+     - composer-update:
+        dir: '.'
+     - composer-test
+    publishers:
+     - castor-save
+
+- project:
+    name: 'composer-flavored-on-nodepool'
+    jobs:
+     - 'composer-{phpflavor}-{image}':
+         phpflavor:
+             # Zend 55 is solely on Trusty
+             - php55:
+                 image: trusty
+             # Wikimedia runs HHVM on Trusty and will move to Jessie
+             - hhvm:
+                 image: trusty
+             - hhvm:
+                 image: jessie
