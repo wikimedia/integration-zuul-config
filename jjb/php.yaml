@@ -1,5 +1,35 @@
 # Generic Jobs related to PHP
 
+# Checks the committed composer.lock file against the database at
+# https://github.com/FriendsOfPHP/security-advisories and the API
+# provided by https://security.sensiolabs.org to see if any of them
+# have reported security issues. See also T74193.
+- job-template:
+    name: '{name}-composer-security'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    scm:
+      - git:
+          url: 'https://gerrit.wikimedia.org/r/{repository}'
+          branches:
+            - master
+          wipe-workspace: false  # keep the workspace...
+          clean:
+              after: true        # ... and use git clean instead
+          prune: true            # prune remote obsoletes branches
+          submodule:
+              recursive: false
+    builders:
+     - shell: |
+         curl -i -H "Accept: text/plain" https://security.sensiolabs.org/check_lock -F lock=@composer.lock -o sensiolabs.check
+         cat sensiolabs.check && grep -F "X-Alerts: 0" sensiolabs.check
+    publishers:
+     - email:
+        recipients: '{notify}'
+    triggers:
+        - timed: "H 20 * * *"
+
+
 # Job for libraries that are published as composer packages.
 # Includes full validation that packagist.org requires.
 - job:
@@ -49,11 +79,27 @@
     logrotate:
         daysToKeep: 15
 
+# Run composer update and composer test
+# Intended for libraries that are published as composer packages
+- job-template:
+    name: 'composer-package-{phpflavor}'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - composer-validate-package
+     - composer-update:
+        dir: '.'
+     - composer-test
+
 - project:
     name: 'composer-flavored'
+    phpflavor:
+        - hhvm
+        - php53
+        - php55
     jobs:
-     - 'composer-{phpflavor}':
-        phpflavor:
-            - hhvm
-            - php53
-            - php55
+     - 'composer-{phpflavor}'
+     - 'composer-package-{phpflavor}'
