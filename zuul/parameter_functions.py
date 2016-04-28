@@ -28,6 +28,10 @@ def set_parameters(item, job, params):
         # T126394: This should always be HHVM
         params['PHP_BIN'] = 'hhvm'
 
+    if params['ZUUL_PROJECT'] == 'oojs/ui' and 'npm' in job.name:
+        # T128091: oojs/ui npm job runs on Jessie which only has HHVM
+        params['PHP_BIN'] = 'hhvm'
+
     ext_deps_jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')
     if job.name.startswith(ext_deps_jobs):
         set_ext_dependencies(item, job, params)
