@@ -7,6 +7,8 @@ $labsproject = 'contintcloud'
 
 # Should have run aptconf.pp first.
 
+require_package('git')
+
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
 include jenkins::slave::requisites
