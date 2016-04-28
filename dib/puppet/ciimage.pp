@@ -26,7 +26,6 @@ if os_version('ubuntu >= trusty') {
         ensure => present,
         before => Class['contint::hhvm'],
     }
-    require ::rsyslog  # Need 'syslog' user
     # Lack php5-fss T95002. Provide PHP via HHVM for now.
     include contint::hhvm
 }
