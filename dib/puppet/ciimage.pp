@@ -22,10 +22,6 @@ if os_version('ubuntu >= trusty') {
     # production which has MediaWiki running on Trusty.
     include mediawiki::packages::php5
 } elsif os_version('debian >= jessie') {
-    package { 'cron':
-        ensure => present,
-        before => Class['contint::hhvm'],
-    }
     # ::hhvm puppet class reference 'syslog' user
     # Drop after merge of https://gerrit.wikimedia.org/r/#/c/285945/
     user { 'syslog':
@@ -33,12 +29,15 @@ if os_version('ubuntu >= trusty') {
         shell      => '/bin/false',
         system     => true,
         managehome => false,
-        before => Class['contint::hhvm'],
+        before     => Class['contint::hhvm'],
     }
-
-    # Lack php5-fss T95002. Provide PHP via HHVM for now.
-    include contint::hhvm
+    # Jessie lacks php5-fss T95002. PHP is provided via HHVM.
 }
+package { 'cron':
+    ensure => present,
+    before => Class['contint::hhvm'],
+}
+include contint::hhvm
 
 if os_version('debian >= jessie') {
     include contint::packages::javascript
