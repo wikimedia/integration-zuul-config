@@ -8,6 +8,7 @@ $labsproject = 'contintcloud'
 # Should have run aptconf.pp first.
 
 require_package('git')
+require_package('rsyslog')  # dep of HHVM
 
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
