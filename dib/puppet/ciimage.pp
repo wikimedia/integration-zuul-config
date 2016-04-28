@@ -8,7 +8,6 @@ $labsproject = 'contintcloud'
 # Should have run aptconf.pp first.
 
 require_package('git')
-ensure_packages(['rsyslog'])  # dep of HHVM
 
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
@@ -27,6 +26,7 @@ if os_version('ubuntu >= trusty') {
         ensure => present,
         before => Class['contint::hhvm'],
     }
+    require ::rsyslog  # Need 'syslog' user
     # Lack php5-fss T95002. Provide PHP via HHVM for now.
     include contint::hhvm
 }
