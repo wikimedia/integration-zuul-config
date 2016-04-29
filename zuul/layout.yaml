@@ -700,6 +700,10 @@ jobs:
     branch: (?!^REL1_23|^REL1_24|^REL1_25|^REL1_26|^fundraising/REL)
     files:
      - '^.*\.(json|php|php5|phtml|inc|xml)$'
+  - name: mediawiki-core-phpcs-trusty
+    branch: (?!^REL1_23|^REL1_24|^REL1_25|^REL1_26|^fundraising/REL)
+    files:
+     - '^.*\.(json|php|php5|phtml|inc|xml)$'
 
 
   - name: ^mediawiki-core-npm-node-4.3$
@@ -1321,6 +1325,8 @@ projects:
       - mediawiki-phpunit-hhvm-composer
       # will replace mediawiki-phpunit-php53 for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
       - mediawiki-phpunit-php53-composer
+      # Nodepool migration - T133976
+      - mediawiki-core-phpcs-trusty
 
   - name: mediawiki/debian
     experimental:
