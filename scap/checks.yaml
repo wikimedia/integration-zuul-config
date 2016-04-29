@@ -1,0 +1,20 @@
+checks:
+    # fetch - after config has been deployed
+    valid_layout:
+        type: command
+        stage: fetch
+        # XXX Config file only readable by user zuul
+        command: >-
+            /usr/bin/zuul-server
+            -c /etc/zuul/zuul-server.conf
+            -l /etc/zuul/wikimedia/zuul/layout.yaml
+
+    # promote - after service reload
+    service_endpoints:
+        stage: promote
+        type: nrpe
+        command: check_zuul
+    service_endpoints:
+        stage: promote
+        type: nrpe
+        command: check_zuul_gearman
