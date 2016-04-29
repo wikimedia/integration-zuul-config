@@ -1,0 +1,15 @@
+checks:
+    # Should be solely for gallium!
+    service_endpoints:
+        type: nrpe
+        command: check_zuul
+        stage: promote
+    service_endpoints:
+        type: nrpe
+        command: check_zuul_gearman
+        stage: promote
+    # For both gallium and scandium
+    service_endpoints:
+        type: nrpe
+        command: check_zuul_merger
+        stage: promote
