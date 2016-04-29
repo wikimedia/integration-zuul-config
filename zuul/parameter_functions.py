@@ -17,7 +17,11 @@ def set_parameters(item, job, params):
     # Xvfb display provided via puppet
     params['DISPLAY'] = ':94'
 
-    hhvm_jobs = ('mediawiki-core-phpcs', 'mw-tools-codesniffer-mwcore-testrun')
+    hhvm_jobs = (
+        'mediawiki-core-phpcs',
+        'mediawiki-core-phpcs-trusty',
+        'mw-tools-codesniffer-mwcore-testrun',
+        )
 
     # Sets a $PHP_BIN variable based on the job name
     if 'php55' in job.name:
