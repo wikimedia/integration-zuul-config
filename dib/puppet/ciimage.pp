@@ -51,7 +51,7 @@ if os_version('debian >= jessie') {
     include mathoid::packages
 }
 
-ensure_packages(['mariadb-server'])
+ensure_packages(['mariadb-client', 'mariadb-server'])
 
 # FIXME should be upstreamed to operations/puppet.git as contint::packages::dev
 package { [
