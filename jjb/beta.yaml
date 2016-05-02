@@ -204,7 +204,7 @@
 - job-template:
     name: beta-cxserver-update-eqiad
     defaults: beta
-    node: deployment-cxserver-eqiad
+    node: deployment-sca01
     triggers:
      - zuul
     logrotate:
@@ -221,7 +221,7 @@
          rsync $RSYNC_OPTS $WORKSPACE/cxserver "$CXSERVER_TARGET"
          rsync $RSYNC_OPTS $WORKSPACE/deploy "$CXSERVER_TARGET"
          # Configuration file is managed by puppet
-         ln -s /srv/deployment/cxserver/config.js "$CXSERVER_TARGET/cxserver/config.js"
+         ln -s /srv/deployment/cxserver/config.yaml "$CXSERVER_TARGET/cxserver/config.yaml"
 
      - shell: |
          sudo service cxserver restart
