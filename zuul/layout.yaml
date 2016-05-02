@@ -1149,16 +1149,14 @@ project-templates:
       - php53lint
       - php55lint
     test:
-      - composer-package-hhvm
-      - composer-package-php53
-      - composer-package-php55
-    gate-and-submit:
-      - composer-package-hhvm
-      - composer-package-php53
-      - composer-package-php55
-    experimental:
       #- composer-package-hhvm-jessie
       - composer-package-hhvm-trusty
+      - composer-package-php53
+      - composer-package-php55-trusty
+    gate-and-submit:
+      #- composer-package-hhvm-jessie
+      - composer-package-hhvm-trusty
+      - composer-package-php53
       - composer-package-php55-trusty
 
   - name: composer-test-package55
@@ -1166,12 +1164,10 @@ project-templates:
       - composer-package-validate
       - php55lint
     test:
-      - composer-package-hhvm
-      - composer-package-php55
+      #- composer-package-hhvm-jessie
+      - composer-package-hhvm-trusty
+      - composer-package-php55-trusty
     gate-and-submit:
-      - composer-package-hhvm
-      - composer-package-php55
-    experimental:
       #- composer-package-hhvm-jessie
       - composer-package-hhvm-trusty
       - composer-package-php55-trusty
