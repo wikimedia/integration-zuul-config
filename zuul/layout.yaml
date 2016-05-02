@@ -898,8 +898,8 @@ project-templates:
      - npm
      - npm-node-4.3
      - composer-php53
-     - composer-php55
-     - composer-hhvm
+     - composer-php55-trusty
+     - composer-hhvm-trusty
 
   - name: extension-unittests-composer-non-voting
     check:
@@ -922,8 +922,8 @@ project-templates:
      - mwext-qunit-composer
      - npm
      - composer-php53
-     - composer-php55
-     - composer-hhvm
+     - composer-php55-trusty
+     - composer-hhvm-trusty
 
   - name: extension-unittests-generic
     check:
@@ -954,8 +954,8 @@ project-templates:
       - npm
       - npm-node-4.3
       - composer-php53
-      - composer-php55
-      - composer-hhvm
+      - composer-php55-trusty
+      - composer-hhvm-trusty
 
   - name: extension-unittests-non-voting
     check:
@@ -983,8 +983,8 @@ project-templates:
       - npm
       - npm-node-4.3
       - composer-php53
-      - composer-php55
-      - composer-hhvm
+      - composer-php55-trusty
+      - composer-hhvm-trusty
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1055,8 +1055,8 @@ project-templates:
      - npm
      - npm-node-4.3
      - composer-php53
-     - composer-php55
-     - composer-hhvm
+     - composer-php55-trusty
+     - composer-hhvm-trusty
 
     # Similar to above, but uses a check/test pipeline
   - name: mw-checks-test
@@ -1083,8 +1083,8 @@ project-templates:
      - npm
      - npm-node-4.3
      - composer-php53
-     - composer-php55
-     - composer-hhvm
+     - composer-php55-trusty
+     - composer-hhvm-trusty
 
   - name: composer-test
     check:
@@ -1993,7 +1993,9 @@ projects:
       - operations-mw-config-php55lint
       - operations-mw-config-phpunit
     experimental:
-      - composer-php55
+      - composer-php55-trusty
+      - composer-hhvm-trusty
+      - composer-hhvm-jessie
     postmerge:
       - beta-mediawiki-config-update-eqiad
 
