@@ -135,6 +135,62 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# Runs all MediaWiki tests under hhvm on Nodepool instances
+- job-template:
+    name: 'mediawiki-phpunit-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-fetch-composer-dev
+     # ParserTests tests are run via 'mediawiki-phpunit-parsertests-phpflavor'
+     - shell: "PHPUNIT_EXCLUDE_GROUP=ParserTests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+     - castor-save
+
+# Only runs the 'parsertests' MediaWiki test suite on Nodepool instances
+# Complements 'mediawiki-phpunit-{phpflavor}-{image}'
+- job-template:
+    name: 'mediawiki-parsertests-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-fetch-composer-dev
+     - shell: "PHPUNIT_TESTSUITE=parsertests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+     - castor-save
+
 # Runs subset of MediaWiki tests
 #
 # Excludes '@group ParserTests' tests which are run in parallel via
@@ -341,6 +397,17 @@
       - '{name}-php55lint'
       - 'mediawiki-phpunit-{phpflavor}'
       - 'mediawiki-phpunit-parsertests-{phpflavor}'
+      - 'mediawiki-phpunit-{phpflavor}-{image}': &phpflavor_images
+          phpflavor:
+              - php55:
+                  image: trusty
+              # Wikimedia runs HHVM on Trusty and will move to Jessie
+              - hhvm:
+                  image: trusty
+              - hhvm:
+                  image: jessie
+      - 'mediawiki-parsertests-{phpflavor}-{image}': *phpflavor_images
+
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}':
           dependencies: &gatedextensions >

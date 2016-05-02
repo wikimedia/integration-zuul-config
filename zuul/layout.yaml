@@ -1278,8 +1278,8 @@ projects:
       - mediawiki-core-npm-node-4.3
       - mediawiki-core-php53lint
       - mediawiki-core-php55lint
-      - mediawiki-phpunit-hhvm
-      - mediawiki-phpunit-parsertests-hhvm
+      - mediawiki-phpunit-hhvm-trusty
+      - mediawiki-parsertests-hhvm-trusty
       - mediawiki-core-qunit
       - composer-package-validate
     php5:
@@ -1294,13 +1294,13 @@ projects:
       - mediawiki-core-php53lint
       - mediawiki-core-php55lint
       - mediawiki-core-phpcs-trusty
-      - mediawiki-phpunit-hhvm
-      - mediawiki-phpunit-parsertests-hhvm
+      - mediawiki-phpunit-hhvm-trusty
+      - mediawiki-parsertests-hhvm-trusty
       - mediawiki-phpunit-hhvm-composer
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
-      - mediawiki-phpunit-php55
-      - mediawiki-phpunit-parsertests-php55
+      - mediawiki-phpunit-php55-trusty
+      - mediawiki-parsertests-php55-trusty
       - mediawiki-core-qunit
       - composer-package-validate
     postmerge:
@@ -1313,6 +1313,9 @@ projects:
       - mediawiki-phpunit-hhvm-composer
       # will replace mediawiki-phpunit-php53 for branches not using vendor, currently not used as the composer part is covered by the hhvm variant
       - mediawiki-phpunit-php53-composer
+      # For when we switch WMF app servers to Jessie
+      - mediawiki-phpunit-hhvm-jessie
+      - mediawiki-parsertests-hhvm-jessie
 
   - name: mediawiki/debian
     experimental:
