@@ -220,8 +220,6 @@
          RSYNC_OPTS="--update --times --recursive --links --delete-after --delay-updates"
          rsync $RSYNC_OPTS $WORKSPACE/cxserver "$CXSERVER_TARGET"
          rsync $RSYNC_OPTS $WORKSPACE/deploy "$CXSERVER_TARGET"
-         # Configuration file is managed by puppet
-         ln -s /srv/deployment/cxserver/config.yaml "$CXSERVER_TARGET/cxserver/config.yaml"
 
      - shell: |
          sudo service cxserver restart
