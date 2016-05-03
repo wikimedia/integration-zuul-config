@@ -62,9 +62,10 @@
         daysToKeep: 15
 
 # Generic job that runs "composer update" and "composer test"
+# Runs on Ubuntu Precise that ships Zend 5.3.
 - job-template:
-    name: 'composer-{phpflavor}'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    name: 'composer-php53'
+    node: 'contintLabsSlave && phpflavor-php53'
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
 
@@ -81,9 +82,10 @@
 
 # Run composer update and composer test
 # Intended for libraries that are published as composer packages
+# Runs on Ubuntu Precise that ships Zend 5.3.
 - job-template:
-    name: 'composer-package-{phpflavor}'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    name: 'composer-package-php53'
+    node: 'contintLabsSlave && phpflavor-php53'
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -94,15 +96,13 @@
         dir: '.'
      - composer-test
 
+# Zend 5.3 is only on Ubuntu Precise
+# Other PHP flavors are on Nodepool instances.
 - project:
-    name: 'composer-flavored'
-    phpflavor:
-        - hhvm
-        - php53
-        - php55
+    name: 'composer-php53'
     jobs:
-     - 'composer-{phpflavor}'
-     - 'composer-package-{phpflavor}'
+     - 'composer-php53'
+     - 'composer-package-php53'
 
 # Same as 'composer-{phpflavor}'. Runs "composer update" and "composer test"
 # but on disposable instances maintained by Nodepool.
