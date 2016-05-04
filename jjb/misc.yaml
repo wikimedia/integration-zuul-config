@@ -309,7 +309,7 @@
         # Ignore grep errors, we handle them manually
         set +e
             # -r does not follow symlinks
-            (fgrep -r --color=always --file=typos --exclude=typos *)
+            (grep -E -r --color=always --file=typos --exclude=typos .)
             ERR="$?"
         set -e
 
