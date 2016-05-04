@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ae564743_5f92c400",
+        "filename": "scap/checks.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-05-04T14:10:28Z",
+      "side": 1,
+      "message": "restart will be skip but the checks will be run anyway.\n\nThe checks should be executed in order (hopefully, have to verify).   So here we want a first check that trigger the reload event. Probably using /etc/init.d/zuul reload  then sleep?",
+      "revId": "5dd072efa70f3b74792d46ff3067b66ef1f30e74",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae564743_9fe57ca2",
+        "filename": "scap/scap.cfg",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-05-04T14:10:28Z",
+      "side": 1,
+      "message": "Since Zuul requires a HUP / reload, the service_* stanzas should be dropped and we should abuse the check to reload.",
+      "revId": "5dd072efa70f3b74792d46ff3067b66ef1f30e74",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
