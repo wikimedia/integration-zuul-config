@@ -1,24 +1,26 @@
 - job-template:
-    name: 'php55-{name}-build'
+    name: '{name}-compile-php55'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
      - shell: |
+        /usr/bin/phpize5 --version
         /usr/bin/phpize5
         ./configure
         make
         make test
 
 - job-template:
-    name: 'php55-{name}-hhvm-build'
+    name: '{name}-compile-hhvm'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
      - shell: |
+         hhvm --version
          hphpize
          cmake .
          make
@@ -27,37 +29,37 @@
 - project:
     name: 'FastStringSearch'
     jobs:
-     - 'php55-{name}-build'
-     - 'php55-{name}-hhvm-build'
+     - '{name}-compile-php55'
+     - '{name}-compile-hhvm'
 
 # NativePreprocessor PHP extension
 - project:
     name: 'NativePreprocessor'
     jobs:
-     - 'php55-{name}-build'
+     - '{name}-compile-php55'
 
 # luasandbox PHP extension
 - project:
     name: 'luasandbox'
     jobs:
-     - 'php55-{name}-build'
-     - 'php55-{name}-hhvm-build'
+     - '{name}-compile-php55'
+     - '{name}-compile-hhvm'
 
 # wikidiff PHP extension
 - project:
     name: 'wikidiff'
     jobs:
-     - 'php55-{name}-build'
+     - '{name}-compile-php55'
 
 # wikidiff2 PHP extension
 - project:
     name: 'wikidiff2'
     jobs:
-     - 'php55-{name}-build'
-     - 'php55-{name}-hhvm-build'
+     - '{name}-compile-php55'
+     - '{name}-compile-hhvm'
 
 # wmerrors PHP extension
 - project:
     name: 'wmerrors'
     jobs:
-     - 'php55-{name}-build'
+     - '{name}-compile-php55'
