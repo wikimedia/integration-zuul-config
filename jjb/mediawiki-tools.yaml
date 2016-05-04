@@ -43,3 +43,15 @@
      - shell: |
         cd $WORKSPACE/src/mediawiki/tools/codesniffer
         vendor/bin/phpcs --standard=./MediaWiki --extensions=php,php5,inc -p -s ../../../includes
+
+- job:
+    name: 'mwdumper-maven'
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 7'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    maven:
+      goals: clean package
