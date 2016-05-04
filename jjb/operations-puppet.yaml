@@ -79,51 +79,6 @@
         docsrc: 'src'
         docdest: 'puppetsource'
 
-# Find out common typos in any files of ops/puppet
-- job-template:
-    name: 'operations-puppet-typos'
-    # Bound to Trusty since we need grep v2.11-8 for -r to not follow symlinks
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-
-    triggers:
-     - zuul
-
-    builders:
-     - shell: |
-        #!/bin/bash -e
-        echo "Looking potential typos from '/typos' file"
-
-        # Ignore grep errors, we handle them manually
-        set +e
-            # -r does not follow symlinks
-            (fgrep -r --color=always --file=typos --exclude=typos *)
-            ERR="$?"
-        set -e
-
-        # The grep utility exits with one of the following values:
-        #
-        # 0     One or more lines were selected.
-        # 1     No lines were selected.
-        # >1    An error occurred.
-        #
-        # Flip 0 and 1 meanings:
-        case $ERR in
-            "0")
-                echo "Typos found!"
-                exit 1
-                ;;
-            "1")
-                echo "No typos found!"
-                exit 0
-                ;;
-            *)
-                echo "Some error occured."
-                exit $ERR
-                ;;
-        esac
-
 - project:
     name: 'operations-puppet'
 
@@ -134,7 +89,7 @@
      - '{name}-puppetlint-lenient'
      - '{name}-puppetlint-strict'
      - '{name}-tox-{toxenv}-jessie'
-     - operations-puppet-typos
+     - '{name}-typos'
      - operations-puppet-test
      - operations-puppet-doc
      - operations-puppet-pep8

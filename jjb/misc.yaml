@@ -290,6 +290,51 @@
       - webpagetest-irc
       - workspace-cleanup
 
+# Find out common typos in any files based on list of typos in a /typos file
+- job-template:
+    name: '{name}-typos'
+    # Bound to Trusty since we need grep v2.11-8 for -r to not follow symlinks
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: |
+        #!/bin/bash -e
+        echo "Looking potential typos from '/typos' file"
+
+        # Ignore grep errors, we handle them manually
+        set +e
+            # -r does not follow symlinks
+            (fgrep -r --color=always --file=typos --exclude=typos *)
+            ERR="$?"
+        set -e
+
+        # The grep utility exits with one of the following values:
+        #
+        # 0     One or more lines were selected.
+        # 1     No lines were selected.
+        # >1    An error occurred.
+        #
+        # Flip 0 and 1 meanings:
+        case $ERR in
+            "0")
+                echo "Typos found!"
+                exit 1
+                ;;
+            "1")
+                echo "No typos found!"
+                exit 0
+                ;;
+            *)
+                echo "Some error occured."
+                exit $ERR
+                ;;
+        esac
+
 - publisher:
     name: webpagetest-irc
     publishers:
