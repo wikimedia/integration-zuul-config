@@ -18,7 +18,6 @@ def set_parameters(item, job, params):
     params['DISPLAY'] = ':94'
 
     hhvm_jobs = (
-        'mediawiki-core-phpcs',
         'mediawiki-core-phpcs-trusty',
         'mw-tools-codesniffer-mwcore-testrun',
         )
