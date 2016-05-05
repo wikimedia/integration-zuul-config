@@ -2,9 +2,6 @@
 - notification-emails:
     name: listofemails  # a 'name' is required by JJB.
     lists:
-     - Collaboration: &emails-collaboration
-        mflaschen@wikimedia.org mmullie@wikimedia.org qa-alerts@lists.wikimedia.org sbisson@wikimedia.org
-
      - multimedia: &emails-multimedia
         multimedia-alerts@lists.wikimedia.org qa-alerts@lists.wikimedia.org
 
@@ -16,37 +13,6 @@
 
      - Wikidata-devs: &emails-Wikidata-devs
         christoph.fischer@wikimedia.de katie.filbert@wikimedia.de qa-alerts@lists.wikimedia.org tobias.gritschacher@wikimedia.de
-
-# Flow
-- project:
-    name: Flow
-    defaults: browsertests
-    folder: tests
-    headless: 'false'
-    platform: linux
-    recipients: *emails-collaboration
-    repository: mediawiki/extensions/Flow
-
-    jobs:
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: chrome
-        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
-        mediawiki_url: en.wikipedia.beta.wmflabs.org
-
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-sauce':
-        browser: firefox
-        mediawiki_credentials_id: Selenium_user-at-beta.wmflabs.org
-        mediawiki_url: en.wikipedia.beta.wmflabs.org
-
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-monobook-sauce':
-        browser: chrome
-        mediawiki_credentials_id: Selenium_user_monobook-at-beta.wmflabs.org
-        mediawiki_url: en.wikipedia.beta.wmflabs.org
-
-     - 'browsertests-{name}-{mediawiki_url}-{platform}-{browser}-monobook-sauce':
-        browser: firefox
-        mediawiki_credentials_id: Selenium_user_monobook-at-beta.wmflabs.org
-        mediawiki_url: en.wikipedia.beta.wmflabs.org
 
 # MobileFrontend
 - project:
