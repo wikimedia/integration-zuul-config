@@ -12,17 +12,7 @@
         /srv/deployment/integration/slave-scripts/bin/git-changed-in-head erb \
         | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
 
-- job-template:
-    name: '{name}-jshint'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - jshint
-
-- job:
+- job: &job_jshint
     name: 'jshint'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
@@ -33,16 +23,13 @@
      - jshint
 
 - job-template:
-    name: '{name}-jsonlint'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
+    !!merge : *job_jshint
+    name: '{name}-jshint'
+    # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-    builders:
-     - jsonlint
 
-- job:
+- job: &job_jsonlint
     name: 'jsonlint'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
@@ -51,6 +38,13 @@
      - zuul
     builders:
      - jsonlint
+
+- job-template:
+    !!merge : *job_jsonlint
+    name: '{name}-jsonlint'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - job:
     name: 'jsduck'
@@ -131,7 +125,7 @@
     triggers:
      - zuul
 
-- job:
+- job: &job_npm-run-doc
     name: 'npm-run-doc'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
@@ -144,7 +138,14 @@
     publishers:
      - global-teardown
 
-- job:
+- job-template:
+    !!merge : *job_npm-run-doc
+    name: '{name}-npm-run-doc'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+- job: &job_npm-run-demos
     name: 'npm-run-demos'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
@@ -156,6 +157,13 @@
      - npm-run-demos
     publishers:
      - global-teardown
+
+- job-template:
+    !!merge : *job_npm-run-demos
+    name: '{name}-npm-run-demos'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - job-template:
     name: '{name}-{repository}-npm'

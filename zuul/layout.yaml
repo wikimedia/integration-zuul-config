@@ -8159,17 +8159,19 @@ projects:
   - name: oojs/ui
     template:
       - name: composer-test-package55
-      - name: npm
-      - name: rake
     check:
-      - jshint
-      - jsonlint
+      - oojs-ui-jshint
+      - oojs-ui-jsonlint
     test:
-      - npm-run-doc
-      - npm-run-demos
+      - oojs-ui-npm-node-4.3
+      - oojs-ui-rake-jessie
+      - oojs-ui-npm-run-doc
+      - oojs-ui-npm-run-demos
     gate-and-submit:
-      - npm-run-doc
-      - npm-run-demos
+      - oojs-ui-npm-node-4.3
+      - oojs-ui-rake-jessie
+      - oojs-ui-npm-run-doc
+      - oojs-ui-npm-run-demos
     postmerge:
       - oojs-ui-jsduck-publish
       - oojs-ui-doxygen-publish

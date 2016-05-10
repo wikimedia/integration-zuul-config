@@ -52,7 +52,7 @@
          command: '{command}'
 
 # Run `bundle exec rake test` on Nodepool Jessie instances.
-- job-template:
+- job: &job_rake-jessie
     name: 'rake-jessie'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
@@ -70,6 +70,13 @@
         bundle exec rake test
     publishers:
      - castor-save
+
+- job-template:
+    !!merge : *job_rake-jessie
+    name: '{name}-rake-jessie'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - project:
     name: common-rake-job
