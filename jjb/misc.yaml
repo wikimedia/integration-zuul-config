@@ -309,7 +309,8 @@
         # Ignore grep errors, we handle them manually
         set +e
             # -r does not follow symlinks
-            (grep -E -r --color=always --file=typos --exclude=typos --exclude-dir=.git .)
+            # Skip processing files detected as being binary
+            (grep -E -r --binary-files=without-match --color=always --file=typos --exclude=typos --exclude-dir=.git .)
             ERR="$?"
         set -e
 
