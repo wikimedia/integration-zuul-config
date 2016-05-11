@@ -132,7 +132,7 @@
 # Same as 'composer-package-{phpflavor}'. Runs "composer update" and "composer
 # test" for libraries that are published as composer packages but on disposable
 # instances maintained by Nodepool.
-- job-template:
+- job-template: &job_composer_package
     name: 'composer-package-{phpflavor}-{image}'
     node: ci-{image}-wikimedia
     defaults: use-remote-zuul-shallow-clone
@@ -144,19 +144,7 @@
     triggers:
      - zuul
     builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - castor-load
-     - composer-validate-package
-     - composer-update:
-        dir: '.'
-     - composer-test
-    publishers:
-     - castor-save
-
-- project:
-    name: 'composer-flavored-on-nodepool'
-    phpflavor:
+     - phpflavor:
         # Zend 55 is solely on Trusty
         - php55:
             image: trusty
@@ -165,6 +153,17 @@
             image: trusty
         - hhvm:
             image: jessie
-    jobs:
-     - 'composer-package-{phpflavor}-{image}'
-     - 'composer-{phpflavor}-{image}'
+     - castor-load
+     - composer-validate-package
+     - composer-update:
+        dir: '.'
+     - composer-test
+    publishers:
+     - castor-save
+
+- job-template:
+    !!merge : *job_composer_package
+    name: '{name}-composer-package-{phpflavor}-{image}'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
