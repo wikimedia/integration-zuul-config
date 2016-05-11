@@ -31,6 +31,12 @@ include contint::hhvm
 
 include contint::packages::javascript
 include contint::packages::php
+require_package('php5-xhprof')
+require_package('libimage-exiftool-perl')
+include ::imagemagick::install
+
+# From mediawiki::packages (which we do not want because of texlive)
+require_package('djvulibre-bin')
 
 if os_version('debian >= jessie') {
     include contint::packages::python
