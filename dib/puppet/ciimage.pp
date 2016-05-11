@@ -30,6 +30,8 @@ package { 'cron':
 include contint::hhvm
 
 include contint::packages::javascript
+include contint::packages::php
+
 if os_version('debian >= jessie') {
     include contint::packages::python
     include contint::packages::ruby
