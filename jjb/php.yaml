@@ -132,7 +132,7 @@
 # Same as 'composer-package-{phpflavor}'. Runs "composer update" and "composer
 # test" for libraries that are published as composer packages but on disposable
 # instances maintained by Nodepool.
-- job-template:
+- job: &job_composer_package
     name: 'composer-package-{phpflavor}-{image}'
     node: ci-{image}-wikimedia
     defaults: use-remote-zuul-shallow-clone
@@ -153,6 +153,13 @@
      - composer-test
     publishers:
      - castor-save
+
+- job-template:
+    !!merge : *job_composer_package
+    name: '{name}-composer-package-{phpflavor}-{image}'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - project:
     name: 'composer-flavored-on-nodepool'
