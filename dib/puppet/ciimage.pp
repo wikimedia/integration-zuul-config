@@ -32,8 +32,10 @@ include contint::hhvm
 include contint::packages::javascript
 include contint::packages::php
 require_package('php5-xhprof')
-mediawiki::php_enmod { 'xhprof':
-    require => Package['php5-xhprof'],
+exec { 'Enable PHP module xhprof':
+    command     => '/usr/sbin/php5enmod -s ALL xhprof',
+    subscribe   => Package['php5-xhprof'],
+    refreshonly => true,
 }
 
 require_package('libimage-exiftool-perl')
