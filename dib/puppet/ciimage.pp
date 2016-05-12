@@ -32,6 +32,10 @@ include contint::hhvm
 include contint::packages::javascript
 include contint::packages::php
 require_package('php5-xhprof')
+mediawiki::php_enmod { 'xhprof':
+    require => Package['php5-xhprof'],
+}
+
 require_package('libimage-exiftool-perl')
 include ::imagemagick::install
 
