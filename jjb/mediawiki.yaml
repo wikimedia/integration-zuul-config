@@ -109,32 +109,6 @@
     publishers:
      - mw-teardown
 
-# Runs all MediaWiki tests under hhvm
-- job-template:
-    name: 'mediawiki-phpunit-hhvm'
-    node: 'contintLabsSlave && UbuntuTrusty && phpflavor-hhvm'
-    concurrent: true
-    properties:
-     - throttle-one-per-node
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: 'hhvm'
-     - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-mysql
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
-    publishers:
-     - phpunit-junit-2
-     - mw-teardown-mysql
-     - archive-log-dir
-
 # Runs all MediaWiki tests under hhvm on Nodepool instances
 - job-template:
     name: 'mediawiki-phpunit-{phpflavor}-{image}'
@@ -395,8 +369,12 @@
       - 'mediawiki-core-doxygen-publish'
       - '{name}-php53lint'
       - '{name}-php55lint'
-      - 'mediawiki-phpunit-{phpflavor}'
-      - 'mediawiki-phpunit-parsertests-{phpflavor}'
+      - 'mediawiki-phpunit-{phpflavor}':
+          phpflavor:
+              - php53
+      - 'mediawiki-phpunit-parsertests-{phpflavor}':
+          phpflavor:
+              - php53
       - 'mediawiki-phpunit-{phpflavor}-{image}': &phpflavor_images
           phpflavor:
               - php55:
