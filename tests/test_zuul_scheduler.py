@@ -295,7 +295,7 @@ class TestZuulScheduler(unittest.TestCase):
             '.*-(tabs|typos)',
             'operations-puppet-pep8',
             '.*-puppet-validate',
-            '.*-puppetlint-(strict|lenient)',
+            '.*-puppetlint-strict',
             '.*-whitespaces',
             'noop',
             'composer-validate',
