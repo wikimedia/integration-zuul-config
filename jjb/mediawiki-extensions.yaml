@@ -192,7 +192,7 @@
      - lint-whitespaces
 
 # Generic phpunit job for extensions.
-- job-template:
+- job-template: &job_mwext-testextension
     name: 'mwext-testextension-{phpflavor}'
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
     concurrent: true
@@ -214,23 +214,10 @@
 # Same as above, but with non-voting suffix because it's non-voting
 - job-template:
     name: 'mwext-testextension-{phpflavor}-non-voting'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
-    concurrent: true
+    !!merge : *job_mwext-testextension
+    # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - prepare-mediawiki-zuul-project
-     - mw-fetch-composer-dev
-     - mw-run-phpunit-allexts
-    publishers:
-     - junit:
-        results: 'log/junit*.xml'
-     - mw-teardown-mysql
-     - archive-log-dir
-
 
 # same but with composer update instead of cloning vendor
 - job-template: &job_mwext-testextension-composer
