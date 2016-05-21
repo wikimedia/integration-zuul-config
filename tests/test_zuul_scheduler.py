@@ -488,8 +488,7 @@ class TestZuulScheduler(unittest.TestCase):
                             'mediawiki/core rake job must run on %s'
                             % allowed_branch)
 
-        for blacklisted_branch in ['REL1_23', 'REL1_24',
-                                   'fundraising/REL1_42']:
+        for blacklisted_branch in ['REL1_23', 'REL1_24']:
             change = change_for_branch(blacklisted_branch)
             self.assertTrue(test_manager.eventMatches(event, change))
             self.assertFalse(rake_job.changeMatches(change),

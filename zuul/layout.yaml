@@ -602,7 +602,7 @@ jobs:
     branch: (?!^wmf/1\.27\.0-wmf\.[45])
     skip-if:
       - project: '^mediawiki/core$'
-        branch: (?:^REL1_23$|^REL1_24$|^fundraising/REL.*)
+        branch: (?:^REL1_23$|^REL1_24$)
       - project: '^mediawiki/extensions/Flow$'
         branch: (?:^REL1_25$)
       - project: '^VisualEditor/VisualEditor$'
@@ -669,11 +669,11 @@ jobs:
 
   - name: ^mediawiki.*-hhvm(-composer)?(-trusty|-jessie)?$
     # Release branches do not support hhvm.
-    branch: (?!REL1_23|REL1_24|fundraising/REL.*)
+    branch: (?!REL1_23|REL1_24)
 
   - name: ^mwext.*-hhvm$
     # Release branches do not support hhvm.
-    branch: (?!REL1_23|REL1_24|fundraising/REL.*)
+    branch: (?!REL1_23|REL1_24)
 
   - name: ^.*php55.*$
     branch: (?!REL1_2[3-6]$)
@@ -689,11 +689,11 @@ jobs:
 
   # Extensions tested together, since 1.25alpha ...
   - name: ^mediawiki-extensions-(qunit|hhvm|php53)$
-    branch: (?!REL1_23|REL1_24|fundraising/REL.*)
+    branch: (?!REL1_23|REL1_24)
     queue-name: mediawiki
 
   - name: ^mediawiki-extensions-php55$
-    branch: (?!REL1_23|REL1_24|REL1_25|REL1_26|fundraising/REL.*)
+    branch: (?!REL1_23|REL1_24|REL1_25|REL1_26)
     queue-name: mediawiki
 
   - name: mediawiki-core-phpcs-trusty
