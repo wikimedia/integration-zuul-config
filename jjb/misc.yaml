@@ -68,6 +68,13 @@
     publishers:
      - global-teardown
 
+- project:
+    name: unicodejs
+    jobs:
+        - '{name}-npm-run-{script}':
+            script:
+                - doc
+
 - job:
     name: 'oojs-core-publish'
     node: contintLabsSlave && UbuntuTrusty
@@ -179,6 +186,13 @@
         dest: 'visualeditor'
     publishers:
      - global-teardown
+
+- project:
+    name: visualeditor
+    jobs:
+        - '{name}-npm-run-{script}':
+            script:
+                - doc
 
 - job:
     name: 'performance-webpagetest-wmf'
