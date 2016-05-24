@@ -45,7 +45,8 @@
      - zuul
     builders:
      - npm-install
-     - npm-run-doc
+     - npm-run:
+         script: doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
@@ -76,7 +77,8 @@
      - zuul
     builders:
      - npm-install
-     - npm-run-doc
+     - npm-run:
+         script: doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs/$DOC_SUBPATH'
@@ -107,7 +109,8 @@
      - zuul
     builders:
      - npm-install
-     - npm-run-doc
+     - npm-run:
+         script: doc
      - doc-publish:
         docsrc: 'docs'
         docdest: 'oojs-ui/$DOC_SUBPATH/js'
@@ -154,7 +157,8 @@
      - zuul
     builders:
      - npm-install
-     - npm-run-demos
+     - npm-run:
+         script: demos
      - doc-publish:
         docsrc: 'demos'
         docdest: 'oojs-ui/$DOC_SUBPATH/demos'
