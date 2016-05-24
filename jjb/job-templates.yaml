@@ -102,17 +102,37 @@
     maven:
       goals: clean package
 
-- job:
-    name: 'npm'
-    node: contintLabsSlave && UbuntuTrusty
+- job: &job_npm-node-0_10
+    name: 'npm-node-0.10'
+    node: ci-trusty-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
-     - npm
+     - assert-node-version-0.10
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+
+         node --version
+         npm --version
+         npm install
+         npm test
     publishers:
-     - global-teardown
+     - archive-log-allow-empty
+     - castor-save
+
+- job-template:
+    !!merge : *job_npm-node-0_10
+    name: '{name}-npm-node-0.10'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - job: &job_npm-node-4_3
     name: 'npm-node-4.3'
@@ -184,19 +204,27 @@
      - archive-log-allow-empty
      - castor-save
 
-
 - job-template:
-    name: '{name}-{repository}-npm'
-    node: contintLabsSlave && UbuntuTrusty
+    name: '{name}-{repository}-npm-node-0.10'
+    node: ci-trusty-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
+     - assert-node-version-0.10
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
      - npm-oid:
          repository: '{repository}'
     publishers:
-     - global-teardown
+     - archive-log-allow-empty
+     - castor-save
 
 # Similar to '{name}-{repository}-npm' but:
 # - runs on Nodepool instances
