@@ -63,31 +63,25 @@
         npm install
         npm test
 
-# The npm-run-* macros are intended to be used when multiple are used
+# The npm-run macro is intended to be used when multiple scripts are used
 # together (e.g. 'doc' and later 'test'). If you simply need to run
 # npm-install and npm-run-test, use the plain 'npm' macro instead.
 #
 # MUST run npm-setup.sh before this (e.g. via npm-install macro)
 #
 # ALWAYS pair with 'global-teardown'
+#
+# Example:
+# builders:
+#  - npm-run:
+#      script: doc
+#
 - builder:
-    name: npm-run-test
+    name: npm-run
     builders:
-    - shell: |
+     - shell: |
         . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
-        npm test
-- builder:
-    name: npm-run-doc
-    builders:
-    - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
-        npm run-script doc
-- builder:
-    name: npm-run-demos
-    builders:
-    - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
-        npm run-script demos
+        npm run-script {script}
 
 # Variant that can use a deploy repo for the dependencies.
 # See macro setup-npm-oid below.
