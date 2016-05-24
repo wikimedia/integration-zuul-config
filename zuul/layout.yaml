@@ -1166,11 +1166,11 @@ project-templates:
     gate-and-submit:
       - npm-node-4.3
 
-  - name: npm-legacy
+  - name: npm-node-0.10
     test:
-      - npm
+      - npm-node-0.10
     gate-and-submit:
-      - npm
+      - npm-node-0.10
     experimental:
       - npm-node-4.3
 
@@ -2134,7 +2134,7 @@ projects:
   - name: wikimedia/fundraising/dash
     template:
       # Depends on node-syslog@1.1.7 which does not work on Node 4.3
-      - name: npm-legacy
+      - name: npm-node-0.10
     check:
       - jshint
       - jsonlint
@@ -8004,7 +8004,7 @@ projects:
     template:
       # Cant switch to node-4.3 because we create a /log/ dir in the source
       # tree and banana complains it can not read /log/qqq.json
-      - name: npm-legacy  # T130207
+      - name: npm-node-0.10  # T130207
     check:
       - jsonlint
 
