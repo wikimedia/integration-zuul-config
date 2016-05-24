@@ -140,6 +140,29 @@
      - global-teardown
 
 - job-template:
+    name: '{name}-npm-run-{script}-node-4.3'
+    node: ci-jessie-wikimedia
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - assert-node-version-4.3
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+     - shell: |
+         npm run-script {{script}}
+    publishers:
+     - archive-log-allow-empty
+     - castor-save
+
+
+- job-template:
     name: '{name}-{repository}-npm'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
