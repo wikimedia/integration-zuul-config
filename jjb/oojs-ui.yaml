@@ -2,8 +2,10 @@
     name: oojs-ui
     jobs:
         - '{name}-npm-node-4.3'
-        - '{name}-npm-run-doc'
-        - '{name}-npm-run-demos'
+        - '{name}-npm-run-{script}':
+            script:
+                - doc
+                - demos
         - '{name}-rake-jessie'
         - '{name}-jshint'
         - '{name}-jsonlint'

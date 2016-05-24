@@ -125,8 +125,8 @@
     triggers:
      - zuul
 
-- job: &job_npm-run-doc
-    name: 'npm-run-doc'
+- job-template: &job_npm-run-script
+    name: 'npm-run-{script}'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
@@ -135,34 +135,13 @@
     builders:
      - npm-install
      - npm-run:
-         script: doc
+         script: '{script}'
     publishers:
      - global-teardown
 
 - job-template:
-    !!merge : *job_npm-run-doc
-    name: '{name}-npm-run-doc'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
-- job: &job_npm-run-demos
-    name: 'npm-run-demos'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - npm-install
-     - npm-run:
-         script: demos
-    publishers:
-     - global-teardown
-
-- job-template:
-    !!merge : *job_npm-run-demos
-    name: '{name}-npm-run-demos'
+    !!merge : *job_npm-run-script
+    name: '{name}-npm-run-{script}'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
