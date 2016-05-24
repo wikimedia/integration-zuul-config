@@ -160,8 +160,8 @@
     publishers:
      - global-teardown
 
-- job-template:
-    name: '{name}-npm-run-{script}-node-4.3'
+- job: &job_npm-run-script-4_3
+    name: 'npm-run-{script}-node-4.3'
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -184,6 +184,53 @@
      - archive-log-allow-empty
      - castor-save
 
+- job-template:
+    !!merge : *job_npm-run-script-4_3
+    name: '{name}-npm-run-{script}-node-4.3'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+- job: &job_npm-run-doc-jsduck-4_3
+    name: 'npm-run-doc-jsduck-node-4.3'
+    node: ci-jessie-wikimedia
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - assert-node-version-4.3
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+         # Install whereever castor restore/save cache
+         # Have to normalize tilde though
+         export GEM_HOME="$BUNDLE_PATH"
+         mkdir -p "$GEM_HOME"
+         gem install --verbose jsduck
+         "$GEM_HOME"/bin/jsduck
+
+         node --version
+         npm --version
+         npm install
+         npm predoc
+         npm run-script doc
+         "$GEM_HOME"/bin/jsduck
+         npm post-doc
+    publishers:
+     - archive-log-allow-empty
+     - castor-save
+
+- job-template:
+    !!merge : *job_npm-run-doc-jsduck-4_3
+    name: '{name}-npm-run-doc-jsduck-node-4.3'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - job-template:
     name: '{name}-{repository}-npm'
