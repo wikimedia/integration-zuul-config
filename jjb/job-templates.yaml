@@ -155,6 +155,9 @@
      - shell: |
          # For archiving build artifacts
          mkdir -p "$WORKSPACE/log"
+         if !jsduck --version >/dev/null; then
+             bundler install jsduck
+         fi
          node --version
          npm --version
          npm install
