@@ -45,6 +45,8 @@ def set_parameters(item, job, params):
         nodepool_params(item, job, params)
     elif job.name.endswith('node-4.3'):
         nodepool_params(item, job, params)
+    elif job.name.endswith('node-0.10'):
+        nodepool_params(item, job, params)
     elif job.name in ['integration-jjb-config-diff']:
         nodepool_params(item, job, params)
 
