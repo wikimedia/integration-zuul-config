@@ -205,7 +205,7 @@ def nodepool_params(item, job, params):
     # in the parent directory.
     #
     # If changing this: DO UPDATE castor-save as well!!!
-    params['BUNDLE_PATH'] = '~/workspace/vendor/bundle'
+    params['BUNDLE_PATH'] = '/home/jenkins/workspace/vendor/bundle'
 
 
 def set_doc_variables(item, job, params):
