@@ -134,6 +134,12 @@
      - localhost-cleanup
      - mw-teardown-mysql
      - archive-log-dir
+    wrappers:
+      - timeout:
+          timeout: 7  # minutes, see T119143
+          fail: false  # T119143
+      - timestamps
+      - ansicolor
 
 # Generic qunit job for extensions with composer update.
 - job:
