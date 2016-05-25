@@ -1,3 +1,30 @@
+- job:
+    name: 'pywikibot-npm-node-4.3'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone-to-src
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - assert-node-version-4.3
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+
+         node --version
+         npm --version
+
+         cd src
+         npm install
+         npm test
+    publishers:
+     - archive-log-allow-empty
+     - castor-save
+
 - project:
     name: pywikibot-core
 
@@ -9,6 +36,7 @@
          toxenv:
           - nose
           - nose34
+     - 'pywikibot-npm-node-4.3'
 
 - job:
     name: pywikibot-tests-beta-cluster
