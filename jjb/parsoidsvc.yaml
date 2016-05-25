@@ -1,19 +1,23 @@
 # Runs MediaWiki core @master PHP parser tests
 - job-template:
-    name: parsoidsvc-php-parsertests
-    node: contintLabsSlave && UbuntuTrusty
+    name: parsoidsvc-hhvm-parsertests-jessie
+    node: ci-jessie-wikimedia
     concurrent: true
     properties:
-        - throttle-one-per-node
+        - zeromq-event
     wrappers:
         - timeout:
-            timeout: 10
+            timeout: 10  # minutes
             fail: true
         - timestamps
         - ansicolor
     triggers:
         - zuul
     builders:
+        - assert-phpflavor:
+            phpflavor: 'hhvm'
+        - assert-node-version-4.3
+        - castor-load
         - zuul-parsoid-cloner:
              projects: >
                 mediawiki/core
@@ -37,7 +41,7 @@
            php tests/parserTests.php --color=no --quiet \
             --file="$WORKSPACE/parsoidsvc/tests/parserTests.txt"
     publishers:
-        - mw-teardown
+        - castor-save
 
 - job-template:
     name: parsoidsvc-{repository}-parse-tool-check
@@ -205,4 +209,4 @@
         - 'parsoidsvc-{repository}-npm-0.10'
         - 'parsoidsvc-{repository}-npm-node-4.3'
         - 'parsoidsvc-{repository}-jsduck-publish'
-        - parsoidsvc-php-parsertests
+        - parsoidsvc-hhvm-parsertests-jessie

@@ -39,6 +39,9 @@ exec { 'Enable PHP module xhprof':
 }
 
 require_package('libimage-exiftool-perl')
+# MediaWiki has $wgDjvuPostProcessor = 'pnmtojpeg';
+# Provided by netpbm which is in imagemagick Recommends
+require_package('netpbm')
 include ::imagemagick::install
 
 # From mediawiki::packages (which we do not want because of texlive)
