@@ -45,12 +45,12 @@
         - castor-save
 
 - job-template:
-    name: parsoidsvc-{repository}-parse-tool-check
-    node: contintLabsSlave && UbuntuTrusty
+    name: parsoidsvc-{repository}-parse-tool-check-trusty
     defaults: use-remoteonly-zuul
+    node: ci-trusty-wikimedia
     concurrent: true
     properties:
-        - throttle-one-per-node
+        - zeromq-event
     wrappers:
         - timeout:
             timeout: 5
@@ -60,6 +60,8 @@
     triggers:
         - zuul
     builders:
+        - assert-node-version-0.10
+        - castor-load
         - setup-npm-oid:
             repository: '{repository}'
         - shell: |
@@ -72,15 +74,15 @@
             echo "Foo" | node parse.js --html2wt
             echo "Foo" | node parse.js --html2html
     publishers:
-     - global-teardown
+     - castor-save
 
 - job-template:
-    name: parsoidsvc-{repository}-roundtrip-test-check
-    node: contintLabsSlave && UbuntuTrusty
+    name: parsoidsvc-{repository}-roundtrip-test-check-trusty
     defaults: use-remoteonly-zuul
+    node: ci-trusty-wikimedia
     concurrent: true
     properties:
-        - throttle-one-per-node
+        - zeromq-event
     wrappers:
         - timeout:
             timeout: 10
@@ -90,6 +92,8 @@
     triggers:
         - zuul
     builders:
+        - assert-node-version-0.10
+        - castor-load
         - setup-npm-oid:
             repository: '{repository}'
         - shell: |
@@ -101,7 +105,7 @@
             node roundtrip-test.js --prefix frwiki "Chope"
             node roundtrip-test.js --xml "Parkour"
     publishers:
-     - global-teardown
+     - castor-save
 
 - job-template:
     name: parsoidsvc-{repository}-npm-0.10
@@ -205,8 +209,8 @@
             script: 'lint'
         - '{name}-debian-glue':
             distribution: trusty
-        - 'parsoidsvc-{repository}-parse-tool-check'
-        - 'parsoidsvc-{repository}-roundtrip-test-check'
+        - 'parsoidsvc-{repository}-parse-tool-check-trusty'
+        - 'parsoidsvc-{repository}-roundtrip-test-check-trusty'
         - 'parsoidsvc-{repository}-npm-0.10'
         - 'parsoidsvc-{repository}-npm-node-4.3'
         - 'parsoidsvc-{repository}-jsduck-publish'
