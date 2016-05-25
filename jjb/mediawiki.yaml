@@ -137,6 +137,38 @@
      - archive-log-dir
      - castor-save
 
+# Same as mediawiki-phpunit-{phpflavor}, except uses composer instead of mediawiki/vendor.
+# Currently experimental, will eventually be used for `master`, and
+# wmf/ branches will use mediawiki/vendor. See T90303.
+- job-template:
+    name: 'mediawiki-phpunit-{phpflavor}-composer-{image}'
+    node: ci-{image}-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+     - composer-validate:
+         dir: 'src'
+     - composer-update:
+         dir: 'src'
+     - mw-install-mysql
+     - mw-apply-settings
+     - shell: "PHPUNIT_EXCLUDE_GROUP=ParserTests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - mw-teardown-mysql
+     - archive-log-dir
+     - castor-save
+
 # Only runs the 'parsertests' MediaWiki test suite on Nodepool instances
 # Complements 'mediawiki-phpunit-{phpflavor}-{image}'
 - job-template:
@@ -195,35 +227,6 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# mediawiki-phpunit-parsertests-{phpflavor}
-#
-# Only runs the 'parsertests' MediaWiki testsuite.
-# Complements 'mediawiki-phpunit-{phpflavor}'.
-- job-template:
-    name: 'mediawiki-phpunit-parsertests-{phpflavor}'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
-    concurrent: true
-    properties:
-     - throttle-one-per-node
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-mysql
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     - shell: "PHPUNIT_TESTSUITE=parsertests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
-    publishers:
-     - phpunit-junit-2
-     - mw-teardown-mysql
-     - archive-log-dir
-
 # Same as mediawiki-phpunit-{phpflavor}, except uses composer instead of mediawiki/vendor.
 # Currently experimental, will eventually be used for `master`, and
 # wmf/ branches will use mediawiki/vendor. See T90303.
@@ -249,6 +252,35 @@
      - mw-install-mysql
      - mw-apply-settings
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - phpunit-junit-2
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# mediawiki-phpunit-parsertests-{phpflavor}
+#
+# Only runs the 'parsertests' MediaWiki testsuite.
+# Complements 'mediawiki-phpunit-{phpflavor}'.
+- job-template:
+    name: 'mediawiki-phpunit-parsertests-{phpflavor}'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-fetch-composer-dev
+     - shell: "PHPUNIT_TESTSUITE=parsertests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - mw-teardown-mysql
@@ -371,6 +403,9 @@
       - 'mediawiki-phpunit-{phpflavor}':
           phpflavor:
               - php53
+      - 'mediawiki-phpunit-{phpflavor}-composer':
+          phpflavor:
+              - php53
       - 'mediawiki-phpunit-parsertests-{phpflavor}':
           phpflavor:
               - php53
@@ -385,7 +420,8 @@
                   image: jessie
       - 'mediawiki-parsertests-{phpflavor}-{image}': *phpflavor_images
 
-      - 'mediawiki-phpunit-{phpflavor}-composer'
+      - 'mediawiki-phpunit-{phpflavor}-composer-{image}': *phpflavor_images
+
       - 'mediawiki-extensions-{phpflavor}':
           dependencies: &gatedextensions >
               AbuseFilter
