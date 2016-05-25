@@ -108,36 +108,6 @@
      - castor-save
 
 - job-template:
-    name: parsoidsvc-{repository}-npm-0.10
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    properties:
-        - throttle-one-per-node
-    wrappers:
-        - timeout:
-            timeout: 20
-            fail: true
-        - timestamps
-        - ansicolor
-    triggers:
-        - zuul
-    builders:
-    - assert-node-version-0.10
-    - setup-npm-oid:
-        repository: '{repository}'
-    - shell: |
-        node --version
-        npm --version
-        set -e
-        . npm-oid.env
-        cd "$NPM_SET_PATH"
-        npm test
-        npm run doc
-    publishers:
-     - global-teardown
-
-- job-template:
     name: parsoidsvc-{repository}-npm-node-4.3
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
@@ -154,6 +124,42 @@
         - zuul
     builders:
     - assert-node-version-4.3
+    - castor-load
+    - shell: |
+        # For archiving build artifacts
+        mkdir -p "$WORKSPACE/log"
+    - setup-npm-oid:
+        repository: '{repository}'
+    - shell: |
+        node --version
+        npm --version
+        set -e
+        . npm-oid.env
+        cd "$NPM_SET_PATH"
+        npm test
+        npm run doc
+    publishers:
+     - archive-log-allow-empty
+     - castor-save
+
+# Same but with NodeJs 0.10 / Trusty
+- job-template:
+    name: parsoidsvc-{repository}-npm-node-0.10
+    node: ci-trusty-wikimedia
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+        - zeromq-event
+    wrappers:
+        - timeout:
+            timeout: 20
+            fail: true
+        - timestamps
+        - ansicolor
+    triggers:
+        - zuul
+    builders:
+    - assert-node-version-0.10
     - castor-load
     - shell: |
         # For archiving build artifacts
@@ -211,7 +217,7 @@
             distribution: trusty
         - 'parsoidsvc-{repository}-parse-tool-check-trusty'
         - 'parsoidsvc-{repository}-roundtrip-test-check-trusty'
-        - 'parsoidsvc-{repository}-npm-0.10'
         - 'parsoidsvc-{repository}-npm-node-4.3'
+        - 'parsoidsvc-{repository}-npm-node-0.10'
         - 'parsoidsvc-{repository}-jsduck-publish'
         - parsoidsvc-hhvm-parsertests-jessie
