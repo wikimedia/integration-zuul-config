@@ -44,6 +44,9 @@ def set_parameters(item, job, params):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
         params['PHP_BIN'] = 'hhvm'
 
+    if job.name.endswith('mediawiki-core-jsduck-jessie'):
+        params['PHP_BIN'] = 'hhvm'
+
     ext_deps_jobs_starting_with = (
         'mwext-testextension',
         'mwext-qunit',

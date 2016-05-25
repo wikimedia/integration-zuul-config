@@ -56,16 +56,21 @@
      - archive-log-dir
 
 - job-template:
-    name: 'mediawiki-core-jsduck'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'mediawiki-core-jsduck-jessie'
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-no-submodules
     concurrent: true
+    properties:
+     - zeromq-event
     logrotate:
         daysToKeep: 15
     triggers:
      - zuul
     builders:
+     - castor-load
      - jsduck
+    publishers:
+     - castor-save
 
 - job:
     name: 'mediawiki-core-jsduck-publish'
@@ -362,7 +367,7 @@
         - php55
     jobs:
       - 'mediawiki-core-qunit-jessie'
-      - 'mediawiki-core-jsduck'
+      - 'mediawiki-core-jsduck-jessie'
       - 'mediawiki-core-npm-node-4.3'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
