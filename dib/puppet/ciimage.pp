@@ -53,10 +53,20 @@ include ::imagemagick::install
 require_package('djvulibre-bin')
 
 include contint::packages::ruby
+
 # Lot of npm based jobs rely on jsduck...
+# Does not compile on Trusty with gem 1.8.1 so switch to gem2.0
+if os_version('ubuntu == trusty') {
+    alternatives::select { 'gem':
+        path    => '/usr/bin/gem2.0',
+        require => Class['::contint::packages::ruby'],
+        before  => Package['jsduck'],
+    }
+}
 package { 'jsduck':
-    ensure => present,
+    ensure   => present,
     provider => 'gem',
+    require  => Class['::contint::packages::ruby'],
 }
 
 if os_version('debian >= jessie') {
