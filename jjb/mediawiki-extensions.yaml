@@ -3,18 +3,6 @@
 # Only VisualEditor uses this as it needs to checkout
 # submodules.
 - job:
-    name: 'mwext-VisualEditor-npm'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - npm
-    publishers:
-     - global-teardown
-
-- job:
     name: 'mwext-VisualEditor-npm-node-4.3'
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
