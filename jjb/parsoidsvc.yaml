@@ -201,8 +201,8 @@
      - source  # mediawiki/services/parsoid
      - deploy  # mediawiki/services/parsoid/deploy
     jobs:
-        - '{name}-jshint'
-        - '{name}-jsonlint'
+        - '{name}-npm-run-{script}-node-4.3':
+            script: 'lint'
         - '{name}-debian-glue':
             distribution: trusty
         - 'parsoidsvc-{repository}-parse-tool-check'
