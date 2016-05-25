@@ -57,10 +57,12 @@
      - archive-log-dir
 
 - job-template:
-    name: 'mediawiki-core-jsduck'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'mediawiki-core-jsduck-jessie'
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-no-submodules
     concurrent: true
+    properties:
+     - zeromq-event
     logrotate:
         daysToKeep: 15
     triggers:
