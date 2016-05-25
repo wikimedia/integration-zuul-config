@@ -13,6 +13,20 @@
             after: true
         submodule: {}
 
+- scm:
+    name: git-remoteonly-zuul-to-src
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        basedir: 'src'
+        wipe-workspace: false
+        clean:
+            after: true
+        submodule: {}
+
 # Wrapper around Zuul Cloner
 #
 # Fallback to the branch ZUUL_BRANCH.
