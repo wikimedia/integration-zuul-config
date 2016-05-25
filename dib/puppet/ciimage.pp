@@ -38,6 +38,9 @@ exec { 'Enable PHP module xhprof':
     refreshonly => true,
 }
 
+# Some NodeJS native modules require g++
+require_package('g++')
+
 require_package('libimage-exiftool-perl')
 # MediaWiki has $wgDjvuPostProcessor = 'pnmtojpeg';
 # Provided by netpbm which is in imagemagick Recommends
