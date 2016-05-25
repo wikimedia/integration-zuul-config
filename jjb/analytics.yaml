@@ -62,6 +62,54 @@
             The build $BUILD_NUMBER for $GIT_PROJECT has finished.
             See $BUILD_URL for details.
 
+- job-template:
+    name: '{name}-update-jars'
+    project-type: freestyle
+    parameters:
+      - string:
+          name: 'GIT_URL'
+          default: 'ssh://{git-user}@gerrit.wikimedia.org:29418'
+      - string:
+          name: 'GIT_PROJECT'
+          default: '{jar-update-project}'
+      - string:
+          name: 'GIT_BRANCH'
+          default: '{jar-update-branch}'
+      - string:
+          name: 'RELEASE_VERSION'
+
+    jdk: 'Ubuntu - OpenJdk 7'
+    node: contintLabsSlave && UbuntuTrusty
+    scm:
+      - git:
+          url: '$GIT_URL/$GIT_PROJECT'
+          branches:
+            - 'refs/heads/$GIT_BRANCH'
+          local-branch: '$GIT_BRANCH'
+          git-config-name: '{git-user}'
+          git-config-email: '{git-user-email}'
+
+    wrappers:
+      - ssh-agent-credentials:
+          users:
+            - '{git-user-id}'
+
+    builders:
+      - shell: |
+          ./bin/update-refinery-source-jars -v $RELEASE_VERSION -u '{git-user}' -b $GIT_BRANCH  -m 'push'
+
+    publishers:
+      - email-ext:
+          recipients: '{recipient-emails}'
+          reply-to: '{replyto-emails}'
+          always: true
+          failure: false
+          content-type: text
+          subject: Update on build $BUILD_TAG
+          body: |
+            The build $BUILD_NUMBER for $GIT_PROJECT has finished.
+            See $BUILD_URL for details.
+
 - project:
     name: 'analytics-refinery'
     git-user: maven-release-user
@@ -71,6 +119,10 @@
     release-branch: master
     recipient-emails: analytics-alerts@wikimedia.org
     replyto-emails: analytics-alerts@wikimedia.org
+    jar-update-project: analytics/refinery
+    jar-update-branch: master
+
     jobs:
      - '{name}-release'
      - '{name}-maven'
+     - '{name}-update-jars'
