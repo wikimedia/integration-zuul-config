@@ -39,7 +39,9 @@ exec { 'Enable PHP module xhprof':
 }
 
 # Some NodeJS native modules require g++
-require_package('g++')
+package { 'g++':
+    ensure => present,
+}
 
 require_package('libimage-exiftool-perl')
 # MediaWiki has $wgDjvuPostProcessor = 'pnmtojpeg';
