@@ -98,3 +98,35 @@
           fail: true
       - timestamps
       - ansicolor
+
+# Same but clones to /src/
+- defaults:
+    name: use-remote-zuul-shallow-clone-to-src
+
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      <p>This job is triggered by Zuul</p>
+
+    project-type: freestyle
+
+    logrotate:
+        daysToKeep: 30
+
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        basedir: 'src'
+        wipe-workspace: true
+        shallow-clone: true
+        submodule:
+            disable: true
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
