@@ -70,8 +70,6 @@ dependencies = {
     'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr'],
     'FlaggedRevs': ['Scribunto'],
-    'Gather': ['PageImages', 'TextExtracts', 'MobileFrontend', 'Echo',
-               'VisualEditor'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'GoogleLogin': ['GoogleAPIClient'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
