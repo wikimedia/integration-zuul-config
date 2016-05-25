@@ -52,9 +52,15 @@ include ::imagemagick::install
 # From mediawiki::packages (which we do not want because of texlive)
 require_package('djvulibre-bin')
 
+include contint::packages::ruby
+# Lot of npm based jobs rely on jsduck...
+package { 'jsduck':
+    ensure => present,
+    provider => 'gem',
+}
+
 if os_version('debian >= jessie') {
     include contint::packages::python
-    include contint::packages::ruby
     include contint::browsers
 
     # services packages and -dev packages for npm modules compilation and test
