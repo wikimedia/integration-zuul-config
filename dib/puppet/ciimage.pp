@@ -55,18 +55,19 @@ require_package('djvulibre-bin')
 include contint::packages::ruby
 
 # Lot of npm based jobs rely on jsduck...
-# Does not compile on Trusty with gem 1.8.1 so switch to gem2.0
 if os_version('ubuntu == trusty') {
-    alternatives::select { 'gem':
-        path    => '/usr/bin/gem2.0',
-        require => Class['::contint::packages::ruby'],
-        before  => Package['jsduck'],
+    # We have build a Debian package
+    package { 'ruby-jsduck':
+        ensure => present,
     }
 }
-package { 'jsduck':
-    ensure   => present,
-    provider => 'gem',
-    require  => Class['::contint::packages::ruby'],
+# Install from gem
+if os_version('debian >= jessie') {
+    package { 'jsduck':
+        ensure   => present,
+        provider => 'gem',
+        require  => Class['::contint::packages::ruby'],
+    }
 }
 
 if os_version('debian >= jessie') {
