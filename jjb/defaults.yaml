@@ -40,6 +40,28 @@
       - ansicolor
 
 - defaults:
+    name: use-remoteonly-zuul-to-src
+
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      <p>This job is triggered by Zuul</p>
+
+    project-type: freestyle
+
+    logrotate:
+        daysToKeep: 30
+
+    scm:
+     - git-remoteonly-zuul-to-src
+
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+
+- defaults:
     name: use-remote-zuul-no-submodules
 
     description: |

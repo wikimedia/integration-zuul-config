@@ -137,7 +137,7 @@
 - job: &job_npm-node-4
     name: 'npm-node-4'
     node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    defaults: use-remote-zuul-shallow-clone-to-src
     concurrent: true
     triggers:
      - zuul
@@ -151,6 +151,8 @@
 
          node --version
          npm --version
+
+         cd src
          npm install
          npm test
     publishers:
@@ -181,7 +183,7 @@
 - job-template:
     name: '{name}-npm-run-{script}-node-4-jessie'
     node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
+    defaults: use-remoteonly-zuul-to-src
     concurrent: true
     triggers:
      - zuul
@@ -192,8 +194,11 @@
      - shell: |
          # For archiving build artifacts
          mkdir -p "$WORKSPACE/log"
+
          node --version
          npm --version
+
+         cd src
          npm install
          npm run-script {script}
     publishers:
