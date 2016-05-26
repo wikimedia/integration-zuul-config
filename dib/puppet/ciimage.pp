@@ -42,7 +42,43 @@ exec { 'Enable PHP module xhprof':
 
 # Qunit/Selenium related
 include contint::browsers
-include contint::worker_localhost
+class { 'contint::worker_localhost':
+    owner => 'jenkins',
+}
+# Augeas rule deals with /etc/logrotate.d/apache2
+# Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
+Package['apache2'] ~> Augeas['Apache2 logs']
+exec { 'prevent apache2 from executing':
+  refreshonly => true,
+  command     => '/bin/chmod -x /usr/sbin/apache2',
+  onlyif      => '/bin/bash -c "export | grep DIB_"',
+  subscribe   => Package['apache2'],
+  before      => [
+    Service['apache2'],
+    Exec['apache2_hard_restart'],
+  ],
+  after       => [
+    Exec['apache2_test_config_and_restart'],
+  ],
+}
+if os_version('ubuntu == trusty') {
+  exec { 'create /run/apache2':
+    command => '/bin/mkdir -p /run/apache2',
+    before  => Exec['apache2_test_config_and_restart'],
+  }
+}
+
+stage { 'last': }
+Stage['main'] -> Stage['last']
+
+class apache2_allow_execution {
+  exec { 'allow apache2 execution':
+      command => '/bin/chmod +x /usr/sbin/apache2',
+  }
+}
+class { 'apache2_allow_execution':
+    stage => last,
+}
 
 require_package('libimage-exiftool-perl')
 # MediaWiki has $wgDjvuPostProcessor = 'pnmtojpeg';
