@@ -79,16 +79,7 @@
     triggers:
      - zuul
     builders:
-     - castor-load
-     - shell: |
-         # Install whereever castor restore/save cache
-         # Have to normalize tilde though
-         export GEM_HOME="$BUNDLE_PATH"
-         mkdir -p "$GEM_HOME"
-         gem install --verbose jsduck
-         "$GEM_HOME"/bin/jsduck
-    publishers:
-     - castor-save
+     - jsduck
 
 - job-template:
     name: '{name}-maven'
