@@ -8,6 +8,8 @@ $labsproject = 'contintcloud'
 # Should have run aptconf.pp first.
 
 require_package('git')
+# We have jobs compiling native packages for NodeJs, Python, Ruby..
+require_package('build-essential')
 
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
@@ -40,11 +42,32 @@ exec { 'Enable PHP module xhprof':
 
 # Qunit/Selenium related
 include contint::browsers
-include contint::worker_localhost
+class { 'contint::worker_localhost':
+    owner => 'jenkins',
+}
+# Augeas rule deals with /etc/logrotate.d/apache2
+# Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
+Package['apache2'] ~> Augeas['Apache2 logs']
+exec { 'prevent apache2 from executing':
+  refreshonly => true,
+  cmd         => '/bin/chmod -x /usr/sbin/apache2',
+  onlyif      => '/bin/bash -c "export | grep DIB_"',
+  subscribe   => Package['apache2'],
+  before      => [
+    Service['apache2'],
+    Exec['apache2_hard_restart'],
+  ],
+}
+stage { 'last': }
+Stage['main'] -> Stage['last']
 
-# Some NodeJS native modules require g++
-package { 'g++':
-    ensure => present,
+class apache2_allow_execution {
+  exec { 'allow apache2 execution':
+      command => '/bin/chmod +x /usr/sbin/apache2',
+  }
+}
+class { 'apache2_allow_execution':
+    stage => last,
 }
 
 require_package('libimage-exiftool-perl')
@@ -68,9 +91,12 @@ if os_version('ubuntu == trusty') {
 # Install from gem
 if os_version('debian >= jessie') {
     package { 'jsduck':
-        ensure   => present,
-        provider => 'gem',
-        require  => Class['::contint::packages::ruby'],
+        ensure          => present,
+        provider        => 'gem',
+        require         => [
+            Class['::contint::packages::ruby'],
+            Package['build-essential'],
+        ],
     }
 }
 
