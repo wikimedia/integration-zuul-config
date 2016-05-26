@@ -40,10 +40,6 @@ exec { 'Enable PHP module xhprof':
     refreshonly => true,
 }
 
-# Qunit/Selenium related
-include contint::browsers
-include contint::worker_localhost
-
 require_package('libimage-exiftool-perl')
 # MediaWiki has $wgDjvuPostProcessor = 'pnmtojpeg';
 # Provided by netpbm which is in imagemagick Recommends
@@ -74,9 +70,46 @@ if os_version('debian >= jessie') {
     }
 }
 
+class apache2_allow_execution {
+  exec { 'allow apache2 execution':
+      command => '/bin/chmod +x /usr/sbin/apache2',
+  }
+}
 if os_version('debian >= jessie') {
     include contint::packages::python
+
+    # Qunit/Selenium related
     include contint::browsers
+
+    class { 'contint::worker_localhost':
+        owner => 'jenkins',
+    }
+
+    # Augeas rule deals with /etc/logrotate.d/apache2
+    # Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
+    Package['apache2'] ~> Augeas['Apache2 logs']
+
+    # Nasty workaround when running inside a chroot...
+    exec { 'prevent apache2 from executing':
+      refreshonly => true,
+      command     => '/bin/chmod -x /usr/sbin/apache2',
+      onlyif      => '/bin/bash -c "export | grep DIB_"',
+      subscribe   => Package['apache2'],
+      before      => [
+        Service['apache2'],
+        Exec['apache2_hard_restart'],
+      ],
+      require     => [
+        Exec['apache2_test_config_and_restart'],
+      ],
+    }
+
+    stage { 'last': }
+    Stage['main'] -> Stage['last']
+
+    class { 'apache2_allow_execution':
+        stage => last,
+    }
 
     # services packages and -dev packages for npm modules compilation and test
     # run. NOTE: hiera must have: service::configuration::use_dev_pkgs: true
