@@ -38,6 +38,10 @@ exec { 'Enable PHP module xhprof':
     refreshonly => true,
 }
 
+# Qunit/Selenium related
+include contint::browsers
+include contint::worker_localhost
+
 # Some NodeJS native modules require g++
 package { 'g++':
     ensure => present,
