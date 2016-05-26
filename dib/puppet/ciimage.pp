@@ -40,7 +40,12 @@ exec { 'Enable PHP module xhprof':
 
 # Qunit/Selenium related
 include contint::browsers
-include contint::worker_localhost
+class { 'contint::worker_localhost':
+    owner => 'jenkins',
+}
+# Augeas rule deals with /etc/logrotate.d/apache2
+# Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
+Package['apache2'] ~> Augeas['Apache2 logs']
 
 # Some NodeJS native modules require g++
 package { 'g++':
