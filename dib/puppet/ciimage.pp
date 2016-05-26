@@ -8,6 +8,8 @@ $labsproject = 'contintcloud'
 # Should have run aptconf.pp first.
 
 require_package('git')
+# We have jobs compiling native packages for NodeJs, Python, Ruby..
+require_package('build-essential')
 
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
@@ -40,12 +42,12 @@ exec { 'Enable PHP module xhprof':
 
 # Qunit/Selenium related
 include contint::browsers
-include contint::worker_localhost
-
-# Some NodeJS native modules require g++
-package { 'g++':
-    ensure => present,
+class { 'contint::worker_localhost':
+    owner => 'jenkins',
 }
+# Augeas rule deals with /etc/logrotate.d/apache2
+# Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
+Package['apache2'] ~> Augeas['Apache2 logs']
 
 require_package('libimage-exiftool-perl')
 # MediaWiki has $wgDjvuPostProcessor = 'pnmtojpeg';
@@ -68,9 +70,12 @@ if os_version('ubuntu == trusty') {
 # Install from gem
 if os_version('debian >= jessie') {
     package { 'jsduck':
-        ensure   => present,
-        provider => 'gem',
-        require  => Class['::contint::packages::ruby'],
+        ensure          => present,
+        provider        => 'gem',
+        require         => [
+            Class['::contint::packages::ruby'],
+            Package['build-essential'],
+        ],
     }
 }
 
