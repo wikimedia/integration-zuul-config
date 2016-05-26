@@ -76,7 +76,6 @@ if os_version('debian >= jessie') {
 
 if os_version('debian >= jessie') {
     include contint::packages::python
-    include contint::browsers
 
     # services packages and -dev packages for npm modules compilation and test
     # run. NOTE: hiera must have: service::configuration::use_dev_pkgs: true
