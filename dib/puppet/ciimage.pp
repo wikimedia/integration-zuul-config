@@ -40,7 +40,9 @@ exec { 'Enable PHP module xhprof':
 
 # Qunit/Selenium related
 include contint::browsers
-include contint::worker_localhost
+class { 'contint::worker_localhost':
+    owner => 'jenkins',
+}
 
 # Some NodeJS native modules require g++
 package { 'g++':
