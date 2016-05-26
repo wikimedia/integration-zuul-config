@@ -1,11 +1,17 @@
 - job-template:
-    name: '{name}-compile-php55'
-    node: contintLabsSlave && UbuntuTrusty
+    name: '{name}-compile-php55-trusty'
+    node: ci-trusty-wikimedia
     defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
      - shell: |
+        export NO_INTERACTION=1
+        export REPORT_EXIT_STATUS=1
+        export TEST_PHP_ARGS='--show-diff'
         /usr/bin/phpize5 --version
         /usr/bin/phpize5
         ./configure
@@ -13,9 +19,12 @@
         make test
 
 - job-template:
-    name: '{name}-compile-hhvm'
-    node: contintLabsSlave && UbuntuTrusty
+    name: '{name}-compile-hhvm-trusty'
+    node: ci-trusty-wikimedia
     defaults: use-remoteonly-zuul
+    concurrent: true
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
@@ -29,37 +38,37 @@
 - project:
     name: 'FastStringSearch'
     jobs:
-     - '{name}-compile-php55'
-     - '{name}-compile-hhvm'
+     - '{name}-compile-php55-trusty'
+     - '{name}-compile-hhvm-trusty'
 
 # NativePreprocessor PHP extension
 - project:
     name: 'NativePreprocessor'
     jobs:
-     - '{name}-compile-php55'
+     - '{name}-compile-php55-trusty'
 
 # luasandbox PHP extension
 - project:
     name: 'luasandbox'
     jobs:
-     - '{name}-compile-php55'
-     - '{name}-compile-hhvm'
+     - '{name}-compile-php55-trusty'
+     - '{name}-compile-hhvm-trusty'
 
 # wikidiff PHP extension
 - project:
     name: 'wikidiff'
     jobs:
-     - '{name}-compile-php55'
+     - '{name}-compile-php55-trusty'
 
 # wikidiff2 PHP extension
 - project:
     name: 'wikidiff2'
     jobs:
-     - '{name}-compile-php55'
-     - '{name}-compile-hhvm'
+     - '{name}-compile-php55-trusty'
+     - '{name}-compile-hhvm-trusty'
 
 # wmerrors PHP extension
 - project:
     name: 'wmerrors'
     jobs:
-     - '{name}-compile-php55'
+     - '{name}-compile-php55-trusty'
