@@ -57,6 +57,29 @@
      - archive-log-dir
 
 - job-template:
+    name: 'mediawiki-core-qunit-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    logrotate:
+        daysToKeep: 15
+    builders:
+     - castor-load
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - qunit-karma
+    publishers:
+     - castor-save
+     - archive-log-dir
+
+- job-template:
     name: 'mediawiki-core-jsduck'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
@@ -364,6 +387,7 @@
         - php55
     jobs:
       - 'mediawiki-core-qunit'
+      - 'mediawiki-core-qunit-jessie'
       - 'mediawiki-core-jsduck'
       - 'mediawiki-core-npm-node-4.3'
       - 'mediawiki-core-jsduck-publish'
