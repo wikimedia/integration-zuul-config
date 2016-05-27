@@ -301,7 +301,9 @@ class TestZuulScheduler(unittest.TestCase):
             'composer-validate',
             'composer-package-validate',
             'fail-archived-repositories',
-            'tox-jessie',
+            # nodepool
+            '.*-(jessie|trusty)',
+            '.*-node-(0\.10|4\.3)',
         ]
         safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
 
