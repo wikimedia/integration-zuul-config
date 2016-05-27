@@ -32,18 +32,18 @@
     publishers:
      - castor-save
 
-
 - job-template:
-    name: 'mediawiki-core-qunit'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'mediawiki-core-qunit-jessie'
+    node: ci-jessie-wikimedia
     concurrent: true
-    logrotate:
-        daysToKeep: 15
     properties:
-     - throttle-one-per-node
+     - zeromq-event
     triggers:
      - zuul
+    logrotate:
+        daysToKeep: 15
     builders:
+     - castor-load
      - zuul-cloner:
          projects: >
              mediawiki/core
@@ -52,8 +52,7 @@
      - mw-apply-settings
      - qunit-karma
     publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
+     - castor-save
      - archive-log-dir
 
 - job-template:
@@ -363,7 +362,7 @@
         - php53
         - php55
     jobs:
-      - 'mediawiki-core-qunit'
+      - 'mediawiki-core-qunit-jessie'
       - 'mediawiki-core-jsduck'
       - 'mediawiki-core-npm-node-4.3'
       - 'mediawiki-core-jsduck-publish'

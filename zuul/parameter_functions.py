@@ -21,6 +21,10 @@ def set_parameters(item, job, params):
         'mediawiki-core-phpcs-trusty',
         'mw-tools-codesniffer-mwcore-testrun',
         )
+    php5_jobs = (
+        # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
+        'mediawiki-core-qunit-jessie',
+        )
 
     # Sets a $PHP_BIN variable based on the job name
     if 'php55' in job.name:
@@ -30,6 +34,8 @@ def set_parameters(item, job, params):
     elif job.name in hhvm_jobs:
         # T126394: This should always be HHVM
         params['PHP_BIN'] = 'hhvm'
+    elif job.name in php5_jobs:
+        params['PHP_BIN'] = 'php5'
 
     if job.name.endswith('node-4.3'):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
