@@ -29,11 +29,12 @@
 # testing against a large sample of code.
 - job:
     name: 'mw-tools-codesniffer-mwcore-testrun'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
     builders:
+     - castor-load
      - zuul-cloner:
          projects: >
              mediawiki/core
@@ -43,6 +44,8 @@
      - shell: |
         cd $WORKSPACE/src/mediawiki/tools/codesniffer
         vendor/bin/phpcs --standard=./MediaWiki --extensions=php,php5,inc -p -s ../../../includes
+    publishers:
+     - castor-save
 
 - job:
     name: 'mwdumper-maven'
