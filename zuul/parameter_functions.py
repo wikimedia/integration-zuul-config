@@ -35,6 +35,9 @@ def set_parameters(item, job, params):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
         params['PHP_BIN'] = 'hhvm'
 
+    if job.name.endswith('composer-package-validate-trusty'):
+        params['PHP_BIN'] = 'php5'
+
     ext_deps_jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')
     if job.name.startswith(ext_deps_jobs):
         set_ext_dependencies(item, job, params)
