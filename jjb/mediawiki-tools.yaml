@@ -45,6 +45,28 @@
         vendor/bin/phpcs --standard=./MediaWiki --extensions=php,php5,inc -p -s ../../../includes
 
 - job:
+    name: 'mw-tools-codesniffer-mwcore-testrun-trusty'
+    node: ci-trusty-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/tools/codesniffer
+     - composer-update:
+        dir: '$WORKSPACE/src/mediawiki/tools/codesniffer'
+     - shell: |
+        cd $WORKSPACE/src/mediawiki/tools/codesniffer
+        vendor/bin/phpcs --standard=./MediaWiki --extensions=php,php5,inc -p -s ../../../includes
+    publishers:
+     - castor-save
+
+- job:
     name: 'mwdumper-maven'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 7'

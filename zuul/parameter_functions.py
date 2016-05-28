@@ -19,7 +19,6 @@ def set_parameters(item, job, params):
 
     hhvm_jobs = (
         'mediawiki-core-phpcs-trusty',
-        'mw-tools-codesniffer-mwcore-testrun',
         )
 
     # Sets a $PHP_BIN variable based on the job name
@@ -34,6 +33,9 @@ def set_parameters(item, job, params):
     if job.name.endswith('node-4.3'):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
         params['PHP_BIN'] = 'hhvm'
+
+    if job.name.endswith('mw-tools-codesniffer-mwcore-testrun-trusty'):
+        params['PHP_BIN'] = 'php5'
 
     ext_deps_jobs = ('mwext-testextension', 'mwext-qunit', 'mwext-mw-selenium')
     if job.name.startswith(ext_deps_jobs):
