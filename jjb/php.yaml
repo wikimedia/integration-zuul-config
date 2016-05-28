@@ -33,17 +33,21 @@
 # Job for libraries that are published as composer packages.
 # Includes full validation that packagist.org requires.
 - job:
-    name: composer-package-validate
-    node: contintLabsSlave && UbuntuTrusty
+    name: composer-package-validate-trusty
+    node: ci-trusty-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
-
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
+     - castor-load
      - composer-validate-package
     logrotate:
         daysToKeep: 15
+    publishers:
+     - castor-save
 
 # Job for anything with a composer.json, but *isn't* going to be
 # published on packagist.org.

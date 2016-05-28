@@ -298,7 +298,7 @@ class TestZuulScheduler(unittest.TestCase):
             '.*-whitespaces',
             'noop',
             'composer-validate',
-            'composer-package-validate',
+            'composer-package-validate-trusty',
             'fail-archived-repositories',
             'tox-jessie',
         ]

@@ -663,7 +663,7 @@ jobs:
     files:
      - '^composer.json$'
 
-  - name: ^composer-package-validate$
+  - name: ^composer-package-validate-trusty$
     files:
      - '^composer.json$'
 
@@ -1143,7 +1143,7 @@ project-templates:
 
   - name: composer-test-package
     check:
-      - composer-package-validate
+      - composer-package-validate-trusty
       - php53lint
       - php55lint
     test:
@@ -1159,7 +1159,7 @@ project-templates:
 
   - name: composer-test-package55
     check:
-      - composer-package-validate
+      - composer-package-validate-trusty
       - php55lint
     test:
       #- composer-package-hhvm-jessie
@@ -1283,7 +1283,7 @@ projects:
     check:
       - mediawiki-core-php53lint
       - mediawiki-core-php55lint
-      - composer-package-validate
+      - composer-package-validate-trusty
     test:
       - mediawiki-core-phpcs-trusty
       - mediawiki-core-jsduck
@@ -1293,7 +1293,7 @@ projects:
       - mediawiki-phpunit-hhvm-trusty
       - mediawiki-parsertests-hhvm-trusty
       - mediawiki-core-qunit-jessie
-      - composer-package-validate
+      - composer-package-validate-trusty
     php5:
       # Comment "check php5" to manually run this
       - mediawiki-phpunit-php55-trusty
@@ -1314,7 +1314,7 @@ projects:
       - mediawiki-phpunit-php55-trusty
       - mediawiki-parsertests-php55-trusty
       - mediawiki-core-qunit-jessie
-      - composer-package-validate
+      - composer-package-validate-trusty
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
@@ -6308,11 +6308,11 @@ projects:
       - name: jsonlint
       - name: npm
     check:
-      - composer-package-validate
+      - composer-package-validate-trusty
     test:
-      - composer-package-validate
+      - composer-package-validate-trusty
     gate-and-submit:
-      - composer-package-validate
+      - composer-package-validate-trusty
 
   - name: mediawiki/extensions/WikibaseQualityConstraints
     template:
@@ -6321,11 +6321,11 @@ projects:
       - name: jsonlint
       - name: npm
     check:
-      - composer-package-validate
+      - composer-package-validate-trusty
     test:
-      - composer-package-validate
+      - composer-package-validate-trusty
     gate-and-submit:
-      - composer-package-validate
+      - composer-package-validate-trusty
 
   - name: mediawiki/extensions/WikibaseQualityExternalValidation
     template:
@@ -6334,11 +6334,11 @@ projects:
       - name: jsonlint
       - name: npm
     check:
-      - composer-package-validate
+      - composer-package-validate-trusty
     test:
-      - composer-package-validate
+      - composer-package-validate-trusty
     gate-and-submit:
-      - composer-package-validate
+      - composer-package-validate-trusty
 
   - name: mediawiki/extensions/WikibaseMediaInfo
     template:
@@ -6347,11 +6347,11 @@ projects:
       - name: extension-qunit-composer
       - name: npm
     check:
-      - composer-package-validate
+      - composer-package-validate-trusty
     test:
-      - composer-package-validate
+      - composer-package-validate-trusty
     gate-and-submit:
-      - composer-package-validate
+      - composer-package-validate-trusty
     experimental:
       - mwext-mw-selenium-composer
 
