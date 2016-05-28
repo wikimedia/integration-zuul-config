@@ -643,7 +643,7 @@ jobs:
     files:
      - '^.*\.pp$'
 
-  - name: ^composer-validate$
+  - name: ^composer-validate-trusty$
     files:
      - '^composer.json$'
 
@@ -878,21 +878,21 @@ project-templates:
     check:
      - php53lint
      - php55lint
-     - composer-validate
+     - composer-validate-trusty
     test:
      - php53lint
      - php55lint
      - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
-     - composer-validate
+     - composer-validate-trusty
     gate-and-submit:
      - php53lint
      - php55lint
      - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
-     - composer-validate
+     - composer-validate-trusty
     experimental:
      - mwext-qunit-composer
      - npm-node-4.3
@@ -904,19 +904,19 @@ project-templates:
     check:
      - php53lint
      - php55lint
-     - composer-validate
+     - composer-validate-trusty
     test:
      - php53lint
      - php55lint
      - mwext-testextension-php53-composer-non-voting
      - mwext-testextension-php55-composer-non-voting
      - mwext-testextension-hhvm-composer-non-voting
-     - composer-validate
+     - composer-validate-trusty
     gate-and-submit:
      - mediawiki-gate
      - php53lint
      - php55lint
-     - composer-validate
+     - composer-validate-trusty
     experimental:
      - mwext-qunit-composer
      - composer-php53
@@ -927,7 +927,7 @@ project-templates:
     check:
      - php53lint
      - php55lint
-     - composer-validate
+     - composer-validate-trusty
     test:
      - php53lint
      - php55lint
@@ -935,7 +935,7 @@ project-templates:
      - mwext-testextension-php53
      - mwext-testextension-php55
      - mwext-testextension-hhvm
-     - composer-validate
+     - composer-validate-trusty
     gate-and-submit:
      - php53lint
      - php55lint
@@ -943,7 +943,7 @@ project-templates:
      - mwext-testextension-php53
      - mwext-testextension-php55
      - mwext-testextension-hhvm
-     - composer-validate
+     - composer-validate-trusty
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
@@ -958,20 +958,20 @@ project-templates:
     check:
      - php53lint
      - php55lint
-     - composer-validate
+     - composer-validate-trusty
     test:
      - php53lint
      - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-hhvm-non-voting
-     - composer-validate
+     - composer-validate-trusty
     php5:
      - mwext-testextension-php53-non-voting
      - mwext-testextension-php55-non-voting
     gate-and-submit:
      - php53lint
      - php55lint
-     - composer-validate
+     - composer-validate-trusty
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
@@ -1037,12 +1037,12 @@ project-templates:
      - php53lint
      - php55lint
      - jsonlint
-     - composer-validate
+     - composer-validate-trusty
     gate-and-submit:
      - php53lint
      - php55lint
      - jsonlint
-     - composer-validate
+     - composer-validate-trusty
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
@@ -1059,17 +1059,17 @@ project-templates:
      - php53lint
      - php55lint
      - jsonlint
-     - composer-validate
+     - composer-validate-trusty
     test:
      - php53lint
      - php55lint
      - jsonlint
-     - composer-validate
+     - composer-validate-trusty
     gate-and-submit:
      - php53lint
      - php55lint
      - jsonlint
-     - composer-validate
+     - composer-validate-trusty
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
@@ -1084,7 +1084,7 @@ project-templates:
     check:
       - php53lint
       - php55lint
-      - composer-validate
+      - composer-validate-trusty
     test:
       - composer-php53
       - composer-php55-trusty
@@ -1099,7 +1099,7 @@ project-templates:
   - name: composer-test55
     check:
       - php55lint
-      - composer-validate
+      - composer-validate-trusty
     test:
       - composer-php55-trusty
       - composer-hhvm-trusty
@@ -1335,11 +1335,11 @@ projects:
     check:
       - php53lint
       - php55lint
-      - composer-validate
+      - composer-validate-trusty
     test:
       - php53lint
       - php55lint
-      - composer-validate
+      - composer-validate-trusty
       - mediawiki-core-qunit
       - mediawiki-phpunit-hhvm-trusty
       - mediawiki-parsertests-hhvm-trusty
@@ -1358,7 +1358,7 @@ projects:
       - mediawiki-phpunit-php53
       - mediawiki-phpunit-parsertests-php53
       - mediawiki-core-qunit
-      - composer-validate
+      - composer-validate-trusty
 
   - name: analytics/aggregator
     template:
@@ -1535,7 +1535,7 @@ projects:
       - name: jsonlint
     check:
       - php55lint
-      - composer-validate
+      - composer-validate-trusty
     test:
       - composer-php55-trusty
     gate-and-submit:
@@ -2002,7 +2002,7 @@ projects:
   - name: operations/mediawiki-config
     check:
       - operations-mw-config-php55lint
-      - composer-validate
+      - composer-validate-trusty
     test:
       - operations-mw-config-php55lint
       - operations-mw-config-phpunit
@@ -7090,7 +7090,7 @@ projects:
      - jshint
      - jsonlint
      - php53lint
-     - composer-validate
+     - composer-validate-trusty
     test: *semanticbundle_jobs
     gate-and-submit: *semanticbundle_jobs
 
@@ -7448,15 +7448,15 @@ projects:
       - jsonlint
       - php53lint
       - perllint
-      - composer-validate
+      - composer-validate-trusty
     test:
      - php53lint
      - perllint
-     - composer-validate
+     - composer-validate-trusty
     gate-and-submit:
      - php53lint
      - perllint
-     - composer-validate
+     - composer-validate-trusty
     experimental:
      - mediawiki-extensions-hhvm
      - mediawiki-extensions-qunit

@@ -48,11 +48,12 @@
 # Job for anything with a composer.json, but *isn't* going to be
 # published on packagist.org.
 - job:
-    name: composer-validate
-    node: contintLabsSlave && UbuntuTrusty
+    name: composer-validate-trusty
+    node: ci-trusty-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
-
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
