@@ -872,6 +872,12 @@ jobs:
     success-message: 'Example result against MediaWiki core'
     failure-message: 'Example result against MediaWiki core'
 
+  # Job to ease reviews of MW-CS changes
+  - name: mw-tools-codesniffer-mwcore-testrun-trusty
+    voting: false
+    success-message: 'Example result against MediaWiki core'
+    failure-message: 'Example result against MediaWiki core'
+
   - name: fail-archived-repositories
     queue-name: archived-repos
     failure-message: 'This repository has been archived and new patches are not being accepted. If you want to maintain it follow https://www.mediawiki.org/wiki/Gerrit/Project_ownership#Requesting_repository_ownership and then change which jobs get run.'
@@ -1859,6 +1865,8 @@ projects:
      - name: composer-test-package
     test:
      - mw-tools-codesniffer-mwcore-testrun
+    experimental:
+     - mw-tools-codesniffer-mwcore-testrun-trusty
 
   - name: mediawiki/tools/dippybird
     check-voter:

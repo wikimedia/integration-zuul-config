@@ -19,7 +19,6 @@ def set_parameters(item, job, params):
 
     hhvm_jobs = (
         'mediawiki-core-phpcs-trusty',
-        'mw-tools-codesniffer-mwcore-testrun',
         )
     php5_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
@@ -43,6 +42,9 @@ def set_parameters(item, job, params):
     if job.name.endswith('node-4.3'):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
         params['PHP_BIN'] = 'hhvm'
+
+    if job.name.endswith('mw-tools-codesniffer-mwcore-testrun-trusty'):
+        params['PHP_BIN'] = 'php5'
 
     ext_deps_jobs_starting_with = (
         'mwext-testextension',
