@@ -112,14 +112,14 @@ class TestZuulScheduler(unittest.TestCase):
     # Tests
 
     def assertProjectHasComposerValidate(self, name, definition, pipeline):
-        # composer-validate
+        # composer-validate-trusty
         # composer-validate-package
         # composer-test-(zend|hhvm)
         self.assertTrue(
             any([job for job in definition
                  if job.startswith(('composer', 'composer-'))]),
             'Project %s pipeline %s must have either '
-            'composer-validate or a composer-* job'
+            'composer-validate-trusty or a composer-* job'
             % (name, pipeline))
 
     def assertProjectHasPhplint(self, name, definition, pipeline):
@@ -297,7 +297,7 @@ class TestZuulScheduler(unittest.TestCase):
             '.*-puppetlint-strict',
             '.*-whitespaces',
             'noop',
-            'composer-validate',
+            'composer-validate-trusty',
             'composer-package-validate',
             'fail-archived-repositories',
             'tox-jessie',
