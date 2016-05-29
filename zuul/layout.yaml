@@ -7443,27 +7443,22 @@ projects:
 
   - name: mediawiki/extensions/timeline
     template:
+      - name: composer-test
       - name: npm
     check:
       - jsonlint
-      - php53lint
       - perllint
-      - composer-validate
     test:
-     - php53lint
      - perllint
-     - composer-validate
     gate-and-submit:
-     - php53lint
      - perllint
-     - composer-validate
     experimental:
      - mediawiki-extensions-hhvm
      - mediawiki-extensions-qunit
+     - mwext-testextension-php55
      - mwext-testextension-hhvm
-     - mwext-testextension-php53-composer
+     - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
-     - composer-php53
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
