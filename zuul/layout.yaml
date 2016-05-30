@@ -32,6 +32,7 @@ pipelines:
     description: >
       Basic jobs being run for all users. Will vote Verified +1/-1.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
         - event: patchset-created
@@ -221,6 +222,7 @@ pipelines:
   - name: check-only
     description: Basic jobs being run for all users. Will vote +1.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
         - event: patchset-created
@@ -241,6 +243,7 @@ pipelines:
     description: >
       Basic jobs for projects without a test pipeline. Will vote +2.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
         - event: patchset-created
@@ -262,6 +265,7 @@ pipelines:
     description: >
       Jobs restricted to trusted users. Will vote +2.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
         - event: patchset-created
@@ -485,6 +489,7 @@ pipelines:
       Jobs manually triggered by whitelisted users commenting 'check experimental'.
       Useful for experimenting new jobs.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
         - event: comment-added
@@ -503,6 +508,7 @@ pipelines:
       Useful for running PHP5 tests that are only part of gate-and-submit.
       This queue was formerly called "zend", so 'check zend' also works.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
         - event: comment-added
@@ -524,6 +530,7 @@ pipelines:
     description: >
       Patchsets that have been reviewed. Will be merged by Jenkins if tests pass.
     manager: DependentPipelineManager
+    source: gerrit
     precedence: high
     window-floor: 12
     trigger:
@@ -550,6 +557,7 @@ pipelines:
   - name: postmerge
     description: Jobs triggered after a change has been merged.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
         - event: change-merged
@@ -568,6 +576,7 @@ pipelines:
   - name: post
     description: Whenever a reference is updated.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
        - event: ref-updated
@@ -577,6 +586,7 @@ pipelines:
   - name: publish
     description: Whenever tags are published.
     manager: IndependentPipelineManager
+    source: gerrit
     trigger:
       gerrit:
        - event: ref-updated
