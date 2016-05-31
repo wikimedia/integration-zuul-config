@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e68cf02_756aa8b2",
+        "filename": "jjb/mediawiki-extensions.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 487
+      },
+      "writtenOn": "2016-05-31T11:58:46Z",
+      "side": 1,
+      "message": "selenium-Wikibase job fails with\n\n no such file to load -- features/support/pages (LoadError)\n\nhttps://integration.wikimedia.org/ci/view/Selenium/job/selenium-Wikibase/BROWSER\u003dfirefox,MEDIAWIKI_ENVIRONMENT\u003dbeta,PLATFORM\u003dLinux,label\u003dcontintLabsSlave%20\u0026\u0026%20UbuntuTrusty/2/console\n\nThe problem is that selenium* jobs run from repository root.\n\nI have fixed the path in the Wikibase repo\n\nhttps://gerrit.wikimedia.org/r/#/c/291890/\n\ntested it, works fine\n\nhttps://integration.wikimedia.org/ci/view/Selenium/job/selenium-Wikibase-291890/\n\nbut now mwext-mw-selenium-composer job fails with\n\n no such file to load -- tests/browser/features/support/pages (LoadError)\n\nhttps://integration.wikimedia.org/ci/job/mwext-mw-selenium-composer/3403/consoleFull\n\nbecause it is not running from the root of the repo but from tests/browser.\n\nThe folder is configured in tests-dir variable of mw-selenium-with-dir builder\n\nhttps://phabricator.wikimedia.org/diffusion/CICF/browse/master/jjb/macro.yaml$353\n\nI have seen it used in mw-selenium:\n\n tests-dir: \u0027src/extensions/$EXT_NAME/tests/browser\u0027\n\nhttps://phabricator.wikimedia.org/diffusion/CICF/browse/master/jjb/macro.yaml$388\n\nand in mediawiki-selenium-integration\n\n tests-dir: \u0027.\u0027\n\nhttps://phabricator.wikimedia.org/diffusion/CICF/browse/master/jjb/ruby-jobs.yaml$133\n\nI am not sure which one is correct.",
+      "revId": "c8ec3a14db8a022b0a9241e89d8fabc14f41aac1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
