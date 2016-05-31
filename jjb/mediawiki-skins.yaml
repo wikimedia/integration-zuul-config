@@ -1,0 +1,232 @@
+# Parameters:
+#
+# skin-name: skin basename. Set to '' to ignore
+# dependencies: comma or spaces/newlines separated list of skins to clone
+# additional-dependencies: gets appended to dependencies, backslash escaping is applied, use \n to separate multiple
+#
+- builder:
+    name: 'zuul-cloner-skindeps'
+    builders:
+     - shell: |
+         set +x
+         echo "Building dependencies list..."
+         rm -f deps.txt
+         touch deps.txt
+         echo "mediawiki/core" >> deps.txt
+         if [ "{additional-repositories}" != "" ]; then
+             echo "> additional repo(s): {additional-repositories}"
+             echo -e "{additional-repositories}" >> deps.txt
+         fi
+         if [ "{skin-name}" != "" ]; then
+            echo "> skin: mediawiki/skins/{skin-name}"
+            echo "mediawiki/skins/{skin-name}" >> deps.txt
+         fi
+         if [ "{dependencies}" != "" ]; then
+             echo "> rest of dependencies..."
+             echo "$(IFS=', '; for dep in `echo {dependencies}`; do echo mediawiki/skins/$dep; done;)" >> deps.txt
+         fi
+         echo "Dependencies list complete."
+     - zuul-cloner:
+         projects: >
+             $(cat deps.txt)
+     - ve-submodules-update
+
+# ALWAYS pair with 'mw-teardown-mysql'
+# Similar to prepare-mediawiki, except gets
+# the skin name from $ZUUL_PROJECT
+- builder:
+    name: prepare-mediawiki-skin-zuul-project
+    builders:
+     - shell: "echo $ZUUL_PROJECT > skins_load.txt"
+     - shell: "echo -e $SKIN_DEPENDENCIES >> skins_load.txt"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+             $(cat skins_load.txt)
+     - shell: "mv skins_load.txt src/extensions_load.txt"
+     - shell: |
+         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
+            cd src/extensions/VisualEditor
+            git submodule update --init
+         fi
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-run-update-script
+
+# same except for use with composer instead of cloning vendor
+- builder:
+    name: prepare-mediawiki-skin-zuul-project-no-vendor
+    builders:
+     - shell: "echo $ZUUL_PROJECT > skins_load.txt"
+     - shell: "echo -e $SKIN_DEPENDENCIES >> skins_load.txt"
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             $(cat skins_load.txt)
+     - shell: "mv skins_load.txt src/skins_load.txt"
+     - shell: |
+         if grep -q mediawiki/extensions/VisualEditor src/extensions_load.txt; then
+            cd src/extensions/VisualEditor
+            git submodule update --init
+         fi
+     - composer-validate:
+         dir: 'src'
+     - composer-local-create:
+         deps: 'skins_load.txt'
+     - composer-update:
+         dir: 'src'
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-run-update-script
+
+# Generic qunit job for extensions.
+- job:
+    name: 'mwskin-qunit'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-skin-zuul-project
+     - qunit-karma
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Generic qunit job for extensions with composer update.
+- job:
+    name: 'mwskin-qunit-composer'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-skin-zuul-project-no-vendor
+     - qunit-karma
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Generic mw-selenium job for extensions.
+- job:
+    name: 'mwskin-mw-selenium'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-skin-zuul-project
+     - zuul-cloner:
+         projects: mediawiki/skins/Vector
+     - mw-selenium
+    publishers:
+     - mw-selenium-cleanup
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+    logrotate:
+      daysToKeep: 15
+      artifactDaysToKeep: 3
+
+# Generic mw-selenium job for extensions.
+- job:
+    name: 'mwskin-mw-selenium-composer'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-skin-zuul-project-no-vendor
+     - zuul-cloner:
+         projects: mediawiki/skins/Vector
+     - mw-selenium
+    publishers:
+     - mw-selenium-cleanup
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+    logrotate:
+      daysToKeep: 15
+      artifactDaysToKeep: 3
+
+# Generic phpunit job for extensions.
+- job-template: &job_mwskin-testskin
+    name: 'mwskin-testskin-{phpflavor}'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-skin-zuul-project
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allskins
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Same as above, but with non-voting suffix because it's non-voting
+- job-template:
+    name: 'mwskin-testskin-{phpflavor}-non-voting'
+    !!merge : *job_mwskin-testskin
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+# same but with composer update instead of cloning vendor
+- job-template: &job_mwskin-testskin-composer
+    name: 'mwskin-testskin-{phpflavor}-composer'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-skin-zuul-project-no-vendor
+     - mw-run-phpunit-allskins
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Same as above, but with non-voting suffix because it's non-voting
+- job-template:
+    name: 'mwskin-testskin-{phpflavor}-composer-non-voting'
+    !!merge : *job_mwskin-testskin-composer
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+- project:
+    name: 'mwskin-testskin-generic'
+    jobs:
+     - 'mwskin-testskin-{phpflavor}':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - 'mwskin-testskin-{phpflavor}-non-voting':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - 'mwskin-testskin-{phpflavor}-composer':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
+     - 'mwskin-testskin-{phpflavor}-composer-non-voting':
+        phpflavor:
+            - hhvm
+            - php53
+            - php55
