@@ -182,7 +182,9 @@
      - prepare-mediawiki-zuul-project-no-vendor
      - zuul-cloner:
          projects: mediawiki/skins/Vector
-     - mw-selenium
+     - mw-selenium:
+         tests-dir: 'src/extensions/$EXT_NAME/'
+         tests-dir: '.'
     publishers:
      - mw-selenium-cleanup
      - localhost-cleanup
