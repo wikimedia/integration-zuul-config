@@ -602,3 +602,39 @@ class TestZuulScheduler(unittest.TestCase):
             'equals.\n'
             'In Zuul: apply the template extension-gate\n'
             'In JJB: add extension to "gatedextensions"')
+
+    def test_gated_skins_are_both_in_jjb_and_zuul(self):
+        self.longMessage = True
+
+        # Grab deps from the JJB template mediawiki-skins-{phpflavor}
+        jjb_mw_file = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '../jjb/mediawiki.yaml')
+        with open(jjb_mw_file, 'r') as f:
+            jjb = yaml.load(f)
+
+        mw_project = next(entry['project'] for entry in jjb
+                          if 'project' in entry
+                          and entry['project'].get('name') == 'mediawiki-core')
+        jjb_gate_template = next(
+            job['mediawiki-skins-{phpflavor}']
+            for job in mw_project['jobs']
+            if isinstance(job, dict)
+            and job.keys()[0] == 'mediawiki-skins-{phpflavor}')
+        # List of skins basenames. Space separted in the YAML definition.
+        jjb_deps = set(jjb_gate_template['dependencies'].rstrip().split(' '))
+
+        # Grab projects having the gate job 'mediawiki-skins-hhvm'
+        gated_in_zuul = set([
+            ext_name[len('mediawiki/skins/'):]  # skin basename
+            for (ext_name, pipelines) in self.getProjectsDefs().iteritems()
+            if ext_name.startswith('mediawiki/skins/')
+            and 'mediawiki-skins-hhvm' in pipelines.get('test', {})
+        ])
+
+        self.assertSetEqual(
+            gated_in_zuul, jjb_deps, msg='Zuul projects triggering gate jobs '
+            '(first set) and dependencies list in JJB (second set) must be '
+            'equals.\n'
+            'In Zuul: apply the template skin-gate\n'
+            'In JJB: add skin to "gatedextensions"')
