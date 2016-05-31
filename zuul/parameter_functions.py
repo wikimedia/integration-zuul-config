@@ -39,6 +39,10 @@ def set_parameters(item, job, params):
     if job.name.startswith(ext_deps_jobs):
         set_ext_dependencies(item, job, params)
 
+    skin_deps_jobs = ('mwskin-testskin', 'mwskin-qunit', 'mwskin-mw-selenium')
+    if job.name.startswith(skin_deps_jobs):
+        set_skin_dependencies(item, job, params)
+
     if job.name.endswith('-jessie'):
         nodepool_params(item, job, params)
     if job.name.endswith('-trusty'):
@@ -53,7 +57,7 @@ def set_parameters(item, job, params):
     if job.name.endswith('-publish'):
         set_doc_variables(item, job, params)
 
-dependencies = {
+ext_dependencies = {
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
@@ -139,6 +143,11 @@ dependencies = {
                    'VisualEditor', 'ZeroBanner'],
 }
 
+# Replace 'Test': ['Test1'] with actual skin name and dep.
+skin_dependencies = {
+    'Test': ['Test1']
+}
+
 
 def set_ext_dependencies(item, job, params):
     """
@@ -160,7 +169,7 @@ def set_ext_dependencies(item, job, params):
     ext_name = split[-1]
     params['EXT_NAME'] = ext_name
 
-    deps = get_dependencies(ext_name, dependencies)
+    deps = get_ext_dependencies(ext_name, ext_dependencies)
 
     # Export with a literal \n character and have bash expand it later
     params['EXT_DEPENDENCIES'] = '\\n'.join(
@@ -168,7 +177,7 @@ def set_ext_dependencies(item, job, params):
     )
 
 
-def get_dependencies(ext_name, mapping):
+def get_ext_dependencies(ext_name, mapping):
     """
     Get the full set of dependencies required by an extension
     :param ext_name: extension name
@@ -191,6 +200,59 @@ def get_dependencies(ext_name, mapping):
         return deps
 
     return resolve_deps(ext_name)
+
+
+def set_skin_dependencies(item, job, params):
+    """
+    Reads dependencies from the yaml file and adds them as a parameter
+    :type item: zuul.model.QueueItem
+    :type job: zuul.model.Job
+    :type params: dict
+    """
+    if not params['ZUUL_PROJECT'].startswith('mediawiki/skins/'):
+        return
+    # mediawiki/skins/FooBar
+    split = params['ZUUL_PROJECT'].split('/')
+    if len(split) != 3:
+        # mediawiki/skins/FooBar/blah
+        # mediawiki/skins
+        return
+
+    # FooBar
+    skin_name = split[-1]
+    params['SKIN_NAME'] = skin_name
+
+    deps = get_skin_dependencies(skin_name, skin_dependencies)
+
+    # Export with a literal \n character and have bash expand it later
+    params['SKIN_DEPENDENCIES'] = '\\n'.join(
+        'mediawiki/skins/' + dep for dep in sorted(deps)
+    )
+
+
+def get_skin_dependencies(skin_name, mapping):
+    """
+    Get the full set of dependencies required by an extension
+    :param ext_name: extension name
+    :param mapping: mapping of extensions to their dependencies
+    :return: set of dependencies, recursively processed
+    """
+    resolved = set()
+
+    def resolve_deps(skin):
+        resolved.add(skin)
+        deps = set()
+
+        if skin in mapping:
+            for dep in mapping[skin]:
+                deps.add(dep)
+
+                if dep not in resolved:
+                    deps = deps.union(resolve_deps(dep))
+
+        return deps
+
+    return resolve_deps(skin_name)
 
 
 def nodepool_params(item, job, params):

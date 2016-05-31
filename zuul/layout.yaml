@@ -685,7 +685,7 @@ jobs:
     # Release branches do not support hhvm.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
-  - name: ^mwext.*-hhvm$
+  - name: ^mw(ext|skin).*-hhvm$
     # Release branches do not support hhvm.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
@@ -702,11 +702,11 @@ jobs:
   # TODO stop triggering php53 jobs for the wmf branches
 
   # Extensions tested together, since 1.25alpha ...
-  - name: ^mediawiki-extensions-(qunit|hhvm|php53)$
+  - name: ^mediawiki-(extensions|skins)-(qunit|hhvm|php53)$
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
     queue-name: mediawiki
 
-  - name: ^mediawiki-extensions-php55$
+  - name: ^mediawiki-(extensions|skins)-php55$
     branch: (?!REL1_23|REL1_24|REL1_25|REL1_26|fundraising/REL.*)
     queue-name: mediawiki
 
@@ -910,6 +910,32 @@ project-templates:
      - composer-php55-trusty
      - composer-hhvm-trusty
 
+  - name: skin-unittests-composer
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     - mwskin-testskin-php53-composer
+     - mwskin-testskin-php55-composer
+     - mwskin-testskin-hhvm-composer
+     - composer-validate
+    gate-and-submit:
+     - php53lint
+     - php55lint
+     - mwskin-testskin-php53-composer
+     - mwext-testextension-php55-composer
+     - mwext-testextension-hhvm-composer
+     - composer-validate
+    experimental:
+     - mwskin-qunit-composer
+     - npm-node-4.3
+     - composer-php53
+     - composer-php55-trusty
+     - composer-hhvm-trusty
+
   - name: extension-unittests-composer-non-voting
     check:
      - php53lint
@@ -929,6 +955,29 @@ project-templates:
      - composer-validate
     experimental:
      - mwext-qunit-composer
+     - composer-php53
+     - composer-php55-trusty
+     - composer-hhvm-trusty
+
+  - name: skin-unittests-composer-non-voting
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     - mwskin-testskin-php53-composer-non-voting
+     - mwskin-testskin-php55-composer-non-voting
+     - mwskin-testskin-hhvm-composer-non-voting
+     - composer-validate
+    gate-and-submit:
+     - mediawiki-gate
+     - php53lint
+     - php55lint
+     - composer-validate
+    experimental:
+     - mwskin-qunit-composer
      - composer-php53
      - composer-php55-trusty
      - composer-hhvm-trusty
@@ -964,6 +1013,37 @@ project-templates:
       - composer-php55-trusty
       - composer-hhvm-trusty
 
+  - name: skin-unittests-generic
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     # Skins tests with core+vendor
+     - mwskin-testskin-php53
+     - mwskin-testskin-php55
+     - mwskin-testskin-hhvm
+     - composer-validate
+    gate-and-submit:
+     - php53lint
+     - php55lint
+     # Skins tests with core+vendor
+     - mwskin-testskin-php53
+     - mwskin-testskin-php55
+     - mwskin-testskin-hhvm
+     - composer-validate
+    experimental:
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-qunit
+      - mwskin-testskin-php53-composer
+      - mwskin-testskin-hhvm-composer
+      - npm-node-4.3
+      - composer-php53
+      - composer-php55-trusty
+      - composer-hhvm-trusty
+
   - name: extension-unittests-non-voting
     check:
      - php53lint
@@ -992,6 +1072,34 @@ project-templates:
       - composer-php55-trusty
       - composer-hhvm-trusty
 
+  - name: skin-unittests-non-voting
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
+    test:
+     - php53lint
+     - php55lint
+     # Skins tests with core+vendor
+     - mwext-testskin-hhvm-non-voting
+     - composer-validate
+    php5:
+     - mwskin-testskin-php53-non-voting
+     - mwskin-testskin-php55-non-voting
+    gate-and-submit:
+     - php53lint
+     - php55lint
+     - composer-validate
+    experimental:
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-qunit
+      - mwskin-testskin-php53-composer
+      - mwskin-testskin-hhvm-composer
+      - npm-node-4.3
+      - composer-php53
+      - composer-php55-trusty
+      - composer-hhvm-trusty
+
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
   - name: extension-selenium
@@ -999,6 +1107,12 @@ project-templates:
       - mwext-mw-selenium
     postmerge:
       - mwext-mw-selenium
+
+  - name: skin-selenium
+    test:
+      - mwskin-mw-selenium
+    postmerge:
+      - mwskin-mw-selenium
 
   - name: extension-gate
     test:
@@ -1012,6 +1126,19 @@ project-templates:
       - mediawiki-extensions-php53
       - mediawiki-extensions-php55
       - mediawiki-extensions-qunit
+
+  - name: skin-gate
+    test:
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-qunit
+    php5:
+      - mediawiki-skins-php55
+      - mediawiki-skins-php53
+    gate-and-submit:
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-php53
+      - mediawiki-skins-php55
+      - mediawiki-skins-qunit
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
@@ -1030,11 +1157,26 @@ project-templates:
     experimental:
       - mwext-qunit-composer
 
+  # Triggers the generic mwskin-qunit job
+  - name: skin-qunit-generic
+    test:
+      - mwskin-qunit
+    gate-and-submit:
+      - mwskin-qunit
+    experimental:
+      - mwskin-qunit-composer
+
   - name: extension-qunit-composer
     test:
       - mwext-qunit-composer
     gate-and-submit:
       - mwext-qunit-composer
+
+  - name: skin-qunit-composer
+    test:
+      - mwskin-qunit-composer
+    gate-and-submit:
+      - mwskin-qunit-composer
 
   - name: jsduck
     test:
@@ -1056,8 +1198,12 @@ project-templates:
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
+     - mwskin-qunit-composer
+     - mwskin-qunit
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
+     - mwskin-testskin-hhvm
+     - mwskin-testskin-hhvm-composer
      - npm-node-4.3
      - composer-php53
      - composer-php55-trusty
@@ -1083,8 +1229,12 @@ project-templates:
     experimental:
      - mwext-qunit-composer
      - mwext-qunit
+     - mwskin-qunit-composer
+     - mwskin-qunit
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
+     - mwskin-testskin-hhvm
+     - mwskin-testskin-hhvm-composer
      - npm-node-4.3
      - composer-php53
      - composer-php55-trusty
@@ -1330,6 +1480,8 @@ projects:
       # For when we switch WMF app servers to Jessie
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-parsertests-hhvm-jessie
+      - mediawiki-skins-hhvm
+      - mediawiki-skins-qunit
 
   - name: mediawiki/debian
     experimental:
@@ -1727,6 +1879,10 @@ projects:
   - name: mediawiki/skins/Metrolook
     template:
      - name: composer-test
+     # Testing the new unit tests for skins
+     # Do not change this to voting unless
+     # It passes the tests.
+     - name: skin-unittests-non-voting
      - name: npm
     check:
      - jsonlint
@@ -1753,6 +1909,10 @@ projects:
   - name: mediawiki/skins/MonoBook
     template:
      - name: composer-test
+     # Testing the new unit tests for skins
+     # Do not change this to voting unless
+     # It passes the tests.
+     - name: skin-unittests-non-voting
      - name: mw-checks-test
      - name: npm
     check:
@@ -1828,6 +1988,10 @@ projects:
   - name: mediawiki/skins/Vector
     template:
      - name: composer-test
+     # Testing the new unit tests for skins
+     # Do not change this to voting unless
+     # It passes the tests.
+     - name: skin-unittests-non-voting
      - name: npm
     check:
      - jshint
