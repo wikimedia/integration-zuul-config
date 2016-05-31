@@ -256,7 +256,7 @@
      - archive-log-dir
 
 - builder:
-    name: inject-experimental-extension
+    name: inject-experimental-extension-or-skin
     builders:
      - shell: |
          # When triggered from the experimental pipeline, add the project to
@@ -313,7 +313,7 @@
          ext-name: ''
          dependencies: '{dependencies}'
          additional-repositories: 'mediawiki/vendor'
-     - inject-experimental-extension
+     - inject-experimental-extension-or-skin
      - sort-deps-txt
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
@@ -321,6 +321,40 @@
      - mw-run-update-script
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+# Same as above but for skins
+- job-template:
+    name: 'mediawiki-skins-{phpflavor}'
+    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - zuul-cloner-skindeps:
+         skin-name: ''
+         dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
+     - inject-experimental-extension-or-skin
+     - sort-deps-txt
+     - mw-install-mysql
+     - shell: "cp deps.txt src/skins_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allskins
     publishers:
      - junit:
         results: 'log/junit*.xml'
@@ -344,10 +378,38 @@
          ext-name: ''
          dependencies: '{dependencies}'
          additional-repositories: 'mediawiki/vendor'
-     - inject-experimental-extension
+     - inject-experimental-extension-or-skin
      - sort-deps-txt
      - mw-install-mysql
      - shell: "cp deps.txt src/extensions_load.txt"
+     - mw-apply-settings
+     - mw-run-update-script
+     - qunit-karma
+    publishers:
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- job-template:
+    name: 'mediawiki-skins-qunit'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    logrotate:
+        daysToKeep: 15
+
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - zuul-cloner-skindeps:
+         skin-name: ''
+         dependencies: '{dependencies}'
+         additional-repositories: 'mediawiki/vendor'
+     - inject-experimental-extension-or-skin
+     - sort-deps-txt
+     - mw-install-mysql
+     - shell: "cp deps.txt src/skins_load.txt"
      - mw-apply-settings
      - mw-run-update-script
      - qunit-karma
@@ -422,6 +484,13 @@
               ZeroPortal
       - 'mediawiki-extensions-qunit':
           dependencies: *gatedextensions
+      - 'mediawiki-skins-{phpflavor}':
+          dependencies: &gatedskins >
+              Metrolook
+              MonoBook
+              Vector
+      - 'mediawiki-skins-qunit':
+          dependencies: *gatedskins
 
 - job:
     name: 'mediawiki-core-code-coverage'
