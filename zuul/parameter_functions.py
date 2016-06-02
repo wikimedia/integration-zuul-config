@@ -71,7 +71,6 @@ dependencies = {
     'EducationProgram': ['cldr'],
     'FlaggedRevs': ['Scribunto'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
-    'GoogleLogin': ['GoogleAPIClient'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
