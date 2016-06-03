@@ -19,12 +19,8 @@ include contint::slave_scripts
 include contint::packages::base
 include contint::composer
 include contint::php
-if os_version('ubuntu >= trusty') {
-    # We dont run PHP based jobs on Jessie yet since we match Wikimedia
-    # production which has MediaWiki running on Trusty.
-    # Jessie lacks php5-fss T95002. PHP is provided via HHVM.
-    include mediawiki::packages::php5
-}
+include mediawiki::packages::php5
+
 package { 'cron':
     ensure => present,
     before => Class['contint::hhvm'],
