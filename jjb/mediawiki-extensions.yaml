@@ -256,6 +256,33 @@
     triggers:
      - zuul
 
+- job-template: &job_mwext-testextension-image
+    name: 'mwext-testextension-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - castor-save
+     - archive-log-dir
+
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-{image}-non-voting'
+    !!merge : *job_mwext-testextension-image
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 # same but with composer update instead of cloning vendor
 - job-template: &job_mwext-testextension-composer
     name: 'mwext-testextension-{phpflavor}-composer'
@@ -283,9 +310,36 @@
     triggers:
      - zuul
 
+- job-template: &job_mwext-testextension-composer-image
+    name: 'mwext-testextension-{phpflavor}-composer-{image}'
+    node: ci-{image}-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - archive-log-dir
+     - castor-save
+
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-composer-{image}-non-voting'
+    !!merge : *job_mwext-testextension-composer-image
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 - project:
     name: 'mwext-testextension-generic'
     jobs:
+     # Legacy permanent slaves
      - 'mwext-testextension-{phpflavor}':
         phpflavor:
             - hhvm
@@ -306,6 +360,17 @@
             - hhvm
             - php53
             - php55
+     # Nodepool
+     - 'mwext-testextension-{phpflavor}-{image}': &phpflavor_images
+         phpflavor:
+             # Change image to jessie once php 5.5 is avilable.
+             - php55:
+                 image: trusty
+             - hhvm:
+                 image: jessie
+     - 'mwext-testextension-{phpflavor}-{image}-non-voting': *phpflavor_images
+     - 'mwext-testextension-{phpflavor}-composer-{image}': *phpflavor_images
+     - 'mwext-testextension-{phpflavor}-composer-{image}-non-voting': *phpflavor_images
 
 - job:
     name: 'mwext-jsduck-publish'
