@@ -94,6 +94,7 @@
      - mw-install-mysql
      - mw-apply-settings
      - mw-run-update-script
+
 # same except for use with composer instead of cloning vendor
 - builder:
     name: prepare-mediawiki-zuul-project-no-vendor
@@ -232,6 +233,38 @@
     triggers:
      - zuul
 
+# Change image to jessie once php 5.5 is avilable.
+- job-template: &job_mwext-testextension-trusty
+    name: 'mwext-testextension-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
+    concurrent: true
+    properties:
+     - zeromq-event
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - castor-load
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-allow-empty
+     - castor-save
+
+# Same as above, but with non-voting suffix because it's non-voting
+- job-template:
+    name: 'mwext-testextension-{phpflavor}-non-voting-{image}'
+    !!merge : *job_mwext-testextension-trusty
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 # same but with composer update instead of cloning vendor
 - job-template: &job_mwext-testextension-composer
     name: 'mwext-testextension-{phpflavor}-composer'
@@ -259,6 +292,7 @@
     triggers:
      - zuul
 
+# Migrate the rest of this if mwext-testextension-generic-trusty passes
 - project:
     name: 'mwext-testextension-generic'
     jobs:
@@ -282,6 +316,23 @@
             - hhvm
             - php53
             - php55
+
+- project:
+    name: 'mwext-testextension-generic-(trusty|jessie)'
+    jobs:
+     - 'mwext-testextension-{phpflavor}-{image}': &phpflavor_images
+        phpflavor:
+            - hhvm
+            - php55
+        phpflavor:
+            - php55:
+                image: trusty
+            # Wikimedia runs HHVM on Trusty and will move to Jessie
+            - hhvm:
+                image: trusty
+            - hhvm:
+                image: jessie
+     - 'mwext-testextension-{phpflavor}-non-voting-{image}': *phpflavor_images
 
 - job:
     name: 'mwext-jsduck-publish'
