@@ -613,7 +613,7 @@ jobs:
   - name: ^.*$
     parameter-function: set_parameters
 
-  - name: ^.*-non-voting$
+  - name: ^.*-non-voting(?:-trusty|-jessie)?$
     voting: false
 
   - name: ^rake-jessie$
@@ -963,6 +963,8 @@ project-templates:
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+      - mwext-testextension-php55-trusty
+      - mwext-testextension-hhvm-trusty
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-4.3
