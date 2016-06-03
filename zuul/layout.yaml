@@ -613,7 +613,7 @@ jobs:
   - name: ^.*$
     parameter-function: set_parameters
 
-  - name: ^.*-non-voting$
+  - name: ^.*-non-voting(?:-trusty|-jessie)?$
     voting: false
 
   - name: ^rake-jessie$
@@ -691,7 +691,7 @@ jobs:
     # Release branches do not support hhvm.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
-  - name: ^mwext.*-hhvm$
+  - name: ^mwext.*-hhvm(?:-trusty|-jessie)?$
     # Release branches do not support hhvm.
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
@@ -963,6 +963,8 @@ project-templates:
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+      - mwext-testextension-php55-trusty
+      - mwext-testextension-hhvm-trusty
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-4.3
@@ -991,6 +993,8 @@ project-templates:
     experimental:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-qunit
+      - mwext-testextension-php55-trusty
+      - mwext-testextension-hhvm-trusty
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-4.3
