@@ -134,3 +134,24 @@
      - localhost-cleanup
      - mw-teardown-mysql
      - archive-log-dir
+
+# Same as mediawiki-selenium-integration but on Nodepool T137112
+- job:
+    name: 'mediawiki-selenium-integration-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - mw-selenium-with-dir:
+         tests-dir: '.'
+    publishers:
+     - castor-save
+     - archive-log-dir

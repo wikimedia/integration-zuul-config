@@ -889,6 +889,9 @@ jobs:
     branch: ^master$
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
     branch: ^master$
+  - name: 'mediawiki-selenium-integration-jessie'
+    # Experimental T137112
+    voting: false
 
   - name: mediawiki-core-doxygen-publish
     branch: ^(master|REL.*|refs/tags/(?!wmf).*)$ # REL is bug 50325
@@ -1051,6 +1054,8 @@ project-templates:
       - mwext-mw-selenium
     postmerge:
       - mwext-mw-selenium
+    experimental:
+      - mwext-mw-selenium-jessie
 
   - name: extension-gate
     test:
@@ -1731,6 +1736,8 @@ projects:
       - name: rake
     test:
      - mediawiki-selenium-integration
+     # Non voting work in progress T137112
+     - mediawiki-selenium-integration-jessie
     gate-and-submit:
      - mediawiki-selenium-integration
     postmerge:
@@ -2681,7 +2688,7 @@ projects:
       - jsonlint
       - jshint
     experimental:
-      - mwext-mw-selenium-composer
+      - mwext-mw-selenium-composer-jessie
 
   - name: mediawiki/extensions/Arrays
     template:
@@ -3405,7 +3412,7 @@ projects:
      - jshint
      - jsonlint
     experimental:
-     - mwext-mw-selenium
+     - mwext-mw-selenium-jessie
     postmerge:
      - mwext-jsduck-publish
 
@@ -6730,7 +6737,7 @@ projects:
     gate-and-submit:
       - composer-package-validate
     experimental:
-      - mwext-mw-selenium-composer
+      - mwext-mw-selenium-composer-jessie
 
   - name: mediawiki/extensions/WikiLabels
     template:
@@ -8093,6 +8100,8 @@ projects:
       - mwext-Wikibase-repo-tests-sqlite-php55
       - mwext-Wikibase-client-tests-mysql-php55
       - mwext-Wikibase-client-tests-sqlite-php55
+      # Will switch to Nodepool eventually T137112
+      - mwext-mw-selenium-composer-jessie
     postmerge:
       - mwext-doxygen-publish
       - mwext-jsduck-publish
