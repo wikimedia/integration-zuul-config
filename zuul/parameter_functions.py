@@ -43,6 +43,8 @@ def set_parameters(item, job, params):
     if job.name.endswith('node-4.3'):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
         params['PHP_BIN'] = 'hhvm'
+    elif job.name.endswith('node-0.10'):
+        params['PHP_BIN'] = 'php5'
 
     ext_deps_jobs_starting_with = (
         'mwext-testextension',
