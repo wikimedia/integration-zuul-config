@@ -754,10 +754,6 @@ jobs:
   - name: ^operations-puppet-tox-pep8-jessie$
     voting: false
 
-  - name: ^perllint$
-    files:
-      - '^.*\.(pl|pm)$'
-
   - name: operations-puppet-puppetlint-strict
     voting: true
 
@@ -7467,15 +7463,12 @@ projects:
     check:
       - jsonlint
       - php53lint
-      - perllint
       - composer-validate
     test:
      - php53lint
-     - perllint
      - composer-validate
     gate-and-submit:
      - php53lint
-     - perllint
      - composer-validate
     experimental:
      - mediawiki-extensions-hhvm
