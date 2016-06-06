@@ -274,28 +274,6 @@
         | xargs -n1 -t puppet parser validate
 
 - job:
-    name: 'perllint'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        # File used to track down whether a perl file is failing syntax check
-        rm -f PERLLINT_FAILED
-
-        find . \
-          \( -name '*.pm' -or -name '*.pl' \) \
-          \( -exec perl -Mstrict -Mdiagnostics -cw {} \; \
-          -or -exec touch PERLLINT_FAILED  \; \)
-
-        # Set exit code to fail the build
-        if [ -e PERLLINT_FAILED ]; then
-            exit 1
-        fi;
-
-- job:
     name: 'php53lint'
     node: contintLabsSlave && phpflavor-php53
     defaults: use-remote-zuul-shallow-clone
