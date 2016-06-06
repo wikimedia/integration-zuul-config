@@ -54,9 +54,7 @@ class TestExtDependencies(unittest.TestCase):
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-qunit-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwext-mw-selenium-composer-jessie'))
-        self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwext-mw-selenium-jessie'))
+            job_name='mwext-mw-selenium'))
         self.assertMissingDependencies(self.fetch_dependencies(
             job_name='mediawiki-core-phplint'))
 

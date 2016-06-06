@@ -156,21 +156,20 @@
 
 # Generic mw-selenium job for extensions.
 - job:
-    name: 'mwext-mw-selenium-jessie'
-    node: ci-jessie-wikimedia
+    name: 'mwext-mw-selenium'
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
-    properties:
-     - zeromq-event
     builders:
-     - castor-load
      - prepare-mediawiki-zuul-project
      - zuul-cloner:
          projects: mediawiki/skins/Vector
      - mw-selenium
     publishers:
-     - castor-save
+     - mw-selenium-cleanup
+     - localhost-cleanup
+     - mw-teardown-mysql
      - archive-log-dir
     logrotate:
       daysToKeep: 15
@@ -178,21 +177,20 @@
 
 # Generic mw-selenium job for extensions.
 - job:
-    name: 'mwext-mw-selenium-composer-jessie'
-    node: ci-jessie-wikimedia
+    name: 'mwext-mw-selenium-composer'
+    node: contintLabsSlave && UbuntuTrusty
     concurrent: true
     triggers:
      - zuul
-    properties:
-     - zeromq-event
     builders:
-     - castor-load
      - prepare-mediawiki-zuul-project-no-vendor
      - zuul-cloner:
          projects: mediawiki/skins/Vector
      - mw-selenium
     publishers:
-     - castor-save
+     - mw-selenium-cleanup
+     - localhost-cleanup
+     - mw-teardown-mysql
      - archive-log-dir
     logrotate:
       daysToKeep: 15
