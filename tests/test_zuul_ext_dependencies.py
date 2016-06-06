@@ -52,7 +52,7 @@ class TestExtDependencies(unittest.TestCase):
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-testextension-hhvm'))
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwext-qunit'))
+            job_name='mwext-qunit-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-mw-selenium'))
         self.assertMissingDependencies(self.fetch_dependencies(

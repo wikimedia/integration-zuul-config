@@ -122,32 +122,36 @@
 
 # Generic qunit job for extensions.
 - job:
-    name: 'mwext-qunit'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'mwext-qunit-jessie'
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
+    properties:
+     - zeromq-event
     builders:
+     - castor-load
      - prepare-mediawiki-zuul-project
      - qunit-karma
     publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
+     - castor-save
      - archive-log-dir
 
 # Generic qunit job for extensions with composer update.
 - job:
-    name: 'mwext-qunit-composer'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'mwext-qunit-composer-jessie'
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
+    properties:
+     - zeromq-event
     builders:
+     - castor-load
      - prepare-mediawiki-zuul-project-no-vendor
      - qunit-karma
     publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
+     - castor-save
      - archive-log-dir
 
 # Generic mw-selenium job for extensions.
