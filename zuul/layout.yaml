@@ -708,7 +708,7 @@ jobs:
   # TODO stop triggering php53 jobs for the wmf branches
 
   # Extensions tested together, since 1.25alpha ...
-  - name: ^mediawiki-extensions-(qunit|hhvm|php53)$
+  - name: ^mediawiki-extensions-(qunit|hhvm|php53)(-jessie|trusty)?$
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
     queue-name: mediawiki
 
@@ -962,7 +962,7 @@ project-templates:
      - composer-validate
     experimental:
       - mediawiki-extensions-hhvm
-      - mediawiki-extensions-qunit
+      - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-4.3
@@ -990,7 +990,7 @@ project-templates:
      - composer-validate
     experimental:
       - mediawiki-extensions-hhvm
-      - mediawiki-extensions-qunit
+      - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-4.3
@@ -1009,7 +1009,7 @@ project-templates:
   - name: extension-gate
     test:
       - mediawiki-extensions-hhvm
-      - mediawiki-extensions-qunit
+      - mediawiki-extensions-qunit-jessie
     php5:
       - mediawiki-extensions-php55
       - mediawiki-extensions-php53
@@ -1017,7 +1017,7 @@ project-templates:
       - mediawiki-extensions-hhvm
       - mediawiki-extensions-php53
       - mediawiki-extensions-php55
-      - mediawiki-extensions-qunit
+      - mediawiki-extensions-qunit-jessie
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
@@ -7479,7 +7479,7 @@ projects:
      - composer-validate
     experimental:
      - mediawiki-extensions-hhvm
-     - mediawiki-extensions-qunit
+     - mediawiki-extensions-qunit-jessie
      - mwext-testextension-hhvm
      - mwext-testextension-php53-composer
      - mwext-testextension-hhvm-composer

@@ -328,17 +328,17 @@
 
 # See 'mediawiki-phpunit-{phpflavor}'
 - job-template:
-    name: 'mediawiki-extensions-qunit'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'mediawiki-extensions-qunit-jessie'
+    node: 'ci-jessie-wikimedia'
     concurrent: true
     logrotate:
         daysToKeep: 15
-
     properties:
-     - throttle-one-per-node
+     - zeromq-event
     triggers:
      - zuul
     builders:
+     - castor-load
      - zuul-cloner-extdeps:
          ext-name: ''
          dependencies: '{dependencies}'
@@ -351,8 +351,7 @@
      - mw-run-update-script
      - qunit-karma
     publishers:
-     - localhost-cleanup
-     - mw-teardown-mysql
+     - castor-save
      - archive-log-dir
 
 - project:
@@ -419,7 +418,7 @@
               Wikidata
               ZeroBanner
               ZeroPortal
-      - 'mediawiki-extensions-qunit':
+      - 'mediawiki-extensions-qunit-jessie':
           dependencies: *gatedextensions
 
 - job:
