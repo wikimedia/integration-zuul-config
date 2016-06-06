@@ -387,6 +387,23 @@
      - mw-selenium-with-dir:
         tests-dir: 'src/extensions/$EXT_NAME/tests/browser'
 
+- builder:
+    name: mw-selenium-nodepool
+    builders:
+     - prepare-localhost
+     - shell: |
+         # Change to the working directory. EXT_NAME is set by Zuul parameters
+         # functions
+         cd "src/extensions/$EXT_NAME/tests/browser"
+         . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
+         bundle install --verbose
+         bundle exec cucumber \
+            --color \
+            --tags @integration \
+            --tags ~@skip \
+            --format pretty \
+            --format junit --out $WORKSPACE/log/junit
+
 # Cleans up anything left under /tmp/jenkins-$EXECUTOR_NUMBER
 #
 # Note that once the bug with Xvfb and TMPDIR is resolved, this can be
