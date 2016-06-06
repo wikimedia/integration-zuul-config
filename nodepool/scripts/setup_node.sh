@@ -37,7 +37,7 @@ echo "Running puppet"
 sudo /usr/local/bin/puppet-apply /opt/git/integration/config/dib/puppet/ciimage.pp
 
 echo "apt-get dist-upgrade && clean"
-sudo apt-get -V -q -y dist-upgrade
+sudo apt-get -V -q -y -o 'DPkg::Options::=--force-confold' dist-upgrade
 sudo apt-get clean
 
 echo "Syncing filesystem"
