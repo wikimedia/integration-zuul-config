@@ -47,7 +47,7 @@ def set_parameters(item, job, params):
     ext_deps_jobs = (
         'mwext-testextension',
         'mwext-qunit-jessie',
-        'mwext-mw-selenium',
+        'mwext-mw-selenium-jessie',
         )
     if job.name.startswith(ext_deps_jobs):
         set_ext_dependencies(item, job, params)
