@@ -77,6 +77,9 @@ if os_version('debian >= jessie') {
     # Qunit/Selenium related
     include contint::browsers
 
+    # For Selenium jobs video recording (T113520)
+    require_package('libav-tools')
+
     class { 'contint::worker_localhost':
         owner => 'jenkins',
     }
