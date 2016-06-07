@@ -1,0 +1,7 @@
+[dashboard]
+  title = Reviewing ${project}
+  description = Review board for ${project}
+[section "Ready"]
+  query = is:open project:${project} label:Code-Review=1 NOT label:code-review<=-1 NOT label:verified<=0
+[section "Review needed by me"]
+  query = is:open project:${project} reviewer:self label:code-review=0,self NOT owner:self
