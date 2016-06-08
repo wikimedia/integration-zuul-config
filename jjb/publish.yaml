@@ -1,6 +1,6 @@
 # Sync files from a Jenkins slave in labs to a central rsync server from which
-# another job (executing on gallium) can pull in the files and publish them
-# on https://doc.wikimedia.org/.
+# another job (executing on contint1001.eqiad.wmnet) can pull in the files and
+# publish them on https://doc.wikimedia.org/.
 #
 # Parameters:
 #
@@ -18,7 +18,7 @@
          echo
          echo "Publishing to https://doc.wikimedia.org/{docdest}/"
      - trigger-builds:
-       - project: publish-on-gallium
+       - project: publish-on-contint1001
          block: true
          current-parameters: true  # Pass Zuul parameters
          predefined-parameters: |
@@ -27,8 +27,8 @@
            PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
 
 # Sync files from a Jenkins slave in labs to a central rsync server from which
-# another job (executing on gallium) can pull in the files and publish them
-# on https://integration.wikimedia.org/cover/.
+# another job (executing on contint1001.eqiad.wmnet) can pull in the files and
+# publish them on https://integration.wikimedia.org/cover/.
 #
 # Parameters:
 #
@@ -46,7 +46,7 @@
          echo
          echo "Publishing to https://integration.wikimedia.org/cover/{dest}/"
      - trigger-builds:
-       - project: publish-on-gallium
+       - project: publish-on-contint1001
          block: true
          current-parameters: true  # Pass Zuul parameters
          predefined-parameters: |
@@ -54,7 +54,8 @@
            WMF_CI_PUB_DEST=cover/{dest}
            PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
 
-# rsync a directory from integration-publisher.eqiad.wmflabs to a website on gallium.
+# rsync a directory from integration-publisher.eqiad.wmflabs to a website on
+# contint1001.eqiad.wmnet.
 #
 # Serves:
 #
@@ -68,8 +69,8 @@
 #
 # Uses $PUBLISHER_PATH as a unique identifier.
 - job:
-    name: publish-on-gallium
-    node: gallium
+    name: publish-on-contint1001
+    node: contint1001.eqiad.wmnet
     parameters:
       - string:
          # MUST exist on integration-publisher
@@ -79,7 +80,7 @@
       - string:
          # MUST NOT have leading slash.
          # MUST NOT have trailing slash.
-         # MUST exist on gallium.
+         # MUST exist on contint1001.eqiad.wmnet
          name: 'WMF_CI_PUB_DOCROOT'
          description: 'A document root under /srv, such as "org/wikimedia/doc"'
       - string:
