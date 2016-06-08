@@ -112,3 +112,57 @@
         - mw-apply-settings
         - mw-run-update-script
         - mw-fetch-composer-dev
+
+- job:
+    name: 'mwext-donationinterfacecore126-testextension-zend53'
+    node: 'contintLabsSlave && phpflavor-php53'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: 'php53'
+     - prepare-mediawiki-126
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- builder:
+    name: prepare-mediawiki-126
+    builders:
+        - shell: |
+            echo "mediawiki/core" > deps.txt
+            echo "mediawiki/vendor" >> deps.txt
+            echo "mediawiki/extensions/DonationInterface" >> deps.txt
+            echo "mediawiki/extensions/FundraisingEmailUnsubscribe" >> deps.txt
+            echo "mediawiki/extensions/ContributionTracking" >> deps.txt
+            echo "mediawiki/extensions/ParserFunctions" >> deps.txt
+            echo "mediawiki/extensions/cldr" >> deps.txt
+            echo "mediawiki/skins/Vector" >> deps.txt
+            zuul-cloner --version
+            zuul-cloner \
+                --color \
+                --verbose \
+                --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+                --workspace src \
+                --cache-dir /srv/git \
+                --branch fundraising/REL1_26 \
+                --project-branch mediawiki/extensions/DonationInterface=master \
+                --project-branch mediawiki/skins/Vector=REL1_26 \
+                --project-branch mediawiki/vendor=REL1_26 \
+                  https://gerrit.wikimedia.org/r/p \
+                    $(cat deps.txt)
+
+        - shell: "cp deps.txt src/extensions_load.txt"
+        - shell: |
+            cd $WORKSPACE/src/extensions/DonationInterface
+            composer install
+        - mw-install-mysql
+        - mw-apply-settings
+        - mw-run-update-script
+        - mw-fetch-composer-dev
