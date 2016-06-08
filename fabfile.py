@@ -5,8 +5,8 @@ Usage:
 * Install fabric (<http://www.fabfile.org/>) via
   pip install --user fabric or a virtualenv
 * Configure your .ssh/config so it can
-  access gallium.wikimedia.org and uses the
-  proper username and key.
+  access contint1001.eqiad.wmnet and uses
+  the proper username and key.
 * Run $ fab deploy_zuul
 
 """
@@ -21,7 +21,7 @@ env.use_ssh_config = True
 def deploy_zuul():
     """Deploy a Zuul layout change"""
     env.sudo_user = 'zuul'
-    env.host_string = 'gallium.wikimedia.org'
+    env.host_string = 'contint1001.eqiad.wmnet'
 
     with cd('/etc/zuul/wikimedia'):
         sudo('git remote update')
