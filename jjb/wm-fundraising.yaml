@@ -59,8 +59,17 @@
       - phpunit-junit
       - archive-log-dir
 
-- job:
-    name: 'mwext-donationinterfacecore125-testextension-zend53'
+
+- project:
+    name: donationinterface-fundraising-branches
+    branch:
+     - REL1_25
+     - REL1_26
+    jobs:
+     - mwext-donationinterfacecore-{branch}-testextension-zend53:
+
+- job-template:
+    name: 'mwext-donationinterfacecore-{branch}-testextension-zend53'
     node: 'contintLabsSlave && phpflavor-php53'
     concurrent: true
     properties:
@@ -70,7 +79,8 @@
     builders:
      - assert-phpflavor:
          phpflavor: 'php53'
-     - prepare-mediawiki-125
+     - prepare-mediawiki-branch:
+         branch: '{branch}'
      - mw-run-phpunit-allexts
     publishers:
      - junit:
@@ -78,8 +88,10 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+# Parameter:
+# - branch: indicated branch to fall back to / prefer.
 - builder:
-    name: prepare-mediawiki-125
+    name: prepare-mediawiki-branch
     builders:
         - shell: |
             echo "mediawiki/core" > deps.txt
@@ -97,10 +109,10 @@
                 --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
                 --workspace src \
                 --cache-dir /srv/git \
-                --branch fundraising/REL1_25 \
+                --branch fundraising/{branch} \
                 --project-branch mediawiki/extensions/DonationInterface=master \
-                --project-branch mediawiki/skins/Vector=REL1_25 \
-                --project-branch mediawiki/vendor=REL1_25 \
+                --project-branch mediawiki/skins/Vector={branch} \
+                --project-branch mediawiki/vendor={branch} \
                   https://gerrit.wikimedia.org/r/p \
                     $(cat deps.txt)
 
