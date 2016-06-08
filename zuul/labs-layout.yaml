@@ -1,0 +1,55 @@
+# vim: set ts=2 sw=2 et ai foldmethod=indent:
+#
+# A Zuul configuration file for a labs install that is hooked with Production
+# Gerrit and Jenkins. Should not report back to Gerrit and barely run any jobs.
+
+includes:
+  - python-file: 'parameter_functions.py'
+
+pipelines:
+  # Use this in combination with a check pipeline.
+  - name: test
+    description: >
+      Reacts on patchset and recheck comments
+    manager: IndependentPipelineManager
+    source: gerrit
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: comment-added
+          comment_filter: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
+
+jobs:
+  # Warning: the files regex are using python re.match() which match at the
+  # beginning of the filename. '.js$' will only match '.js' not 'foo.js'.
+  #
+  # See: http://docs.python.org/2/library/re.html#search-vs-match
+  - name: ^.*$
+    parameter-function: set_parameters
+  - name: ^.*-non-voting$
+    voting: false
+
+project-templates:
+
+  - name: dummy-template
+    test:
+      - noop
+
+# Register a few high traffic / testing projects
+projects:
+
+  - name: integration/config
+    template:
+      - name: dummy-template
+
+  - name: mediawiki/core
+    template:
+      - name: dummy-template
+
+  - name: operations/puppet
+    template:
+      - name: dummy-template
+
+  - name: test/gerrit-ping
+    template:
+      - name: dummy-template
