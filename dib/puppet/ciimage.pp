@@ -47,13 +47,6 @@ require_package('djvulibre-bin')
 
 include contint::packages::ruby
 
-# Lot of npm based jobs rely on jsduck...
-if os_version('ubuntu == trusty') {
-    # We have build a Debian package
-    package { 'ruby-jsduck':
-        ensure => present,
-    }
-}
 # Install from gem
 if os_version('debian >= jessie') {
     package { 'jsduck':
