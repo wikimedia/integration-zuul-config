@@ -52,15 +52,16 @@ include contint::packages::ruby
 # Install from gem
 if os_version('debian >= jessie') {
     package { 'jsduck':
-        ensure          => present,
-        provider        => 'gem',
-        require         => [
+        ensure   => present,
+        provider => 'gem',
+        require  => [
             Class['::contint::packages::ruby'],
             Package['build-essential'],
         ],
     }
 }
 
+# allow apache2 execution
 class apache2_allow_execution {
   exec { 'allow apache2 execution':
       command => '/bin/chmod +x /usr/sbin/apache2',
