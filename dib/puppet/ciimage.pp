@@ -29,6 +29,8 @@ include contint::hhvm
 
 include contint::packages::javascript
 include contint::packages::php
+include phabricator::arcanist
+
 require_package('php5-xhprof')
 exec { 'Enable PHP module xhprof':
     command     => '/usr/sbin/php5enmod -s ALL xhprof',
