@@ -1,16 +1,6 @@
-# YAML structure to define email recipients aliases
-- notification-emails:
-    name: selenium-emails # a 'name' is required by JJB.
-    lists:
-     - default: &emails-default
-        qa-alerts@lists.wikimedia.org zfilipin@wikimedia.org
-
-     - fundraising: &emails-fundraising
-        fr-tech@wikimedia.org qa-alerts@lists.wikimedia.org
-
 - project:
     name: CentralAuth
-    recipients: *emails-default
+    recipients: gtisza@wikimedia.org qa-alerts@lists.wikimedia.org
     repository: mediawiki/extensions/CentralAuth
 
     jobs:
@@ -18,7 +8,7 @@
 
 - project:
     name: CentralNotice
-    recipients: *emails-fundraising
+    recipients: agreen@wikimedia.org qa-alerts@lists.wikimedia.org
     repository: mediawiki/extensions/CentralNotice
 
     jobs:
@@ -34,7 +24,7 @@
 
 - project:
     name: Core
-    recipients: *emails-default
+    recipients: qa-alerts@lists.wikimedia.org zfilipin@wikimedia.org
     repository: mediawiki/core
 
     jobs:
@@ -76,7 +66,7 @@
     name: MobileFrontend
     # do not sent e-mail messages to Jon until jobs are more stable
     # recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org
-    recipients: *emails-default
+    recipients: qa-alerts@lists.wikimedia.org
     repository: mediawiki/extensions/MobileFrontend
 
     jobs:
@@ -86,7 +76,7 @@
     name: MultimediaViewer
     # do not sent e-mail messages to Jon until jobs are more stable
     # recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org
-    recipients: *emails-default
+    recipients: qa-alerts@lists.wikimedia.org
     repository: mediawiki/extensions/MultimediaViewer
 
     jobs:
@@ -96,14 +86,6 @@
     name: PageTriage
     recipients: qa-alerts@lists.wikimedia.org sbisson@wikimedia.org
     repository: mediawiki/extensions/PageTriage
-
-    jobs:
-     - 'selenium-{name}'
-
-- project:
-    name: PdfHandler
-    recipients: *emails-default
-    repository: mediawiki/extensions/PdfHandler
 
     jobs:
      - 'selenium-{name}'
@@ -125,17 +107,10 @@
      - 'selenium-{name}'
 
 - project:
-    name: WikiLove
-    recipients: qa-alerts@lists.wikimedia.org sbisson@wikimedia.org
-    repository: mediawiki/extensions/WikiLove
-
-    jobs:
-     - 'selenium-{name}'
-
-- project:
-    name: Wikidata
-    recipients: adrian.lang@wikimedia.de qa-alerts@lists.wikimedia.org
-    repository: wikidata/browsertests
+    name: VisualEditor
+    path_to_ci_yml: modules/ve-mw/tests/browser/ci.yml
+    recipients: jforrester@wikimedia.org qa-alerts@lists.wikimedia.org
+    repository: mediawiki/extensions/VisualEditor
 
     jobs:
      - 'selenium-{name}'
@@ -149,10 +124,17 @@
      - 'selenium-{name}'
 
 - project:
-    name: VisualEditor
-    path_to_ci_yml: modules/ve-mw/tests/browser/ci.yml
-    recipients: jforrester@wikimedia.org qa-alerts@lists.wikimedia.org
-    repository: mediawiki/extensions/VisualEditor
+    name: Wikidata
+    recipients: adrian.lang@wikimedia.de qa-alerts@lists.wikimedia.org
+    repository: wikidata/browsertests
+
+    jobs:
+     - 'selenium-{name}'
+
+- project:
+    name: WikiLove
+    recipients: qa-alerts@lists.wikimedia.org sbisson@wikimedia.org
+    repository: mediawiki/extensions/WikiLove
 
     jobs:
      - 'selenium-{name}'
