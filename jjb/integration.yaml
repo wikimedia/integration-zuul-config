@@ -71,6 +71,7 @@
         /usr/bin/zuul-server -c <(echo '[zuul]') -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/before.txt
         sed -i -e 's/^INFO:zuul.IndependentPipelineManager:Configured Pipeline Manager /Pipeline: /' log/current.txt log/before.txt
         colordiff --show-function-line='^Pipeline: ' -u log/before.txt log/current.txt
+        gzip --best log/before.txt log/current.txt
     publishers:
      - archive-log-dir
 
