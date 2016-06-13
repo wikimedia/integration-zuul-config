@@ -109,10 +109,9 @@
                 --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
                 --workspace src \
                 --cache-dir /srv/git \
-                --branch fundraising/{branch} \
+                --branch {branch} \
                 --project-branch mediawiki/extensions/DonationInterface=master \
-                --project-branch mediawiki/skins/Vector={branch} \
-                --project-branch mediawiki/vendor={branch} \
+                --project-branch mediawiki/vendor=fundraising/{branch} \
                   https://gerrit.wikimedia.org/r/p \
                     $(cat deps.txt)
 
