@@ -293,7 +293,6 @@ class TestZuulScheduler(unittest.TestCase):
             '.*-(js|shell|php5[35]|)lint',
             '(pp|erb)lint-HEAD',
             '.*-(tabs|typos)',
-            'operations-puppet-pep8',
             '.*-puppet-validate',
             '.*-puppetlint-strict',
             '.*-whitespaces',

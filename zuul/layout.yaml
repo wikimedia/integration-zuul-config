@@ -746,14 +746,6 @@ jobs:
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
 
-  - name: operations-puppet-pep8
-    files:
-     - '^(.*\.py|tox.ini|.pep8|setup.cfg)$'
-    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/violations/'
-
-  - name: ^operations-puppet-tox-pep8-jessie$
-    voting: false
-
   - name: operations-puppet-puppetlint-strict
     voting: true
 
@@ -2046,20 +2038,17 @@ projects:
       - erblint-HEAD
       - pplint-HEAD
       - operations-puppet-puppetlint-strict
-      - operations-puppet-pep8
       - operations-puppet-typos
     # Same for trusted user
     test:
       # testing
-      - operations-puppet-tox-pep8-jessie
-      - operations-puppet-tox-py27-jessie
+      - operations-puppet-tox-jessie
+      - rake-jessie
       # Same as `check` pipeline:
       - erblint-HEAD
       - pplint-HEAD
       - operations-puppet-puppetlint-strict
-      - operations-puppet-pep8
       - operations-puppet-typos
-      - rake-jessie
     experimental:
       - tox-jessie
     postmerge:

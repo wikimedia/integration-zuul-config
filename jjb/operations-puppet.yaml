@@ -11,33 +11,6 @@
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/bin/puppet-test-runner.sh"
 
-# Run pep8 per file so that individual puppet dirs
-#  can specify their own .pep8 rules
-- job-template:
-    name: 'operations-puppet-pep8'
-    node: contintLabsSlave && UbuntuTrusty
-    # Dont process other puppet submodules
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-
-    triggers:
-     - zuul
-
-    builders:
-      # Requires Jenkins slave scripts
-      - shell: |
-         set -o pipefail
-         /srv/deployment/integration/slave-scripts/tools/puppet_pep8.py . | tee pep8.txt
-         set +o pipefail
-
-    publishers:
-     - violations:
-         pep8:
-             min: 0
-             max: 1
-             unstable: 1
-             pattern: '**/pep8.txt'
-
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
@@ -81,14 +54,9 @@
 
 - project:
     name: 'operations-puppet'
-
-    toxenv:
-     - pep8
-     - py27
     jobs:
      - '{name}-puppetlint-strict'
-     - '{name}-tox-{toxenv}-jessie'
      - '{name}-typos'
+     - '{name}-tox-jessie'
      - operations-puppet-test
      - operations-puppet-doc
-     - operations-puppet-pep8
