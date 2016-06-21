@@ -1,0 +1,240 @@
+# Phabricator-triggered jobs
+
+- defaults:
+    name: phabricator-defaults
+    description: |
+        <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+        <p>This job is triggered by Phabricator</p>
+    project-type: freestyle
+    logrotate:
+        daysToKeep: 30
+    concurrent: true
+    auth-token: harbormaster-token
+    properties:
+        - zeromq-event
+    triggers:
+        - raw:
+            xml: |
+                <triggers/>
+    scm:
+        - git:
+            wipe-workspace: true
+            browser: phabricator
+            browser-url: https://phabricator.wikimedia.org
+    wrappers:
+        - timeout:
+            timeout: 30
+            fail: true
+        - timestamps
+        - ansicolor
+    publishers:
+        - phabricator-comment
+        - archive-log-dir
+
+
+- publisher:
+    name: phabricator-comment
+    publishers:
+        - phabricator:
+            comment-on-success: false
+            uberalls-enabled: false
+            comment-with-console-link-on-failure: true
+            comment-file: ".phabricator_comment"
+            comment-size: 1000
+
+
+- builder:
+    name: phabricator-builder-checkout
+    builders:
+        - shell: |
+            set +e
+            git
+            git fetch -c core.askpass=true fetch --tags --progress "$CLONE_URI" +refs/heads/*:refs/remotes/origin/*
+            git checkout $CHECKOUT_REVISION
+            if [ $? -gt 0 ]; then
+                git checkout FETCH_HEAD
+            fi
+- builder:
+    name: phabricator-builder-prebuild
+    builders:
+        - shell: |
+            COMMENT="|{{icon question-circle}}|**Test Name**|{icon link}|"
+            echo $COMMENT > .phabricator_comment
+            rm log/stdout.log || true > /dev/null 2>&1
+            rm log/phab_comment.log || true > /dev/null 2>&1
+            mkdir -p log/ || true
+
+- builder:
+    name: phabricator-builder-postbuild
+    builders:
+        - shell: |
+            set +e
+            if [ -f .phab_comment.log ]; then
+                cat log/phab_comment.log >> .phabricator_comment
+                rm log/phab_comment.log || true > /dev/null 2>&1
+            fi
+- builder:
+    name: phabricator-builder
+    builders:
+        - shell: |
+            set +e
+            if [ -f '{configfile}' ]; then
+                echo 'Found {configfile}, running {testname}:'
+                set -o pipefail
+                {command} | tee "log/stdout.log"
+                if [ $? -gt 0 ]; then
+                    # log the error and exit cleanly to continue other build steps
+                    COMMENT="|{{icon times-circle color=red}}|{testname}|[[$BUILD_URL | Build Details]]|"
+                    echo "$COMMENT" >> .phabricator_comment
+                    echo "== {testname} log ==" >> log/phab_comment.log
+                    echo "```" >> log/phab_comment.log
+                    tail -5 log/stdout.log >> log/phab_comment.log
+                    echo "```" >> log/phab_comment.log
+                    exit 1
+                fi
+            fi
+
+- builder:
+    name: phabricator-builder-arclint
+    builders:
+        - phabricator-builder:
+            testname: "arc lint"
+            configfile: ".arclint"
+            command: "arc lint --rev HEAD^ --output summary --never-apply-patches --severity error"
+
+
+- builder:
+    name: phabricator-builder-arcunit
+    builders:
+        - phabricator-builder:
+            testname: "arcanist unit tests"
+            configfile: ".arcunit"
+            command: "/usr/bin/arc unit --rev HEAD^ -target $PHID"
+
+
+- builder:
+    name: phabricator-builder-composer
+    builders:
+        - phabricator-builder:
+            testname: "composer test"
+            configfile: "composer.json"
+            command: "composer install && composer test"
+
+
+- builder:
+    name: phabricator-builder-npm
+    builders:
+        - phabricator-builder:
+            testname: "npm tests"
+            configfile: "package.json"
+            command: "npm install && npm run test"
+
+
+- builder:
+    name: phabricator-builder-rake
+    builders:
+        - phabricator-builder:
+            testname: 'rake -T'
+            configfile: "Rakefile"
+            command: "bundle exec rake -T"
+
+
+- builder:
+    name: phabricator-builder-tox
+    builders:
+        - phabricator-builder:
+            testname: 'tox -v'
+            configfile: "tox.ini"
+            command: "PY_COLORS=1 tox -v"
+
+
+- builder:
+    name: phabricator-builder-all
+    builders:
+        - phabricator-builder-prebuild
+        - phabricator-builder-arclint
+        - phabricator-builder-arcunit
+        - phabricator-builder-composer
+        - phabricator-builder-npm
+        - phabricator-builder-rake
+        - phabricator-builder-tox
+        - phabricator-builder-postbuild
+
+
+- job-template:
+    name: '{name}-{platform}-diffs'
+    node: ci-{platform}-wikimedia
+    defaults: phabricator-defaults
+
+    scm:
+        - git:
+            url: '$CLONE_URI'
+            branches:
+                - FETCH_HEAD
+
+    builders:
+        - phabricator-builder-all
+
+    parameters:
+        - string:
+            name: PHID
+            description: "Unique id of the build target in phabricator."
+        - string:
+            name: DIFF_ID
+            default: ""
+            description: "Differential diff ID to apply."
+        - string:
+            name: CLONE_URI
+            description: "The public clone URI of the repository."
+        - string:
+            name: STAGING_REF
+            default: ""
+            description: "(optional) a ref in the staging repository that points to a specific revision to test."
+    wrappers:
+       - raw:
+            xml: |
+                <com.uber.jenkins.phabricator.PhabricatorBuildWrapper plugin="phabricator-plugin@1.9.5">
+                    <createCommit>true</createCommit>
+                    <applyToMaster>false</applyToMaster>
+                    <skipForcedClean>false</skipForcedClean>
+                    <createBranch>false</createBranch>
+                    <patchWithForceFlag>true</patchWithForceFlag>
+                </com.uber.jenkins.phabricator.PhabricatorBuildWrapper>
+
+
+- job-template:
+    name: '{name}-{platform}-commits'
+    node: ci-{platform}-wikimedia
+    defaults: phabricator-defaults
+
+    scm:
+     - git:
+        url: '$CLONE_URI'
+        branches:
+         - '$CHECKOUT_REVISION'
+
+    builders:
+        - phabricator-builder-all
+    publishers:
+        - phabricator-comment
+        - archive-log-dir
+    parameters:
+        - string:
+            name: PHID
+            description: "Unique id of the build target in phabricator."
+        - string:
+            name: CLONE_URI
+            description: "The public clone URI of the repository."
+        - string:
+            name: CHECKOUT_REVISION
+            description: "The hash of a specific revision to test."
+
+
+- project:
+    name: phabricator
+    platform:
+      - jessie
+      - trusty
+    jobs:
+        - '{name}-{platform}-commits'
+        - '{name}-{platform}-diffs'
