@@ -1,0 +1,163 @@
+# Phabricator-triggered jobs
+
+- defaults:
+    name: phabricator-defaults
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      <p>This job is triggered by Phabricator</p>
+    project-type: freestyle
+    logrotate:
+        daysToKeep: 30
+    scm:
+     - git:
+        url: '$CLONE_URI'
+        branches:
+         - '$CHECKOUT_REVISION'
+        wipe-workspace: true
+        browser: phabricator
+        browser-url: https://phabricator.wikimedia.org
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+
+
+- publisher:
+    name: phabricator-comment
+    publishers:
+        - phabricator:
+            comment-on-success: false
+            uberalls-enabled: false
+            comment-with-console-link-on-failure: true
+            comment-file: ".phabricator_comment"
+            comment-size: 1000
+
+
+- builder:
+    name: phabricator-builder
+    builders:
+        - shell: |
+            # remarkup-formatted comment that will be sent to phabricator
+            COMMENT="{{icon check-circle color=green}} [[$BUILD_URL | Build Details]]"
+            echo $COMMENT > .phabricator_comment
+            rm log/stdout.log || true > /dev/null 2>&1
+        - shell: |
+            if [ -f '{configfile}' ]; then
+                echo 'Found {configfile}, running {testname}:'
+                {command} | tee "log/stdout.log"
+                if [ $1 -gt 0 ]; then
+                    COMMENT="{{icon times-circle color=red}} [[$BUILD_URL | Build Details]]"
+                    echo "$COMMENT" > .phabricator_comment
+                    tail -10 log/stdout.log >> .phabricator_comment
+                    exit $1
+                fi
+            fi
+
+
+- builder:
+    name: phabricator-builder-arclint
+    builders:
+      - phabricator-builder:
+          testname: "arc lint"
+          configfile: ".arclint"
+          command: "arc lint --rev HEAD^ --output summary --never-apply-patches --severity error"
+
+
+- builder:
+    name: phabricator-builder-arcunit
+    builders:
+        - phabricator-builder:
+            testname: "arcanist unit tests"
+            configfile: ".arcunit"
+            command: "/usr/bin/arc unit --rev HEAD^ -target $PHID"
+
+
+- builder:
+      name: phabricator-builder-composer
+      builders:
+          - phabricator-builder:
+            testname: 'composer test'
+            configfile: "composer.json"
+            command: "(composer install && composer test)"
+
+
+- builder:
+      name: phabricator-builder-npm
+      builders:
+          - phabricator-builder:
+            testname: 'npm tests'
+            configfile: "package.json"
+            command: "(npm install && npm run test)"
+
+
+- builder:
+      name: phabricator-builder-rake
+      builders:
+          - phabricator-builder:
+            testname: 'rake -T'
+            configfile: "Rakefile"
+            command: "bundle exec rake -T"
+
+
+- builder:
+      name: phabricator-builder-tox
+      builders:
+          - phabricator-builder:
+            testname: 'tox -v'
+            configfile: "tox.ini"
+            command: "PY_COLORS=1 tox -v"
+
+
+- builder:
+    name: phabricator-builder-all
+    builders:
+        - phabricator-builder-arclint
+        - phabricator-builder-arcunit
+        - phabricator-builder-composer
+        - phabricator-builder-npm
+        - phabricator-builder-rake
+        - phabricator-builder-tox
+
+
+- job-template:
+    name: '{name}-jessie'
+    node: ci-jessie-wikimedia
+    defaults: phabricator-defaults
+    concurrent: true
+    auth-token: harbormaster-token
+    properties:
+        - zeromq-event
+    triggers:
+        - raw:
+              xml: |
+                  <triggers/>
+    builders:
+        - castor-load
+        - phabricator-builder-all
+    publishers:
+        - phabricator-comment
+        - archive-log-dir
+        - castor-save
+    parameters:
+        - string:
+            name: PHID
+            description: "Phabricator unique id of build target"
+        - string:
+            name: CALLSIGN
+            description: "Phabricator repository callsign"
+        - string:
+            name: DIFF_ID
+            description: "Differential diff ID to test"
+        - string:
+            name: CLONE_URI
+            description: "Repository URI to clone"
+        - string:
+            name: CHECKOUT_REVISION
+            description: "Either a revision sha or a git ref to checkout"
+
+- project:
+    name: phabricator
+    jobs:
+     - '{name}-jessie'
