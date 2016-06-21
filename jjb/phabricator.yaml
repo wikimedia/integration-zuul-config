@@ -1,0 +1,257 @@
+# Phabricator-triggered jobs
+
+- defaults:
+    name: phabricator-defaults
+    description: |
+        <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+        <p>This job is triggered by Phabricator</p>
+    project-type: freestyle
+    logrotate:
+        daysToKeep: 30
+    concurrent: true
+    auth-token: harbormaster-token
+    properties:
+        - zeromq-event
+    scm:
+        - git:
+            browser: phabricator
+            browser-url: https://phabricator.wikimedia.org
+    wrappers:
+        - timeout:
+            timeout: 30
+            fail: true
+        - timestamps
+        - ansicolor
+
+    publishers:
+        - phabricator-comment
+        - archive-log-dir
+
+# Add details to the .phabricator_comment file. The contents are included in
+# the comment that jenkins posts to the phabricator diff/commit when tests fail.
+
+- publisher:
+    name: phabricator-comment
+    publishers:
+        - phabricator:
+            comment-on-success: false
+            uberalls-enabled: false
+            comment-with-console-link-on-failure: true
+            comment-file: ".phabricator_comment"
+            comment-size: 1000
+        - postbuildscript:
+            builders:
+                - shell: |
+                    set +e
+                    cat log/.phabricator_comment log/phab_comment.log > ./.phabricator_comment
+                    rm -f log/phab_comment.log log/.phabricator_comment
+            onsuccess: false
+            onfailure: false
+
+
+- builder:
+    name: phabricator-builder-prebuild
+    builders:
+        - shell: |
+            COMMENT="|{{icon question-circle}}|**Test Name**|{icon link}|"
+            mkdir -p log/
+            echo $COMMENT > log/.phabricator_comment
+
+# This builder is used once for each test entrypoint
+# parameters are:
+#   testname: the name of the unit testing framework, e.g. "composer test"
+#   configfile: the test framework's config file. If this file is present,
+#               we run corresponding tests, otherwise the test is skipped.
+#   pretestcmd: optional, command to initialize test environment before test run
+#   versioncmd: optional, the output of this command is logged for debugging failed test runs
+#   testcmd: The shell command line to execute to run this test.
+- builder:
+    name: phabricator-builder
+    builders:
+        - shell: |
+            set +e
+            if [ -f '{configfile}' ]; then
+                echo 'Found {configfile}, running {testname}:'
+                set -o pipefail
+                # run pretest command, if any:
+                {pretestcmd} | tee "log/stdout.log"
+                TEST_EXIT_CODE=$?
+                WHAT_FAILED="{pretestcmd}"
+                # if pretest succeeded, run test command:
+                if [ $TEST_EXIT_CODE -eq 0 ]; then
+                    {testcmd} | tee "log/stdout.log"
+                    TEST_EXIT_CODE=$?
+                    WHAT_FAILED="{testcmd}"
+                fi
+                # if either command failed, log the details
+                if [ $TEST_EXIT_CODE -gt 0 ]; then
+                    # log the error and exit cleanly to continue other build steps
+                    COMMENT="|{{icon times-circle color=red}}|{testname}|[[$BUILD_URL | Build Details]]|"
+                    echo "$COMMENT" >> log/.phabricator_comment
+                    echo "== {testname} log ==" >> log/phab_comment.log
+                    echo "Got exit code $TEST_EXIT_CODE from $WHAT_FAILED" >> log/phab_comment.log
+                    {versioncmd} >> log/phab_comment.log
+                    echo "```" >> log/phab_comment.log
+                    tail -10 log/stdout.log >> log/phab_comment.log
+                    echo "```" >> log/phab_comment.log
+                    exit $TEST_EXIT_CODE
+                fi
+            fi
+
+
+# run arc lint if .arclint is found in the repo
+- builder:
+    name: phabricator-builder-arclint
+    builders:
+        - phabricator-builder:
+            testname: "arc lint"
+            configfile: ".arclint"
+            versioncmd: "dpkg-query --show arcanist"
+            pretestcmd: "BASE_REV=`arc which --show-base`"
+            testcmd: "arc lint --rev $BASE_REV --output summary --never-apply-patches --severity error"
+
+# run arc unit if .arcunit is found in the repo
+- builder:
+    name: phabricator-builder-arcunit
+    builders:
+        - phabricator-builder:
+            testname: "arcanist unit tests"
+            configfile: ".arcunit"
+            versioncmd: "dpkg-query --show arcanist"
+            pretestcmd: "BASE_REV=`arc which --show-base`"
+            testcmd: "arc unit --rev $BASE_REV -target $PHID"
+
+# run composer test if composer.json is found in the repo
+- builder:
+    name: phabricator-builder-composer
+    builders:
+        - phabricator-builder:
+            testname: "composer test"
+            configfile: "composer.json"
+            versioncmd: "composer --version"
+            pretestcmd: "composer update --ansi --no-progress --prefer-dist --profile -v"
+            testcmd: "composer test"
+
+# run npm test if package.json is found in the repo
+- builder:
+    name: phabricator-builder-npm
+    builders:
+        - phabricator-builder:
+            testname: "npm tests"
+            configfile: "package.json"
+            versioncmd: "node --version && npm --version"
+            pretestcmd: "npm install"
+            testcmd: "npm run test"
+
+# run rake test if Rakefile is found in the repo
+- builder:
+    name: phabricator-builder-rake
+    builders:
+        - phabricator-builder:
+            testname: 'rake -T'
+            configfile: "Rakefile"
+            versioncmd: "rake --version"
+            pretestcmd: "bundle install --clean --verbose"
+            testcmd: "bundle exec rake test"
+
+
+- builder:
+    name: phabricator-builder-tox
+    builders:
+        - phabricator-builder:
+            testname: 'tox -v'
+            configfile: "tox.ini"
+            versioncmd: "tox --version"
+            pretestcmd: "tox -l"
+            testcmd: "PY_COLORS=1 tox -v"
+
+
+- builder:
+    name: phabricator-builder-all
+    builders:
+        - phabricator-builder-prebuild
+        - phabricator-builder-arclint
+        - phabricator-builder-arcunit
+        - phabricator-builder-composer
+        - phabricator-builder-npm
+        - phabricator-builder-rake
+        - phabricator-builder-tox
+
+
+- job-template:
+    name: '{name}-{platform}-diffs'
+    node: contintLabsSlave && DebianJessie
+    defaults: phabricator-defaults
+
+    scm:
+        - git:
+            url: '$CLONE_URI'
+            branches:
+                - FETCH_HEAD
+
+    builders:
+        - phabricator-builder-all
+
+    parameters:
+        - string:
+            name: PHID
+            description: "Unique id of the build target in phabricator."
+        - string:
+            name: DIFF_ID
+            default: ""
+            description: "Differential diff ID to apply."
+        - string:
+            name: CLONE_URI
+            description: "The public clone URI of the repository."
+        - string:
+            name: STAGING_REF
+            default: ""
+            description: "(optional) a ref in the staging repository that points to a specific revision to test."
+    wrappers:
+       - raw:
+            xml: |
+                <com.uber.jenkins.phabricator.PhabricatorBuildWrapper plugin="phabricator-plugin@1.9.5">
+                    <createCommit>true</createCommit>
+                    <applyToMaster>false</applyToMaster>
+                    <skipForcedClean>false</skipForcedClean>
+                    <createBranch>false</createBranch>
+                    <patchWithForceFlag>true</patchWithForceFlag>
+                </com.uber.jenkins.phabricator.PhabricatorBuildWrapper>
+
+
+- job-template:
+    name: '{name}-{platform}-commits'
+    node: contintLabsSlave && DebianJessie
+    defaults: phabricator-defaults
+
+    scm:
+     - git:
+        url: '$CLONE_URI'
+        branches:
+         - '$CHECKOUT_REVISION'
+
+    builders:
+        - phabricator-builder-all
+    publishers:
+        - phabricator-comment
+        - archive-log-dir
+    parameters:
+        - string:
+            name: PHID
+            description: "Unique id of the build target in phabricator."
+        - string:
+            name: CLONE_URI
+            description: "The public clone URI of the repository."
+        - string:
+            name: CHECKOUT_REVISION
+            description: "The hash of a specific revision to test."
+
+
+- project:
+    name: phabricator
+    platform:
+      - jessie
+      - trusty
+    jobs:
+        - '{name}-{platform}-commits'
+        - '{name}-{platform}-diffs'
