@@ -7455,24 +7455,11 @@ projects:
 
   - name: mediawiki/extensions/timeline
     template:
+      - name: composer-test
+      - name: extension-unittests-non-voting
       - name: npm
     check:
       - jsonlint
-      - php53lint
-      - composer-validate
-    test:
-     - php53lint
-     - composer-validate
-    gate-and-submit:
-     - php53lint
-     - composer-validate
-    experimental:
-     - mediawiki-extensions-hhvm
-     - mediawiki-extensions-qunit-jessie
-     - mwext-testextension-hhvm
-     - mwext-testextension-php53-composer
-     - mwext-testextension-hhvm-composer
-     - composer-php53
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
