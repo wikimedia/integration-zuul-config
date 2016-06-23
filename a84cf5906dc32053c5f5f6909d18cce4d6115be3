@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0efd9372_9ae2839a",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "So just leave out the triggers entirely?",
+      "parentUuid": "0efd9372_f2b93979",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efd9372_d26b55ec",
         "filename": "jjb/phabricator.yaml",
         "patchSetId": 7
@@ -30,6 +48,24 @@
       "writtenOn": "2016-06-23T13:26:16Z",
       "side": 1,
       "message": "The Nodepool instances are used only once, hence there is no need to wipe-workspace.",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_7add1fe1",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0efd9372_d26b55ec",
       "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "0efd9372_daeb6b75",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "so just leave this out?",
+      "parentUuid": "0efd9372_f24f7995",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efd9372_5225a5bb",
         "filename": "jjb/phabricator.yaml",
         "patchSetId": 7
@@ -64,6 +118,24 @@
       "writtenOn": "2016-06-23T13:26:16Z",
       "side": 1,
       "message": "rm -f will silently ignore a file not existing so you can simply:\n\n rm -f log/stdout.log log/phab_comment.log\n\nAgain on Nodepool instances the workspace is initially empty and the log dir does not exist. So I would just drop the rm commands.",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_baee6784",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0efd9372_5225a5bb",
       "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "0efd9372_1ae693ac",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0efd9372_922f0d9c",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efd9372_141e6a63",
         "filename": "jjb/phabricator.yaml",
         "patchSetId": 7
@@ -98,6 +188,24 @@
       "writtenOn": "2016-06-23T13:26:16Z",
       "side": 1,
       "message": ".phab_comment.log is created by the rebuild step and this block is thus always executed.\n\nI would drop that step and instead have the prebuild one to:\n\n COMMENT\u003d\"...\"\n mkdir -p log\n echo \"$COMMENT\" \u003e log/.phabricator_comment\n\nThen have all the build steps to append directly to log/.phabricator_comment and then you can drop that postbuild step.\n\n\nAdditionaly, the builder has no guarantee to be run, for example if the job is aborted due to a timeout.  To make sure a script runs we use the postbuild publisher:\n\n - publisher:\n     name: run-after-build\n     publishers:\n      - postbuildscript:\n          builders:\n           - shell: \"echo foo\"\n          # Postbuild options are confusing, setting both to false ensures the script always runs.\n          onsuccess: False\n          onfailure: False",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_fae8ef78",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0efd9372_141e6a63",
       "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "0efd9372_5aff7b31",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0efd9372_94489a61",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efd9372_94beda11",
         "filename": "jjb/phabricator.yaml",
         "patchSetId": 7
@@ -132,6 +258,24 @@
       "writtenOn": "2016-06-23T13:26:16Z",
       "side": 1,
       "message": "composer install install from the composer.lock but we have switched everything to just update (forgot all the details).\n\nSeems our default macro is:\n\n  composer update --ansi --no-progress --prefer-dist --profile -v\n\n\ncomposer test should be aligned with the existing composer-test macro:\n\n COMPOSER_PROCESS_TIMEOUT\u003d600 composer --ansi test\n\nWhile at it we could display the composer version:  composer --version",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_3afa7740",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "Can I reuse a macro instead of duplicating code here?",
+      "parentUuid": "0efd9372_94beda11",
       "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "0efd9372_9af9e34c",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "is there a reusable macro? if not should I make one?",
+      "parentUuid": "0efd9372_b48afe6b",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efd9372_74909698",
         "filename": "jjb/phabricator.yaml",
         "patchSetId": 7
@@ -166,6 +328,24 @@
       "writtenOn": "2016-06-23T13:26:16Z",
       "side": 1,
       "message": "rake -T list documented tasks but does not execute any. We also need to install the dependencies:\n\n bundle install --clean --verbose\n bundle exec rake test\n\nThat should do it",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_7af4ff50",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "is there a reusable macro? if not should I make one?",
+      "parentUuid": "0efd9372_74909698",
       "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -206,6 +386,24 @@
     },
     {
       "key": {
+        "uuid": "0efd9372_1a9df30e",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "no",
+      "parentUuid": "0efd9372_54c912ad",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efd9372_5448f231",
         "filename": "jjb/phabricator.yaml",
         "patchSetId": 7
@@ -217,6 +415,24 @@
       "writtenOn": "2016-06-23T13:26:16Z",
       "side": 1,
       "message": "That is creative ;-}   We will want to upstream that to Jenkins Job Builder ;-)",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_3ad397d8",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1706
+      },
+      "writtenOn": "2016-06-23T17:52:00Z",
+      "side": 1,
+      "message": "They don\u0027t want to support the wrapper, see\nhttps://github.com/uber/phabricator-jenkins-plugin/issues/81\n\n\"Upstream strongly recommends against the arc patch based approach (the better approaches did not exist when this plugin was first written). I\u0027m not sure it makes sense to encourage arc patch via the wrapper\"\n\nUnfortunately the arc patch approach is the only one I can get working consistently because the staging repo doesn\u0027t yet work reliably with our current setup. So jjb won\u0027t be supporting this and the raw xml is a temporary workaround until we have reliable change handoff via staging URLs.",
+      "parentUuid": "0efd9372_5448f231",
       "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
