@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "0efd9372_5de2d52e",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T18:49:36Z",
+      "side": 1,
+      "message": "Yes you can remove it entirely.  JJB will just create an empty \u003ctriggers/\u003e :)",
+      "parentUuid": "0efd9372_9ae2839a",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efd9372_d26b55ec",
         "filename": "jjb/phabricator.yaml",
         "patchSetId": 7
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "so just leave this out?",
       "parentUuid": "0efd9372_f24f7995",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_3ddd5174",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T18:49:36Z",
+      "side": 1,
+      "message": "Given the prebuild step will always create the /log/ dir it should be fine.   We can always adjust later on as needed.",
+      "parentUuid": "0efd9372_daeb6b75",
       "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -282,6 +318,24 @@
     },
     {
       "key": {
+        "uuid": "0efd9372_1dd04d54",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T18:49:36Z",
+      "side": 1,
+      "message": "Not sure it can be done easily. The other macros tends to be several line longs and the phabricator-builder inject it in:\n\n {command} | tee \"log/stdlout.log\"\n\nMaybe we can hack it with something like  $({command}) | tee \"log/stdlout.log\" but that becomes complicated.\n\nGiven all those commands are straightforward and havent been tweaked/changed in a long time, I guess we can afford some code duplication.  It is simpler than trying to figure out a nicely engineered solution.",
+      "parentUuid": "0efd9372_3afa7740",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efd9372_b48afe6b",
         "filename": "jjb/phabricator.yaml",
         "patchSetId": 7
@@ -433,6 +487,24 @@
       "side": 1,
       "message": "They don\u0027t want to support the wrapper, see\nhttps://github.com/uber/phabricator-jenkins-plugin/issues/81\n\n\"Upstream strongly recommends against the arc patch based approach (the better approaches did not exist when this plugin was first written). I\u0027m not sure it makes sense to encourage arc patch via the wrapper\"\n\nUnfortunately the arc patch approach is the only one I can get working consistently because the staging repo doesn\u0027t yet work reliably with our current setup. So jjb won\u0027t be supporting this and the raw xml is a temporary workaround until we have reliable change handoff via staging URLs.",
       "parentUuid": "0efd9372_5448f231",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_dd3405aa",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T18:49:36Z",
+      "side": 1,
+      "message": "That sounds fair and let us at least get something to work / migrate to.  Can you please fill in a task about fixing the staging and blocking another task to get rid of this wrapper?  Simply so we dont forget :)\n\nThx for the clarification. Part is good as it is.",
+      "parentUuid": "0efd9372_3ad397d8",
       "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
