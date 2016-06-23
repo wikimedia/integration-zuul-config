@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0efd9372_f2b93979",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "I am not sure why it would be needed, we have jobs without any triggers such as tox-jessie and this raw xml seems to generate:\n\n +  \u003ctriggers class\u003d\"vector\"\u003e\n +    \u003ctriggers/\u003e\n +  \u003c/triggers\u003e\n\nIf there is a specific need for it, add a comment explain it.",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_d26b55ec",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "The Nodepool instances are used only once, hence there is no need to wipe-workspace.",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_f24f7995",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "Note that archive-log-dir will fail the build if /log/ is empty and most probably fail as well whenever it is non empty.   Maybe that is not an issue though",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_5225a5bb",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "rm -f will silently ignore a file not existing so you can simply:\n\n rm -f log/stdout.log log/phab_comment.log\n\nAgain on Nodepool instances the workspace is initially empty and the log dir does not exist. So I would just drop the rm commands.",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_922f0d9c",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "mkdir -p does not yield any error if target already exists, the || true can be removed.",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_141e6a63",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": ".phab_comment.log is created by the rebuild step and this block is thus always executed.\n\nI would drop that step and instead have the prebuild one to:\n\n COMMENT\u003d\"...\"\n mkdir -p log\n echo \"$COMMENT\" \u003e log/.phabricator_comment\n\nThen have all the build steps to append directly to log/.phabricator_comment and then you can drop that postbuild step.\n\n\nAdditionaly, the builder has no guarantee to be run, for example if the job is aborted due to a timeout.  To make sure a script runs we use the postbuild publisher:\n\n - publisher:\n     name: run-after-build\n     publishers:\n      - postbuildscript:\n          builders:\n           - shell: \"echo foo\"\n          # Postbuild options are confusing, setting both to false ensures the script always runs.\n          onsuccess: False\n          onfailure: False",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_94489a61",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "Nitpick: ideally we should exit with the original exit code.",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_94beda11",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "composer install install from the composer.lock but we have switched everything to just update (forgot all the details).\n\nSeems our default macro is:\n\n  composer update --ansi --no-progress --prefer-dist --profile -v\n\n\ncomposer test should be aligned with the existing composer-test macro:\n\n COMPOSER_PROCESS_TIMEOUT\u003d600 composer --ansi test\n\nWhile at it we could display the composer version:  composer --version",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_b48afe6b",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "Prepend it with:\n\n node --version\n npm --version\n\nUseful for devs / debugging.",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_74909698",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "rake -T list documented tasks but does not execute any. We also need to install the dependencies:\n\n bundle install --clean --verbose\n bundle exec rake test\n\nThat should do it",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_94ec1a22",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "For large repositories (namely mediawiki/core) the Nodepool instances have bare git repositories under /srv/git  but they are named after the Gerrit project name so that is not going to be of any help here.\n\nGuess we will come to it later :-}",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_54c912ad",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "Isn\u0027t the Phabricator plugin already taking care of cloning and checking out?",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efd9372_5448f231",
+        "filename": "jjb/phabricator.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-06-23T13:26:16Z",
+      "side": 1,
+      "message": "That is creative ;-}   We will want to upstream that to Jenkins Job Builder ;-)",
+      "revId": "a84cf5906dc32053c5f5f6909d18cce4d6115be3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
