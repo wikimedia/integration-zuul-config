@@ -326,7 +326,7 @@ class TestZuulScheduler(unittest.TestCase):
             'composer-validate',
             'composer-package-validate',
             'fail-archived-repositories',
-            'tox-jessie',
+            '.*tox-jessie',
             'commit-message-validator',
         ]
         safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
