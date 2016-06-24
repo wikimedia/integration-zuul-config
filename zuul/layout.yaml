@@ -2184,14 +2184,18 @@ projects:
     check:
       - wikimedia-fundraising-crm-jsonlint
       - php53lint
+      - php55lint
     test:
       - wikimedia-fundraising-crm-jsonlint
       - php53lint
+      - php55lint
       - wikimedia-fundraising-civicrm
+      # TODO: fixups so that we can run composer-validate
       - noop
     gate-and-submit:
       - wikimedia-fundraising-crm-jsonlint
       - php53lint
+      - php55lint
       - wikimedia-fundraising-civicrm
       # Since jobs above might not trigger due to file filtering and
       # wikimedia-fundraising-civicrm is not run on deployment branch, we still
@@ -2202,11 +2206,14 @@ projects:
   - name: wikimedia/fundraising/crm/civicrm
     check:
       - php53lint
+      - php55lint
     test:
       - php53lint
+      - php55lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
       - php53lint
+      - php55lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/drupal
@@ -2222,20 +2229,33 @@ projects:
   - name: wikimedia/fundraising/crm/vendor
     check:
       - php53lint
+      - php55lint
     test:
       - php53lint
+      - php55lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
       - php53lint
+      - php55lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/php-queue
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
     test:
+     - php53lint
+     - php55lint
      - composer-php53
      - composer-hhvm-trusty
+     - composer-validate
     gate-and-submit:
+     - php53lint
+     - php55lint
      - composer-php53
      - composer-hhvm-trusty
+     - composer-validate
 
   - name: wikimedia/fundraising/slander
     template:
