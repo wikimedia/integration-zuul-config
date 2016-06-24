@@ -30,7 +30,8 @@
 
 - job-template:
     name: 'apps-android-wikipedia-test'
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
+    jdk: 'Debian - OpenJdk 8'
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -98,7 +99,8 @@
 
 - job-template:
     name: 'apps-android-wikipedia-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
+    jdk: 'Debian - OpenJdk 8'
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -122,7 +124,8 @@
 # Additional lint check, not passing as of May 2015
 - job-template:
     name: 'apps-android-wikipedia-lint'
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
+    jdk: 'Debian - OpenJdk 8'
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
