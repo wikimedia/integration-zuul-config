@@ -667,12 +667,6 @@ jobs:
     files:
      - '^composer.json$'
 
-  # Don't run tests on deployment branches where the tests have been removed.
-  - name: ^composer-(php53|hhvm-trusty)$
-    skip-if:
-     - project: ^wikimedia/fundraising/SmashPig$
-       branch: ^deployment$
-
   - name: ^.*-php53lint$
     files:
      - '^.*\.(php|php5|phtml|inc)$'
@@ -708,6 +702,16 @@ jobs:
     skip-if:
       - project: '^mediawiki/.*$'
         branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
+      - project: ^wikimedia/fundraising/SmashPig$
+        branch: ^deployment$
+
+  # Don't run tests on deployment branches where the tests have been removed.
+  # Covered by test_smashpig_deployment_branch_filters
+  - name: ^composer-hhvm-trusty$
+    skip-if:
+     - project: ^wikimedia/fundraising/SmashPig$
+       branch: ^deployment$
+
 
   # Jobs testing multiple extensions together
   #
