@@ -667,6 +667,12 @@ jobs:
     files:
      - '^composer.json$'
 
+  # Don't run tests on deployment branches where the tests have been removed.
+  - name: ^composer-(php53|hhvm-trusty)$
+    skip-if:
+     - project: ^wikimedia/fundraising/SmashPig$
+       branch: ^deployment$
+
   - name: ^.*-php53lint$
     files:
      - '^.*\.(php|php5|phtml|inc)$'
@@ -2232,10 +2238,20 @@ projects:
       - name: tox-jessie
 
   - name: wikimedia/fundraising/SmashPig
+    check:
+     - php53lint
+     - php55lint
     test:
+     - php53lint
+     - php55lint
+     # TODO: clean up the composer.json, then enable validation here...
+     #- composer-validate
      - composer-php53
      - composer-hhvm-trusty
     gate-and-submit:
+     - php53lint
+     - php55lint
+     #- composer-validate
      - composer-php53
      - composer-hhvm-trusty
 
