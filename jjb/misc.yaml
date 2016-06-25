@@ -123,19 +123,28 @@
      - global-teardown
 
 - job:
-    name: 'oojs-ui-coverage'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'oojs-ui-coverage-jessie'
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
-     - npm
+     - assert-node-version-4.3
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+         node --version
+         npm --version
+         npm install
+         npm test
      - cover-publish:
         src: 'coverage'
         dest: 'oojs-ui'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'oojs-ui-doxygen-publish'
