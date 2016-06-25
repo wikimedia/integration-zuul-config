@@ -20,6 +20,7 @@ def set_parameters(item, job, params):
     hhvm_jobs = (
         'mediawiki-core-phpcs-trusty',
         'mw-tools-codesniffer-mwcore-testrun',
+        'oojs-ui-coverage-jessie',
         )
     php5_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
