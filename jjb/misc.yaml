@@ -154,21 +154,28 @@
      - global-teardown
 
 - job:
-    name: 'oojs-ui-demos-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'oojs-ui-demos-publish-jessie'
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
+    properties:
+     - zeromq-event
     triggers:
      - zuul
     builders:
-     - npm-install
-     - npm-run:
-         script: demos
+     - assert-node-version-4.3
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - shell: |
+        node --version
+        npm --version
+        npm install
+        npm run-script demos
      - doc-publish:
         docsrc: 'demos'
         docdest: 'oojs-ui/$DOC_SUBPATH/demos'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'visualeditor-coverage'
