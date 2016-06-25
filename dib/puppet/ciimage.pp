@@ -37,7 +37,7 @@ include apt
 include contint::packages::apt
 include contint::packages::php
 
-require_package('arcanist')
+include contint::arcanist
 
 require_package('php5-xhprof')
 exec { 'Enable PHP module xhprof':
