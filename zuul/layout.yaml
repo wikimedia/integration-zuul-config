@@ -232,7 +232,7 @@ pipelines:
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
+          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
     success-message: 'Basic test build succeeded.'
     success:
       gerrit:
@@ -253,7 +253,7 @@ pipelines:
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
+          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
     success-message: 'Basic test build succeeded.'
     success:
       gerrit:
@@ -467,7 +467,7 @@ pipelines:
         # Let whitelisted users the ability to reenqueue a change in the test
         # pipeline by simply commenting 'recheck' on a change.
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
+          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
           email: *email_whitelist
 
         # Let whitelisted users CR+1 to trigger tests for an untested patch
@@ -499,7 +499,7 @@ pipelines:
     trigger:
       gerrit:
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:\n\n\s*check experimental\.?\s*$
+          comment: (?im)^Patch Set \d+:\n\n\s*check experimental\.?\s*$
           email: *email_whitelist
     success-message: 'Experimental build succeeded.'
     success:
@@ -518,7 +518,7 @@ pipelines:
     trigger:
       gerrit:
         - event: comment-added
-          comment_filter: (?im)^Patch Set \d+:\n\n\s*check (php53?|zend)\.?\s*$
+          comment: (?im)^Patch Set \d+:\n\n\s*check (php53?|zend)\.?\s*$
           email: *email_whitelist
     success-message: 'PHP5 build succeeded.'
     success:
