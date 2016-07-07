@@ -1,5 +1,5 @@
-- job-template:
-    name: '{name}-compile-php55'
+- job:
+    name: 'php-compile-php55'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     triggers:
@@ -12,8 +12,8 @@
         make
         REPORT_EXIT_STATUS=1 make test
 
-- job-template:
-    name: '{name}-compile-hhvm'
+- job:
+    name: 'php-compile-hhvm'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     triggers:
@@ -24,42 +24,3 @@
          hphpize
          cmake .
          make
-
-# FastStringSearch PHP extension
-- project:
-    name: 'FastStringSearch'
-    jobs:
-     - '{name}-compile-php55'
-     - '{name}-compile-hhvm'
-
-# NativePreprocessor PHP extension
-- project:
-    name: 'NativePreprocessor'
-    jobs:
-     - '{name}-compile-php55'
-
-# luasandbox PHP extension
-- project:
-    name: 'luasandbox'
-    jobs:
-     - '{name}-compile-php55'
-     - '{name}-compile-hhvm'
-
-# wikidiff PHP extension
-- project:
-    name: 'wikidiff'
-    jobs:
-     - '{name}-compile-php55'
-
-# wikidiff2 PHP extension
-- project:
-    name: 'wikidiff2'
-    jobs:
-     - '{name}-compile-php55'
-     - '{name}-compile-hhvm'
-
-# wmerrors PHP extension
-- project:
-    name: 'wmerrors'
-    jobs:
-     - '{name}-compile-php55'
