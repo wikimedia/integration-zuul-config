@@ -24,3 +24,20 @@
          hphpize
          cmake .
          make
+
+# Version that runs the HHVM tests using a kind
+# of hack.
+- job:
+    name: 'php-compile-hhvm-test'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remoteonly-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         hhvm --version
+         hphpize
+         cmake .
+         make
+         phpize # Generate run-tests.php
+         ./hhvm-test.sh run-tests.php
