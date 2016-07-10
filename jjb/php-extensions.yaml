@@ -30,6 +30,7 @@
     publishers:
      - archive:
          artifacts: 'tests/*.log'
+         allow-empty: true
 
 # Version that runs the HHVM tests using a kind
 # of hack.
@@ -46,6 +47,6 @@
          cmake .
          make
          phpize # Generate run-tests.php
-         ./hhvm-test.sh run-tests.php
+         REPORT_EXIT_STATUS=1 ./hhvm-test.sh run-tests.php
     publishers:
      - archive-test-logs
