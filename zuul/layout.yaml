@@ -807,11 +807,6 @@ jobs:
     success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
     failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
 
-  - name: beta-parsoid-update-eqiad
-    branch: ^master$
-    success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
-    failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
-
   - name: ^debian-glue$
     # Point directly to artifacts
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
@@ -6920,7 +6915,6 @@ projects:
       - parsoidsvc-source-npm-node-0.10
       - parsoidsvc-source-npm-node-4.3
     postmerge:
-      - beta-parsoid-update-eqiad
       - parsoidsvc-source-jsduck-publish
 
   - name: mediawiki/services/parsoid/deploy
@@ -6935,8 +6929,6 @@ projects:
       - parsoidsvc-deploy-roundtrip-test-check-trusty
       - parsoidsvc-deploy-npm-node-0.10
       - parsoidsvc-deploy-npm-node-4.3
-    postmerge:
-      - beta-parsoid-update-eqiad
 
   - name: mediawiki/services/rcstream
     template:

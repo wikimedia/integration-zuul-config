@@ -169,39 +169,6 @@
           fixed: true
 
 - job-template:
-    name: beta-parsoid-update-eqiad
-    defaults: beta
-    node: deployment-parsoid-eqiad
-    triggers:
-     - zuul
-    logrotate:
-        daysToKeep: 15
-    builders:
-     # Builder macro that uses multigit.sh to fetch parsoid and parsoid/deploy
-     # applying triggered change patch to the proper repository
-     - shell: |
-         /srv/deployment/integration/slave-scripts/bin/multigit.sh \
-         mediawiki/services/parsoid mediawiki/services/parsoid/deploy
-     - shell: |
-         cd parsoid
-         # Extra paranoia, multigit already does a git clean -xqdff
-         rm -fR node_modules
-         npm install
-
-     - shell: |
-         PARSOID_TARGET=/srv/deployment/parsoid
-         mkdir -p "$PARSOID_TARGET"
-         # sync workspace and deployment target
-         RSYNC_OPTS="--update --times --recursive --links --delete-after --delay-updates"
-         rsync $RSYNC_OPTS $WORKSPACE/parsoid "$PARSOID_TARGET"
-         rsync $RSYNC_OPTS $WORKSPACE/deploy "$PARSOID_TARGET"
-
-     - shell: |
-         sudo /etc/init.d/parsoid restart
-    publishers:
-      - beta-irc
-
-- job-template:
     name: beta-cxserver-update-eqiad
     defaults: beta
     node: deployment-sca01
@@ -249,6 +216,5 @@
      - beta-code-update-eqiad
      - beta-mediawiki-config-update-eqiad
      - beta-cxserver-update-eqiad
-     - beta-parsoid-update-eqiad
      - beta-scap-eqiad
      - beta-update-databases-eqiad
