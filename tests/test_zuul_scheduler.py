@@ -45,7 +45,7 @@ class TestZuulScheduler(unittest.TestCase):
         cfg.add_section('zuul')
         cfg.set('zuul', 'layout_config', wmf_zuul_layout)
 
-        cls.sched = zuul.scheduler.Scheduler()
+        cls.sched = zuul.scheduler.Scheduler({})
         # Reporters and Triggers are registered by zuul-server, not the
         # Scheduler class:
         cls.sched.registerTrigger(FakeTrigger(), 'gerrit')
