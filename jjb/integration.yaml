@@ -32,7 +32,7 @@
      - zuul
     builders:
      - shell: |
-        /usr/bin/zuul-server  -c <(echo '[zuul]') -l "$WORKSPACE"/zuul/layout.yaml
+        /usr/bin/zuul-server  -c tests/fixtures/zuul-dummy.conf -l "$WORKSPACE"/zuul/layout.yaml
 
 - job-template:
     name: 'integration-zuul-layoutvalidation-gate'
@@ -46,7 +46,7 @@
      - shell: |
         rm -f jenkins_jobs.txt
         python /srv/deployment/integration/slave-scripts/bin/jenkins-jobs-list.py > jenkins_jobs.txt
-        /usr/bin/zuul-server -c <(echo '[zuul]') -t jenkins_jobs.txt -l "$WORKSPACE"/zuul/layout.yaml
+        /usr/bin/zuul-server -c tests/fixtures/zuul-dummy.conf -t jenkins_jobs.txt -l "$WORKSPACE"/zuul/layout.yaml
 
 # Job for Zuul configuration validation
 # Make sure the Zuul config is passed and show a different with the previous
