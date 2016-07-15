@@ -48,9 +48,9 @@ class TestZuulScheduler(unittest.TestCase):
         cls.sched = zuul.scheduler.Scheduler()
         # Reporters and Triggers are registered by zuul-server, not the
         # Scheduler class:
-        cls.sched.registerTrigger(FakeTrigger(), 'gerrit')
-        cls.sched.registerTrigger(FakeTrigger(), 'timer')
-        cls.sched.registerTrigger(FakeTrigger(), 'zuul')
+        cls.sched.triggers['gerrit'] = FakeTrigger()
+        cls.sched.triggers['timer'] = FakeTrigger()
+        cls.sched.triggers['zuul'] = FakeTrigger()
         cls.sched._doReconfigureEvent(ReconfigureEvent(cfg))
 
     @classmethod
