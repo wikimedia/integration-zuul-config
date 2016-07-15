@@ -14,21 +14,18 @@ import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
 import zuul.model
 
+from zuul.connection import BaseConnection
 
-class FakeTrigger(object):
 
+class FakeConnection(BaseConnection):
     """
-    Simulate a Zuul trigger.
-
-    When the scheduler is reconfigured, it calls maintainCache() on each
-    trigger.
+    Simulate a Zuul connection
     """
 
-    def maintainCache(self, relevant):
-        return
-
-    def postConfig(self):
-        return
+    def __init__(self, connection_name, connection_config):
+        super(FakeConnection, self).__init__(connection_name,
+                                             connection_config)
+        self.driver_name = connection_name
 
 
 class TestZuulScheduler(unittest.TestCase):
@@ -45,12 +42,12 @@ class TestZuulScheduler(unittest.TestCase):
         cfg.add_section('zuul')
         cfg.set('zuul', 'layout_config', wmf_zuul_layout)
 
-        cls.sched = zuul.scheduler.Scheduler()
         # Reporters and Triggers are registered by zuul-server, not the
         # Scheduler class:
-        cls.sched.registerTrigger(FakeTrigger(), 'gerrit')
-        cls.sched.registerTrigger(FakeTrigger(), 'timer')
-        cls.sched.registerTrigger(FakeTrigger(), 'zuul')
+        cls.sched = zuul.scheduler.Scheduler({})
+        cls.sched.registerConnections({
+            'gerrit': FakeConnection('gerrit', {})
+        })
         cls.sched._doReconfigureEvent(ReconfigureEvent(cfg))
 
     @classmethod
