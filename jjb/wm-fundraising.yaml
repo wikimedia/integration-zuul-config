@@ -64,7 +64,6 @@
     name: donationinterface-fundraising-branches
     branch:
      - REL1_25
-     - REL1_26
     jobs:
      - mwext-donationinterfacecore-{branch}-testextension-zend53:
 
@@ -81,6 +80,34 @@
          phpflavor: 'php53'
      - prepare-mediawiki-branch:
          branch: '{branch}'
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- project:
+    name: donationinterface-fundraising-branches-php55
+    branch:
+     - REL1_27
+    jobs:
+     - mwext-donationinterfacecore-{branch}-testextension-zend55:
+
+- job-template:
+    name: 'mwext-donationinterfacecore-{branch}-testextension-zend55'
+    node: 'contintLabsSlave && phpflavor-php55'
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: 'php55'
+     - prepare-mediawiki-branch:
+         branch: '{branch}'
+     - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
     publishers:
      - junit:
