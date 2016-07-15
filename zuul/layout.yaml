@@ -873,10 +873,6 @@ jobs:
   - name: mediawiki-core-jsduck-publish
     branch: ^(REL.*|master)$
 
-  # TODO make this voting once fundraising is on mw 1.27 and remove 1.25 test
-  - name: mwext-donationinterfacecore-REL1_27-testextension-zend55
-    voting: false
-
   # Job to ease reviews of MW-CS changes
   - name: mw-tools-codesniffer-mwcore-testrun
     voting: false
@@ -2955,9 +2951,9 @@ projects:
       - jshint
     test:
       - mwext-donationinterfacecore-REL1_25-testextension-zend53
+      - mwext-donationinterfacecore-REL1_27-testextension-zend55
     gate-and-submit:
       - mwext-donationinterfacecore-REL1_25-testextension-zend53
-    experimental:
       - mwext-donationinterfacecore-REL1_27-testextension-zend55
 
   - name: mediawiki/extensions/DoubleWiki
