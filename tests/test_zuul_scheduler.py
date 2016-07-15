@@ -14,6 +14,11 @@ import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
 import zuul.model
 
+from zuul.connection import BaseConnection
+
+class FakeConnection(BaseConnection)
+    pass
+
 
 class FakeTrigger(object):
 
@@ -45,12 +50,12 @@ class TestZuulScheduler(unittest.TestCase):
         cfg.add_section('zuul')
         cfg.set('zuul', 'layout_config', wmf_zuul_layout)
 
-        cls.sched = zuul.scheduler.Scheduler()
+        cls.sched = zuul.scheduler.Scheduler({})
         # Reporters and Triggers are registered by zuul-server, not the
         # Scheduler class:
-        cls.sched.registerTrigger(FakeTrigger(), 'gerrit')
-        cls.sched.registerTrigger(FakeTrigger(), 'timer')
-        cls.sched.registerTrigger(FakeTrigger(), 'zuul')
+        cls.sched.triggers['gerrit'] =  FakeConnection(BaseConnection)
+        cls.sched.triggers['timer'] =  FakeConnection(BaseConnection)
+        cls.sched.triggers['zuul'] =  FakeConnection(BaseConnection)
         cls.sched._doReconfigureEvent(ReconfigureEvent(cfg))
 
     @classmethod
