@@ -459,6 +459,27 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertFalse(check_manager.eventMatches(trusted_event, change))
         self.assertTrue(test_manager.eventMatches(trusted_event, change))
 
+    def test_donationinterface_deployment_branch_filters(self):
+        test_manager = self.getPipeline('test').manager
+        event = zuul.model.TriggerEvent()
+        event.type = 'patchset-created'
+
+        change = zuul.model.Change('mediawiki/extensions/DonationInterface')
+        change.branch = 'deployment'
+
+        jobs_tree = [t for (p, t) in
+                     self.getPipeline('test').job_trees.iteritems()
+                     if p.name == 'mediawiki/extensions/DonationInterface'][0]
+        for job in jobs_tree.getJobs():
+            if job.name.startswith('mwext-'):
+                self.assertFalse(
+                    job.changeMatches(change),
+                    msg='%s should not trigger for branch %s' % (
+                        job.name, change.branch)
+                )
+
+        self.assertTrue(test_manager.eventMatches(event, change))
+
     def test_smashpig_deployment_branch_filters(self):
         # Since SmashPig override a generic skip-if set by ^.*php53.*$
         # Make sure it is properly honored.
