@@ -718,6 +718,15 @@ jobs:
      - project: ^wikimedia/fundraising/SmashPig$
        branch: ^deployment$
 
+  - name: ^mwext-testextension-hhvm
+    skip-if:
+      - project: ^mediawiki/extensions/DonationInterface$
+        branch: ^deployment$
+
+  - name: ^mwext-donationinterfacecore-REL1_(25|27)-testextension-zend(53|55)$
+    skip-if:
+      - project: ^mediawiki/extensions/DonationInterface$
+        branch: ^deployment$
 
   # Jobs testing multiple extensions together
   #
