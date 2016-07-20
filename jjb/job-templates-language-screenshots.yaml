@@ -1,0 +1,109 @@
+- job-template:
+    name: 'language-screenshots-{name}'
+    project-type: matrix
+    path_to_ci_yml: build/screenshots.yml
+    yaml-strategy:
+      exclude-key: 'exclude'
+      filename: '{path_to_ci_yml}'
+    axes:
+      - axis:
+          type: label-expression
+          name: label
+          values:
+            - ci-jessie-wikimedia
+      - axis:
+          name: BROWSER
+          type: yaml
+          filename: '{path_to_ci_yml}'
+      - axis:
+          name: PLATFORM
+          type: yaml
+          filename: '{path_to_ci_yml}'
+
+    node: ci-jessie-wikimedia
+    repository_host: 'gerrit.wikimedia.org/r'
+
+    logrotate:
+        daysToKeep: 31  # ~ 2 * 2 weeks sprints
+
+    scm:
+      - git:
+          url: https://{repository_host}/{repository}
+          # refspec: refs/changes/... # TODO: remove
+          branches:
+            # - FETCH_HEAD # TODO: remove
+            - master
+          wipe-workspace: false  # keep the workspace...
+          clean:
+              after: true        # ... and use git clean instead
+          prune: true            # prune remote obsoletes branches
+          submodule:
+              recursive: true
+
+    builders:
+      #- castor-load # TODO: enable caching
+
+      - shell: |
+          # credentials for screenshots
+          export SAUCE_ONDEMAND_USERNAME=wikimedia-jenkins
+
+          # check installed dependencies
+          node -v
+          npm -v
+          /usr/lib/chromium/chromedriver -v
+          /usr/lib/chromium/chromium --version
+
+          # install npm dependencies
+          npm install
+
+          # add chromedriver to PATH
+          PATH=/usr/lib/chromium:$PATH
+          which chromedriver
+
+          # screenshot all the things
+          # node_modules/.bin/grunt screenshots # TODO: testing just en
+          node_modules/.bin/grunt screenshots-all # TODO: all languages
+
+          # install ruby dependencies
+          export BUNDLE_PATH='/home/jenkins/workspace/vendor/bundle'
+          bundle install --verbose
+
+          # upload all the things
+          #export MEDIAWIKI_API_UPLOAD_URL=https://commons.wikimedia.org/w/api.php # TODO: the real one
+          export MEDIAWIKI_API_UPLOAD_URL=http://commons.wikimedia.beta.wmflabs.org/w/api.php # TODO: the test one
+          export MEDIAWIKI_USER=LanguageScreenshotBot
+          set +x
+          export MEDIAWIKI_PASSWORD="$LanguageScreenshotBot"
+          set -x
+          echo $LANGUAGE_SCREENSHOT_CODE # TODO: remove
+          echo $LANGUAGE_SCREENSHOT_CATEGORY # TODO: remove
+          #bundle exec upload # TODO: uncomment
+
+    publishers:
+      #- castor-save # TODO: enable caching
+
+      - email-ext:
+          recipients: '{recipients}'
+          body: '${{SCRIPT, template="wikimedia.template"}}'
+
+      #- browsertests-irc # TODO: uncomment
+
+      - claim-build
+
+      - archive:
+          artifacts: 'screenshots/*.png'
+
+    wrappers:
+      - ansicolor
+      - timeout:
+          timeout: 180
+      - timestamps
+      # Wiki usernames and passwords are hold in Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/selenium/
+      - credentials-binding:
+          - text:
+              credential-id: LanguageScreenshotBot
+              variable: LanguageScreenshotBot
+          - text:
+              credential-id: sauce-ondemand-access-key
+              variable: SAUCE_ONDEMAND_ACCESS_KEY
