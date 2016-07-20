@@ -83,7 +83,6 @@ dependencies = {
     'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr'],
     'FlaggedRevs': ['Scribunto'],
-    'GeoCrumbs': ['CustomData'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GuidedTour': ['EventLogging'],
