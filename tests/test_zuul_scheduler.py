@@ -44,7 +44,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         # Reporters and Triggers are registered by zuul-server, not the
         # Scheduler class:
-        cls.sched = zuul.scheduler.Scheduler({})
+        cls.sched = zuul.scheduler.Scheduler(cfg)
         cls.sched.registerConnections({
             'gerrit': FakeConnection('gerrit', {})
         })
