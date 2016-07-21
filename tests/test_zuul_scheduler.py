@@ -6,6 +6,8 @@
 import ConfigParser
 import copy
 import re
+import shutil
+import tempfile
 import os
 import unittest
 
@@ -42,6 +44,9 @@ class TestZuulScheduler(unittest.TestCase):
         cfg.add_section('zuul')
         cfg.set('zuul', 'layout_config', wmf_zuul_layout)
 
+        cls.state_dir = tempfile.mkdtemp()
+        cfg.set('zuul', 'state_dir', cls.state_dir)
+
         # Reporters and Triggers are registered by zuul-server, not the
         # Scheduler class:
         cls.sched = zuul.scheduler.Scheduler(cfg)
@@ -53,6 +58,8 @@ class TestZuulScheduler(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.sched.exit()
+        if cls.state_dir:
+            shutil.rmtree(cls.state_dir)
 
     # Helpers
 
