@@ -95,19 +95,21 @@
 
     scm:
      - git:
-        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        url: 'https://gerrit.wikimedia.org/r/p/$ZUUL_PROJECT'
         branches:
          - '$ZUUL_COMMIT'
         refspec: '$ZUUL_REF'
         # Git plugin would set GIT_BRANCH=detached which confuses debian glue
         # Will override it as a workaround
-        local-branch: $ZUUL_REF
+        local-branch: '$ZUUL_REF'
         basedir: 'source'
         wipe-workspace: true
-        shallow-clone: true
         submodule:
             disable: true
     builders:
+        - shell: |
+            cd source
+            git fetch "$ZUUL_URL"/"$ZUUL_PROJECT" "$ZUUL_REF" && git checkout -f "$ZUUL_REF" FETCH_HEAD
         - shell: |
             # GIT_BRANCH is set to 'detached' :-(
             export GIT_BRANCH="$ZUUL_REF"
