@@ -66,6 +66,12 @@ def set_parameters(item, job, params):
     if job.name.endswith('-publish'):
         set_doc_variables(item, job, params)
 
+    if 'debian-glue' in job.name:
+        # Finely tweak jenkins-debian-glue parameters
+        if params['ZUUL_PROJECT'] == 'integration/zuul':
+            # Uses dh_virtualenv which needs access to pypy.python.org
+            params['PBUILDER_USENETWORK'] = 'yes'
+
 dependencies = {
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
