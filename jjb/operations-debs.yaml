@@ -109,6 +109,30 @@
             disable: true
     builders:
         - shell: |
+            # Workaround the path not being correctly exported.
+            # This makes sure we doint copy any prevous zuul versions
+            # we built.
+            export distributions=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
+            export DISTS=$distributions
+            if [ "$DISTS" = "precise-wikimedia" ]
+            then
+                if ls /mnt/pbuilder/result/precise-amd64/zuul_* 1> /dev/null 2>&1; then
+                    sudo rm -rf /mnt/pbuilder/result/precise-amd64/zuul_*
+                fi
+            fi
+            if [ "$DISTS" = "trusty-wikimedia" ]
+            then
+                if ls /mnt/pbuilder/result/trusty-amd64/zuul_* 1> /dev/null 2>&1; then
+                    sudo rm -rf /mnt/pbuilder/result/trusty-amd64/zuul_*
+                fi
+            fi
+            if [ "$DISTS" = "jessie-wikimedia" ]
+            then
+                if ls /mnt/pbuilder/result/jessie-amd64/zuul_* 1> /dev/null 2>&1; then
+                    sudo rm -rf /mnt/pbuilder/result/jessie-amd64/zuul_*
+                fi
+            fi
+        - shell: |
             # GIT_BRANCH is set to 'detached' :-(
             export GIT_BRANCH="$ZUUL_REF"
             if [ "$ZUUL_PIPELINE" == "gate-and-submit" ]; then
@@ -135,6 +159,22 @@
             export COWBUILDER_BASE="$BASEPATH"
 
             /usr/bin/build-and-provide-package
+        - shell: |
+            # Workaround the path not being correctly exported.
+            export distributions=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
+            export DISTS=$distributions
+            if [ "$DISTS" = "precise-wikimedia" ]
+            then
+                cp /mnt/pbuilder/result/precise-amd64/zuul_* "$WORKSPACE"
+            fi
+            if [ "$DISTS" = "trusty-wikimedia" ]
+            then
+                cp /mnt/pbuilder/result/trusty-amd64/zuul_* "$WORKSPACE"
+            fi
+            if [ "$DISTS" = "jessie-wikimedia" ]
+            then
+                cp /mnt/pbuilder/result/jessie-amd64/zuul_* "$WORKSPACE"
+            fi
         - debian-glue-lintian
         - debian-glue-piuparts
     publishers: *debian-glue-publishers
