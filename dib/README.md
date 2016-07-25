@@ -20,3 +20,6 @@ To build an Ubuntu Trusty image:
 
 See upstream documentation:
 http://docs.openstack.org/developer/diskimage-builder/
+
+
+
