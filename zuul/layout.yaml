@@ -720,11 +720,11 @@ jobs:
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^mwext-testextension-hhvm
+  - name: ^mwext-testextension-
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
-  - name: ^mwext-donationinterfacecore-REL1_(25|27)-testextension-zend(53|55)$
+  - name: ^mwext-donationinterfacecore-REL1_27-testextension-zend(53|55)$
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
@@ -2948,7 +2948,7 @@ projects:
 
   - name: mediawiki/extensions/DonationInterface
     template:
-      - name: extension-unittests-non-voting
+      - name: extension-unittests-composer-non-voting
       - name: npm
     check:
       - jsonlint
