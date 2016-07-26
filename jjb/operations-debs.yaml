@@ -1,34 +1,20 @@
-- builder:
-    name: debian-glue-generate-git-snapshot
-    builders:
-      - shell: /usr/bin/generate-git-snapshot
+# Jobs to build a Debian package using the set of shell scripts from
+# http://jenkins-debian-glue.org/
+#
+# Merely a very useful wrapper / set of conventions around cowbuilder which on
+# CI slaves are setup via the puppet module package_builder.
+#
+# Packages are build against the distribution mentionned in debian/changelog
+# and we recognize the -wikimedia flavor such as 'jessie-wikimedia'.
+#
+# See upstream:
+#    http://jenkins-debian-glue.org/docs/
+#    https://github.com/mika/jenkins-debian-glue/tree/master/scripts
 
-- builder:
-    name: debian-glue-build-and-provide-package
-    builders:
-      - shell: |
-          export distribution={distribution}
-          export REPOSITORY=/data/project/debianrepo
-          export REPOS=jenkins-debian-glue
-
-          # Use Wikimedia hooks provided by puppet ::package_builder
-          # See below for more detailled explanations
-          export PBUILDER_CONFIG=/etc/pbuilderrc
-          . /etc/pbuilderrc
-          export COWBUILDER_BASE="$BASEPATH"
-
-          /usr/bin/build-and-provide-package
-
-- builder:
-    name: debian-glue-generate-reprepro-codename
-    builders:
-      - shell: /usr/bin/generate-reprepro-codename
-
-- builder:
-    name: debian-glue-increase-version-number
-    builders:
-      - shell: /usr/bin/increase-version-number
-
+# Lintian checks packages for common errors. Generate a JUnit report that is
+# then consumed by Jenkins Junit publisher plugin.
+#
+# https://lintian.debian.org/
 - builder:
     name: debian-glue-lintian
     builders:
@@ -41,6 +27,10 @@
           /usr/bin/lintian-junit-report --filename lintian-source.txt *.changes | tee lintian-source.xml
           set +o pipefail
 
+# Piuparts test installation / removal of a package
+#
+# https://piuparts.debian.org/
+#
 - builder:
     name: debian-glue-piuparts
     builders:
@@ -51,42 +41,8 @@
           piuparts_tap piuparts.txt > piuparts.tap
 
 #
-# JOB TEMPLATES
+# Generic job template around jenkins-debian-glue
 #
-
-- job-template:
-    name: '{name}-debian-glue'
-    #name: '{name}-debian-glue-{distribution}'
-    defaults: use-remoteonly-zuul
-    node: DebianGlue && DebianJessie
-    concurrent: true
-    triggers:
-     - zuul
-
-    # Clone into ./source
-    scm:
-     - git:
-        url: '$ZUUL_URL/$ZUUL_PROJECT'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        basedir: 'source'
-
-    builders:
-      - debian-glue-generate-git-snapshot
-      - debian-glue-build-and-provide-package:
-          distribution: '{distribution}'
-      - debian-glue-lintian
-      - debian-glue-piuparts
-
-    publishers: &debian-glue-publishers
-      - junit:
-          results: 'lintian-*.xml'
-      - tap:
-          results: piuparts.tap
-      - archive:
-          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
-
 - job-template:
     name: 'debian-glue'
     node: DebianGlue && DebianJessie
@@ -96,8 +52,18 @@
     builders:
         - shell: |
             # Clone from Gerrit to $WORKSPACE /source
+            #
+            # Have to first clone from Gerrit to have all the branches
+            # (debian/upstream/master...) to be at their proper tip. The git
+            # repositories on the zuul-merger instances have their head set at
+            # arbitrary merge commits. Zuul cloner then checkout the
+            # appropriate patch.
+            #
+            # The inlined clone map is to force zuul-cloner to use /source as a
+            # workspace, else it would clone under /source/$ZUUL_PROJECT (the
+            # default).
             zuul-cloner --version
-            echo "Nuking previous build source tree"
+            echo "*** Nuking previous build source tree ***"
             rm -fR source
             zuul-cloner \
                  --color \
@@ -108,18 +74,28 @@
                  https://gerrit.wikimedia.org/r/p \
                  "$ZUUL_PROJECT"
         - shell: |
+            # jenkins-debian-glue expects the job to be run with the Jenkins
+            # git plugin which exposes metadata via GIT_ environement
+            # variables.
             export GIT_BRANCH="$ZUUL_BRANCH"
             export GIT_COMMIT="$ZUUL_COMMIT"
+            # FIXME would be for postmerge pipeline later on?
             if [ "$ZUUL_PIPELINE" == "gate-and-submit" ]; then
                 export SKIP_DCH=true
             fi
             /usr/bin/generate-git-snapshot
         - shell: |
             # Skip repository setup
+            # FIXME: later on we could have postmerge to publish the resulting
+            # package to some kind of central repository by using REPOSITORY
+            # and REPOS.
             export BUILD_ONLY=yes
 
+            # Always build against the debian/changelog indicated distribution,
+            # gives freedom to developers to pick the Distribution the package
+            # will be build against.
             export distribution=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
-            echo "Distribution set from debian/changelog to $distribution"
+            echo "*** Distribution set from debian/changelog to $distribution ***"
 
             # Use Wikimedia hooks provided by puppet ::package_builder
             export PBUILDER_CONFIG=/etc/pbuilderrc
@@ -128,124 +104,43 @@
             # Wikimedia flavor.  We point jenkins-debian-glue cowbuilder path
             # to the canonical image, ie have jessie-wikimedia to point to
             # base-jessie-amd64.cow and init hook
+            #
             # Since $WIKIMEDIA is set, the hook will inject apt.wikimedia.org
+            #
+            # NOTE: build-and-provide-package invokes cowbuilder with sudo
+            # which strips out every environment variables. They have to be
+            # explicitly whitelisted on Wikitech sudo policy at
+            # https://wikitech.wikimedia.org/wiki/Special:NovaSudoer
+            #
+            # Example:
+            #   env_keep+=distribution
+            #
             export DIST=$distribution
             . /etc/pbuilderrc
             export COWBUILDER_BASE="$BASEPATH"
             export BUILDRESULT="$WORKSPACE/binaries"
 
             /usr/bin/build-and-provide-package
+        # Linters
         - debian-glue-lintian
         - debian-glue-piuparts
-    publishers: *debian-glue-publishers
-
-- project:
-    name: 'debian-glue'
-    jobs:
-        - 'debian-glue'
+    publishers:
+      # FIXME should switch to xunit publisher to get rid of UNSTABLE status
+      # since on Gerrit patchset the previous build is most probably unrelated.
+      - junit:
+          results: 'lintian-*.xml'
+      # FIXME should convert UNSTABLE to FAILED.
+      - tap:
+          results: piuparts.tap
+      - archive:
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
 
 #
 # PROJECTS
 #
-
+# FIXME later on that should be autogenerated for each postmerge job.
+#
 - project:
-    name: gerrit
+    name: debian-glue
     jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-apertium'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-apertium-apy'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-cg3'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-hfst'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-lttoolbox'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-archiva'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-gerrit'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-git-fat'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-ganglia'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-jenkins-debian-glue'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-kafka'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-latexml'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: operations-debs-pybal
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-varnish'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-vips'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
-
-- project:
-    name: 'operations-debs-wikistats'
-    jobs:
-     - '{name}-debian-glue':
-         distribution: trusty
+        - 'debian-glue'
