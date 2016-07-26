@@ -645,13 +645,12 @@ jobs:
 
   # Experimental building of Debian packages
   # based on jenkins-debian-glue
-  - name: ^.*-debian-glue$
+  - name: ^debian-glue$
     voting: false
-
-  # Work in progress https://gerrit.wikimedia.org/r/110666
-  - name: parsoidsvc-debian-glue
-    voting: false
-    files: 'debian/.*'
+    # Point directly to artifacts
+    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
+    # FIXME maybe restrict just to debian/ changes:
+    #files: 'debian/.*'
 
   - name: erblint-HEAD
     files:
@@ -816,10 +815,6 @@ jobs:
     branch: ^master$
     success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
     failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
-
-  - name: ^debian-glue$
-    # Point directly to artifacts
-    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
 
   - name: parsoidsvc-source-jsduck-publish
     branch: ^master$
@@ -1283,8 +1278,7 @@ projects:
       - jsonlint
 
   - name: integration/zuul
-    experimental:
-      - integration-zuul-debian-glue
+    test:
       - debian-glue
 
   - name: maps/tilerator/deploy
@@ -1347,7 +1341,7 @@ projects:
       - mediawiki-parsertests-hhvm-jessie
 
   - name: mediawiki/debian
-    experimental:
+    test:
       - debian-glue
 
   - name: mediawiki/event-schemas
@@ -1937,83 +1931,83 @@ projects:
 
   - name: operations/debs/archiva
     test:
-     - operations-debs-archiva-debian-glue
+     - debian-glue
 
   - name: operations/debs/contenttranslation/apertium
     test:
-     - operations-debs-apertium-debian-glue
+     - debian-glue
 
   - name: operations/debs/contenttranslation/apertium-apy
     test:
-     - operations-debs-apertium-apy-debian-glue
+     - debian-glue
 
   - name: operations/debs/contenttranslation/cg3
     test:
-     - operations-debs-cg3-debian-glue
+     - debian-glue
 
   - name: operations/debs/contenttranslation/hfst
     test:
-     - operations-debs-hfst-debian-glue
+     - debian-glue
 
   - name: operations/debs/contenttranslation/lttoolbox
     test:
-     - operations-debs-lttoolbox-debian-glue
+     - debian-glue
 
   - name: operations/debs/debdeploy
-    experimental:
+    test:
      - debian-glue
 
   - name: operations/debs/ganglia
     test:
-     - operations-debs-ganglia-debian-glue
+     - debian-glue
 
   - name: operations/debs/gerrit
     test:
-     - operations-debs-gerrit-debian-glue
+     - debian-glue
 
   - name: operations/debs/git-fat
     test:
-     - operations-debs-git-fat-debian-glue
+     - debian-glue
 
   - name: operations/debs/jenkins-debian-glue
     test:
-     - operations-debs-jenkins-debian-glue-debian-glue
+     - debian-glue
 
   - name: operations/debs/kafka
     test:
-     - operations-debs-kafka-debian-glue
+     - debian-glue
 
   - name: operations/debs/latexml
     test:
-     - operations-debs-latexml-debian-glue
+     - debian-glue
 
   - name: operations/debs/nodepool
-    experimental:
+    test:
      - debian-glue
 
   - name: operations/debs/pybal
     template:
       - name: tox-jessie
     test:
-     - operations-debs-pybal-debian-glue
+     - debian-glue
 
   - name: operations/debs/varnish
     test:
-     - operations-debs-varnish-debian-glue
+     - debian-glue
 
   - name: operations/debs/vips
     test:
-     - operations-debs-vips-debian-glue
+     - debian-glue
 
   - name: operations/debs/wikistats
     check:
       - php53lint
     test:
      - php53lint
-     - operations-debs-wikistats-debian-glue
+     - debian-glue
     gate-and-submit:
      - php53lint
-     - operations-debs-wikistats-debian-glue
+     - debian-glue
 
   - name: operations/dns
     check-voter:
@@ -6925,7 +6919,7 @@ projects:
 
   - name: mediawiki/services/parsoid/deploy
     test:
-      - parsoidsvc-debian-glue
+      - debian-glue
       - parsoidsvc-deploy-parse-tool-check-trusty
       - parsoidsvc-deploy-roundtrip-test-check-trusty
       - parsoidsvc-deploy-npm-node-0.10
