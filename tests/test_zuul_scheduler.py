@@ -233,8 +233,12 @@ class TestZuulScheduler(unittest.TestCase):
                 'gate-and-submit' in pipelines
                 # Zuul account cant merge for ops:
                 or project.startswith('operations/')
-                # Weird edge case:
-                or project == 'analytics/kraken'
+                # Weird edge cases:
+                or project in [
+                    'analytics/kraken',
+                    'integration/zuul',
+                    'mediawiki/debian',
+                    ]
                 # Some repos just have experimental:
                 or pipelines == ['experimental']
             ):
