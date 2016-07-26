@@ -35,9 +35,10 @@
     name: debian-glue-piuparts
     builders:
       - shell: |
-          distribution=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
+          DIST=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
           echo "Distribution set from debian/changelog to $distribution"
-          sudo distribution="$distribution" piuparts_wrapper "$PWD"/*.deb || true
+          . /etc/pbuilderrc
+          sudo distribution="$DIST" piuparts_wrapper "$PWD"/*.deb || true
           piuparts_tap piuparts.txt > piuparts.tap
 
 #
