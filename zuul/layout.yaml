@@ -1922,80 +1922,122 @@ projects:
       - mediawiki-vagrant-puppet-doc-publish
       - mediawiki-vagrant-bundle17-yard-publish
 
+
+  # TIP:
+  # gerrit ls-projects -p operations/debs/
+  # Nice alignement in vim obtained via: !column -t
+  # With vim Tabularize plugin: Tab /test:
   - name: operations/debs/adminbot
     template:
       - name: tox-jessie
-
-  - name: operations/debs/archiva
     test:
-     - debian-glue
-
-  - name: operations/debs/contenttranslation/apertium
-    test:
-     - debian-glue
-
-  - name: operations/debs/contenttranslation/apertium-apy
-    test:
-     - debian-glue
-
-  - name: operations/debs/contenttranslation/cg3
-    test:
-     - debian-glue
-
-  - name: operations/debs/contenttranslation/hfst
-    test:
-     - debian-glue
-
-  - name: operations/debs/contenttranslation/lttoolbox
-    test:
-     - debian-glue
-
-  - name: operations/debs/debdeploy
-    test:
-     - debian-glue
-
-  - name: operations/debs/ganglia
-    test:
-     - debian-glue
-
-  - name: operations/debs/gerrit
-    test:
-     - debian-glue
-
-  - name: operations/debs/git-fat
-    test:
-     - debian-glue
-
-  - name: operations/debs/jenkins-debian-glue
-    test:
-     - debian-glue
-
-  - name: operations/debs/kafka
-    test:
-     - debian-glue
-
-  - name: operations/debs/latexml
-    test:
-     - debian-glue
-
-  - name: operations/debs/nodepool
-    test:
-     - debian-glue
-
-  - name: operations/debs/pybal
-    template:
-      - name: tox-jessie
-    test:
-     - debian-glue
-
-  - name: operations/debs/varnish
-    test:
-     - debian-glue
-
-  - name: operations/debs/vips
-    test:
-     - debian-glue
-
+      - debian-glue
+  - { name: operations/debs/archiva,                         test: ['debian-glue'] }
+  - { name: operations/debs/avconv10,                        test: ['debian-glue'] }
+  - { name: operations/debs/bloomd,                          test: ['debian-glue'] }
+  - { name: operations/debs/burrow,                          test: ['debian-glue'] }
+  - { name: operations/debs/carbon-c-relay,                  test: ['debian-glue'] }
+  - { name: operations/debs/check_ganglia,                   test: ['debian-glue'] }
+  - { name: operations/debs/confd,                           test: ['debian-glue'] }
+  - { name: operations/debs/debdeploy,                       test: ['debian-glue'] }
+  - { name: operations/debs/druid,                           test: ['debian-glue'] }
+  - { name: operations/debs/etherpad-lite,                   test: ['debian-glue'] }
+  - { name: operations/debs/ffmpeg2theora,                   test: ['debian-glue'] }
+  - { name: operations/debs/flannel,                         test: ['debian-glue'] }
+  - { name: operations/debs/flask-login,                     test: ['debian-glue'] }
+  - { name: operations/debs/ganglia,                         test: ['debian-glue'] }
+  - { name: operations/debs/geckodriver,                     test: ['debian-glue'] }
+  - { name: operations/debs/gerrit,                          test: ['debian-glue'] }
+  - { name: operations/debs/git-deploy,                      test: ['debian-glue'] }
+  - { name: operations/debs/git-fat,                         test: ['debian-glue'] }
+  - { name: operations/debs/golang-burrow,                   test: ['debian-glue'] }
+  - { name: operations/debs/hhvm,                            test: ['debian-glue'] }
+  - { name: operations/debs/ircd-ratbox,                     test: ['debian-glue'] }
+  - { name: operations/debs/ircecho,                         test: ['debian-glue'] }
+  - { name: operations/debs/jenkins-debian-glue,             test: ['debian-glue'] }
+  - { name: operations/debs/jetty-runner,                    test: ['debian-glue'] }
+  - { name: operations/debs/jmxtrans,                        test: ['debian-glue'] }
+  - { name: operations/debs/kafka,                           test: ['debian-glue'] }
+  - { name: operations/debs/kafkacat,                        test: ['debian-glue'] }
+  - { name: operations/debs/kubernetes,                      test: ['debian-glue'] }
+  - { name: operations/debs/latexml,                         test: ['debian-glue'] }
+  - { name: operations/debs/libanon,                         test: ['debian-glue'] }
+  - { name: operations/debs/libav,                           test: ['debian-glue'] }
+  - { name: operations/debs/librsvg,                         test: ['debian-glue'] }
+  - { name: operations/debs/libvpx,                          test: ['debian-glue'] }
+  - { name: operations/debs/linux,                           test: ['debian-glue'] }
+  - { name: operations/debs/linux44,                         test: ['debian-glue'] }
+  - { name: operations/debs/linux-meta,                      test: ['debian-glue'] }
+  - { name: operations/debs/logstash-gelf,                   test: ['debian-glue'] }
+  - { name: operations/debs/logster,                         test: ['debian-glue'] }
+  - { name: operations/debs/lucene-search-2,                 test: ['debian-glue'] }
+  - { name: operations/debs/mariadb-server,                  test: ['debian-glue'] }
+  - { name: operations/debs/mcrouter,                        test: ['debian-glue'] }
+  - { name: operations/debs/memkeys,                         test: ['debian-glue'] }
+  - { name: operations/debs/mod_tile,                        test: ['debian-glue'] }
+  - { name: operations/debs/mtail,                           test: ['debian-glue'] }
+  - { name: operations/debs/mwbzutils,                       test: ['debian-glue'] }
+  - { name: operations/debs/mysqlatfacebook,                 test: ['debian-glue'] }
+  - { name: operations/debs/nfsd-ldap,                       test: ['debian-glue'] }
+  - { name: operations/debs/nginx,                           test: ['debian-glue'] }
+  - { name: operations/debs/nodejs,                          test: ['debian-glue'] }
+  - { name: operations/debs/nodepool,                        test: ['debian-glue'] }
+  - { name: operations/debs/nutcracker,                      test: ['debian-glue'] }
+  - { name: operations/debs/openssl,                         test: ['debian-glue'] }
+  - { name: operations/debs/opus,                            test: ['debian-glue'] }
+  - { name: operations/debs/osm2pgsql,                       test: ['debian-glue'] }
+  - { name: operations/debs/osm-mapnik-style,                test: ['debian-glue'] }
+  - { name: operations/debs/perf-tools,                      test: ['debian-glue'] }
+  - { name: operations/debs/phantomjs,                       test: ['debian-glue'] }
+  - { name: operations/debs/php-mailparse,                   test: ['debian-glue'] }
+  - { name: operations/debs/puppet,                          test: ['debian-glue'] }
+  - { name: operations/debs/pybal,                           test: ['debian-glue'] }
+  - { name: operations/debs/pykube,                          test: ['debian-glue'] }
+  - { name: operations/debs/python-confluent-kafka,          test: ['debian-glue'] }
+  - { name: operations/debs/python-diamond,                  test: ['debian-glue'] }
+  - { name: operations/debs/python-dotted,                   test: ['debian-glue'] }
+  - { name: operations/debs/python-etcd,                     test: ['debian-glue'] }
+  - { name: operations/debs/python-flask-login,              test: ['debian-glue'] }
+  - { name: operations/debs/python-gear,                     test: ['debian-glue'] }
+  - { name: operations/debs/python-gevent,                   test: ['debian-glue'] }
+  - { name: operations/debs/python-jsonable,                 test: ['debian-glue'] }
+  - { name: operations/debs/python-jsonschema,               test: ['debian-glue'] }
+  - { name: operations/debs/python-kafka,                    test: ['debian-glue'] }
+  - { name: operations/debs/python-mwapi,                    test: ['debian-glue'] }
+  - { name: operations/debs/python-mwparserfromhell,         test: ['debian-glue'] }
+  - { name: operations/debs/python-mwtypes,                  test: ['debian-glue'] }
+  - { name: operations/debs/python-phabricator,              test: ['debian-glue'] }
+  - { name: operations/debs/python-pykafka,                  test: ['debian-glue'] }
+  - { name: operations/debs/python-sprockets,                test: ['debian-glue'] }
+  - { name: operations/debs/python-sprockets-clients-statsd, test: ['debian-glue'] }
+  - { name: operations/debs/python-sprockets-mixins-statsd,  test: ['debian-glue'] }
+  - { name: operations/debs/python-stopit,                   test: ['debian-glue'] }
+  - { name: operations/debs/python-ua-parser,                test: ['debian-glue'] }
+  - { name: operations/debs/quickstack,                      test: ['debian-glue'] }
+  - { name: operations/debs/rt-authen-externalauth,          test: ['debian-glue'] }
+  - { name: operations/debs/ruby-dimensions,                 test: ['debian-glue'] }
+  - { name: operations/debs/ruby-execjs,                     test: ['debian-glue'] }
+  - { name: operations/debs/ruby-jsduck,                     test: ['debian-glue'] }
+  - { name: operations/debs/ruby-parallel,                   test: ['debian-glue'] }
+  - { name: operations/debs/salt,                            test: ['debian-glue'] }
+  - { name: operations/debs/sartoris,                        test: ['debian-glue'] }
+  - { name: operations/debs/search-qa,                       test: ['debian-glue'] }
+  - { name: operations/debs/squid,                           test: ['debian-glue'] }
+  - { name: operations/debs/StatsD,                          test: ['debian-glue'] }
+  - { name: operations/debs/statsite,                        test: ['debian-glue'] }
+  - { name: operations/debs/udp2log-log4j-java,              test: ['debian-glue'] }
+  - { name: operations/debs/utfnormal,                       test: ['debian-glue'] }
+  - { name: operations/debs/varnish,                         test: ['debian-glue'] }
+  - { name: operations/debs/varnish4,                        test: ['debian-glue'] }
+  - { name: operations/debs/vips,                            test: ['debian-glue'] }
+  - { name: operations/debs/wikibugs,                        test: ['debian-glue'] }
+  - { name: operations/debs/wikimedia-base,                  test: ['debian-glue'] }
+  - { name: operations/debs/wikimedia-job-runner,            test: ['debian-glue'] }
+  - { name: operations/debs/wikimedia-keyring,               test: ['debian-glue'] }
+  - { name: operations/debs/wikimedia-ldap-tools,            test: ['debian-glue'] }
+  - { name: operations/debs/wikimedia-lvs-realserver,        test: ['debian-glue'] }
+  - { name: operations/debs/wikimedia-search-qa,             test: ['debian-glue'] }
+  - { name: operations/debs/wikimedia-task-appserver,        test: ['debian-glue'] }
   - name: operations/debs/wikistats
     check:
       - php53lint
@@ -2005,6 +2047,81 @@ projects:
     gate-and-submit:
      - php53lint
      - debian-glue
+
+  # Content translation related packages
+  - { name: operations/debs/contenttranslation/apertium,           test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-af-nl,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-apy,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-arg,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-arg-cat,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-br-fr,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-ca-it,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-cat,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-cy-en,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-dan,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-dan-nor,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-en-ca,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-en-es,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-en-gl,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-eo-ca,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-eo-en,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-eo-es,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-eo-fr,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-es-an,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-es-ast,    test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-es-ca,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-es-gl,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-es-it,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-es-pt,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-es-ro,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-eu-en,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-eu-es,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-eus,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-fra,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-fra-cat,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-fr-ca,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-fr-es,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-hbs,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-hbs-eng,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-hbs-mkd,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-hbs-slv,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-hin,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-id-ms,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-isl,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-isl-eng,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-is-sv,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-kaz,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-kaz-tat,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-lex-tools, test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-mk,        test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-mk-bg,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-mk-en,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-mlt-ara,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-nno,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-nno-nob,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-nob,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-oc-ca,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-oc-es,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-pt-ca,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-pt-gl,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-sme-nob,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-spa,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-spa-arg,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-sv-da,     test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-swe,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-swe-dan,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-swe-nor,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-tat,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-urd,       test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/apertium-urd-hin,   test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/cg3,                test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/foma,               test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/giella-core,        test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/giella-sme,         test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/hfst,               test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/hfst-ospell,        test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/lttoolbox,          test: ['debian-glue'] }
+  - { name: operations/debs/contenttranslation/python-toro,        test: ['debian-glue'] }
 
   - name: operations/dns
     check-voter:
