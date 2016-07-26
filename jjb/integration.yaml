@@ -65,10 +65,15 @@
         rm -fR log
         mkdir -p log
 
-        # FIXME change path whenever we have zuul packaged.
-        /usr/bin/zuul-server -c <(echo '[zuul]') -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/current.txt
+        # Install zuul based on /test-requirements.txt and activate venv
+        tox -e py27 -v -v --notest
+        . .tox/py27/bin/activate
+        zuul-server --version
+
+        zuul-server -c tests/fixtures/zuul-dummy.conf -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/current.txt
         git checkout HEAD^
-        /usr/bin/zuul-server -c <(echo '[zuul]') -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/before.txt
+        zuul-server -c tests/fixtures/zuul-dummy.conf -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/before.txt
+
         sed -i -e 's/^INFO:zuul.IndependentPipelineManager:Configured Pipeline Manager /Pipeline: /' log/current.txt log/before.txt
 
         function compress_logs() {{
