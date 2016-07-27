@@ -109,6 +109,7 @@ dependencies = {
     'NSFileRepo': ['Lockdown'],
     'OpenIDConnect': ['PluggableAuth'],
     'OpenStackManager': ['LdapAuthentication'],
+    'ORES': ['BetaFeatures'],
     'PhpTagsFunctions': ['PhpTags'],
     'PhpTagsStorage': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki',
                        'PhpTagsWidgets'],
