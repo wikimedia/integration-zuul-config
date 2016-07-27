@@ -795,10 +795,7 @@ jobs:
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
 
-  # Lint not passing yet. The lintAlphaDebug will be integrated in the other
-  # job later on.
   - name: apps-android-wikipedia-lint
-    voting: false # TODO: add to gate-and-submit once voting.
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/artifact/app/build/outputs/lint-results-alphaDebug.html'
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/artifact/app/build/outputs/lint-results-alphaDebug.html'
 
@@ -1492,8 +1489,7 @@ projects:
     gate-and-submit:
       - tox-jessie
       - apps-android-wikipedia-test
-      # TODO: uncomment once this job votes.
-      # - apps-android-wikipedia-lint
+      - apps-android-wikipedia-lint
     postmerge:
       - apps-android-wikipedia-publish
 
