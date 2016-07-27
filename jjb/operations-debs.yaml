@@ -126,10 +126,10 @@
         - debian-glue-lintian
         - debian-glue-piuparts
     publishers:
-      # FIXME should switch to xunit publisher to get rid of UNSTABLE status
-      # since on Gerrit patchset the previous build is most probably unrelated.
-      - junit:
-          results: 'lintian-*.xml'
+      - xunit:
+          types:
+              - junit:
+                  pattern: 'lintian-*.xml'
       # FIXME should convert UNSTABLE to FAILED.
       - tap:
           results: piuparts.tap
