@@ -1990,7 +1990,11 @@ projects:
   - { name: operations/debs/phantomjs,                       test: ['debian-glue-non-voting'] }
   - { name: operations/debs/php-mailparse,                   test: ['debian-glue-non-voting'] }
   - { name: operations/debs/puppet,                          test: ['debian-glue-non-voting'] }
-  - { name: operations/debs/pybal,                           test: ['debian-glue-non-voting'] }
+  - name: operations/debs/pybal
+    template:
+      - name: tox-jessie
+    test:
+      - debian-glue-non-voting
   - { name: operations/debs/pykube,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/python-confluent-kafka,          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/python-diamond,                  test: ['debian-glue-non-voting'] }
