@@ -44,7 +44,7 @@
 #
 # Generic job template around jenkins-debian-glue
 #
-- job-template:
+- job-template: &job_template_debian_glue
     name: 'debian-glue'
     node: DebianGlue && DebianJessie
     concurrent: true
@@ -141,6 +141,12 @@
       - archive:
           artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
 
+- job-template:
+    !!merge : *job_template_debian_glue
+    name: 'debian-glue-non-voting'
+    # Reinject Zuul parameters since JJB strip them for some reason
+    triggers:
+     - zuul
 #
 # PROJECTS
 #
@@ -150,3 +156,4 @@
     name: debian-glue
     jobs:
         - 'debian-glue'
+        - 'debian-glue-non-voting'
