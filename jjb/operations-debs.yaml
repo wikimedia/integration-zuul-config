@@ -98,8 +98,6 @@
             export distribution=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
             echo "*** Distribution set from debian/changelog to $distribution ***"
 
-            # Use Wikimedia hooks provided by puppet ::package_builder
-            export PBUILDER_CONFIG=/etc/pbuilderrc
 
             # We set DIST which is used by pbuilderrc to determine whether it a
             # Wikimedia flavor.  We point jenkins-debian-glue cowbuilder path
@@ -121,6 +119,16 @@
             export COWBUILDER_BASE="$BASEPATH"
             export BUILDRESULT="$WORKSPACE/binaries"
             export SKIP_COWBUILDER_UPDATE="true"
+
+            # Use Wikimedia hooks provided by puppet ::package_builder but
+            # override some settings such as BUILDRESULT
+            #
+            # See T141538
+            echo "*** Overriding Wikimedia BUILDRESULT ***"
+            cat /etc/pbuilderrc > job-pbuilderrc
+            echo "BUILDRESULT=$BUILDRESULT" >> job-pbuilderrc
+
+            export PBUILDER_CONFIG="$WORKSPACE/job-pbuilderrc"
 
             /usr/bin/build-and-provide-package
         # Linters
