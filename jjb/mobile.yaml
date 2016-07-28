@@ -65,8 +65,9 @@
         results: '**/test-results/**/*.xml'
 
 - job-template:
-    name: 'apps-android-wikipedia-periodic-test'
-    node: contintLabsSlave && AndroidEmulator
+    name: 'apps-android-wikipedia-periodic-test-new'
+    node: integration-slave-android-jessie
+    jdk: 'Debian - OpenJdk 8'
     defaults: use-remoteonly-zuul
     concurrent: true
     properties:
@@ -150,7 +151,7 @@
     name: 'apps-android-wikipedia'
     jobs:
       - 'apps-android-wikipedia-test'
-      - 'apps-android-wikipedia-periodic-test'
+      - 'apps-android-wikipedia-periodic-test-new'
       - 'apps-android-wikipedia-publish'
       - 'apps-android-wikipedia-lint'
 
