@@ -15,6 +15,9 @@
 # then consumed by Jenkins Junit publisher plugin.
 #
 # https://lintian.debian.org/
+
+
+
 - builder:
     name: debian-glue-lintian
     builders:
@@ -74,6 +77,13 @@
                  --cache-dir /srv/git \
                  https://gerrit.wikimedia.org/r/p \
                  "$ZUUL_PROJECT"
+            # zuul-cloner checkout to a detached branch but the build require
+            # the patch to be in the named branch
+            PREPARED_HEAD=`git -C ./source rev-parse HEAD`
+            git -C ./source checkout -q -f master
+            git -C ./source reset --hard "$PREPARED_HEAD"
+            git -C ./source branch -vv
+
         - shell: |
             # jenkins-debian-glue expects the job to be run with the Jenkins
             # git plugin which exposes metadata via GIT_ environement
@@ -84,7 +94,9 @@
             if [ "$ZUUL_PIPELINE" == "gate-and-submit" ]; then
                 export SKIP_DCH=true
             fi
+            git -C ./source branch -vva
             /usr/bin/generate-git-snapshot
+            git -C ./source branch -vva
         - shell: |
             # Skip repository setup
             # FIXME: later on we could have postmerge to publish the resulting
