@@ -63,6 +63,8 @@
             # The inlined clone map is to force zuul-cloner to use /source as a
             # workspace, else it would clone under /source/$ZUUL_PROJECT (the
             # default).
+            
+            
             zuul-cloner --version
             echo "*** Nuking previous build source tree ***"
             rm -fR source
@@ -74,6 +76,13 @@
                  --cache-dir /srv/git \
                  https://gerrit.wikimedia.org/r/p \
                  "$ZUUL_PROJECT"
+            # zuul-cloner checkout to a detached branch but the build require
+            # the patch to be in the named branch
+            PREPARED_HEAD=`git -C ./source rev-parse HEAD`
+            git -C ./source checkout -q -f master
+            git -C ./source reset --hard "$PREPARED_HEAD"
+            git -C ./source branch -vv
+
         - shell: |
             # jenkins-debian-glue expects the job to be run with the Jenkins
             # git plugin which exposes metadata via GIT_ environement
@@ -99,7 +108,9 @@
             # $distribution can not contain dashes since it is injected in
             # debian/changelog.
             # Double curly braces are for JJB escaping.
+            git -C ./source branch -vva
             distribution=${{distribution//-/+}} /usr/bin/generate-git-snapshot
+            git -C ./source branch -vva
 
             # Skip repository setup
             # FIXME: later on we could have postmerge to publish the resulting
