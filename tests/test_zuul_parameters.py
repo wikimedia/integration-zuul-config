@@ -20,7 +20,7 @@ class TestZuulSetParameters(unittest.TestCase):
         self.assertNotIn('PBUILDER_USENETWORK', params)
 
     def test_zuul_debian_glue_with_network(self):
-        job = FakeJob('debian-glue')
+        job = FakeJob('debian-glue-non-voting')
         params = {'ZUUL_PROJECT': 'integration/zuul'}
         set_parameters(None, job, params)
         self.assertIn('PBUILDER_USENETWORK', params)
