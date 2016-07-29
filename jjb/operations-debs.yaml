@@ -78,8 +78,12 @@
             # jenkins-debian-glue expects the job to be run with the Jenkins
             # git plugin which exposes metadata via GIT_ environement
             # variables.
-            export GIT_BRANCH="$ZUUL_BRANCH"
+            #export GIT_BRANCH="$ZUUL_BRANCH"
             export GIT_COMMIT="$ZUUL_COMMIT"
+            # generate-git-snapshot checkout -f $GIT_BRANCH but zuul-cloner
+            # checkout the patch in a detached branch, not in the local branch
+            # $ZUUL_BRANCH
+            export GIT_BRANCH="$GIT_COMMIT"
 
             # Always build against the debian/changelog indicated distribution,
             # gives freedom to developers to pick the Distribution the package
