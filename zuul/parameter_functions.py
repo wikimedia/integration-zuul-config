@@ -87,7 +87,7 @@ dependencies = {
                            'UniversalLanguageSelector', 'Wikidata'],
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
-    'EducationProgram': ['cldr'],
+    'EducationProgram': ['cldr', 'WikiEditor'],
     'FlaggedRevs': ['Scribunto'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
