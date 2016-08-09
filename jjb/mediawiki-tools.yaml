@@ -41,8 +41,7 @@
      - composer-update:
         dir: '$WORKSPACE/src/mediawiki/tools/codesniffer'
      - shell: |
-        cd $WORKSPACE/src/mediawiki/tools/codesniffer
-        vendor/bin/phpcs --standard=./MediaWiki --extensions=php,php5,inc -p -s ../../../includes
+        $WORKSPACE/src/mediawiki/tools/codesniffer/vendor/bin/phpcs -p -s --ignore=$WORKSPACE/src/mediawiki/tools/*,$WORKSPACE/src/mediawiki/core/vendor/*
 
 - job:
     name: 'mwdumper-maven'
