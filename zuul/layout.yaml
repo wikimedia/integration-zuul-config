@@ -781,6 +781,10 @@ jobs:
   - name: ^.*-whitespaces$
     voting: false
 
+  # Still being tested
+  - name: commit-message-validator
+    voting: false
+
   #
   # Individual adjustments
   #
@@ -1207,6 +1211,14 @@ project-templates:
      - tox-jessie
     gate-and-submit:
      - tox-jessie
+
+  - name: commit-message-validator
+    check:
+     - commit-message-validator
+    test:
+     - commit-message-validator
+    gate-and-submit:
+     - commit-message-validator
 
   - name: archived
     check:
@@ -7827,6 +7839,7 @@ projects:
       - name: extension-gate
       - name: rake
       - name: composer-test
+      - name: commit-message-validator
     check:
       - jshint
       - jsonlint

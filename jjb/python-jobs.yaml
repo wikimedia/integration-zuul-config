@@ -82,3 +82,14 @@
      - 'tox-{toxenv}-jessie':
          toxenv:
              - doc
+
+- job:
+    name: 'commit-message-validator'
+    node: contintLabsSlave && DebianJessie
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/run-commit-message-validator
