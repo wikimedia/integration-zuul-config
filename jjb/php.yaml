@@ -104,11 +104,10 @@
      - 'composer-php53'
      - 'composer-package-php53'
 
-# Same as 'composer-{phpflavor}'. Runs "composer update" and "composer test"
-# but on disposable instances maintained by Nodepool.
+# Runs "composer update" and "composer test"
 - job-template:
-    name: 'composer-{phpflavor}-{image}'
-    node: ci-{image}-wikimedia
+    name: 'composer-{phpflavor}'
+    node: contintLabsSlave && phpflavor-{phpflavor}
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     logrotate:
@@ -118,14 +117,11 @@
     builders:
      - assert-phpflavor:
          phpflavor: '{phpflavor}'
-     - castor-load
      - composer-validate:
         dir: '.'
      - composer-update:
         dir: '.'
      - composer-test
-    publishers:
-     - castor-save
 
 # Same as 'composer-package-{phpflavor}'. Runs "composer update" and "composer
 # test" for libraries that are published as composer packages but on disposable
@@ -163,4 +159,11 @@
             image: jessie
     jobs:
      - 'composer-package-{phpflavor}-{image}'
-     - 'composer-{phpflavor}-{image}'
+
+- project:
+    name: 'composer-flavored'
+    phpflavor:
+        - php55
+        - hhvm
+    jobs:
+     - 'composer-{phpflavor}'
