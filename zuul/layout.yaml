@@ -746,7 +746,7 @@ jobs:
      - '^.*\.(json|php|php5|phtml|inc|xml)$'
 
 
-  - name: ^mediawiki-core-npm-node-4.3$
+  - name: ^mediawiki-core-npm-node-4$
     files:
      - '^(\.js.*|.*\.(js|json|less)$)'
 
@@ -911,7 +911,7 @@ project-templates:
      - composer-validate
     experimental:
      - mwext-qunit-composer-jessie
-     - npm-node-4.3
+     - npm-node-4
      - composer-php53
      - composer-php55
      - composer-hhvm
@@ -965,7 +965,7 @@ project-templates:
       - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
-      - npm-node-4.3
+      - npm-node-4
       - composer-php53
       - composer-php55
       - composer-hhvm
@@ -993,7 +993,7 @@ project-templates:
       - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
-      - npm-node-4.3
+      - npm-node-4
       - composer-php53
       - composer-php55
       - composer-hhvm
@@ -1065,7 +1065,7 @@ project-templates:
      - mwext-qunit-jessie
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
-     - npm-node-4.3
+     - npm-node-4
      - composer-php53
      - composer-php55
      - composer-hhvm
@@ -1092,7 +1092,7 @@ project-templates:
      - mwext-qunit-jessie
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
-     - npm-node-4.3
+     - npm-node-4
      - composer-php53
      - composer-php55
      - composer-hhvm
@@ -1177,9 +1177,9 @@ project-templates:
 
   - name: npm
     test:
-      - npm-node-4.3
+      - npm-node-4
     gate-and-submit:
-      - npm-node-4.3
+      - npm-node-4
 
   - name: npm-node-0.10
     test:
@@ -1187,7 +1187,7 @@ project-templates:
     gate-and-submit:
       - npm-node-0.10
     experimental:
-      - npm-node-4.3
+      - npm-node-4
 
   - name: puppet
     # FIXME add merge probably
@@ -1303,7 +1303,7 @@ projects:
     test:
       - mediawiki-core-phpcs
       - mediawiki-core-jsduck
-      - mediawiki-core-npm-node-4.3
+      - mediawiki-core-npm-node-4
       - mediawiki-core-php53lint
       - mediawiki-core-php55lint
       - mediawiki-phpunit-hhvm-trusty
@@ -1318,7 +1318,7 @@ projects:
       - mediawiki-phpunit-parsertests-php53
     gate-and-submit:
       - mediawiki-core-jsduck
-      - mediawiki-core-npm-node-4.3
+      - mediawiki-core-npm-node-4
       - mediawiki-core-php53lint
       - mediawiki-core-php55lint
       - mediawiki-core-phpcs
@@ -6993,9 +6993,9 @@ projects:
 
   - name: mediawiki/services/citoid/deploy
     test:
-      - citoid-deploy-npm-node-4.3
+      - citoid-deploy-npm-node-4
     gate-and-submit:
-      - citoid-deploy-npm-node-4.3
+      - citoid-deploy-npm-node-4
 
   - name: mediawiki/services/cxserver
     template:
@@ -7005,9 +7005,9 @@ projects:
 
   - name: mediawiki/services/cxserver/deploy
     test:
-      - cxserver-deploy-npm-node-4.3
+      - cxserver-deploy-npm-node-4
     gate-and-submit:
-      - cxserver-deploy-npm-node-4.3
+      - cxserver-deploy-npm-node-4
     postmerge:
       - beta-cxserver-update-eqiad
 
@@ -7017,9 +7017,9 @@ projects:
 
   - name: mediawiki/services/graphoid/deploy
     test:
-      - graphoid-deploy-npm-node-4.3
+      - graphoid-deploy-npm-node-4
     gate-and-submit:
-      - graphoid-deploy-npm-node-4.3
+      - graphoid-deploy-npm-node-4
 
   - name: mediawiki/services/jobrunner
     template:
@@ -7031,9 +7031,9 @@ projects:
 
   - name: mediawiki/services/mathoid/deploy
     test:
-      - mathoid-deploy-npm-node-4.3
+      - mathoid-deploy-npm-node-4
     gate-and-submit:
-      - mathoid-deploy-npm-node-4.3
+      - mathoid-deploy-npm-node-4
 
   - name: mediawiki/services/mobileapps
     template:
@@ -7041,25 +7041,25 @@ projects:
 
   - name: mediawiki/services/mobileapps/deploy
     test:
-      - mobileapps-deploy-npm-node-4.3
+      - mobileapps-deploy-npm-node-4
     gate-and-submit:
-      - mobileapps-deploy-npm-node-4.3
+      - mobileapps-deploy-npm-node-4
 
   - name: mediawiki/services/parsoid
     test:
-      - parsoidsvc-npm-run-lint-node-4.3
+      - parsoidsvc-npm-run-lint-node-4
       - parsoidsvc-hhvm-parsertests-jessie
       - parsoidsvc-source-parse-tool-check-trusty
       - parsoidsvc-source-roundtrip-test-check-trusty
       - parsoidsvc-source-npm-node-0.10
-      - parsoidsvc-source-npm-node-4.3
+      - parsoidsvc-source-npm-node-4
     gate-and-submit:
-      - parsoidsvc-npm-run-lint-node-4.3
+      - parsoidsvc-npm-run-lint-node-4
       - parsoidsvc-hhvm-parsertests-jessie
       - parsoidsvc-source-parse-tool-check-trusty
       - parsoidsvc-source-roundtrip-test-check-trusty
       - parsoidsvc-source-npm-node-0.10
-      - parsoidsvc-source-npm-node-4.3
+      - parsoidsvc-source-npm-node-4
     postmerge:
       - parsoidsvc-source-jsduck-publish
 
@@ -7069,12 +7069,12 @@ projects:
       - parsoidsvc-deploy-parse-tool-check-trusty
       - parsoidsvc-deploy-roundtrip-test-check-trusty
       - parsoidsvc-deploy-npm-node-0.10
-      - parsoidsvc-deploy-npm-node-4.3
+      - parsoidsvc-deploy-npm-node-4
     gate-and-submit:
       - parsoidsvc-deploy-parse-tool-check-trusty
       - parsoidsvc-deploy-roundtrip-test-check-trusty
       - parsoidsvc-deploy-npm-node-0.10
-      - parsoidsvc-deploy-npm-node-4.3
+      - parsoidsvc-deploy-npm-node-4
 
   - name: mediawiki/services/rcstream
     template:
@@ -7861,10 +7861,10 @@ projects:
       - jshint
       - jsonlint
     test:
-      - mwext-VisualEditor-npm-node-4.3
+      - mwext-VisualEditor-npm-node-4
       - mwext-VisualEditor-jsduck
     gate-and-submit:
-      - mwext-VisualEditor-npm-node-4.3
+      - mwext-VisualEditor-npm-node-4
       - mwext-VisualEditor-jsduck
     postmerge:
       - mwext-VisualEditor-publish
@@ -8330,9 +8330,9 @@ projects:
 
   - name: wikimedia/portals
     test:
-      - wikimedia-portals-npm-node-4.3
+      - wikimedia-portals-npm-node-4
     gate-and-submit:
-      - wikimedia-portals-npm-node-4.3
+      - wikimedia-portals-npm-node-4
 
   - name: search/extra
     test:
@@ -8381,15 +8381,15 @@ projects:
       - oojs-ui-jshint
       - oojs-ui-jsonlint
     test:
-      - oojs-ui-npm-node-4.3
+      - oojs-ui-npm-node-4
       - oojs-ui-rake-jessie
-      - oojs-ui-npm-run-demos-node-4.3
-      - oojs-ui-npm-run-doc-node-4.3
+      - oojs-ui-npm-run-demos-node-4
+      - oojs-ui-npm-run-doc-node-4
     gate-and-submit:
-      - oojs-ui-npm-node-4.3
+      - oojs-ui-npm-node-4
       - oojs-ui-rake-jessie
-      - oojs-ui-npm-run-demos-node-4.3
-      - oojs-ui-npm-run-doc-node-4.3
+      - oojs-ui-npm-run-demos-node-4
+      - oojs-ui-npm-run-doc-node-4
     postmerge:
       - oojs-ui-jsduck-publish
       - oojs-ui-doxygen-publish
@@ -8441,7 +8441,7 @@ projects:
 
   - name: wikidata/query/gui-deploy
     experimental:
-      - npm-node-4.3
+      - npm-node-4
 
   - name: wikimedia/bots/jouncebot
     template:
