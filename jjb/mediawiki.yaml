@@ -498,14 +498,15 @@
 # Special job to run MW-CS against MediaWiki core.
 # Can't run it through composer because it'll timeout.
 - job:
-    name: 'mediawiki-core-phpcs'
-    node: contintLabsSlave && phpflavor-hhvm
+    name: 'mediawiki-core-phpcs-trusty'
+    node: ci-trusty-wikimedia
     concurrent: true
     logrotate:
         daysToKeep: 15
     triggers:
      - zuul
     builders:
+     - castor-load
      - zuul-cloner:
          projects: >
              mediawiki/core
@@ -514,3 +515,5 @@
      - shell: |
         cd $WORKSPACE/src
         vendor/bin/phpcs -p -s
+    publishers:
+     - castor-save
