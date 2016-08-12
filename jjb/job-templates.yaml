@@ -122,8 +122,8 @@
     triggers:
      - zuul
 
-- job: &job_npm-node-4_3
-    name: 'npm-node-4.3'
+- job: &job_npm-node-4
+    name: 'npm-node-4'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
@@ -146,8 +146,8 @@
      - castor-save
 
 - job-template:
-    !!merge : *job_npm-node-4_3
-    name: '{name}-npm-node-4.3'
+    !!merge : *job_npm-node-4
+    name: '{name}-npm-node-4'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
@@ -167,7 +167,7 @@
      - global-teardown
 
 - job-template:
-    name: '{name}-npm-run-{script}-node-4.3'
+    name: '{name}-npm-run-{script}-node-4'
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -209,7 +209,7 @@
      - castor-save
 
 - job-template:
-    name: '{name}-{repository}-npm-node-4.3'
+    name: '{name}-{repository}-npm-node-4'
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
