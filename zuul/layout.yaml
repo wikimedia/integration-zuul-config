@@ -3004,6 +3004,19 @@ projects:
     experimental:
       - mwext-donationinterfacecore-REL1_28-zend56-jessie
 
+  - name: mediawiki/extensions/DonationInterface/vendor
+    check:
+      - php55lint
+      - php56lint
+    test:
+      - mwext-donationinterfacecore-REL1_27-testextension-zend56
+      - php55lint
+      - php56lint
+    gate-and-submit:
+      - mwext-donationinterfacecore-REL1_27-testextension-zend56
+      - php55lint
+      - php56lint
+
   - name: mediawiki/extensions/DoubleWiki
     template:
       - name: extension-unittests-generic
