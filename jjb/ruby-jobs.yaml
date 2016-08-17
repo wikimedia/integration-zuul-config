@@ -61,9 +61,7 @@
      - zuul
     builders:
      - shell: |
-        # We clean up unused gems that might be injected by castor
-        # Installs under BUNDLE_PATH injected by Zuul
-        bundle install --clean
+        bundle install --clean --path ../vendor/bundle
         bundle exec rake test
 
 - job-template:
