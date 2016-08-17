@@ -622,7 +622,7 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
-  - name: ^rake-jessie$
+  - name: ^rake$
     # Rake entry points have not been backported to wmf branches yet
     # -- hashar Nov 10th 2015
     branch: (?!^wmf/1\.27\.0-wmf\.[45])
@@ -1198,9 +1198,9 @@ project-templates:
 
   - name: rake
     test:
-      - rake-jessie
+      - rake
     gate-and-submit:
-      - rake-jessie
+      - rake
 
   - name: tox-jessie
     test:
@@ -2199,7 +2199,7 @@ projects:
     test:
       # testing
       - operations-puppet-tox
-      - rake-jessie
+      - rake
       # Same as `check` pipeline:
       - erblint-HEAD
       - pplint-HEAD
@@ -8376,12 +8376,12 @@ projects:
       - oojs-ui-jsonlint
     test:
       - oojs-ui-npm-node-4
-      - oojs-ui-rake-jessie
+      - oojs-ui-rake
       - oojs-ui-npm-run-demos-node-4
       - oojs-ui-npm-run-doc-node-4
     gate-and-submit:
       - oojs-ui-npm-node-4
-      - oojs-ui-rake-jessie
+      - oojs-ui-rake
       - oojs-ui-npm-run-demos-node-4
       - oojs-ui-npm-run-doc-node-4
     postmerge:
