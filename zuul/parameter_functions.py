@@ -134,6 +134,7 @@ dependencies = {
     'TranslationNotifications': ['Translate'],
     'TwnMainPage': ['Translate'],
     'UniversalLanguageSelector': ['EventLogging'],
+    'UploadWizard': ['WikimediaMessages'],
     'VectorBeta': ['EventLogging'],
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
