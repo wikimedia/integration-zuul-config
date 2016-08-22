@@ -218,6 +218,9 @@
               credential-id: 'd5ee743e-b2e4-43eb-bc16-0bf11bcdec43'
               variable: WMF_WPT_KEY
           - text:
+              credential-id: 'e0131e1d-c45a-468c-b163-439769f21a20'
+              variable: WPT_ORG_WPT_KEY
+          - text:
               credential-id: 'f9a95f38-76cc-456d-bc8c-2cf126c604c3'
               variable: WPT_USER
           - text:
@@ -228,7 +231,6 @@
         #!/bin/bash
         declare -i RESULT=0
         # These tests runs on our own WebPageTest instance
-        # Securely set beforehand: WMF_WPT_KEY, WPT_USER, WPT_USER_PASSWORD
         export STATSV_ENDPOINT="https://www.wikimedia.org/beacon/statsv"
         export WPT_RUNS="5"
         export WPT_MOBILE_RUNS="5"
@@ -288,7 +290,6 @@
      - shell: |
         #!/bin/bash
         declare -i RESULT=0
-        # Securely set beforehand: WPT_ORG_WPT_KEY, WPT_USER, WPT_USER_PASSWORD
         # These tests run on WebPageTest.org
         # Note: We can make 1000 runs per day
         export STATSV_ENDPOINT="https://www.wikimedia.org/beacon/statsv"
