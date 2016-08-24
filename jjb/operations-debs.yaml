@@ -48,6 +48,17 @@
     name: 'debian-glue'
     node: DebianGlue && DebianJessie
     concurrent: true
+    parameters:
+      - string:
+          name: BUILD_TIMEOUT
+          default: '30'
+          description: 'Timeout in minutes.'
+    wrappers:
+      - timeout:
+          timeout: $BUILD_TIMEOUT
+          fail: true
+      - timestamps
+      - ansicolor
     triggers:
         - zuul
     builders:
