@@ -97,7 +97,7 @@
      - castor-save
 
 - job-template:
-    name: parsoidsvc-{repository}-npm-node-4-jessie
+    name: parsoidsvc-{repository}-npm-node-4
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -162,10 +162,10 @@
      - source  # mediawiki/services/parsoid
      - deploy  # mediawiki/services/parsoid/deploy
     jobs:
-        - '{name}-npm-run-{script}-node-4-jessie':
+        - '{name}-npm-run-{script}-node-4':
             script: 'lint'
         - 'parsoidsvc-{repository}-parse-tool-check-jessie'
         - 'parsoidsvc-{repository}-roundtrip-test-check-jessie'
-        - 'parsoidsvc-{repository}-npm-node-4-jessie'
+        - 'parsoidsvc-{repository}-npm-node-4'
         - 'parsoidsvc-{repository}-jsduck-publish'
         - parsoidsvc-hhvm-parsertests-jessie
