@@ -512,7 +512,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
-    # Make sure rake is properly filtered
+    # Make sure rake-jessie is properly filtered
     # https://phabricator.wikimedia.org/T105178
     def test_mediawiki_core_rake_filters(self):
         test_manager = self.getPipeline('test').manager
@@ -520,7 +520,7 @@ class TestZuulScheduler(unittest.TestCase):
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'mediawiki/core'][0]
         rake_job = [j for j in jobs_tree.getJobs()
-                    if j.name == 'rake'][0]
+                    if j.name == 'rake-jessie'][0]
 
         def change_for_branch(branch_name):
             """Return a change against branch_name branch"""
