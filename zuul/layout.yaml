@@ -844,7 +844,7 @@ jobs:
     failure-message: 'FAILURE Failed to compare your patchset with the current configuration.'
     files: '^jjb/.*'
 
-  - name: 'integration-config-tox-dib'
+  - name: 'integration-config-tox-dib-jessie'
     files: '^dib/.*'
 
   - name: 'integration-zuul-layoutdiff'
@@ -1216,9 +1216,9 @@ project-templates:
 
   - name: tox-jessie
     test:
-     - tox
+     - tox-jessie
     gate-and-submit:
-     - tox
+     - tox-jessie
 
   - name: commit-message-validator
     check:
@@ -1245,16 +1245,16 @@ projects:
     check:
       - noop
     test:
-      - integration-config-tox
+      - integration-config-tox-jessie
       - integration-config-puppet-validate
-      - integration-config-tox-dib
+      - integration-config-tox-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
       - integration-zuul-layoutvalidation
     gate-and-submit:
-      - integration-config-tox
+      - integration-config-tox-jessie
       - integration-config-puppet-validate
-      - integration-config-tox-dib
+      - integration-config-tox-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
       - integration-zuul-layoutvalidation-gate
@@ -2228,7 +2228,7 @@ projects:
     # Same for trusted user
     test:
       # testing
-      - operations-puppet-tox
+      - operations-puppet-tox-jessie
       - rake
       # Same as `check` pipeline:
       - erblint-HEAD
@@ -8205,12 +8205,12 @@ projects:
     check:
       - tox-jessie
     test:
-      - pywikibot-core-tox-nose
-      - pywikibot-core-tox-nose34
+      - pywikibot-core-tox-nose-jessie
+      - pywikibot-core-tox-nose34-jessie
       - tox-doc-jessie
     gate-and-submit:
-      - pywikibot-core-tox-nose
-      - pywikibot-core-tox-nose34
+      - pywikibot-core-tox-nose-jessie
+      - pywikibot-core-tox-nose34-jessie
       - tox-doc-jessie
     postmerge:
       - pywikibot-core-tox-doc-publish
@@ -8227,11 +8227,11 @@ projects:
     template:
       - name: tox-jessie
     test:
-      - pywikibot-wikibase-tox-nose
-      - pywikibot-wikibase-tox-nose34
+      - pywikibot-wikibase-tox-nose-jessie
+      - pywikibot-wikibase-tox-nose34-jessie
     gate-and-submit:
-      - pywikibot-wikibase-tox-nose
-      - pywikibot-wikibase-tox-nose34
+      - pywikibot-wikibase-tox-nose-jessie
+      - pywikibot-wikibase-tox-nose34-jessie
 
   - name: pywikibot/bots/xqbot
     template:
