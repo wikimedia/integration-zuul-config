@@ -630,13 +630,12 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
-  - name: ^rake$
+  - name: ^rake-jessie$
     files:
       # Uses python re.match() which checks at BEGINNING of the string
       - '.*\.rb'
       - '(\.rubocop|\.gemspec|Gemfile)'
       - '.*([Rr]akefile|/spec/)'
-
     # Rake entry points have not been backported to wmf branches yet
     # -- hashar Nov 10th 2015
     branch: (?!^wmf/1\.27\.0-wmf\.[45])
@@ -1208,9 +1207,9 @@ project-templates:
 
   - name: rake
     test:
-      - rake
+      - rake-jessie
     gate-and-submit:
-      - rake
+      - rake-jessie
 
   - name: tox-jessie
     test:
@@ -2224,7 +2223,7 @@ projects:
     test:
       # testing
       - operations-puppet-tox-jessie
-      - rake
+      - rake-jessie
       # Same as `check` pipeline:
       - erblint-HEAD
       - pplint-HEAD
@@ -8402,12 +8401,12 @@ projects:
       - oojs-ui-jsonlint
     test:
       - oojs-ui-npm-node-4-jessie
-      - oojs-ui-rake
+      - oojs-ui-rake-jessie
       - oojs-ui-npm-run-demos-node-4
       - oojs-ui-npm-run-doc-node-4
     gate-and-submit:
       - oojs-ui-npm-node-4-jessie
-      - oojs-ui-rake
+      - oojs-ui-rake-jessie
       - oojs-ui-npm-run-demos-node-4
       - oojs-ui-npm-run-doc-node-4
     postmerge:
