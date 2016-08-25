@@ -513,19 +513,19 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(test_manager.eventMatches(event, change))
 
     # FIXME: should be more generic
-    def get_mediawiki_core_rake_job(self, pipeline_manager):
+    def get_mediawiki_core_rake_jessie_job(self, pipeline_manager):
         jobs_tree = [t for (p, t) in
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'mediawiki/core'][0]
-        rake_job = [j for j in jobs_tree.getJobs()
-                    if j.name == 'rake'][0]
-        return rake_job
+        rake_jessie_job = [j for j in jobs_tree.getJobs()
+                           if j.name == 'rake-jessie'][0]
+        return rake_jessie_job
 
-    # Make sure rake is properly filtered
+    # Make sure rake-jessie is properly filtered
     # https://phabricator.wikimedia.org/T105178
-    def test_mediawiki_core_rake_branch_filters(self):
+    def test_mediawiki_core_rake_jessie_branch_filters(self):
         test_manager = self.getPipeline('test').manager
-        rake_job = self.get_mediawiki_core_rake_job(test_manager)
+        rake_jessie_job = self.get_mediawiki_core_rake_jessie_job(test_manager)
 
         def change_for_branch(branch_name):
             """Return a change against branch_name branch"""
@@ -541,21 +541,21 @@ class TestZuulScheduler(unittest.TestCase):
         for allowed_branch in ['master', 'REL1_25', 'REL1_26']:
             change = change_for_branch(allowed_branch)
             self.assertTrue(test_manager.eventMatches(event, change))
-            self.assertTrue(rake_job.changeMatches(change),
-                            'mediawiki/core rake job must run on %s'
+            self.assertTrue(rake_jessie_job.changeMatches(change),
+                            'mediawiki/core rake-jessie job must run on %s'
                             % allowed_branch)
 
         for blacklisted_branch in ['REL1_23', 'REL1_24',
                                    'fundraising/REL1_42']:
             change = change_for_branch(blacklisted_branch)
             self.assertTrue(test_manager.eventMatches(event, change))
-            self.assertFalse(rake_job.changeMatches(change),
-                             'mediawiki/core rake job must NOT run on %s'
+            self.assertFalse(rake_jessie_job.changeMatches(change),
+                             'mediawiki/core rake-jessie job must NOT run on %s'
                              % blacklisted_branch)
 
-    def test_rake_files_filters(self):
+    def test_rake_jessie_files_filters(self):
         test_manager = self.getPipeline('test').manager
-        rake_job = self.get_mediawiki_core_rake_job(test_manager)
+        rake_jessie_job = self.get_mediawiki_core_rake_jessie_job(test_manager)
 
         def change_with_files(files):
             change = zuul.model.Change('mediawiki/core')
@@ -582,12 +582,12 @@ class TestZuulScheduler(unittest.TestCase):
             try:
                 if expect:
                     self.assertTrue(
-                        rake_job.changeMatches(change),
-                        'rake should run with files: %s' % files)
+                        rake_jessie_job.changeMatches(change),
+                        'rake-jessie should run with files: %s' % files)
                 else:
                     self.assertFalse(
-                        rake_job.changeMatches(change),
-                        'rake should NOT run with files: %s' % files)
+                        rake_jessie_job.changeMatches(change),
+                        'rake-jessie should NOT run with files: %s' % files)
             except AssertionError, e:
                 errors.append(str(e))
 
