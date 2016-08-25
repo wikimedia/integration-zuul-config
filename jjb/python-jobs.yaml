@@ -5,8 +5,8 @@
          artifacts: '.tox/*/log/*.log'
 
 - job-template:
-    name: '{name}-tox-{toxenv}'
-    node: contintLabsSlave && DebianJessie
+    name: '{name}-tox-{toxenv}-jessie'
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -21,8 +21,8 @@
 
 # Same for Jessie
 - job-template:
-    name: 'tox-{toxenv}'
-    node: contintLabsSlave && DebianJessie
+    name: 'tox-{toxenv}-jessie'
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -35,22 +35,24 @@
      - archive-log-dir
      - castor-save
 
-- job-template: &job_tox
-    name: 'tox'
-    node: contintLabsSlave && DebianJessie
+- job-template: &job_tox-jessie
+    name: 'tox-jessie'
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
     builders:
+     - castor-load
      - tox-all-envs
     publishers:
      - archive-log-dir
      - archive-tox-logs
+     - castor-save
 
 - job-template:
-    !!merge : *job_tox
-    name: '{name}-tox'
+    !!merge : *job_tox-jessie
+    name: '{name}-tox-jessie'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
@@ -76,8 +78,8 @@
 - project:
     name: common-tox-jobs
     jobs:
-     - 'tox'
-     - 'tox-{toxenv}':
+     - 'tox-jessie'
+     - 'tox-{toxenv}-jessie':
          toxenv:
              - doc
 
