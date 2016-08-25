@@ -2265,12 +2265,8 @@ projects:
   # Repo of misc softwares
   # Voting V+2 so ops dont idle waiting for CI to report.
   - name: operations/software
-    test:
-     - noop
-    gate-and-submit:
-     - noop
-    experimental:
-     - tox  # T143559
+    template:
+      - name: tox-jessie
 
   - name: operations/software/conftool
     template:
