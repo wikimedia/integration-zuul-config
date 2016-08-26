@@ -689,6 +689,11 @@ jobs:
      - '^.*\.(php|php5|phtml|inc)$'
     branch: (?!REL1_2[3-6]$)
 
+  - name: wikimedia-fundraising-crm-vendor-php55lint
+    files:
+     - '^(?!symfony/polyfill-php54/.*).*\.(php|php5|phtml|inc)$'
+    branch: (?!REL1_2[3-6]$)
+
   - name: ^mediawiki-phpunit-php53-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
     branch: (?!REL1_23)
@@ -2384,14 +2389,14 @@ projects:
   - name: wikimedia/fundraising/crm/vendor
     check:
       - php53lint
-      - php55lint
+      - wikimedia-fundraising-crm-vendor-php55lint
     test:
       - php53lint
-      - php55lint
+      - wikimedia-fundraising-crm-vendor-php55lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
       - php53lint
-      - php55lint
+      - wikimedia-fundraising-crm-vendor-php55lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/php-queue
