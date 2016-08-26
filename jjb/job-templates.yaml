@@ -272,7 +272,7 @@
     builders:
      - phplint
 
-- job:
+- job: &job_php55lint
     name: 'php55lint'
     node: contintLabsSlave && phpflavor-php55
     defaults: use-remote-zuul-shallow-clone
@@ -281,6 +281,13 @@
      - zuul
     builders:
      - phplint
+
+- job-template:
+    !!merge : *job_php55lint
+    name: '{name}-php55lint'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 # Deprecated non-generic phplint job. You should
 # use the above 'phplint' job. Due to a performance issue
