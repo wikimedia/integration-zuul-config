@@ -71,6 +71,7 @@ def set_parameters(item, job, params):
         if params['ZUUL_PROJECT'] == 'integration/zuul':
             # Uses dh_virtualenv which needs access to pypy.python.org
             params['PBUILDER_USENETWORK'] = 'yes'
+            params['DEB_BUILD_OPTIONS'] = 'nocheck'
         elif (params['ZUUL_PROJECT'] ==
                 'operations/debs/contenttranslation/giella-sme'):
             # Heavy build T143546
