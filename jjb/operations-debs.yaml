@@ -49,6 +49,10 @@
     node: DebianGlue && DebianJessie
     concurrent: true
     parameters:
+      # Set a default in case someone trigger the job manually
+      #
+      # Value is passed by Zuul, and if missed fallback to the Jenkins globally
+      # set value.
       - string:
           name: BUILD_TIMEOUT
           default: '30'
