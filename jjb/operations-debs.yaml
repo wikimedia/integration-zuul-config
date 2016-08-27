@@ -44,21 +44,10 @@
 #
 # Generic job template around jenkins-debian-glue
 #
-- job-template: &job_template_debian_glue
+- job-template: &job_template_debian_glue &job_template_debian_glue_custom
     name: 'debian-glue'
     node: DebianGlue && DebianJessie
     concurrent: true
-    parameters:
-      - string:
-          name: BUILD_TIMEOUT
-          default: '30'
-          description: 'Timeout in minutes.'
-    wrappers:
-      - timeout:
-          timeout: '${{BUILD_TIMEOUT}}'
-          fail: true
-      - timestamps
-      - ansicolor
     triggers:
         - zuul
     builders:
@@ -175,6 +164,25 @@
     # Reinject Zuul parameters since JJB strip them for some reason
     triggers:
      - zuul
+
+- job-template:
+    !!merge : *job_template_debian_glue_custom
+    name: 'debian-glue-custom'
+    parameters:
+      - string:
+          name: BUILD_TIMEOUT
+          default: '30'
+          description: 'Timeout in minutes.'
+    wrappers:
+      - timeout:
+          timeout: '${{BUILD_TIMEOUT}}'
+          fail: true
+      - timestamps
+      - ansicolor
+    # Reinject Zuul parameters since JJB strip them for some reason
+    triggers:
+     - zuul
+
 #
 # PROJECTS
 #
@@ -185,3 +193,4 @@
     jobs:
         - 'debian-glue'
         - 'debian-glue-non-voting'
+        - 'debian-glue-custom'
