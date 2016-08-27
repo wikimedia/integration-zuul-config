@@ -64,7 +64,7 @@ def set_parameters(item, job, params):
     if job.name.endswith('-publish'):
         set_doc_variables(item, job, params)
 
-    if 'debian-glue' in job.name:
+    if 'debian-glue*' in job.name:
         # Finely tweak jenkins-debian-glue parameters
         if params['ZUUL_PROJECT'] == 'integration/zuul':
             # Uses dh_virtualenv which needs access to pypy.python.org
@@ -72,7 +72,11 @@ def set_parameters(item, job, params):
         elif (params['ZUUL_PROJECT'] ==
                 'operations/debs/contenttranslation/giella-sme'):
             # Heavy build T143546
-            params['BUILD_TIMEOUT'] = 180  # minutes
+            params['BUILD_TIMEOUT'] = '180'  # minutes
+		elif 'debian-glue' in job.name:
+            params['BUILD_TIMEOUT'] = '30'  # minutes
+		elif 'debian-glue-non-voting' in job.name:
+            params['BUILD_TIMEOUT'] = '30'  # minutes
 
 dependencies = {
     'AbuseFilter': ['AntiSpoof'],
