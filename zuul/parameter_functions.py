@@ -65,6 +65,8 @@ def set_parameters(item, job, params):
         set_doc_variables(item, job, params)
 
     if 'debian-glue' in job.name:
+        # Always set the value to be safe (T144094)
+        params['BUILD_TIMEOUT'] = 30  # minutes
         # Finely tweak jenkins-debian-glue parameters
         if params['ZUUL_PROJECT'] == 'integration/zuul':
             # Uses dh_virtualenv which needs access to pypy.python.org
