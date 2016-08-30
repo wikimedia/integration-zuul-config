@@ -724,7 +724,10 @@ jobs:
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^mwext-testextension-hhvm
+  #
+  # Should be ^mwext-testextension-(hhvm|php55)-composer
+  # Once the tests are fixed
+  - name: ^mwext-testextension-(hhvm|php55)-composer-non-voting
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
@@ -3096,7 +3099,7 @@ projects:
 
   - name: mediawiki/extensions/DonationInterface
     template:
-      - name: extension-unittests-non-voting
+      - name: extension-unittests-composer-non-voting
       - name: npm
     check:
       - jsonlint
