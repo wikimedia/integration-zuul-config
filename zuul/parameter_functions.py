@@ -108,7 +108,7 @@ dependencies = {
     'Math': ['VisualEditor', 'Wikidata'],
     'MathSearch': ['Math'],
     'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
-    'MobileFrontend': ['Echo', 'VisualEditor'],
+    'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp' ],
     'NavigationTiming': ['EventLogging'],
     'NSFileRepo': ['Lockdown'],
     'OpenIDConnect': ['PluggableAuth'],
