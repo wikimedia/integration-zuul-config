@@ -512,15 +512,20 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
-    # Make sure rake is properly filtered
-    # https://phabricator.wikimedia.org/T105178
-    def test_mediawiki_core_rake_filters(self):
-        test_manager = self.getPipeline('test').manager
+    # FIXME: should be more generic
+    def get_mediawiki_core_rake_job(self, pipeline_manager):
         jobs_tree = [t for (p, t) in
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'mediawiki/core'][0]
         rake_job = [j for j in jobs_tree.getJobs()
                     if j.name == 'rake'][0]
+        return rake_job
+
+    # Make sure rake is properly filtered
+    # https://phabricator.wikimedia.org/T105178
+    def test_mediawiki_core_rake_branch_filters(self):
+        test_manager = self.getPipeline('test').manager
+        rake_job = self.get_mediawiki_core_rake_job(test_manager)
 
         def change_for_branch(branch_name):
             """Return a change against branch_name branch"""
@@ -547,6 +552,46 @@ class TestZuulScheduler(unittest.TestCase):
             self.assertFalse(rake_job.changeMatches(change),
                              'mediawiki/core rake job must NOT run on %s'
                              % blacklisted_branch)
+
+    def test_rake_files_filters(self):
+        test_manager = self.getPipeline('test').manager
+        rake_job = self.get_mediawiki_core_rake_job(test_manager)
+
+        def change_with_files(files):
+            change = zuul.model.Change('mediawiki/core')
+            change.branch = 'master'
+            change.files.extend(files)
+            return change
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'patchset-created'
+        event.account = {'email': 'johndoe@wikimedia.org'}
+
+        cases = [
+            (True, ['rakefile']),
+            (True, ['tests/browser/Rakefile']),
+            (True, ['foo/task.rb']),
+            (True, ['module/spec/foo']),
+            (True, ['Gemfile.lock']),
+
+            (False, ['foo.php']),
+        ]
+        errors = []
+        for (expect, files) in cases:
+            change = change_with_files(files)
+            try:
+                if expect:
+                    self.assertTrue(
+                        rake_job.changeMatches(change),
+                        'rake should run with files: %s' % files)
+                else:
+                    self.assertFalse(
+                        rake_job.changeMatches(change),
+                        'rake should NOT run with files: %s' % files)
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.assertListEqual([], errors)
 
     def test_l10nbot_patchets_are_ignored(self):
         managers = [self.getPipeline(p).manager

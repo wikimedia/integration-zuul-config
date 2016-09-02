@@ -630,7 +630,11 @@ jobs:
 
   - name: ^rake$
     files:
-     - '^(\.rubocop.*|\.gemspec|.*\.rb|Gemfile$|Gemfile\.lock$)'
+      # Uses python re.match() which checks at BEGINNING of the string
+      - '.*\.rb'
+      - '(\.rubocop|\.gemspec|Gemfile)'
+      - '.*([Rr]akefile|/spec/)'
+
     # Rake entry points have not been backported to wmf branches yet
     # -- hashar Nov 10th 2015
     branch: (?!^wmf/1\.27\.0-wmf\.[45])
