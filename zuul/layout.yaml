@@ -803,10 +803,6 @@ jobs:
   # Individual adjustments
   #
 
-  # being tested out
-  - name: apps-android-commons-build
-    voting: false
-
   # This job does more than one thing. Point to the build page and let the user drill into details.
   - name: ^apps-android-wikipedia-.+$
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
@@ -1498,12 +1494,6 @@ projects:
     gate-and-submit:
      - noop
      - php55lint
-
-  - name: apps/android/commons
-    test:
-      - apps-android-commons-build
-    gate-and-submit:
-      - apps-android-commons-build
 
   - name: apps/android/java-mwapi
     test:
