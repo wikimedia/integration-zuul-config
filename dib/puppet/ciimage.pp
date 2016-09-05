@@ -62,6 +62,19 @@ if os_version('debian >= jessie') {
     }
 }
 
+# Overrides
+class standard {
+
+}
+define diamond::collector(
+  $settings    = undef,
+  $ensure      = present,
+  $source      = undef,
+  $content     = undef,
+) {
+
+}
+
 # allow apache2 execution
 class apache2_allow_execution {
   exec { 'allow apache2 execution':
