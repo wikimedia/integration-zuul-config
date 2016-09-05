@@ -11,6 +11,31 @@
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/bin/puppet-test-runner.sh"
 
+# Detect problematic manifests that break puppet runs as per T119042
+- operations-puppet-path-check:
+    name: 'operations-puppet-path-check'
+
+    node: contintLabsSlave
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+
+    triggers:
+     - zuul
+
+    builders:
+     - shell: |
+        #!/bin/bash -e
+        echo "Checking for invalid manifest paths."
+
+        BAD=0
+        shopt -s nullglob
+        for f in modules/role/manifests/*.pp; do
+            echo "Invalid manifest path found: ${f}.  See T119042 for explanation."
+            BAD=1
+        done
+
+        exit $BAD
+
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
@@ -57,6 +82,7 @@
     jobs:
      - '{name}-puppetlint-strict'
      - '{name}-typos'
+     - operations-puppet-path-check
      - '{name}-tox-jessie'
      - operations-puppet-test
      - operations-puppet-doc
