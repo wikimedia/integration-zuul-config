@@ -82,6 +82,8 @@ class apache2_allow_execution {
   }
 }
 if os_version('debian >= jessie') {
+    require_package('libapache2-mod-php5')
+
     include contint::packages::python
 
     # Qunit/Selenium related
