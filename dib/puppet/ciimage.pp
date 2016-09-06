@@ -19,6 +19,11 @@ include contint::slave_scripts
 include contint::packages::base
 include contint::composer
 include contint::php
+
+# FIXME: hack, our manifests no more ship libapache2-mod-php5
+# See T144802
+include ::apache::mod::php5
+
 include mediawiki::packages::php5
 
 package { 'cron':
