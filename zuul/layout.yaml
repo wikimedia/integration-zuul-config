@@ -715,6 +715,9 @@ jobs:
   - name: ^.*php55.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
 
+  - name: ^.*php70.*$
+    branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
+
   - name: ^.*php53.*$
     skip-if:
       - project: '^mediawiki/.*$'
@@ -923,6 +926,7 @@ project-templates:
      - npm-node-4
      - composer-php53
      - composer-php55
+     - composer-php70
      - composer-hhvm
 
   - name: extension-unittests-composer-non-voting
@@ -946,6 +950,7 @@ project-templates:
      - mwext-qunit-composer-jessie
      - composer-php53
      - composer-php55
+     - composer-php70
      - composer-hhvm
 
   - name: extension-unittests-generic
@@ -977,6 +982,7 @@ project-templates:
       - npm-node-4
       - composer-php53
       - composer-php55
+      - composer-php70
       - composer-hhvm
 
   - name: extension-unittests-non-voting
@@ -1005,6 +1011,7 @@ project-templates:
       - npm-node-4
       - composer-php53
       - composer-php55
+      - composer-php70
       - composer-hhvm
 
   # Template to run per-patch selenium browser test
@@ -1119,6 +1126,8 @@ project-templates:
       - composer-php53
       - composer-php55
       - composer-hhvm
+    experimental:
+      - composer-php70
 
   - name: composer-test55
     check:
@@ -1130,6 +1139,8 @@ project-templates:
     gate-and-submit:
       - composer-php55
       - composer-hhvm
+    experimental:
+      - composer-php70
 
   - name: jshint
     check:
@@ -1170,6 +1181,8 @@ project-templates:
       - composer-package-hhvm-trusty
       - composer-package-php53
       - composer-package-php55-trusty
+    experimental:
+      - composer-package-php70-jessie
 
   - name: composer-test-package55
     check:
@@ -1183,6 +1196,8 @@ project-templates:
       #- composer-package-hhvm-jessie
       - composer-package-hhvm-trusty
       - composer-package-php55-trusty
+    experimental:
+      - composer-package-php70-jessie
 
   - name: npm
     test:
