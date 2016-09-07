@@ -152,6 +152,8 @@
         # Zend 55 is solely on Trusty
         - php55:
             image: trusty
+        - php70:
+            image: jessie
         # Wikimedia runs HHVM on Trusty and will move to Jessie
         - hhvm:
             image: trusty
@@ -164,6 +166,7 @@
     name: 'composer-flavored'
     phpflavor:
         - php55
+        - php70
         - hhvm
     jobs:
      - 'composer-{phpflavor}'

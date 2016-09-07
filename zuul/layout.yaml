@@ -700,6 +700,11 @@ jobs:
      - '^.*\.(php|php5|phtml|inc)$'
     branch: (?!REL1_2[3-6]$)
 
+  - name: php70lint
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+    branch: (?!REL1_2[3-6]$)
+
   - name: ^mediawiki-phpunit-php53-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
     branch: (?!REL1_23)
@@ -713,6 +718,9 @@ jobs:
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
 
   - name: ^.*php55.*$
+    branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
+
+  - name: ^.*php70.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
 
   - name: ^.*php53.*$
@@ -923,6 +931,7 @@ project-templates:
      - npm-node-4
      - composer-php53
      - composer-php55
+     - composer-php70
      - composer-hhvm
 
   - name: extension-unittests-composer-non-voting
@@ -946,7 +955,9 @@ project-templates:
      - mwext-qunit-composer-jessie
      - composer-php53
      - composer-php55
+     - composer-php70
      - composer-hhvm
+     - php70lint
 
   - name: extension-unittests-generic
     check:
@@ -977,7 +988,9 @@ project-templates:
       - npm-node-4
       - composer-php53
       - composer-php55
+      - composer-php70
       - composer-hhvm
+      - php70lint
 
   - name: extension-unittests-non-voting
     check:
@@ -1005,7 +1018,9 @@ project-templates:
       - npm-node-4
       - composer-php53
       - composer-php55
+      - composer-php70
       - composer-hhvm
+      - php70lint
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1119,6 +1134,8 @@ project-templates:
       - composer-php53
       - composer-php55
       - composer-hhvm
+    experimental:
+      - composer-php70
 
   - name: composer-test55
     check:
@@ -1130,6 +1147,8 @@ project-templates:
     gate-and-submit:
       - composer-php55
       - composer-hhvm
+    experimental:
+      - composer-php70
 
   - name: jshint
     check:
@@ -1170,6 +1189,8 @@ project-templates:
       - composer-package-hhvm-trusty
       - composer-package-php53
       - composer-package-php55-trusty
+    experimental:
+      - composer-package-php70-jessie
 
   - name: composer-test-package55
     check:
@@ -1183,6 +1204,8 @@ project-templates:
       #- composer-package-hhvm-jessie
       - composer-package-hhvm-trusty
       - composer-package-php55-trusty
+    experimental:
+      - composer-package-php70-jessie
 
   - name: npm
     test:
