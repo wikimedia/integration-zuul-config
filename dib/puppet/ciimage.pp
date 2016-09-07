@@ -37,7 +37,9 @@ include apt
 include contint::packages::apt
 include contint::packages::php
 # php7 packages are in 3rd party repo, gotta update
-Exec['apt-get update'] -> Class['contint::packages::php']
+Class['contint::packages::apt']
+-> Exec['apt-get update']
+-> Class['contint::packages::php']
 
 require_package('arcanist')
 
