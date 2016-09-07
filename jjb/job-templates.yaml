@@ -282,6 +282,16 @@
     builders:
      - phplint
 
+- job:
+    name: 'php70lint'
+    node: contintLabsSlave && phpflavor-php70
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - phplint
+
 # Deprecated non-generic phplint job. You should
 # use the above 'phplint' job. Due to a performance issue
 # with Git on Ubuntu Precise (details on T92042), this is
@@ -302,6 +312,18 @@
 - job-template:
     name: '{name}-php55lint'
     node: contintLabsSlave && phpflavor-php55
+    defaults: use-remote-zuul-no-submodules
+    concurrent: true
+    properties:
+     - throttle-one-per-node
+    triggers:
+     - zuul
+    builders:
+     - phplint
+
+- job-template:
+    name: '{name}-php70lint'
+    node: contintLabsSlave && phpflavor-php70
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     properties:
