@@ -33,6 +33,7 @@ package { 'cron':
 include contint::hhvm
 
 include contint::packages::javascript
+include contint::packages::apt
 include contint::packages::php
 
 require_package('arcanist')
