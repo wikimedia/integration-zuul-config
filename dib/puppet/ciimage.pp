@@ -33,6 +33,7 @@ package { 'cron':
 include contint::hhvm
 
 include contint::packages::javascript
+include apt
 include contint::packages::apt
 include contint::packages::php
 
