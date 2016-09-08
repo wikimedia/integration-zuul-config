@@ -36,7 +36,21 @@
     builders:
      - puppet-doc:
         puppet: "$WORKSPACE"
-     - doc-publish:
+     - shell: |
+        # Destination dir must not exist or 'puppet doc' complains
+        rm -fR "$WORKSPACE/doc"
+
+        cd "$WORKSPACE/src"
+        # Have to exclude /bin/ directories from modules. Done by injecting an
+        # extra parameter to rdoc to extend puppet internal list of --exclude /
+        # options.
+        # T143233
+        RDOCOPT='--exclude=/modules/[^/]*/bin/.*$' /usr/bin/puppet doc \
+            --trace \
+            --mode rdoc \
+            --outputdir "$WORKSPACE/doc" \
+            --modulepath "modules" \
+            --manifestdir "manifests"     - doc-publish:
         docsrc: 'doc'
         docdest: 'puppet'
      # And publish the entire workspace as "puppetsource"
