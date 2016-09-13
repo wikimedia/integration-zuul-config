@@ -97,6 +97,7 @@ dependencies = {
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr', 'WikiEditor'],
+    'FileAnnotations': ['EventLogging'],
     'FlaggedRevs': ['Scribunto'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
