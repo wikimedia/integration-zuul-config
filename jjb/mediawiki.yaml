@@ -105,7 +105,7 @@
     publishers:
      - mw-teardown
 
-# Runs all MediaWiki tests under hhvm on Nodepool instances
+# Runs all MediaWiki PHPUnit tests on Nodepool
 - job-template:
     name: 'mediawiki-phpunit-{phpflavor}-{image}'
     node: ci-{image}-wikimedia
@@ -124,43 +124,13 @@
      - mw-install-mysql
      - mw-apply-settings
      - mw-fetch-composer-dev
-     # ParserTests tests are run via 'mediawiki-phpunit-parsertests-phpflavor'
-     - shell: "PHPUNIT_EXCLUDE_GROUP=ParserTests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - archive-log-dir
      - castor-save
 
-# Only runs the 'parsertests' MediaWiki test suite on Nodepool instances
-# Complements 'mediawiki-phpunit-{phpflavor}-{image}'
-- job-template:
-    name: 'mediawiki-parsertests-{phpflavor}-{image}'
-    node: ci-{image}-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-mysql
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     - shell: "PHPUNIT_TESTSUITE=parsertests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
-    publishers:
-     - phpunit-junit-2
-     - archive-log-dir
-     - castor-save
-
-# Runs subset of MediaWiki tests
-#
-# Excludes '@group ParserTests' tests which are run in parallel via
-# mediawiki-phpunit-parsertests-{phpflavor}
+# Runs all MediaWiki PHPUnit tests on a CI slave
 - job-template:
     name: 'mediawiki-phpunit-{phpflavor}'
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
@@ -180,37 +150,7 @@
      - mw-install-mysql
      - mw-apply-settings
      - mw-fetch-composer-dev
-     # ParserTests tests are run via 'mediawiki-phpunit-parsertests-phpflavor'
-     - shell: "PHPUNIT_EXCLUDE_GROUP=ParserTests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
-    publishers:
-     - phpunit-junit-2
-     - mw-teardown-mysql
-     - archive-log-dir
-
-# mediawiki-phpunit-parsertests-{phpflavor}
-#
-# Only runs the 'parsertests' MediaWiki testsuite.
-# Complements 'mediawiki-phpunit-{phpflavor}'.
-- job-template:
-    name: 'mediawiki-phpunit-parsertests-{phpflavor}'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
-    concurrent: true
-    properties:
-     - throttle-one-per-node
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-mysql
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     - shell: "PHPUNIT_TESTSUITE=parsertests /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
      - mw-teardown-mysql
@@ -361,9 +301,6 @@
       - 'mediawiki-phpunit-{phpflavor}':
           phpflavor:
               - php53
-      - 'mediawiki-phpunit-parsertests-{phpflavor}':
-          phpflavor:
-              - php53
       - 'mediawiki-phpunit-{phpflavor}-{image}': &phpflavor_images
           phpflavor:
               - php55:
@@ -373,7 +310,6 @@
                   image: trusty
               - hhvm:
                   image: jessie
-      - 'mediawiki-parsertests-{phpflavor}-{image}': *phpflavor_images
 
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}':
