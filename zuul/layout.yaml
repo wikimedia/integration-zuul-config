@@ -35,7 +35,10 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/meta/config).*$
         - event: patchset-created
+          ref: ^(?!refs/meta/config).*$
           # Don't run the check pipeline if the user is allowed to run the test pipeline (bug 43391).
           # TODO: Figure out a way to turn this into a list instead of a single regex.
           # TODO: Figure out a way to not have to repeat this from pipeline 'test'.
@@ -235,7 +238,10 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/meta/config).*$
         - event: patchset-created
+          ref: ^(?!refs/meta/config).*$
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
@@ -256,7 +262,10 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/meta/config).*$
         - event: patchset-created
+          ref: ^(?!refs/meta/config).*$
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
@@ -278,7 +287,10 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/meta/config).*$
         - event: patchset-created
+          ref: ^(?!refs/meta/config).*$
 
           # BEWARE:
           # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
@@ -514,6 +526,10 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
+        - event: patchset-created
+          ref: ^(?!refs/meta/config).*$
+        - event: ref-updated
+          ref: ^(?!refs/meta/config).*$
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check experimental\.?\s*$
           email: *email_whitelist
@@ -533,6 +549,10 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
+        - event: patchset-created
+          ref: ^(?!refs/meta/config).*$
+        - event: ref-updated
+          ref: ^(?!refs/meta/config).*$
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check (php53?|zend)\.?\s*$
           email: *email_whitelist
@@ -557,6 +577,10 @@ pipelines:
     window-floor: 12
     trigger:
       gerrit:
+        - event: patchset-created
+          ref: ^(?!refs/meta/config).*$
+        - event: ref-updated
+          ref: ^(?!refs/meta/config).*$
         - event: comment-added
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
