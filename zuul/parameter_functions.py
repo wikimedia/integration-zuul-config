@@ -119,6 +119,7 @@ dependencies = {
     'OpenIDConnect': ['PluggableAuth'],
     'OpenStackManager': ['LdapAuthentication'],
     'ORES': ['BetaFeatures'],
+    'PageTriage': ['WikiLove'],
     'PhpTagsFunctions': ['PhpTags'],
     'PhpTagsStorage': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki',
                        'PhpTagsWidgets'],
