@@ -2474,14 +2474,13 @@ projects:
 
 #### MediaWiki extensions ######################################
 
-  - name: mediawiki/extensions/2ColConflict
-    template:
-      - name: composer-test
-      - name: extension-unittests-generic
-      - name: npm
+  - name: mediawiki/extensions
     check:
-      - jsonlint
-      - jshint
+      - noop
+    test:
+      - noop
+    gate-and-submit:
+      - noop
 
   - name: mediawiki/extensions/AbuseFilter
     template:
@@ -3237,15 +3236,6 @@ projects:
       - name: npm
     check:
       - jsonlint
-
-  - name: mediawiki/extensions/ElectronPdfService
-    template:
-      - name: composer-test
-      - name: extension-unittests-generic
-      - name: npm
-    check:
-      - jsonlint
-      - jshint
 
   - name: mediawiki/extensions/EmailCapture
     template:
