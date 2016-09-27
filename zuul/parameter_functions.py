@@ -94,6 +94,7 @@ dependencies = {
     'CirrusSearch': ['MwEmbedSupport', 'TimedMediaHandler', 'PdfHandler',
                      'Cite'],
     'CodeEditor': ['WikiEditor'],
+    'CollaborationKit': ['EventLogging'],
     'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
                            'UniversalLanguageSelector', 'Wikidata'],
     'Disambiguator': ['VisualEditor'],
