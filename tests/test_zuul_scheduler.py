@@ -136,20 +136,23 @@ class TestZuulScheduler(unittest.TestCase):
         # composer-validate
         # composer-validate-package
         # composer-test-(zend|hhvm)
+        # mwgate-composer-validate
         self.assertTrue(
             any([job for job in definition
-                 if job.startswith(('composer', 'composer-'))
+                 if job.startswith(
+                     ('composer', 'composer-', 'mwgate-composer'))
                  or job == 'mwext-testextension-php55-composer-trusty'
                  or job == 'mwext-testextension-hhvm-composer-jessie']),
             'Project %s pipeline %s must have either '
             'composer-validate or a composer-* job'
-            % (name, pipeline))
+            'has: %s'
+            % (name, pipeline, definition))
 
     def assertProjectHasPhplint(self, name, definition, pipeline):
         self.assertTrue(
             any([job for job in definition
                  if job.endswith(('php55lint')) or
-                 job.startswith('composer-')]),
+                 job.startswith(('composer-', 'mwgate-composer'))]),
             'Project %s pipeline %s must have either '
             'phplint or a composer-* job'
             % (name, pipeline))
@@ -905,6 +908,7 @@ class TestZuulScheduler(unittest.TestCase):
                 or p_name.startswith('mediawiki/skins/')
                 or p_name == 'mediawiki/vendor'
                 or p_name == 'mediawiki/core'
+                or p_name == 'data-values/value-view'
             ):
                 return is_mw
             return not is_mw

@@ -276,6 +276,26 @@
       - 'mediawiki-extensions-{phpflavor}-{image}': *phpflavor_images
       - 'mediawiki-extensions-qunit-jessie'
 
+# Used mostly to decouple MediaWiki related projects from the rest of the
+# projects in gate-and-submit. See T107529.
+- project:
+    name: 'mwgate'
+    jobs:
+        - '{name}-composer-php53'
+        - '{name}-composer-{phpflavor}':
+            phpflavor:
+                - php55
+                - php70
+                - hhvm
+        - '{name}-jsduck'
+        - '{name}-jshint'
+        - '{name}-jsonlint'
+        - '{name}-php53lint'
+        - '{name}-php55lint'
+        - '{name}-rake-jessie'
+        - '{name}-tox-jessie'
+        - '{name}-npm-node-4-jessie'
+
 - job:
     name: 'mediawiki-core-code-coverage'
     node: contintLabsSlave && DebianJessie
