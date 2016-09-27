@@ -124,7 +124,7 @@
 
 - job: &job_npm-node-4
     name: 'npm-node-4'
-    node: contintLabsSlave && DebianJessie
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -148,7 +148,6 @@
 - job-template:
     !!merge : *job_npm-node-4
     name: '{name}-npm-node-4-jessie'
-    node: ci-jessie-wikimedia
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
