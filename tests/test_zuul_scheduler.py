@@ -710,6 +710,7 @@ class TestZuulScheduler(unittest.TestCase):
                 or p_name.startswith('mediawiki/skins/')
                 or p_name == 'mediawiki/vendor'
                 or p_name == 'mediawiki/core'
+                or p_name == 'data-values/value-view'
             ):
                 return is_mw
             return not is_mw

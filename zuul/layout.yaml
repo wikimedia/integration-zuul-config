@@ -688,18 +688,14 @@ jobs:
     files:
      - '^composer.json$'
 
-  - name: ^.*-php53lint$
-    files:
-     - '^.*\.(php|php5|phtml|inc)$'
-
-  - name: php53lint
+  - name: ^.*php53lint$
     files:
      - '^.*\.(php|php5|phtml|inc)$'
     skip-if:
      - project: '^mediawiki/.*$'
        branch: (?!REL1_2[3-6]$)
 
-  - name: php55lint
+  - name: ^.*php55lint$
     files:
      - '^.*\.(php|php5|phtml|inc)$'
     branch: (?!REL1_2[3-6]$)
@@ -909,6 +905,22 @@ jobs:
 
 project-templates:
 
+  - name: extension-jshint
+    check:
+      - jshint
+    test:
+      - jshint
+    gate-and-submit:
+      - mwgate-jshint
+
+  - name: extension-jsonlint
+    check:
+      - jsonlint
+    test:
+      - jsonlint
+    gate-and-submit:
+      - mwgate-jsonlint
+
   - name: extension-unittests-composer
     check:
      - php53lint
@@ -922,8 +934,8 @@ project-templates:
      - mwext-testextension-hhvm-composer
      - composer-validate
     gate-and-submit:
-     - php53lint
-     - php55lint
+     - mwgate-php53lint
+     - mwgate-php55lint
      - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
@@ -950,8 +962,8 @@ project-templates:
      - composer-validate
     gate-and-submit:
      - mediawiki-gate
-     - php53lint
-     - php55lint
+     - mwgate-php53lint
+     - mwgate-php55lint
      - composer-validate
     experimental:
      - mwext-qunit-composer-jessie
@@ -974,8 +986,8 @@ project-templates:
      - mwext-testextension-hhvm
      - composer-validate
     gate-and-submit:
-     - php53lint
-     - php55lint
+     - mwgate-php53lint
+     - mwgate-php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-php53
      - mwext-testextension-php55
@@ -1007,8 +1019,8 @@ project-templates:
      - mwext-testextension-php53-non-voting
      - mwext-testextension-php55-non-voting
     gate-and-submit:
-     - php53lint
-     - php55lint
+     - mwgate-php53lint
+     - mwgate-php55lint
      - composer-validate
     experimental:
       - mediawiki-extensions-hhvm
@@ -1071,6 +1083,12 @@ project-templates:
     gate-and-submit:
      - jsduck
 
+  - name: extension-jsduck
+    test:
+     - jsduck
+    gate-and-submit:
+     - mwgate-jsduck
+
   - name: mw-checks
     check-voter:
      - php53lint
@@ -1078,9 +1096,9 @@ project-templates:
      - jsonlint
      - composer-validate
     gate-and-submit:
-     - php53lint
-     - php55lint
-     - jsonlint
+     - mwgate-php53lint
+     - mwgate-php55lint
+     - mwgate-jsonlint
      - composer-validate
      - noop  # All jobs above have file filters and we need at least one job
     experimental:
@@ -1106,9 +1124,9 @@ project-templates:
      - jsonlint
      - composer-validate
     gate-and-submit:
-     - php53lint
-     - php55lint
-     - jsonlint
+     - mwgate-php53lint
+     - mwgate-php55lint
+     - mwgate-jsonlint
      - composer-validate
     experimental:
      - mwext-qunit-composer-jessie
@@ -1136,6 +1154,22 @@ project-templates:
     experimental:
       - composer-php70
 
+  - name: extension-composer-test
+    check:
+      - php53lint
+      - php55lint
+      - composer-validate
+    test:
+      - composer-php53
+      - composer-php55
+      - composer-hhvm
+    gate-and-submit:
+      - mwgate-composer-php53
+      - mwgate-composer-php55
+      - mwgate-composer-hhvm
+    experimental:
+      - composer-php70
+
   - name: composer-test55
     check:
       - php55lint
@@ -1146,6 +1180,19 @@ project-templates:
     gate-and-submit:
       - composer-php55
       - composer-hhvm
+    experimental:
+      - composer-php70
+
+  - name: extension-composer-test55
+    check:
+      - php55lint
+      - composer-validate
+    test:
+      - composer-php55
+      - composer-hhvm
+    gate-and-submit:
+      - mwgate-composer-php55
+      - mwgate-composer-hhvm
     experimental:
       - composer-php70
 
@@ -1212,6 +1259,12 @@ project-templates:
     gate-and-submit:
       - npm-node-4
 
+  - name: extension-npm
+    test:
+      - npm-node-4
+    gate-and-submit:
+      - mwgate-npm-node-4
+
   - name: npm-node-0.10
     test:
       - npm-node-0.10
@@ -1233,11 +1286,23 @@ project-templates:
     gate-and-submit:
       - rake-jessie
 
+  - name: mwgate-rake
+    test:
+      - rake-jessie
+    gate-and-submit:
+      - mwgate-rake-jessie
+
   - name: tox-jessie
     test:
      - tox-jessie
     gate-and-submit:
      - tox-jessie
+
+  - name: mwgate-tox-jessie
+    test:
+     - tox-jessie
+    gate-and-submit:
+     - mwgate-tox-jessie
 
   - name: commit-message-validator
     check:
@@ -1332,7 +1397,7 @@ projects:
   - name: mediawiki/core
     template:
       - name: extension-gate
-      - name: rake
+      - name: mwgate-rake
     check:
       - mediawiki-core-php53lint
       - mediawiki-core-php55lint
@@ -1400,8 +1465,8 @@ projects:
       - mediawiki-phpunit-php55-trusty
       - mediawiki-phpunit-php53
     gate-and-submit:
-      - php53lint
-      - php55lint
+      - mwgate-php53lint
+      - mwgate-php55lint
       - mediawiki-phpunit-hhvm-trusty
       - mediawiki-phpunit-php55-trusty
       - mediawiki-phpunit-php53
@@ -1683,8 +1748,8 @@ projects:
 
   - name: mediawiki/skins/apex
     template:
-     - name: composer-test
-     - name: npm
+     - name: extension-composer-test
+     - name: extension-npm
     check:
      - jsonlint
      - jshint
@@ -1692,8 +1757,8 @@ projects:
 
   - name: mediawiki/skins/Blueprint
     template:
-      - name: composer-test
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -1707,7 +1772,7 @@ projects:
   - name: mediawiki/skins/BlueSpiceSkin
     template:
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
@@ -1717,7 +1782,7 @@ projects:
     check-voter:
      - jshint
     gate-and-submit:
-     - jshint
+     - mwgate-jshint
 
   - name: mediawiki/skins/chameleon
     template:
@@ -1725,16 +1790,16 @@ projects:
 
   - name: mediawiki/skins/CologneBlue
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
   - name: mediawiki/skins/Daddio
     template:
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
@@ -1764,8 +1829,8 @@ projects:
 
   - name: mediawiki/skins/Example
     template:
-     - name: composer-test
-     - name: npm
+     - name: extension-composer-test
+     - name: extension-npm
     check:
      - jsonlint
 
@@ -1776,14 +1841,14 @@ projects:
   - name: mediawiki/skins/GreyStuff
     template:
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
   - name: mediawiki/skins/Mask
     template:
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
@@ -1793,8 +1858,8 @@ projects:
 
   - name: mediawiki/skins/Metrolook
     template:
-     - name: composer-test
-     - name: npm
+     - name: extension-composer-test
+     - name: extension-npm
     check:
      - jsonlint
      - jshint
@@ -1802,8 +1867,8 @@ projects:
 
   - name: mediawiki/skins/MinervaNeue
     template:
-     - name: composer-test
-     - name: npm
+     - name: extension-composer-test
+     - name: extension-npm
     check:
      - jsonlint
      - jshint
@@ -1811,17 +1876,17 @@ projects:
 
   - name: mediawiki/skins/Modern
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
   - name: mediawiki/skins/MonoBook
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
@@ -1831,12 +1896,12 @@ projects:
     check-voter:
      - jshint
     gate-and-submit:
-     - jshint
+     - mwgate-jshint
 
   - name: mediawiki/skins/Nostalgia
     template:
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
@@ -1850,8 +1915,8 @@ projects:
 
   - name: mediawiki/skins/Slate
     template:
-     - name: composer-test
-     - name: npm
+     - name: extension-composer-test
+     - name: extension-npm
     check:
      - jsonlint
      - jshint
@@ -1860,7 +1925,7 @@ projects:
   - name: mediawiki/skins/Splash
     template:
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
@@ -1871,14 +1936,14 @@ projects:
   - name: mediawiki/skins/Tempo
     template:
      - name: mw-checks-test
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
   - name: mediawiki/skins/Timeless
     template:
-     - name: composer-test
-     - name: npm
+     - name: extension-composer-test
+     - name: extension-npm
     check:
      - jsonlint
      - jshint
@@ -1894,16 +1959,16 @@ projects:
 
   - name: mediawiki/skins/Vector
     template:
-     - name: composer-test
-     - name: npm
+     - name: extension-composer-test
+     - name: extension-npm
     check:
      - jshint
      - jsonlint
 
   - name: mediawiki/skins/VectorV2
     template:
-     - name: composer-test
-     - name: npm
+     - name: extension-composer-test
+     - name: extension-npm
     check:
      - jshint
      - jsonlint
@@ -2435,13 +2500,11 @@ projects:
      - php55lint
      - composer-php53
      - composer-hhvm
-     - composer-validate
     gate-and-submit:
      - php53lint
      - php55lint
      - composer-php53
      - composer-hhvm
-     - composer-validate
 
   - name: wikimedia/fundraising/slander
     template:
@@ -2493,71 +2556,71 @@ projects:
 
   - name: mediawiki/extensions/2ColConflict
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/AbuseFilter
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/AccountAudit
     template:
-      - name: composer-test
-      - name: jshint
+      - name: extension-composer-test
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AccountInfo
     template:
-      - name: composer-test
-      - name: jshint
+      - name: extension-composer-test
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ActiveAbstract
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ActivityMonitor
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/AddMessages
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AdminLinks
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -2568,21 +2631,21 @@ projects:
   - name: mediawiki/extensions/AntiBot
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AntiSpoof
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Annotator
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/APC
@@ -2595,13 +2658,13 @@ projects:
 
   - name: mediawiki/extensions/ApprovedRevs
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ArticleFeedback
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: mw-checks-test
 
   - name: mediawiki/extensions/ArticleFeedbackv5
@@ -2610,10 +2673,10 @@ projects:
 
   - name: mediawiki/extensions/ArticlePlaceholder
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-composer
       - name: extension-qunit-composer
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -2622,32 +2685,32 @@ projects:
 
   - name: mediawiki/extensions/Arrays
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Babel
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BaseHooks
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BetaFeatures
     template:
-      - name: npm
+      - name: extension-npm
       - name: extension-unittests-generic
     check:
       - jsonlint
@@ -2658,25 +2721,25 @@ projects:
 
   - name: mediawiki/extensions/BlogPage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/BoilerPlate
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BookManager
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -2684,54 +2747,54 @@ projects:
   - name: mediawiki/extensions/BookManagerv2
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/BounceHandler
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Buggy
     template:
-      - name: npm
+      - name: extension-npm
       - name: extension-unittests-generic
     check:
      - jsonlint
 
   - name: mediawiki/extensions/Calendar
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Campaigns
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Capiunto
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Cards
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -2739,67 +2802,67 @@ projects:
   - name: mediawiki/extensions/CategoryTagSorter
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CategoryTree
     template:
-      - name: jshint
-      - name: npm
+      - name: extension-jshint
+      - name: extension-npm
       - name: extension-unittests-generic
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CharInsert
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CheckUser
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Cite
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/CiteThisPage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Citoid
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/cldr
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -2808,18 +2871,18 @@ projects:
     template:
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: rake
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CentralNotice
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: rake
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -2827,9 +2890,9 @@ projects:
   - name: mediawiki/extensions/CirrusSearch
     template:
       - name: extension-gate
-      - name: rake
+      - name: mwgate-rake
       - name: mw-checks-test
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -2840,9 +2903,9 @@ projects:
 
   - name: mediawiki/extensions/CleanChanges
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -2854,42 +2917,42 @@ projects:
   - name: mediawiki/extensions/ClientSide
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CookieWarning
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/CodeEditor
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/CodeMirror
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/CodeReview
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -2902,17 +2965,17 @@ projects:
 
   - name: mediawiki/extensions/CollaborationKit
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CollapsibleVector
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: extension-unittests-generic
-     - name: npm
+     - name: extension-npm
     check:
      - jshint
      - jsonlint
@@ -2920,72 +2983,72 @@ projects:
   - name: mediawiki/extensions/Collection
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
      - jshint
      - jsonlint
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
-      - name: npm
+      - name: extension-npm
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     template:
-      - name: npm
+      - name: extension-npm
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
     template:
-      - name: npm
+      - name: extension-npm
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/text_renderer
     template:
-      - name: npm
+      - name: extension-npm
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/zim_renderer
     template:
-      - name: npm
+      - name: extension-npm
 
   - name: mediawiki/extensions/CommonsMetadata
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Configure
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ConfirmAccount
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ConfirmEdit
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ContentTranslation
     template:
-      - name: composer-test
-      - name: rake
-      - name: npm
+      - name: extension-composer-test
+      - name: mwgate-rake
+      - name: extension-npm
       - name: extension-unittests-generic
       - name: extension-qunit-generic
     check:
@@ -2995,9 +3058,9 @@ projects:
 
   - name: mediawiki/extensions/ContributionScores
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3005,14 +3068,14 @@ projects:
   - name: mediawiki/extensions/ContributionsList
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CommonMessages
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3020,42 +3083,42 @@ projects:
   - name: mediawiki/extensions/CommunityApplications
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CommunityHiring
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CommunityVoice
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ContactPage
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FundraisingChart
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ContributionReporting
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3063,7 +3126,7 @@ projects:
   - name: mediawiki/extensions/ContributionTracking
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3075,7 +3138,7 @@ projects:
   - name: mediawiki/extensions/CreditsSource
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -3086,7 +3149,7 @@ projects:
   - name: mediawiki/extensions/CustomUserSignup
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3094,38 +3157,38 @@ projects:
   - name: mediawiki/extensions/DebugMode
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DeleteBatch
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DeletePagesForGood
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/DisableAccount
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Disambiguator
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3133,14 +3196,14 @@ projects:
   - name: mediawiki/extensions/DiscussionThreading
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DismissableSiteNotice
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3148,7 +3211,7 @@ projects:
   - name: mediawiki/extensions/DonationInterface
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3157,20 +3220,20 @@ projects:
       - php53lint
     gate-and-submit:
       - mwext-donationinterfacecore-REL1_27-testextension-zend55
-      - php53lint
+      - mwgate-php53lint
 
   - name: mediawiki/extensions/DoubleWiki
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Drafts
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3178,7 +3241,7 @@ projects:
   - name: mediawiki/extensions/DynamicSidebar
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3186,7 +3249,7 @@ projects:
   - name: mediawiki/extensions/DumpHTML
     template:
       - name: mw-checks-test
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3197,12 +3260,12 @@ projects:
 
   - name: mediawiki/extensions/Echo
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: rake
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-npm
       - name: extension-selenium
     check:
       - jsonlint
@@ -3211,38 +3274,38 @@ projects:
   - name: mediawiki/extensions/EditAccount
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Editcount
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/EditPageTracking
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/EditUser
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/EducationProgram
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -3250,16 +3313,16 @@ projects:
     template:
       - name: mw-checks-test
       - name: extension-gate
-      - name: jshint
-      - name: npm
+      - name: extension-jshint
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ElectronPdfService
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3267,26 +3330,26 @@ projects:
   - name: mediawiki/extensions/EmailCapture
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/EtherEditor
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/EventLogging
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: jsduck
-      - name: npm
+      - name: extension-jsduck
+      - name: extension-npm
     check:
       - jsonlint
     postmerge:
@@ -3298,9 +3361,9 @@ projects:
 
   - name: mediawiki/extensions/EventBus
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -3311,33 +3374,33 @@ projects:
   - name: mediawiki/extensions/ExtensionDistributor
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FeaturedFeeds
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FlaggedRevs
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Flow
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: extension-gate
-     - name: rake
-     - name: jsduck
-     - name: npm
+     - name: mwgate-rake
+     - name: extension-jsduck
+     - name: extension-npm
     check:
      - jshint
      - jsonlint
@@ -3348,29 +3411,29 @@ projects:
 
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/FundraiserLandingPage
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FundraisingTranslateWorkflow
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
      - jsonlint
 
   - name: mediawiki/extensions/Gadgets
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3383,43 +3446,43 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: rake
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/GeoCrumbs
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GeoData
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-gate
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GeoGebra
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Git2Pages
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3427,68 +3490,68 @@ projects:
   - name: mediawiki/extensions/GitHub
     template:
       - name: extension-unittests-composer
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Gitweb
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalBlocking
     template:
-      - name: jshint
-      - name: composer-test
+      - name: extension-jshint
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalContributions
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalCssJs
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-gate
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalPreferences
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalUsage
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalUserPage
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GoogleAdSense
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -3499,79 +3562,79 @@ projects:
   - name: mediawiki/extensions/GoogleAnalyticsTopPages
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GoogleAppEngine
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GoogleCustomWikiSearch
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GoogleLogin
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-composer
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/GoogleNewsSitemap
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GoogleSiteSearch
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GPGMail
     template:
-      - name: composer-test
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-npm
       - name: extension-unittests-generic
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Graph
     template:
-      - name: npm
+      - name: extension-npm
       - name: extension-unittests-generic
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GraphViz
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GuidedTour
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: jsduck
-      - name: npm
+      - name: extension-jsduck
+      - name: extension-npm
       - name: extension-gate
     check:
       - jsonlint
@@ -3581,9 +3644,9 @@ projects:
 
   - name: mediawiki/extensions/GWToolset
     template:
-      - name: composer-test
-      - name: jshint
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-jshint
+      - name: extension-npm
       - name: extension-unittests-generic
     check:
       - jsonlint
@@ -3591,81 +3654,81 @@ projects:
   - name: mediawiki/extensions/HelpPages
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/I18nTags
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ImageMap
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ImportArticles
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/InputBox
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Insider
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Interwiki
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/intersection
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/JsonConfig
     template:
       - name: extension-gate
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Kartographer
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3675,48 +3738,48 @@ projects:
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LandingCheck
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LanguageTool
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LastModified
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/LdapAuthentication
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Lingo
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3724,49 +3787,49 @@ projects:
   - name: mediawiki/extensions/LinkedWiki
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/LiquidThreads
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Listings
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LocalisationUpdate
     template:
-      - name: composer-test
-      - name: jshint
+      - name: extension-composer-test
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LoginNotify
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Mailgun
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -3776,51 +3839,51 @@ projects:
 
   - name: mediawiki/extensions/Math
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: rake
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-npm
     check:
       - jshint
       - jsonlint
 
   - name: mediawiki/extensions/MathSearch
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/MapSources
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MassAction
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MassMessage
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: composer-test
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MarkAsHelpful
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3828,7 +3891,7 @@ projects:
   - name: mediawiki/extensions/MixedNamespaceSearchSuggestions
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3836,9 +3899,9 @@ projects:
   - name: mediawiki/extensions/MobileFrontend
     template:
       - name: extension-gate
-      - name: rake
-      - name: composer-test
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-composer-test
+      - name: extension-npm
       - name: extension-selenium
     check:
       - jshint
@@ -3854,24 +3917,24 @@ projects:
   - name: mediawiki/extensions/MobileApp
     template:
       - name: extension-gate
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MolHandler
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MoodBar
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3879,7 +3942,7 @@ projects:
   - name: mediawiki/extensions/MultiMaps
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3887,10 +3950,10 @@ projects:
   - name: mediawiki/extensions/MultimediaViewer
     template:
       - name: extension-qunit-generic
-      - name: rake
+      - name: mwgate-rake
       - name: extension-unittests-generic
-      - name: composer-test
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-npm
       - name: extension-selenium
     check:
       - jsonlint
@@ -3899,9 +3962,9 @@ projects:
 
   - name: mediawiki/extensions/MwEmbedSupport
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3909,21 +3972,21 @@ projects:
   - name: mediawiki/extensions/MWSearch
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NaturalLanguageList
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NavigationTiming
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3931,36 +3994,36 @@ projects:
   - name: mediawiki/extensions/NewestPages
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NewUserMessage
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NewUserNotif
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NoBogusUserpages
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Nonlinear
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -3971,42 +4034,42 @@ projects:
 
   - name: mediawiki/extensions/Nuke
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/OATHAuth
     template:
-      - name: composer-test
-      - name: jshint
+      - name: extension-composer-test
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/OAI
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/OAuth
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/OAuthAuthentication
     template:
-      - name: composer-test
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-npm
       - name: extension-unittests-composer
     check:
       - jsonlint
@@ -4022,7 +4085,7 @@ projects:
   - name: mediawiki/extensions/OpenID
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4030,7 +4093,7 @@ projects:
   - name: mediawiki/extensions/OpenIDConnect
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -4040,100 +4103,100 @@ projects:
 
   - name: mediawiki/extensions/OpenStackManager
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: extension-unittests-generic
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
      - jshint
 
   - name: mediawiki/extensions/ORES
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/PageAssessments
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/PageBlock
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/PagedTiffHandler
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/PageImages
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/PageTriage
     template:
       - name: extension-unittests-generic
-      - name: rake
-      - name: composer-test
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-composer-test
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ParserFunctions
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ParserHooks
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-composer
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ParserMigration
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
 
   - name: mediawiki/extensions/Patroller
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Petition
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4141,7 +4204,7 @@ projects:
   - name: mediawiki/extensions/Prezi
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -4149,17 +4212,17 @@ projects:
 
   - name: mediawiki/extensions/AbsenteeLandlord
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AccessControl
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -4169,106 +4232,106 @@ projects:
 
   - name: mediawiki/extensions/ActionEditSubmit
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AddHTMLMetaAndTitle
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AddThis
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AdManager
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Ads
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AdvancedMeta
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AjaxLogin
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/AJAXPoll
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/AkismetKlik
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AllTimeZones
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AnchorHandler
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ApiExplorer
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ApiFeatureUsage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4284,7 +4347,7 @@ projects:
   - name: mediawiki/extensions/ArticleIndex
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4296,79 +4359,79 @@ projects:
   - name: mediawiki/extensions/Auth_remoteuser
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AuthorProtect
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AutoCreateCategoryPages
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AutomaticBoardWelcome
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AutoProxyBlock
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Awesomeness
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AWS
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-composer
     check:
       - jsonlint
 
   - name: mediawiki/extensions/AWSSDK
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BatchUserRights
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BayesianFilter
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BiblioPlus
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4376,7 +4439,7 @@ projects:
   - name: mediawiki/extensions/BibManager
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4384,14 +4447,14 @@ projects:
   - name: mediawiki/extensions/Blackout
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BlockAndNuke
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -4400,15 +4463,15 @@ projects:
   - name: mediawiki/extensions/BlueSpiceExtensions
     template:
       - name: extension-unittests-composer-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BlueSpiceFoundation
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-composer
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4416,15 +4479,15 @@ projects:
   - name: mediawiki/extensions/Bootstrap
     template:
       - name: extension-unittests-composer
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/BreadCrumbs
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jshint
       - jsonlint
@@ -4432,7 +4495,7 @@ projects:
   - name: mediawiki/extensions/BreadCrumbs2
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4440,14 +4503,14 @@ projects:
   - name: mediawiki/extensions/Carp
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Cargo
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4455,7 +4518,7 @@ projects:
   - name: mediawiki/extensions/CategorySlideShow
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -4463,201 +4526,201 @@ projects:
   - name: mediawiki/extensions/CategorySortHeaders
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CategoryTests
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CentralLogging
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CharRangeSpan
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Checkpoint
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CloseWikis
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Commentbox
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CommentPages
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Comments
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/CommunityTwitter
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ConditionalShowSection
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CongressLookup
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Contest
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Contributors
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Convert2Wiki
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/CopyToClipboard
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CreatePage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/CreateRedirect
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jshint
       - jsonlint
 
   - name: mediawiki/extensions/CreditTab
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/CryoKey
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/CSS
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DataTransfer
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DeleteOwn
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Description2
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DeviceMapLogCapture
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Diagnosis
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -4667,25 +4730,25 @@ projects:
 
   - name: mediawiki/extensions/DidYouKnow
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DidYouMean
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DisqusTag
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -4695,445 +4758,445 @@ projects:
 
   - name: mediawiki/extensions/DownloadCounter
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DPLforum
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Duplicator
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/DynamicPageList
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/EditSubpages
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/EnhanceContactForm
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ErrorHandler
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/EtherpadLite
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/examples
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ExternalArticles
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ExternalData
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ExtraLanguageLink
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ExtTab
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/FanBoxes
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/FeedsFromPrivateWikis
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FileAnnotations
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FilterListUsers
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FirstSteps
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FlvHandler
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ForcePreview
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FormatDates
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FormatNum
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/FormelApplet
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Foxway
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/FundraisingEmailUnsubscribe
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Genderize
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalNotice
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalUserGroups
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GlobalUserrights
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/googleAnalytics
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GoogleDocs4MW
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GoogleDocTag
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GoogleMaps
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/GooglePlusOne
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/GroupsSidebar
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/HashTables
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/HeaderTabs
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/HelpCommons
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/HidePrefix
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/HostStats
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Hovergallery
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/HSTS
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/HTMLets
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/HTMLTags
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/IframePage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/IfTemplates
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ImageLink
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ImageMetrics
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ImageTweaks
     template:
-      - name: composer-test
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/IndexFunction
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/InlineCategorizer
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/InteractiveBlockMessage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Interlanguage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/InterwikiMagic
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/InviteSignup
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -5141,16 +5204,16 @@ projects:
   - name: mediawiki/extensions/Josa
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/JSBreadCrumbs
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -5158,24 +5221,24 @@ projects:
   - name: mediawiki/extensions/JsonData
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LanguageSelector
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/LanguageTag
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -5185,25 +5248,25 @@ projects:
 
   - name: mediawiki/extensions/LifeWeb
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LifeWebCore
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LightweightRDFa
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -5214,412 +5277,412 @@ projects:
 
   - name: mediawiki/extensions/LinkFilter
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/LinkSuggest
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ListSignup
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LiveTranslate
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Lockdown
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LockDownEnglishPages
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LogEntry
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LogoFunctions
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LookupUser
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/LoopFunctions
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Loops
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MagicNoCache
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Maintenance
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/MaintenanceShell
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Maps
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MassEditRegex
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MediaFunctions
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MediaWikiAuth
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MediaWikiChat
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Minifier
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Model
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Moodle
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Mpdf
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MsLinks
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MSSQLBackCompat
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MsUpload
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/MultimediaPlayer
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MultiUpload
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/MyVariables
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NamespaceHTML
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NamespacePaths
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NamespaceRelations
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Negref
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NetworkAuth
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/News
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NewsBox
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NewSignupPage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Newsletter
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/NewUsersList
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NoTitle
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/NSFileRepo
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/NukeDPL
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/NumberFormat
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/NumberOfWikis
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Numbertext
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/NumerAlpha
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OdbcDatabase
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OfflineImportLexicon
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OnlineStatus
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/OnlineStatusBar
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/OnlyRecentRecentChanges
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OpenGraphMeta
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OpenStreetMapSlippyMap
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OracleTextSearch
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Oversight
@@ -5628,134 +5691,134 @@ projects:
 
   - name: mediawiki/extensions/PageCreationNotif
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
 
   - name: mediawiki/extensions/PageDisqus
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PageInCat
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PageLanguage
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PageNotice
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PageSchemas
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PageTools
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PanScroll
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PdfExport
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PerPageLicense
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Persona
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PGFTikZ
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Phalanx
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpHighlight
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsMaps
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/PhpTagsSMW
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/PictureGame
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/PipeEscape
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Poll
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PollNY
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/Polyglot
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PrefStats
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PrefSwitch
@@ -5764,72 +5827,72 @@ projects:
 
   - name: mediawiki/extensions/Premoderation
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PrivateDomains
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PronunciationRecording
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jshint
       - jsonlint
 
   - name: mediawiki/extensions/ProtectSite
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PubSubHubbub
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PurgeClickThrough
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Push
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PushToWatch
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Quantcast
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/QuickResponse
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/QuickSurveys
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-qunit-generic
-      - name: rake
+      - name: mwgate-rake
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
       - name: extension-selenium
     check:
       - jshint
@@ -5837,126 +5900,126 @@ projects:
 
   - name: mediawiki/extensions/QuickSearchLookup
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/QuizGame
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/QuizTabulate
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RandomFeaturedUser
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RandomGameUnit
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RandomImage
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RandomImageByCategory
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RandomInCategory
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RandomUsersWithAvatars
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Ratings
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/RDFIO
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/ReassignEdits
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Reflect
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/RefreshSpecial
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RegexFun
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/RegexFunctions
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RelationLinks
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RestBaseUpdateJobs
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/RevisionCommentSupplement
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RevisionSlider
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
       - name: extension-selenium
     check:
       - jsonlint
@@ -5964,172 +6027,172 @@ projects:
 
   - name: mediawiki/extensions/RightFunctions
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/RT
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SafeDelete
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SandboxLink
     template:
       - name: extension-gate
-      - name: composer-test
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Sarcasm
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/ScanSet
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Screenplay
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SearchRealnames
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SectionDisqus
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SecureHTML
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SecurePasswords
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SecureSessions
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SelectCategory
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SelectTag
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SemanticComments
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SemanticHighcharts
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SemanticRating
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SemanticSifter
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SemanticWebBrowser
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SharedCssJs
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ShortUrlApi
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/ShoutBox
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ShoutWikiAds
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ShoutWikiAPI
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/SidebarDonateBox
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SignWritingMediaWikiPlugin
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SimpleChanges
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SimpleSecurity
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SimpleSurvey
@@ -6138,254 +6201,254 @@ projects:
 
   - name: mediawiki/extensions/SiteMetrics
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SiteSettings
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/SkelJS
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SkinPerNamespace
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SlimboxThumbs
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SmiteSpam
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/SmoothGallery
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SocialLogin
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/SocialProfile
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/SoftwareVersion
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SolrStore
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SoundManager2Button
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Spark
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Special404
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SpellingApi
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SphinxSearch
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SportsTeams
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SSLClientAuthentication
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/StaffEdits
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/StalkerLog
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/StarterWiki
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/StringFunctionsEscaped
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SubpageFun
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Suhosin
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SwarmExport
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
 
   - name: mediawiki/extensions/SwiftMailer
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Tabber
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Tabs
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/TemplateInfo
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TemplateStyles
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: extension-unittests-generic
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
 
   - name: mediawiki/extensions/Theme
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: extension-unittests-generic
-     - name: npm
+     - name: extension-npm
     check:
      - jsonlint
      - jshint
 
   - name: mediawiki/extensions/ThemeDesigner
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ThrottleOverride
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ThumbParser
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TimelineTable
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TimeMachine
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TimezoneSelector
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TitleIcon
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TranslateSvg
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TweetANew
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TwitterCards
@@ -6394,22 +6457,22 @@ projects:
 
   - name: mediawiki/extensions/TwitterLogin
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jshint
       - jsonlint
 
   - name: mediawiki/extensions/TwoFactorAuthentication
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/UIFeedback
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/UnitTest
@@ -6418,7 +6481,7 @@ projects:
 
   - name: mediawiki/extensions/UpdateMediaWiki
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/UploadLocal
@@ -6428,8 +6491,8 @@ projects:
   - name: mediawiki/extensions/UploadsLink
     template:
       - name: extension-unittests-generic
-      - name: composer-test
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -6439,7 +6502,7 @@ projects:
 
   - name: mediawiki/extensions/UrlShortener
     template:
-      - name: npm
+      - name: extension-npm
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/URNames
@@ -6452,9 +6515,9 @@ projects:
 
   - name: mediawiki/extensions/UserGroups
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -6465,8 +6528,8 @@ projects:
 
   - name: mediawiki/extensions/UserStatus
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Video
@@ -6483,8 +6546,8 @@ projects:
 
   - name: mediawiki/extensions/Vine
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/VisualChat
@@ -6493,8 +6556,8 @@ projects:
 
   - name: mediawiki/extensions/VoteNY
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WantedPagesFromNS
@@ -6507,8 +6570,8 @@ projects:
 
   - name: mediawiki/extensions/WebPlatformSearchAutocomplete
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WhitelistPages
@@ -6525,20 +6588,20 @@ projects:
 
   - name: mediawiki/extensions/Widgets
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/WikiArticleFeeds
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikibaseMobile
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikibaseSolr
@@ -6547,22 +6610,22 @@ projects:
 
   - name: mediawiki/extensions/WikiCategoryTagCloud
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikidataEntitySuggester
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/WikidataPageBanner
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -6571,8 +6634,8 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
-      - name: jsonlint
-      - name: npm
+      - name: extension-jsonlint
+      - name: extension-npm
     check:
       - composer-package-validate
     test:
@@ -6584,8 +6647,8 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
-      - name: jsonlint
-      - name: npm
+      - name: extension-jsonlint
+      - name: extension-npm
     check:
       - composer-package-validate
     test:
@@ -6597,8 +6660,8 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
-      - name: jsonlint
-      - name: npm
+      - name: extension-jsonlint
+      - name: extension-npm
     check:
       - composer-package-validate
     test:
@@ -6608,10 +6671,10 @@ projects:
 
   - name: mediawiki/extensions/WikibaseMediaInfo
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-composer
       - name: extension-qunit-composer
-      - name: npm
+      - name: extension-npm
     check:
       - composer-package-validate
     test:
@@ -6623,9 +6686,9 @@ projects:
 
   - name: mediawiki/extensions/WikiLabels
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -6635,14 +6698,14 @@ projects:
 
   - name: mediawiki/extensions/WikiLovesMonuments
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikiPinger
     template:
-      - name: npm
+      - name: extension-npm
       - name: extension-unittests-generic
-      - name: composer-test
+      - name: extension-composer-test
 
   - name: mediawiki/extensions/WikiTextLoggedInOut
     template:
@@ -6650,13 +6713,13 @@ projects:
 
   - name: mediawiki/extensions/WikiTwidget
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikivoteMapsYandex
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/WindowsAzureSDK
@@ -6669,13 +6732,13 @@ projects:
 
   - name: mediawiki/extensions/WYSIWYG
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/XMLContentExtension
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/YetAnotherKeywords
@@ -6688,32 +6751,32 @@ projects:
 
   - name: mediawiki/extensions/YouTube
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ArticleComments
     template:
-     - name: jsonlint
+     - name: extension-jsonlint
      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/AzharAuth
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/Challenge
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/ContributorsAddon
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   # Empty repo - 20151127
   - name: mediawiki/extensions/DetectLanguage
@@ -6722,15 +6785,15 @@ projects:
 
   - name: mediawiki/extensions/EditSimilar
     template:
-     - name: jsonlint
-     - name: jshint
+     - name: extension-jsonlint
+     - name: extension-jshint
      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Farmer
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -6738,17 +6801,17 @@ projects:
   - name: mediawiki/extensions/Favorites
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/FixedHeaderTable
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/GoToShell
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   # Depends on SemanticForms
   - name: mediawiki/extensions/HierarchyBuilder
@@ -6757,9 +6820,9 @@ projects:
 
   - name: mediawiki/extensions/HitCounters
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -6772,12 +6835,12 @@ projects:
   - name: mediawiki/extensions/ImageTagging
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/InterwikiIntegration
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   # Empty repo - 20151127
   - name: mediawiki/extensions/InterwikiMap
@@ -6792,17 +6855,17 @@ projects:
   - name: mediawiki/extensions/LDAPAuthorization
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/LastUserLogin
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/LinkSuggest2
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   # Missing entry point
   - name: mediawiki/extensions/Link_Attributes
@@ -6812,42 +6875,42 @@ projects:
   - name: mediawiki/extensions/MadLib
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/MiniInvite
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/MobileDetect
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/MsCalendar
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/MsCatSelect
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/MsInsert
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/MsWikiEditor
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/MultiBoilerplate
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   # File not found
   # /OOUIPlayground/vendor/autoload.php
@@ -6859,9 +6922,9 @@ projects:
     template:
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: composer-test
-      - name: jsduck
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-jsduck
+      - name: extension-npm
     check:
       - jshint
       - jsonlint
@@ -6869,12 +6932,12 @@ projects:
   - name: mediawiki/extensions/PagesList
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/PaginateText
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   # Depends on Validator and Parse
   - name: mediawiki/extensions/ParserFun
@@ -6894,42 +6957,42 @@ projects:
   - name: mediawiki/extensions/PluggableAuth
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/PopupPages
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/PureWikiDeletion
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/RPED
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/RecentActivityFeed
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/ReorderParserPhases
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/RevealEmail
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/SacredText
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticBreadcrumbLinks
     template:
@@ -6946,48 +7009,48 @@ projects:
   - name: mediawiki/extensions/SimpleSAMLphp
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/SiteScout
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/SpecialNamespaces
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/SubPageList
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/Teahouse
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/Tooltip
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/TopTenPages
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: jsonlint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/VIKI
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/VideoJsPlayer
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   # Empty repo - 20151127
   - name: mediawiki/extensions/ViewportMetrics
@@ -6997,27 +7060,27 @@ projects:
   - name: mediawiki/extensions/VikiSemanticTitle
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/VikiTitleIcon
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/WebCache
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/WhosOnline
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   - name: mediawiki/extensions/WikEdDiff
     template:
      - name: extension-unittests-generic
-     - name: jsonlint
+     - name: extension-jsonlint
 
   # Empty repo - 20151127
   - name: mediawiki/extensions/WikibaseClient
@@ -7042,7 +7105,7 @@ projects:
   - name: mediawiki/extensions/XAnalytics
     template:
       - name: mw-checks-test
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -7156,73 +7219,73 @@ projects:
   - name: mediawiki/extensions/ParsoidBatchAPI
     template:
       - name: extension-unittests-generic
-      - name: jsonlint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/PdfHandler
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
-      - name: rake
-      - name: jshint
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-jshint
+      - name: extension-npm
 
   - name: mediawiki/extensions/PerformanceInspector
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: npm
+      - name: extension-npm
 
   - name: mediawiki/extensions/PhpTags
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsFunctions
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsStorage
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsWidgets
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PhpTagsWiki
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/PHPExcel
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Poem
     template:
-      - name: composer-test
-      - name: jshint
+      - name: extension-composer-test
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/PoolCounter
     template:
-      - name: rake
+      - name: mwgate-rake
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
     test:
@@ -7232,10 +7295,10 @@ projects:
 
   - name: mediawiki/extensions/Popups
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: npm
+      - name: extension-npm
       - name: extension-selenium
     check:
       - jsonlint
@@ -7243,22 +7306,22 @@ projects:
 
   - name: mediawiki/extensions/PostEdit
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ProofreadPage
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Quiz
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -7273,10 +7336,10 @@ projects:
 
   - name: mediawiki/extensions/RelatedArticles
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
-      - name: rake
+      - name: extension-npm
+      - name: mwgate-rake
       - name: extension-selenium
     check:
       - jsonlint
@@ -7284,91 +7347,99 @@ projects:
 
   - name: mediawiki/extensions/RelatedSites
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Renameuser
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ReplaceSet
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/ReplaceText
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/RSS
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Score
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/SearchExtraNS
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/SecurePoll
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SemanticACL
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticBundle
-    check: &semanticbundle_jobs
+    check:
      - jshint
      - jsonlint
      - php53lint
      - composer-validate
-    test: *semanticbundle_jobs
-    gate-and-submit: *semanticbundle_jobs
+    test:
+     - jshint
+     - jsonlint
+     - php53lint
+     - composer-validate
+    gate-and-submit:
+     - mwgate-jshint
+     - mwgate-jsonlint
+     - mwgate-php53lint
+     - composer-validate
 
   - name: mediawiki/extensions/SemanticCompoundQueries
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticDrilldown
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -7376,24 +7447,24 @@ projects:
   - name: mediawiki/extensions/SemanticDummyEditor
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticExpressiveness
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: mw-checks-test
 
   - name: mediawiki/extensions/SemanticExtraSpecialProperties
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticForms
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -7401,279 +7472,279 @@ projects:
   - name: mediawiki/extensions/SemanticFormsInputs
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticGenealogy
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticGlossary
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticImageAnnotator
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticImageInput
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: mw-checks-test
 
   - name: mediawiki/extensions/SemanticInternalObjects
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticMaps
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: mw-checks-test
 
   - name: mediawiki/extensions/SemanticMediaWiki
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SemanticMetaTags
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SemanticPageMaker
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticPageSeries
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticResultFormats
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SemanticSignup
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticTasks
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticTitle
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticUpdateOnPurge
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/SemanticWatchlist
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: mw-checks-test
 
   - name: mediawiki/extensions/Sentry
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jshint
       - jsonlint
 
   - name: mediawiki/extensions/Scribunto
     template:
-      - name: composer-test
-      - name: jshint
+      - name: extension-composer-test
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/ShortUrl
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/SimpleAntiSpam
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SimpleFarm
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SiteMatrix
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/SkinPerPage
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Solarium
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SpamBlacklist
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/SpamDiffTool
     template:
-      - name: composer-test
-      - name: jsonlint
+      - name: extension-composer-test
+      - name: extension-jsonlint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Spreadsheet
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/StickToThatLanguage
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/StopForumSpam
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/StrategyWiki
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SubPageList3
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/SubpageSortkey
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Sudo
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Survey
     template:
       - name: extension-unittests-non-voting
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/SVGEdit
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/SwiftCloudFiles
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TemplateSandbox
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
-      - name: composer-test
+      - name: extension-npm
+      - name: extension-composer-test
     check:
       - jsonlint
 
   - name: mediawiki/extensions/TextExtracts
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/SideBarMenu
     template:
-      - name: jsonlint
-      - name: jshint
+      - name: extension-jsonlint
+      - name: extension-jshint
       - name: extension-unittests-composer
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -7681,9 +7752,9 @@ projects:
     template:
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: composer-test
-      - name: jsduck
-      - name: npm
+      - name: extension-composer-test
+      - name: extension-jsduck
+      - name: extension-npm
     check:
       - jsonlint
     postmerge:
@@ -7691,24 +7762,24 @@ projects:
 
   - name: mediawiki/extensions/Thanks
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate  # T86687
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/TimedMediaHandler
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/timeline
     template:
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - php53lint
@@ -7717,7 +7788,7 @@ projects:
      - php53lint
      - composer-validate
     gate-and-submit:
-     - php53lint
+     - mwgate-php53lint
      - composer-validate
     experimental:
      - mediawiki-extensions-hhvm
@@ -7729,126 +7800,126 @@ projects:
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
-      - name: composer-test
-      - name: jshint
+      - name: extension-composer-test
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/TitleKey
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/TocTree
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/TorBlock
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/Translate
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-qunit-generic
-      - name: rake
+      - name: mwgate-rake
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jshint
       - jsonlint
 
   - name: mediawiki/extensions/TranslationNotifications
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Transliterator
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/TrustedXFF
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/TwnMainPage
     template:
-      - name: composer-test
-      - name: rake
+      - name: extension-composer-test
+      - name: mwgate-rake
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/OpenBadges
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/OpenLayers
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/UnicodeConverter
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
-      - name: rake
+      - name: mwgate-rake
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/UploadBlacklist
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/UploadWizard
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: npm
-      - name: tox-jessie
+      - name: extension-npm
+      - name: mwgate-tox-jessie
     check:
       - jshint
       - jsonlint
@@ -7859,35 +7930,35 @@ projects:
 
   - name: mediawiki/extensions/UserMerge
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
-      - name: composer-test
+      - name: extension-npm
+      - name: extension-composer-test
     check:
       - jsonlint
 
   - name: mediawiki/extensions/UserOptionStats
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/UserThrottle
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Validator
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/Variables
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/Vector
@@ -7896,30 +7967,30 @@ projects:
 
   - name: mediawiki/extensions/VectorBeta
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/VipsScaler
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/VirtualKeyboard
     template:
-      - name: jsonlint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/VisualEditor
     template:
       - name: extension-gate
-      - name: rake
-      - name: composer-test
+      - name: mwgate-rake
+      - name: extension-composer-test
       - name: commit-message-validator
     check:
       - jshint
@@ -7935,35 +8006,35 @@ projects:
 
   - name: mediawiki/extensions/WebChat
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/WebPlatformAuth
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-composer
 
   - name: mediawiki/extensions/WikiEditor
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-qunit-generic
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/Wikibase
     template:
-      - name: npm
-      - name: composer-test
+      - name: extension-npm
+      - name: extension-composer-test
       - name: extension-unittests-composer
       - name: extension-qunit-composer
-      - name: rake
+      - name: mwgate-rake
     check:
       - jshint
       - jsonlint
@@ -7999,12 +8070,12 @@ projects:
 
   - name: mediawiki/extensions/WikibaseJavaScriptApi
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-qunit-composer
       - name: extension-unittests-composer
-      - name: jshint
-      - name: jsonlint
-      - name: npm
+      - name: extension-jshint
+      - name: extension-jsonlint
+      - name: extension-npm
 
   - name: mediawiki/extensions/Wikidata
     template:
@@ -8018,55 +8089,55 @@ projects:
 
   - name: mediawiki/extensions/Wikidata.org
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-qunit-composer
       - name: extension-unittests-composer
-      - name: jshint
-      - name: jsonlint
-      - name: npm
+      - name: extension-jshint
+      - name: extension-jsonlint
+      - name: extension-npm
 
   - name: mediawiki/extensions/WikiForum
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikiLexicalData
     template:
       - name: mw-checks-test
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
 
   - name: mediawiki/extensions/WikiLove
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-generic
-      - name: rake
+      - name: mwgate-rake
 
   - name: mediawiki/extensions/wikihiero
     template:
-      - name: npm
+      - name: extension-npm
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikimediaBadges
     template:
-      - name: jshint
-      - name: jsonlint
+      - name: extension-jshint
+      - name: extension-jsonlint
       - name: extension-unittests-composer
 
   - name: mediawiki/extensions/WikimediaEvents
     template:
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
   - name: mediawiki/extensions/WikimediaIncubator
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -8076,18 +8147,13 @@ projects:
 
   - name: mediawiki/extensions/WikimediaMessages
     template:
+      - name: extension-jsonlint
       - name: extension-unittests-generic
-    check:
-      - jsonlint
-    test:
-      - jsonlint
-    gate-and-submit:
-      - jsonlint
 
   - name: mediawiki/extensions/WikimediaPageViewInfo
     template:
-      - name: npm
-      - name: composer-test
+      - name: extension-npm
+      - name: extension-composer-test
       - name: extension-unittests-generic
 
   - name: mediawiki/extensions/WikimediaShopLink
@@ -8104,10 +8170,10 @@ projects:
 
   - name: mediawiki/extensions/Wikispeech
     template:
-      - name: jshint
+      - name: extension-jshint
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
 
@@ -8119,18 +8185,18 @@ projects:
     template:
       - name: extension-gate
       - name: mw-checks-test
-      - name: npm
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/extensions/ZeroPortal
     template:
-      - name: composer-test
+      - name: extension-composer-test
       - name: extension-gate
       - name: mw-checks-test
-      - name: rake
-      - name: npm
+      - name: mwgate-rake
+      - name: extension-npm
     check:
       - jsonlint
       - jshint
@@ -8536,9 +8602,9 @@ projects:
 
   - name: data-values/value-view
     template:
-     - name: composer-test
+     - name: extension-composer-test
      - name: extension-qunit-composer
-     - name: npm
+     - name: extension-npm
 
   - name: wikidata/build-resources
     template:
