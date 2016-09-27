@@ -866,6 +866,9 @@ jobs:
   - name: 'mwext-jsduck-publish'
     branch: ^master$
 
+  - name: 'mwext-MobileFrontend-npm-run-lint-modules'
+    branch: ^(?!REL1_2[3-7]|wmf/)
+
   - name: 'mwext-VisualEditor-publish'
     branch: ^master$
 
@@ -3841,6 +3844,9 @@ projects:
       - jshint
       - jsonlint
       - php53lint
+    experimental:
+      # WIP: https://gerrit.wikimedia.org/r/#/c/312850/
+      - mwext-MobileFrontend-npm-run-lint-modules
     postmerge:
       - mwext-jsduck-publish
       - mwext-doxygen-publish

@@ -189,6 +189,34 @@
      - archive-log-allow-empty
      - castor-save
 
+# A very specific job for MobileFrontend which uses a JavaScript test suite
+# which requires mediawiki/core.
+- job-template:
+    name: 'mwext-MobileFrontend-npm-run-lint-modules'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-node-version-4
+     # FIXME: we should save node_modules and run npm prune
+     - castor-load
+     - zuul-cloner-extdeps:
+         ext-name: MobileFrontend
+         dependencies: ''
+         additional-repositories: ''
+     - shell: |
+         # For archiving build artifacts
+         mkdir -p "$WORKSPACE/log"
+         node --version
+         npm --version
+         cd src/extensions/MobileFrontend
+         npm install
+         npm run-script lint:modules
+    publishers:
+     - archive-log-allow-empty
+     - castor-save
+
 - job-template:
     name: '{name}-{repository}-npm-node-0.10'
     node: ci-trusty-wikimedia
