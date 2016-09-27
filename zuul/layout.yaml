@@ -827,11 +827,6 @@ jobs:
     success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
     failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to fixup the working directory on the destination server.'
 
-  - name: beta-cxserver-update-eqiad
-    branch: ^master$
-    success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
-    failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to investigate.'
-
   - name: parsoidsvc-source-jsduck-publish
     branch: ^master$
     success-message: 'SUCCESS Deployed documentation to https://doc.wikimedia.org/Parsoid/master/'
@@ -7069,16 +7064,12 @@ projects:
   - name: mediawiki/services/cxserver
     template:
       - name: npm
-    postmerge:
-      - beta-cxserver-update-eqiad
 
   - name: mediawiki/services/cxserver/deploy
     test:
       - cxserver-deploy-npm-node-4-jessie
     gate-and-submit:
       - cxserver-deploy-npm-node-4-jessie
-    postmerge:
-      - beta-cxserver-update-eqiad
 
   - name: mediawiki/services/graphoid
     template:

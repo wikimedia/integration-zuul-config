@@ -168,31 +168,6 @@
           failure: true
           fixed: true
 
-- job-template:
-    name: beta-cxserver-update-eqiad
-    defaults: beta
-    node: deployment-sca01
-    triggers:
-     - zuul
-    logrotate:
-        daysToKeep: 15
-    builders:
-     - shell: |
-        /srv/deployment/integration/slave-scripts/bin/multigit.sh \
-          mediawiki/services/cxserver mediawiki/services/cxserver/deploy
-     - shell: |
-         CXSERVER_TARGET=/srv/deployment/cxserver
-         mkdir -p "$CXSERVER_TARGET"
-         # sync workspace and deployment target
-         RSYNC_OPTS="--update --times --recursive --links --delete-after --delay-updates"
-         rsync $RSYNC_OPTS $WORKSPACE/cxserver "$CXSERVER_TARGET"
-         rsync $RSYNC_OPTS $WORKSPACE/deploy "$CXSERVER_TARGET"
-
-     - shell: |
-         sudo service cxserver restart
-    publishers:
-     - beta-irc
-
 # Also used in mediawiki-core-code-coverage
 - publisher:
     name: beta-irc
@@ -215,6 +190,5 @@
     jobs:
      - beta-code-update-eqiad
      - beta-mediawiki-config-update-eqiad
-     - beta-cxserver-update-eqiad
      - beta-scap-eqiad
      - beta-update-databases-eqiad
