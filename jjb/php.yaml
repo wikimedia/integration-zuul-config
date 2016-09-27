@@ -87,6 +87,13 @@
     publishers:
      - castor-save
 
+- job-template:
+    !!merge : *job_composer-phpflavor-image
+    name: '{name}-composer-{phpflavor}-{image}'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 # Same as 'composer-package-{phpflavor}'. Runs "composer update" and "composer
 # test" for libraries that are published as composer packages but on disposable
 # instances maintained by Nodepool.
