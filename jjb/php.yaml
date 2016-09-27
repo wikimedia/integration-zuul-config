@@ -63,7 +63,7 @@
 
 # Generic job that runs "composer update" and "composer test"
 # Runs on Ubuntu Precise that ships Zend 5.3.
-- job-template:
+- job-template: &job_composer-php53
     name: 'composer-php53'
     node: 'contintLabsSlave && phpflavor-php53'
     defaults: use-remote-zuul-shallow-clone
@@ -79,6 +79,13 @@
      - composer-test
     logrotate:
         daysToKeep: 15
+
+- job-template:
+    !!merge : *job_composer-php53
+    name: '{name}-composer-php53'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 # Run composer update and composer test
 # Intended for libraries that are published as composer packages
@@ -105,7 +112,7 @@
      - 'composer-package-php53'
 
 # Runs "composer update" and "composer test"
-- job-template:
+- job-template: &job_composer-phpflavor
     name: 'composer-{phpflavor}'
     node: contintLabsSlave && phpflavor-{phpflavor}
     defaults: use-remote-zuul-shallow-clone
@@ -122,6 +129,13 @@
      - composer-update:
         dir: '.'
      - composer-test
+
+- job-template:
+    !!merge : *job_composer-phpflavor
+    name: '{name}-composer-{phpflavor}'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 # Same as 'composer-package-{phpflavor}'. Runs "composer update" and "composer
 # test" for libraries that are published as composer packages but on disposable
