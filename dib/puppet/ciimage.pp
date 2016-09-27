@@ -11,6 +11,13 @@ require_package('git')
 # We have jobs compiling native packages for NodeJs, Python, Ruby..
 require_package('build-essential')
 
+# T146783
+if os_version('debian >= jessie') {
+    require_package('libcairo2-dev')
+	require_package('libpango1.0-dev')
+	require_package('libgif-dev')
+}
+
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
 include jenkins::slave::requisites
@@ -163,4 +170,5 @@ if os_version('debian >= jessie') {
         ensure => present,
     }
 }
+
 # end contint::packages::ops
