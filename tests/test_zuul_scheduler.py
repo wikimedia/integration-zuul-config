@@ -11,7 +11,6 @@ import tempfile
 import os
 import unittest
 
-from nose.plugins.attrib import attr
 import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
 from zuul.reporter.gerrit import GerritReporter
@@ -136,20 +135,23 @@ class TestZuulScheduler(unittest.TestCase):
         # composer-validate
         # composer-validate-package
         # composer-test-(zend|hhvm)
+        # mwgate-composer-validate
         self.assertTrue(
             any([job for job in definition
-                 if job.startswith(('composer', 'composer-'))
+                 if job.startswith(
+                     ('composer', 'composer-', 'mwgate-composer'))
                  or job == 'mwext-testextension-php55-composer-trusty'
                  or job == 'mwext-testextension-hhvm-composer-jessie']),
             'Project %s pipeline %s must have either '
             'composer-validate or a composer-* job'
-            % (name, pipeline))
+            'has: %s'
+            % (name, pipeline, definition))
 
     def assertProjectHasPhplint(self, name, definition, pipeline):
         self.assertTrue(
             any([job for job in definition
                  if job.endswith(('php55lint')) or
-                 job.startswith('composer-')]),
+                 job.startswith(('composer-', 'mwgate-composer'))]),
             'Project %s pipeline %s must have either '
             'phplint or a composer-* job'
             % (name, pipeline))
@@ -587,6 +589,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         # mediawiki/core
         change = zuul.model.Change('mediawiki/core')
+        change.files = ['foobar.php']  # php55lint jobs have a files: filter
         lint_job = getPipelineJobForProject(
             'mediawiki-core-php55lint', 'mediawiki/core')
 
@@ -612,7 +615,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         # A MediaWiki extension
         change = zuul.model.Change('mediawiki/extensions/ConfirmEdit')
-        change.files = ['foobar.php']  # php55lint has a files: filter
+        change.files = ['foobar.php']  # php55lint jobs have a files: filter
         lint_job = getPipelineJobForProject(
             'php55lint', 'mediawiki/extensions/ConfirmEdit')
 
@@ -895,7 +898,6 @@ class TestZuulScheduler(unittest.TestCase):
             cmd,
             'gerrit review command does not match Gerrit 2.13 expectation')
 
-    @attr('qa')
     def test_only_mediawiki_projects_in_mediawiki_gate(self):
 
         def _mw_filter(zuul_project, is_mw):
@@ -905,6 +907,7 @@ class TestZuulScheduler(unittest.TestCase):
                 or p_name.startswith('mediawiki/skins/')
                 or p_name == 'mediawiki/vendor'
                 or p_name == 'mediawiki/core'
+                or p_name == 'data-values/value-view'
             ):
                 return is_mw
             return not is_mw
