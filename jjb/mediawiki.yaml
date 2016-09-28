@@ -219,6 +219,7 @@
     # - HHVM flavor runs on Trusty CI labs slaves with HHVM
     # - PHP53 flavor runs on Precise CI labs slaves with Zend PHP 5.3
     # - PHP55 flavor runs on Trusty CI labs slaves with Zend PHP 5.5
+    # - PHP70 flavor runs on Trusty CI labs slaves with Zend PHP 7.0
     #
     # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
     # definition based on the job name.
@@ -290,6 +291,7 @@
         - hhvm
         - php53
         - php55
+        - php70
     jobs:
       - 'mediawiki-core-qunit-jessie'
       - 'mediawiki-core-jsduck'
@@ -298,6 +300,7 @@
       - 'mediawiki-core-doxygen-publish'
       - '{name}-php53lint'
       - '{name}-php55lint'
+      - '{name}-php70lint'
       - 'mediawiki-phpunit-{phpflavor}':
           phpflavor:
               - php53
@@ -305,6 +308,9 @@
           phpflavor:
               - php55:
                   image: trusty
+              # Experimental php version
+              - php70:
+                  image: jessie
               # Wikimedia runs HHVM on Trusty and will move to Jessie
               - hhvm:
                   image: trusty
