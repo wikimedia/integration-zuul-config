@@ -13,7 +13,7 @@
      - zuul
     builders:
      - castor-load
-     - tox:
+     - run-tox:
          venv: '{toxenv}'
     publishers:
      - archive-log-dir
@@ -29,7 +29,7 @@
      - zuul
     builders:
      - castor-load
-     - tox:
+     - run-tox:
          venv: '{toxenv}'
     publishers:
      - archive-log-dir
@@ -66,7 +66,7 @@
     triggers:
      - zuul
     builders:
-     - tox:
+     - run-tox:
          venv: doc
      - doc-publish:
         docsrc: '{docsrc}'
