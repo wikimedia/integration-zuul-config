@@ -194,8 +194,9 @@
     name: 'performance-webpagetest-wmf'
     node: contintLabsSlave && UbuntuTrusty
     defaults: global
-    logrotate:
-        daysToKeep: 60
+    properties:
+     - build-discarder:
+         days-to-keep: 60
     concurrent: false
     scm:
       - git:
@@ -257,8 +258,9 @@
     name: 'performance-webpagetest-wpt-org'
     node: contintLabsSlave && UbuntuTrusty
     defaults: global
-    logrotate:
-        daysToKeep: 60
+    properties:
+     - build-discarder:
+         days-to-keep: 60
     concurrent: false
     scm:
       - git:

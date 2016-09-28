@@ -165,9 +165,10 @@
      - localhost-cleanup
      - mw-teardown-mysql
      - archive-log-dir
-    logrotate:
-      daysToKeep: 15
-      artifactDaysToKeep: 3
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+         artifact-days-to-keep: 3
 
 # Generic mw-selenium job for extensions.
 - job:
@@ -186,17 +187,19 @@
      - localhost-cleanup
      - mw-teardown-mysql
      - archive-log-dir
-    logrotate:
-      daysToKeep: 15
-      artifactDaysToKeep: 3
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+         artifact-days-to-keep: 3
 
 - job-template:
     name: 'mwext-{name}-whitespaces'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     triggers:
      - zuul
     builders:

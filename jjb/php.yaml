@@ -42,8 +42,9 @@
      - zuul
     builders:
      - composer-validate-package
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
 
 # Job for anything with a composer.json, but *isn't* going to be
 # published on packagist.org.
@@ -58,8 +59,9 @@
     builders:
      - composer-validate:
         dir: '.'
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
 
 # Generic job that runs "composer update" and "composer test"
 # Runs on Ubuntu Precise that ships Zend 5.3.
@@ -77,8 +79,9 @@
      - composer-update:
         dir: '.'
      - composer-test
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
 
 # Run composer update and composer test
 # Intended for libraries that are published as composer packages
@@ -110,8 +113,9 @@
     node: contintLabsSlave && phpflavor-{phpflavor}
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     triggers:
      - zuul
     builders:
@@ -131,8 +135,9 @@
     node: ci-{image}-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     triggers:
      - zuul
     builders:
