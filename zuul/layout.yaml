@@ -708,6 +708,11 @@ jobs:
      - '^.*\.(php|php5|phtml|inc)$'
     branch: (?!REL1_2[3-6]$)
 
+  - name: php70lint
+    files:
+     - '^.*\.(php|php5|phtml|inc)$'
+    branch: (?!REL1_2[3-6]$)
+
   - name: ^mediawiki-phpunit-php53-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
     branch: (?!REL1_23)
@@ -760,7 +765,7 @@ jobs:
     branch: (?!REL1_23|REL1_24|fundraising/REL.*)
     queue-name: mediawiki
 
-  - name: ^mediawiki-extensions-php55$
+  - name: ^mediawiki-extensions-php(55|70)$
     branch: (?!REL1_23|REL1_24|REL1_25|REL1_26|fundraising/REL.*)
     queue-name: mediawiki
 
@@ -982,6 +987,7 @@ project-templates:
      - composer-validate
     experimental:
       - mediawiki-extensions-hhvm
+      - mediawiki-extensions-php70
       - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
@@ -1011,6 +1017,7 @@ project-templates:
      - composer-validate
     experimental:
       - mediawiki-extensions-hhvm
+      - mediawiki-extensions-php70
       - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
