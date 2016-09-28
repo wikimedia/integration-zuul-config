@@ -27,8 +27,9 @@
     node: contintLabsSlave && UbuntuTrusty
     repository_host: 'gerrit.wikimedia.org/r'
 
-    logrotate:
-        daysToKeep: 31  # ~ 2 * 2 weeks sprints
+    properties:
+     - build-discarder:
+         days-to-keep: 31  # ~ 2 * 2 weeks sprints
 
     scm:
       - git:

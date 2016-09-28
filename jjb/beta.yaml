@@ -59,8 +59,9 @@
     triggers:
      - timed: '@hourly'
 
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
 
 # Job to deploy the Wikimedia MediaWiki configuration files
 #
@@ -84,8 +85,9 @@
     builders:
      - shell: /usr/local/bin/wmf-beta-mwconfig-update
 
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
 
     publishers:
       - beta-irc
@@ -111,8 +113,9 @@
     # Do not run concurrently with the downstream job
     block-downstream: true
 
-    logrotate:
-        daysToKeep: 7
+    properties:
+     - build-discarder:
+         days-to-keep: 7
 
     triggers:
      # Every ten minutes:
@@ -149,8 +152,9 @@
       - shell: |
           /srv/deployment/scap/scap/bin/scap sync "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
 
-    logrotate:
-        daysToKeep: 7
+    properties:
+     - build-discarder:
+         days-to-keep: 7
 
     wrappers:
       - ansicolor
