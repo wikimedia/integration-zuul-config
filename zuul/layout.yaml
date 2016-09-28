@@ -621,6 +621,24 @@ pipelines:
     failure:
       gerrit: {}
 
+  - name: php7
+    description: >
+      Jobs manually triggered by whitelisted users commenting 'check php7'.
+      Useful for running PHP7 tests that are only part of gate-and-submit.
+    manager: IndependentPipelineManager
+    source: gerrit
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment: (?im)^Patch Set \d+:\n\n\s*check php7\.?\s*$
+          email: *email_whitelist
+    success-message: 'PHP7 build succeeded.'
+    success:
+      gerrit: {}
+    failure-message: 'PHP7 build failed.'
+    failure:
+      gerrit: {}
+
   # Actual gate (report/vote in Gerrit)
   # Will auto-submit change on success!
   #
