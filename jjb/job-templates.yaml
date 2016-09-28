@@ -320,6 +320,8 @@
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     properties:
+     - build-discarder:
+         days-to-keep: 15
      - throttle-one-per-node
     triggers:
      - zuul
@@ -332,6 +334,8 @@
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     properties:
+     - build-discarder:
+         days-to-keep: 15
      - throttle-one-per-node
     triggers:
      - zuul

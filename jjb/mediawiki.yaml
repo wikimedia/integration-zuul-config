@@ -36,8 +36,9 @@
     concurrent: true
     triggers:
      - zuul
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     builders:
      - castor-load
      - zuul-cloner:
@@ -56,8 +57,9 @@
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
     concurrent: true
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     triggers:
      - zuul
     builders:
@@ -68,8 +70,9 @@
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
     concurrent: false
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     triggers:
      - zuul
     builders:
@@ -136,6 +139,8 @@
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
     concurrent: true
     properties:
+     - build-discarder:
+         days-to-keep: 15
      - throttle-one-per-node
     triggers:
      - zuul
@@ -164,6 +169,8 @@
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
     concurrent: true
     properties:
+     - build-discarder:
+         days-to-keep: 15
      - throttle-one-per-node
     triggers:
      - zuul
@@ -229,10 +236,9 @@
     # matching the expression.
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
     concurrent: true
-    logrotate:
-        daysToKeep: 15
-
     properties:
+     - build-discarder:
+         days-to-keep: 15
      - throttle-one-per-node
     triggers:
      - zuul
@@ -263,8 +269,9 @@
     name: 'mediawiki-extensions-qunit-jessie'
     node: 'ci-jessie-wikimedia'
     concurrent: true
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     triggers:
      - zuul
     builders:
@@ -437,8 +444,9 @@
     name: 'mediawiki-core-phpcs-trusty'
     node: ci-trusty-wikimedia
     concurrent: true
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     triggers:
      - zuul
     builders:

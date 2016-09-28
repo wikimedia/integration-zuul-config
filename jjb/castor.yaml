@@ -93,8 +93,9 @@
     name: castor-save
     node: castor
     concurrent: true
-    logrotate:
-        daysToKeep: 5
+    properties:
+     - build-discarder:
+         days-to-keep: 5
     parameters:
         - string:
             name: TRIGGERED_SSH_CONNECTION

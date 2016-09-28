@@ -43,8 +43,9 @@
     concurrent: true
     triggers:
      - zuul
-    logrotate:
-        daysToKeep: 15
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     wrappers:
      - timeout:
          timeout: 30
@@ -71,6 +72,8 @@
     defaults: use-remoteonly-zuul
     concurrent: true
     properties:
+     - build-discarder:
+         days-to-keep: 30
      - throttle-one-per-node
     triggers:
      - pollscm:
@@ -160,7 +163,10 @@
     defaults: use-remoteonly-zuul
     concurrent: true
     properties:
+     - build-discarder:
+         days-to-keep: 30
      - throttle-one-per-node
+
     triggers:
      - zuul
     builders:
