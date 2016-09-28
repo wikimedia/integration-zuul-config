@@ -289,19 +289,9 @@
         /srv/deployment/integration/slave-scripts/bin/git-changed-in-head pp \
         | xargs -n1 -t puppet parser validate
 
-- job:
+- job: &job_php53lint
     name: 'php53lint'
     node: contintLabsSlave && phpflavor-php53
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - phplint
-
-- job:
-    name: 'php55lint'
-    node: contintLabsSlave && phpflavor-php55
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -315,28 +305,28 @@
 # kept around for large repositories that need to have their
 # own workspace.
 - job-template:
+    !!merge : *job_php53lint
     name: '{name}-php53lint'
-    node: contintLabsSlave && phpflavor-php53
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+- job: &job_php55lint
+    name: 'php55lint'
+    node: contintLabsSlave && phpflavor-php55
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
-    properties:
-     - throttle-one-per-node
     triggers:
      - zuul
     builders:
      - phplint
 
 - job-template:
+    !!merge : *job_php55lint
     name: '{name}-php55lint'
-    node: contintLabsSlave && phpflavor-php55
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    properties:
-     - throttle-one-per-node
+    # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-    builders:
-     - phplint
 
 - job-template:
     name: '{name}-puppet-validate'
