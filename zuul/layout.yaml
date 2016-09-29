@@ -283,6 +283,7 @@ pipelines:
     trigger:
       gerrit:
         - event: patchset-created
+          branch: (?!^refs/meta/config)
 
           # BEWARE:
           # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
@@ -491,12 +492,14 @@ pipelines:
         # Let whitelisted users the ability to reenqueue a change in the test
         # pipeline by simply commenting 'recheck' on a change.
         - event: comment-added
+          branch: (?!^refs/meta/config)
           comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
           email: *email_whitelist
 
         # Let whitelisted users CR+1 to trigger tests for an untested patch
         # (Verified 0 or 1)
         - event: comment-added
+          branch: (?!^refs/meta/config$)
           require-approval:
             # hasn't been tested yet
             - verified: [0, 1]
@@ -566,6 +569,7 @@ pipelines:
     trigger:
       gerrit:
         - event: comment-added
+          branch: (?!^refs/meta/config)
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
@@ -591,6 +595,7 @@ pipelines:
     trigger:
       gerrit:
         - event: change-merged
+          branch: (?!^refs/meta/config)
     success-message: 'Post-merge build succeeded.'
     # Zuul needs at least one option beside --message or it will not report
     # Since Gerrit 2.8, we can vote on closed changes.
