@@ -35,8 +35,6 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
-        - event: ref-updated
-          ref: ^(?!refs/meta/config).*$
         - event: patchset-created
           # Don't run the check pipeline if the user is allowed to run the test pipeline (bug 43391).
           # TODO: Figure out a way to turn this into a list instead of a single regex.
@@ -240,8 +238,6 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
-        - event: ref-updated
-          ref: ^(?!refs/meta/config).*$
         - event: patchset-created
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
@@ -263,8 +259,6 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
-        - event: ref-updated
-          ref: ^(?!refs/meta/config).*$
         - event: patchset-created
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
@@ -287,8 +281,6 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
-        - event: ref-updated
-          ref: ^(?!refs/meta/config).*$
         - event: patchset-created
 
           # BEWARE:
@@ -528,8 +520,6 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
-        - event: ref-updated
-          ref: ^(?!refs/meta/config).*$
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check experimental\.?\s*$
           email: *email_whitelist
@@ -549,8 +539,6 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
-        - event: ref-updated
-          ref: ^(?!refs/meta/config).*$
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check (php53?|zend)\.?\s*$
           email: *email_whitelist
@@ -575,8 +563,6 @@ pipelines:
     window-floor: 12
     trigger:
       gerrit:
-        - event: ref-updated
-          ref: ^(?!refs/meta/config).*$
         - event: comment-added
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
