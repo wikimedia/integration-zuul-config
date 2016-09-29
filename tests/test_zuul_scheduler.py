@@ -331,133 +331,196 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_recheck_comment_trusted_user(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
 
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1:\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_recheck_comment_untrusted_user(self):
         test_manager = self.getPipeline('test').manager
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
 
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1:\n\nrecheck'
         event.account = {'email': 'untrusted@example.org'}
+        event.branch = change.branch
+
         self.assertFalse(test_manager.eventMatches(event, change))
 
     def test_recheck_comment_untrusted_user_with_code_review(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
 
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: -Code-Review\n\nrecheck'
         event.account = {'email': 'untrusted@example.org'}
+        event.branch = change.branch
+
         self.assertFalse(test_manager.eventMatches(event, change))
 
     def test_recheck_with_code_review_vote_removed(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: -Code-Review\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_recheck_with_verified_vote_removed(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: -Verified\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertFalse(test_manager.eventMatches(event, change))
 
     def test_recheck_with_code_review_vote_plus_one(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Code-Review+1\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_recheck_with_code_review_vote_plus_two(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Code-Review+2\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_recheck_with_code_review_vote_minus_one(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Code-Review-1\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_recheck_with_code_review_vote_minus_two(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Code-Review-2\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_recheck_with_verified_vote_minus_two(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Verified-2\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertFalse(test_manager.eventMatches(event, change))
 
     def test_recheck_with_verified_vote_minus_one(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Verified-1\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertFalse(test_manager.eventMatches(event, change))
 
     def test_recheck_with_verified_vote_plus_one(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Verified+1\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertFalse(test_manager.eventMatches(event, change))
 
     def test_recheck_with_verified_vote_plus_2(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Verified+2\n\nrecheck'
         event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
         self.assertFalse(test_manager.eventMatches(event, change))
 
     def test_pipelines_trustiness(self):
         check_manager = self.getPipeline('check').manager
         test_manager = self.getPipeline('test').manager
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
 
         # Untrusted user
         untrusted_event = zuul.model.TriggerEvent()
         untrusted_event.type = 'patchset-created'
         untrusted_event.account = {'email': 'untrusted@example.org'}
+        untrusted_event.branch = change.branch
         self.assertTrue(check_manager.eventMatches(untrusted_event, change))
         self.assertFalse(test_manager.eventMatches(untrusted_event, change))
 
@@ -465,16 +528,19 @@ class TestZuulScheduler(unittest.TestCase):
         trusted_event = zuul.model.TriggerEvent()
         trusted_event.type = 'patchset-created'
         trusted_event.account = {'email': 'jdoe@wikimedia.org'}
+        trusted_event.branch = change.branch
         self.assertFalse(check_manager.eventMatches(trusted_event, change))
         self.assertTrue(test_manager.eventMatches(trusted_event, change))
 
     def test_donationinterface_deployment_branch_filters(self):
         test_manager = self.getPipeline('test').manager
-        event = zuul.model.TriggerEvent()
-        event.type = 'patchset-created'
 
         change = zuul.model.Change('mediawiki/extensions/DonationInterface')
         change.branch = 'deployment'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'patchset-created'
+        event.branch = change.branch
 
         jobs_tree = [t for (p, t) in
                      self.getPipeline('test').job_trees.iteritems()
@@ -510,6 +576,7 @@ class TestZuulScheduler(unittest.TestCase):
                         job.name, change.branch)
                 )
 
+        event.branch = change.branch
         self.assertTrue(test_manager.eventMatches(event, change))
 
     # FIXME: should be more generic
@@ -540,6 +607,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         for allowed_branch in ['master', 'REL1_25', 'REL1_26']:
             change = change_for_branch(allowed_branch)
+            event.branch = change.branch
             self.assertTrue(test_manager.eventMatches(event, change))
             self.assertTrue(rake_jessie_job.changeMatches(change),
                             'mediawiki/core rake-jessie job must run on %s'
@@ -548,6 +616,7 @@ class TestZuulScheduler(unittest.TestCase):
         for blacklisted_branch in ['REL1_23', 'REL1_24',
                                    'fundraising/REL1_42']:
             change = change_for_branch(blacklisted_branch)
+            event.branch = change.branch
             self.assertTrue(test_manager.eventMatches(event, change))
             self.assertFalse(
                 rake_jessie_job.changeMatches(change),
@@ -598,10 +667,12 @@ class TestZuulScheduler(unittest.TestCase):
         managers = [self.getPipeline(p).manager
                     for p in ['check', 'check-only', 'check-voter', 'test']]
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
 
         l10n_event = zuul.model.TriggerEvent()
         l10n_event.type = 'patchset-created'
         l10n_event.account = {'email': 'l10n-bot@translatewiki.net'}
+        l10n_event.branch = change.branch
 
         [self.assertFalse(manager.eventMatches(l10n_event, change),
                           'l10-bot should not enter %s pipeline' %
@@ -629,6 +700,7 @@ class TestZuulScheduler(unittest.TestCase):
     def test_trusted_cr_vote_tests_untested_change(self):
         test_manager = self.getPipeline('test').manager
         change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
         change.approvals = [
             {'description': 'Verified',
              'type': 'VRFY',
@@ -652,6 +724,7 @@ class TestZuulScheduler(unittest.TestCase):
              'by': {'email': 'unstrusted@example.org'},
              },
         ]
+        event.branch = change.branch
         self.assertFalse(test_manager.eventMatches(event, change))
 
         event = zuul.model.TriggerEvent()
@@ -663,6 +736,7 @@ class TestZuulScheduler(unittest.TestCase):
              'value': '1',
              },
         ]
+        event.branch = change.branch
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_gated_extensions_are_both_in_jjb_and_zuul(self):
