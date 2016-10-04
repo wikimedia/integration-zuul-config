@@ -37,6 +37,25 @@
      - global-teardown
 
 - job:
+    name: 'tox-py27-coverage-publish'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - global-setup
+     - shell: |
+         . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
+         rm -rf coverage
+         tox -e py27 -- --cover-html --cover-html-dir=coverage/
+     - cover-publish:
+        src: 'coverage'
+        dest: '$DOC_PROJECT'
+    publishers:
+     - global-teardown
+
+- job:
     name: 'unicodejs-publish'
     node: ci-trusty-wikimedia  # Trusty has jsduck.deb
     defaults: use-remote-zuul-shallow-clone
