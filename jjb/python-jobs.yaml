@@ -77,6 +77,29 @@
      - castor-save
      - archive-log-dir
 
+- job:
+    name: 'tox-py27-coverage-publish'
+    node: ci-jessie-wikimedia
+    defaults: use-remoteonly-zuul
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     # Most is copied from our 'run-tox' macro
+     - shell: |
+         rm -fR coverage log
+         mkdir -p log
+         set -o pipefail
+         PY_COLORS=1 tox -e py27 -- --cover-html --cover-html-dir=coverage/ | tee "log/tox-coverage.log"
+         set +o pipefail
+     - cover-publish:
+        src: 'coverage'
+        dest: '$DOC_PROJECT'
+    publishers:
+        - castor-save
+        - archive-log-dir
+
 - project:
     name: common-tox-jobs
     jobs:
