@@ -143,6 +143,7 @@ dependencies = {
     'SimpleSurvey': ['PrefSwitch'],
     'SolrStore': ['SemanticMediaWiki'],
     'Spreadsheet': ['PHPExcel'],
+    'SubPageList': ['ParserHooks'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'TitleBlacklist': ['AntiSpoof'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
