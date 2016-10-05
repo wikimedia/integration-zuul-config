@@ -127,6 +127,30 @@
         dir: '.'
      - composer-test
 
+# Runs "composer update" and "composer test" but on disposable instances
+# maintained by Nodepool.
+- job-template:
+    name: 'composer-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - castor-load
+     - composer-validate:
+        dir: '.'
+     - composer-update:
+        dir: '.'
+     - composer-test
+    publishers:
+     - castor-save
+
 # Same as 'composer-package-{phpflavor}'. Runs "composer update" and "composer
 # test" for libraries that are published as composer packages but on disposable
 # instances maintained by Nodepool.
@@ -166,6 +190,7 @@
             image: jessie
     jobs:
      - 'composer-package-{phpflavor}-{image}'
+     - 'composer-{phpflavor}-{image}'
 
 - project:
     name: 'composer-flavored'
