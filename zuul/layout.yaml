@@ -2354,15 +2354,18 @@ projects:
       - jsonlint
 
   - name: wikimedia/fundraising/tools
-    check-voter:
+    check:
       - jshint
       - jsonlint
+    test:
+      - jshint
+      - jsonlint
+      - tox-jessie
     gate-and-submit:
       - jshint
       - jsonlint
-      - noop  # in case a patch has no .js/.json
-    experimental:
       - tox-jessie
+      - noop  # in case a patch has no .js/.json/.py/.yaml
 
   - name: wikimedia/fundraising/crm
     check:
