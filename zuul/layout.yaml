@@ -930,10 +930,10 @@ project-templates:
     experimental:
      - mwext-qunit-composer-jessie
      - npm-node-4
+     - composer-hhvm-trusty
      - composer-php53
-     - composer-php55
-     - composer-php70
-     - composer-hhvm
+     - composer-php55-trusty
+     - composer-php70-jessie
 
   - name: extension-unittests-composer-non-voting
     check:
@@ -953,10 +953,10 @@ project-templates:
      - composer-validate
     experimental:
      - mwext-qunit-composer-jessie
+     - composer-hhvm-trusty
      - composer-php53
-     - composer-php55
-     - composer-php70
-     - composer-hhvm
+     - composer-php55-trusty
+     - composer-php70-jessie
 
   - name: extension-unittests-generic
     check:
@@ -985,10 +985,10 @@ project-templates:
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-4
+      - composer-hhvm-trusty
       - composer-php53
-      - composer-php55
-      - composer-php70
-      - composer-hhvm
+      - composer-php55-trusty
+      - composer-php70-jessie
 
   - name: extension-unittests-non-voting
     check:
@@ -1014,10 +1014,10 @@ project-templates:
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-4
+      - composer-hhvm-trusty
       - composer-php53
-      - composer-php55
-      - composer-php70
-      - composer-hhvm
+      - composer-php55-trusty
+      - composer-php70-jessie
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1087,9 +1087,10 @@ project-templates:
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
      - npm-node-4
+     - composer-hhvm-trusty
      - composer-php53
-     - composer-php55
-     - composer-hhvm
+     - composer-php55-trusty
+     - composer-php70-jessie
 
     # Similar to above, but uses a check/test pipeline
   - name: mw-checks-test
@@ -1114,9 +1115,10 @@ project-templates:
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
      - npm-node-4
+     - composer-hhvm-trusty
      - composer-php53
-     - composer-php55
-     - composer-hhvm
+     - composer-php55-trusty
+     - composer-php70-jessie
 
   - name: composer-test
     check:
@@ -1132,7 +1134,8 @@ project-templates:
       - composer-php55
       - composer-hhvm
     experimental:
-      - composer-php70
+      - composer-php70-jessie
+      - composer-hhvm-jessie
 
   - name: composer-test55
     check:
@@ -1145,7 +1148,8 @@ project-templates:
       - composer-php55-trusty
       - composer-hhvm-trusty
     experimental:
-      - composer-php70
+      - composer-php70-jessie
+      - composer-hhvm-jessie
 
   - name: jshint
     check:
@@ -2214,8 +2218,9 @@ projects:
       - operations-mw-config-phpunit
       - operations-mw-config-typos
     experimental:
-      - composer-php55
-      - composer-hhvm
+      - composer-php55-trusty
+      - composer-hhvm-trusty
+      - composer-hhvm-jessie
     postmerge:
       - beta-mediawiki-config-update-eqiad
 
