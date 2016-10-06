@@ -920,6 +920,16 @@ jobs:
   - name: operations-puppet-doc
     success-message: 'Documentation published on https://doc.wikimedia.org/puppet/. Build'
 
+  - name: tox-jessie
+    skip-if:
+      # Done on master, not ready on deployment branch T145012
+      #
+      # FIXME drop the 'noop' job from gate-and-submit when the skip rule is
+      # removed.
+      #
+      - project: ^wikimedia/fundraising/tools$
+        branch: ^deployment$
+
 project-templates:
 
   - name: extension-unittests-composer
@@ -2404,15 +2414,19 @@ projects:
       - jsonlint
 
   - name: wikimedia/fundraising/tools
-    check-voter:
+    check:
       - jshint
       - jsonlint
+    test:
+      - jshint
+      - jsonlint
+      - tox-jessie
     gate-and-submit:
       - jshint
       - jsonlint
-      - noop  # in case a patch has no .js/.json
-    experimental:
       - tox-jessie
+      # tox-jessie is skipped on 'deployment' branch (WIP T145012)
+      - noop
 
   - name: wikimedia/fundraising/crm
     check:
