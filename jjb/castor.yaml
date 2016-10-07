@@ -105,7 +105,7 @@
             description: 'JOB_NAME of upstream job'
         - string:
             name: ZUUL_PIPELINE
-            description: 'Name of Zuul pipeline. Must be gate-and-submit to actually save cache.'
+            description: 'Name of Zuul pipeline. Must be gate-and-submit or postmerge to actually save cache.'
     wrappers:
         - ansicolor
         - timeout:
@@ -122,8 +122,8 @@
         # from being triggered by the upstream job.
         - shell: |
             # Note: described in the parameters: section above
-            if [ "$ZUUL_PIPELINE" != 'gate-and-submit' ]; then
-                echo "Only saving cache for gate-and-submit pipeline"
+            if [ "$ZUUL_PIPELINE" != 'gate-and-submit' -a "$ZUUL_PIPELINE" != 'postmerge' ]; then
+                echo "Only saving cache for gate-and-submit or postmerge pipelines"
                 exit 1
             fi
         - castor-define-namespace
