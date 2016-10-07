@@ -77,11 +77,12 @@
 - job:
     name: 'oojs-core-publish'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
+    node: ci-trusty-wikimedia  # Trusty has jsduck.deb
     concurrent: false
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm-install
      - npm-run:
          script: doc
@@ -89,7 +90,7 @@
         docsrc: 'docs'
         docdest: 'oojs/$DOC_SUBPATH'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'oojs-core-coverage'
@@ -108,12 +109,13 @@
 
 - job:
     name: 'oojs-ui-jsduck-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-trusty-wikimedia  # Trusty has jsduck.deb
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm-install
      - npm-run:
          script: doc
@@ -121,7 +123,7 @@
         docsrc: 'docs'
         docdest: 'oojs-ui/$DOC_SUBPATH/js'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'oojs-ui-coverage'
@@ -156,12 +158,13 @@
 
 - job:
     name: 'oojs-ui-demos-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-trusty-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm-install
      - npm-run:
          script: demos
@@ -169,7 +172,7 @@
         docsrc: 'demos'
         docdest: 'oojs-ui/$DOC_SUBPATH/demos'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'visualeditor-coverage'
