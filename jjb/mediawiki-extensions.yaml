@@ -298,8 +298,8 @@
         docdest: '$DOC_BASENAME/$ZUUL_BRANCH/js'
 
 - job-template:
-    name: 'mwext-PoolCounter-build'
-    node: contintLabsSlave && UbuntuTrusty
+    name: 'mwext-PoolCounter-build-jessie'
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
@@ -307,6 +307,9 @@
      - shell: |
         cd daemon
         make
+    publishers:
+     - archive:
+         artifacts: daemon/poolcounterd
 
 - job:
     name: 'mwext-VisualEditor-publish'
@@ -354,7 +357,7 @@
 - project:
     name: 'mwext-PoolCounter'
     jobs:
-     - 'mwext-PoolCounter-build'
+     - 'mwext-PoolCounter-build-jessie'
 
 - project:
     name: 'mwext-VisualEditor'
