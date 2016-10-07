@@ -76,8 +76,8 @@
 
 - job:
     name: 'oojs-core-publish'
-    node: contintLabsSlave && UbuntuTrusty
     node: ci-trusty-wikimedia  # Trusty has jsduck.deb
+    defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
