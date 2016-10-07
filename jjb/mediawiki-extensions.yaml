@@ -304,12 +304,19 @@
     triggers:
      - zuul
     builders:
+     - castor-load
      - shell: |
         cd daemon
         make
+     - shell: |
+         # Install to BUNDLE_PATH, injected by Zuul
+         bundle install --clean
+         cd daemon
+         bundle exec make test
     publishers:
      - archive:
          artifacts: daemon/poolcounterd
+     - castor-save
 
 - job:
     name: 'mwext-VisualEditor-publish'
