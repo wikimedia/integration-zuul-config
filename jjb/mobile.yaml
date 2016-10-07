@@ -78,35 +78,34 @@
     triggers:
      - pollscm:
         cron: '@hourly'
+    parameters:
+     - string:
+         name: 'DISPLAY'
+         default: ':95'
     scm:
      - git:
         url: https://phabricator.wikimedia.org/diffusion/APAW
         branches:
-          - origin/master # Hardcode to branch so pollscm works properly.
+          - master # Hardcode to branch so pollscm works properly.
     wrappers:
-     - android-emulator:
-         os: android-15
-         target-abi: x86
-         wipe: false
-         delete: false
-         snapshot: true
-         commandline-options: '-noaudio'
+     - android-emulator: # api 24 on a nexus s because 1440x2560 at 560 PPI doesn't boot in CI
+         os: android-24
          screen-density: 240
-         screen-resolution: WVGA
-         locale: en_US
+         target-abi: x86
+         show-window: true
          hardware-properties:
-             vm.heapSize: 512
+            # Required for emulators to terminate: https://wiki.jenkins-ci.org/display/JENKINS/Android+Emulator+Plugin#AndroidEmulatorPlugin-Knownissues
+            hw.audioInput: no
     builders:
      - shell: |
-         ./gradlew clean assembleAlphaRelease packageAlphaReleaseAndroidTest
-         scripts/adb-setup.bash
-         ./gradlew spoonAlphaReleaseAndroidTest
+         ./gradlew clean testAllAlphaRelease -Pandroid.testInstrumentationRunnerArguments.size=small
+         scripts/diff-screenshots
     publishers:
      - archive:
-         # Capture generated .apk, ProGuard mappings, and Spoon results
-         artifacts: '**/build/outputs/**,**/build/spoon/**'
+         # Capture generated .apk, ProGuard mappings, and screenshot results
+         artifacts: '**/build/outputs/**,**/build/androidTest-results/**,**/build/screenshots/**,**/build/screenshots-diff/**'
      - junit:
-         results: '**/build/spoon/**/*.xml'
+         results: '**/build/androidTest-results/**/*.xml'
      - irc-android-ci
 
 - job-template:
