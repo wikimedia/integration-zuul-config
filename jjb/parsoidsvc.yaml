@@ -131,13 +131,14 @@
 # documentation builder (based on `oojs-ui-jsduck-publish` job)
 - job-template:
     name: parsoidsvc-{repository}-jsduck-publish
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-trusty-wikimedia  # Trusty has jsduck.deb
     defaults: use-remoteonly-zuul
     concurrent: false
     triggers:
      - zuul
     builders:
     - assert-node-version-0.10
+    - castor-load
     - setup-npm-oid:
         repository: '{repository}'
     - shell: |
@@ -152,7 +153,7 @@
         docsrc: 'generated-docs'
         docdest: 'Parsoid/$DOC_SUBPATH'
     publishers:
-    - global-teardown
+    - castor-save
 
 - project:
     name: parsoidsvc
