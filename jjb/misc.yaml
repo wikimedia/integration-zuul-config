@@ -38,12 +38,13 @@
 
 - job:
     name: 'unicodejs-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-trusty-wikimedia  # Trusty has jsduck.deb
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm-install
      - npm-run:
          script: doc
@@ -51,7 +52,7 @@
         docsrc: 'docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'unicodejs-coverage'
