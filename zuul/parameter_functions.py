@@ -107,7 +107,7 @@ dependencies = {
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'ImageMetrics': ['EventLogging'],
-    'Kartographer': ['VisualEditor'],
+    'Kartographer': ['WikimediaMessages', 'VisualEditor'],
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore'],
     'LightweightRDFa': ['WikiEditor'],
