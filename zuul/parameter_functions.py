@@ -88,6 +88,7 @@ dependencies = {
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
+    'BlueSpiceExtensions': ['BlueSpiceFoundation'],
     'Capiunto': ['Scribunto'],
     'Cite': ['VisualEditor'],
     'Citoid': ['Cite', 'VisualEditor'],
