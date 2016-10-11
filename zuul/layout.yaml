@@ -1331,17 +1331,37 @@ projects:
     test:
       - debian-glue-non-voting
 
+  - name: maps/kartotherian
+    test:
+      - noop
+    gate-and-submit:
+      - noop
+    experimental:
+      - npm-node-4
+
   - name: maps/kartotherian/deploy
     test:
       - noop
     gate-and-submit:
       - noop
+    experimental:
+      - kartotherian-deploy-npm-node-4-jessie
+
+  - name: maps/tilerator
+    test:
+      - noop
+    gate-and-submit:
+      - noop
+    experimental:
+      - npm-node-4
 
   - name: maps/tilerator/deploy
     test:
       - noop
     gate-and-submit:
       - noop
+    experimental:
+      - tilerator-deploy-npm-node-4-jessie
 
   - name: mediawiki/core
     template:
