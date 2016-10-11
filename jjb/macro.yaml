@@ -147,47 +147,15 @@
 # Assert 'php' is phpflavor
 #
 # Parameter:
-# * phpflavor: 'hhvm' or 'zend' or 'php55'
+# * phpflavor: 'hhvm' or 'zend' or 'php55' or 'php70'
+#
+# The script is located in integration/jenkins repo now.
 #
 - builder:
     name: assert-phpflavor
     builders:
         - shell: |
-            #!/bin/bash -eu
-            PHP_VERSION=`php --version`
-
-            case "{phpflavor}" in
-                ( 'hhvm' )
-                    MATCHER='^HipHop'
-                ;;
-                ( 'zend' )
-                    MATCHER='^Zend Engine'
-                ;;
-                ( 'php53' )
-                    MATCHER='^PHP 5\.3'
-                ;;
-                ( 'php55' )
-                    MATCHER='^PHP 5\.5'
-                ;;
-                ( 'php56' )
-                    MATCHER='^PHP 5\.6'
-                ;;
-                ( 'php70' )
-                    MATCHER='^PHP 7\.0'
-                ;;
-                ( * )
-                    echo "Invalid phpflavor '{phpflavor}' for JJB macro 'assert-phpflavor'"
-                    echo "Must be either 'hhvm' or 'zend'"
-                    exit 1
-                ;;
-            esac
-
-            if ( echo "$PHP_VERSION" | egrep "$MATCHER" > /dev/null ); then
-                echo -e "php is {phpflavor}:\n\n$PHP_VERSION\n"
-            else
-                echo -e "Assertion error: php is not {phpflavor}:\n\n$PHP_VERSION\n"
-                exit 1
-            fi
+            . /srv/deployment/integration/slave-scripts/bin/assert-phpflavor.sh
 
 - builder:
     name: 'hhvm-clear-hhbc'
