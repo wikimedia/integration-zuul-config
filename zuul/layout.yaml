@@ -2376,14 +2376,20 @@ projects:
       - name: tox-jessie
 
   - name: translatewiki
-    template:
-      - name: composer-test55
-    check: &translatewiki_jobs
+    check:
       - translatewiki-puppet-validate
       - translatewiki-puppetlint-strict
       - translatewiki-shelllint
-    test: *translatewiki_jobs
-    gate-and-submit: *translatewiki_jobs
+    test:
+      - translatewiki-puppet-validate
+      - translatewiki-puppetlint-strict
+      - translatewiki-shelllint
+      - composer-hhvm-jessie
+    gate-and-submit:
+      - translatewiki-puppet-validate
+      - translatewiki-puppetlint-strict
+      - translatewiki-shelllint
+      - composer-hhvm-jessie
 
   - name: wikimedia/discovery/relevanceForge
     template:

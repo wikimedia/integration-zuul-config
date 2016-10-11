@@ -109,7 +109,7 @@
 
 # Runs "composer update" and "composer test" but on disposable instances
 # maintained by Nodepool.
-- job-template:
+- job-template: &job_composer-phpflavor-image
     name: 'composer-{phpflavor}-{image}'
     node: ci-{image}-wikimedia
     defaults: use-remote-zuul-shallow-clone
@@ -154,6 +154,15 @@
      - composer-test
     publishers:
      - castor-save
+
+- job-template:
+    !!merge : *job_composer-phpflavor-image
+    name: 'translatewiki-composer-hhvm-jessie'
+    image: jessie
+    phpflavor: hhvm
+    triggers:
+     - zuul
+
 
 - project:
     name: 'composer-flavored-on-nodepool'
