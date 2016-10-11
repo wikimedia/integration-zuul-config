@@ -36,6 +36,7 @@ pipelines:
     trigger:
       gerrit:
         - event: patchset-created
+          branch: (?!^refs/meta/config)
           # Don't run the check pipeline if the user is allowed to run the test pipeline (bug 43391).
           # TODO: Figure out a way to turn this into a list instead of a single regex.
           # TODO: Figure out a way to not have to repeat this from pipeline 'test'.
@@ -240,9 +241,11 @@ pipelines:
     trigger:
       gerrit:
         - event: patchset-created
+          branch: (?!^refs/meta/config)
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
         - event: comment-added
+          branch: (?!^refs/meta/config)
           comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
     success-message: 'Basic test build succeeded.'
     success:
