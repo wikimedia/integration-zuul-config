@@ -96,8 +96,14 @@
 - builder:
     name: prepare-mediawiki-zuul-project-no-vendor
     builders:
-     - shell: "echo $ZUUL_PROJECT > extensions_load.txt"
-     - shell: "echo -e $EXT_DEPENDENCIES >> extensions_load.txt"
+     - shell: |
+         if [ "${ZUUL_PROJECT:-}" ]; then
+             echo $ZUUL_PROJECT > extensions_load.txt
+             echo -e $EXT_DEPENDENCIES >> extensions_load.txt
+         else
+             echo "ZUUL_PROJECT is not set. Using extensions_load.txt:"
+             cat extensions_load.txt
+         fi
      - zuul-cloner:
          projects: >
              mediawiki/core
