@@ -66,6 +66,61 @@
      - jsduck
 
 - job:
+    name: mediawiki-release-integration
+    project-type: matrix
+    description: '<a href="https://www.mediawiki.org/wiki/Version_lifecycle">MediaWiki version lifecycle</a>'
+    execution-strategy:
+        sequential: true
+        combination-filter: '!(ZUUL_BRANCH="REL1_23" && PHP_BIN=="php5")'
+    axes:
+      - axis:
+          type: label-expression
+          name: label
+          values:
+           - integration-slave-jessie-1001
+      - axis:
+          type: user-defined
+          # Must be ZUUL_BRANCH for zuul-cloner to fetch the proper branch
+          name: ZUUL_BRANCH
+          values:
+           - master
+           - REL1_27
+           - REL1_26
+           - REL1_23
+      - axis:
+          type: user-defined
+          name: PHP_BIN
+          values:
+           # Exact version depends on the slave distribution
+           - php5
+           - hhvm
+
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    builders:
+     - shell: |
+         rm -fR release/
+         git clone https://gerrit.wikimedia.org/r/p/mediawiki/tools/release.git
+     - shell: |
+        if [[ "$ZUUL_BRANCH" =~ REL([0-9]+)_([0-9]+) ]]; then
+            mwversion="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.0"
+        fi
+         set -o pipefail
+         ./release/make-release/make-release.py --list-bundled $mwversion | sed -e 's%^%mediawiki/%' | tee extensions_load.txt
+     - shell: |
+         echo "Purging MediaWiki from composer/extensions/skins"
+         git -C ./src clean -d -ff -x || :
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project-no-vendor
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
+
+- job:
     name: 'mediawiki-core-jsduck-publish'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-no-submodules
@@ -298,6 +353,7 @@
         - php53
         - php55
     jobs:
+      - 'mediawiki-release-integration'
       - 'mediawiki-core-qunit-jessie'
       - 'mediawiki-core-jsduck'
       - 'mediawiki-core-npm-node-4-jessie'
