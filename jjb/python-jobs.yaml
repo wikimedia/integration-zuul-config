@@ -61,11 +61,12 @@
 # doc.wikimedia.org using an intermediate rsync repository in labs.
 - job-template:
     name: '{name}-tox-doc-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
+     - castor-load
      - run-tox:
          venv: doc
      - doc-publish:
@@ -73,6 +74,7 @@
         docdest: '{docdest}'
 
     publishers:
+     - castor-save
      - archive-log-dir
 
 - project:
