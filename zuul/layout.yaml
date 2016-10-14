@@ -654,6 +654,24 @@ pipelines:
     failure:
       gerrit: {}
 
+  - name: puppet-compiler
+    description: >
+      Jobs manually triggered by whitelisted users commenting 'puppet compile (node).wikimedia.org'.
+      Used for running puppet compilier..
+    manager: IndependentPipelineManager
+    source: gerrit
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment: (?im)^Patch Set \d+:\n\n\s*puppet compile node.wikimedia.org\.?\s*$
+          email: *email_whitelist
+    success-message: 'Puppet Compiler build succeeded.'
+    success:
+      gerrit: {}
+    failure-message: 'Puppet Compiler build failed.'
+    failure:
+      gerrit: {}
+
   - name: php5
     description: >
       Jobs manually triggered by whitelisted users commenting 'check php'.
