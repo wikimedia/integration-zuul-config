@@ -9,6 +9,15 @@
          failure: false
          fixed: true
 
+# Testing puppet compiler currently so adding -test prefix on the end.
+- job-template:
+    name: 'operations-puppet-catalog-compiler-test'
+    node: compiler02.puppet3-diffs.eqiad.wmflabs
+    defaults: use-remoteonly-zuul
+    concurrent: false  # dont want to race doc creation!
+    triggers:
+     - zuul
+
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
