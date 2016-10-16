@@ -248,6 +248,43 @@
                 exit 1
             fi
 
+# Assert 'database' is databaseflavor
+#
+# Parameter:
+# * databaseflavor: 'mysql' or 'sqlite' or 'postgres'
+#
+- builder:
+    name: assert-databaseflavor
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            case "{databaseflavor}" in
+                ( 'mysql' )
+                    MATCHER='^MySQL'
+                    DATABASE_VERSION=`mysql --version`
+                ;;
+                ( 'sqlite' )
+                    MATCHER='^SQlite'
+                    DATABASE_VERSION=`sqlite --version`
+                ;;
+                ( 'postgresql' )
+                    MATCHER='^pgsql'
+                    DATABASE_VERSION=`pgsql -v`
+                ;;
+                ( * )
+                    echo "Invalid database '{databaseflavor}' for JJB macro 'assert-databaseflavor'"
+                    echo "Must be either 'mysql' or 'sqlite' or 'postgresql'"
+                    exit 1
+                ;;
+            esac
+
+            if ( echo "$DATABASE_VERSION" | egrep "$MATCHER" > /dev/null ); then
+                echo -e "database is {database}:\n\n$DATABASE_VERSION\n"
+            else
+                echo -e "Assertion error: database is not {databaseflavor}:\n\n$DATABASE_VERSION\n"
+                exit 1
+            fi
+
 - builder:
     name: 'hhvm-clear-hhbc'
     builders:
