@@ -189,6 +189,43 @@
                 exit 1
             fi
 
+# Assert 'database' is databaseflavor
+#
+# Parameter:
+# * databaseflavor: 'mysql' or 'sqlite' or 'postgres'
+#
+- builder:
+    name: assert-databaseflavor
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            case "{databaseflavor}" in
+                ( 'mysql' )
+                    MATCHER='^MySQL'
+                    DATABASE_VERSION=`mysql --version`
+                ;;
+                ( 'sqlite' )
+                    MATCHER='^SQLite'
+                    DATABASE_VERSION=`sqlite --version`
+                ;;
+                ( 'postgresql' )
+                    MATCHER='^psql'
+                    DATABASE_VERSION=`psql -v`
+                ;;
+                ( * )
+                    echo "Invalid database '{databaseflavor}' for JJB macro 'assert-databaseflavor'"
+                    echo "Must be either 'mysql' or 'sqlite' or 'postgresql'"
+                    exit 1
+                ;;
+            esac
+
+            if ( echo "$DATABASE_VERSION" | egrep "$MATCHER" > /dev/null ); then
+                echo -e "database is {databaseflavour}:\n\n$DATABASE_VERSION\n"
+            else
+                echo -e "Assertion error: database is not {databaseflavor}:\n\n$DATABASE_VERSION\n"
+                exit 1
+            fi
+
 - builder:
     name: 'hhvm-clear-hhbc'
     builders:
@@ -438,12 +475,28 @@
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-mysql.sh"
 
+# ALWAYS pair with 'mw-teardown-postgresql' publisher to ensure we don't leave temporary files behind
+- builder:
+    name: mw-install-postgresql
+    builders:
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-postgresql.sh"
+
 - publisher:
     name: mw-teardown
     publishers:
      - postbuildscript:
          builders:
           - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown.sh"
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
+- publisher:
+    name: mw-teardown-postgresql
+    publishers:
+     - postbuildscript:
+         builders:
+          - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown-postgresql.sh"
          # Postbuild options are confusing, setting both to false ensures the script always runs.
          onsuccess: False
          onfailure: False
