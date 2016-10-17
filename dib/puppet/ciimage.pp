@@ -15,6 +15,15 @@ require_package('build-essential')
 # the  image. T126246.
 include jenkins::slave::requisites
 
+if os_version('debian >= jessie') {
+    package { [
+        'postgresql',
+        'postgresql-contrib',
+        ]:
+        ensure => present,
+    }
+}
+
 include contint::slave_scripts
 include contint::packages::base
 include contint::composer
