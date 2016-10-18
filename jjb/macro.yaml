@@ -551,7 +551,12 @@
         rm -fR "$WORKSPACE/doc"
 
         cd "$WORKSPACE/src"
-        /usr/bin/puppet doc \
+        # Have to exclude /bin/ directories from modules. Done by injecting an
+        # extra parameter to rdoc to extend puppet internal list of --exclude /
+        # options.
+        # T143233
+        RDOCOPT='--exclude=/modules/[^/]*/bin/.*$' /usr/bin/puppet doc \
+            --trace \
             --mode rdoc \
             --outputdir "$WORKSPACE/doc" \
             --modulepath "{puppet}/modules" \
