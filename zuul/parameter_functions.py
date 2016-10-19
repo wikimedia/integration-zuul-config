@@ -139,7 +139,7 @@ dependencies = {
     'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
     'RevisionSlider': ['BetaFeatures'],
     'Score': ['VisualEditor'],
-    'SemanticFormsInputs': ['SemanticForms'],
+    'SemanticFormsInputs': ['PageForms'],
     'SemanticSifter': ['SemanticMediaWiki'],
     'SimpleSurvey': ['PrefSwitch'],
     'SolrStore': ['SemanticMediaWiki'],
