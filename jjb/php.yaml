@@ -107,26 +107,6 @@
      - 'composer-php53'
      - 'composer-package-php53'
 
-# Runs "composer update" and "composer test"
-- job-template:
-    name: 'composer-{phpflavor}'
-    node: contintLabsSlave && phpflavor-{phpflavor}
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - composer-validate:
-        dir: '.'
-     - composer-update:
-        dir: '.'
-     - composer-test
-
 # Runs "composer update" and "composer test" but on disposable instances
 # maintained by Nodepool.
 - job-template:
@@ -191,12 +171,3 @@
     jobs:
      - 'composer-package-{phpflavor}-{image}'
      - 'composer-{phpflavor}-{image}'
-
-- project:
-    name: 'composer-flavored'
-    phpflavor:
-        - php55
-        - php70
-        - hhvm
-    jobs:
-     - 'composer-{phpflavor}'
