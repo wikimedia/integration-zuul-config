@@ -176,18 +176,19 @@
 
 - job:
     name: 'visualeditor-coverage'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm
      - cover-publish:
         src: 'coverage'
         dest: 'visualeditor'
     publishers:
-     - global-teardown
+     - castor-save
 
 - project:
     name: visualeditor
