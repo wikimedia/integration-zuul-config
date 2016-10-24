@@ -56,18 +56,19 @@
 
 - job:
     name: 'unicodejs-coverage'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm
      - cover-publish:
         src: 'coverage'
         dest: 'unicodejs'
     publishers:
-     - global-teardown
+     - castor-save
 
 - project:
     name: unicodejs
@@ -94,18 +95,19 @@
 
 - job:
     name: 'oojs-core-coverage'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm
      - cover-publish:
         src: 'coverage'
         dest: 'oojs'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'oojs-ui-jsduck-publish'
@@ -127,18 +129,19 @@
 
 - job:
     name: 'oojs-ui-coverage'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm
      - cover-publish:
         src: 'coverage'
         dest: 'oojs-ui'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'oojs-ui-doxygen-publish'
