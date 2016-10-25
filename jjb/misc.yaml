@@ -20,21 +20,25 @@
 
 - job:
     name: 'phpunit-coverage-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-trusty-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
-     - global-setup
+     - castor-load
      - composer-update:
         dir: '.'
-     - phpunit-coverage
+     # Use php5 instead of php (hhvm) because it doesn't do coverage as well as
+     # php5-xdebug. And also slow.
+     - shell: |
+         rm -rf coverage
+         php5 ./vendor/bin/phpunit --coverage-html coverage/
      - cover-publish:
         src: 'coverage'
         dest: '$DOC_PROJECT'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'unicodejs-publish'
