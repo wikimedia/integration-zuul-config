@@ -1,16 +1,3 @@
-# Trigger integration tests hold in 'tests' sub directories as manifests.
-# See the shell wrapper in integration/jenkins.git
-- job-template:
-    name: 'operations-puppet-test'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-
-    builders:
-     - shell: "/srv/deployment/integration/slave-scripts/bin/puppet-test-runner.sh"
-
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
@@ -50,5 +37,4 @@
      - '{name}-puppetlint-strict'
      - '{name}-typos'
      - '{name}-tox-jessie'
-     - operations-puppet-test
      - operations-puppet-doc
