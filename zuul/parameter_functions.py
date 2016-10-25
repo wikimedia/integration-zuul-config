@@ -160,6 +160,7 @@ dependencies = {
     'Wikibase': ['CirrusSearch', 'cldr', 'Elastica', 'GeoData',
                  'Scribunto', 'Capiunto'],
     'WikibaseJavaScriptApi': ['Wikibase'],
+    'WikibaseLexeme': ['Wikibase'],
     'WikibaseMediaInfo': ['Wikibase'],
     'WikibaseQuality': ['Wikibase'],
     'WikibaseQualityConstraints': ['Wikibase', 'WikibaseQuality'],
