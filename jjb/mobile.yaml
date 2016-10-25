@@ -95,10 +95,10 @@
          scripts/diff-screenshots
     publishers:
      - archive:
-         # Capture generated .apk, ProGuard mappings, Spoon results, and screenshot difference results
-         artifacts: '**/build/outputs/**,**/build/spoon/**,**/build/screenshots/**,**/build/screenshots-diff/**'
+         # Capture generated .apk, ProGuard mappings, Spoon results, and screenshots
+         artifacts: '**/build/outputs/**,**/build/spoon/**,**/screenshots*/**'
      - junit:
-         results: '**/build/spoon/**/*.xml'
+         results: '**/test-results/**/*.xml,**/androidTest-results/**/*.xml,**/build/spoon/**/*.xml'
      - irc-android-ci
 
 - job-template:
