@@ -101,6 +101,7 @@ dependencies = {
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr', 'WikiEditor'],
+    'ElectronPdfService': ['Collection'],
     'FileAnnotations': ['EventLogging'],
     'FlaggedRevs': ['Scribunto'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
