@@ -200,10 +200,10 @@
      - assert-node-version-4
      # FIXME: we should save node_modules and run npm prune
      - castor-load
-     - zuul-cloner-extdeps:
-         ext-name: MobileFrontend
-         dependencies: ''
-         additional-repositories: ''
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/extensions/MobileFrontend
      - shell: |
          # For archiving build artifacts
          mkdir -p "$WORKSPACE/log"
