@@ -27,7 +27,6 @@
 
 # Parameters:
 #
-# ext-name: extension basename. Set to '' to ignore
 # dependencies: comma or spaces/newlines separated list of extensions to clone
 #
 - builder:
@@ -39,10 +38,6 @@
          rm -f deps.txt
          touch deps.txt
          echo "mediawiki/core" >> deps.txt
-         if [ "{ext-name}" != "" ]; then
-            echo "> extension: mediawiki/extensions/{ext-name}"
-            echo "mediawiki/extensions/{ext-name}" >> deps.txt
-         fi
          if [ "{dependencies}" != "" ]; then
              echo "> rest of dependencies..."
              echo "$(IFS=', '; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
