@@ -23,7 +23,7 @@
                {params}
 
 - job-template:
-    name: 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}'
+    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}'
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
     concurrent: true
     triggers:
@@ -37,7 +37,7 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - zuul-cloner-extdeps:
-         ext-name: '{ext-name}'
+         ext-name: Wikibase
          dependencies: '{dependencies}'
      - wd-mw-composer-merged-install
      - 'mw-install-{dbflavor}'
@@ -69,8 +69,7 @@
 
     jobs:
 
-     - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
-        ext-name: 'Wikibase'
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
         kind: repo
         repoorclient: 'repo'
         dependencies: 'CirrusSearch,Elastica,GeoData,cldr'
@@ -81,8 +80,7 @@
           - php55
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
-     - 'mwext-{ext-name}-{kind}-tests-{dbflavor}-{phpflavor}':
-        ext-name: 'Wikibase'
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
         kind: client
         repoorclient: 'client'
         dependencies: 'Scribunto,Capiunto,cldr,Echo'
