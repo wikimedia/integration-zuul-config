@@ -128,32 +128,31 @@
      - archive-log-allow-empty
      - castor-save
 
-# documentation builder (based on `oojs-ui-jsduck-publish` job)
 - job-template:
-    name: parsoidsvc-{repository}-jsduck-publish
-    node: ci-trusty-wikimedia  # Trusty has jsduck.deb
-    defaults: use-remoteonly-zuul
+    name: parsoidsvc-{repository}-jsduck-publish-jessie
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
-    - assert-node-version-0.10
-    - castor-load
-    - setup-npm-oid:
-        repository: '{repository}'
-    - shell: |
-        node --version
-        npm --version
-        set -e
-        . npm-oid.env
-        ln -s "$NPM_SET_PATH/docs" generated-docs
-        cd "$NPM_SET_PATH"
-        npm run doc
-    - doc-publish:
-        docsrc: 'generated-docs'
-        docdest: 'Parsoid/$DOC_SUBPATH'
+     - assert-node-version-4
+     - castor-load
+     - setup-npm-oid:
+         repository: '{repository}'
+     - shell: |
+         node --version
+         npm --version
+         set -e
+         . npm-oid.env
+         ln -s "$NPM_SET_PATH/docs" generated-docs
+         cd "$NPM_SET_PATH"
+         npm run doc
+     - doc-publish:
+         docsrc: 'generated-docs'
+         docdest: 'Parsoid/$DOC_SUBPATH'
     publishers:
-    - castor-save
+     - castor-save
 
 - project:
     name: parsoidsvc
@@ -167,7 +166,7 @@
         - 'parsoidsvc-{repository}-parse-tool-check-jessie'
         - 'parsoidsvc-{repository}-roundtrip-test-check-jessie'
         - 'parsoidsvc-{repository}-npm-node-4-jessie'
-        - 'parsoidsvc-{repository}-jsduck-publish':
+        - 'parsoidsvc-{repository}-jsduck-publish-jessie':
             # We only publish doc of the 'source' repo
             repository:
                 - source
