@@ -1,4 +1,4 @@
-- job:
+- job: &php-compile-php55
     name: 'php-compile-php55'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
@@ -15,6 +15,13 @@
      - archive-test-logs
 
 - job:
+    !!merge : *php-compile-php55
+    name: 'php-compile-php55-trusty'
+    node: ci-trusty-wikimedia
+    triggers:
+     - zuul
+
+- job: &php-compile-hhvm
     name: 'php-compile-hhvm'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
@@ -26,6 +33,12 @@
          hphpize
          cmake .
          make
+- job:
+    !!merge : *php-compile-hhvm
+    name: 'php-compile-hhvm-jessie'
+    node: ci-jessie-wikimedia
+    triggers:
+     - zuul
 
 - publisher:
     name: archive-test-logs
@@ -36,7 +49,7 @@
 
 # Version that runs the HHVM tests using a kind
 # of hack.
-- job:
+- job: &php-compile-hhvm-test
     name: 'php-compile-hhvm-test'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
@@ -52,3 +65,10 @@
          REPORT_EXIT_STATUS=1 ./hhvm-test.sh run-tests.php
     publishers:
      - archive-test-logs
+
+- job:
+    !!merge : *php-compile-hhvm-test
+    name: php-compile-hhvm-test-jessie
+    node: ci-jessie-wikimedia
+    triggers:
+     - zuul
