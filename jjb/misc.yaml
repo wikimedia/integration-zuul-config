@@ -4,19 +4,17 @@
 # matches the Git repository name.
 - job:
     name: 'doxygen-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
      - global-setup
-     - run-doxygen
+     - shell: doxygen
      - doc-publish:
         docsrc: 'doc/html'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
-    publishers:
-     - global-teardown
 
 - job:
     name: 'phpunit-coverage-publish'
@@ -149,19 +147,17 @@
 
 - job:
     name: 'oojs-ui-doxygen-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
      - global-setup
-     - run-doxygen
+     - shell: doxygen
      - doc-publish:
         docsrc: 'doc/html'
         docdest: 'oojs-ui/$DOC_SUBPATH/php'
-    publishers:
-     - global-teardown
 
 - job:
     name: 'oojs-ui-demos-publish'

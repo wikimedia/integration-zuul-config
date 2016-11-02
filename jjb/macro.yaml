@@ -106,15 +106,6 @@
          cd "$NPM_SET_PATH"  # for deploy: ./src
          npm test
 
-# MUST run 'global-setup' before this
-- builder:
-    name: run-doxygen
-    builders:
-     - shell: |
-         . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
-         rm -rf doc/html
-         doxygen
-
 # ALWAYS pair with 'global-teardown'
 - builder:
     name: global-setup
