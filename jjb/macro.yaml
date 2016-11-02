@@ -450,12 +450,6 @@
     builders:
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
 
-# ALWAYS pair with 'mw-teardown' publisher to ensure we don't leave temporary files behind
-- builder:
-    name: mw-setup
-    builders:
-        - shell: "/srv/deployment/integration/slave-scripts/bin/mw-setup.sh"
-
 # ALWAYS pair with 'mw-teardown-sqlite' publisher to ensure we don't leave temporary files behind
 - builder:
     name: mw-install-sqlite

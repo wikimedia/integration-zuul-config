@@ -93,7 +93,7 @@
     triggers:
      - zuul
     builders:
-     - mw-setup
+     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-setup.sh"
      - assert-env-doc_subpath
      - zuul-cloner:
          projects: >
