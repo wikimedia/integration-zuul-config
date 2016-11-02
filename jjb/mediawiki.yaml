@@ -88,7 +88,7 @@
 
 - job:
     name: 'mediawiki-core-doxygen-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     concurrent: false
     triggers:
      - zuul
@@ -105,8 +105,6 @@
      - doc-publish:
          docsrc: 'build/doc/html'
          docdest: 'mediawiki-core/$DOC_SUBPATH/php'
-    publishers:
-     - mw-teardown
 
 # Runs all MediaWiki PHPUnit tests on Nodepool
 - job-template:
