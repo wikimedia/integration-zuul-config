@@ -1,6 +1,6 @@
 - job:
     name: 'php-compile-php55'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-trusty-wikimedia
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
@@ -16,7 +16,7 @@
 
 - job:
     name: 'php-compile-hhvm'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
@@ -38,7 +38,7 @@
 # of hack.
 - job:
     name: 'php-compile-hhvm-test'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
