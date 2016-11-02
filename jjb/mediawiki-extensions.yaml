@@ -363,19 +363,17 @@
 
 - job:
     name: 'mwext-doxygen-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: false
     triggers:
      - zuul
     builders:
      - global-setup
-     - run-doxygen
+     - shell: doxygen
      - doc-publish:
         docsrc: 'docs/php'
         docdest: '$DOC_BASENAME/$DOC_SUBPATH/php'
-    publishers:
-     - global-teardown
 
 - project:
     name: 'mwext-CirrusSearch'
