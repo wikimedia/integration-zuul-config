@@ -12,19 +12,29 @@
 
 - job:
     name: pywikibot-tests-beta-cluster
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
+    triggers:
+        - timed: "@midnight"
+    parameters:
+      # Zuul parameter to trigger Castor
+      - string:
+          name: 'ZUUL_BRANCH'
+          default: 'master'
+      - string:
+          name: 'ZUUL_PROJECT'
+          default: 'pywikibot/core'
+      - string:
+          name: 'ZUUL_PIPELINE'
+          default: 'postmerge'
     scm:
       - git:
           url: 'https://gerrit.wikimedia.org/r/pywikibot/core'
           branches:
             - master
-          wipe-workspace: false  # keep the workspace...
-          clean:
-              after: true        # ... and use git clean instead
-          prune: true            # prune remote obsoletes branches
           submodule:
               recursive: false
     builders:
+     - castor-load
      - shell: |
          export PYWIKIBOT2_DIR=$WORKSPACE
          tox -e venv -- pip install --upgrade ndg-httpsclient
@@ -33,8 +43,8 @@
          echo "console_encoding='utf8'" >> $WORKSPACE/user-config.py
          tox -e venv -- pip install -rdev-requirements.txt
          tox -e venv -- python setup.py nosetests --tests tests --verbosity=2 -a '"family=wpbeta,code=en"'
-    triggers:
-        - timed: "@midnight"
+    publishers:
+        - castor-save
 
 - project:
     name: pywikibot-wikibase
