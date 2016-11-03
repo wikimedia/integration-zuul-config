@@ -1,7 +1,7 @@
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: false  # dont want to race doc creation!
 
@@ -9,17 +9,15 @@
      - zuul
     scm:
      - git:
-         url: '$ZUUL_URL/$ZUUL_PROJECT'
-         basedir: 'src'
+         url: 'https://gerrit.wikimedia.org/r/p/operations/puppet.git'
          branches:
-             - '$ZUUL_COMMIT'
-         refspec: '$ZUUL_REF'
-         wipe-workspace: true
-         clean:
-             after: true
+             - production
+         reference-repo: '/srv/git/operations/puppet.git'
          submodule:
              disable: false
              recursive: true
+         basedir: 'src'
+
     builders:
      - puppet-doc:
         puppet: "$WORKSPACE/src"
@@ -32,6 +30,15 @@
      - doc-publish:
         docsrc: 'src'
         docdest: 'puppetsource'
+    publishers:
+     - email-ext:
+         recipients: qa-alerts@lists.wikimedia.org
+         attach-build-log: true
+         first-failure: true
+         aborted: true
+         failure: false
+         fixed: true
+
 
 - project:
     name: 'operations-puppet'
