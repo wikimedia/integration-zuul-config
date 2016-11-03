@@ -1,6 +1,6 @@
 # Sync files from a Jenkins slave in labs to a central rsync server from which
-# another job (executing on contint1001.eqiad.wmnet) can pull in the files and
-# publish them on https://doc.wikimedia.org/.
+# another job (executing on contint1001.wikimedia.org) can pull in the files
+# and publish them on https://doc.wikimedia.org/.
 #
 # Parameters:
 #
@@ -55,7 +55,7 @@
            PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
 
 # rsync a directory from integration-publisher.eqiad.wmflabs to a website on
-# contint1001.eqiad.wmnet.
+# contint1001.wikimedia.org.
 #
 # Serves:
 #
@@ -70,7 +70,7 @@
 # Uses $PUBLISHER_PATH as a unique identifier.
 - job:
     name: publish-on-contint1001
-    node: contint1001.eqiad.wmnet
+    node: contint1001
     parameters:
       - string:
          # MUST exist on integration-publisher
@@ -80,7 +80,7 @@
       - string:
          # MUST NOT have leading slash.
          # MUST NOT have trailing slash.
-         # MUST exist on contint1001.eqiad.wmnet
+         # MUST exist on contint1001.wikimedia.org
          name: 'WMF_CI_PUB_DOCROOT'
          description: 'A document root under /srv, such as "org/wikimedia/doc"'
       - string:
