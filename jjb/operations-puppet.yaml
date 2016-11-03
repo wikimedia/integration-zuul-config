@@ -14,7 +14,7 @@
          branches:
              - '$ZUUL_COMMIT'
          refspec: '$ZUUL_REF'
-         wipe-workspace: false
+         wipe-workspace: true
          clean:
              after: true
          submodule:
@@ -27,6 +27,8 @@
         docsrc: 'doc'
         docdest: 'puppet'
      # And publish the entire workspace as "puppetsource"
+     - shell: |
+         rm -fR src/.git
      - doc-publish:
         docsrc: 'src'
         docdest: 'puppetsource'
