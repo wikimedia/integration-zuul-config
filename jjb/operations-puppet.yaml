@@ -6,7 +6,8 @@
     concurrent: false  # dont want to race doc creation!
 
     triggers:
-     - zuul
+     - pollscm:
+         cron: '@hourly'
     scm:
      - git:
          url: 'https://gerrit.wikimedia.org/r/p/operations/puppet.git'
