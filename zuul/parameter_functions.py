@@ -70,6 +70,10 @@ def set_parameters(item, job, params):
     if job.name.endswith('-publish'):
         set_doc_variables(item, job, params)
 
+    # Needs BUNDLE_PATH
+    if job.name.endswith('yard-publish'):
+        nodepool_params(item, job, params)
+
     if 'debian-glue' in job.name:
         # Always set the value to be safe (T144094)
         params['BUILD_TIMEOUT'] = 30  # minutes
