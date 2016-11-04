@@ -38,6 +38,13 @@
          vendor/bin/bundle install --verbose
          vendor/bin/bundle exec {command}
 
+- builder:
+    name: bundle-nodepool
+    builders:
+     - shell: |
+         bundle install --clean --verbose
+         bundle exec {command}
+
 # Executes a Gem command via Bundler
 #
 # - command: Gem/Bundler command to run
@@ -85,16 +92,19 @@
 # doc.wikimedia.org using an intermediate rsync repository in labs.
 - job-template:
     name: '{name}-bundle-yard-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     triggers:
      - zuul
     builders:
-     - bundle:
+     - castor-load
+     - bundle-nodepool:
          command: 'yard'
      - doc-publish:
          docsrc: 'doc'
          docdest: 'rubygems/{name}'
+    publishers:
+     - castor-save
 
 - job-template:
     name: '{name}-bundle17-yard-publish'
