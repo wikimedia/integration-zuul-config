@@ -121,7 +121,9 @@ class TestZuulScheduler(unittest.TestCase):
         # composer-test-(zend|hhvm)
         self.assertTrue(
             any([job for job in definition
-                 if job.startswith(('composer', 'composer-'))]),
+                 if job.startswith(('composer', 'composer-'))
+                 or job == 'mwext-testextension-php55-composer'
+                 or job == 'mwext-testextension-hhvm-composer']),
             'Project %s pipeline %s must have either '
             'composer-validate or a composer-* job'
             % (name, pipeline))
