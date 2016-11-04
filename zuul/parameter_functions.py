@@ -102,6 +102,7 @@ dependencies = {
     'CollaborationKit': ['EventLogging', 'VisualEditor'],
     'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
                            'UniversalLanguageSelector', 'Wikidata'],
+    'CookieWarning': ['MobileFrontend'],
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr', 'WikiEditor'],
