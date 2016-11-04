@@ -90,6 +90,7 @@ class apache2_allow_execution {
 }
 if os_version('debian >= jessie') {
     include contint::packages::doxygen
+    include contint::packages::java
     include contint::packages::python
 
     # Qunit/Selenium related
