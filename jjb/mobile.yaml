@@ -45,9 +45,7 @@
      - ansicolor
     builders:
      - install-android-sdk
-     - shell: |
-         scripts/missing-qq.py
-         ./gradlew clean checkstyle assembleAlphaRelease testAlphaRelease compileAlphaReleaseAndroidTestSources
+     - shell: scripts/apps-android-wikipedia-test
     publishers:
      - archive:
          # Capture generated .apk, ProGuard mappings, checkstyle.xml, and test results
@@ -90,9 +88,7 @@
             # Required for emulators to terminate: https://wiki.jenkins-ci.org/display/JENKINS/Android+Emulator+Plugin#AndroidEmulatorPlugin-Knownissues
             hw.audioInput: no
     builders:
-     - shell: |
-         ./gradlew clean testAllAlphaRelease -Pandroid.testInstrumentationRunnerArguments.size=small
-         scripts/diff-screenshots
+     - shell: scripts/apps-android-wikipedia-periodic-test
     publishers:
      - archive:
          # Capture generated .apk, ProGuard mappings, Spoon results, and screenshots
@@ -136,8 +132,7 @@
     triggers:
      - zuul
     builders:
-     - shell: |
-         ./gradlew -q clean lintAlphaDebug
+     - shell: scripts/apps-android-wikipedia-lint
     publishers:
      - archive:
          artifacts: '**/build/outputs/**'
