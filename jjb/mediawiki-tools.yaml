@@ -51,10 +51,14 @@
     name: 'mwdumper-maven'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 7'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
+    prebuilders:
+     - castor-load
     maven:
       goals: clean package
+    publishers:
+     - castor-save

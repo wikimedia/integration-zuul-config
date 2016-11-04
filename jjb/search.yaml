@@ -2,7 +2,7 @@
     name: 'search-extra'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 7'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
@@ -17,14 +17,18 @@
          fail: true
      - timestamps
      - ansicolor
+    prebuilders:
+     - castor-load
     maven:
       goals: clean package
+    publishers:
+     - castor-save
 
 - job:
     name: 'search-extra-javadoc'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 7'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
@@ -39,14 +43,18 @@
          fail: true
      - timestamps
      - ansicolor
+    prebuilders:
+     - castor-load
     maven:
       goals: clean javadoc:javadoc
+    publishers:
+     - castor-save
 
 - job:
     name: 'search-extra-javadoc-publish'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 7'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
@@ -61,12 +69,16 @@
          fail: true
      - timestamps
      - ansicolor
+    prebuilders:
+     - castor-load
     maven:
       goals: clean javadoc:javadoc
     postbuilders:
      - doc-publish:
          docsrc: 'target/site/apidocs'
          docdest: 'search-extra'
+    publishers:
+     - castor-save
 
 - project:
     name: 'search-extra'
@@ -78,7 +90,7 @@
     name: 'search-highlighter'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 7'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
@@ -93,8 +105,12 @@
          fail: true
      - timestamps
      - ansicolor
+    prebuilders:
+     - castor-load
     maven:
       goals: clean package
+    publishers:
+     - castor-save
 
 - project:
     name: 'search-highlighter'
@@ -105,7 +121,7 @@
     name: 'search-repository-swift'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 7'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
@@ -120,8 +136,12 @@
          fail: true
      - timestamps
      - ansicolor
+    prebuilders:
+     - castor-load
     maven:
       goals: clean package
+    publishers:
+     - castor-save
 
 - project:
     name: 'search-repository-swift'

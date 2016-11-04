@@ -95,7 +95,7 @@
 - job:
     name: wikidata-gremlin
     project-type: maven
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     jdk: 'Ubuntu - OpenJdk 7'
     triggers:
      - zuul
@@ -107,8 +107,12 @@
          fail: true
      - timestamps
      - ansicolor
+    prebuilders:
+     - castor-load
     maven:
       goals: clean verify
+    publishers:
+     - castor-save
 
 - project:
     name: wikidata-gremlin
