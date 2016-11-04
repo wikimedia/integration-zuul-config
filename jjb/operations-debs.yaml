@@ -156,7 +156,10 @@
             /usr/bin/build-and-provide-package
         # Linters
         - debian-glue-lintian
-        - debian-glue-piuparts
+        # Piuparts does NOT run in cowbuilder which is source of false
+        # positives, specially when the tar.gz is severly outdated
+        # T141454 T148664
+        #- debian-glue-piuparts
     publishers:
       - xunit:
           thresholdsmode: 'number'
@@ -168,8 +171,9 @@
               - junit:
                   pattern: 'lintian-*.xml'
       # FIXME should convert UNSTABLE to FAILED.
-      - tap:
-          results: piuparts.tap
+      # FIXME disabled due to T141454 T148664
+      #- tap:
+      #    results: piuparts.tap
       - archive:
           artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
 
