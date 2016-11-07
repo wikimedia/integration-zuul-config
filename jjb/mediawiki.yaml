@@ -245,16 +245,7 @@
      - assert-phpflavor:
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
-     - zuul-cloner-extdeps:
-         dependencies: '{dependencies}'
-     - zuul-cloner:
-         projects: mediawiki/vendor
-     - inject-experimental-extension
-     - sort-deps-txt
-     - mw-install-mysql
-     - shell: "cp deps.txt src/extensions_load.txt"
-     - mw-apply-settings
-     - mw-run-update-script
+     - prepare-mediawiki-zuul-project
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
     publishers:
@@ -275,16 +266,7 @@
      - zuul
     builders:
      - castor-load
-     - zuul-cloner-extdeps:
-         dependencies: '{dependencies}'
-     - zuul-cloner:
-         projects: mediawiki/vendor
-     - inject-experimental-extension
-     - sort-deps-txt
-     - mw-install-mysql
-     - shell: "cp deps.txt src/extensions_load.txt"
-     - mw-apply-settings
-     - mw-run-update-script
+     - prepare-mediawiki-zuul-project
      - qunit-karma
     publishers:
      - castor-save
@@ -318,41 +300,8 @@
                   image: jessie
 
       - 'mediawiki-phpunit-{phpflavor}-composer'
-      - 'mediawiki-extensions-{phpflavor}':
-          dependencies: &gatedextensions >
-              AbuseFilter
-              Babel
-              Cards
-              CheckUser
-              CirrusSearch
-              Cite
-              cldr
-              ConfirmEdit
-              Echo
-              Elastica
-              EventLogging
-              Flow
-              GeoData
-              GlobalCssJs
-              GuidedTour
-              JsonConfig
-              MobileApp
-              MobileFrontend
-              MwEmbedSupport
-              ParserFunctions
-              PdfHandler
-              SandboxLink
-              SpamBlacklist
-              Thanks
-              TimedMediaHandler
-              Translate
-              UniversalLanguageSelector
-              VisualEditor
-              Wikidata
-              ZeroBanner
-              ZeroPortal
-      - 'mediawiki-extensions-qunit-jessie':
-          dependencies: *gatedextensions
+      - 'mediawiki-extensions-{phpflavor}'
+      - 'mediawiki-extensions-qunit-jessie'
 
 - job:
     name: 'mediawiki-core-code-coverage'
