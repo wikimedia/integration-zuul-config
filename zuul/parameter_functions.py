@@ -56,6 +56,9 @@ def set_parameters(item, job, params):
     if job.name.startswith(ext_deps_jobs_starting_with):
         set_ext_dependencies(item, job, params)
 
+    if job.name.startswith('mediawiki-extensions-'):
+        set_gated_extensions(item, job, params)
+
     if job.name.endswith('-jessie'):
         nodepool_params(item, job, params)
     if job.name.endswith('-trusty'):
@@ -237,6 +240,60 @@ def get_dependencies(ext_name, mapping):
         return deps
 
     return resolve_deps(ext_name)
+
+
+gatedextensions = [
+    'AbuseFilter',
+    'Babel',
+    'Cards',
+    'CheckUser',
+    'CirrusSearch',
+    'Cite',
+    'cldr',
+    'ConfirmEdit',
+    'Echo',
+    'Elastica',
+    'EventLogging',
+    'Flow',
+    'GeoData',
+    'GlobalCssJs',
+    'GuidedTour',
+    'JsonConfig',
+    'MobileApp',
+    'MobileFrontend',
+    'MwEmbedSupport',
+    'ParserFunctions',
+    'PdfHandler',
+    'SandboxLink',
+    'SpamBlacklist',
+    'Thanks',
+    'TimedMediaHandler',
+    'Translate',
+    'UniversalLanguageSelector',
+    'VisualEditor',
+    'Wikidata',
+    'ZeroBanner',
+    'ZeroPortal',
+]
+
+
+def set_gated_extensions(item, job, params):
+    deps = []
+    # When triggered from the experimental pipeline, add the project to the
+    # list of dependencies. Used to inject an extension which is not yet
+    # participating.
+    if(
+        params['ZUUL_PIPELINE'] == 'experimental' and
+        params['ZUUL_PROJECT'].startswith('mediawiki/extensions/')
+    ):
+        deps.append(params['ZUUL_PROJECT'].split('/')[-1])
+
+    deps.extend(gatedextensions)
+    deps = sorted(list(set(deps)))
+
+    params['EXT_DEPENDENCIES'] = '\\n'.join(
+        'mediawiki/extensions/' + dep for dep in deps
+    )
 
 
 def nodepool_params(item, job, params):
