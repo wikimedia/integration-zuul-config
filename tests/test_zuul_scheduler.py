@@ -208,9 +208,7 @@ class TestZuulScheduler(unittest.TestCase):
             # Pipelines that must be set
             requirements = set()
             requirements.add('gate-and-submit')
-            if 'check-only' in project_def.keys():
-                requirements.add('check-only')
-            elif 'check-voter' in project_def.keys():
+            if 'check-voter' in project_def.keys():
                 # Skins uses a different check pipeline
                 requirements.add('check-voter')
             else:
@@ -272,12 +270,6 @@ class TestZuulScheduler(unittest.TestCase):
         self.longMessage = True
         self.maxDiff = None
         self.assertEqual(set(), first & second, msg)
-
-    def test_projects_in_check_only_are_not_in_test_pipeline(self):
-        self.assertPipelinesDoNotOverlap(
-            'check-only', 'test',
-            msg="check-only is only for projects not having entries in the "
-                "test pipeline. Move the jobs to 'check' pipeline instead.")
 
     def test_projects_in_check_voter_are_not_in_test_pipeline(self):
         self.assertPipelinesDoNotOverlap(
@@ -666,7 +658,7 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_l10nbot_patchets_are_ignored(self):
         managers = [self.getPipeline(p).manager
-                    for p in ['check', 'check-only', 'check-voter', 'test']]
+                    for p in ['check', 'check-voter', 'test']]
         change = zuul.model.Change('mediawiki/core')
         change.branch = 'master'
 

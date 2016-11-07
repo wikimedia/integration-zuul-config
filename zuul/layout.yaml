@@ -234,31 +234,6 @@ pipelines:
       gerrit:
         verified: -1
 
-  # Use this instead of 'check' for projects not having a separate 'test' pipeline. Those need to
-  # be marked as 'check-only' instead of 'check', because 'check' has a reversed email filter to
-  # compensate the 'test' pipeline.
-  - name: check-only
-    description: Basic jobs being run for all users. Will vote +1.
-    manager: IndependentPipelineManager
-    source: gerrit
-    trigger:
-      gerrit:
-        - event: patchset-created
-          branch: (?!^refs/meta/config)
-          email:
-           - ^(?!l10n-bot@translatewiki\.net).*$
-        - event: comment-added
-          branch: (?!^refs/meta/config)
-          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
-    success-message: 'Basic test build succeeded.'
-    success:
-      gerrit:
-        verified: 1
-    failure-message: 'Basic test build failed.'
-    failure:
-      gerrit:
-        verified: -1
-
   - name: check-voter
     description: >
       Basic jobs for projects without a test pipeline. Will vote +2.
