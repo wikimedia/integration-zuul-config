@@ -7230,6 +7230,16 @@ projects:
     template:
       - name: tox-jessie
 
+  - name: mediawiki/services/trending-edits
+    template:
+      - name: npm
+
+  - name: mediawiki/services/trending-edits/deploy
+    test:
+      - trending-edits-deploy-npm-node-4-jessie
+    gate-and-submit:
+      - trending-edits-deploy-npm-node-4-jessie
+
   - name: mediawiki/extensions/Parsoid
     template:
       - name: archived
