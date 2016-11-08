@@ -45,19 +45,6 @@
          bundle install --clean --verbose
          bundle exec {command}
 
-# Executes a Gem command via Bundler
-#
-# - command: Gem/Bundler command to run
-#
-- builder:
-    name: bundle
-    builders:
-     - bundle-with-options:
-         initialization: ''
-         dir: '.'
-         bundler-version: ''
-         command: '{command}'
-
 # Run `bundle exec rake test` on Nodepool Jessie instances.
 - job: &job_rake-jessie
     name: 'rake-jessie'
