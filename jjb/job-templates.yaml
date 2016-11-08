@@ -3,8 +3,16 @@
 - job:
     name: 'erblint-HEAD'
     node: contintLabsSlave && DebianJessie
-    defaults: use-remote-zuul-shallow-clone
     concurrent: true
+    scm:
+     - git:
+         url: '$ZUUL_URL/$ZUUL_PROJECT'
+         branches:
+          - '$ZUUL_COMMIT'
+         refspec: '$ZUUL_REF'
+         wipe-workspace: true
+         submodule:
+             disable: true
     triggers:
      - zuul
     builders:
@@ -283,8 +291,17 @@
 - job:
     name: 'pplint-HEAD'
     node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
     concurrent: true
+    scm:
+     - git:
+         url: '$ZUUL_URL/$ZUUL_PROJECT'
+         branches:
+          - '$ZUUL_COMMIT'
+         refspec: '$ZUUL_REF'
+         wipe-workspace: true
+         submodule:
+             disable: true
+
     triggers:
      - zuul
     builders:
