@@ -632,7 +632,7 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
-  - name: ^rake-jessie$
+  - name: ^(?:operations-puppet-)?rake-jessie$
     files:
       # Uses python re.match() which checks at BEGINNING of the string
       - '.*\.rb'
@@ -2251,7 +2251,7 @@ projects:
     test:
       # testing
       - operations-puppet-tox-jessie
-      - rake-jessie
+      - operations-puppet-rake-jessie
       # Same as `check` pipeline:
       - erblint-HEAD
       - pplint-HEAD
