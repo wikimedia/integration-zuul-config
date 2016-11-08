@@ -210,13 +210,6 @@
                 "$ZUUL_PROJECT"
          fi
 
-- builder:
-    name: sort-deps-txt
-    builders:
-     - shell: |
-         # Ensure consistent loading
-         sort -o deps.txt deps.txt
-
 - job-template:
     name: 'mediawiki-extensions-{phpflavor}'
     # Select runnable node based on the phpflavor (hhvm or php53)
