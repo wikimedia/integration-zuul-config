@@ -8599,16 +8599,17 @@ projects:
       - unicodejs-publish
 
   - name: VisualEditor/VisualEditor
-    template:
-      - name: npm
-      - name: rake
     check:
       - jshint
       - jsonlint
     test:
       - visualeditor-jsduck-jessie
+      - visualeditor-npm-node-4-jessie
+      - visualeditor-rake-jessie
     gate-and-submit:
       - visualeditor-jsduck-jessie
+      - visualeditor-npm-node-4-jessie
+      - visualeditor-rake-jessie
     postmerge:
       - visualeditor-coverage
 
