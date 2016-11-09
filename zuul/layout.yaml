@@ -2509,15 +2509,6 @@ projects:
 
 #### MediaWiki extensions ######################################
 
-  - name: mediawiki/extensions/TwoColConflict
-    template:
-      - name: composer-test
-      - name: extension-unittests-generic
-      - name: npm
-    check:
-      - jsonlint
-      - jshint
-
   - name: mediawiki/extensions/AbuseFilter
     template:
       - name: composer-test
@@ -6485,6 +6476,17 @@ projects:
     check:
       - jshint
       - jsonlint
+
+  - name: mediawiki/extensions/TwoColConflict
+    template:
+      - name: composer-test
+      - name: extension-unittests-generic
+      - name: npm
+    check:
+      - jsonlint
+      - jshint
+    experimental:
+      - mwext-mw-selenium
 
   - name: mediawiki/extensions/TwoFactorAuthentication
     template:
