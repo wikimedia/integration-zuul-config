@@ -43,3 +43,42 @@
          dir: '.'
      - fetch-composer-dev
      - composer-test
+
+- job:
+    name: 'operations-mw-config-phpunit-2'
+    node: ci-jessie-wikimedia
+    triggers:
+     - zuul
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        reference-repo: '/srv/git/${ZUUL_PROJECT}.git'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        submodule:
+            disable: false
+    builders:
+     - composer-validate:
+         dir: '.'
+     - castor-load
+     - shell: |
+         php --version
+         versions_paths=`php -r 'print join("\n", array_unique(json_decode(file_get_contents("wikiversions.json"), true)));'`
+         for wmfpath in $versions_paths; do
+             git clone -q https://gerrit.wikimedia.org/r/p/mediawiki/core \
+                 --reference /srv/git/mediawiki/core.git \
+                 --single-branch \
+                 --branch "${wmfpath/php-/wmf/}" \
+                 "$wmfpath"
+             git -C "$wmfpath" branch -vv
+             git -C "$wmfpath" submodule update --init \
+                 --reference /srv/git/mediawiki/vendor.git vendor
+         done;
+     - shell: |
+         composer install --dev --ansi --prefer-dist -v
+     - composer-test
+    publishers:
+     - phpunit-junit
+     - archive-log-dir
+     - castor-save
