@@ -53,3 +53,52 @@
         shallow-clone: true
         submodule:
             disable: false
+
+- job:
+    name: 'operations-mw-config-phpunit-2'
+    node: ci-jessie-wikimedia
+    triggers:
+     - zuul
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        reference-repo: '/srv/git/${ZUUL_PROJECT}.git'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        submodule:
+            disable: false
+    builders:
+     - composer-validate:
+         dir: '.'
+     - shell: |
+         php --version
+         versions_paths=`php -r 'print join("\n", array_unique(json_decode(file_get_contents("wikiversions.json"), true)));'`
+         for wmfpath in $versions_paths; do
+             git clone -q https://gerrit.wikimedia.org/r/p/mediawiki/core \
+                 --reference /srv/git/mediawiki/core.git \
+                 --single-branch \
+                 --branch "${wmfpath/php-/wmf/}" \
+                 "$wmfpath"
+             git -C "$wmfpath" branch -vv
+             git -C "$wmfpath" submodule update --init \
+                 --reference /srv/git/mediawiki/vendor.git vendor
+         done;
+     - castor-load
+     - shell: |
+         set -o pipefail
+         mkdir -p log
+
+         export PHP_BIN
+         PHP_BIN=hhvm
+
+         node /srv/deployment/integration/slave-scripts/tools/composer-dev-args.js "composer.json" | \
+             PHP_BIN=hhvm xargs composer require --dev --ansi --no-progress --ignore-platform-reqs --prefer-dist -v
+
+         composer --ansi exec -- phpunit \
+             --colors \
+             --log-junit log/junit-phpunit.xml
+    publishers:
+     - phpunit-junit
+     - archive-log-dir
+     - castor-save
