@@ -53,3 +53,44 @@
         shallow-clone: true
         submodule:
             disable: false
+
+- job:
+    name: 'operations-mw-config-phpunit-2'
+    node: ci-jessie-wikimedia
+    triggers:
+     - zuul
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        reference-repo: '/srv/git/${ZUUL_PROJECT}.git'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        submodule:
+            disable: false
+    builders:
+     - composer-validate:
+         dir: '.'
+     - shell: |
+         php --version
+         versions_paths=`php -r 'print join("\n", array_unique(json_decode(file_get_contents("wikiversions.json"), true)));'`
+         for wmfpath in $versions_paths; do
+             git clone -q https://gerrit.wikimedia.org/r/p/mediawiki/core \
+                 --reference /srv/git/mediawiki/core.git \
+                 --single-branch \
+                 --branch "${wmfpath/php-/wmf/}" \
+                 "$wmfpath"
+             git -C "$wmfpath" branch -vv
+         done;
+     - castor-load
+     - shell: |
+         mkdir -p log
+         # xhprof requires mwcrypt which we do not have
+         composer require --ignore-platform-reqs -- "phpunit/phpunit=4.8.*"
+         composer exec -- phpunit \
+             --colors=always \
+             --log-junit log/junit-phpunit.xml
+    publishers:
+     - phpunit-junit
+     - archive-log-dir
+     - castor-save
