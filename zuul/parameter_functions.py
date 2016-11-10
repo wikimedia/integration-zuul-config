@@ -266,6 +266,7 @@ gatedextensions = [
     'PdfHandler',
     'SandboxLink',
     'SpamBlacklist',
+    'SiteMatrix',
     'Thanks',
     'TimedMediaHandler',
     'Translate',
