@@ -19,6 +19,7 @@ def get_gerrit_repos():
     projects = json.load(request)
     return sorted(projects.keys())
 
+
 GERRIT_REPOS = get_gerrit_repos()
 
 
