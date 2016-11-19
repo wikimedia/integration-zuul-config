@@ -353,6 +353,7 @@
     triggers:
      - zuul
     builders:
+     - castor-load
      - npm-install
      - npm-run:
          script: doc
@@ -360,7 +361,7 @@
         docsrc: 'docs'
         docdest: 'VisualEditor/$ZUUL_BRANCH'
     publishers:
-     - global-teardown
+     - castor-save
 
 - job:
     name: 'mwext-doxygen-publish'
