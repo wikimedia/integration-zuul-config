@@ -644,6 +644,10 @@ jobs:
       - project: '^VisualEditor/VisualEditor$'
         branch: (?:^REL1_26$)
 
+  # Always trigger rake for operations/puppet since it runs puppetlint
+  - name: ^operations-puppet-rake-jessie$
+    files: []
+
   # Experiment for analytics/kraken repository
   - name: analytics-kraken-maven
     voting: false
@@ -2267,7 +2271,6 @@ projects:
     check:
       - erblint-HEAD
       - pplint-HEAD
-      - operations-puppet-puppetlint-strict
       - operations-puppet-typos
     # Same for trusted user
     test:
@@ -2277,7 +2280,6 @@ projects:
       # Same as `check` pipeline:
       - erblint-HEAD
       - pplint-HEAD
-      - operations-puppet-puppetlint-strict
       - operations-puppet-typos
     experimental:
       - tox-jessie
