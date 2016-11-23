@@ -1069,14 +1069,32 @@ project-templates:
       - mwext-qunit-composer-jessie
 
   - name: skin-tests
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
     test:
       - mw-testskin
     gate-and-submit:
       - mw-testskin
+    experimental:
+      - composer-hhvm-trusty
+      - composer-php53
+      - composer-php55-trusty
+      - composer-php70-jessie
 
   - name: skin-tests-non-voting
+    check:
+     - php53lint
+     - php55lint
+     - composer-validate
     test:
       - mw-testskin-non-voting
+    experimental:
+      - composer-hhvm-trusty
+      - composer-php53
+      - composer-php55-trusty
+      - composer-php70-jessie
 
   - name: jsduck
     test:
@@ -1900,7 +1918,6 @@ projects:
     check:
      - jsonlint
      - jshint
-     - php53lint
 
   - name: mediawiki/skins/MinervaNeue
     template:
@@ -2019,7 +2036,7 @@ projects:
     template:
      - name: composer-test
      - name: npm
-     - name: skin-tests-non-voting
+     - name: skin-tests
     check:
      - jshint
      - jsonlint
