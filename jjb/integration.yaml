@@ -86,6 +86,37 @@
      - archive-log-dir
 
 - job-template:
+    name: 'integration-jjb-config-deploy'
+    node: contintLabsSlave && DebianJessie
+    concurrent: true
+    triggers:
+     - zuul
+    scm:
+      # We need our copy of Jenkins job builder which closely follow upstream HEAD
+      - git:
+          url: 'https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder.git'
+          wipe-workspace: false
+          clean:
+              after: true
+          branches:
+           - master
+      - git:
+          url: '$ZUUL_URL/integration/config'
+          branches:
+           - '$ZUUL_COMMIT'
+          refspec: '$ZUUL_REF'
+          basedir: 'config'
+          wipe-workspace: false
+          clean:
+              after: true
+    builders:
+     - castor-load
+     - shell: jenkins-jobs update --delete-old jenkins/.
+    publishers:
+     - archive-tox-logs
+     - castor-save
+
+- job-template:
     name: 'integration-jjb-config-diff'
     node: ci-jessie-wikimedia
     concurrent: true
@@ -140,6 +171,7 @@
         echo "Done."
         echo "Carefully review the diff above before deploying the jobs and merging the patch"
 
+
 # Super basic sanity check for integration/composer repo
 - job-template:
     name: 'integration-composer-check-{phpflavor}'
@@ -187,6 +219,7 @@
 - project:
     name: 'integration-config'
     jobs:
+     - 'integration-jjb-config-deploy'
      - 'integration-jjb-config-diff'
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation'
