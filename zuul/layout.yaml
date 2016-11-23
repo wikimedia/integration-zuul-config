@@ -1068,6 +1068,16 @@ project-templates:
     gate-and-submit:
       - mwext-qunit-composer-jessie
 
+  - name: skin-tests
+    test:
+      - mw-testskin
+    gate-and-submit:
+      - mw-testskin
+
+  - name: skin-tests-non-voting
+    test:
+      - mw-testskin-non-voting
+
   - name: jsduck
     test:
      - jsduck
@@ -1735,6 +1745,7 @@ projects:
     template:
      - name: composer-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
      - jshint
@@ -1744,13 +1755,15 @@ projects:
     template:
       - name: composer-test
       - name: npm
+      - name: skin-tests-non-voting
     check:
       - jsonlint
       - jshint
 
   - name: mediawiki/skins/BlueSky
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
     experimental:
      - jshint
 
@@ -1758,12 +1771,14 @@ projects:
     template:
      - name: mw-checks-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
 
   - name: mediawiki/skins/Bouquet
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
     check-voter:
      - jshint
     gate-and-submit:
@@ -1771,12 +1786,14 @@ projects:
 
   - name: mediawiki/skins/chameleon
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/CologneBlue
     template:
      - name: composer-test
      - name: mw-checks-test
+     - name: skin-tests-non-voting
      - name: npm
     check:
      - jsonlint
@@ -1790,43 +1807,52 @@ projects:
 
   - name: mediawiki/skins/DeskMessMirrored
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Donate
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Dusk
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/DuskToDawn
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/erudite
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Empty
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Example
     template:
      - name: composer-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
 
   - name: mediawiki/skins/Gamepress
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/GreyStuff
     template:
      - name: mw-checks-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
 
@@ -1834,17 +1860,20 @@ projects:
     template:
      - name: mw-checks-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
 
   - name: mediawiki/skins/mediawiki-strapping
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Metrolook
     template:
      - name: composer-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
      - jshint
@@ -1854,6 +1883,7 @@ projects:
     template:
      - name: composer-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
      - jshint
@@ -1864,6 +1894,7 @@ projects:
      - name: composer-test
      - name: mw-checks-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
 
@@ -1872,12 +1903,14 @@ projects:
      - name: composer-test
      - name: mw-checks-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
 
   - name: mediawiki/skins/Nimbus
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
     check-voter:
      - jshint
     gate-and-submit:
@@ -1887,21 +1920,24 @@ projects:
     template:
      - name: mw-checks-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
 
   - name: mediawiki/skins/p2wiki
     template:
-     - name: mw-checks
+     - name: mw-checks-test
 
   - name: mediawiki/skins/Schulenburg
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Slate
     template:
      - name: composer-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
      - jshint
@@ -1911,12 +1947,14 @@ projects:
     template:
      - name: mw-checks-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jsonlint
 
   - name: mediawiki/skins/Synagonism
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Tempo
     template:
@@ -1936,16 +1974,19 @@ projects:
 
   - name: mediawiki/skins/Tomas
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Truglass
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/Vector
     template:
      - name: composer-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jshint
      - jsonlint
@@ -1954,17 +1995,20 @@ projects:
     template:
      - name: composer-test
      - name: npm
+     - name: skin-tests-non-voting
     check:
      - jshint
      - jsonlint
 
   - name: mediawiki/skins/webplatform
     template:
-     - name: mw-checks
+     - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/skins/WPtouch
     template:
      - name: mw-checks-test
+     - name: skin-tests-non-voting
 
   - name: mediawiki/tools/code-utils
     check-voter:

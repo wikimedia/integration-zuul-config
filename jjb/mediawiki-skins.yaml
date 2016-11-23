@@ -1,0 +1,29 @@
+# Runs MediaWiki core 'skins' testsuite against an extension
+#
+# Runs with HHVM on Jessie
+#
+- job: &job_mw-testskin
+    name: mw-testskin
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: hhvm
+     - castor-load
+     - prepare-mediawiki-zuul-project-no-vendor
+     # FIXME: note how the skins is injected AFTER composer has been used.
+     # Missing dependencies might well break the run!
+     - shell: |
+         PHPUNIT_TESTSUITE=skins \
+            /srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh
+    publishers:
+     - phpunit-junit-2
+     - castor-save
+
+- job:
+    !!merge : *job_mw-testskin
+    name: mw-testskin-non-voting
+    triggers:
+     - zuul
