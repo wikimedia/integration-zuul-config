@@ -24,3 +24,11 @@ class TestZuulSetParameters(unittest.TestCase):
         params = {'ZUUL_PROJECT': 'integration/zuul'}
         set_parameters(None, job, params)
         self.assertIn('PBUILDER_USENETWORK', params)
+
+    def test_mw_testskin_parameters(self):
+        for job_name in ['mw-testskin', 'mw-testskin-non-voting']:
+            job = FakeJob(job_name)
+            params = {'ZUUL_PROJECT': 'mediawiki/extensions/Vector'}
+            set_parameters(None, job, params)
+            self.assertIn('PHP_BIN', params)
+            self.assertEqual('hhvm', params['PHP_BIN'])
