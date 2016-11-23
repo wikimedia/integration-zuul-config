@@ -77,6 +77,27 @@
      - archive-log-dir
 
 - job-template:
+    name: 'integration-jjb-config-deploy-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        # we need a full clone
+        - docker-zuul-cloner:
+            projects: >
+                integration/config
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+            options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/jjb/deploy.sh'
+            logdir: '/log'
+    publishers:
+        - castor-save-workspace-cache
+        - docker-cleanup
+
+- job-template:
     name: 'integration-jjb-config-diff-docker'
     node: DebianJessieDocker
     concurrent: true
@@ -205,6 +226,7 @@
 - project:
     name: 'integration-config'
     jobs:
+     - 'integration-jjb-config-deploy-docker'
      - 'integration-jjb-config-diff-docker'
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation-gate'
