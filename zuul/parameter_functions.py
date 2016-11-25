@@ -54,6 +54,8 @@ def set_parameters(item, job, params):
         'mwext-testextension',
         'mwext-qunit',
         'mwext-mw-selenium',
+        'mw-testskin',
+        'mw-testskin-non-voting',
         )
     if job.name.startswith(ext_deps_jobs_starting_with):
         set_ext_dependencies(item, job, params)
@@ -95,102 +97,213 @@ def set_parameters(item, job, params):
 
 
 dependencies = {
-    'AbuseFilter': ['AntiSpoof'],
-    'ApiFeatureUsage': ['Elastica'],
-    'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
-    'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
-    'BlueSpiceExtensions': ['BlueSpiceFoundation'],
-    'Capiunto': ['Scribunto'],
-    'Cite': ['VisualEditor'],
-    'Citoid': ['Cite', 'VisualEditor'],
-    'CirrusSearch': ['MwEmbedSupport', 'TimedMediaHandler', 'PdfHandler',
-                     'Cite'],
-    'CodeEditor': ['WikiEditor'],
-    'CollaborationKit': ['EventLogging', 'VisualEditor'],
-    'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
-                           'UniversalLanguageSelector', 'Wikidata'],
-    'CookieWarning': ['MobileFrontend'],
-    'Disambiguator': ['VisualEditor'],
-    'DonationInterface': ['ContributionTracking'],
-    'EducationProgram': ['cldr', 'WikiEditor'],
-    'ElectronPdfService': ['Collection'],
-    'FileAnnotations': ['EventLogging'],
-    'FlaggedRevs': ['Scribunto'],
-    'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
-    'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
-    'GuidedTour': ['EventLogging'],
-    'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
-    'ImageMetrics': ['EventLogging'],
-    'Kartographer': ['ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
-    'LanguageTool': ['VisualEditor'],
-    'LifeWeb': ['LifeWebCore', 'Wikibase'],
-    'LightweightRDFa': ['WikiEditor'],
-    'Maps': ['Validator'],
-    'MassMessage': ['LiquidThreads'],
-    'Math': ['VisualEditor', 'Wikidata'],
-    'MathSearch': ['Math'],
-    'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
-    'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp'],
-    'NavigationTiming': ['EventLogging'],
-    'NSFileRepo': ['Lockdown'],
-    'OpenIDConnect': ['PluggableAuth'],
-    'OpenStackManager': ['LdapAuthentication'],
-    'ORES': ['BetaFeatures'],
-    'PageTriage': ['WikiLove'],
-    'PageViewInfo': ['Graph'],
-    'PhpTagsFunctions': ['PhpTags'],
-    'PhpTagsStorage': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki',
-                       'PhpTagsWidgets'],
-    'PhpTagsWidgets': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki'],
-    'PhpTagsWiki': ['PhpTags', 'PhpTagsFunctions'],
-    'PictureGame': ['SocialProfile'],
-    'PollNY': ['SocialProfile'],
-    'Popups': ['BetaFeatures', 'TextExtracts', 'PageImages'],
-    'PronunciationRecording': ['UploadWizard'],
-    'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
-    'QuickSurveys': ['EventLogging'],
-    'Ratings': ['Validator'],
-    'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
-    'RevisionSlider': ['BetaFeatures'],
-    'Score': ['VisualEditor'],
-    'SemanticFormsInputs': ['SemanticForms'],
-    'SemanticImageInput': ['SemanticMediaWiki'],
-    'SemanticSifter': ['SemanticMediaWiki'],
-    'SimpleSurvey': ['PrefSwitch'],
-    'SolrStore': ['SemanticMediaWiki'],
-    'Spreadsheet': ['PHPExcel'],
-    'SubPageList': ['ParserHooks'],
-    'SyntaxHighlight_GeSHi': ['VisualEditor'],
-    'TitleBlacklist': ['AntiSpoof'],
-    'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
-    'TranslateSvg': ['Translate'],
-    'TranslationNotifications': ['Translate'],
-    'TwnMainPage': ['Translate'],
-    'UniversalLanguageSelector': ['EventLogging'],
-    'UploadWizard': ['WikimediaMessages', 'EventLogging'],
-    'VectorBeta': ['EventLogging'],
-    'VikiSemanticTitle': ['VIKI'],
-    'VikiTitleIcon': ['VIKI'],
-    'VisualEditor': ['Cite'],
-    'Wikibase': ['CirrusSearch', 'cldr', 'Elastica', 'GeoData',
-                 'Scribunto', 'Capiunto'],
-    'WikibaseJavaScriptApi': ['Wikibase'],
-    'WikibaseLexeme': ['Wikibase'],
-    'WikibaseMediaInfo': ['Wikibase'],
-    'WikibaseQuality': ['Wikibase'],
-    'WikibaseQualityConstraints': ['Wikibase', 'WikibaseQuality'],
-    'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
-    'Wikidata': ['cldr', 'Elastica',
-                 'GeoData', 'Scribunto'],
-    'Wikidata.org': ['Wikibase'],
-    'WikidataPageBanner': ['Wikidata'],
-    'WikimediaBadges': ['Wikibase'],
-    'WikimediaEvents': ['EventLogging'],
-    'wikihiero': ['VisualEditor'],
-    'ZeroBanner': ['Echo', 'JsonConfig', 'MobileFrontend', 'VisualEditor',
-                   'ZeroPortal'],
-    'ZeroPortal': ['Echo', 'JsonConfig', 'MobileFrontend', 'Scribunto',
-                   'VisualEditor', 'ZeroBanner'],
+    'extensions/AbuseFilter': ['extensions/AntiSpoof'],
+    'extensions/ApiFeatureUsage': ['extensions/Elastica'],
+    'extensions/Arrays': [
+        'extensions/Loops',
+        'extensions/ParserFunctions',
+        'extensions/Variables'
+    ],
+    'extensions/ArticlePlaceholder': [
+        'extensions/Wikibase',
+        'extensions/Scribunto'
+    ],
+    'extensions/BlueSpiceExtensions': ['extensions/BlueSpiceFoundation'],
+    'extensions/Capiunto': ['extensions/Scribunto'],
+    'extensions/Cite': ['extensions/VisualEditor'],
+    'extensions/Citoid': [
+        'extensions/Cite',
+        'extensions/VisualEditor'
+    ],
+    'extensions/CirrusSearch': [
+        'extensions/MwEmbedSupport',
+        'extensions/TimedMediaHandler',
+        'extensions/PdfHandler',
+        'extensions/Cite'
+    ],
+    'extensions/CodeEditor': ['extensions/WikiEditor'],
+    'extensions/CollaborationKit': [
+        'extensions/EventLogging',
+        'extensions/VisualEditor'
+    ],
+    'extensions/ContentTranslation': [
+        'extensions/Echo',
+        'extensions/EventLogging',
+        'extensions/GuidedTour',
+        'extensions/UniversalLanguageSelector',
+        'extensions/Wikidata'
+    ],
+    'extensions/CookieWarning': ['extensions/MobileFrontend'],
+    'extensions/Disambiguator': ['extensions/VisualEditor'],
+    'extensions/DonationInterface': ['extensions/ContributionTracking'],
+    'extensions/EducationProgram': [
+        'extensions/cldr',
+        'extensions/WikiEditor'
+    ],
+    'extensions/ElectronPdfService': ['extensions/Collection'],
+    'extensions/FileAnnotations': ['extensions/EventLogging'],
+    'extensions/FlaggedRevs': ['extensions/Scribunto'],
+    'extensions/GettingStarted': [
+        'extensions/CentralAuth',
+        'extensions/EventLogging',
+        'extensions/GuidedTour'
+    ],
+    'extensions/Graph': [
+        'extensions/CodeEditor',
+        'extensions/JsonConfig',
+        'extensions/VisualEditor'
+    ],
+    'extensions/GuidedTour': ['extensions/EventLogging'],
+    'extensions/GWToolset': [
+        'extensions/SyntaxHighlight_GeSHi',
+        'extensions/Scribunto',
+        'extensions/TemplateData'
+    ],
+    'extensions/ImageMetrics': ['extensions/EventLogging'],
+    'extensions/Kartographer': [
+        'extensions/ParserFunctions',
+        'extensions/VisualEditor',
+        'extensions/WikimediaMessages'
+    ],
+    'extensions/LanguageTool': ['extensions/VisualEditor'],
+    'extensions/LifeWeb': [
+        'extensions/LifeWebCore',
+        'extensions/Wikibase'
+    ],
+    'extensions/LightweightRDFa': ['extensions/WikiEditor'],
+    'extensions/Maps': ['extensions/Validator'],
+    'extensions/MassMessage': ['extensions/LiquidThreads'],
+    'extensions/Math': [
+        'extensions/VisualEditor',
+        'extensions/Wikidata'
+    ],
+    'extensions/MathSearch': ['extensions/Math'],
+    'extensions/MobileApp': [
+        'extensions/Echo',
+        'extensions/MobileFrontend',
+        'extensions/VisualEditor'
+    ],
+    'extensions/MobileFrontend': [
+        'extensions/Echo',
+        'extensions/VisualEditor',
+        'extensions/ZeroBanner',
+        'extensions/MobileApp'
+    ],
+    'extensions/NavigationTiming': ['extensions/EventLogging'],
+    'extensions/NSFileRepo': ['extensions/Lockdown'],
+    'extensions/OpenIDConnect': ['extensions/PluggableAuth'],
+    'extensions/OpenStackManager': ['extensions/LdapAuthentication'],
+    'extensions/ORES': ['extensions/BetaFeatures'],
+    'extensions/PageTriage': ['extensions/WikiLove'],
+    'extensions/PageViewInfo': ['extensions/Graph'],
+    'extensions/PhpTagsFunctions': ['extensions/PhpTags'],
+    'extensions/PhpTagsStorage': [
+        'extensions/PhpTags',
+        'extensions/PhpTagsFunctions',
+        'extensions/PhpTagsWiki',
+        'extensions/PhpTagsWidgets'
+    ],
+    'extensions/PhpTagsWidgets': [
+        'extensions/PhpTags',
+        'extensions/PhpTagsFunctions',
+        'extensions/PhpTagsWiki'
+    ],
+    'extensions/PhpTagsWiki': [
+        'extensions/PhpTags',
+        'extensions/PhpTagsFunctions'
+    ],
+    'extensions/PictureGame': ['extensions/SocialProfile'],
+    'extensions/PollNY': ['extensions/SocialProfile'],
+    'extensions/Popups': [
+        'extensions/BetaFeatures',
+        'extensions/TextExtracts',
+        'extensions/PageImages'
+    ],
+    'extensions/PronunciationRecording': ['extensions/UploadWizard'],
+    'extensions/ProofreadPage': [
+        'extensions/LabeledSectionTransclusion',
+        'extensions/VisualEditor'
+    ],
+    'extensions/QuickSurveys': ['extensions/EventLogging'],
+    'extensions/Ratings': ['extensions/Validator'],
+    'extensions/RelatedArticles': [
+        'extensions/BetaFeatures',
+        'extensions/Cards',
+        'extensions/MobileFrontend'
+    ],
+    'extensions/RevisionSlider': ['extensions/BetaFeatures'],
+    'extensions/Score': ['extensions/VisualEditor'],
+    'extensions/SemanticFormsInputs': ['extensions/SemanticForms'],
+    'extensions/SemanticImageInput': ['extensions/SemanticMediaWiki'],
+    'extensions/SemanticSifter': ['extensions/SemanticMediaWiki'],
+    'extensions/SimpleSurvey': ['extensions/PrefSwitch'],
+    'extensions/SolrStore': ['extensions/SemanticMediaWiki'],
+    'extensions/Spreadsheet': ['extensions/PHPExcel'],
+    'extensions/SubPageList': ['extensions/ParserHooks'],
+    'extensions/SyntaxHighlight_GeSHi': ['extensions/VisualEditor'],
+    'extensions/TitleBlacklist': ['extensions/AntiSpoof'],
+    'extensions/Translate': [
+        'extensions/UniversalLanguageSelector',
+        'extensions/EventLogging',
+        'extensions/cldr'
+    ],
+    'extensions/TranslateSvg': ['extensions/Translate'],
+    'extensions/TranslationNotifications': ['extensions/Translate'],
+    'extensions/TwnMainPage': ['extensions/Translate'],
+    'extensions/UniversalLanguageSelector': ['extensions/EventLogging'],
+    'extensions/UploadWizard': [
+        'extensions/WikimediaMessages',
+        'extensions/EventLogging'
+    ],
+    'extensions/VectorBeta': ['extensions/EventLogging'],
+    'extensions/VikiSemanticTitle': ['extensions/VIKI'],
+    'extensions/VikiTitleIcon': ['extensions/VIKI'],
+    'extensions/VisualEditor': ['extensions/Cite'],
+    'extensions/Wikibase': [
+        'extensions/CirrusSearch',
+        'extensions/cldr',
+        'extensions/Elastica',
+        'extensions/GeoData',
+        'extensions/Scribunto',
+        'extensions/Capiunto'
+    ],
+    'extensions/WikibaseJavaScriptApi': ['extensions/Wikibase'],
+    'extensions/WikibaseLexeme': ['extensions/Wikibase'],
+    'extensions/WikibaseMediaInfo': ['extensions/Wikibase'],
+    'extensions/WikibaseQuality': ['extensions/Wikibase'],
+    'extensions/WikibaseQualityConstraints': [
+        'extensions/Wikibase',
+        'extensions/WikibaseQuality'
+    ],
+    'extensions/WikibaseQualityExternalValidation': [
+        'extensions/Wikibase',
+        'extensions/WikibaseQuality'
+    ],
+    'extensions/Wikidata': [
+        'extensions/cldr',
+        'extensions/Elastica',
+        'extensions/GeoData',
+        'extensions/Scribunto'
+    ],
+    'extensions/Wikidata.org': ['extensions/Wikibase'],
+    'extensions/WikidataPageBanner': ['extensions/Wikidata'],
+    'extensions/WikimediaBadges': ['extensions/Wikibase'],
+    'extensions/WikimediaEvents': ['extensions/EventLogging'],
+    'extensions/wikihiero': ['extensions/VisualEditor'],
+    'extensions/ZeroBanner': [
+        'extensions/Echo', 'extensions/JsonConfig',
+        'extensions/MobileFrontend',
+        'extensions/VisualEditor',
+        'extensions/ZeroPortal'
+    ],
+    'extensions/ZeroPortal': [
+        'extensions/Echo',
+        'extensions/JsonConfig',
+        'extensions/MobileFrontend',
+        'extensions/Scribunto',
+        'extensions/VisualEditor',
+        'extensions/ZeroBanner'
+    ],
 }
 
 
@@ -201,7 +314,7 @@ def set_ext_dependencies(item, job, params):
     :type job: zuul.model.Job
     :type params: dict
     """
-    if not params['ZUUL_PROJECT'].startswith('mediawiki/extensions/'):
+    if not params['ZUUL_PROJECT'].startswith('mediawiki/'):
         return
     # mediawiki/extensions/FooBar
     split = params['ZUUL_PROJECT'].split('/')
@@ -218,7 +331,7 @@ def set_ext_dependencies(item, job, params):
 
     # Export with a literal \n character and have bash expand it later
     params['EXT_DEPENDENCIES'] = '\\n'.join(
-        'mediawiki/extensions/' + dep for dep in sorted(deps)
+        'mediawiki/' + dep for dep in sorted(deps)
     )
 
 
