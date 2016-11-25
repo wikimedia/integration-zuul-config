@@ -32,4 +32,5 @@ def test_zuul_project_in_gerrit():
 
 
 def is_in_gerrit(zuul_project):
-    assert zuul_project in GERRIT_REPOS
+    msg = "Project configured in Zuul is not in Gerrit: %s" % (zuul_project)
+    assert zuul_project in GERRIT_REPOS, msg
