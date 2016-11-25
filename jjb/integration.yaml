@@ -152,6 +152,23 @@
      - shell: |
         ./vendor/bin/composer --version
 
+- job:
+    name: integration-config-qa
+    node: ci-jessie-wikimedia
+    scm:
+     - git:
+         url: 'https://gerrit.wikimedia.org/r/p/integration/config.git'
+         branches:
+             - master
+         reference-repo: '/srv/git/integration/config.git'
+    builders:
+     - zuul-cloner:
+     - run-tox:
+         venv: qa
+    publishers:
+     - archive-log-dir
+     - junit:
+         results: 'log/junit*.xml'
 
 - project:
     name: 'integration-config'
