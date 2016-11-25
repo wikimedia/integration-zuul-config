@@ -101,6 +101,7 @@ dependencies = {
                      'extensions/Variables'],
     'extensions/ArticlePlaceholder': ['extensions/Wikibase', 'extensions/Scribunto'],
     'extensions/BlueSpiceExtensions': ['extensions/BlueSpiceFoundation'],
+    'skins/BlueSpiceSkin': ['extensions/BlueSpiceFoundation'],
     'extensions/Capiunto': ['extensions/Scribunto'],
     'extensions/Cite': ['extensions/VisualEditor'],
     'extensions/Citoid': ['extensions/Cite', 'extensions/VisualEditor'],
