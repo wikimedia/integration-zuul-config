@@ -93,9 +93,8 @@ def set_parameters(item, job, params):
             # Heavy build T143546
             params['BUILD_TIMEOUT'] = 180  # minutes
 
-
 dependencies = {
-    'AbuseFilter': ['AntiSpoof'],
+    'extensions/AbuseFilter': ['extensions/AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
@@ -174,22 +173,22 @@ dependencies = {
     'VisualEditor': ['Cite'],
     'Wikibase': ['CirrusSearch', 'cldr', 'Elastica', 'GeoData',
                  'Scribunto', 'Capiunto'],
-    'WikibaseJavaScriptApi': ['Wikibase'],
-    'WikibaseLexeme': ['Wikibase'],
-    'WikibaseMediaInfo': ['Wikibase'],
-    'WikibaseQuality': ['Wikibase'],
-    'WikibaseQualityConstraints': ['Wikibase', 'WikibaseQuality'],
-    'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
-    'Wikidata': ['cldr', 'Elastica',
+    'extensions/WikibaseJavaScriptApi': ['extensions/Wikibase'],
+    'extensions/WikibaseLexeme': ['extensions/Wikibase'],
+    'extensions/WikibaseMediaInfo': ['Wikibase'],
+    'extensions/WikibaseQuality': ['Wikibase'],
+    'extensions/WikibaseQualityConstraints': ['Wikibase', 'WikibaseQuality'],
+    'extensions/WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
+    'extensions/Wikidata': ['cldr', 'Elastica',
                  'GeoData', 'Scribunto'],
-    'Wikidata.org': ['Wikibase'],
-    'WikidataPageBanner': ['Wikidata'],
-    'WikimediaBadges': ['Wikibase'],
-    'WikimediaEvents': ['EventLogging'],
-    'wikihiero': ['VisualEditor'],
-    'ZeroBanner': ['Echo', 'JsonConfig', 'MobileFrontend', 'VisualEditor',
+    'extensions/Wikidata.org': ['Wikibase'],
+    'extensions/WikidataPageBanner': ['Wikidata'],
+    'extensions/WikimediaBadges': ['Wikibase'],
+    'extensions/WikimediaEvents': ['EventLogging'],
+    'extensions/wikihiero': ['VisualEditor'],
+    'extensions/ZeroBanner': ['Echo', 'JsonConfig', 'MobileFrontend', 'VisualEditor',
                    'ZeroPortal'],
-    'ZeroPortal': ['Echo', 'JsonConfig', 'MobileFrontend', 'Scribunto',
+    'extensions/ZeroPortal': ['extensions/Echo', 'JsonConfig', 'MobileFrontend', 'Scribunto',
                    'VisualEditor', 'ZeroBanner'],
 }
 
@@ -201,7 +200,7 @@ def set_ext_dependencies(item, job, params):
     :type job: zuul.model.Job
     :type params: dict
     """
-    if not params['ZUUL_PROJECT'].startswith('mediawiki/extensions/'):
+    if not params['ZUUL_PROJECT'].startswith('mediawiki/'):
         return
     # mediawiki/extensions/FooBar
     split = params['ZUUL_PROJECT'].split('/')
@@ -218,7 +217,7 @@ def set_ext_dependencies(item, job, params):
 
     # Export with a literal \n character and have bash expand it later
     params['EXT_DEPENDENCIES'] = '\\n'.join(
-        'mediawiki/extensions/' + dep for dep in sorted(deps)
+        'mediawiki/' + dep for dep in sorted(deps)
     )
 
 
