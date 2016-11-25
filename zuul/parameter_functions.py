@@ -49,13 +49,15 @@ def set_parameters(item, job, params):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
         params['PHP_BIN'] = 'hhvm'
 
-    ext_deps_jobs_starting_with = (
+    mw_deps_jobs_starting_with = (
         'mwext-testextension',
         'mwext-qunit',
         'mwext-mw-selenium',
+        'mw-testskin',
+        'mw-testskin-non-voting',
         )
-    if job.name.startswith(ext_deps_jobs_starting_with):
-        set_ext_dependencies(item, job, params)
+    if job.name.startswith(mw_deps_jobs_starting_with):
+        set_mw_dependencies(item, job, params)
 
     if job.name.startswith('mediawiki-extensions-'):
         set_gated_extensions(item, job, params)
@@ -93,6 +95,11 @@ def set_parameters(item, job, params):
             params['BUILD_TIMEOUT'] = 180  # minutes
 
 
+# This has is used to inject dependencies for MediaWiki jobs.
+#
+# Values are assumed to be MediaWiki extensions. Skins have to be prefixed with
+# 'skins/'.  The has is used by the set_mw_dependencies() parameter function
+# below.
 dependencies = {
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
@@ -194,39 +201,56 @@ dependencies = {
 }
 
 
-def set_ext_dependencies(item, job, params):
+def set_mw_dependencies(item, job, params):
     """
-    Reads dependencies from the yaml file and adds them as a parameter
+    Reads MediaWiki dependencies for a repository and inject them as
+    parameters. Configured via the global 'dependencies' python variable.
+
     :type item: zuul.model.QueueItem
     :type job: zuul.model.Job
     :type params: dict
     """
-    if not params['ZUUL_PROJECT'].startswith('mediawiki/extensions/'):
+    if not params['ZUUL_PROJECT'].startswith((
+        'mediawiki/extensions/',
+        'mediawiki/skins/',
+    )):
         return
-    # mediawiki/extensions/FooBar
+
     split = params['ZUUL_PROJECT'].split('/')
+
     if len(split) != 3:
-        # mediawiki/extensions/FooBar/blah
-        # mediawiki/extensions
         return
 
-    # FooBar
-    ext_name = split[-1]
-    params['EXT_NAME'] = ext_name
+    if split[1] == 'skins':
+        # Skins: 'skins/Vector'
+        dep_key = 'skins' + '/' + split[-1]
+        params['SKIN_NAME'] = split[-1]
+    else:
+        # Extensions: 'Foobar'
+        dep_key = split[-1]
+        params['EXT_NAME'] = split[-1]
 
-    deps = get_dependencies(ext_name, dependencies)
+    deps = get_dependencies(dep_key, dependencies)
+
+    skin_deps = {d for d in deps if d.startswith('skins/')}
+    ext_deps = deps - skin_deps
 
     # Export with a literal \n character and have bash expand it later
-    params['EXT_DEPENDENCIES'] = '\\n'.join(
-        'mediawiki/extensions/' + dep for dep in sorted(deps)
-    )
+    def glue_deps(prefix, deps):
+        return '\\n'.join(
+            prefix + d for d in sorted(deps)
+        )
+
+    params['SKIN_DEPENDENCIES'] = glue_deps('mediawiki/', skin_deps)
+    params['EXT_DEPENDENCIES'] = glue_deps('mediawiki/extensions/', ext_deps)
 
 
-def get_dependencies(ext_name, mapping):
+def get_dependencies(key, mapping):
     """
     Get the full set of dependencies required by an extension
-    :param ext_name: extension name
-    :param mapping: mapping of extensions to their dependencies
+
+    :param key: extension base name or skin as 'skin/BASENAME'
+    :param mapping: mapping of repositories to their dependencies
     :return: set of dependencies, recursively processed
     """
     resolved = set()
@@ -244,7 +268,7 @@ def get_dependencies(ext_name, mapping):
 
         return deps
 
-    return resolve_deps(ext_name)
+    return resolve_deps(key)
 
 
 gatedextensions = [

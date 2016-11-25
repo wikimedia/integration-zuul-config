@@ -12,12 +12,13 @@ execfile(os.path.join(
     '../zuul/parameter_functions.py'))
 
 
-class TestExtDependencies(unittest.TestCase):
+class TestMwDependencies(unittest.TestCase):
     def assertHasDependencies(self, params):
         self.assertIn('EXT_DEPENDENCIES', params)
 
     def assertMissingDependencies(self, params):
         self.assertNotIn('EXT_DEPENDENCIES', params)
+        self.assertNotIn('SKIN_DEPENDENCIES', params)
 
     def fetch_dependencies(self, job_name=None, project=None):
         if project:
@@ -35,6 +36,13 @@ class TestExtDependencies(unittest.TestCase):
         self.assertIn('EXT_NAME', params)
         self.assertEqual(params['EXT_NAME'], 'Example')
 
+    def test_skin_name(self):
+        params = self.fetch_dependencies(
+            project='mediawiki/skins/Vector')
+
+        self.assertIn('SKIN_NAME', params)
+        self.assertEqual(params['SKIN_NAME'], 'Vector')
+
     def test_cyclical_dependencies(self):
         """verifies that cyclical dependencies are possible"""
 
@@ -42,11 +50,23 @@ class TestExtDependencies(unittest.TestCase):
 
         self.assertEqual(get_dependencies('Foo', mapping), set(['Foo', 'Bar']))
 
+    def test_cyclical_dependencies_with_skins(self):
+        mapping = {'Foo': ['skins/Vector'], 'skins/Vector': ['Foo']}
+        self.assertEqual(
+            get_dependencies('skins/Vector', mapping),
+            set(['Foo', 'skins/Vector'])
+        )
+
     def test_resolvable_dependencies(self):
         """verifies that we can resolve all of the dependencies"""
-        for ext_name in dependencies:
+        for base_name in dependencies:
+            if base_name.startswith('skins/'):
+                project = 'mediawiki/' + base_name
+            else:
+                project = 'mediawiki/extensions/' + base_name
+
             self.assertHasDependencies(self.fetch_dependencies(
-                project='mediawiki/extensions/' + ext_name))
+                project=project))
 
     def test_job_name(self):
         self.assertHasDependencies(self.fetch_dependencies(
@@ -59,15 +79,52 @@ class TestExtDependencies(unittest.TestCase):
             job_name='mwext-mw-selenium-composer-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-mw-selenium-jessie'))
+
+        self.assertHasDependencies(self.fetch_dependencies(
+            job_name='mw-testskin'))
+        self.assertHasDependencies(self.fetch_dependencies(
+            job_name='mw-testskin-non-voting'))
+
         self.assertMissingDependencies(self.fetch_dependencies(
             job_name='mediawiki-core-phplint'))
 
     def test_zuul_project_name(self):
         self.assertHasDependencies(self.fetch_dependencies(
             project='mediawiki/extensions/Example'))
+
         self.assertMissingDependencies(self.fetch_dependencies(
             project='mediawiki/extensions'))
+        self.assertMissingDependencies(self.fetch_dependencies(
+            project='mediawiki/skins'))
         self.assertMissingDependencies(self.fetch_dependencies(
             project='mediawiki/extensions/Example/vendor'))
         self.assertMissingDependencies(self.fetch_dependencies(
             project='foo/bar/baz'))
+
+    def test_resolve_skin_on_extension(self):
+        mapping = {'Foo': ['skins/Vector']}
+        self.assertEqual(
+            get_dependencies('Foo', mapping),
+            set(['skins/Vector'])
+            )
+
+    def test_resolve_extension_on_skin(self):
+        mapping = {'skins/Vector': ['Foo']}
+        self.assertEqual(
+            get_dependencies('skins/Vector', mapping),
+            set(['Foo'])
+            )
+
+    def test_resolve_extension_on_extension(self):
+        mapping = {'Foo': ['DepExtension']}
+        self.assertEqual(
+            get_dependencies('Foo', mapping),
+            set(['DepExtension'])
+            )
+
+    def test_resolve_skin_on_skin(self):
+        mapping = {'skins/Child': ['skin/Common']}
+        self.assertEqual(
+            get_dependencies('skins/Child', mapping),
+            set(['skin/Common'])
+            )
