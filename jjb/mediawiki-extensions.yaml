@@ -66,11 +66,13 @@
     builders:
      - shell: "echo $ZUUL_PROJECT > deps.txt"
      - shell: "echo -e $EXT_DEPENDENCIES >> deps.txt"
+     - shell: "echo -e $SKIN_DEPENDENCIES > deps_skins.txt"
      - zuul-cloner:
          projects: >
              mediawiki/core
              mediawiki/vendor
              $(cat deps.txt)
+             $(cat deps_skins.txt)
      - ve-submodules-update
      - shell: "mv deps.txt src/extensions_load.txt"
      - mw-install-mysql
@@ -83,10 +85,12 @@
     builders:
      - shell: "echo $ZUUL_PROJECT > deps.txt"
      - shell: "echo -e $EXT_DEPENDENCIES >> deps.txt"
+     - shell: "echo -e $SKIN_DEPENDENCIES > deps_skins.txt"
      - zuul-cloner:
          projects: >
              mediawiki/core
              $(cat deps.txt)
+             $(cat deps_skins.txt)
      - ve-submodules-update
      - shell: "mv deps.txt src/extensions_load.txt"
      - composer-validate:
