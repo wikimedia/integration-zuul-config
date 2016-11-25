@@ -44,9 +44,14 @@ class TestExtDependencies(unittest.TestCase):
 
     def test_resolvable_dependencies(self):
         """verifies that we can resolve all of the dependencies"""
-        for ext_name in dependencies:
+        for base_name in dependencies:
+            if base_name.startswith('skins/'):
+                project = 'mediawiki/' + base_name
+            else:
+                project = 'mediawiki/extensions/' + base_name
+
             self.assertHasDependencies(self.fetch_dependencies(
-                project='mediawiki/extensions/' + ext_name))
+                project=project))
 
     def test_job_name(self):
         self.assertHasDependencies(self.fetch_dependencies(

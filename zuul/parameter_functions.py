@@ -53,6 +53,8 @@ def set_parameters(item, job, params):
         'mwext-testextension',
         'mwext-qunit',
         'mwext-mw-selenium',
+        'mw-testskin',
+        'mw-testskin-non-voting',
         )
     if job.name.startswith(ext_deps_jobs_starting_with):
         set_ext_dependencies(item, job, params)
@@ -201,7 +203,10 @@ def set_ext_dependencies(item, job, params):
     :type job: zuul.model.Job
     :type params: dict
     """
-    if not params['ZUUL_PROJECT'].startswith('mediawiki/extensions/'):
+    if not params['ZUUL_PROJECT'].startswith((
+        'mediawiki/extensions/',
+        'mediawiki/skins/',
+    )):
         return
     # mediawiki/extensions/FooBar
     split = params['ZUUL_PROJECT'].split('/')
