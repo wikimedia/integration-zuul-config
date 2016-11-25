@@ -40,7 +40,7 @@
          echo "mediawiki/core" >> deps.txt
          if [ "{dependencies}" != "" ]; then
              echo "> rest of dependencies..."
-             echo "$(IFS=', '; for dep in `echo {dependencies}`; do echo mediawiki/extensions/$dep; done;)" >> deps.txt
+             echo "$(IFS=', '; for dep in `echo {dependencies}`; do echo mediawiki/$dep; done;)" >> deps.txt
          fi
          echo "Dependencies list complete."
      - zuul-cloner:
