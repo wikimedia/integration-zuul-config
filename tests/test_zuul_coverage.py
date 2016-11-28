@@ -25,10 +25,10 @@ class TestZuulCoverage(unittest.TestCase):
             'https://gerrit.wikimedia.org/r/projects/?type=code&description')
         # Strip Gerrit json harness: )]}'
         req.readline()
-        cls._repos = sorted([
-            name for (name, meta) in json.load(req).iteritems()
-            if meta['state'] == 'ACTIVE'
-        ])
+        cls._repos = {
+            name: meta['state']
+            for (name, meta) in json.load(req).iteritems()
+        }
 
     def getLayoutProjects(self):
         layout = os.path.join(
@@ -40,12 +40,14 @@ class TestZuulCoverage(unittest.TestCase):
 
     def assert_have_gate_and_submit(self, prefix):
         projects = self.getLayoutProjects()
-        missing = [repo for repo in self._repos
-                   if repo.startswith(prefix) and repo not in projects]
+        missing = [repo for (repo, state) in self._repos.iteritems()
+                   if repo.startswith(prefix)
+                   and state == 'ACTIVE'
+                   and repo not in projects]
 
         self.longMessage = True
         self.assertEqual(
-            [], missing,
+            [], sorted(missing),
             '%s %s are not configured in zuul' % (len(missing), prefix))
 
     def test_all_extensions_have_gate_and_submit(self):
@@ -57,7 +59,7 @@ class TestZuulCoverage(unittest.TestCase):
     # FIXME should compare against ACTIVE + READ-ONLY repos ???
     def test_zuul_projects_in_gerrit(self):
         zuul = set(self.getLayoutProjects())
-        gerrit = set(self._repos)
+        gerrit = set(self._repos.keys())
         self.longMessage = True
         self.assertEqual(
             [], sorted((zuul & gerrit) ^ zuul),
