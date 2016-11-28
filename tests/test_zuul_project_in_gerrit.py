@@ -1,6 +1,8 @@
 import json
 import os
 import urllib2
+
+from nose.plugins.attrib import attr
 import yaml
 
 GERRIT_URL = 'https://gerrit.wikimedia.org/r/projects/?type=code'
@@ -23,6 +25,7 @@ def get_gerrit_repos():
 GERRIT_REPOS = get_gerrit_repos()
 
 
+@attr('qa')
 def test_zuul_project_in_gerrit():
 
     with open(ZUUL_LAYOUT) as f:
