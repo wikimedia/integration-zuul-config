@@ -20,10 +20,6 @@ include contint::packages::base
 include contint::composer
 include contint::php
 
-# FIXME: hack, our manifests no more ship libapache2-mod-php5
-# See T144802
-include ::apache::mod::php5
-
 include mediawiki::packages::php5
 
 package { 'cron':
@@ -95,6 +91,11 @@ if os_version('debian >= jessie') {
 
     # Qunit/Selenium related
     include contint::browsers
+
+
+    # FIXME: hack, our manifests no more ship libapache2-mod-php5
+    # See T144802
+    include ::apache::mod::php5
 
     # For Selenium jobs video recording (T113520)
     require_package('libav-tools')
