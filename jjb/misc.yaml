@@ -198,10 +198,21 @@
     publishers:
      - castor-save
 
+- job:
+    name: 'visualeditor-jsduck-jessie'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - npm
+     - '{name}-rake-jessie'
+
 - project:
     name: visualeditor
     jobs:
-        - '{name}-jsduck-jessie'
         - '{name}-npm-node-4-jessie'
         - '{name}-rake-jessie'
 
