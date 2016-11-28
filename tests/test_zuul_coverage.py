@@ -55,3 +55,12 @@ class TestZuulCoverage(unittest.TestCase):
 
     def test_all_skins_have_gate_and_submit(self):
         self.assert_have_gate_and_submit('mediawiki/skins/')
+
+    # FIXME should compare against ACTIVE + READ-ONLY repos ???
+    def test_zuul_projects_in_gerrit(self):
+        zuul = set(self.getLayoutProjects())
+        gerrit = set(self._repos.keys())
+        self.longMessage = True
+        self.assertEqual(
+            [], sorted((zuul & gerrit) ^ zuul),
+            'Projects configured in Zuul but no more active in Gerrit')
