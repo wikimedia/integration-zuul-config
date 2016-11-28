@@ -17,20 +17,18 @@ from nose.plugins.attrib import attr
 class TestZuulCoverage(unittest.TestCase):
 
     maxDiff = None
-    _extdistrepos = None
+    _repos = None
 
     @classmethod
     def setUpClass(cls):
         req = urllib.urlopen(
-            'https://www.mediawiki.org/w/api.php?action=query'
-            '&list=extdistrepos&format=json&continue'
-        )
-        data = json.load(req)
-        req.close()
-        cls._extdistrepos = data['query']['extdistrepos']
-
-    def getExtDistRepos(self):
-        return self._extdistrepos
+            'https://gerrit.wikimedia.org/r/projects/?type=code&description')
+        # Strip Gerrit json harness: )]}'
+        req.readline()
+        cls._repos = sorted([
+            name for (name, meta) in json.load(req).iteritems()
+            if meta['state'] == 'ACTIVE'
+        ])
 
     def getLayoutProjects(self):
         layout = os.path.join(
@@ -40,23 +38,18 @@ class TestZuulCoverage(unittest.TestCase):
             projects = [p['name'] for p in yaml.safe_load(f)['projects']]
         return projects
 
-    def assert_have_gate_and_submit(self, kind):
-        assert kind in ['extensions', 'skins'], 'Unrecognized: %s' % kind
-
+    def assert_have_gate_and_submit(self, prefix):
         projects = self.getLayoutProjects()
-        repos = self.getExtDistRepos()[kind]
-        missing = []
-        for repo in repos:
-            if 'mediawiki/%s/%s' % (kind, repo) not in projects:
-                missing.append(repo)
+        missing = [repo for repo in self._repos
+                   if repo.startswith(prefix) and repo not in projects]
 
         self.longMessage = True
         self.assertEqual(
             [], missing,
-            'Some %s are not configured in zuul' % kind)
+            '%s %s are not configured in zuul' % (len(missing), prefix))
 
     def test_all_extensions_have_gate_and_submit(self):
-        self.assert_have_gate_and_submit('extensions')
+        self.assert_have_gate_and_submit('mediawiki/extensions/')
 
     def test_all_skins_have_gate_and_submit(self):
-        self.assert_have_gate_and_submit('skins')
+        self.assert_have_gate_and_submit('mediawiki/skins/')
