@@ -133,6 +133,7 @@ dependencies = {
     'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp'],
     'NavigationTiming': ['EventLogging'],
     'NSFileRepo': ['Lockdown'],
+    'NumberOfComments': ['Comments'],
     'OpenIDConnect': ['PluggableAuth'],
     'OpenStackManager': ['LdapAuthentication'],
     'ORES': ['BetaFeatures'],
