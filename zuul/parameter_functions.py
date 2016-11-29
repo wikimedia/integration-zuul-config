@@ -158,6 +158,7 @@ dependencies = {
     'SemanticSifter': ['SemanticMediaWiki'],
     'SimpleSurvey': ['PrefSwitch'],
     'SolrStore': ['SemanticMediaWiki'],
+    'SpellingDictionary': ['UniversalLanguageSelector'],
     'Spreadsheet': ['PHPExcel'],
     'SubPageList': ['ParserHooks'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
