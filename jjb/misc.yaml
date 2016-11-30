@@ -198,23 +198,12 @@
     publishers:
      - castor-save
 
-# VisualEditor has dependencies that have to be installed via npm first.
-- job:
-    name: 'visualeditor-jsduck-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - npm-install
-     - jsduck
-
 - project:
     name: visualeditor
     jobs:
         - '{name}-npm-node-4-jessie'
+        - '{name}-npm-run-{script}-node-4-jessie':
+           script: 'doc'
         - '{name}-rake-jessie'
 
 - job:
