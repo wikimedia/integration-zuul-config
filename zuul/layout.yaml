@@ -754,7 +754,7 @@ jobs:
     branch: (?!REL1_23|fundraising/REL.*)
     queue-name: mediawiki
 
-  - name: ^mediawiki-extensions-php55$
+  - name: ^mediawiki-extensions-php55(-trusty)?$
     branch: (?!REL1_23|REL1_26|fundraising/REL.*)
     queue-name: mediawiki
 
@@ -1046,6 +1046,9 @@ project-templates:
       - mediawiki-extensions-php53
       - mediawiki-extensions-php55
       - mediawiki-extensions-qunit-jessie
+    experimental:
+      - mediawiki-extensions-hhvm-jessie
+      - mediawiki-extensions-php55-trusty
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
