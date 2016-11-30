@@ -173,8 +173,16 @@
          results: 'log/junit*.xml'
      - email-ext:
          recipients: hashar@free.fr
-         body: ${JELLY_SCRIPT,template="html"}
-
+         content-type: html
+         body: |
+             ${SCRIPT, template="wikimedia.template"}
+             <h2>Changes since last build</h2>
+             <p>
+             ${CHANGES_SINCE_LAST_BUILD}</p>
+             <h2>Console output</h2>
+             <pre>
+             ${BUILD_LOG}
+             </pre>
 
 - project:
     name: 'integration-config'
