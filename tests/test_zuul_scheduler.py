@@ -769,7 +769,7 @@ class TestZuulScheduler(unittest.TestCase):
             ext_name[len('mediawiki/extensions/'):]  # extension basename
             for (ext_name, pipelines) in self.getProjectsDefs().iteritems()
             if ext_name.startswith('mediawiki/extensions/')
-            and 'mediawiki-extensions-hhvm' in pipelines.get('test', {})
+            and 'mediawiki-extensions-hhvm-jessie' in pipelines.get('test', {})
         ])
 
         self.assertSetEqual(
