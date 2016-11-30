@@ -247,6 +247,29 @@
      - mw-teardown-mysql
      - archive-log-dir
 
+- job-template:
+    name: 'mediawiki-extensions-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
+    concurrent: true
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - assert-phpflavor:
+         phpflavor: '{phpflavor}'
+     - hhvm-clear-hhbc
+     - prepare-mediawiki-zuul-project
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allexts
+    publishers:
+     - junit:
+        results: 'log/junit*.xml'
+     - archive-log-dir
+     - castor-save
+
 # See 'mediawiki-phpunit-{phpflavor}'
 - job-template:
     name: 'mediawiki-extensions-qunit-jessie'
@@ -294,6 +317,7 @@
 
       - 'mediawiki-phpunit-{phpflavor}-composer'
       - 'mediawiki-extensions-{phpflavor}'
+      - 'mediawiki-extensions-{phpflavor}-{image}': *phpflavor_images
       - 'mediawiki-extensions-qunit-jessie'
 
 - job:
