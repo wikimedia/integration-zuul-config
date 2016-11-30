@@ -52,6 +52,32 @@
      - castor-save
      - archive-log-dir
 
+# The same as mediawiki-core-qunit-jessie but also cloning
+# mediawiki/skins/Vector and running mocha-selenium builder
+# instead of qunit-karma
+- job-template:
+    name: 'mediawiki-core-selenium-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    builders:
+     - castor-load
+     - zuul-cloner:
+         projects: >
+             mediawiki/skins/Vector
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-mysql
+     - mw-apply-settings
+     - mocha-selenium
+    publishers:
+     - castor-save
+     - archive-log-dir
+
 - job-template:
     name: 'mediawiki-core-jsduck'
     node: contintLabsSlave && UbuntuTrusty
