@@ -754,7 +754,7 @@ jobs:
     branch: (?!REL1_23|fundraising/REL.*)
     queue-name: mediawiki
 
-  - name: ^mediawiki-extensions-php55(-trusty)?$
+  - name: ^mediawiki-extensions-php55-trusty$
     branch: (?!REL1_23|REL1_26|fundraising/REL.*)
     queue-name: mediawiki
 
@@ -976,7 +976,7 @@ project-templates:
      - mwext-testextension-hhvm
      - composer-validate
     experimental:
-      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
@@ -1006,7 +1006,7 @@ project-templates:
      - php55lint
      - composer-validate
     experimental:
-      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
@@ -1036,19 +1036,16 @@ project-templates:
 
   - name: extension-gate
     test:
-      - mediawiki-extensions-hhvm
+      - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
     php5:
-      - mediawiki-extensions-php55
+      - mediawiki-extensions-php55-trusty
       - mediawiki-extensions-php53
     gate-and-submit:
-      - mediawiki-extensions-hhvm
-      - mediawiki-extensions-php53
-      - mediawiki-extensions-php55
-      - mediawiki-extensions-qunit-jessie
-    experimental:
       - mediawiki-extensions-hhvm-jessie
+      - mediawiki-extensions-php53
       - mediawiki-extensions-php55-trusty
+      - mediawiki-extensions-qunit-jessie
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
