@@ -151,6 +151,28 @@
          days-to-keep: 15
          artifact-days-to-keep: 3
 
+# Same as mwext-mw-selenium but runs `bundle exec rake spec` instead of `bundle exec cucumber` T146916
+- job:
+    name: 'mwext-mw-rspec'
+    node: contintLabsSlave && UbuntuTrusty
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - prepare-mediawiki-zuul-project
+     - zuul-cloner:
+         projects: mediawiki/skins/Vector
+     - mw-selenium
+    publishers:
+     - mw-selenium-cleanup
+     - localhost-cleanup
+     - mw-teardown-mysql
+     - archive-log-dir
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+         artifact-days-to-keep: 3
+
 # Same as mwext-mw-selenium but on Nodepool T137112
 - job:
     name: 'mwext-mw-selenium-jessie'
