@@ -917,6 +917,10 @@ jobs:
   - name: mediawiki-core-qunit-jessie
     queue-name: mediawiki
 
+  - name: mediawiki-core-selenium-jessie
+    # Experimental T139740
+    voting: false
+
   - name: mediawiki-core-jsduck
     branch: ^(REL.*|master)$
 
@@ -1332,6 +1336,7 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
+      - mediawiki-core-selenium-jessie
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-core-qunit-jessie
       - composer-package-validate
@@ -1344,6 +1349,7 @@ projects:
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
       - mediawiki-core-phpcs-trusty
+      - mediawiki-core-selenium-jessie
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-hhvm-composer-jessie
       - mediawiki-phpunit-php55-trusty
@@ -1360,8 +1366,6 @@ projects:
       - composer-php70-jessie
       - mediawiki-phpunit-php70-jessie
       - mediawiki-extensions-php70-jessie
-      # experimental Node.js Selenium job
-      - mediawiki-core-selenium-jessie
 
   - name: mediawiki/debian
     test:
