@@ -406,6 +406,19 @@
             --format pretty \
             --format junit --out $WORKSPACE/log/junit
 
+# Similar to mw-selenium-nodepool job but runs `bundle exec rake spec` instead of `bundle exec cucumber` T146916
+- builder:
+    name: mw-rspec-nodepool
+    builders:
+     - prepare-localhost
+     - shell: |
+         # Change to the working directory. EXT_NAME is set by Zuul parameters
+         # functions
+         cd "src/extensions/$EXT_NAME"
+         . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
+         bundle install --verbose
+         bundle exec rake spec
+
 # Cleans up anything left under /tmp/jenkins-$EXECUTOR_NUMBER
 #
 # Note that once the bug with Xvfb and TMPDIR is resolved, this can be
