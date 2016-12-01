@@ -1,0 +1,16 @@
+#!/bin/bash
+# vim: set et ts=4 sw=4:
+
+# Must happens after:
+# elements/debootstrap/install.d/10-debian-networking
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# Remove eth1 configuration from debootstrap element.
+# Seems to delay instance boot https://phabricator.wikimedia.org/T113342
+echo "Removing unneeded eth1 configuration package..."
+rm -fv /etc/network/interfaces.d/eth1
