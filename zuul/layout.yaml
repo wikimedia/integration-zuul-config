@@ -917,6 +917,9 @@ jobs:
   - name: mediawiki-core-qunit-jessie
     queue-name: mediawiki
 
+  - name: mediawiki-core-selenium-jessie
+    branch: ^master$
+
   - name: mediawiki-core-jsduck
     branch: ^(REL.*|master)$
 
@@ -1332,6 +1335,7 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
+      - mediawiki-core-selenium-jessie
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-core-qunit-jessie
       - composer-package-validate
@@ -1344,6 +1348,7 @@ projects:
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
       - mediawiki-core-phpcs-trusty
+      - mediawiki-core-selenium-jessie
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-hhvm-composer-jessie
       - mediawiki-phpunit-php55-trusty
@@ -1360,8 +1365,6 @@ projects:
       - composer-php70-jessie
       - mediawiki-phpunit-php70-jessie
       - mediawiki-extensions-php70-jessie
-      # experimental Node.js Selenium job
-      - mediawiki-core-selenium-jessie
 
   - name: mediawiki/debian
     test:
@@ -1381,6 +1384,7 @@ projects:
       - php55lint
       - composer-validate
       - mediawiki-core-qunit-jessie
+      - mediawiki-core-selenium-jessie
       - mediawiki-phpunit-hhvm-jessie
     php5:
       - mediawiki-phpunit-php55-trusty
@@ -1389,6 +1393,7 @@ projects:
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-trusty
       - mediawiki-core-qunit-jessie
+      - mediawiki-core-selenium-jessie
       - composer-validate
     experimental:
       - composer-hhvm-jessie
@@ -1951,8 +1956,10 @@ projects:
      - name: skin-tests
     check:
      - jsonlint
-    experimental:
-     - mediawiki-core-selenium-jessie
+    test:
+      - mediawiki-core-selenium-jessie
+    gate-and-submit:
+      - mediawiki-core-selenium-jessie
 
   - name: mediawiki/skins/VectorV2
     template:
