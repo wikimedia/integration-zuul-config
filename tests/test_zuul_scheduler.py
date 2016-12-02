@@ -596,7 +596,7 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(test_manager.eventMatches(event, change))
 
     # FIXME: should be more generic
-    def get_mediawiki_core_rake_jessie_job(self, pipeline_manager):
+    def get_mediawiki_core_rake_jessie_job(self):
         jobs_tree = [t for (p, t) in
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'mediawiki/core'][0]
