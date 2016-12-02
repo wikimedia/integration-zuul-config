@@ -165,5 +165,9 @@ if os_version('debian >= jessie') {
     package { 'varnish':
         ensure => present,
     }
+    service { 'varnish':
+        require  => Package['varnish'],
+        enable => false,
+    }
 }
 # end contint::packages::ops
