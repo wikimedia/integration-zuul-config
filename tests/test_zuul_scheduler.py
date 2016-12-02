@@ -596,7 +596,7 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(test_manager.eventMatches(event, change))
 
     # FIXME: should be more generic
-    def get_mediawiki_core_rake_jessie_job(self, pipeline_manager):
+    def get_mediawiki_core_rake_jessie_job(self):
         jobs_tree = [t for (p, t) in
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'mediawiki/core'][0]
@@ -608,7 +608,7 @@ class TestZuulScheduler(unittest.TestCase):
     # https://phabricator.wikimedia.org/T105178
     def test_mediawiki_core_rake_jessie_branch_filters(self):
         test_manager = self.getPipeline('test').manager
-        rake_jessie_job = self.get_mediawiki_core_rake_jessie_job(test_manager)
+        rake_jessie_job = self.get_mediawiki_core_rake_jessie_job()
 
         def change_for_branch(branch_name):
             """Return a change against branch_name branch"""
@@ -640,7 +640,7 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_rake_jessie_files_filters(self):
         test_manager = self.getPipeline('test').manager
-        rake_jessie_job = self.get_mediawiki_core_rake_jessie_job(test_manager)
+        rake_jessie_job = self.get_mediawiki_core_rake_jessie_job()
 
         def change_with_files(files):
             change = zuul.model.Change('mediawiki/core')
