@@ -9,6 +9,45 @@
          failure: false
          fixed: true
 
+- job:
+    name: operations-puppet-catalog-compiler
+    block-downstream: false
+    block-upstream: false
+    builders:
+    - shell: CHANGE="${GERRIT_CHANGE_NUMBER}" NODES="${LIST_OF_NODES}" puppet-compiler
+    concurrent: false
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      <p>The Puppet compiler. Use it to check your changes :)</p>
+    disabled: false
+    jdk: (System)
+    node: compiler02.puppet3-diffs.eqiad.wmflabs
+    parameters:
+    - string:
+        default: '2'
+        description: Number of threads used on the labs instance to compile catalog.
+          Don't use more than four!
+        name: NUM_THREADS
+    - string:
+        default: ''
+        description: The Gerrit change number (without patchset number) that will
+          be fetched from Gerrit to compile the catalogs against Puppet version 2
+          and 3.
+        name: GERRIT_CHANGE_NUMBER
+    - string:
+        default: ''
+        description: |-
+          List of nodes (comma separated) to compile catalogs against.<br/>
+          Leave blank to have the software select nodes for you (by parsing site.pp and matches that with the node list it had).
+        name: LIST_OF_NODES
+    project-type: freestyle
+    properties:
+    - build-discarder:
+        artifact-days-to-keep: -1
+        artifact-num-to-keep: -1
+        days-to-keep: 60
+        num-to-keep: -1
+
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
