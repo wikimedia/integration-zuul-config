@@ -44,8 +44,7 @@ pipelines:
           email:
             - |
               (?x) ^(?!(
-                .*?@wikimedia\.org
-                | .*?@wikimedia\.de
+                .*?@wikimedia\.(org|de)
                 | 01tonythomas@gmail\.com
                 | aarcos\.wiki@gmail\.com
                 | adamr_carter@btinternet\.com
@@ -276,8 +275,7 @@ pipelines:
           # - Also update the email filter of the 'check' pipeline.
 
           email: &email_whitelist
-           - .*?@wikimedia\.org$
-           - .*?@wikimedia\.de$
+           - .*?@wikimedia\.(org|de)$
 
           # WMF staff & contractors:
            - ^aarcos\.wiki@gmail\.com$
