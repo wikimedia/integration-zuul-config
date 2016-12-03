@@ -41,9 +41,8 @@ pipelines:
           # TODO: Figure out a way to turn this into a list instead of a single regex.
           # TODO: Figure out a way to not have to repeat this from pipeline 'test'.
           # This email filter and the one for 'test' can be removed once we have fixed bug 45499.
-          email:
-            - |
-              (?x) ^(?!(
+          email-value:
+            - &email_whitelist
                 .*?@wikimedia\.(org|de)
                 | 01tonythomas@gmail\.com
                 | aarcos\.wiki@gmail\.com
@@ -223,7 +222,8 @@ pipelines:
                 | yuriastrakhan@gmail\.com
                 | yuvipanda@gmail\.com
                 | zhorishna@gmail\.com
-              )).*$
+          email-value:
+            - ^(?!(%{email_whitelist}))*.$
 
     success-message: 'Basic test build succeeded.'
     success:
@@ -274,217 +274,16 @@ pipelines:
           # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
           # - Also update the email filter of the 'check' pipeline.
 
-          email: &email_whitelist
-           - .*?@wikimedia\.(org|de)$
-
-          # WMF staff & contractors:
-           - ^aarcos\.wiki@gmail\.com$
-           - ^amir\.aharoni@mail\.huji\.ac\.il$
-           - ^andrew\.green\.df@gmail\.com$
-           - ^anomie\.wikipedia@gmail\.com$
-           - ^bawolff\+wn@gmail\.com$
-           - ^christian@quelltextlich\.at$
-           - ^david@troi\.org$ # David Chan
-           - ^git@samsmith\.io$ # Sam Smith
-           - ^glaser@hallowelt\.biz$
-           - ^hashar@free\.fr$
-           - ^jeroendedauw@gmail\.com$
-           - ^kartik\.mistry@gmail\.com$
-           - ^krinklemail@gmail\.com$ # Timo Tijhof
-           - ^legoktm@member\.fsf\.org$ # Kunal Mehta
-           - ^maxsem\.wiki@gmail\.com$
-           - ^marielle\.volz@gmail\.com$
-           - ^moriel@gmail\.com # Moriel Schottlender
-           - ^mtraceur@member\.fsf\.org$
-           - ^niharikakohli29@gmail\.com$
-           - ^niklas\.laxstrom@gmail\.com$
-           - ^roan\.kattouw@gmail\.com$
-           - ^sam@samwilson\.id\.au$
-           - ^santhosh\.thottingal@gmail\.com$
-           - ^shahyar@gmail\.com$
-           - ^siebrand@kitano\.nl$
-           - ^stefan@garage-coding\.com$
-           - ^stefan\.petrea@gmail\.com$
-           - ^sucheta\.ghoshal@gmail\.com$
-           - ^trevorparscal@gmail\.com$
-           - ^yuriastrakhan@gmail\.com$
-           - ^yuvipanda@gmail\.com$
-
-          # VisualEditor (Wikia)
-           - ^inez@wikia-inc\.com$
-           - ^orbit@framezero\.com$ # Christian Williams
-
-          # WMDE:
-           - ^addshorewiki@gmail\.com$
-           - ^aude\.wiki@gmail\.com$
-           - ^hoo@online\.de$
-
-          # WMSE:
-           - ^sebastian\.berlin@wikimedia\.se$
-
-          # Hasso-Plattner-Institut students working on Wikidata projects
-           - ^andreas\.burmeister@student\.hpi\.de$
-           - ^dominic\.sauer@yahoo\.de$
-           - ^jonas@keutel\.de$
-           - ^soeren_oldag@freenet\.de$
-           - ^tamaraslosarek@gmail\.com$
-
-          # VistaPrint
-          # They are heavily using MediaWiki internally and open sourced
-          # some of their extensions. Might wildcard them as well, for
-          # now just whitelist Daniel Renfro.
-           - ^drenfro@vistaprint\.com$ # AlephNull
-
-          # Trusted long term users:
-           - ^adamr_carter@btinternet\.com$ # UltrasonicNXT
-           - ^admin@alphacorp\.tk$ # Hydriz
-           - ^admin@glados\.cc$ # Unicodesnowman
-           - ^cblair91@gmail\.com$ # Cblair91 -- mw/ext/ImportArticles
-           - ^anirudh24seven@gmail\.com$ # Anirudh S
-           - ^asthana\.sumit23@gmail\.com$ # Sumit
-           - ^benapetr@gmail\.com$ # petrb
-           - ^benestar\.wikimedia@gmail\.com$
-           - ^bryan\.tongminh@gmail\.com$
-           - ^cenarium\.sysop@gmail\.com$ # Cenarium
-           - ^cicalese@mitre\.org$
-           - ^codereview@emsenhuber\.ch$
-           - ^CommodoreFabianus@gmx\.de # XZise, Pywikibot maintainer
-           - ^d_entous@yahoo\.com$
-           - ^daniel@nadir-seen-fire\.com$
-           - ^daniel\.rey\.lopez@gmail\.com$
-           - ^dereckson@espace-win\.org$
-           - ^devunt@gmail\.com$
-           - ^ebrahim@gnu\.org$
-           - ^eloquence@gmail\.com$
-           - ^eranroz89@gmail\.com$ # Eran Roz
-           - ^federicoleva@tiscali\.it$ # Nemo bis
-           - ^florian\.schmidt\.stargatewissen@gmail\.com$
-           - ^fomafix@googlemail\.com$
-           - ^geofbot@gmail\.com$
-           - ^glaisher\.wiki@gmail\.com$
-           - ^hartman\.wiki@gmail\.com$
-           - ^hgasuser@gmail\.com$ # MGChecker
-           - ^huji\.huji@gmail\.com$
-           - ^info@gno\.de$ # Xqt, Pywikibot maintainer
-           - ^jamesmhare@gmail\.com$ # harej
-           - ^jamesin\.hongkong\.1@gmail\.com$ # Mwjames
-           - ^jack@countervandalism\.net$ # Jack Phoenix
-           - ^jackmcbarn@gmail\.com$ # Jackmcbarn
-           - ^jan\.wikimedia@zerebecki\.de # Jan Zerebecki
-           - ^jarry1250@gmail\.com$
-           - ^jayvdb@gmail\.com$
-           - ^jeanfrederic\.wiki@gmail\.com$
-           - ^jeff\.janes@gmail\.com$
-           - ^julien\.inbox\.wiki@gmail\.com$ # JGirault
-           - ^karsten@hoffmeyer\.info$ # Kghbln
-           - ^krenair@gmail\.com$
-           - ^kumariankita002@gmail\.com$
-           - ^[lL]adsgroup@gmail\.com$ # Pywikibot maintainer
-           - ^lewis@lewiscawte\.me$
-           - ^liangent@gmail\.com$
-           - ^lokal\.profil@gmail\.com$
-           - ^luke@faraone\.cc$
-           - ^luke081515@web\.de$
-           - ^l\.verhovskij@gmail\.com$ # Ljonka
-           - ^mah@nichework\.com$
-           - ^marc@uberbox\.org$
-           - ^mail@wikinaut\.de$
-           - ^markus@semantic-mediawiki\.org$
-           - ^maroloccio@gmail\.com$
-           - ^martin@urbanec\.cz$ # Urbanecm
-           - ^martin\.urbanec@wikimedia\.cz$
-           - ^matanya\.moses@gmail\.com$
-           - ^matanya@foss\.co\.il$
-           - ^matma\.rex@gmail\.com$
-           - ^misterstrad@gmail\.com$ # Mr. Stradivarius
-           - ^mjbmri@gmail\.com$
-           - ^mlazowik@gmail\.com$
-           - ^mxn@1ec5\.org$ # Minh Nguyen T139345
-           - ^nilesh@nileshc\.com$
-           - ^oliver\.buchtala@gmail\.com$ # Substance.io developer
-           - ^pastakhov@yandex\.ru$ # PhpTags maintainer
-           - ^platonides@gmail\.com$
-           - ^pleasestand@live\.com$
-           - ^pragun06@gmail\.com$
-           - ^purodha@blissenbach\.org$
-           - ^raimond\.spekking@gmail\.com$
-           - ^rillke@wikipedia\.de$
-           - ^robinp\.1273@gmail\.com$
-           - ^vogel@hallowelt\.biz$ # Robert Vogel
-           - ^saper@saper\.info$
-           - ^se4598@gmx\.de$
-           - ^skizzerz@skizzerz\.net$
-           - ^strigiwm@gmail\.com$ # MarcoAurelio
-           - ^s7eph4n@gmail\.org$ # Foxtrott
-           - ^tasneem\.lo\.31@gmail\.com$
-           - ^thalia\.e\.chan@googlemail\.com$ # Thalia Chan
-           - ^thomasmulhall410@yahoo\.com$ # Paladox T114528
-           - ^thomaspt@hotmail\.fr$
-           - ^at\.light@live\.com\.au$ # This, that and the other
-           - ^tomasz@twkozlowski\.com$
-           - ^01tonythomas@gmail\.com$
-           - ^tim@tim-landscheidt\.de$
-           - ^tinajohnson\.1234@gmail\.com$
-           - ^tur\.neslihan@gmail\.com$ # Nes / Neslihan
-           - ^tylerromeo@gmail\.com$
-           - ^umherirrender_de\.wp@web\.de$
-           - ^v\.a\.ghaisas@gmail\.com$ # polybuildr
-           - ^valhallasw@arctus\.nl$ # Merlijn van Deen
-           - ^vikasyaligar\.it@gmail\.com$ # Vikas Yaligar
-           - ^w@mzmcbride\.com$
-           - ^wctaiwan@gmail\.com$
-           - ^wiki@physikerwelt\.de$
-           - ^wirth@hallowelt\.biz$ # Pwirth
-           - ^yaron57@gmail\.com$
-           - ^zhorishna@gmail\.com$ # Isarra
-           - ^mwalker@khaosdev\.com$ # Matt Walker
-
-           # Pywikibot related
-           - ^alexsh@mail2000\.com\.tw$  # Alex S.H. Lin
-           - ^dalba\.wiki@gmail\.com$
-           - ^loic@dachary\.org$
-           - ^dr\.trigon@surfeu\.ch$  # DrTrigon
-           - ^happy5214@gmail\.com$
-           - ^maarten@mdammers\.nl$  # Multichill
-           - ^malafaya@clix\.pt$
-           - ^mpaa\.wiki@gmail\.com$
-           - ^nullzero\.free@gmail\.com$
-           - ^pyfisch@gmail\.com$
-           - ^ricordisamoa@openmailbox\.org$
-           - ^russblau@imapmail\.org$  # Russell Blau
-           - ^whym@whym\.org$
-           - ^wiki@strainu\.ro$  # Strainu
-           - ^wikiposta@gmail\.com$  # Bináris
-
-          # Parsoid OPW interns
-           - ^bebirchall@gmail\.com$
-           - ^ecokpo@gmail\.com$
-           - ^maria\.pacana@gmail\.com$
-
-          # GSoC students!
-           - ^hardikjuneja\.hj@gmail\.com$
-           - ^xietaoecho@gmail\.com$ # Lethexie
-           - ^hbhyrava@gmail\.com$ # Darthbhyrava
-
-          # GCI students!
-           - ^bmp2558@gmail\.com$ # Georggi
-           - ^crazy4sb@gmail\.com$ # unicornisaurous
-           - ^divad\.nnamtdeis@gmail\.com$ # Divadsn
-           - ^gianiskido@gmail\.com$ # IoannisKydonis
-           - ^i@ananayarora\.com$
-           - ^juliusalphonso\.09@gmail\.com$ # JadeMaveric
-           - ^justin\.d128@gmail\.com$ # MtDu
-           - ^mhutti1@gmail\.com$
-           - ^pranavmk98@gmail\.com$ # PranavK
-           - ^rj23@protonmail\.com$ # Filip / rlot
-           - ^victorbarbu08@gmail\.com$ # Victorbarbu
+          email:
+            - ^(%{email_whitelist})$
 
         # Let whitelisted users the ability to reenqueue a change in the test
         # pipeline by simply commenting 'recheck' on a change.
         - event: comment-added
           branch: (?!^refs/meta/config)
           comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
-          email: *email_whitelist
+          email:
+            - ^(%{email_whitelist})$
 
         # Let whitelisted users CR+1 to trigger tests for an untested patch
         # (Verified 0 or 1)
@@ -494,7 +293,8 @@ pipelines:
             # hasn't been tested yet
             - verified: [0, 1]
               username: jenkins-bot
-          email: *email_whitelist
+          email:
+            - ^({*email_whitelist})$
           approval:
             - code-review: +1
 
@@ -518,7 +318,8 @@ pipelines:
       gerrit:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check experimental\.?\s*$
-          email: *email_whitelist
+          email:
+            - ^(%{email_whitelist}).*$
     success-message: 'Experimental build succeeded.'
     success:
       gerrit: {}
@@ -537,7 +338,8 @@ pipelines:
       gerrit:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check (php53?|zend)\.?\s*$
-          email: *email_whitelist
+          email:
+            - ^(%{email_whitelist})$
     success-message: 'PHP5 build succeeded.'
     success:
       gerrit: {}
