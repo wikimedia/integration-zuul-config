@@ -598,6 +598,29 @@ pipelines:
       gerrit:
         verified: 0
 
+  - name: puppet-compiler
+    description: Jobs triggered after a comment on gerrit.
+    manager: IndependentPipelineManager
+    source: gerrit
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment: (?im)^Patch Set \d+:\n\n\s*check puppet-compiler (php53?|zend)\.?\s*$
+          # Might want to create a new whitelist if we decide we only want half of the users to run this.
+          email: *email_whitelist
+          branch: (?!^refs/meta/config)
+    start:
+      gerrit:
+        verified: 0
+    success-message: 'Puppet compiler build succeeded.'
+    success:
+      gerrit:
+        verified: 2
+    failure-message: 'Puppet compiler build failed.'
+    failure:
+      gerrit:
+        verified: -1
+
   # Pipeline reacting whenever a reference is updated
   - name: post
     description: Whenever a reference is updated.
