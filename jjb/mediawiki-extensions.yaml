@@ -374,16 +374,7 @@
      - castor-load
      - shell: |
         cd daemon
-        make
-     - shell: |
-         # Install to BUNDLE_PATH, injected by Zuul
-         bundle install --clean
-         cd daemon
-
-         # AUTOTEST is recognized by cucumber ANSI formatter to force color
-         # output on non TTY.
-         export AUTOTEST=1
-         bundle exec make test
+        make test
     publishers:
      - archive:
          artifacts: daemon/poolcounterd
