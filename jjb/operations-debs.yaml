@@ -183,6 +183,20 @@
     # Reinject Zuul parameters since JJB strip them for some reason
     triggers:
      - zuul
+
+- job-template:
+    !!merge : *job_template_debian_glue
+    name: 'PoolCounter-debian-glue'
+    parameters:
+        # T152338
+        - string:
+            name: SOURCE_DIRECTORY
+            description: 'Location of /debian directory for generate-git-snapshot'
+            default: 'source/daemon'
+    # Reinject Zuul parameters since JJB strip them for some reason
+    triggers:
+     - zuul
+
 #
 # PROJECTS
 #
@@ -193,3 +207,4 @@
     jobs:
         - 'debian-glue'
         - 'debian-glue-non-voting'
+        - 'PoolCounter-debian-glue'
