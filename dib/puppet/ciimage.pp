@@ -134,6 +134,7 @@ if os_version('debian >= jessie') {
     # run. NOTE: hiera must have: service::configuration::use_dev_pkgs: true
     include graphoid::packages
     include mathoid::packages
+    include trendingedits::packages
 }
 
 ensure_packages(['mariadb-client', 'mariadb-server'])
