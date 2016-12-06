@@ -14,3 +14,8 @@ set -o pipefail
 # Seems to delay instance boot https://phabricator.wikimedia.org/T113342
 echo "Removing unneeded eth1 configuration package..."
 rm -fv /etc/network/interfaces.d/eth1
+
+# Drop potentially overlapping sourcing statement in interfaces.
+if grep -q '^source-directory ' /etc/network/interfaces; then
+    sed -i -e '\%^source /etc/network/interfaces.d/%d'
+fi
