@@ -40,6 +40,10 @@ echo "apt-get dist-upgrade && clean"
 sudo apt-get -V -q -y -o 'DPkg::Options::=--force-confold' dist-upgrade
 sudo apt-get clean
 
+# T113342, left over leases delay instances boot
+echo "Deleting DHCP leases"
+sudo rm -fv /var/lib/dhcp/dhclient.*.leases
+
 echo "Syncing filesystem"
 sync
 
