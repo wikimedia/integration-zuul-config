@@ -646,6 +646,9 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
+  - name: ^mediawiki-core-php70-phan$
+    voting: false
+
   - name: ^.*rake-jessie$
     files:
       # Uses python re.match() which checks at BEGINNING of the string
@@ -1404,6 +1407,7 @@ projects:
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-core-qunit-jessie
       - composer-package-validate
+      - mediawiki-core-php70-phan
     php5:
       # Comment "check php5" to manually run this
       - mediawiki-phpunit-php55-trusty
@@ -1420,6 +1424,7 @@ projects:
       - mediawiki-phpunit-php55-trusty
       - mediawiki-core-qunit-jessie
       - composer-package-validate
+      - mediawiki-core-php70-phan
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
@@ -1434,7 +1439,6 @@ projects:
       - composer-php70-jessie
       # experimental Node.js Selenium job
       - mediawiki-core-selenium-jessie
-      - mediawiki-core-php70-phan
 
   - name: mediawiki/debian
     test:
