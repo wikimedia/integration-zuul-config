@@ -7541,6 +7541,16 @@ projects:
      - name: archived
 
 # End of new currently disabled extensions checks from mass extension import - Addshore
+#
+  - name: mediawiki/services/change-propagation
+    template:
+      - name: npm
+
+  - name: mediawiki/services/change-propagation/deploy
+    test:
+      - change-propagation-npm-node-4-jessie
+    gate-and-submit:
+      - change-propagation-npm-node-4-jessie
 
   - name: mediawiki/services/citoid
     template:
