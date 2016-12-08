@@ -484,7 +484,7 @@
         dir: '$WORKSPACE/src'
      - shell: |
         cd $WORKSPACE/src
-        composer require etsy/phan:0.6.0 --dev # todo don't hardcode version here
+        composer require etsy/phan:dev-master --prefer-source --dev # todo don't hardcode version here
         PHAN=vendor/bin/phan ./tests/phan/bin/phan
     publishers:
      - castor-save
