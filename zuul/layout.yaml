@@ -648,6 +648,9 @@ jobs:
 
   - name: ^mediawiki-core-php70-phan-jessie$
     voting: false
+    skip-if:
+      - project: '^mediawiki/core$'
+        branch: (?:^(fundraising/)?REL1_2[378]$|^wmf/1\.29\.0-wmf\.5$)
 
   - name: ^.*rake-jessie$
     files:
