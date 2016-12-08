@@ -664,6 +664,11 @@ jobs:
       - project: '^VisualEditor/VisualEditor$'
         branch: (?:^REL1_26$)
 
+  - name: ^debian-glue-non-voting$
+    skip-if:
+      - project: '^integration/uprightdiff$'
+        branch: (?!debian$)
+
   # Always trigger rake for operations/puppet since it runs puppetlint
   - name: ^operations-puppet-rake-jessie$
     files:
@@ -1350,6 +1355,13 @@ projects:
     check:
       - jshint
       - jsonlint
+
+  - name: integration/uprightdiff
+    test:
+      - debian-glue-non-voting
+    gate-and-submit:
+      # FIXME will be debian-glue eventually T152577
+      - noop
 
   - name: integration/zuul
     test:
