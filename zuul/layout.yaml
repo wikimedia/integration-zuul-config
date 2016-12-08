@@ -664,11 +664,6 @@ jobs:
       - project: '^VisualEditor/VisualEditor$'
         branch: (?:^REL1_26$)
 
-  - name: ^debian-glue-non-voting$
-    skip-if:
-      - project: '^integration/uprightdiff$'
-        branch: (?!debian$)
-
   # Always trigger rake for operations/puppet since it runs puppetlint
   - name: ^operations-puppet-rake-jessie$
     files:
@@ -685,6 +680,9 @@ jobs:
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     # FIXME maybe restrict just to debian/ changes:
     #files: 'debian/.*'
+    skip-if:
+      - project: '^integration/uprightdiff$'
+        branch: (?!debian$)
 
   - name: erblint-HEAD
     files:
@@ -1358,10 +1356,9 @@ projects:
 
   - name: integration/uprightdiff
     test:
-      - debian-glue-non-voting
+      - debian-glue
     gate-and-submit:
-      # FIXME will be debian-glue eventually T152577
-      - noop
+      - debian-glue
 
   - name: integration/zuul
     test:
