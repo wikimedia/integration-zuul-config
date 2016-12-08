@@ -664,7 +664,7 @@ jobs:
       - project: '^VisualEditor/VisualEditor$'
         branch: (?:^REL1_26$)
 
-  - name: ^debian-glue-non-voting$
+  - name: ^debian-glue$
     skip-if:
       - project: '^integration/uprightdiff$'
         branch: (?!debian$)
@@ -1358,10 +1358,9 @@ projects:
 
   - name: integration/uprightdiff
     test:
-      - debian-glue-non-voting
+      - debian-glue
     gate-and-submit:
-      # FIXME will be debian-glue eventually T152577
-      - noop
+      - debian-glue
 
   - name: integration/zuul
     test:
