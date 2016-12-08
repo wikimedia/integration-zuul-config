@@ -178,6 +178,14 @@
              exit 1
          fi
 
+- builder:
+    name: set-phpflavor
+    builders:
+        - shell: |
+            export PHP_BIN={phpflavor}
+        - assert-phpflavor:
+            phpflavor: '{phpflavor}'
+
 # Assert 'php' is phpflavor
 #
 # Parameter:
