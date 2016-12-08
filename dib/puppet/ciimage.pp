@@ -146,6 +146,9 @@ package { [
     ensure => present,
 }
 
+# For mediawiki/services, they use `nc` to check Kafka
+ensure_packages(['netcat-openbsd'])
+
 # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
 ensure_packages(['zip', 'unzip'])
 
