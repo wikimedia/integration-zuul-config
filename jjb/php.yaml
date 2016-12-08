@@ -163,32 +163,6 @@
     triggers:
      - zuul
 
-# Runs "composer update" and "composer test" but on disposable instances
-# maintained by Nodepool. It runs both PHP55 and HHVM tests in the same job.
-- job:
-    name: 'composer-php55-hhvm-trusty'
-    node: ci-trusty-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - set-phpflavor:
-         phpflavor: php55
-     - composer-validate:
-        dir: '.'
-     - composer-update:
-        dir: '.'
-     - composer-test
-     - set-phpflavor:
-         phpflavor: hhvm
-     - composer-test
-    publishers:
-     - castor-save
 
 - project:
     name: 'composer-flavored-on-nodepool'
