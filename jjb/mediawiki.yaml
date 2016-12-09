@@ -485,6 +485,12 @@
      - shell: |
         cd $WORKSPACE/src
         composer require etsy/phan:0.7 --prefer-dist --dev --no-progress --ansi --profile -v # todo don't hardcode version here
-        PHAN=vendor/bin/phan ./tests/phan/bin/phan
+        PHAN=vendor/bin/phan ./tests/phan/bin/phan -m checkstyle
     publishers:
      - castor-save
+     - checkstyle:
+        pattern: 'src/tests/phan/issues/latest'
+        can-run-on-failed: true
+        thresholds:
+          failed:
+            total-all: 1
