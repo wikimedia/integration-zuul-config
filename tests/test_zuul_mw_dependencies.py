@@ -128,3 +128,25 @@ class TestMwDependencies(unittest.TestCase):
             get_dependencies('skins/Child', mapping),
             set(['skin/Common'])
             )
+
+    def test_inject_skin_on_an_extension(self):
+        deps = self.fetch_dependencies(
+            job_name='mwext-testextension-hhvm',
+            project='mediawiki/extensions/CustomPage')
+        self.assertDictContainsSubset(
+            {
+                'EXT_NAME': 'CustomPage',
+                'SKIN_DEPENDENCIES': 'mediawiki/skins/CustomPage',
+            },
+            deps)
+
+    def test_inject_extension_on_a_skin(self):
+        deps = self.fetch_dependencies(
+            job_name='mw-testskin',
+            project='mediawiki/skins/BlueSpiceSkin')
+        self.assertDictContainsSubset(
+            {
+                'SKIN_NAME': 'BlueSpiceSkin',
+                'EXT_DEPENDENCIES': 'mediawiki/extensions/BlueSpiceFoundation',
+            },
+            deps)
