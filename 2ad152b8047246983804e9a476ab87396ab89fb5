@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2edfb757_40c0dc2f",
+        "filename": "jjb/mediawiki-extensions.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-12-12T12:31:40Z",
+      "side": 1,
+      "message": "The zuul-cloner-extdeps is now solely used for the Wikidata jobs.  The {dependencies} there is a variable that is internal to JJB and not related to the Zuul parameter EXT_DEPENDENCIES.\n\nI will eventually drop that and move to use  prepare-mediawiki-zuul-project",
+      "revId": "2ad152b8047246983804e9a476ab87396ab89fb5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2edfb757_20bdd0ad",
+        "filename": "zuul/parameter_functions.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-12-12T12:31:40Z",
+      "side": 1,
+      "message": "I am going to rewrite this patch so it assumes everything is an extension and one can just use \u0027skins/\u0027 prefix to denote a skin.   That is less moving parts this way and will leave that hash unchanged.",
+      "revId": "2ad152b8047246983804e9a476ab87396ab89fb5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2edfb757_00d9b42c",
+        "filename": "zuul/parameter_functions.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2016-12-12T12:31:40Z",
+      "side": 1,
+      "message": "Going to inject the skins using another variable SKIN_DEPENDENCIES.  Both are slightly different, specially the skins are auto injected in LocalSettings.php while extensions rely on our custom loader.",
+      "revId": "2ad152b8047246983804e9a476ab87396ab89fb5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
