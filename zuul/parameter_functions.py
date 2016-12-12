@@ -101,6 +101,11 @@ def set_parameters(item, job, params):
 # 'skins/'.  The has is used by the set_mw_dependencies() parameter function
 # below.
 dependencies = {
+    # Skins are listed first to highlight the skin dependencies
+    'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
+
+    # Extensions
+    # One can add a skin by using: 'skin/XXXXX'
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
@@ -116,6 +121,7 @@ dependencies = {
     'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
                            'UniversalLanguageSelector', 'Wikidata'],
     'CookieWarning': ['MobileFrontend'],
+    'CustomPage': ['skins/CustomPage'],
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr', 'WikiEditor'],
