@@ -1836,6 +1836,8 @@ projects:
   - name: mediawiki/skins/CustomPage
     template:
      - name: mw-checks-test
+     # Fails in extension registration due to a duplicate entry with
+     # skins/CustomPage (which is a dependency). T153050
      - name: skin-tests-non-voting
     check:
      - jsonlint
@@ -3269,7 +3271,8 @@ projects:
 
   - name: mediawiki/extensions/CustomPage
     template:
-      # FIXME Need to inject skins/CustomPage
+      # Fails in extension registration due to a duplicate entry with
+      # skins/CustomPage (which is a dependency). T153050
       - name: extension-unittests-non-voting
       - name: jsonlint
 
