@@ -311,6 +311,7 @@ gatedextensions = [
     'ParserFunctions',
     'PdfHandler',
     'SandboxLink',
+    'Scribunto',
     'SpamBlacklist',
     'SiteMatrix',
     'Thanks',
