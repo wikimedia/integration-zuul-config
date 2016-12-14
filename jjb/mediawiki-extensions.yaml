@@ -136,26 +136,6 @@
      - castor-save
      - archive-log-dir
 
-# Generic mw-selenium job for extensions.
-- job:
-    name: 'mwext-mw-selenium'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - prepare-mediawiki-zuul-project
-     - mw-selenium
-    publishers:
-     - mw-selenium-cleanup
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-         artifact-days-to-keep: 3
-
 # Same as mwext-mw-selenium-jessie but runs `bundle exec rake spec` instead of `bundle exec cucumber` T146916
 - job:
     name: 'mwext-mw-rspec-jessie'
@@ -177,7 +157,7 @@
          days-to-keep: 15
          artifact-days-to-keep: 3
 
-# Same as mwext-mw-selenium but on Nodepool T137112
+# Generic mw-selenium job for extensions.
 - job:
     name: 'mwext-mw-selenium-jessie'
     node: ci-jessie-wikimedia
@@ -196,26 +176,7 @@
          days-to-keep: 15
          artifact-days-to-keep: 3
 
-# Generic mw-selenium job for extensions.
-- job:
-    name: 'mwext-mw-selenium-composer'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - prepare-mediawiki-zuul-project-no-vendor
-     - mw-selenium
-    publishers:
-     - mw-selenium-cleanup
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-         artifact-days-to-keep: 3
-
+# Generic mw-selenium job for extensions with composer install
 # Same as mwext-mw-selenium-composer but on Nodepool T137112
 - job:
     name: 'mwext-mw-selenium-composer-jessie'

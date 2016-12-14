@@ -1041,18 +1041,14 @@ project-templates:
   # Intentionally not in gate because it's super slow
   - name: extension-selenium
     test:
-      - mwext-mw-selenium
+      - mwext-mw-selenium-jessie
     postmerge:
-      - mwext-mw-selenium
-    experimental:
       - mwext-mw-selenium-jessie
 
   - name: extension-selenium-gate
     test:
-      - mwext-mw-selenium
+      - mwext-mw-selenium-jessie
     gate-and-submit:
-      - mwext-mw-selenium
-    experimental:
       - mwext-mw-selenium-jessie
 
   - name: extension-gate
@@ -8426,12 +8422,12 @@ projects:
       - mwext-Wikibase-client-tests-mysql-php55
       - mwext-Wikibase-client-tests-sqlite-php55
     test:
-      - mwext-mw-selenium-composer
+      - mwext-mw-selenium-composer-jessie
       - mwext-Wikibase-repo-tests-sqlite-hhvm
       - mwext-Wikibase-client-tests-mysql-hhvm
       - mwext-Wikibase-client-tests-sqlite-hhvm
     gate-and-submit:
-      - mwext-mw-selenium-composer
+      - mwext-mw-selenium-composer-jessie
       - mwext-Wikibase-repo-tests-sqlite-php53
       - mwext-Wikibase-repo-tests-sqlite-php55
       - mwext-Wikibase-repo-tests-sqlite-hhvm
