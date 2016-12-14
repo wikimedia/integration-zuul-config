@@ -304,7 +304,7 @@ gatedextensions = [
     'GeoData',
     'GlobalCssJs',
     'GuidedTour',
-    'JsonConfig',
+    # 'JsonConfig',
     'MobileApp',
     'MobileFrontend',
     'MwEmbedSupport',
