@@ -137,6 +137,16 @@ class TestMwDependencies(unittest.TestCase):
             'mediawiki/skins/monobook\\nmediawiki/skins/Vector',
         )
 
+    def test_vector_skin_added_to_mwext_mw_selenium(self):
+        deps = self.fetch_dependencies(
+            project='mediawiki/extensions/Flow',
+            job_name='mwext-mw-selenium')
+        self.assertIn('SKIN_DEPENDENCIES', deps)
+        self.assertIn(
+            'mediawiki/skins/Vector',
+            deps['SKIN_DEPENDENCIES'].split('\\n')
+            )
+
     def test_resolve_skin_on_extension(self):
         mapping = {'Foo': ['skins/Vector']}
         self.assertEqual(
