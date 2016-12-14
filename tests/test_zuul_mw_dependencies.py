@@ -101,6 +101,14 @@ class TestMwDependencies(unittest.TestCase):
         self.assertMissingDependencies(self.fetch_dependencies(
             project='foo/bar/baz'))
 
+    def test_vector_skin_added_to_selenium_job(self):
+        deps = self.fetch_dependencies(
+            job_name='mediawiki-core-selenium-jessie')
+        self.assertDictContainsSubset(
+            {'SKIN_DEPENDENCIES': 'mediawiki/skins/Vector'},
+            deps
+            )
+
     def test_resolve_skin_on_extension(self):
         mapping = {'Foo': ['skins/Vector']}
         self.assertEqual(
