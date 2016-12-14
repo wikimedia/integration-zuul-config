@@ -13,6 +13,17 @@ execfile(os.path.join(
 
 
 class TestMwDependencies(unittest.TestCase):
+
+    def setUp(self):
+        # Let test mangle the 'dependencies' global
+        self._deps_copy = dependencies.copy()
+
+    def tearDown(self):
+        # Restore the 'dependencies' global from the shallow clone
+        global dependencies
+        dependencies = self._deps_copy
+        self.assertIn('AbuseFilter', dependencies)
+
     def assertHasDependencies(self, params):
         self.assertIn('EXT_DEPENDENCIES', params)
 
@@ -100,6 +111,31 @@ class TestMwDependencies(unittest.TestCase):
             project='mediawiki/extensions/Example/vendor'))
         self.assertMissingDependencies(self.fetch_dependencies(
             project='foo/bar/baz'))
+
+    def test_vector_skin_added_to_selenium_job(self):
+        deps = self.fetch_dependencies(
+            job_name='mediawiki-core-selenium-jessie')
+        self.assertDictContainsSubset(
+            {'SKIN_DEPENDENCIES': 'mediawiki/skins/Vector'},
+            deps
+            )
+
+    def test_vector_skin_added_to_selenium_job_on_top_of_other_deps(self):
+
+        # FoobarExt already depends on the monobook skin, we want to make sure
+        # we also inject Vector. Global is restored via setUp/tearDown
+        global dependencies
+        dependencies = {
+            'FoobarExt': ['skins/monobook'],
+        }
+        deps = self.fetch_dependencies(
+            project='mediawiki/extensions/FoobarExt',
+            job_name='mediawiki-core-selenium-jessie')
+        self.assertIn('SKIN_DEPENDENCIES', deps)
+        self.assertEqual(
+            deps['SKIN_DEPENDENCIES'],
+            'mediawiki/skins/monobook\\nmediawiki/skins/Vector',
+        )
 
     def test_resolve_skin_on_extension(self):
         mapping = {'Foo': ['skins/Vector']}

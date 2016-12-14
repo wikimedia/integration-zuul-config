@@ -59,6 +59,14 @@ def set_parameters(item, job, params):
     if job.name.startswith(mw_deps_jobs_starting_with):
         set_mw_dependencies(item, job, params)
 
+    # FIXME rather hacky for T139740
+    if job.name.startswith('mediawiki-core-selenium'):
+        set_mw_dependencies(item, job, params)
+        if params['SKIN_DEPENDENCIES']:
+            params['SKIN_DEPENDENCIES'] += '\\nmediawiki/skins/Vector'
+        else:
+            params['SKIN_DEPENDENCIES'] = 'mediawiki/skins/Vector'
+
     if job.name.startswith('mediawiki-extensions-'):
         set_gated_extensions(item, job, params)
 
