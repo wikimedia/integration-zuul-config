@@ -52,6 +52,7 @@ def set_parameters(item, job, params):
     mw_deps_jobs_starting_with = (
         'mwext-testextension',
         'mwext-qunit',
+        'mwext-mw-rspec',
         'mwext-mw-selenium',
         'mw-testskin',
         'mw-testskin-non-voting',
