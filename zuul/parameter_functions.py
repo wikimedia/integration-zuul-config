@@ -182,7 +182,6 @@ dependencies = {
     'SolrStore': ['SemanticMediaWiki'],
     'SpellingDictionary': ['UniversalLanguageSelector'],
     'Spreadsheet': ['PHPExcel'],
-    'SubPageList': ['ParserHooks'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'TitleBlacklist': ['AntiSpoof'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
