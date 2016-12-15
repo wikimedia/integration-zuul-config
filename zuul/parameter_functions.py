@@ -147,7 +147,6 @@ dependencies = {
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
     'LightweightRDFa': ['WikiEditor'],
-    'Maps': ['Validator'],
     'MassMessage': ['LiquidThreads'],
     'Math': ['VisualEditor', 'Wikidata'],
     'MathSearch': ['Math'],
