@@ -506,6 +506,36 @@ pipelines:
           approval:
             - code-review: +1
 
+  # Start the migration for all tests to be run by everyone
+  # At one point we should rename this pipeline back to test
+  # and the one above should be renamed to test-restrict
+  - name: test-nodepool
+    description: >
+      Jobs run by all users. Will vote +2.
+    manager: IndependentPipelineManager
+    source: gerrit
+    trigger:
+      gerrit:
+        - event: patchset-created
+          branch: (?!^refs/meta/config)
+
+        # Let whitelisted users the ability to reenqueue a change in the test
+        # pipeline by simply commenting 'recheck' on a change.
+        - event: comment-added
+          branch: (?!^refs/meta/config)
+          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
+
+        # Let whitelisted users CR+1 to trigger tests for an untested patch
+        # (Verified 0 or 1)
+        - event: comment-added
+          branch: (?!^refs/meta/config$)
+          require-approval:
+            # hasn't been tested yet
+            - verified: [0, 1]
+              username: jenkins-bot
+          approval:
+            - code-review: +1
+
     success-message: 'Main test build succeeded.'
     success:
       gerrit:
