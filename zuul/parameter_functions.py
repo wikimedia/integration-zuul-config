@@ -161,6 +161,7 @@ dependencies = {
     'PageTriage': ['WikiLove'],
     'PageViewInfo': ['Graph'],
     'PhpTagsFunctions': ['PhpTags'],
+    'PhpTagsSPARQL': ['PhpTags'],
     'PhpTagsStorage': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki',
                        'PhpTagsWidgets'],
     'PhpTagsWidgets': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki'],
