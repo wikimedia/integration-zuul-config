@@ -53,6 +53,13 @@
      - junit:
         results: 'log/junit*.xml'
      - 'mw-teardown-{dbflavor}'
+     - email-ext:
+       recipients: wikidata-ci-status@wikimedia.de
+       attach-build-log: true
+       first-failure: true
+       aborted: true
+       failure: true
+       fixed: false
 
 - project:
     name: wikidata
