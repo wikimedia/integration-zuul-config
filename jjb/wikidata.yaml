@@ -91,7 +91,13 @@
           - php55
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseClient'
-
+- email-ext:
+         recipients: wikidata-ci-status@wikimedia.de
+         attach-build-log: true
+         first-failure: true
+         aborted: true
+         failure: true
+         fixed: false
 - job:
     name: wikidata-gremlin
     project-type: maven
