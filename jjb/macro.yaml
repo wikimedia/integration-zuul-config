@@ -310,8 +310,9 @@
 
         # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
         # NB: Uses 'tac' twice to exhaust buffer before using 'head' to avoid "curl: Failed writing body" error.
-        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php/Special:BlankPage" | tac|tac | head -n42
-        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/load.php?debug=true&modules=startup&only=scripts" | tac|tac | head -n42
+        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php/Special:BlankPage" | tee log/curl-SpecialBlankPage.log | tac|tac | head -n42
+        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/load.php?debug=true&modules=startup&only=scripts" | tee log/curl-load-startup.log | tac|tac | head -n42
+        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php?title=Special:JavaScriptTest/qunit/export" | tee log/curl-SpecialJavaScriptTest.log | tac|tac | head -n11
 
 # qunit
 #
