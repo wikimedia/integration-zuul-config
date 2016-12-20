@@ -6,7 +6,7 @@ Foundation: Jenkins Job Builder.
 
 When you tweak or add jobs, follow the documentation maintained on mediawiki.org:
 
-  https://www.mediawiki.org/wiki/CI/JJB
+  https://www.mediawiki.org/wiki/Special:MyLanguage/CI/JJB
 
 For more about the Jenkins Job Builder software and how to use it, refer to the upstream documentation:
 
