@@ -120,6 +120,17 @@ class TestMwDependencies(unittest.TestCase):
             deps
             )
 
+    def test_vector_skin_added_to_mediawiki_core(self):
+        # mediawiki/core does not have dependencies, make sure we can append
+        # the skin even when SKIN_DEPENDENCIES has not been set previously.
+        deps = self.fetch_dependencies(
+            job_name='mediawiki-core-selenium-jessie',
+            project='mediawiki/core')
+        self.assertDictContainsSubset(
+            {'SKIN_DEPENDENCIES': 'mediawiki/skins/Vector'},
+            deps
+            )
+
     def test_vector_skin_added_to_selenium_job_on_top_of_other_deps(self):
 
         # FoobarExt already depends on the monobook skin, we want to make sure
