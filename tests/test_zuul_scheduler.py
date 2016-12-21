@@ -13,9 +13,11 @@ import unittest
 
 import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
+from zuul.reporter.gerrit import GerritReporter
 import zuul.model
 
 from zuul.connection import BaseConnection
+from zuul.connection.gerrit import GerritConnection
 
 
 class FakeConnection(BaseConnection):
@@ -778,3 +780,46 @@ class TestZuulScheduler(unittest.TestCase):
             'must be equals.\n'
             'In Zuul: apply the template extension-gate\n'
             'In JJB: add extension to "gatedextensions"')
+
+    def test_pipelines_have_report_action_to_gerrit(self):
+        not_reporting = ['post', 'publish']
+        required_actions = ['success', 'failure']
+        reporting_pipelines = [
+            p for p in self.getPipelines()
+            if p.name not in not_reporting]
+
+        for pipeline in reporting_pipelines:
+            for action in required_actions:
+                reporters = pipeline.__getattribute__(action + '_actions')
+                self.assertTrue(
+                    # At least one reporter is to Gerrit
+                    any([isinstance(reporter, GerritReporter)
+                         for reporter in reporters]
+                        ),
+                    'Pipeline %s must have a GerritReporter on %s got %s' % (
+                        pipeline.name, action, reporters)
+                )
+
+    # Gerrit review command tends to change between release
+    #
+    # The Zuul layout configuration must have an empty list of parameters {}
+    # and should not vote on a closed change.
+    # T153737
+    def test_postmerge_gerrit_review_command(self):
+        pipe = self.getPipeline('postmerge')
+        # Pick the first Gerrit success reporter
+        gerrit_reporter = [r for r in pipe.success_actions
+                           if isinstance(r, GerritReporter)][0]
+        self.assertEquals({}, gerrit_reporter.reporter_config)
+
+        gerrit = GerritConnection('fake_gerrit',
+                                  {'server': 'localhost', 'user': 'john'})
+        # Fake ssh (stdout, stderr) so the command is returned by review()
+        gerrit._ssh = lambda x: ['', x]
+        cmd = gerrit.review('some/project', '12345,42', 'hello world')
+        self.longMessage = True
+        self.assertEquals(
+            'gerrit review --project some/project '
+            '--message "hello world" 12345,42',
+            cmd,
+            'gerrit review command does not match Gerrit 2.13 expectation')
