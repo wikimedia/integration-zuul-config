@@ -13,6 +13,7 @@ import unittest
 
 import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
+from zuul.reporter.gerrit import GerritReporter
 import zuul.model
 
 from zuul.connection import BaseConnection
@@ -778,3 +779,15 @@ class TestZuulScheduler(unittest.TestCase):
             'must be equals.\n'
             'In Zuul: apply the template extension-gate\n'
             'In JJB: add extension to "gatedextensions"')
+
+    def test_postmerge_pipeline_has_report_actions_to_gerrit(self):
+        pipe = self.getPipeline('postmerge')
+
+        self.assertNotEqual([], pipe.success_actions)
+        self.assertIsInstance(pipe.success_actions[0], GerritReporter)
+
+        self.assertNotEqual([], pipe.failure_actions)
+        self.assertIsInstance(pipe.failure_actions[0], GerritReporter)
+
+    def test_postmerge_pipeline_reports_to_gerrit(self):
+        pass
