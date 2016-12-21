@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e0e73b5_5d440dbd",
+        "filename": "jjb/wikidata.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 170
+      },
+      "writtenOn": "2016-12-21T10:58:47Z",
+      "side": 1,
+      "message": "I\u0027m sorry, but I think this is in the wrong place. Looking at https://integration.wikimedia.org/ci/job/integration-jjb-config-diff/6508/console this will trigger email-notifications for jobs named\nmwext-Wikibase-client-tests-mysql-hhvm,\nmwext-Wikibase-client-tests-mysql-php53,\nmwext-Wikibase-client-tests-mysql-php55\nmwext-Wikibase-repo-tests-sqlite-hhvm,\nmwext-Wikibase-repo-tests-sqlite-php53 and\nmwext-Wikibase-repo-tests-sqlite-php55.\nThose jobs run for the Wikibase-extension, but not for the Wikidata-build. What we need are email-notifications for the Wikidata-build. I think there is no separate configuration-file for these jobs, just the normal extension test jobs are running there:\nmwext-testextension-php55\nmwext-testextension-hhvm\nmediawiki-extensions-hhvm-jessie\nmediawiki-extensions-qunit-jessie\nAs far as I can tell, these are defined in https://phabricator.wikimedia.org/diffusion/CICF/browse/master/zuul/layout.yaml;bc110f8b82413ec6f86171716fb3698856baaab5$8463\nThat\u0027s what we need email notifications for.",
+      "revId": "121e10b1591b373e1c389014715b8e29f033e6c4",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
