@@ -20,6 +20,8 @@ include contint::packages::base
 include contint::composer
 include contint::php
 
+include zuul
+
 include mediawiki::packages::php5
 
 package { 'cron':
@@ -153,10 +155,6 @@ ensure_packages(['netcat-openbsd'])
 ensure_packages(['zip', 'unzip'])
 
 ensure_packages(['openjdk-7-jre-headless'])
-
-package { 'zuul':
-  ensure => present,
-}
 
 if os_version('debian >= jessie') {
     # Following should later be included in contint::packages::ops once GeoIP
