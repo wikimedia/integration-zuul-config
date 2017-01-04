@@ -56,6 +56,7 @@ def set_parameters(item, job, params):
         'mwext-mw-selenium',
         'mw-testskin',
         'mw-testskin-non-voting',
+        'mwext-php70-phan-jessie',
         )
     if job.name.startswith(mw_deps_jobs_starting_with):
         set_mw_dependencies(item, job, params)
