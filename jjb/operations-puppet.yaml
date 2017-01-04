@@ -5,6 +5,12 @@
     defaults: use-remoteonly-zuul
     concurrent: false  # dont want to race doc creation!
 
+    # BUNDLE_PATH is usually injected by Zuul but this job is triggered by Jenkins
+    parameters:
+      - string:
+          name: 'BUNDLE_PATH'
+          default: '/home/jenkins/workspace/vendor/bundle'
+
     triggers:
      - pollscm:
          cron: '@hourly'
@@ -17,20 +23,12 @@
          submodule:
              disable: false
              recursive: true
-         basedir: 'src'
-
     builders:
-     - puppet-doc:
-        puppet: "$WORKSPACE/src"
+     - bundle-nodepool:
+         command: 'rake doc'
      - doc-publish:
         docsrc: 'doc'
         docdest: 'puppet'
-     # And publish the entire workspace as "puppetsource"
-     - shell: |
-         rm -fR src/.git
-     - doc-publish:
-        docsrc: 'src'
-        docdest: 'puppetsource'
     publishers:
      - email-ext:
          recipients: qa-alerts@lists.wikimedia.org
