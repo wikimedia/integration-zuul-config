@@ -17,20 +17,12 @@
          submodule:
              disable: false
              recursive: true
-         basedir: 'src'
-
     builders:
-     - puppet-doc:
-        puppet: "$WORKSPACE/src"
+     - bundle-nodepool:
+         command: 'rake doc'
      - doc-publish:
         docsrc: 'doc'
         docdest: 'puppet'
-     # And publish the entire workspace as "puppetsource"
-     - shell: |
-         rm -fR src/.git
-     - doc-publish:
-        docsrc: 'src'
-        docdest: 'puppetsource'
     publishers:
      - email-ext:
          recipients: qa-alerts@lists.wikimedia.org
