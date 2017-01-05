@@ -183,7 +183,8 @@
     builders:
      - castor-load
      - prepare-mediawiki-zuul-project
-     - mw-selenium-nodepool
+     - mw-selenium-nodepool:
+         tests-dir: src/extensions/$EXT_NAME/tests/browser
     publishers:
      - castor-save
      - archive-log-dir
@@ -203,7 +204,8 @@
     builders:
      - castor-load
      - prepare-mediawiki-zuul-project-no-vendor
-     - mw-selenium-nodepool
+     - mw-selenium-nodepool:
+         tests-dir: src/extensions/$EXT_NAME/tests/browser
     publishers:
      - castor-save
      - archive-log-dir
