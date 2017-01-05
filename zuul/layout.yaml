@@ -8936,8 +8936,12 @@ projects:
   - name: search/highlighter
     test:
       - search-highlighter
+      - search-highlighter-javadoc
     gate-and-submit:
       - search-highlighter
+      - search-highlighter-javadoc
+    postmerge:
+      - search-highlighter-javadoc-publish
 
   - name: search/repository-swift
     test:
