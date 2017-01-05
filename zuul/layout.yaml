@@ -8946,8 +8946,12 @@ projects:
   - name: search/repository-swift
     test:
       - search-repository-swift
+      - search-repository-swift-javadoc
     gate-and-submit:
       - search-repository-swift
+      - search-repository-swift-javadoc
+    postmerge:
+      - search-repository-swift-javadoc-publish
 
   - name: generator-wikimedia-php-library
     template:
