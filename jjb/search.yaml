@@ -1,8 +1,16 @@
 - project:
     name: search
+    javadocgoals: clean javadoc:javadoc
     project:
         - extra
-        - highlighter
+        - highlighter:
+            # highlighter is a multi-modules project and javadoc:javadoc goal
+            # fails due to missing dependencies that are built via "package".
+            # Also have to aggregate all the modules doc in the parent folder
+            # via javadoc:aggregate
+            # Tests are skipped entirely, since 'search-{project}' already runs
+            # them.
+            javadocgoals: 'clean package javadoc:aggregate -Dmaven.test.skip=true'
         - ltr
         - repository-swift
     jobs:
@@ -58,7 +66,7 @@
     prebuilders:
      - castor-load
     maven:
-      goals: clean javadoc:javadoc
+      goals: '{javadocgoals}'
     publishers:
      - castor-save
 
@@ -84,7 +92,7 @@
     prebuilders:
      - castor-load
     maven:
-      goals: clean javadoc:javadoc
+      goals: '{javadocgoals}'
     postbuilders:
      - doc-publish:
          docsrc: 'target/site/apidocs'
