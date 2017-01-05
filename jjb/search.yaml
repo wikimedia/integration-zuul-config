@@ -1,5 +1,16 @@
-- job:
-    name: 'search-extra'
+- project:
+    name: search
+    project:
+        - extra
+        - highlighter
+        - repository-swift
+    jobs:
+        - 'search-{project}'
+        - 'search-{project}-javadoc'
+        - 'search-{project}-javadoc-publish'
+
+- job-template:
+    name: 'search-{project}'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 8'
     node: ci-jessie-wikimedia
@@ -24,8 +35,8 @@
     publishers:
      - castor-save
 
-- job:
-    name: 'search-extra-javadoc'
+- job-template:
+    name: 'search-{project}-javadoc'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 8'
     node: ci-jessie-wikimedia
@@ -50,8 +61,8 @@
     publishers:
      - castor-save
 
-- job:
-    name: 'search-extra-javadoc-publish'
+- job-template:
+    name: 'search-{project}-javadoc-publish'
     project-type: maven
     jdk: 'Ubuntu - OpenJdk 8'
     node: ci-jessie-wikimedia
@@ -76,74 +87,6 @@
     postbuilders:
      - doc-publish:
          docsrc: 'target/site/apidocs'
-         docdest: 'search-extra'
+         docdest: 'search-{project}'
     publishers:
      - castor-save
-
-- project:
-    name: 'search-extra'
-    jobs:
-     - 'search-extra'
-     - 'search-extra-javadoc'
-
-- job:
-    name: 'search-highlighter'
-    project-type: maven
-    jdk: 'Ubuntu - OpenJdk 8'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    scm:
-     - git-remoteonly-zuul
-    wrappers:
-     - timeout:
-         timeout: 60  # minutes
-         fail: true
-     - timestamps
-     - ansicolor
-    prebuilders:
-     - castor-load
-    maven:
-      goals: clean package
-    publishers:
-     - castor-save
-
-- project:
-    name: 'search-highlighter'
-    jobs:
-     - 'search-highlighter'
-
-- job:
-    name: 'search-repository-swift'
-    project-type: maven
-    jdk: 'Ubuntu - OpenJdk 8'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    scm:
-     - git-remoteonly-zuul
-    wrappers:
-     - timeout:
-         timeout: 60  # minutes
-         fail: true
-     - timestamps
-     - ansicolor
-    prebuilders:
-     - castor-load
-    maven:
-      goals: clean package
-    publishers:
-     - castor-save
-
-- project:
-    name: 'search-repository-swift'
-    jobs:
-     - 'search-repository-swift'
