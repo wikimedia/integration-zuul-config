@@ -8945,6 +8945,16 @@ projects:
     gate-and-submit:
       - search-repository-swift
 
+  - name: search/ltr
+    test:
+      - search-ltr
+      - search-ltr-javadoc
+    gate-and-submit:
+      - search-ltr
+      - search-ltr-javadoc
+    postmerge:
+      - search-ltr-javadoc-publish
+
   - name: generator-wikimedia-php-library
     template:
       - name: npm

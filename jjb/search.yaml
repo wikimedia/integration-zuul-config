@@ -147,3 +147,91 @@
     name: 'search-repository-swift'
     jobs:
      - 'search-repository-swift'
+
+- job:
+    name: 'search-ltr'
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 8'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    scm:
+     - git-remoteonly-zuul
+    wrappers:
+     - timeout:
+         timeout: 60  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    prebuilders:
+     - castor-load
+    maven:
+      goals: clean package
+    publishers:
+     - castor-save
+
+- job:
+    name: 'search-ltr-javadoc'
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 8'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    scm:
+     - git-remoteonly-zuul
+    wrappers:
+     - timeout:
+         timeout: 60  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    prebuilders:
+     - castor-load
+    maven:
+      goals: clean javadoc:javadoc
+    publishers:
+     - castor-save
+
+- job:
+    name: 'search-ltr-javadoc-publish'
+    project-type: maven
+    jdk: 'Ubuntu - OpenJdk 8'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    scm:
+     - git-remoteonly-zuul
+    wrappers:
+     - timeout:
+         timeout: 60  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    prebuilders:
+     - castor-load
+    maven:
+      goals: clean javadoc:javadoc
+    postbuilders:
+     - doc-publish:
+         docsrc: 'target/site/apidocs'
+         docdest: 'search-ltr'
+    publishers:
+     - castor-save
+
+- project:
+    name: 'search-ltr'
+    jobs:
+     - 'search-ltr'
+     - 'search-ltr-javadoc'
