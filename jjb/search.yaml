@@ -58,7 +58,7 @@
     prebuilders:
      - castor-load
     maven:
-      goals: clean javadoc:javadoc
+      goals: clean package javadoc:aggregate -Dmaven.test.skip=true
     publishers:
      - castor-save
 
@@ -84,7 +84,7 @@
     prebuilders:
      - castor-load
     maven:
-      goals: clean javadoc:javadoc
+      goals: clean package javadoc:aggregate -Dmaven.test.skip=true
     postbuilders:
      - doc-publish:
          docsrc: 'target/site/apidocs'
