@@ -487,7 +487,11 @@
 - builder:
     name: fetch-composer-dev
     builders:
-     - shell: "/srv/deployment/integration/slave-scripts/bin/fetch-composer-dev.sh"
+     - shell: |
+        #!/bin/bash -eu
+        # Load require-dev packages on top of vendor (T92605, T112895)
+        set -o pipefail
+        node /srv/deployment/integration/slave-scripts/tools/composer-dev-args.js "composer.json" | xargs composer require --dev --ansi --no-progress --prefer-dist -v
 
 - builder:
     name: mw-run-update-script
