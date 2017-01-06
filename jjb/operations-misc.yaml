@@ -53,3 +53,16 @@
         shallow-clone: true
         submodule:
             disable: false
+
+- job:
+    name: 'operations-mw-config-composer-jessie'
+    node: ci-jessie-wikimedia
+    defaults: use-remoteonly-zuul
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - composer-validate:
+        dir: '.'
+     - fetch-composer-dev
+     - composer-test
