@@ -173,6 +173,7 @@ dependencies = {
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
     'QuickSurveys': ['EventLogging'],
+    'QuizGame': ['SocialProfile'],
     'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
     'RevisionSlider': ['BetaFeatures'],
     'Score': ['VisualEditor'],
