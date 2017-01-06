@@ -56,13 +56,13 @@
 
 - job:
     name: 'operations-mw-config-composer-jessie'
-    node: ci-jessie-wikimedia
+    node: contintLabsSlave && UbuntuTrusty
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
     builders:
      - composer-validate:
-        dir: '.'
+         dir: '.'
      - fetch-composer-dev
      - composer-test
