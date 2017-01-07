@@ -26,34 +26,11 @@
      - '{name}-php55lint'
      - '{name}-typos'
 
-# Runs 'phpunit' and 'composer validate', for the
-# operations/mediawiki-config repo to get it out of
-# the MediaWiki gate-and-submit queue (T101908)
-- job:
-    name: 'operations-mw-config-phpunit'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    triggers:
-     - zuul
-    builders:
-     - composer-validate:
-         dir: '.'
-     - phpunit-junit
-    publishers:
-     - phpunit-junit
-     - archive-log-dir
-    scm:
-     # Override to wipe workspace/shallow clone and process submodules
-     - git:
-        url: '$ZUUL_URL/$ZUUL_PROJECT'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        wipe-workspace: true
-        shallow-clone: true
-        submodule:
-            disable: false
-
+# Runs 'composer validate' and 'composer test', for the
+# operations/mediawiki-config repo. Uses fetch-composer-dev to install require-dev
+# packages while preserving non-dev packages from vendor in Git. (T85947)
+# Avoid generic jobs to ensure it stays out of the
+# MediaWiki gate-and-submit queue. (T101908)
 - job:
     name: 'operations-mw-config-composer-hhvm-jessie'
     node: ci-jessie-wikimedia
