@@ -330,6 +330,18 @@
         npm install
         ./node_modules/.bin/grunt karma:main
 
+# Being called nodepool to support jessie and trusty
+- builder:
+    name: qunit-karma-nodepool
+    builders:
+     - prepare-localhost
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
+        cd $MW_INSTALL_PATH
+        rm -rf node_modules
+        npm install
+        ./node_modules/.bin/grunt karma:main
+
 - publisher:
     name: localhost-cleanup
     publishers:
