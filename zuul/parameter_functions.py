@@ -17,6 +17,11 @@ def set_parameters(item, job, params):
     # Xvfb display provided via puppet
     params['DISPLAY'] = ':94'
 
+    if job.name.endswith(('-jessie', 'node-4')):
+        params['CHROME_BIN'] = `which chromium`
+    elif job.name.endswith(('-trusty', 'node-0.10')):
+        params['CHROME_BIN'] = `which chromium-browser`
+
     hhvm_jobs = (
         'mw-testskin',
         'mw-testskin-non-voting',
