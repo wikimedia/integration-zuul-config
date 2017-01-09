@@ -4,13 +4,9 @@
     project:
         - extra
         - highlighter:
-            # highlighter is a multi-modules project and javadoc:javadoc goal
-            # fails due to missing dependencies that are built via "package".
-            # Also have to aggregate all the modules doc in the parent folder
-            # via javadoc:aggregate
-            # Tests are skipped entirely, since 'search-{project}' already runs
-            # them.
-            javadocgoals: 'clean package javadoc:aggregate -Dmaven.test.skip=true'
+            # Running compile and javadoc:aggregate is required on multimodule
+            # projects. Javadoc cannot work with "uncompiled" deps.
+            javadocgoals: 'clean compile javadoc:aggregate'
         - ltr
         - repository-swift
     jobs:
