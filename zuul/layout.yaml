@@ -1104,30 +1104,6 @@ project-templates:
     gate-and-submit:
      - jsduck
 
-  - name: mw-checks
-    check-voter:
-     - php53lint
-     - php55lint
-     - jsonlint
-     - composer-validate
-    gate-and-submit:
-     - php53lint
-     - php55lint
-     - jsonlint
-     - composer-validate
-     - noop  # All jobs above have file filters and we need at least one job
-    experimental:
-     - mwext-qunit-composer-jessie
-     - mwext-qunit-jessie
-     - mwext-testextension-hhvm
-     - mwext-testextension-hhvm-composer
-     - npm-node-4
-     - composer-hhvm-trusty
-     - composer-php53
-     - composer-php55-trusty
-     - composer-php70-jessie
-
-    # Similar to above, but uses a check/test pipeline
   - name: mw-checks-test
     check:
      - php53lint
@@ -7394,7 +7370,7 @@ projects:
   # Missing entry point
   - name: mediawiki/extensions/Link_Attributes
     template:
-     - name: mw-checks
+     - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/MadLib
     template:
@@ -7440,7 +7416,7 @@ projects:
   # /OOUIPlayground/vendor/autoload.php
   - name: mediawiki/extensions/OOUIPlayground
     template:
-     - name: mw-checks
+     - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/OOJsUIAjaxLogin
     template:
@@ -7472,7 +7448,7 @@ projects:
   # Depends on Validator and Parse
   - name: mediawiki/extensions/ParserFun
     template:
-     - name: mw-checks
+     - name: extension-unittests-non-voting
 
   # Empty repo - 20151127
   - name: mediawiki/extensions/PlanOut
@@ -7526,7 +7502,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticDependency
     template:
-     - name: mw-checks
+     - name: extension-unittests-non-voting
 
   - name: mediawiki/extensions/SimpleSAMLphp
     template:
