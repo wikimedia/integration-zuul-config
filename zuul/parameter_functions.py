@@ -157,6 +157,7 @@ dependencies = {
     'MathSearch': ['Math'],
     'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
     'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp'],
+    'NamespacePopups': ['PagePopups'],
     'NavigationTiming': ['EventLogging'],
     'NSFileRepo': ['Lockdown'],
     'NumberOfComments': ['Comments'],
