@@ -90,6 +90,8 @@ def set_parameters(item, job, params):
     # Needs BUNDLE_PATH
     if job.name.endswith('yard-publish'):
         nodepool_params(item, job, params)
+    if job.name == 'mediawiki-vagrant-puppet-doc-publish':
+        nodepool_params(item, job, params)
 
     if 'debian-glue' in job.name:
         # Always set the value to be safe (T144094)

@@ -1,13 +1,14 @@
 - job-template:
     name: 'mediawiki-vagrant-puppet-doc-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: false
     triggers:
      - zuul
     builders:
-     - puppet-doc:
-        puppet: "$WORKSPACE/puppet"
+     # BUNDLE_PATH is injected by Zuul
+     - bundle-nodepool:
+         command: 'rake doc'
      - doc-publish:
         docsrc: 'doc'
         docdest: 'mediawiki-vagrant'
