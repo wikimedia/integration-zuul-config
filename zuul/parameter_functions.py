@@ -168,6 +168,7 @@ dependencies = {
     'PageViewInfo': ['Graph'],
     'PhpTagsFunctions': ['PhpTags'],
     'PhpTagsSPARQL': ['PhpTags'],
+    'PhpTagsSMW': ['PhpTags'],
     'PhpTagsStorage': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki',
                        'PhpTagsWidgets'],
     'PhpTagsWidgets': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki'],
