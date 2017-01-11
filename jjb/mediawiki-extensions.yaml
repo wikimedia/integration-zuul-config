@@ -435,7 +435,7 @@
 # Phan! (T153039)
 - job:
     name: 'mwext-php70-phan-jessie'
-    node: ci-jessie-wikimedia
+    node: DebianJessie
     concurrent: true
     properties:
      - build-discarder:
@@ -448,9 +448,10 @@
      - mw-fetch-composer-dev
      - shell: |
         cd $WORKSPACE/src
+        mkdir -p $WORKSPACE/log
         composer require etsy/phan:0.7 --prefer-dist --dev --no-progress --ansi --profile -v # todo don't hardcode version here
-        PHAN=vendor/bin/phan ./tests/phan/bin/phan ./extensions/$EXT_NAME -m checkstyle
-        mv ./extensions/$EXT_NAME/tests/phan/issues/latest $WORKSPACE/log/phan-issues
+        PHAN=$WORKSPACE/src/vendor/bin/phan ./tests/phan/bin/phan ./extensions/$EXT_NAME -m checkstyle
+        mv $WORKSPACE/src/extensions/$EXT_NAME/tests/phan/issues/latest $WORKSPACE/log/phan-issues
     publishers:
      - castor-save
      - checkstyle:
