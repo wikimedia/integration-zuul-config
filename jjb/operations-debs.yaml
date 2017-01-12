@@ -22,9 +22,9 @@
           # We might consider adding --warnings
           set -o pipefail
           # Source package:
-          /usr/bin/lintian-junit-report --filename lintian-binary.txt *.dsc | tee lintian-binary.xml
+          /usr/bin/lintian-junit-report --filename --lintian-opt=--suppress-tags no-copyright-file --suppress-tags debian-changelog-file-missing --suppress-tags init.d-script-does-not-implement-required-option etc/init.d/gerrit force-reload lintian-binary.txt *.dsc | tee lintian-binary.xml
           # Binary package:
-          /usr/bin/lintian-junit-report --filename lintian-source.txt *.changes | tee lintian-source.xml
+          /usr/bin/lintian-junit-report --filename --lintian-opt=--suppress-tags no-copyright-file --suppress-tags debian-changelog-file-missing --suppress-tags init.d-script-does-not-implement-required-option etc/init.d/gerrit force-reload lintian-source.txt *.changes | tee lintian-source.xml
           set +o pipefail
 
 # Piuparts test installation / removal of a package
