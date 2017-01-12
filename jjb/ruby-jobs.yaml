@@ -82,6 +82,16 @@
          submodule:
              disable: false
              recursive: true
+    publishers:
+     - xunit:
+         types:
+          - junit:
+             pattern: 'log/junit*.xml'
+             # rspec integration is not merged yet
+             skip-if-no-test-files: true
+             stoponerror: false
+     - archive-log-allow-empty
+     - castor-save
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
