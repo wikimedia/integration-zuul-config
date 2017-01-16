@@ -14,7 +14,7 @@
     builders:
         - assert-phpflavor:
             phpflavor: 'hhvm'
-        - assert-node-version-4
+        - assert-node-version-6
         - castor-load
         - zuul-parsoid-cloner:
              projects: >
@@ -55,7 +55,7 @@
     triggers:
         - zuul
     builders:
-        - assert-node-version-4
+        - assert-node-version-6
         - castor-load
         - setup-npm-oid:
             repository: '{repository}'
@@ -82,7 +82,7 @@
     triggers:
         - zuul
     builders:
-        - assert-node-version-4
+        - assert-node-version-6
         - castor-load
         - setup-npm-oid:
             repository: '{repository}'
@@ -96,7 +96,7 @@
      - castor-save
 
 - job-template:
-    name: parsoidsvc-{repository}-npm-node-4-jessie
+    name: parsoidsvc-{repository}-npm-node-6-jessie
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
@@ -109,7 +109,7 @@
     triggers:
         - zuul
     builders:
-    - assert-node-version-4
+    - assert-node-version-6
     - castor-load
     - shell: |
         # For archiving build artifacts
@@ -136,7 +136,7 @@
     triggers:
      - zuul
     builders:
-     - assert-node-version-4
+     - assert-node-version-6
      - castor-load
      - setup-npm-oid:
          repository: '{repository}'
@@ -161,11 +161,11 @@
      - source  # mediawiki/services/parsoid
      - deploy  # mediawiki/services/parsoid/deploy
     jobs:
-        - '{name}-npm-run-{script}-node-4-jessie':
+        - '{name}-npm-run-{script}-node-6-jessie':
             script: 'lint'
         - 'parsoidsvc-{repository}-parse-tool-check-jessie'
         - 'parsoidsvc-{repository}-roundtrip-test-check-jessie'
-        - 'parsoidsvc-{repository}-npm-node-4-jessie'
+        - 'parsoidsvc-{repository}-npm-node-6-jessie'
         - 'parsoidsvc-{repository}-jsduck-publish':
             # We only publish doc of the 'source' repo
             repository:
