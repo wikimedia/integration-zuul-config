@@ -134,15 +134,15 @@
     triggers:
      - zuul
 
-- job: &job_npm-node-4
-    name: 'npm-node-4'
+- job: &job_npm-node-6
+    name: 'npm-node-6-jessie'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
      - zuul
     builders:
-     - assert-node-version-4
+     - assert-node-version-6
      # FIXME: we should save node_modules and run npm prune
      - castor-load
      - shell: |
@@ -158,8 +158,8 @@
      - castor-save
 
 - job-template:
-    !!merge : *job_npm-node-4
-    name: '{name}-npm-node-4-jessie'
+    !!merge : *job_npm-node-6
+    name: '{name}-npm-node-6-jessie'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
@@ -179,14 +179,14 @@
      - global-teardown
 
 - job-template:
-    name: '{name}-npm-run-{script}-node-4-jessie'
+    name: '{name}-npm-run-{script}-node-6-jessie'
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
     builders:
-     - assert-node-version-4
+     - assert-node-version-6
      # FIXME: we should save node_modules and run npm prune
      - castor-load
      - shell: |
@@ -209,7 +209,7 @@
     triggers:
      - zuul
     builders:
-     - assert-node-version-4
+     - assert-node-version-6
      # FIXME: we should save node_modules and run npm prune
      - castor-load
      - zuul-cloner:
@@ -249,14 +249,14 @@
      - castor-save
 
 - job-template:
-    name: '{name}-{repository}-npm-node-4-jessie'
+    name: '{name}-{repository}-npm-node-6-jessie'
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
      - zuul
     builders:
-     - assert-node-version-4
+     - assert-node-version-6
      # FIXME: we should save node_modules and run npm prune
      - castor-load
      - shell: |

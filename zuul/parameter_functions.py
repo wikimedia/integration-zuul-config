@@ -45,7 +45,7 @@ def set_parameters(item, job, params):
     elif job.name in php5_jobs:
         params['PHP_BIN'] = 'php5'
 
-    if job.name.endswith('node-4'):
+    if job.name.endswith('node-6-jessie'):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
         params['PHP_BIN'] = 'hhvm'
 
@@ -76,7 +76,7 @@ def set_parameters(item, job, params):
         nodepool_params(item, job, params)
     if job.name.endswith('-trusty'):
         nodepool_params(item, job, params)
-    elif job.name.endswith('node-4'):
+    elif job.name.endswith('node-6-jessie'):
         nodepool_params(item, job, params)
     elif job.name.endswith('node-0.10'):
         nodepool_params(item, job, params)
