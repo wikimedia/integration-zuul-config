@@ -6,12 +6,15 @@
     triggers:
      - zuul
     builders:
+     - castor-load
      # BUNDLE_PATH is injected by Zuul
      - bundle-nodepool:
          command: 'rake doc'
      - doc-publish:
         docsrc: 'doc'
         docdest: 'mediawiki-vagrant'
+    publishers:
+     - castor-save
 
 - project:
     name: 'mediawiki-ruby-api'
