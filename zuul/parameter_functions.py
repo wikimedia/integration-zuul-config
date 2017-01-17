@@ -177,6 +177,7 @@ dependencies = {
     'PictureGame': ['SocialProfile'],
     'PollNY': ['SocialProfile'],
     'Popups': ['BetaFeatures', 'TextExtracts', 'PageImages', 'EventLogging'],
+    'Premoderation': ['skins/Vector'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
     'QuickSurveys': ['EventLogging'],
