@@ -129,7 +129,7 @@ dependencies = {
     'Cite': ['VisualEditor'],
     'Citoid': ['Cite', 'VisualEditor'],
     'CirrusSearch': ['MwEmbedSupport', 'TimedMediaHandler', 'PdfHandler',
-                     'Cite'],
+                     'Cite', 'Elastica', 'GeoData', 'BetaFeatures', 'SiteMatrix'],
     'CodeEditor': ['WikiEditor'],
     'CollaborationKit': ['EventLogging', 'VisualEditor'],
     'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
