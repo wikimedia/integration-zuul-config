@@ -157,11 +157,7 @@ ensure_packages(['zip', 'unzip'])
 ensure_packages(['openjdk-7-jre-headless'])
 
 if os_version('debian >= jessie') {
-    # Following should later be included in contint::packages::ops once GeoIP
-    # is installable.
-    package { ['etcd', 'python-etcd']:
-        ensure => present,
-    }
+    include contint::packages::ops
 
     # We run varnishtest
     package { 'varnish':
