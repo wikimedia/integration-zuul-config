@@ -22,7 +22,7 @@
                --log-junit "$WORKSPACE/log/junit-wikidata.xml" \
                {params}
 
-- job-template:
+- job-template: &wikibase-tests-template
     name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}'
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
     concurrent: true
@@ -54,6 +54,15 @@
         results: 'log/junit*.xml'
      - 'mw-teardown-{dbflavor}'
 
+# XXX miss castor :(
+- job-template:
+    !!merge : *wikibase-tests-template
+    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
+    # Reinject Zuul parameters since JJB strip them for some reason
+    triggers:
+     - zuul
+
 - project:
     name: wikidata
     # By default we do not need any other extensions:
@@ -68,6 +77,7 @@
 
     jobs:
 
+     # repo
      - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
         kind: repo
         repoorclient: 'repo'
@@ -78,6 +88,22 @@
           - php55
           - hhvm
         phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
+
+     # repo on Nodepool
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}-{image}':
+        kind: repo
+        repoorclient: 'repo'
+        dependencies: 'CirrusSearch,Elastica,GeoData,cldr'
+        dbflavor:
+          - sqlite
+        phpflavor:
+            - php55:
+                image: trusty
+            - hhvm:
+                image: jessie
+        phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
+
+     # client
      - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
         kind: client
         repoorclient: 'client'
@@ -88,6 +114,20 @@
         phpflavor:
           - php55
           - hhvm
+        phpunit-params: '--group Wikibase,WikibaseClient'
+     # client on Nodepool
+     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}-{image}':
+        kind: client
+        repoorclient: 'client'
+        dependencies: 'Scribunto,Capiunto,cldr,Echo'
+        dbflavor:
+          - mysql
+          - sqlite
+        phpflavor:
+           - php55:
+               image: trusty
+           - hhvm:
+               image: jessie
         phpunit-params: '--group Wikibase,WikibaseClient'
 
 - job:
