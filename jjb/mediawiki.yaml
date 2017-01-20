@@ -490,3 +490,86 @@
         thresholds:
           failed:
             total-all: 1
+
+- job:
+    name: mediawiki-releases
+    project-type: matrix
+    execution-strategy:
+        sequential: true
+        touchstone:
+            expr: (PHP_BIN=="php5" && ZUUL_BRANCH=="master")
+        combination-filter: >
+            !(ZUUL_BRANCH=="REL1_23" && PHP_BIN=="hhvm")
+            && (
+                (PHP_BIN=="php5" && label=="UbuntuTrusty")
+                ||
+                (PHP_BIN=="hhvm" && label=="DebianJessie")
+                )
+    parameters:
+        - string:
+            name: 'ZUUL_PROJECT'
+            default: 'foo'
+        - string:
+            name: 'ZUUL_URL'
+            default: 'https://gerrit.wikimedia.org/r/p'
+    axes:
+        - axis:
+            type: user-defined
+            name: ZUUL_BRANCH
+            # See https://www.mediawiki.org/wiki/Version_lifecycle
+            values:
+                - master
+                - REL1_28
+                - REL1_27
+                - REL1_23
+        - axis:
+            type: label-expression
+            name: label
+            values:
+                - UbuntuTrusty
+                - DebianJessie
+        - axis:
+            type: user-defined
+            name: PHP_BIN
+            values:
+                - php5
+                - hhvm
+    builders:
+        - shell: |
+            set +x
+            set -ue
+            set -o pipefail
+
+            mkdir -p log
+
+            echo "Label: $label"
+            echo "Branch: $ZUUL_BRANCH"
+            rm -fR release
+            git clone --depth 1 https://gerrit.wikimedia.org/r/mediawiki/tools/release
+            ver=$(release/make-release/branch_to_ver.sh "$ZUUL_BRANCH")
+            release/make-release/make-release.py --list-bundled "$ver"|tee log/list-bundled.txt
+            sed -e 's%^%mediawiki/%' log/list-bundled.txt > log/deps.txt
+        - zuul-cloner:
+            projects: >
+                mediawiki/core
+                $(cat log/deps.txt)
+        - ve-submodules-update
+        - composer-validate:
+            dir: 'src'
+        - composer-local-create:
+            deps: '../log/deps.txt'
+        - composer-update:
+            dir: 'src'
+        - mw-install-mysql
+        - mw-apply-settings
+        - mw-run-update-script
+        # Finally setup is done. Lets do tests:
+        - qunit-karma
+        - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+    publishers:
+     - xunit:
+         types:
+             - phpunit:
+                 pattern: 'log/junit*.xml'
+     - mw-teardown-mysql
+     - archive-log-dir
