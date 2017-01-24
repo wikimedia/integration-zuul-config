@@ -10,11 +10,11 @@
 - builder:
     name: doc-publish
     builders:
-     # rsync folder to integration-publisher.eqiad.wmflabs
+     # rsync folder to integration-publishing.eqiad.wmflabs
      - shell: |
          set -u
          echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {docdest}"
-         rsync --recursive "{docsrc}/" "rsync://10.68.16.255/doc/$JOB_NAME-$BUILD_NUMBER"
+         rsync --recursive "{docsrc}/" "rsync://10.68.23.254/doc/$JOB_NAME-$BUILD_NUMBER"
          echo
          echo "Publishing to https://doc.wikimedia.org/{docdest}/"
      - trigger-builds:
@@ -38,11 +38,11 @@
 - builder:
     name: cover-publish
     builders:
-     # rsync folder to integration-publisher.eqiad.wmflabs
+     # rsync folder to integration-publishing.eqiad.wmflabs
      - shell: |
          set -u
          echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {dest}"
-         rsync --recursive "{src}/" "rsync://10.68.16.255/doc/$JOB_NAME-$BUILD_NUMBER"
+         rsync --recursive "{src}/" "rsync://10.68.23.254/doc/$JOB_NAME-$BUILD_NUMBER"
          echo
          echo "Publishing to https://doc.wikimedia.org/cover/{dest}/"
      - trigger-builds:
@@ -54,7 +54,7 @@
            WMF_CI_PUB_DEST=cover/{dest}
            PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
 
-# rsync a directory from integration-publisher.eqiad.wmflabs to a website on
+# rsync a directory from integration-publishing.eqiad.wmflabs to a website on
 # contint1001.wikimedia.org.
 #
 # Serves:
@@ -73,10 +73,10 @@
     node: contint1001
     parameters:
       - string:
-         # MUST exist on integration-publisher
+         # MUST exist on integration-publishing
          # Should have been created/passed by upstream job
          name: 'PUBLISHER_PATH'
-         description: 'Unique path on integration-publisher to fetch from'
+         description: 'Unique path on integration-publishing to fetch from'
       - string:
          # MUST NOT have leading slash.
          # MUST NOT have trailing slash.
@@ -106,7 +106,7 @@
          LOCAL_DEST="$LOCAL_DOCROOT/$WMF_CI_PUB_DEST"
          mkdir -p "$LOCAL_DEST"
          # Paths are normalized via the trailing slash dot
-         rsync --recursive --delete-after "rsync://10.68.16.255/doc/$PUBLISHER_PATH/." "$LOCAL_DEST/."
+         rsync --recursive --delete-after "rsync://10.68.23.254/doc/$PUBLISHER_PATH/." "$LOCAL_DEST/."
 
          LOCAL_VHOST=$(echo $WMF_CI_PUB_DOCROOT | awk -F'/' '{ print $3"."$2"."$1 }')
          echo
@@ -126,7 +126,7 @@
               # touch the named directory itself.
               #
               # -- Bryan "bd808" Davis
-              rsync --delete --recursive --include="$PUBLISHER_PATH/***" --exclude="*" . rsync://10.68.16.255/doc
+              rsync --delete --recursive --include="$PUBLISHER_PATH/***" --exclude="*" . rsync://10.68.23.254/doc
 
          # Options are confusing, setting them both to false ensures the
          # postbuildscript is ALWAYS run.
