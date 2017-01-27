@@ -205,7 +205,7 @@ dependencies = {
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite'],
     'Wikibase': ['CirrusSearch', 'cldr', 'Elastica', 'GeoData',
-                 'Scribunto', 'Capiunto'],
+                 'Scribunto', 'Capiunto', 'Echo'],
     'WikibaseJavaScriptApi': ['Wikibase'],
     'WikibaseLexeme': ['Wikibase'],
     'WikibaseMediaInfo': ['Wikibase'],
