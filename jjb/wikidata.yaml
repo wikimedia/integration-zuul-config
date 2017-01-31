@@ -22,6 +22,13 @@
                --log-junit "$WORKSPACE/log/junit-wikidata.xml" \
                {params}
 
+- builder:
+    name: wd-install-dev-dependencies
+    builders:
+        - shell: |
+            cd "$WORKSPACE/src/extensions/Wikibase"
+            composer update --ansi --no-progress --prefer-dist --profile -v
+
 - job-template:
     name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}'
     node: 'contintLabsSlave && phpflavor-{phpflavor}'
@@ -46,6 +53,7 @@
           experimental: 'true'
      - mw-apply-settings
      - mw-run-update-script
+     - wd-install-dev-dependencies
      - wd-runtests:
           params: '{phpunit-params}'
     publishers:
