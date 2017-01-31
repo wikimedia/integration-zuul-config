@@ -740,7 +740,11 @@ jobs:
     branch: (?!REL1_23|fundraising/REL.*)
 
   - name: ^.*php55.*$
-    branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
+    skip-if:
+      - project: '^mediawiki/.*$'
+        branch: (REL1_2[3-6]|fundraising/REL1_2[3-6]$)
+      - project: ^wikimedia/fundraising/SmashPig$
+        branch: ^deployment$
 
   - name: ^.*php70.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
@@ -749,8 +753,6 @@ jobs:
     skip-if:
       - project: '^mediawiki/.*$'
         branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
-      - project: ^wikimedia/fundraising/SmashPig$
-        branch: ^deployment$
 
   # Don't run tests on deployment branches where the tests have been removed.
   # Covered by test_smashpig_deployment_branch_filters
@@ -2586,7 +2588,7 @@ projects:
 
   - name: wikimedia/fundraising/SmashPig
     template:
-      - name: composer-test
+      - name: composer-test55
 
   - name: wikimedia/iegreview
     template:
