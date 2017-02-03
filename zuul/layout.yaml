@@ -2370,7 +2370,7 @@ projects:
 
   - name: operations/puppet/cdh
     template:
-      - name: puppet
+      - name: rake
 
   - name: operations/puppet/cdh4
     template:
@@ -2378,19 +2378,19 @@ projects:
 
   - name: operations/puppet/jmxtrans
     template:
-      - name: puppet
+      - name: rake
 
   - name: operations/puppet/kafka
     template:
       - name: puppet
 
   - name: operations/puppet/kafkatee
+    template:
+      - name: rake
     test:
       - tox-jessie
       - erblint-HEAD
       - pplint-HEAD
-    experimental:
-      - rake-jessie
 
   - name: operations/puppet/mariadb
     template:
@@ -2401,12 +2401,10 @@ projects:
       - name: puppet
 
   - name: operations/puppet/varnishkafka
+    template:
+      - name: rake
     test:
       - tox-jessie
-      - erblint-HEAD
-      - pplint-HEAD
-    experimental:
-      - rake-jessie
 
   - name: operations/puppet/wikimetrics
     template:
@@ -2414,7 +2412,7 @@ projects:
 
   - name: operations/puppet/zookeeper
     template:
-      - name: puppet
+      - name: rake
 
   # Repo of misc softwares
   # Voting V+2 so ops dont idle waiting for CI to report.
