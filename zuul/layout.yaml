@@ -754,7 +754,7 @@ jobs:
 
   # Don't run tests on deployment branches where the tests have been removed.
   # Covered by test_smashpig_deployment_branch_filters
-  - name: ^composer-hhvm-trusty$
+  - name: ^composer-hhvm-jessie$
     skip-if:
      - project: ^wikimedia/fundraising/SmashPig$
        branch: ^deployment$
@@ -957,7 +957,7 @@ project-templates:
     experimental:
      - mwext-qunit-composer-jessie
      - npm-node-6-jessie
-     - composer-hhvm-trusty
+     - composer-hhvm-jessie
      - composer-php53
      - composer-php55-trusty
      - composer-php70-jessie
@@ -980,7 +980,7 @@ project-templates:
      - composer-validate
     experimental:
      - mwext-qunit-composer-jessie
-     - composer-hhvm-trusty
+     - composer-hhvm-jessie
      - composer-php53
      - composer-php55-trusty
      - composer-php70-jessie
@@ -1014,7 +1014,7 @@ project-templates:
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-6-jessie
-      - composer-hhvm-trusty
+      - composer-hhvm-jessie
       - composer-php53
       - composer-php55-trusty
       - composer-php70-jessie
@@ -1045,7 +1045,7 @@ project-templates:
       - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-6-jessie
-      - composer-hhvm-trusty
+      - composer-hhvm-jessie
       - composer-php53
       - composer-php55-trusty
       - composer-php70-jessie
@@ -1144,7 +1144,7 @@ project-templates:
      - mwext-testextension-hhvm
      - mwext-testextension-hhvm-composer
      - npm-node-6-jessie
-     - composer-hhvm-trusty
+     - composer-hhvm-jessie
      - composer-php53
      - composer-php55-trusty
      - composer-php70-jessie
@@ -1157,14 +1157,13 @@ project-templates:
     test:
       - composer-php53
       - composer-php55-trusty
-      - composer-hhvm-trusty
+      - composer-hhvm-jessie
     gate-and-submit:
       - composer-php53
       - composer-php55-trusty
-      - composer-hhvm-trusty
+      - composer-hhvm-jessie
     experimental:
       - composer-php70-jessie
-      - composer-hhvm-jessie
 
   - name: composer-test55
     check:
@@ -1172,13 +1171,12 @@ project-templates:
       - composer-validate
     test:
       - composer-php55-trusty
-      - composer-hhvm-trusty
+      - composer-hhvm-jessie
     gate-and-submit:
       - composer-php55-trusty
-      - composer-hhvm-trusty
+      - composer-hhvm-jessie
     experimental:
       - composer-php70-jessie
-      - composer-hhvm-jessie
 
   - name: jshint
     check:
@@ -1210,13 +1208,11 @@ project-templates:
       - php53lint
       - php55lint
     test:
-      #- composer-package-hhvm-jessie
-      - composer-package-hhvm-trusty
+      - composer-package-hhvm-jessie
       - composer-package-php53
       - composer-package-php55-trusty
     gate-and-submit:
-      #- composer-package-hhvm-jessie
-      - composer-package-hhvm-trusty
+      - composer-package-hhvm-jessie
       - composer-package-php53
       - composer-package-php55-trusty
     experimental:
@@ -1227,12 +1223,10 @@ project-templates:
       - composer-package-validate
       - php55lint
     test:
-      #- composer-package-hhvm-jessie
-      - composer-package-hhvm-trusty
+      - composer-package-hhvm-jessie
       - composer-package-php55-trusty
     gate-and-submit:
-      #- composer-package-hhvm-jessie
-      - composer-package-hhvm-trusty
+      - composer-package-hhvm-jessie
       - composer-package-php55-trusty
     experimental:
       - composer-package-php70-jessie
@@ -2648,13 +2642,13 @@ projects:
      - php53lint
      - php55lint
      - composer-php53
-     - composer-hhvm-trusty
+     - composer-hhvm-jessie
      - composer-validate
     gate-and-submit:
      - php53lint
      - php55lint
      - composer-php53
-     - composer-hhvm-trusty
+     - composer-hhvm-jessie
      - composer-validate
 
   - name: wikimedia/fundraising/slander
