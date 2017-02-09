@@ -16,10 +16,20 @@
             phpflavor: 'hhvm'
         - assert-node-version-6
         - castor-load
+        - shell: "echo -e 'mediawiki/extensions/Cite' > deps.txt"
         - zuul-parsoid-cloner:
-             projects: >
+            projects: >
                 mediawiki/core
+                $(cat deps.txt)
                 mediawiki/services/parsoid
+        - shell: "mv deps.txt src/mediawiki/core/extensions_load.txt"
+        - composer-validate:
+            dir: 'src/mediawiki/core'
+        - shell: |
+            # composer-local-create
+            set -u
+            cd src/mediawiki/core
+            /srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py extensions_load.txt composer.local.json
         - composer-update:
             dir: 'src/mediawiki/core'
         - shell: |
@@ -30,13 +40,18 @@
             /srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh
             /srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh
         - shell: |
-           # record the versions of parsertests we're running, for debugging
-           # if something goes wrong
-           find -name parserTests.txt -print0 | xargs -0 md5sum -b
-           # Now run parserTests
-           cd src/mediawiki/core
-           php tests/parser/parserTests.php --color=no --quiet \
-            --file="$WORKSPACE/parsoidsvc/tests/parserTests.txt"
+            # record the versions of parsertests we're running, for debugging
+            # if something goes wrong
+            find -name parserTests.txt -print0 | xargs -0 md5sum -b
+            find -name citeParserTests.txt -print0 | xargs -0 md5sum -b
+            # Now run parserTests
+            cd src/mediawiki/core
+            # export again, we're in a new shell
+            export MW_INSTALL_PATH='src/mediawiki/core'
+            php tests/parser/parserTests.php --color=no --quiet \
+                --file="$WORKSPACE/parsoidsvc/tests/parserTests.txt"
+            php tests/parser/parserTests.php --color=no --quiet \
+                --file="$WORKSPACE/parsoidsvc/tests/citeParserTests.txt"
     publishers:
         - archive-log-allow-empty
         - castor-save
