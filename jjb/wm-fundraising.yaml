@@ -9,11 +9,15 @@
     builders:
       - zuul-cloner:
           projects: >
-            wikimedia/fundraising/civicrm-buildkit
             wikimedia/fundraising/crm
             wikimedia/fundraising/crm/civicrm
             wikimedia/fundraising/crm/drupal
       - shell: |
+          if [[ -d $WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit ]]; then
+            cd $WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit && git pull
+          else 
+            git clone https://github.com/civicrm/civicrm-buildkit.git $WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit
+          fi
           $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-create-dbs.sh
           $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-populate-dbs.sh
 
