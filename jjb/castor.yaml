@@ -141,7 +141,7 @@
             ssh -q -a -T \
               -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
               jenkins@"${REMOTE_INSTANCE}" \
-              'mkdir -v -p .cache/composer .m2/repository .cache/pip/wheels .npm workspace/vendor/bundle'
+              'mkdir -v -p .cache/composer .composer/cache .m2/repository .cache/pip/wheels .npm workspace/vendor/bundle'
 
             echo "Creating directory holding cache:"
             mkdir -v -p "${DEST}"
@@ -153,6 +153,6 @@
               --rsh="ssh -a -T  -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
               --delete-delay \
               --relative \
-              jenkins@"${REMOTE_INSTANCE}":.cache/composer :.m2/repository :.cache/pip/wheels :.npm :workspace/vendor/bundle "${DEST}/"
+              jenkins@"${REMOTE_INSTANCE}":.cache/composer :.composer/cache :.m2/repository :.cache/pip/wheels :.npm :workspace/vendor/bundle "${DEST}/"
 
             echo -e "\nDone"
