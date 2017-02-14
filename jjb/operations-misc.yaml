@@ -39,7 +39,10 @@
     triggers:
      - zuul
     builders:
+     - castor-load
      - composer-validate:
          dir: '.'
      - fetch-composer-dev
      - composer-test
+    publishers:
+     - castor-save
