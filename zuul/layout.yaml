@@ -1266,6 +1266,12 @@ project-templates:
     gate-and-submit:
       - rake-jessie
 
+  - name: puppet-module
+    test:
+      - puppet-{name}-rake-jessie
+    gate-and-submit:
+      - puppet-{name}-rake-jessie
+
   - name: tox-jessie
     test:
      - tox-jessie
@@ -2377,7 +2383,7 @@ projects:
 
   - name: operations/puppet/cdh
     template:
-      - name: rake
+      - name: puppet-module
 
   - name: operations/puppet/cdh4
     template:
@@ -2385,7 +2391,7 @@ projects:
 
   - name: operations/puppet/jmxtrans
     template:
-      - name: rake
+      - name: puppet-module
 
   - name: operations/puppet/kafka
     template:
@@ -2393,13 +2399,13 @@ projects:
 
   - name: operations/puppet/kafkatee
     template:
-      - name: rake
+      - name: puppet-module
     test:
       - tox-jessie
 
   - name: operations/puppet/mariadb
     template:
-      - name: rake
+      - name: puppet-module
 
   - name: operations/puppet/nginx
     template:
@@ -2407,7 +2413,7 @@ projects:
 
   - name: operations/puppet/varnishkafka
     template:
-      - name: rake
+      - name: puppet-module
     test:
       - tox-jessie
 
@@ -2417,7 +2423,7 @@ projects:
 
   - name: operations/puppet/zookeeper
     template:
-      - name: rake
+      - name: puppet-module
 
   # Repo of misc softwares
   # Voting V+2 so ops dont idle waiting for CI to report.
