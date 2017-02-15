@@ -574,7 +574,8 @@ pipelines:
     manager: DependentPipelineManager
     source: gerrit
     precedence: high
-    window-floor: 12
+    window: 5  # initial value
+    window-floor: 2  # minimum
     trigger:
       gerrit:
         - event: comment-added
