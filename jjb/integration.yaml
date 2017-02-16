@@ -20,6 +20,13 @@
         git checkout $ZUUL_COMMIT
         echo "`date -R`> $ZUUL_COMMIT" >> /srv/jenkins-autodeploy
 
+- job-template:
+    name: 'integration-infra-end-to-end'
+    node: ci-trusty-wikimedia
+    builders:
+        # FIXME make it emit something to statsd?
+        - shell: "/bin/true"
+
 # Pass integration/config.git:zuul/layout.yaml to zuul-server layout validation
 # Requires zuul to be installed on the Jenkins host.
 - job-template:

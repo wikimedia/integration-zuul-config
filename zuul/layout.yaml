@@ -635,6 +635,14 @@ pipelines:
        - event: ref-updated
          ref: ^refs/tags/.*$
 
+  - name: dead-man-switch
+    description: End to end test of the CI infrastructure
+    manager: IndependentPipelineManager
+    trigger:
+      timer:
+        # Every 5 minutes
+        - time: '*/5 * * * *'
+
 # Fine tune some jobs
 jobs:
 
@@ -1297,6 +1305,10 @@ project-templates:
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
+  - name: test/gerrit-ping
+    dead-man-switch:
+      - integration-infra-end-to-end
+
   - name: gerrit
 
   - name: integration/config
