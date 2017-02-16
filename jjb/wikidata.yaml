@@ -22,9 +22,9 @@
                --log-junit "$WORKSPACE/log/junit-wikidata.xml" \
                {params}
 
-- job-template: &wikibase-tests-template
-    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+- job-template:
+    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
     concurrent: true
     triggers:
      - zuul
@@ -36,6 +36,7 @@
      - assert-phpflavor:
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
+     - castor-load
      - zuul-cloner-extdeps:
          dependencies: 'Wikibase,{dependencies}'
      - wd-mw-composer-merged-install
@@ -49,19 +50,11 @@
      - wd-runtests:
           params: '{phpunit-params}'
     publishers:
+     - castor-save
      - archive-log-dir
      - junit:
         results: 'log/junit*.xml'
      - 'mw-teardown-{dbflavor}'
-
-# XXX miss castor :(
-- job-template:
-    !!merge : *wikibase-tests-template
-    name: 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}-{image}'
-    node: ci-{image}-wikimedia
-    # Reinject Zuul parameters since JJB strip them for some reason
-    triggers:
-     - zuul
 
 - project:
     name: wikidata
@@ -76,19 +69,6 @@
       - ansicolor
 
     jobs:
-
-     # repo
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
-        kind: repo
-        repoorclient: 'repo'
-        dependencies: 'CirrusSearch,Elastica,GeoData,cldr'
-        dbflavor:
-          - sqlite
-        phpflavor:
-          - php55
-          - hhvm
-        phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
-
      # repo on Nodepool
      - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}-{image}':
         kind: repo
@@ -103,18 +83,6 @@
                 image: jessie
         phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
 
-     # client
-     - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}':
-        kind: client
-        repoorclient: 'client'
-        dependencies: 'Scribunto,Capiunto,cldr,Echo'
-        dbflavor:
-          - mysql
-          - sqlite
-        phpflavor:
-          - php55
-          - hhvm
-        phpunit-params: '--group Wikibase,WikibaseClient'
      # client on Nodepool
      - 'mwext-Wikibase-{kind}-tests-{dbflavor}-{phpflavor}-{image}':
         kind: client
