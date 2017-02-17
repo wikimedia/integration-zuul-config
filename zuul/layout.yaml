@@ -2366,17 +2366,12 @@ projects:
   - name: operations/puppet
     # Only lint on submission for now, that will be voting
     check:
-      - erblint-HEAD
-      - pplint-HEAD
       - operations-puppet-typos
     # Same for trusted user
     test:
       # testing
       - operations-puppet-tox-jessie
       - operations-puppet-rake-jessie
-      # Same as `check` pipeline:
-      - erblint-HEAD
-      - pplint-HEAD
       - operations-puppet-typos
     experimental:
       - tox-jessie
