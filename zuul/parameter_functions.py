@@ -328,6 +328,7 @@ gatedextensions = [
     'MobileApp',
     'MobileFrontend',
     'MwEmbedSupport',
+    'NavigationTiming',
     'ParserFunctions',
     'PdfHandler',
     'SandboxLink',
