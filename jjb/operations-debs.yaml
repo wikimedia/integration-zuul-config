@@ -162,6 +162,9 @@
         # positives, specially when the tar.gz is severly outdated
         # T141454 T148664
         #- debian-glue-piuparts
+        - shell: |
+            set -o pipefail
+            jdg-debc | tee debc.txt
     publishers:
       - xunit:
           thresholdsmode: 'number'
@@ -177,7 +180,7 @@
       #- tap:
       #    results: piuparts.tap
       - archive:
-          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian.txt,lintian.xml,piuparts.txt,piuparts.tap'
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,debc.txt,lintian.txt,lintian.xml,piuparts.txt,piuparts.tap'
 
 - job-template:
     !!merge : *job_template_debian_glue
