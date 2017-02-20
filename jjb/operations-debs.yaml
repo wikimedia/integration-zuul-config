@@ -21,11 +21,10 @@
       - shell: |
           # We might consider adding --warnings
           set -o pipefail
-          # Source package:
-          /usr/bin/lintian-junit-report --filename lintian-binary.txt *.dsc | tee lintian-binary.xml
-          # Binary package:
-          /usr/bin/lintian-junit-report --filename lintian-source.txt *.changes | tee lintian-source.xml
+          /usr/bin/lintian-junit-report --filename lintian.txt *.changes > lintian.xml
           set +o pipefail
+          # For human consumption when looking at the build console
+          cat lintian.txt
 
 # Piuparts test installation / removal of a package
 #
@@ -172,13 +171,13 @@
                   failure: 0
           types:
               - junit:
-                  pattern: 'lintian-*.xml'
+                  pattern: 'lintian.xml'
       # FIXME should convert UNSTABLE to FAILED.
       # FIXME disabled due to T141454 T148664
       #- tap:
       #    results: piuparts.tap
       - archive:
-          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian-*.txt,lintian-*.xml,piuparts.txt,piuparts.tap'
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.changes,lintian.txt,lintian.xml,piuparts.txt,piuparts.tap'
 
 - job-template:
     !!merge : *job_template_debian_glue
