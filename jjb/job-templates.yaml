@@ -1,25 +1,5 @@
 # Generic job-templates
 
-- job:
-    name: 'erblint-HEAD'
-    node: contintLabsSlave && DebianJessie
-    concurrent: true
-    scm:
-     - git:
-         url: '$ZUUL_URL/$ZUUL_PROJECT'
-         branches:
-          - '$ZUUL_COMMIT'
-         refspec: '$ZUUL_REF'
-         wipe-workspace: true
-         submodule:
-             disable: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head erb \
-        | xargs -n1 -I {} -t sh -c 'erb -P -x -T - {} | ruby -c'
-
 - job: &job_jshint
     name: 'jshint'
     node: contintLabsSlave && UbuntuTrusty
@@ -287,28 +267,6 @@
          set +o pipefail
     publishers:
      - puppet-lint
-
-- job:
-    name: 'pplint-HEAD'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    scm:
-     - git:
-         url: '$ZUUL_URL/$ZUUL_PROJECT'
-         branches:
-          - '$ZUUL_COMMIT'
-         refspec: '$ZUUL_REF'
-         wipe-workspace: true
-         submodule:
-             disable: true
-
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        puppet --version
-        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head pp \
-        | xargs -n1 -t puppet parser validate
 
 - job:
     name: 'php53lint'
