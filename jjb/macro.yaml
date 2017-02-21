@@ -489,6 +489,14 @@
     name: mw-fetch-composer-dev
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-fetch-composer-dev.sh"
+     - shell: |
+         set -e
+         set -u
+         . /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
+         if [ -f "$MW_INSTALL_PATH/composer.lock" ]; then
+             mkdir -p "$WORKSPACE/log/"
+             cp -f "$MW_INSTALL_PATH/composer.lock" "$WORKSPACE/log/"
+         fi
 
 - builder:
     name: fetch-composer-dev
