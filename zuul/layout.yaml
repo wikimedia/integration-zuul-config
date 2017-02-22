@@ -6925,7 +6925,7 @@ projects:
   - name: mediawiki/extensions/TemplateStyles
     template:
      - name: composer-test
-     - name: extension-unittests-generic
+     - name: extension-unittests-composer
      - name: npm
     check:
      - jsonlint
@@ -9059,6 +9059,13 @@ projects:
      - name: composer-test-package
     postmerge:
       - doxygen-publish
+
+  - name: css-sanitizer
+    template:
+     - name: composer-test-package55
+    postmerge:
+      - doxygen-publish
+      - phpunit-coverage-publish
 
   - name: php-session-serializer
     template:
