@@ -269,28 +269,6 @@
      - puppet-lint
 
 - job:
-    name: 'pplint-HEAD'
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    scm:
-     - git:
-         url: '$ZUUL_URL/$ZUUL_PROJECT'
-         branches:
-          - '$ZUUL_COMMIT'
-         refspec: '$ZUUL_REF'
-         wipe-workspace: true
-         submodule:
-             disable: true
-
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        puppet --version
-        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head pp \
-        | xargs -n1 -t puppet parser validate
-
-- job:
     name: 'php53lint'
     node: contintLabsSlave && phpflavor-php53
     defaults: use-remote-zuul-shallow-clone
