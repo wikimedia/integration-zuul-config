@@ -319,7 +319,7 @@ class TestZuulScheduler(unittest.TestCase):
             '.*-(jshint|jsonlint)',
             '.*-(js|shell|php5[35]|)lint',
             '.*-(tabs|typos)',
-            '.*-puppet-validate',
+            'translatewiki-puppet-validate',
             '.*-puppetlint-strict',
             '.*-whitespaces',
             'noop',

@@ -697,10 +697,6 @@ jobs:
       - project: '^operations/software/cumin$'
         branch: ^master$
 
-  - name: 'integration-config-puppet-validate'
-    files:
-     - '^.*\.pp$'
-
   - name: ^composer-validate$
     files:
      - '^composer.json$'
@@ -2096,12 +2092,6 @@ projects:
   - name: mediawiki/vagrant
     template:
       - name: rake
-    check:
-      - mediawiki-vagrant-puppet-validate
-    test:
-      - mediawiki-vagrant-puppet-validate
-    gate-and-submit:
-      - mediawiki-vagrant-puppet-validate
     postmerge:
       - mediawiki-vagrant-puppet-doc-publish
 

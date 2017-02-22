@@ -321,17 +321,6 @@
     builders:
      - phplint
 
-- job-template:
-    name: '{name}-puppet-validate'
-    defaults: use-remote-zuul-no-submodules
-    node: contintLabsSlave
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        find . -type f -name '*.pp' -print0 | xargs -0 puppet parser validate
-
 # Verify whether there is any leading tabs in files matching 'fileselector'.
 #
 # 'fileselector': the parameter is passed to grep --include= option and is
