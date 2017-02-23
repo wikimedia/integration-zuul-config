@@ -133,7 +133,7 @@ class TestZuulScheduler(unittest.TestCase):
     def assertProjectHasPhplint(self, name, definition, pipeline):
         self.assertTrue(
             any([job for job in definition
-                 if job.endswith(('php53lint', 'php55lint')) or
+                 if job.endswith(('php55lint')) or
                  job.startswith('composer-')]),
             'Project %s pipeline %s must have either '
             'phplint or a composer-* job'
@@ -596,6 +596,82 @@ class TestZuulScheduler(unittest.TestCase):
 
         event.branch = change.branch
         self.assertTrue(test_manager.eventMatches(event, change))
+
+    # transient test job to help phasing out Zend 5.3 - T158652
+    def test_mediawiki_release_branches_trigger_phplint(self):
+        def assertChangeTriggersJob(change, job):
+            self.assertTrue(
+                job.changeMatches(change),
+                msg='%s should trigger for branch %s. Job: %s' % (
+                    job.name, change.branch, job.__dict__)
+            )
+
+        def getPipelineJobForProject(job_name, project_name,
+                                     pipeline_name='test'):
+            jobs_tree = [t for (p, t) in
+                         self.getPipeline(pipeline_name).job_trees.iteritems()
+                         if p.name == project_name][0]
+            return [j for j in jobs_tree.getJobs()
+                    if j.name == job_name][0]
+
+        # mediawiki/core
+        change = zuul.model.Change('mediawiki/core')
+        lint_job = getPipelineJobForProject(
+            'mediawiki-core-php55lint', 'mediawiki/core')
+
+        change.branch = 'REL1_26'  # last that supports Zend 5.3
+        assertChangeTriggersJob(change, lint_job)
+
+        change.branch = 'REL1_27'  # requires Zend 5.5
+        assertChangeTriggersJob(change, lint_job)
+
+        change.branch = 'master'
+        assertChangeTriggersJob(change, lint_job)
+
+        # A MediaWiki extension
+        change = zuul.model.Change('mediawiki/extensions/ConfirmEdit')
+        change.files = ['foobar.php']  # php55lint has a files: filter
+        lint_job = getPipelineJobForProject(
+            'php55lint', 'mediawiki/extensions/ConfirmEdit')
+
+        change.branch = 'REL1_26'  # last that supports Zend 5.3
+        assertChangeTriggersJob(change, lint_job)
+
+        change.branch = 'REL1_27'  # requires Zend 5.5
+        assertChangeTriggersJob(change, lint_job)
+
+        change.branch = 'master'
+        assertChangeTriggersJob(change, lint_job)
+
+        # Make sure test jobs are properly triggered
+        test_53 = getPipelineJobForProject(
+            'mwext-testextension-php53',
+            'mediawiki/extensions/ConfirmEdit',
+            'gate-and-submit')
+        gate_53 = getPipelineJobForProject(
+            'mediawiki-extensions-php53',
+            'mediawiki/extensions/ConfirmEdit',
+            'gate-and-submit')
+        test_55 = getPipelineJobForProject(
+            'mwext-testextension-php55',
+            'mediawiki/extensions/ConfirmEdit',
+            'gate-and-submit')
+        gate_55 = getPipelineJobForProject(
+            'mediawiki-extensions-php55-trusty',
+            'mediawiki/extensions/ConfirmEdit',
+            'gate-and-submit')
+
+        change.branch = 'REL1_26'  # still on Zend 5.3
+        assertChangeTriggersJob(change, test_53)
+        assertChangeTriggersJob(change, gate_53)
+
+        change.branch = 'REL1_27'
+        assertChangeTriggersJob(change, test_55)
+        assertChangeTriggersJob(change, gate_55)
+
+        change.branch = 'master'
+        assertChangeTriggersJob(change, test_55)
+        assertChangeTriggersJob(change, gate_55)
 
     # FIXME: should be more generic
     def get_mediawiki_core_rake_jessie_job(self):

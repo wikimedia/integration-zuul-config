@@ -269,39 +269,10 @@
      - puppet-lint
 
 - job:
-    name: 'php53lint'
-    node: contintLabsSlave && phpflavor-php53
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - phplint
-
-- job:
     name: 'php55lint'
     node: contintLabsSlave && phpflavor-php55
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - phplint
-
-# Deprecated non-generic phplint job. You should
-# use the above 'phplint' job. Due to a performance issue
-# with Git on Ubuntu Precise (details on T92042), this is
-# kept around for large repositories that need to have their
-# own workspace.
-- job-template:
-    name: '{name}-php53lint'
-    node: contintLabsSlave && phpflavor-php53
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-     - throttle-one-per-node
     triggers:
      - zuul
     builders:
