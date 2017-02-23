@@ -585,7 +585,7 @@ class TestZuulScheduler(unittest.TestCase):
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'wikimedia/fundraising/SmashPig'][0]
         for job in jobs_tree.getJobs():
-            if job.name in ['composer-php53', 'composer-hhvm-jessie']:
+            if job.name in ['composer-php55', 'composer-hhvm-jessie']:
                 self.assertFalse(
                     job.changeMatches(change),
                     msg='%s should not trigger for branch %s' % (
