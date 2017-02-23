@@ -715,21 +715,9 @@ jobs:
     files:
      - '^composer.json$'
 
-  - name: ^.*-php53lint$
-    files:
-     - '^.*\.(php|php5|phtml|inc)$'
-
-  - name: php53lint
-    files:
-     - '^.*\.(php|php5|phtml|inc)$'
-    skip-if:
-     - project: '^mediawiki/.*$'
-       branch: (?!REL1_2[3-6]$)
-
   - name: php55lint
     files:
      - '^.*\.(php|php5|phtml|inc)$'
-    branch: (?!REL1_2[3-6]$)
 
   - name: ^mediawiki-phpunit-php53-composer$
     # Release branch 1.23 does not support composer, hhvm variant is done by the next filter
@@ -749,6 +737,17 @@ jobs:
         branch: (REL1_2[3-6]|fundraising/REL1_2[3-6]$)
       - project: ^wikimedia/fundraising/SmashPig$
         branch: ^deployment$
+
+  # php53lint is gone so hack the above skip-if so we trigger php55lint on any
+  # branches.
+  - name: ^php55lint$
+    skip-if:
+      - project: '^mediawiki/.*$'
+        branch: (?!.*)
+  - name: ^mediawiki-core-php55lint$
+    skip-if:
+      - project: '^mediawiki/.*$'
+        branch: (?!.*)
 
   - name: ^.*php70.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
@@ -945,18 +944,15 @@ project-templates:
 
   - name: extension-unittests-composer
     check:
-     - php53lint
      - php55lint
      - composer-validate
     test:
-     - php53lint
      - php55lint
      - mwext-testextension-hhvm-composer
     php5:
      - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
     gate-and-submit:
-     - php53lint
      - php55lint
      - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
@@ -971,11 +967,9 @@ project-templates:
 
   - name: extension-unittests-composer-non-voting
     check:
-     - php53lint
      - php55lint
      - composer-validate
     test:
-     - php53lint
      - php55lint
      - mwext-testextension-hhvm-composer-jessie-non-voting
      - composer-validate
@@ -983,7 +977,6 @@ project-templates:
      - mwext-testextension-php53-composer-non-voting
      - mwext-testextension-php55-composer-trusty-non-voting
     gate-and-submit:
-     - php53lint
      - php55lint
      - composer-validate
     experimental:
@@ -995,11 +988,9 @@ project-templates:
 
   - name: extension-unittests-generic
     check:
-     - php53lint
      - php55lint
      - composer-validate
     test:
-     - php53lint
      - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-hhvm
@@ -1008,7 +999,6 @@ project-templates:
      - mwext-testextension-php53
      - mwext-testextension-php55
     gate-and-submit:
-     - php53lint
      - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-php53
@@ -1031,11 +1021,9 @@ project-templates:
 
   - name: extension-unittests-non-voting
     check:
-     - php53lint
      - php55lint
      - composer-validate
     test:
-     - php53lint
      - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-hhvm-jessie-non-voting
@@ -1045,7 +1033,6 @@ project-templates:
      - mwext-testextension-php55-trusty-non-voting
     gate-and-submit:
      - noop
-     - php53lint
      - php55lint
      - composer-validate
     experimental:
@@ -1133,17 +1120,14 @@ project-templates:
 
   - name: mw-checks-test
     check:
-     - php53lint
      - php55lint
      - jsonlint
      - composer-validate
     test:
-     - php53lint
      - php55lint
      - jsonlint
      - composer-validate
     gate-and-submit:
-     - php53lint
      - php55lint
      - jsonlint
      - composer-validate
@@ -1156,7 +1140,6 @@ project-templates:
 
   - name: composer-test
     check:
-      - php53lint
       - php55lint
       - composer-validate
     test:
@@ -1210,7 +1193,6 @@ project-templates:
   - name: composer-test-package
     check:
       - composer-package-validate
-      - php53lint
       - php55lint
     test:
       - composer-package-hhvm-jessie
@@ -1389,14 +1371,12 @@ projects:
       - name: extension-gate
       - name: rake
     check:
-      - mediawiki-core-php53lint
       - mediawiki-core-php55lint
       - composer-package-validate
     test:
       - mediawiki-core-phpcs-trusty
       - mediawiki-core-jsduck
       - mediawiki-core-npm-node-6-jessie
-      - mediawiki-core-php53lint
       - mediawiki-core-php55lint
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-core-qunit-jessie
@@ -1409,7 +1389,6 @@ projects:
     gate-and-submit:
       - mediawiki-core-jsduck
       - mediawiki-core-npm-node-6-jessie
-      - mediawiki-core-php53lint
       - mediawiki-core-php55lint
       - mediawiki-core-phpcs-trusty
       - mediawiki-phpunit-hhvm-jessie
@@ -1448,11 +1427,9 @@ projects:
     template:
       - name: extension-gate
     check:
-      - php53lint
       - php55lint
       - composer-validate
     test:
-      - php53lint
       - php55lint
       - composer-validate
       - mediawiki-core-qunit-jessie
@@ -1461,7 +1438,6 @@ projects:
       - mediawiki-phpunit-php55-trusty
       - mediawiki-phpunit-php53
     gate-and-submit:
-      - php53lint
       - php55lint
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-trusty
@@ -1517,9 +1493,9 @@ projects:
 
   - name: analytics/limn-wikidata-data
     check-voter:
-     - php53lint
+     - php55lint
     gate-and-submit:
-     - php53lint
+     - php55lint
 
   - name: analytics/mediawiki-storage
     template:
@@ -1602,9 +1578,9 @@ projects:
 
   - name: labs/incubator
     check-voter:
-     - php53lint
+     - php55lint
     gate-and-submit:
-     - php53lint
+     - php55lint
 
   - name: labs/migration-assistant
     template:
@@ -1642,11 +1618,11 @@ projects:
     test:
      - tox-jessie
      - debian-glue
-     - php53lint
+     - php55lint
     gate-and-submit:
      - tox-jessie
      - debian-glue
-     - php53lint
+     - php55lint
 
   - name: labs/tools/crosswatch
     template:
@@ -2059,9 +2035,9 @@ projects:
 
   - name: mediawiki/tools/code-utils
     check-voter:
-     - php53lint
+     - php55lint
     gate-and-submit:
-     - php53lint
+     - php55lint
 
   - name: mediawiki/tools/codesniffer
     template:
@@ -2071,9 +2047,9 @@ projects:
 
   - name: mediawiki/tools/dippybird
     check-voter:
-     - php53lint
+     - php55lint
     gate-and-submit:
-     - php53lint
+     - php55lint
 
   - name: mediawiki/tools/mwdumper
     test:
@@ -2088,9 +2064,9 @@ projects:
     check:
       - jsonlint
     test:
-      - php53lint
+      - php55lint
     gate-and-submit:
-      - php53lint
+      - php55lint
 
   - name: mediawiki/tools/releng
     test:
@@ -2239,12 +2215,12 @@ projects:
   - { name: operations/debs/wikimedia-task-appserver,        test: ['debian-glue-non-voting'] }
   - name: operations/debs/wikistats
     check:
-      - php53lint
+      - php55lint
     test:
-     - php53lint
+     - php55lint
      - debian-glue-non-voting
     gate-and-submit:
-     - php53lint
+     - php55lint
      - debian-glue-non-voting
 
   # Content translation related packages
@@ -2519,14 +2495,12 @@ projects:
   - name: wikimedia/fundraising/crm
     test:
       - wikimedia-fundraising-crm-jsonlint
-      - php53lint
       - php55lint
       - wikimedia-fundraising-civicrm
       # TODO: fixups so that we can run composer-validate
       - noop
     gate-and-submit:
       - wikimedia-fundraising-crm-jsonlint
-      - php53lint
       - php55lint
       - wikimedia-fundraising-civicrm
       # Since jobs above might not trigger due to file filtering and
@@ -2537,41 +2511,35 @@ projects:
 
   - name: wikimedia/fundraising/crm/civicrm
     test:
-      - php53lint
       - php55lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - php53lint
       - php55lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/drupal
     test:
-      - php53lint
+      - php55lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - php53lint
+      - php55lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/vendor
     test:
-      - php53lint
       - php55lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - php53lint
       - php55lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/php-queue
     test:
-     - php53lint
      - php55lint
      - composer-php53
      - composer-hhvm-jessie
      - composer-validate
     gate-and-submit:
-     - php53lint
      - php55lint
      - composer-php53
      - composer-hhvm-jessie
@@ -3140,7 +3108,6 @@ projects:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
     check:
-      - php53lint
       - jsonlint
 
   - name: mediawiki/extensions/ContributionScores
@@ -3356,10 +3323,10 @@ projects:
     test:
       - mwext-donationinterfacecore-REL1_27-testextension-zend55
       - mwext-donationinterfacecore-REL1_28-testextension-zend55
-      - php53lint
+      - php55lint
     gate-and-submit:
       - mwext-donationinterfacecore-REL1_27-testextension-zend55
-      - php53lint
+      - php55lint
 
   - name: mediawiki/extensions/DoubleWiki
     template:
@@ -4180,7 +4147,6 @@ projects:
     check:
       - jshint
       - jsonlint
-      - php53lint
     experimental:
       # WIP: https://gerrit.wikimedia.org/r/#/c/312850/
       - mwext-MobileFrontend-npm-run-lint-modules
@@ -8139,7 +8105,6 @@ projects:
     check: &semanticbundle_jobs
      - jshint
      - jsonlint
-     - php53lint
      - composer-validate
     test: *semanticbundle_jobs
     gate-and-submit: *semanticbundle_jobs
@@ -9048,9 +9013,9 @@ projects:
 
   - name: qrpedia
     check-voter:
-      - php53lint
+      - php55lint
     gate-and-submit:
-      - php53lint
+      - php55lint
 
   - name: cdb
     template:
