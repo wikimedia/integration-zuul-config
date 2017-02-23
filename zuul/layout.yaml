@@ -738,6 +738,15 @@ jobs:
     skip-if:
       - project: '^mediawiki/.*$'
         branch: (?!.*)
+  # composer-php53 is gone. Same hack
+  - name: ^composer-php55-trusty$
+    skip-if:
+      - project: '^mediawiki/.*$'
+        branch: (?!.*)
+  - name: ^composer-package-php55-trusty$
+    skip-if:
+      - project: '^mediawiki/.*$'
+        branch: (?!.*)
 
   - name: ^.*php70.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
@@ -951,7 +960,6 @@ project-templates:
      - mwext-qunit-composer-jessie
      - npm-node-6-jessie
      - composer-hhvm-jessie
-     - composer-php53
      - composer-php55-trusty
      - composer-php70-jessie
 
@@ -972,7 +980,6 @@ project-templates:
     experimental:
      - mwext-qunit-composer-jessie
      - composer-hhvm-jessie
-     - composer-php53
      - composer-php55-trusty
      - composer-php70-jessie
 
@@ -1004,7 +1011,6 @@ project-templates:
       - mwext-testextension-hhvm-composer
       - npm-node-6-jessie
       - composer-hhvm-jessie
-      - composer-php53
       - composer-php55-trusty
       - composer-php70-jessie
       - mwext-php70-phan-jessie
@@ -1032,7 +1038,6 @@ project-templates:
       - mwext-testextension-hhvm-composer
       - npm-node-6-jessie
       - composer-hhvm-jessie
-      - composer-php53
       - composer-php55-trusty
       - composer-php70-jessie
 
@@ -1124,26 +1129,10 @@ project-templates:
     experimental:
      - npm-node-6-jessie
      - composer-hhvm-jessie
-     - composer-php53
      - composer-php55-trusty
      - composer-php70-jessie
 
   - name: composer-test
-    check:
-      - php55lint
-      - composer-validate
-    test:
-      - composer-php53
-      - composer-php55-trusty
-      - composer-hhvm-jessie
-    gate-and-submit:
-      - composer-php53
-      - composer-php55-trusty
-      - composer-hhvm-jessie
-    experimental:
-      - composer-php70-jessie
-
-  - name: composer-test55
     check:
       - php55lint
       - composer-validate
@@ -1181,21 +1170,6 @@ project-templates:
       - php55lint
 
   - name: composer-test-package
-    check:
-      - composer-package-validate
-      - php55lint
-    test:
-      - composer-package-hhvm-jessie
-      - composer-package-php53
-      - composer-package-php55-trusty
-    gate-and-submit:
-      - composer-package-hhvm-jessie
-      - composer-package-php53
-      - composer-package-php55-trusty
-    experimental:
-      - composer-package-php70-jessie
-
-  - name: composer-test-package55
     check:
       - composer-package-validate
       - php55lint
@@ -1668,7 +1642,7 @@ projects:
 
   - name: labs/tools/stewardbots
     template:
-      - name: composer-test55
+      - name: composer-test
       - name: tox-jessie
 
   - name: labs/tools/wikibugs2
@@ -2529,12 +2503,12 @@ projects:
   - name: wikimedia/fundraising/php-queue
     test:
      - php55lint
-     - composer-php53
+     - composer-php55
      - composer-hhvm-jessie
      - composer-validate
     gate-and-submit:
      - php55lint
-     - composer-php53
+     - composer-php55
      - composer-hhvm-jessie
      - composer-validate
 
@@ -2544,7 +2518,7 @@ projects:
 
   - name: wikimedia/fundraising/SmashPig
     template:
-      - name: composer-test55
+      - name: composer-test
 
   - name: wikimedia/iegreview
     template:
@@ -2556,7 +2530,7 @@ projects:
     template:
      - name: jshint
      - name: jsonlint
-     - name: composer-test55
+     - name: composer-test
 
   - name: wikimedia/textcat
     template:
@@ -8707,7 +8681,7 @@ projects:
 
   - name: mediawiki/extensions/WikiLexicalData
     template:
-      - name: composer-test55
+      - name: composer-test
       - name: extension-unittests-non-voting
       - name: jshint
       - name: jsonlint
@@ -8996,7 +8970,7 @@ projects:
 
   - name: purtle
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
@@ -9023,7 +8997,7 @@ projects:
 
   - name: css-sanitizer
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
@@ -9063,7 +9037,7 @@ projects:
 
   - name: WrappedString
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
@@ -9077,42 +9051,42 @@ projects:
 
   - name: HtmlFormatter
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
 
   - name: mediawiki/libs/Assert
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       #- doxygen-publish
       - phpunit-coverage-publish
 
   - name: mediawiki/libs/RemexHtml
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - remexhtml-phpunit-coverage-publish
 
   - name: mediawiki/libs/ScopedCallback
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
 
   - name: mediawiki/libs/Timestamp
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
 
   - name: mediawiki/libs/WaitConditionLoop
     template:
-     - name: composer-test-package55
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-publish
@@ -9191,7 +9165,7 @@ projects:
 
   - name: oojs/ui
     template:
-      - name: composer-test-package55
+      - name: composer-test-package
     test:
       - oojs-ui-npm-node-6-jessie
       - oojs-ui-rake-jessie
