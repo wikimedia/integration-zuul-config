@@ -328,6 +328,7 @@ class TestZuulScheduler(unittest.TestCase):
             'fail-archived-repositories',
             '.*tox-jessie',
             'commit-message-validator',
+            'mediawiki-core-composer-test-HEAD-php55-trusty',
         ]
         safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
 
