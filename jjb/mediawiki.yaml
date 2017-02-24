@@ -324,7 +324,7 @@
       - 'mediawiki-core-doxygen-publish'
       - 'mediawiki-core-selenium-jessie'
       - '{name}-php53lint'
-      - '{name}-php55lint'
+      - '{name}-composer-test-HEAD-php55lint-trusty'
       - 'mediawiki-phpunit-{phpflavor}':
           phpflavor:
               - php53
@@ -452,6 +452,38 @@
         rm -fR "$WORKSPACE/log"
         mkdir -p "$WORKSPACE/log"
         vendor/bin/phpcs -p -s --report-full --report-checkstyle=$WORKSPACE/log/checkstyle.xml
+    publishers:
+     - castor-save
+     - checkstyle:
+        pattern: 'log/checkstyle.xml'
+        can-run-on-failed: true
+        thresholds:
+          failed:
+            total-all: 1
+
+- job:
+    name: 'mediawiki-core-composer-test-HEAD-php55-trusty'
+    node: ci-trusty-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+     - assert-phpflavor:
+         phpflavor: 'php55'
+     - castor-load
+     - shell: |
+        cd $WORKSPACE/src
+        rm -fR "$WORKSPACE/log"
+     - composer-validate-package
+     - composer-update:
+        dir: '.'
+     - shell: |
+        php -v
+        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head | xargs composer test
     publishers:
      - castor-save
      - checkstyle:
