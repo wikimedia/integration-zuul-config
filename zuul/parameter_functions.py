@@ -28,6 +28,7 @@ def set_parameters(item, job, params):
         'mwext-qunit-jessie',
         'mwext-qunit-composer-jessie',
         'mediawiki-extensions-qunit-jessie',
+        'mediawiki-core-composer-test-HEAD-php55lint-trusty',
         )
 
     # Sets a $PHP_BIN variable based on the job name
