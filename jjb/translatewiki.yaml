@@ -1,18 +1,3 @@
-# Run whatever test we find under the `puppet` subdirectory.
-- job-template:
-    name: 'translatewiki-puppet-validate'
-    defaults: use-remoteonly-zuul
-    node: contintLabsSlave && UbuntuTrusty
-    concurrent: true
-    triggers:
-     - zuul
-
-    builders:
-     - shell: |
-         echo -n "Puppet version: "
-         puppet --version
-         find . -type f -name '*.pp' -print0 | xargs -t -n1 -0  puppet parser validate --verbose
-
 # Run bash on each file under /bin without actually executing the script (-n)
 - job-template:
     name: 'translatewiki-shelllint'
@@ -32,7 +17,5 @@
 
     jobs:
      - translatewiki-composer-hhvm-jessie
-     - translatewiki-puppet-validate
-     - '{name}-puppetlint-strict'
      - '{name}-rake-jessie'
      - translatewiki-shelllint
