@@ -319,7 +319,6 @@ class TestZuulScheduler(unittest.TestCase):
             '.*-(jshint|jsonlint)',
             '.*-(js|shell|php5[35]|)lint',
             '.*-(tabs|typos)',
-            '.*-puppetlint-strict',
             '.*-whitespaces',
             'noop',
             'composer-validate',
