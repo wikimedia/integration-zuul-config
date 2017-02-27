@@ -678,6 +678,12 @@ jobs:
   - name: ^operations-puppet-rake-jessie$
     files:
       - '.*'
+  # Ditto for translatewiki which has puppet modules under /puppet
+  - name: ^translatewiki-rake-jessie$
+    files:
+      - '^\.puppet-lint\.rc$'
+      - '^puppet/.*'
+      - '(^Rakefile$|^Gemfile$)'
 
   # Experiment for analytics/kraken repository
   - name: analytics-kraken-maven
