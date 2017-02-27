@@ -2462,22 +2462,14 @@ projects:
       - name: tox-jessie
 
   - name: translatewiki
-    check:
-      - translatewiki-puppet-validate
-      - translatewiki-puppetlint-strict
-      - translatewiki-shelllint
     test:
-      - translatewiki-puppet-validate
-      - translatewiki-puppetlint-strict
+      - translatewiki-rake-jessie
       - translatewiki-shelllint
       - composer-hhvm-jessie
     gate-and-submit:
-      - translatewiki-puppet-validate
-      - translatewiki-puppetlint-strict
+      - translatewiki-rake-jessie
       - translatewiki-shelllint
       - composer-hhvm-jessie
-    experimental:
-      - translatewiki-rake-jessie
 
   - name: wikimedia/discovery/relevanceForge
     template:
