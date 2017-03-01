@@ -204,6 +204,7 @@ dependencies = {
     'Spreadsheet': ['PHPExcel'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'TitleBlacklist': ['AntiSpoof'],
+    'TheWikipediaLibrary': ['Echo'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
