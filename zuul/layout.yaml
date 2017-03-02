@@ -37,10 +37,10 @@ pipelines:
       gerrit:
         - event: patchset-created
           branch: (?!^refs/meta/config)
-          # Don't run the check pipeline if the user is allowed to run the test pipeline (bug 43391).
+          # Don't run the check pipeline if the user is allowed to run the test pipeline (T45391).
           # TODO: Figure out a way to turn this into a list instead of a single regex.
           # TODO: Figure out a way to not have to repeat this from pipeline 'test'.
-          # This email filter and the one for 'test' can be removed once we have fixed bug 45499.
+          # This email filter and the one for 'test' can be removed once we have fixed T47499.
           email:
             - |
               (?x) ^(?!(
@@ -225,6 +225,7 @@ pipelines:
                 | wctaiwan@gmail\.com
                 | whym@whym\.org
                 | wiki@physikerwelt\.de
+                | wikimedia\.org@eddie-sh\.de
                 | wikiposta@gmail\.com
                 | wiki@strainu\.ro
                 | wirth@hallowelt\.biz
@@ -367,6 +368,7 @@ pipelines:
            - ^dereckson@espace-win\.org$
            - ^devunt@gmail\.com$
            - ^ebrahim@gnu\.org$
+           - ^wikimedia\.org@eddie-sh\.de$ # EddieGP
            - ^eloquence@gmail\.com$
            - ^eranroz89@gmail\.com$ # Eran Roz
            - ^federicoleva@tiscali\.it$ # Nemo bis
