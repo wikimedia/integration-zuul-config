@@ -248,26 +248,6 @@
      - archive-log-allow-empty
      - castor-save
 
-- job-template:
-    name: '{name}-puppetlint-strict'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-         rm -f puppet-lint.log
-         puppet-lint --version
-         set -o pipefail
-         puppet-lint \
-            --log-format '%{{path}}:%{{line}} %{{KIND}} %{{message}} (%{{check}})' \
-            --fail-on-warnings \
-            . | tee puppet-lint.log
-         set +o pipefail
-    publishers:
-     - puppet-lint
-
 - job:
     name: 'php53lint'
     node: contintLabsSlave && phpflavor-php53

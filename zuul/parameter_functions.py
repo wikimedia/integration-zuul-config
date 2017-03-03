@@ -128,6 +128,7 @@ dependencies = {
 
     # Extensions
     # One can add a skin by using: 'skin/XXXXX'
+    '3D': ['MultimediaViewer'],
     'AbuseFilter': ['AntiSpoof'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
@@ -204,6 +205,7 @@ dependencies = {
     'Spreadsheet': ['PHPExcel'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'TitleBlacklist': ['AntiSpoof'],
+    'TheWikipediaLibrary': ['Echo'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
