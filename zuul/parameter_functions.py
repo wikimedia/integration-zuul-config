@@ -73,10 +73,8 @@ def set_parameters(item, job, params):
     # composer.json. That let us easily merge autoload-dev section and thus
     # complete the autoloader in mw-fetch-composer-dev.js
     #
-    # Only for Wikidata daily build for now -- hashar 20160224
-    #
     # T158674
-    if params['ZUUL_PROJECT'] == 'mediawiki/extensions/Wikidata':
+    if job.name.startswith('mediawiki/') and 'composer' not in job.name:
         params['MW_COMPOSER_MERGE_MW_IN_VENDOR'] = 1
 
     if job.name.startswith('mediawiki-extensions-'):
