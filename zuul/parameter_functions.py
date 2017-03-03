@@ -74,7 +74,10 @@ def set_parameters(item, job, params):
     # complete the autoloader in mw-fetch-composer-dev.js
     #
     # T158674
-    if job.name.startswith('mediawiki/') and 'composer' not in job.name:
+    if (
+        'composer' not in job.name
+        and params['ZUUL_PROJECT'].startswith('mediawiki/')
+    ):
         params['MW_COMPOSER_MERGE_MW_IN_VENDOR'] = 1
 
     if job.name.startswith('mediawiki-extensions-'):
