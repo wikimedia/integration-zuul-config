@@ -31,7 +31,9 @@ package { 'cron':
 include contint::hhvm
 
 include contint::packages::javascript
-include apt
+class { '::apt':
+    use_proxy => false,
+}
 include contint::packages::apt
 include contint::packages::php
 

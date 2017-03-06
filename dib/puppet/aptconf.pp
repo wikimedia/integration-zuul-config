@@ -14,5 +14,7 @@ exec { 'Ensure sources.list exists':
     before  => Class['::apt'],
 }
 
-class { '::apt': }
+class { '::apt':
+  use_proxy => false,
+}
 include contint::packages::apt
