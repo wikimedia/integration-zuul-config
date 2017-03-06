@@ -1,9 +1,3 @@
-- publisher:
-    name: puppet-lint
-    publishers:
-     - archive:
-         artifacts: puppet-lint.log
-
 # Lint whitespace in directory {dir}. Usefull when the Git repository has
 # been fetched out in some subdirtory of the Workspace. Example:
 #
@@ -586,29 +580,6 @@
         php -v
         /srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc phtml module install \
         | xargs -n1 -t php -l
-
-- builder:
-    name: puppet-doc
-    # Directory where 'modules' and 'manifests' directories are
-    puppet: '{puppet}'
-    builders:
-     - shell: |
-        # Destination dir must not exist or 'puppet doc' complains
-        rm -fR "$WORKSPACE/doc"
-
-        cd "{puppet}"
-
-        # Delete unwanted bin dir
-        # https://tickets.puppetlabs.com/browse/PUP-3261
-        rm -v -fR modules/*/bin
-
-        /usr/bin/puppet --version
-        /usr/bin/puppet doc \
-            --trace \
-            --mode rdoc \
-            --outputdir "$WORKSPACE/doc" \
-            --modulepath "{puppet}/modules" \
-            --manifestdir "{puppet}/manifests"
 
 - builder:
     name: run-tox
