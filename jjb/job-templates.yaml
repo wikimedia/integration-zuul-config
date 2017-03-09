@@ -128,11 +128,10 @@
      - shell: |
          # For archiving build artifacts
          mkdir -p "$WORKSPACE/log"
-
-         node --version
-         npm --version
-         npm install
-         npm test
+    # Ensure set-env sets CHROME_BIN so that all npm-test jobs
+    # can run karma-qunit with karma-chrome-launcher, not just
+    # mediawiki-core-qunit.
+     - npm
     publishers:
      - archive-log-allow-empty
      - castor-save
