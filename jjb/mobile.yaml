@@ -1,10 +1,3 @@
-- builder:
-    name: install-android-sdk
-    builders:
-     - raw:
-         # Build step from Android Emulator
-         xml: |
-            <hudson.plugins.android__emulator.builder.ProjectPrerequisitesInstaller />
 - publisher:
     name: gradle-reports-checkstyle
     publishers:
@@ -44,7 +37,6 @@
      - timestamps
      - ansicolor
     builders:
-     - install-android-sdk
      - shell: scripts/apps-android-wikipedia-test
     publishers:
      - archive:
@@ -115,7 +107,6 @@
      - timestamps
      - ansicolor
     builders:
-     - install-android-sdk
      - shell: |
          declare START_TIME="$(date +"%Y-%m-%dT%H:%M:%S.%N")"
          ./gradlew -q clean assembleAlphaRelease
@@ -135,7 +126,6 @@
     triggers:
      - zuul
     builders:
-     - install-android-sdk
      - shell: scripts/apps-android-wikipedia-lint
     publishers:
      - archive:
