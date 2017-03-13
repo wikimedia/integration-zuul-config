@@ -7,7 +7,18 @@
 
 - job:
     name: 'mw-tools-scap-tox-doc-publish'
-    node: contintLabsSlave && UbuntuTrusty
+    node: ci-jessie-wikimedia
+    parameters:
+      # Trigger castor
+      - string:
+          name: 'ZUUL_PIPELINE'
+          default: 'postmerge'
+      - string:
+          name: 'ZUUL_PROJECT'
+          default: 'MSCA'
+      - string:
+          name: 'ZUUL_BRANCH'
+          default: 'master'
     triggers:
       - pollscm:
           cron: '@hourly'
@@ -16,13 +27,15 @@
           url: 'https://phabricator.wikimedia.org/diffusion/MSCA/scap'
           branches:
             - 'origin/master'
-          wipe-workspace: true
     builders:
+      - castor-load
       - run-tox:
           venv: doc
       - doc-publish:
           docsrc: 'docs/_build/html'
           docdest: 'mw-tools-scap'
+    publishers:
+      - castor-save
 
 # Job to run MW-CS patchsets against
 # mediwiki/core's includes/ directory for easier
