@@ -158,16 +158,16 @@
 # Currently experimental, will eventually be used for `master`, and
 # wmf/ branches will use mediawiki/vendor. See T90303.
 - job-template:
-    name: 'mediawiki-phpunit-{phpflavor}-composer'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
+    name: 'mediawiki-phpunit-{phpflavor}-composer-{image}'
+    node: ci-{image}-wikimedia
     concurrent: true
     properties:
      - build-discarder:
          days-to-keep: 15
-     - throttle-one-per-node
     triggers:
      - zuul
     builders:
+     - castor-load
      - assert-phpflavor:
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
@@ -183,8 +183,8 @@
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
     publishers:
      - phpunit-junit-2
-     - mw-teardown-mysql
      - archive-log-dir
+     - castor-save
 
 - builder:
     name: inject-experimental-extension
@@ -267,9 +267,10 @@
               # Wikimedia runs HHVM on Jessie
               - hhvm:
                   image: jessie
-      - 'mediawiki-phpunit-{phpflavor}-composer':
+      - 'mediawiki-phpunit-{phpflavor}-composer-{image}':
           phpflavor:
-              - hhvm
+              - hhvm:
+                  image: jessie
       - 'mediawiki-extensions-{phpflavor}-{image}': *phpflavor_images
       - 'mediawiki-extensions-qunit-jessie'
 
