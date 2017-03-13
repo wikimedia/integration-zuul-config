@@ -650,7 +650,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         # Make sure test jobs are properly triggered
         test_55 = getPipelineJobForProject(
-            'mwext-testextension-php55',
+            'mwext-testextension-php55-trusty',
             'mediawiki/extensions/ConfirmEdit',
             'gate-and-submit')
         gate_55 = getPipelineJobForProject(
