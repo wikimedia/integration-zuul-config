@@ -682,6 +682,11 @@ jobs:
   - name: ^operations-puppet-rake-jessie$
     files:
       - '.*'
+  # Same for mediawiki/vagrant
+  - name: ^mediawiki-vagrant-rake-jessie$
+    files:
+      - '.*'
+
   # Ditto for translatewiki which has puppet modules under /puppet
   - name: ^translatewiki-rake-jessie$
     files:
@@ -2018,8 +2023,10 @@ projects:
       - mw-tools-releng-tox-doc-publish
 
   - name: mediawiki/vagrant
-    template:
-      - name: rake
+    test:
+      - mediawiki-vagrant-rake-jessie
+    gate-and-submit:
+      - mediawiki-vagrant-rake-jessie
     postmerge:
       - mediawiki-vagrant-puppet-doc-publish
 
