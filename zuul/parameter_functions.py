@@ -31,8 +31,6 @@ def set_parameters(item, job, params):
         )
 
     # Sets a $PHP_BIN variable based on the job name
-    if 'php53' in job.name:
-        params['PHP_BIN'] = 'php5'
     if 'php55' in job.name:
         params['PHP_BIN'] = 'php5'
     elif 'php70' in job.name:

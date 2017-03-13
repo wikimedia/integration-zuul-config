@@ -560,7 +560,7 @@ pipelines:
     trigger:
       gerrit:
         - event: comment-added
-          comment: (?im)^Patch Set \d+:\n\n\s*check (php53?|zend)\.?\s*$
+          comment: (?im)^Patch Set \d+:\n\n\s*check (php5?|zend)\.?\s*$
           email: *email_whitelist
     success-message: 'PHP5 build succeeded.'
     success:
@@ -759,11 +759,6 @@ jobs:
   - name: ^.*php70.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
 
-  - name: ^.*php53.*$
-    skip-if:
-      - project: '^mediawiki/.*$'
-        branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
-
   # Don't run tests on deployment branches where the tests have been removed.
   # Covered by test_smashpig_deployment_branch_filters
   - name: ^composer-hhvm-jessie$
@@ -786,16 +781,14 @@ jobs:
     voting: false
 
   # Jobs testing multiple extensions together
-  #
-  # TODO stop triggering php53 jobs for the wmf branches
 
   # Extensions tested together, since 1.25alpha ...
-  - name: ^mediawiki-extensions-(qunit|hhvm|php53)(-jessie|trusty)?$
+  - name: ^mediawiki-extensions-(qunit|hhvm)(-jessie|trusty)?$
     branch: (?!REL1_23|fundraising/REL.*)
     queue-name: mediawiki
 
   - name: ^mediawiki-extensions-php55-trusty$
-    branch: (?!REL1_23|REL1_26|fundraising/REL.*)
+    branch: (?!REL1_23|fundraising/REL.*)
     queue-name: mediawiki
 
   - name: mediawiki-core-phpcs-trusty
@@ -955,11 +948,9 @@ project-templates:
      - php55lint
      - mwext-testextension-hhvm-composer
     php5:
-     - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
     gate-and-submit:
      - php55lint
-     - mwext-testextension-php53-composer
      - mwext-testextension-php55-composer
      - mwext-testextension-hhvm-composer
     experimental:
@@ -978,7 +969,6 @@ project-templates:
      - mwext-testextension-hhvm-composer-jessie-non-voting
      - composer-validate
     php5:
-     - mwext-testextension-php53-composer-non-voting
      - mwext-testextension-php55-composer-trusty-non-voting
     gate-and-submit:
      - php55lint
@@ -999,12 +989,10 @@ project-templates:
      - mwext-testextension-hhvm
      - composer-validate
     php5:
-     - mwext-testextension-php53
      - mwext-testextension-php55
     gate-and-submit:
      - php55lint
      # Extensions tests with core+vendor
-     - mwext-testextension-php53
      - mwext-testextension-php55
      - mwext-testextension-hhvm
      - composer-validate
@@ -1013,7 +1001,6 @@ project-templates:
       - mediawiki-extensions-qunit-jessie
       - mwext-testextension-php55-trusty
       - mwext-testextension-hhvm-jessie
-      - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-6-jessie
       - composer-hhvm-jessie
@@ -1031,7 +1018,6 @@ project-templates:
      - mwext-testextension-hhvm-jessie-non-voting
      - composer-validate
     php5:
-     - mwext-testextension-php53-non-voting
      - mwext-testextension-php55-trusty-non-voting
     gate-and-submit:
      - noop
@@ -1040,7 +1026,6 @@ project-templates:
     experimental:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
-      - mwext-testextension-php53-composer
       - mwext-testextension-hhvm-composer
       - npm-node-6-jessie
       - composer-hhvm-jessie
@@ -1067,10 +1052,8 @@ project-templates:
       - mediawiki-extensions-qunit-jessie
     php5:
       - mediawiki-extensions-php55-trusty
-      - mediawiki-extensions-php53
     gate-and-submit:
       - mediawiki-extensions-hhvm-jessie
-      - mediawiki-extensions-php53
       - mediawiki-extensions-php55-trusty
       - mediawiki-extensions-qunit-jessie
 
