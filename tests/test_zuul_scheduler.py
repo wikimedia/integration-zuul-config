@@ -139,20 +139,13 @@ class TestZuulScheduler(unittest.TestCase):
             'phplint or a composer-* job'
             % (name, pipeline))
 
-    def assertProjectHasPhp53TestAnd55(self, name, definition, pipeline):
-        has_53 = False
-        for job in definition:
-            if 'testextension-php53' in job:
-                has_53 = True
-                break
-        if not has_53:
-            self.assertFalse(has_53)
+    def assertProjectHasPhp55Test(self, name, definition, pipeline):
+        if pipeline != 'php5' or pipeline != 'gate-and-submit':
             return
         for job in definition:
-            if 'testextension-php55' in job:
+            if 'testextension-hhvm' in job:
                 self.assertTrue(True)
                 return
-
         self.assertTrue(False, 'Project %s pipeline %s must have a '
                         'php55 test job' % (name, pipeline))
 
@@ -186,7 +179,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
-                self.assertProjectHasPhp53TestAnd55
+                self.assertProjectHasPhp55Test
             ],
             'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,
@@ -572,7 +565,7 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_smashpig_deployment_branch_filters(self):
-        # Since SmashPig override a generic skip-if set by ^.*php53.*$
+        # Since SmashPig override a generic skip-if set by ^.*php55.*$
         # Make sure it is properly honored.
         test_manager = self.getPipeline('test').manager
         event = zuul.model.TriggerEvent()
@@ -656,14 +649,6 @@ class TestZuulScheduler(unittest.TestCase):
         assertChangeTriggersJob(change, lint_job)
 
         # Make sure test jobs are properly triggered
-        test_53 = getPipelineJobForProject(
-            'mwext-testextension-php53',
-            'mediawiki/extensions/ConfirmEdit',
-            'gate-and-submit')
-        gate_53 = getPipelineJobForProject(
-            'mediawiki-extensions-php53',
-            'mediawiki/extensions/ConfirmEdit',
-            'gate-and-submit')
         test_55 = getPipelineJobForProject(
             'mwext-testextension-php55',
             'mediawiki/extensions/ConfirmEdit',
@@ -673,9 +658,9 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki/extensions/ConfirmEdit',
             'gate-and-submit')
 
-        change.branch = 'REL1_26'  # still on Zend 5.3
-        assertChangeTriggersJob(change, test_53)
-        assertChangeTriggersJob(change, gate_53)
+        change.branch = 'REL1_26'
+        assertChangeTriggersJob(change, test_55)
+        assertChangeTriggersJob(change, gate_55)
 
         change.branch = 'REL1_27'
         assertChangeTriggersJob(change, test_55)
