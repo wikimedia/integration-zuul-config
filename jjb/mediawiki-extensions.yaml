@@ -253,14 +253,6 @@
      - mw-teardown-mysql
      - archive-log-dir
 
-# Same as above, but with non-voting suffix because it's non-voting
-- job-template:
-    name: 'mwext-testextension-{phpflavor}-non-voting'
-    !!merge : *job_mwext-testextension
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job-template: &job_mwext-testextension-image
     name: 'mwext-testextension-{phpflavor}-{image}'
     node: ci-{image}-wikimedia
@@ -338,10 +330,6 @@
     jobs:
      # Legacy permanent slaves
      - 'mwext-testextension-{phpflavor}':
-        phpflavor:
-            - hhvm
-            - php55
-     - 'mwext-testextension-{phpflavor}-non-voting':
         phpflavor:
             - hhvm
             - php55
