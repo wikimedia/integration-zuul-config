@@ -154,66 +154,6 @@
      - archive-log-dir
      - castor-save
 
-# Runs all MediaWiki PHPUnit tests on a CI slave
-- job-template:
-    name: 'mediawiki-phpunit-{phpflavor}'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-     - throttle-one-per-node
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-mysql
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
-    publishers:
-     - phpunit-junit-2
-     - mw-teardown-mysql
-     - archive-log-dir
-
-# Same as mediawiki-phpunit-{phpflavor}, except uses composer instead of mediawiki/vendor.
-# Currently experimental, will eventually be used for `master`, and
-# wmf/ branches will use mediawiki/vendor. See T90303.
-- job-template:
-    name: 'mediawiki-phpunit-{phpflavor}-composer'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-     - throttle-one-per-node
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-     - composer-validate:
-         dir: 'src'
-     - composer-update:
-         dir: 'src'
-     - mw-install-mysql
-     - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
-    publishers:
-     - phpunit-junit-2
-     - mw-teardown-mysql
-     - archive-log-dir
-
 - builder:
     name: inject-experimental-extension
     builders:
@@ -231,43 +171,6 @@
                 https://gerrit.wikimedia.org/r/p \
                 "$ZUUL_PROJECT"
          fi
-
-- job-template:
-    name: 'mediawiki-extensions-{phpflavor}'
-    # Select runnable node based on the phpflavor (hhvm or php53)
-    #
-    # We want to reuse the same job template for both PHP flavor:
-    # - HHVM flavor runs on Trusty CI labs slaves with HHVM
-    # - PHP53 flavor runs on Precise CI labs slaves with Zend PHP 5.3
-    # - PHP55 flavor runs on Trusty CI labs slaves with Zend PHP 5.5
-    #
-    # Doing a '&& phpflavor-{phpflavor}' is the trick to vary the label
-    # definition based on the job name.
-    #
-    # If you want to verify the slaves, head to the job configuration page,
-    # search for 'Restrict where this project can be run', below the input box
-    # is a text: Slaves in [label]: X . Clicking [label] will list nodes
-    # matching the expression.
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-     - throttle-one-per-node
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - prepare-mediawiki-zuul-project
-     - mw-fetch-composer-dev
-     - mw-run-phpunit-allexts
-    publishers:
-     - junit:
-        results: 'log/junit*.xml'
-     - mw-teardown-mysql
-     - archive-log-dir
 
 - job-template:
     name: 'mediawiki-extensions-{phpflavor}-{image}'
@@ -324,9 +227,6 @@
       - 'mediawiki-core-doxygen-publish'
       - 'mediawiki-core-selenium-jessie'
       - '{name}-php55lint'
-      - 'mediawiki-phpunit-{phpflavor}':
-          phpflavor:
-              - php53
       - 'mediawiki-phpunit-{phpflavor}-{image}': &phpflavor_images
           phpflavor:
               - php55:
@@ -336,11 +236,6 @@
               # Wikimedia runs HHVM on Jessie
               - hhvm:
                   image: jessie
-
-      - 'mediawiki-phpunit-{phpflavor}-composer'
-      - 'mediawiki-extensions-{phpflavor}':
-          phpflavor:
-              - php53
       - 'mediawiki-extensions-{phpflavor}-{image}': *phpflavor_images
       - 'mediawiki-extensions-qunit-jessie'
 
