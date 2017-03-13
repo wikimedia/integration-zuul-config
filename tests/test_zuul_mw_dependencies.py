@@ -36,7 +36,8 @@ class TestMwDependencies(unittest.TestCase):
             params = {'ZUUL_PROJECT': project}
         else:
             params = {'ZUUL_PROJECT': 'mediawiki/extensions/Example'}
-        job = FakeJob(job_name if job_name else 'mwext-testextension-hhvm')
+        job = FakeJob(job_name if job_name
+                      else 'mwext-testextension-hhvm-jessie')
         set_parameters(None, job, params)
         return params
 
@@ -81,7 +82,7 @@ class TestMwDependencies(unittest.TestCase):
 
     def test_job_name(self):
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwext-testextension-hhvm'))
+            job_name='mwext-testextension-hhvm-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-qunit-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
@@ -188,7 +189,7 @@ class TestMwDependencies(unittest.TestCase):
 
     def test_inject_skin_on_an_extension(self):
         deps = self.fetch_dependencies(
-            job_name='mwext-testextension-hhvm',
+            job_name='mwext-testextension-hhvm-jessie',
             project='mediawiki/extensions/CustomPage')
         self.assertDictContainsSubset(
             {

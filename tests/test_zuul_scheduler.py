@@ -125,7 +125,7 @@ class TestZuulScheduler(unittest.TestCase):
             any([job for job in definition
                  if job.startswith(('composer', 'composer-'))
                  or job == 'mwext-testextension-php55-composer-trusty'
-                 or job == 'mwext-testextension-hhvm-composer']),
+                 or job == 'mwext-testextension-hhvm-composer-jessie']),
             'Project %s pipeline %s must have either '
             'composer-validate or a composer-* job'
             % (name, pipeline))

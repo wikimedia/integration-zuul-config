@@ -233,26 +233,6 @@
     builders:
      - lint-whitespaces
 
-# Generic phpunit job for extensions.
-- job-template: &job_mwext-testextension
-    name: 'mwext-testextension-{phpflavor}'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - prepare-mediawiki-zuul-project
-     - mw-fetch-composer-dev
-     - mw-run-phpunit-allexts
-    publishers:
-     - junit:
-        results: 'log/junit*.xml'
-     - mw-teardown-mysql
-     - archive-log-dir
-
 - job-template: &job_mwext-testextension-image
     name: 'mwext-testextension-{phpflavor}-{image}'
     node: ci-{image}-wikimedia
@@ -279,25 +259,6 @@
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-
-# same but with composer update instead of cloning vendor
-- job-template: &job_mwext-testextension-composer
-    name: 'mwext-testextension-{phpflavor}-composer'
-    node: 'contintLabsSlave && phpflavor-{phpflavor}'
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - prepare-mediawiki-zuul-project-no-vendor
-     - mw-run-phpunit-allexts
-    publishers:
-     - junit:
-        results: 'log/junit*.xml'
-     - mw-teardown-mysql
-     - archive-log-dir
 
 - job-template: &job_mwext-testextension-composer-image
     name: 'mwext-testextension-{phpflavor}-composer-{image}'
@@ -328,13 +289,6 @@
 - project:
     name: 'mwext-testextension-generic'
     jobs:
-     # Legacy permanent slaves
-     - 'mwext-testextension-{phpflavor}':
-        phpflavor:
-            - hhvm
-     - 'mwext-testextension-{phpflavor}-composer':
-        phpflavor:
-            - hhvm
      # Nodepool
      - 'mwext-testextension-{phpflavor}-{image}': &phpflavor_images
          phpflavor:
