@@ -617,17 +617,25 @@ class TestZuulScheduler(unittest.TestCase):
         lint_job = getPipelineJobForProject(
             'mediawiki-core-php55lint', 'mediawiki/core')
 
+        gate_phpunit55_job = getPipelineJobForProject(
+            'mediawiki-phpunit-php55-trusty', 'mediawiki/core',
+            'gate-and-submit')
+
         change.branch = 'REL1_23'
         assertChangeTriggersJob(change, lint_job)
+        assertChangeTriggersJob(change, gate_phpunit55_job)
 
         change.branch = 'REL1_26'  # last that supports Zend 5.3
         assertChangeTriggersJob(change, lint_job)
+        assertChangeTriggersJob(change, gate_phpunit55_job)
 
         change.branch = 'REL1_27'  # requires Zend 5.5
         assertChangeTriggersJob(change, lint_job)
+        assertChangeTriggersJob(change, gate_phpunit55_job)
 
         change.branch = 'master'
         assertChangeTriggersJob(change, lint_job)
+        assertChangeTriggersJob(change, gate_phpunit55_job)
 
         # A MediaWiki extension
         change = zuul.model.Change('mediawiki/extensions/ConfirmEdit')
