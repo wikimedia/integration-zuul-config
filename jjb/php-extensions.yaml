@@ -10,9 +10,21 @@
         /usr/bin/phpize5
         ./configure
         make
-        REPORT_EXIT_STATUS=1 make test
+
+        # Never ask to send email
+        export NO_INTERACTION=1
+        # exit(1) on test failure
+        export REPORT_EXIT_STATUS=1
+        # Craft JUnit report
+        export TEST_PHP_JUNIT=junit.xml
+        # Do not load php.ini (php -n)
+        export TEST_PHP_ARGS='-n'
+
+        make test
     publishers:
      - archive-test-logs
+     - junit:
+         results: 'junit.xml'
 
 - job:
     !!merge : *php-compile-php55

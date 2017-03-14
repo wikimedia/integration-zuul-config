@@ -8790,13 +8790,8 @@ projects:
   - name: mediawiki/php/FastStringSearch
     # no check pipeline since -build runs code :-)
     test:
-      - php-compile-hhvm
-      - php-compile-php55
+      - php-compile-php55-trusty
     gate-and-submit:
-      - php-compile-hhvm
-      - php-compile-php55
-    experimental:
-      - php-compile-hhvm-jessie
       - php-compile-php55-trusty
 
   - name: mediawiki/php/luasandbox
@@ -8808,8 +8803,15 @@ projects:
       - php-compile-hhvm-test
       - php-compile-php55
     experimental:
+      # Nodepool instances are missing luajit among others https://gerrit.wikimedia.org/r/342635
       - php-compile-hhvm-test-jessie
       - php-compile-php55-trusty
+
+  - name: mediawiki/php/tidy
+    experimental:
+      - php-compile-hhvm-test
+      - php-compile-php55-trusty
+      # Nodepool instances are missing libtidy-dev https://gerrit.wikimedia.org/r/342635
 
   - name: mediawiki/php/wikidiff2
     # no check pipeline since -build runs code :-)
@@ -8820,16 +8822,15 @@ projects:
       - php-compile-hhvm
       - php-compile-php55
     experimental:
+      # Nodepool instances missing libthai-dev https://gerrit.wikimedia.org/r/342635
       - php-compile-hhvm-jessie
       - php-compile-php55-trusty
 
   - name: mediawiki/php/wmerrors
     # no check pipeline since -build runs code :-)
     test:
-      - php-compile-php55
+      - php-compile-php55-trusty
     gate-and-submit:
-      - php-compile-php55
-    experimental:
       - php-compile-php55-trusty
 
   - name: mediawiki/oauthclient-php
