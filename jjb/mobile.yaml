@@ -107,10 +107,7 @@
      - timestamps
      - ansicolor
     builders:
-     - shell: |
-         declare START_TIME="$(date +"%Y-%m-%dT%H:%M:%S.%N")"
-         ./gradlew -q clean assembleAlphaRelease
-         echo "{{\"commit_hash\": \"$GIT_COMMIT\", \"completed_on\": \"$START_TIME\"}}" > meta.json
+     - shell: scripts/apps-android-wikipedia-publish
     publishers:
      - archive:
          # Capture generated .apk and meta.json
