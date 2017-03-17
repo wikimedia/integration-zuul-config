@@ -788,6 +788,7 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_trusted_cr_vote_tests_untested_change(self):
         test_manager = self.getPipeline('test').manager
+
         change = zuul.model.Change('mediawiki/core')
         change.branch = 'master'
         change.approvals = [
@@ -827,6 +828,23 @@ class TestZuulScheduler(unittest.TestCase):
         ]
         event.branch = change.branch
         self.assertTrue(test_manager.eventMatches(event, change))
+
+        change.approvals = [{
+            'description': 'Verified',
+            'type': 'VRFY',
+            'value': '-1',
+            'by': {'username': 'jenkins-bot'},
+        }]
+        self.assertFalse(
+            test_manager.eventMatches(event, change),
+            'Verified -1 prevents CR+1 from triggering tests'
+        )
+
+        change.approvals[0]['value'] = 2
+        self.assertFalse(
+            test_manager.eventMatches(event, change),
+            'Verified +2 prevents CR+1 from triggering tests'
+        )
 
     def test_gated_extensions_lists_are_in_sync(self):
         self.longMessage = True
