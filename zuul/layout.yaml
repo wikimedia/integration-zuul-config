@@ -272,7 +272,8 @@ pipelines:
         verified: -1
 
   # Use this in combination with a check pipeline.
-  - name: test
+  - &test_pipeline
+    name: test
     description: >
       Jobs restricted to trusted users. Will vote +2.
     manager: IndependentPipelineManager
@@ -514,10 +515,9 @@ pipelines:
         # (Verified 0 or 1)
         - event: comment-added
           branch: (?!^refs/meta/config$)
-          require-approval:
+          reject-approval:
             # hasn't been tested yet
-            - verified: [0, 1]
-              username: jenkins-bot
+            - verified: [-1, 2]
           email: *email_whitelist
           approval:
             - code-review: +1
@@ -530,6 +530,12 @@ pipelines:
     failure:
       gerrit:
         verified: -1
+
+  - !!merge : *test_pipeline
+    name: test-prio
+    description: >
+      High precedence tests. Will vote +2.
+    precedence: high
 
   - name: experimental
     description: >
@@ -2279,7 +2285,7 @@ projects:
 
   - name: operations/puppet
     # Same for trusted user
-    test:
+    test-prio:
       # testing
       - operations-puppet-tox-jessie
       - operations-puppet-rake-jessie
