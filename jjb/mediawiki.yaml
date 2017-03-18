@@ -336,12 +336,8 @@
         nice -n 19 php $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
             --coverage-clover log/clover.xml \
-            --coverage-html "$WORKSPACE/cover" \
-            || :
+            --coverage-html "$WORKSPACE/cover"
 
-        # PHP segfault (bug 43972) so ignore any error with '|| :' or the
-        # Jenkins plugin will never generate the coverage report for us
-        # https://issues.jenkins-ci.org/browse/JENKINS-21046
      - cover-publish:
          src: 'cover'
          dest: 'mediawiki-core/$ZUUL_BRANCH/php'
