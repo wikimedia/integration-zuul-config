@@ -11,7 +11,6 @@
         - repository-swift
     jobs:
         - 'search-{project}'
-        - 'search-{project}-javadoc'
         - 'search-{project}-javadoc-publish'
 
 - job-template:
@@ -37,32 +36,6 @@
      - castor-load
     maven:
       goals: clean verify
-    publishers:
-     - castor-save
-
-- job-template:
-    name: 'search-{project}-javadoc'
-    project-type: maven
-    jdk: 'Ubuntu - OpenJdk 8'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    scm:
-     - git-remoteonly-zuul
-    wrappers:
-     - timeout:
-         timeout: 60  # minutes
-         fail: true
-     - timestamps
-     - ansicolor
-    prebuilders:
-     - castor-load
-    maven:
-      goals: '{javadocgoals}'
     publishers:
      - castor-save
 
