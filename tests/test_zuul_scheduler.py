@@ -690,54 +690,17 @@ class TestZuulScheduler(unittest.TestCase):
         assertChangeTriggersJob(change, test_55)
         assertChangeTriggersJob(change, gate_55)
 
-    # FIXME: should be more generic
-    def get_mediawiki_core_rake_jessie_job(self):
-        jobs_tree = [t for (p, t) in
-                     self.getPipeline('test').job_trees.iteritems()
-                     if p.name == 'mediawiki/core'][0]
-        rake_jessie_job = [j for j in jobs_tree.getJobs()
-                           if j.name == 'mwgate-rake-jessie'][0]
-        return rake_jessie_job
-
-    # Make sure rake-jessie is properly filtered
-    # https://phabricator.wikimedia.org/T105178
-    def test_mediawiki_core_rake_jessie_branch_filters(self):
-        test_manager = self.getPipeline('test').manager
-        rake_jessie_job = self.get_mediawiki_core_rake_jessie_job()
-
-        def change_for_branch(branch_name):
-            """Return a change against branch_name branch"""
-            change = zuul.model.Change('mediawiki/core')
-            change.branch = branch_name
-            change.files.append('Gemfile.lock')
-            return change
-
-        event = zuul.model.TriggerEvent()
-        event.type = 'patchset-created'
-        event.account = {'email': 'johndoe@wikimedia.org'}
-
-        for allowed_branch in ['master', 'REL1_25', 'REL1_26']:
-            change = change_for_branch(allowed_branch)
-            event.branch = change.branch
-            self.assertTrue(test_manager.eventMatches(event, change))
-            self.assertTrue(rake_jessie_job.changeMatches(change),
-                            'mediawiki/core rake-jessie job must run on %s'
-                            % allowed_branch)
-
-        for blacklisted_branch in ['REL1_23', 'fundraising/REL1_42']:
-            change = change_for_branch(blacklisted_branch)
-            event.branch = change.branch
-            self.assertTrue(test_manager.eventMatches(event, change))
-            self.assertFalse(
-                rake_jessie_job.changeMatches(change),
-                'mediawiki/core rake-jessie job must NOT run on %s'
-                % blacklisted_branch)
 
     def test_rake_jessie_files_filters(self):
-        rake_jessie_job = self.get_mediawiki_core_rake_jessie_job()
+        # FIXME: should be more generic
+        jobs_tree = [t for (p, t) in
+                     self.getPipeline('test').job_trees.iteritems()
+                     if p.name == 'mediawiki/ruby/api'][0]
+        rake_jessie_job = [j for j in jobs_tree.getJobs()
+                           if j.name == 'rake-jessie'][0]
 
         def change_with_files(files):
-            change = zuul.model.Change('mediawiki/core')
+            change = zuul.model.Change('mediawiki/ruby/api')
             change.branch = 'master'
             change.files.extend(files)
             return change
