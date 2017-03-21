@@ -738,11 +738,6 @@ jobs:
     # Release branches do not support hhvm.
     branch: (?!REL1_23|fundraising/REL.*)
 
-  - name: ^.*php55.*$
-    skip-if:
-      - project: ^wikimedia/fundraising/SmashPig$
-        branch: ^deployment$
-
   # php53lint is gone so hack the above skip-if so we trigger php55lint on any
   # branches.
   - name: ^php55lint$
@@ -765,13 +760,6 @@ jobs:
 
   - name: ^.*php70.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
-
-  # Don't run tests on deployment branches where the tests have been removed.
-  # Covered by test_smashpig_deployment_branch_filters
-  - name: ^composer-hhvm-jessie$
-    skip-if:
-     - project: ^wikimedia/fundraising/SmashPig$
-       branch: ^deployment$
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
