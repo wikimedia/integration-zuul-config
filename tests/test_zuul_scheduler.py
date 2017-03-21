@@ -564,30 +564,6 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
-    def test_smashpig_deployment_branch_filters(self):
-        # Since SmashPig override a generic skip-if set by ^.*php55.*$
-        # Make sure it is properly honored.
-        test_manager = self.getPipeline('test').manager
-        event = zuul.model.TriggerEvent()
-        event.type = 'patchset-created'
-
-        change = zuul.model.Change('wikimedia/fundraising/SmashPig')
-        change.branch = 'deployment'
-
-        jobs_tree = [t for (p, t) in
-                     self.getPipeline('test').job_trees.iteritems()
-                     if p.name == 'wikimedia/fundraising/SmashPig'][0]
-        for job in jobs_tree.getJobs():
-            if job.name in ['composer-php55', 'composer-hhvm-jessie']:
-                self.assertFalse(
-                    job.changeMatches(change),
-                    msg='%s should not trigger for branch %s' % (
-                        job.name, change.branch)
-                )
-
-        event.branch = change.branch
-        self.assertTrue(test_manager.eventMatches(event, change))
-
     # transient test job to help phasing out Zend 5.3 - T158652
     def test_mediawiki_release_branches_trigger_phplint(self):
         def assertChangeTriggersJob(change, job):
