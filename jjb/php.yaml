@@ -111,14 +111,21 @@
     publishers:
      - castor-save
 
+# Couple jobs with a {name} prefix
 - job-template:
     !!merge : *job_composer-phpflavor-image
-    name: 'translatewiki-composer-hhvm-jessie'
+    name: '{name}-composer-hhvm-jessie'
     image: jessie
     phpflavor: hhvm
     triggers:
      - zuul
-
+- job-template:
+    !!merge : *job_composer-phpflavor-image
+    name: '{name}-composer-php55-trusty'
+    image: trusty
+    phpflavor: php55
+    triggers:
+     - zuul
 
 - project:
     name: 'composer-flavored-on-nodepool'
