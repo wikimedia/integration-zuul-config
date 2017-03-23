@@ -38,6 +38,39 @@
          failure: false
          fixed: true
 
+- job:
+    name: 'operations-puppet-tests-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+    scm:
+     - git:
+         url: '$ZUUL_URL/$ZUUL_PROJECT'
+         reference-repo: '/srv/git/${ZUUL_PROJECT}.git'
+         branches:
+          - '$ZUUL_COMMIT'
+         refspec: '$ZUUL_REF'
+         submodule:
+             disable: false
+             recursive: true
+    builders:
+     - castor-load
+     - tox-all-envs
+     - bundle-nodepool:
+         command: rake test
+    publishers:
+     - xunit:
+         types:
+          - junit:
+             pattern: 'log/junit*.xml'
+             # rspec integration is not merged yet
+             skip-if-no-test-files: true
+             stoponerror: false
+     - archive-log-dir
+     - archive-tox-logs
+     - castor-save
 
 - project:
     name: 'operations-puppet'
