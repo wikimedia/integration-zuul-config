@@ -248,29 +248,6 @@ pipelines:
       gerrit:
         verified: -1
 
-  - name: check-voter
-    description: >
-      Basic jobs for projects without a test pipeline. Will vote +2.
-    manager: IndependentPipelineManager
-    source: gerrit
-    trigger:
-      gerrit:
-        - event: patchset-created
-          branch: (?!^refs/meta/config)
-          email:
-           - ^(?!l10n-bot@translatewiki\.net).*$
-        - event: comment-added
-          branch: (?!^refs/meta/config)
-          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?\n\n\s*recheck\.?\s*$
-    success-message: 'Basic test build succeeded.'
-    success:
-      gerrit:
-        verified: 2
-    failure-message: 'Basic test build failed.'
-    failure:
-      gerrit:
-        verified: -1
-
   # Use this in combination with a check pipeline.
   - &test_pipeline
     name: test
@@ -1428,7 +1405,7 @@ projects:
      - noop
 
   - name: analytics/limn-wikidata-data
-    check-voter:
+    test:
      - php55lint
     gate-and-submit:
      - php55lint
@@ -1482,7 +1459,7 @@ projects:
      - tox-jessie
 
   - name: analytics/wmde/scripts
-    check-voter:
+    test:
      - php55lint
     gate-and-submit:
      - noop
@@ -1513,7 +1490,7 @@ projects:
       - name: archived
 
   - name: labs/incubator
-    check-voter:
+    test:
      - php55lint
     gate-and-submit:
      - php55lint
@@ -1602,7 +1579,7 @@ projects:
       - composer-php55-trusty
 
   - name: labs/tools/Luke081515IRCBot
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
@@ -1970,7 +1947,7 @@ projects:
      - name: npm
 
   - name: mediawiki/tools/code-utils
-    check-voter:
+    test:
      - php55lint
     gate-and-submit:
      - php55lint
@@ -1982,7 +1959,7 @@ projects:
      - mw-tools-codesniffer-mwcore-testrun
 
   - name: mediawiki/tools/dippybird
-    check-voter:
+    test:
      - php55lint
     gate-and-submit:
      - php55lint
@@ -8880,55 +8857,55 @@ projects:
       - phpunit-coverage-publish
 
   - name: phabricator/arcanist
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
 
   - name: phabricator/extensions
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
 
   - name: phabricator/extensions/BurnDownCharts
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
 
   - name: phabricator/extensions/Sprint
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
 
   - name: phabricator/extensions/security
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
 
   - name: phabricator/libphutil
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
 
   - name: phabricator/phabricator
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
 
   - name: phabricator/test
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
 
   - name: phabricator/tools
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint
@@ -8980,7 +8957,7 @@ projects:
       - name: tox-jessie
 
   - name: qrpedia
-    check-voter:
+    test:
       - php55lint
     gate-and-submit:
       - php55lint

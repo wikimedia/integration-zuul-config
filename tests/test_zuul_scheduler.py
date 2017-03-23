@@ -226,15 +226,11 @@ class TestZuulScheduler(unittest.TestCase):
             # Pipelines that must be set
             requirements = set()
             requirements.add('gate-and-submit')
-            if 'check-voter' in project_def.keys():
-                # Skins uses a different check pipeline
-                requirements.add('check-voter')
-            else:
-                for default_requirement in ['check', 'test']:
-                    requirements.add(default_requirement)
-                    self.assertIn(default_requirement, project_def.keys(),
-                                  'Project %s must have a %s pipeline'
-                                  % (project_name, default_requirement))
+            for default_requirement in ['check', 'test']:
+                requirements.add(default_requirement)
+                self.assertIn(default_requirement, project_def.keys(),
+                              'Project %s must have a %s pipeline'
+                              % (project_name, default_requirement))
 
             # Validate the pipeline has the proper jobs
             for req_pipeline in requirements:
@@ -288,13 +284,6 @@ class TestZuulScheduler(unittest.TestCase):
         self.longMessage = True
         self.maxDiff = None
         self.assertEqual(set(), first & second, msg)
-
-    def test_projects_in_check_voter_are_not_in_test_pipeline(self):
-        self.assertPipelinesDoNotOverlap(
-            'check-voter', 'test',
-            msg="check-voter is only for projects not having entries in "
-                "the test pipeline and for which the repository lacks tests. "
-                "Move jobs from check-voter to check pipeline")
 
     def test_valid_jobs_in_check_pipelines(self):
         check_pipelines = [p.name for p in self.getPipelines()
@@ -730,7 +719,7 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_l10nbot_patchets_are_ignored(self):
         managers = [self.getPipeline(p).manager
-                    for p in ['check', 'check-voter', 'test']]
+                    for p in ['check', 'test']]
         change = zuul.model.Change('mediawiki/core')
         change.branch = 'master'
 
