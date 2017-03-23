@@ -69,33 +69,6 @@
     triggers:
      - zuul
 
-- job:
-    !!merge : *job_rake-jessie
-    name: 'operations-puppet-rake-jessie'
-    scm:
-     - git:
-         url: '$ZUUL_URL/$ZUUL_PROJECT'
-         reference-repo: '/srv/git/${ZUUL_PROJECT}.git'
-         branches:
-          - '$ZUUL_COMMIT'
-         refspec: '$ZUUL_REF'
-         submodule:
-             disable: false
-             recursive: true
-    publishers:
-     - xunit:
-         types:
-          - junit:
-             pattern: 'log/junit*.xml'
-             # rspec integration is not merged yet
-             skip-if-no-test-files: true
-             stoponerror: false
-     - archive-log-allow-empty
-     - castor-save
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - project:
     name: common-rake-job
     jobs:

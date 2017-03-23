@@ -661,10 +661,6 @@ jobs:
       - project: '^VisualEditor/VisualEditor$'
         branch: (?:^REL1_26$)
 
-  # Always trigger rake for operations/puppet since it runs puppetlint
-  - name: ^operations-puppet-rake-jessie$
-    files:
-      - '.*'
   # Same for mediawiki/vagrant
   - name: ^mediawiki-vagrant-rake-jessie$
     files:
@@ -2247,11 +2243,8 @@ projects:
     # Same for trusted user
     test-prio:
       # testing
-      - operations-puppet-tox-jessie
-      - operations-puppet-rake-jessie
-      - operations-puppet-typos
-    experimental:
       - operations-puppet-tests-jessie
+      - operations-puppet-typos
 
   - name: operations/puppet/cdh
     template:
