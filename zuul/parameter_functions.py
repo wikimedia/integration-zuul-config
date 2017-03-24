@@ -190,6 +190,7 @@ dependencies = {
                        'PhpTagsWidgets'],
     'PhpTagsWidgets': ['PhpTags', 'PhpTagsFunctions', 'PhpTagsWiki'],
     'PhpTagsWiki': ['PhpTags', 'PhpTagsFunctions'],
+    'Pickle': ['Scribunto'],
     'PictureGame': ['SocialProfile'],
     'PollNY': ['SocialProfile'],
     'Popups': ['BetaFeatures', 'TextExtracts', 'PageImages', 'EventLogging'],
