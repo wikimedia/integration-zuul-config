@@ -711,26 +711,6 @@ jobs:
     # Release branches do not support hhvm.
     branch: (?!REL1_23|fundraising/REL.*)
 
-  # php53lint is gone so hack the above skip-if so we trigger php55lint on any
-  # branches.
-  - name: ^php55lint$
-    skip-if:
-      - project: '^mediawiki/.*$'
-        branch: (?!.*)
-  - name: ^mediawiki-core-php55lint$
-    skip-if:
-      - project: '^mediawiki/.*$'
-        branch: (?!.*)
-  # composer-php53 is gone. Same hack
-  - name: ^composer-php55-trusty$
-    skip-if:
-      - project: '^mediawiki/.*$'
-        branch: (?!.*)
-  - name: ^composer-package-php55-trusty$
-    skip-if:
-      - project: '^mediawiki/.*$'
-        branch: (?!.*)
-
   - name: ^.*php70.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
 
