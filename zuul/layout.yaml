@@ -869,6 +869,11 @@ jobs:
     # FIXME does fundraising active branches support HHVM?
     branch: (?!fundraising/REL.*)
 
+  - name: ^.*php55.*$  # T94149
+    skip-if:
+      - project: ^mediawiki/.*
+        branch: '^wmf/'
+
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
   - name: ^mwext-testextension-(hhvm|php70)
