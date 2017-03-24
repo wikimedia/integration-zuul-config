@@ -711,6 +711,11 @@ jobs:
     # Release branches do not support hhvm.
     branch: (?!REL1_23|fundraising/REL.*)
 
+  - name: ^.*php55.*$  # T94149
+    skip-if:
+      - project: ^mediawiki/.*
+        branch: '^wmf/'
+
   - name: ^.*php70.*$
     branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
 
