@@ -336,7 +336,19 @@
         nice -n 19 php $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
             --exclude-group Dump,Broken,ParserFuzz,Stub \
             --coverage-clover log/clover.xml \
-            --coverage-html "$WORKSPACE/cover"
+            --coverage-html "$WORKSPACE/cover" \
+            || :
+        # Above: Use "|| :" to ignore any non-zero exist status
+        # We want to publish code coverage even in case one of there
+        # being PHPUnit test failures. Normal test failures are not
+        # fatal and PHPUnit will stil generate console output, clover
+        # reports and and html reports. However don't blindly
+        # make the job pass either because if we do, then cover-publish
+        # will end up syncing an empty directory, which deletes the
+        # coverage report from doc.wikimedia.org. In case of "real" failure,
+        # let the job fail and don't publish a new report. "real" failures
+        # can be a PHP Fatal error, of a segfault, for example.
+        test -f cover/index.html
 
      - cover-publish:
          src: 'cover'
