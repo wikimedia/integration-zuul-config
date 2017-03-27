@@ -364,36 +364,6 @@
 # local instance of MediaWiki. All setup of intial state for these kinds of
 # tests should be done by the test suite via the API, including creation of
 # the test user.
-#
-# - tests-dir: Parent of the `features` directory. Usually `tests/browser`.
-#
-# ALWAYS pair with 'localhost-cleanup'
-# ALWAYS pair with 'mw-selenium-cleanup'
-#
-- builder:
-    name: mw-selenium-with-dir
-    builders:
-     - prepare-localhost
-     - bundle-with-options:
-        initialization: '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
-        command: |
-          cucumber --color --tags @integration --tags ~@skip --format pretty \
-            --format junit --out $WORKSPACE/log/junit
-        dir: '{tests-dir}'
-        bundler-version: ''
-
-# Run MW-Selenium tests located in a standard location, `tests/browser` beneath
-# the MW extension directory. Note that EXT_NAME is set by
-# zuul/ext_dependencies.py
-#
-# ALWAYS pair with 'localhost-cleanup'
-# ALWAYS pair with 'mw-selenium-cleanup'
-#
-- builder:
-    name: mw-selenium
-    builders:
-     - mw-selenium-with-dir:
-        tests-dir: 'src/extensions/$EXT_NAME/tests/browser'
 
 - builder:
     name: mw-selenium-nodepool
@@ -428,21 +398,6 @@
          . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
          bundle install --verbose
          bundle exec rake spec
-
-# Cleans up anything left under /tmp/jenkins-$EXECUTOR_NUMBER
-#
-# Note that once the bug with Xvfb and TMPDIR is resolved, this can be
-# removed. See the bin/mw-set-env-mw-selenium.sh slave script for details.
-#
-- publisher:
-    name: mw-selenium-cleanup
-    publishers:
-     - postbuildscript:
-         builders:
-           - shell: '/srv/deployment/integration/slave-scripts/bin/mw-selenium-teardown.sh'
-         # Postbuild options are confusing, setting both to false ensures the script always runs.
-         onsuccess: False
-         onfailure: False
 
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
