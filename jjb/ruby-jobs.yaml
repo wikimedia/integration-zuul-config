@@ -110,29 +110,6 @@
 
 # General MW-Selenium job used to dogfood the builder against MW core.
 - job:
-    name: 'mediawiki-selenium-integration'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-mysql
-     - mw-apply-settings
-     - mw-selenium-with-dir:
-         tests-dir: '.'
-    publishers:
-     - mw-selenium-cleanup
-     - localhost-cleanup
-     - mw-teardown-mysql
-     - archive-log-dir
-
-# Same as mediawiki-selenium-integration but on Nodepool T137112
-- job:
     name: 'mediawiki-selenium-integration-jessie'
     node: ci-jessie-wikimedia
     concurrent: true

@@ -846,9 +846,6 @@ jobs:
     branch: ^master$
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
     branch: ^master$
-  - name: 'mediawiki-selenium-integration-jessie'
-    # Experimental T137112
-    voting: false
 
   - name: mediawiki-core-doxygen-publish
     branch: ^(master|REL.*|refs/tags/(?!wmf).*)$ # REL is bug 50325
@@ -1620,11 +1617,9 @@ projects:
     template:
       - name: rake
     test:
-     - mediawiki-selenium-integration
-     # Non voting work in progress T137112
      - mediawiki-selenium-integration-jessie
     gate-and-submit:
-     - mediawiki-selenium-integration
+     - mediawiki-selenium-integration-jessie
     postmerge:
      - mediawiki-selenium-bundle-yard-publish
 
