@@ -20,20 +20,6 @@
         git checkout $ZUUL_COMMIT
         echo "`date -R`> $ZUUL_COMMIT" >> /srv/jenkins-autodeploy
 
-# Pass integration/config.git:zuul/layout.yaml to zuul-server layout validation
-# Requires zuul to be installed on the Jenkins host.
-- job-template:
-    name: 'integration-zuul-layoutvalidation'
-    # Same distro as the prod machine hosting Zuul server
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        /usr/bin/zuul-server  -c tests/fixtures/zuul-dummy.conf -l "$WORKSPACE"/zuul/layout.yaml
-
 - job-template:
     name: 'integration-zuul-layoutvalidation-gate'
     # Same distro as the prod machine hosting Zuul server
@@ -189,7 +175,6 @@
     jobs:
      - 'integration-jjb-config-diff'
      - 'integration-zuul-layoutdiff'
-     - 'integration-zuul-layoutvalidation'
      - 'integration-zuul-layoutvalidation-gate'
      - '{name}-rake-jessie'
      - '{name}-tox-jessie'
