@@ -614,6 +614,22 @@
         artifacts: 'log/*'
         allow-empty: true
 
+- publisher:
+    name: browsertests-irc
+    publishers:
+      - ircbot:
+          strategy: statechange-only
+          notify-start: false
+          notify-committers: false
+          notify-culprits: false
+          notify-upstream: false
+          notify-fixers: false
+          message-type: summary
+          matrix-notifier: only-configurations
+          channels:
+              - name: '#wikimedia-releng'
+                notify-only: true
+
 # Validate a composer.json
 - builder:
     name: composer-validate
