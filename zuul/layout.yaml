@@ -786,10 +786,6 @@ jobs:
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
 
-  - name: apps-android-wikipedia-lint
-    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/artifact/app/build/reports/lint-results-alphaDebug.html'
-    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/artifact/app/build/reports/lint-results-alphaDebug.html'
-
   - name: apps-android-java-mwapi
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
@@ -1447,12 +1443,10 @@ projects:
       - apps-android-wikipedia-npm-node-6-jessie
       - apps-android-wikipedia-tox-jessie
       - apps-android-wikipedia-test
-      - apps-android-wikipedia-lint
     gate-and-submit:
       - apps-android-wikipedia-npm-node-6-jessie
       - apps-android-wikipedia-tox-jessie
       - apps-android-wikipedia-test
-      - apps-android-wikipedia-lint
     postmerge:
       - apps-android-wikipedia-publish
 

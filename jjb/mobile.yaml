@@ -113,20 +113,6 @@
          artifacts: '**/build/outputs/**,meta.json'
      - irc-android-ci
 
-- job-template:
-    name: 'apps-android-wikipedia-lint'
-    node: contintLabsSlave && DebianJessie
-    jdk: 'Debian - OpenJdk 8'
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: scripts/apps-android-wikipedia-lint
-    publishers:
-     - archive:
-         artifacts: '**/build/reports/**'
-
 - project:
     name: 'apps-android-wikipedia'
     jobs:
@@ -135,7 +121,6 @@
       - 'apps-android-wikipedia-test'
       - 'apps-android-wikipedia-periodic-test'
       - 'apps-android-wikipedia-publish'
-      - 'apps-android-wikipedia-lint'
 
 - job-template:
     name: 'apps-android-java-mwapi'
