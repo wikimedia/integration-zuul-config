@@ -60,7 +60,7 @@
         git checkout HEAD^
         zuul-server -c tests/fixtures/zuul-dummy.conf -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/before.txt
 
-        sed -i -e 's/^INFO:zuul.IndependentPipelineManager:Configured Pipeline Manager /Pipeline: /' log/current.txt log/before.txt
+        sed -i -e 's/^INFO:zuul\..*:Configured Pipeline Manager /Pipeline: /' log/current.txt log/before.txt
 
         function compress_logs() {{
             gzip --best log/before.txt log/current.txt
