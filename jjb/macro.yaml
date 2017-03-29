@@ -309,10 +309,11 @@
         ln -s "$MW_INSTALL_PATH" "$PUBLIC_DIR"
 
         # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
-        # NB: Uses 'tac' twice to exhaust buffer before using 'head' to avoid "curl: Failed writing body" error.
-        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php/Special:BlankPage" | tee log/curl-SpecialBlankPage.log | tac|tac | head -n42
-        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/load.php?debug=true&modules=startup&only=scripts" | tee log/curl-load-startup.log | tac|tac | head -n42
-        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php?title=Special:JavaScriptTest/qunit/export" | tee log/curl-SpecialJavaScriptTest.log | tac|tac | head -n11
+        # NB: Avoid "curl: Failed writing body" error when using 'head'. Either by using 'tac|tac', or by ignoring stderr,
+        # or by writing to a file first and running 'head' on that.
+        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php/Special:BlankPage" > log/curl-SpecialBlankPage.log; head -n42 log/curl-SpecialBlankPage.log
+        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/load.php?debug=true&modules=startup&only=scripts" > log/curl-load-startup.log; head -n42 log/curl-load-startup.log
+        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php?title=Special:JavaScriptTest/qunit/export" > log/curl-SpecialJavaScriptTest.log; head -n11 log/curl-SpecialJavaScriptTest.log
 
 # qunit
 #
