@@ -9121,14 +9121,15 @@ projects:
       - oojs-core-coverage
 
   - name: oojs/ui
-    template:
-      - name: composer-test-package
+    # composer hhvm is already run by npm-run-jenkins T155483
     test:
       - oojs-ui-npm-run-jenkins-node-6-jessie
       - oojs-ui-rake-jessie
+      - composer-package-php55-trusty
     gate-and-submit:
       - oojs-ui-npm-run-jenkins-node-6-jessie
       - oojs-ui-rake-jessie
+      - composer-package-php55-trusty
     postmerge:
       - oojs-ui-jsduck-publish
       - oojs-ui-doxygen-publish
