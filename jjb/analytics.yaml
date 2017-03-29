@@ -126,3 +126,19 @@
      - '{name}-release'
      - '{name}-maven'
      - '{name}-update-jars'
+
+- job:
+    name: 'analytics-wikistats'
+    node: contintLabsSlave && UbuntuTrusty
+    defaults: use-remote-zuul-shallow-clone
+    triggers:
+        - zuul
+    builders:
+        - shell: |
+            #--- squids directory has been replaced with an older version that
+            # does not come with tests. So we cannot run tests it the squids
+            # folder for now.
+            #                                    (qchris@2014-04-16)
+            #
+            #(cd squids && prove -v -Iperl/ t/)
+            (cd pageviews_reports && prove -v -Ilib/ t/)
