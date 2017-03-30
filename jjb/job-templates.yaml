@@ -83,37 +83,6 @@
     publishers:
      - castor-save
 
-- job: &job_npm-node-0_10
-    name: 'npm-node-0.10'
-    node: ci-trusty-wikimedia
-    defaults: use-remote-zuul-shallow-clone-to-src
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - assert-node-version-0.10
-     # FIXME: we should save node_modules and run npm prune
-     - castor-load
-     - shell: |
-         # For archiving build artifacts
-         mkdir -p "$WORKSPACE/log"
-         node --version
-         npm --version
-
-         cd src
-         npm install
-         npm test
-    publishers:
-     - archive-log-allow-empty
-     - castor-save
-
-- job-template:
-    !!merge : *job_npm-node-0_10
-    name: '{name}-npm-node-0.10'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job: &job_npm-node-6-jessie
     name: 'npm-node-6-jessie'
     node: ci-jessie-wikimedia
@@ -203,26 +172,6 @@
          cd src/extensions/MobileFrontend
          npm install
          npm run-script lint:modules
-    publishers:
-     - archive-log-allow-empty
-     - castor-save
-
-- job-template:
-    name: '{name}-{repository}-npm-node-0.10'
-    node: ci-trusty-wikimedia
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - assert-node-version-0.10
-     # FIXME: we should save node_modules and run npm prune
-     - castor-load
-     - shell: |
-         # For archiving build artifacts
-         mkdir -p "$WORKSPACE/log"
-     - npm-oid:
-         repository: '{repository}'
     publishers:
      - archive-log-allow-empty
      - castor-save

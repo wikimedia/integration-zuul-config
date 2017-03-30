@@ -87,8 +87,6 @@ def set_parameters(item, job, params):
         nodepool_params(item, job, params)
     elif job.name.endswith('node-6-jessie'):
         nodepool_params(item, job, params)
-    elif job.name.endswith('node-0.10'):
-        nodepool_params(item, job, params)
     elif job.name in ['integration-jjb-config-diff',
                       'mwext-VisualEditor-publish']:
         nodepool_params(item, job, params)
