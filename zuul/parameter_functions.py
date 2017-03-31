@@ -158,6 +158,7 @@ dependencies = {
     'ElectronPdfService': ['Collection'],
     'FileAnnotations': ['EventLogging'],
     'FlaggedRevs': ['Scribunto'],
+    'GeoData': ['CirrusSearch', 'Elastica'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GuidedTour': ['EventLogging'],
