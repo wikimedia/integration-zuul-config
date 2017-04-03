@@ -42,8 +42,9 @@
         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         node --version
         npm --version
-        rm -rf node_modules
-        npm install
+        export NPM_CONFIG_PREFIX=/home/jenkins/workspace/vendor/node_modules
+        npm prune
+        npm update
 
 # ALWAYS pair with 'global-teardown'
 - builder:
@@ -53,8 +54,9 @@
         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         node --version
         npm --version
-        rm -rf node_modules
-        npm install
+        export NPM_CONFIG_PREFIX=/home/jenkins/workspace/vendor/node_modules
+        npm prune
+        npm update
         npm test
 
 # The npm-run macro is intended to be used when multiple scripts are used
