@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e436fe2_29b9cd78",
+        "filename": "jjb/macro.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2017-04-03T23:52:53Z",
+      "side": 1,
+      "message": "What is this for?\n\nI\u0027m not sure how this variable is relevant here.\n\nNPM_CONFIG_PREFIX (or \u0027npm config get prefix\u0027) typically defaults to \"/usr/lib\". This relates to where global modules are installed by commands such as \"npm install -g grunt-cli\" or \"npm install -g npm\" for example.\n\nAside from the code that runs when provisioning an instance via Puppet for persistent slaves and/or Nodepool images, I don\u0027t think we do this kind of command anywhere.\n\nThe central cache directory defaults to $HOME/.npm (see \u0027npm config get cache\u0027). NPM supports that directory to be shared between concurrent processes, is robust against race conditions and job aborting and is internally fragmented by package name and version.\n\nThe $HOME/.npm cache directory is essentially used as an HTTP proxy (like Varnish) between npmjs.org and the workspace for the downloading of package tarballs etc.\n\nCastor already caches this one.\n\nWhen running \u0027npm install\u0027 in a build, assuming cache hit, NPM just copies the subset of relevant files from $HOME/.npm to $WORKSPACE/node_modules.\n\nThe notable exception to this logic is modules that require post-install build scripts or native compilation. Those artefacts are not cached at the HTTP layer, which is why some repositories like oojs-ui would like the workspace directory \"node_modules\" to be cached in-place in builds. That way, running \u0027npm prune \u0026\u0026 npm update\u0027 will only run build scripts or re-compile when there is a change detected in package.json compared to the version from castor.\n\nHowever to do this, we should not override the workspace directory for node_modules. That is not supported by npm and will break in many ways. I\u0027m also slightly confused as to what this was for.",
+      "range": {
+        "startLine": 45,
+        "startChar": 15,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "8ece9bb0be69c9f1bc9f6fe9dc7adf88b531bd12",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
