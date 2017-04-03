@@ -113,20 +113,6 @@
      - zuul
 
 - job-template:
-    name: '{name}-npm-run-{script}'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - npm-install
-     - npm-run:
-         script: '{script}'
-    publishers:
-     - global-teardown
-
-- job-template:
     name: '{name}-npm-run-{script}-node-6-jessie'
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
