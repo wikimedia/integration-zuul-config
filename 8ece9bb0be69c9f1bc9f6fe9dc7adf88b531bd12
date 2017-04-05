@@ -70,6 +70,30 @@
       "revId": "8ece9bb0be69c9f1bc9f6fe9dc7adf88b531bd12",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e436fe2_63a0488e",
+        "filename": "jjb/macro.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-04-05T12:43:13Z",
+      "side": 1,
+      "message": "It is a different context!\n\nAt the end of the build on a Nodepool instance, we trigger the job \u0027castor-save\u0027 that runs on another instance.  Good news: castor-save is triggered with the parameter:\n\n     TRIGGERED_JOB_NAME\u003d$JOB_NAME\n\nSo inside castor-save we have the original job name. So we can cache it that way.\n\n\nAnother issue is that for MediaWiki extensions and skins, the cache is shared:\n\n            if [[ \"$ZUUL_PROJECT\" \u003d~ ^mediawiki/(extensions|skins)/ ]]; then\n                NS_PROJECT\u003d\"castor-mw-ext-and-skins\"\n            fi\n\nnode_modules can be vaguely/vastly different between extensions and the cache would keep changing when changes of different mw repositories are merged :(  I guess that is what happens already for bundler (mediawiki repos all use the same rake-jessie job and workspace/vendor/bundle ).",
+      "parentUuid": "6e436fe2_e8c99656",
+      "range": {
+        "startLine": 45,
+        "startChar": 15,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "8ece9bb0be69c9f1bc9f6fe9dc7adf88b531bd12",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
