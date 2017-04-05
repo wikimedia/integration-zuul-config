@@ -46,6 +46,30 @@
       "revId": "8ece9bb0be69c9f1bc9f6fe9dc7adf88b531bd12",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e436fe2_e8c99656",
+        "filename": "jjb/macro.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2017-04-05T04:04:31Z",
+      "side": 1,
+      "message": "I\u0027m not sure I follow. Just like for doc publish, the creation of the sub job happens in context of the current one. All env variables are available.\n\nAlso, it is possible to configure the job so that the main job waits for the sub job to finish. That way we don\u0027t have to worry about the workspace being deleted or changed by another job before castor-save is ready.\n\nAll we need then is a way for the sub job to know where the workspace is. I\u0027m not 100% sure, but I think the shared env variables provide enough information to reverse engineer the workspace.\n\nIf not, then we can use the other variables to at least create something \"mostly\" unique. For example, doc-publish uses \"$JOB_NAME-$BUILD_NUMBER\". We can use that here and create a symlink like \"/home/jenkins/castor/node_modules-$JOB_NAME-$BUILD_NUMBER\"\n\nI would avoid using a directory inside \"workspace/\" to avoid conflict with potential job names that use such workspace.",
+      "parentUuid": "6e436fe2_aa72ab0e",
+      "range": {
+        "startLine": 45,
+        "startChar": 15,
+        "endLine": 45,
+        "endChar": 32
+      },
+      "revId": "8ece9bb0be69c9f1bc9f6fe9dc7adf88b531bd12",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
