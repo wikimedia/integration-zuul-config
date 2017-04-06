@@ -854,7 +854,7 @@ jobs:
   - name: mediawiki-phpunit-hhvm-jessie
     queue-name: mediawiki
 
-  - name: mediawiki-core-qunit-jessie
+  - name: mediawiki-core-qunit-selenium-jessie
     queue-name: mediawiki
 
   - name: mediawiki-core-jsduck
@@ -1265,7 +1265,7 @@ projects:
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
       - mediawiki-phpunit-hhvm-jessie
-      - mediawiki-core-qunit-jessie
+      - mediawiki-core-qunit-selenium-jessie
       - composer-package-validate
       - mediawiki-core-php70-phan-jessie
     php5:
@@ -1279,7 +1279,7 @@ projects:
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-hhvm-composer-jessie
       - mediawiki-phpunit-php55-trusty
-      - mediawiki-core-qunit-jessie
+      - mediawiki-core-qunit-selenium-jessie
       - composer-package-validate
       - mediawiki-core-php70-phan-jessie
     postmerge:
@@ -1292,8 +1292,6 @@ projects:
       - composer-php70-jessie
       - mediawiki-phpunit-php70-jessie
       - mediawiki-extensions-php70-jessie
-      # experimental Node.js Selenium job
-      - mediawiki-core-selenium-jessie
 
   - name: mediawiki/debian
     test:
@@ -1312,7 +1310,7 @@ projects:
     test:
       - php55lint
       - composer-validate
-      - mediawiki-core-qunit-jessie
+      - mediawiki-core-qunit-selenium-jessie
       - mediawiki-phpunit-hhvm-jessie
     php5:
       - mediawiki-phpunit-php55-trusty
@@ -1320,7 +1318,7 @@ projects:
       - php55lint
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-trusty
-      - mediawiki-core-qunit-jessie
+      - mediawiki-core-qunit-selenium-jessie
       - composer-validate
     experimental:
       - composer-hhvm-jessie
@@ -1854,8 +1852,10 @@ projects:
      - name: skin-tests
     check:
      - jsonlint
-    experimental:
-     - mediawiki-core-selenium-jessie
+    test:
+     - mediawiki-core-qunit-selenium-jessie
+    gate-and-submit:
+     - mediawiki-core-qunit-selenium-jessie
 
   - name: mediawiki/skins/VectorV2
     template:
@@ -3788,9 +3788,6 @@ projects:
     postmerge:
       - mwext-doxygen-publish
       - mwext-jsduck-publish
-    experimental:
-      # experimental Node.js Selenium job
-      - mediawiki-core-selenium-jessie
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
@@ -7915,9 +7912,6 @@ projects:
     check:
       - jsonlint
       - jshint
-    experimental:
-      # T158052 Set up Selenium tests in Node.js for RelatedArticles extension
-      - mediawiki-core-selenium-jessie
 
   - name: mediawiki/extensions/RelatedSites
     template:
@@ -8528,9 +8522,6 @@ projects:
       - mwext-VisualEditor-jsduck
     postmerge:
       - mwext-VisualEditor-publish
-    experimental:
-      # T150435 Selenium tests in Node.js
-      - mediawiki-core-selenium-jessie
 
   - name: mediawiki/extensions/WebChat
     template:
