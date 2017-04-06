@@ -31,32 +31,7 @@
      - castor-save
 
 - job-template:
-    name: 'mediawiki-core-qunit-jessie'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    builders:
-     - castor-load
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-mysql
-     - mw-apply-settings
-     - qunit-karma
-    publishers:
-     - castor-save
-     - archive-log-dir
-
-# The same as mediawiki-core-qunit-jessie but also cloning
-# mediawiki/skins/Vector and running mocha-selenium builder
-# instead of qunit-karma
-- job-template:
-    name: 'mediawiki-core-selenium-jessie'
+    name: 'mediawiki-core-qunit-selenium-jessie'
     node: ci-jessie-wikimedia
     concurrent: true
     triggers:
@@ -67,12 +42,21 @@
     builders:
      - castor-load
      - prepare-mediawiki-zuul-project
-     - mocha-selenium
+     - qunit-karma
+     # Run selenium script if it exists. The localhost vhost is setup by
+     # qunit-karma already
+     - shell:
+        cd $MW_INSTALL_PATH
+        if [ -f ./tests/selenium/wdio.conf.js ]; then
+            npm run selenium
+        fi
     publishers:
      - castor-save
-     - junit:
-        results: 'log/*.xml'
      - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml'
+        # Qunit does not generate Junit file and we might skip selenium
+        allow-empty-results: true
 
 - job-template:
     name: 'mediawiki-core-jsduck'
@@ -251,12 +235,11 @@
         - hhvm
         - php55
     jobs:
-      - 'mediawiki-core-qunit-jessie'
+      - 'mediawiki-core-qunit-selenium-jessie'
       - 'mediawiki-core-jsduck'
       - 'mediawiki-core-npm-node-6-jessie'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
-      - 'mediawiki-core-selenium-jessie'
       - '{name}-php55lint'
       - 'mediawiki-phpunit-{phpflavor}-{image}': &phpflavor_images
           phpflavor:
