@@ -154,6 +154,44 @@
      - archive-log-dir
      - castor-save
 
+- job:
+    name: 'mediawiki-phpunit-php55-trusty-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - shell: |
+       #!/bin/bash -eu
+       cp /srv/deployment/integration/dockerfiles/Dockerfile.php-trusty ./Dockerfile
+
+       cat /srv/deployment/integration/dockerfiles/parts/mw-install-mysql >> Dockerfile
+       cat /srv/deployment/integration/dockerfiles/parts/mw-apply-settings >> Dockerfile
+       cat /srv/deployment/integration/dockerfiles/parts/mw-fetch-composer-dev >> Dockerfile
+       cat /srv/deployment/integration/dockerfiles/parts/mw-phpunit >> Dockerfile
+       # WEEEEEEEEEEEEEE UGLY HACKS!
+       cat /srv/deployment/integration/dockerfiles/parts/ugly-hacks >> Dockerfile
+
+       cat <<TEST >> Dockerfile
+       ENTRYPOINT /run.sh
+       TEST
+
+       sed -i -e "s#{{EXECUTOR_NUMBER}}#${EXECUTOR_NUMBER}#g" \
+              -e "s#{{WORKSPACE}}#/job#g" Dockerfile
+
+       cp -R /srv/deployment/integration/dockerfiles/files ./.dockerfiles
+       docker build -t "$JOB_NAME:$BUILD_TAG" .
+       docker run -v $WORKSPACE:/job "$JOB_NAME:$BUILD_TAG"
+    publishers:
+     - phpunit-junit-2
+     - archive-log-dir
+     - castor-save
+
 # Same as mediawiki-phpunit-{phpflavor}, except uses composer instead of mediawiki/vendor.
 # Currently experimental, will eventually be used for `master`, and
 # wmf/ branches will use mediawiki/vendor. See T90303.
