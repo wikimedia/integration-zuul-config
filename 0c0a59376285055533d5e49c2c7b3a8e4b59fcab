@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e506ba4_f8cf5c80",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-04-10T16:54:52Z",
+      "side": 1,
+      "message": "I am tempted to also add the bits from https://github.com/thcipriani/integration-docker/  though we have two repositories to define the jobs:\n\n integration/config\n integration/jenkins\n\nI am tempted to merge integration/jenkins in a sub dir of integration/config such as slave-scripts.  And then merge your github poc into integration/config as well.\n\nThen the Dockerfile can just clone integration/config and we will have everything available :]",
+      "revId": "0c0a59376285055533d5e49c2c7b3a8e4b59fcab",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e506ba4_18afa892",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-04-10T16:54:52Z",
+      "side": 1,
+      "message": "Maybe all the cat parts could be contatenated to a run.sh that is then copied in the image to be used as the entry point?\n\nZuul 2.5 also supports generating such glue by reading JJB config files and generating an Ansible manifest.  Though I have never played with that and I am not sure we want to add Ansible into the chain.",
+      "revId": "0c0a59376285055533d5e49c2c7b3a8e4b59fcab",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e506ba4_d8994082",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-04-10T16:54:52Z",
+      "side": 1,
+      "message": "if those files get changed, is it going to nuke the Docker cache?",
+      "revId": "0c0a59376285055533d5e49c2c7b3a8e4b59fcab",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
