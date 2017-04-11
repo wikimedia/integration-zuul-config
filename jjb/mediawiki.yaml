@@ -109,7 +109,8 @@
     publishers:
      - castor-save
 
-- job:
+# Should be converted to poll scm (TT115755)
+- job: &mediawiki-core-doxygen-publish
     name: 'mediawiki-core-doxygen-publish'
     node: ci-jessie-wikimedia
     concurrent: false
@@ -128,6 +129,15 @@
      - doc-publish:
          docsrc: 'build/doc/html'
          docdest: 'mediawiki-core/$DOC_SUBPATH/php'
+
+# Same but allow concurrent build for tags
+- job:
+    !!merge : *mediawiki-core-doxygen-publish
+    name: 'mediawiki-core-tag-doxygen-publish'
+    concurrent: true
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 # Runs all MediaWiki PHPUnit tests on Nodepool
 - job-template:
