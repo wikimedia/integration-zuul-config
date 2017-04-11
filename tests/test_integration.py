@@ -6,7 +6,7 @@ import shutil
 import tempfile
 import unittest
 
-from jenkins_jobs.cmd import main as jjb
+from jenkins_jobs.cli.entry import JenkinsJobs as jjb
 import zuul.cmd.server
 
 
@@ -29,7 +29,7 @@ class IntegrationTests(unittest.TestCase):
         jjb_dir = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             '../jjb')
-        jjb(argv=['test', jjb_dir, '-o', out_dir])
+        jjb(args=['test', jjb_dir, '-o', out_dir])
 
     # Merely to show that the config has been generated in setUpClass
     def test_jjb_generate_jobs(self):
