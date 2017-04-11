@@ -43,7 +43,7 @@ ELEMENTS=(
 	'wikimedia'
 	)
 export DIB_COMMAND=${DIB_COMMAND:-'disk-image-create'}
-export DIB_IMAGE_CACHE=${DIB_IMAGE_CACHE:-/srv/dib/cache}  # XXX should be unset by default
+export DIB_IMAGE_CACHE=${DIB_IMAGE_CACHE:-imagecache}  # XXX should be unset by default
 DATE=`date -u +'%Y%m%dT%H%M%SZ'`
 export DIB_IMAGE_NAME=${DIB_IMAGE_NAME:-"image-${DIB_RELEASE}-${DATE}"}
 export DIB_GIT_BARE_MIRRORS='/srv/git'
