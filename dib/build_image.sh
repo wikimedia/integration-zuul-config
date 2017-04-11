@@ -48,8 +48,6 @@ DATE=`date -u +'%Y%m%dT%H%M%SZ'`
 export DIB_IMAGE_NAME=${DIB_IMAGE_NAME:-"image-${DIB_RELEASE}-${DATE}"}
 export DIB_GIT_BARE_MIRRORS='/srv/git'
 
-export IMAGE_TYPE="qcow2"
-
 export DIB_CLOUD_INIT_DATASOURCES='Ec2'
 
 export DIB_DEBIAN_COMPONENTS='main,contrib,non-free'
@@ -72,11 +70,11 @@ else
 	export ELEMENTS_PATH="${ELEMENTS_PATH}:elements"
 fi
 
-$DIB_COMMAND -t "$IMAGE_TYPE" --no-tmpfs -o "$DIB_IMAGE_NAME" ${ELEMENTS[@]}
+$DIB_COMMAND --no-tmpfs -o "$DIB_IMAGE_NAME" ${ELEMENTS[@]}
 EXIT_CODE=$?
 if [[ $EXIT_CODE -gt 0 ]]; then
 	>&2 echo "Disk image creation failed (exit: $EXIT_CODE)"
 	exit $EXIT_CODE
 else
-	echo "Disk image successful ${DIB_IMAGE_NAME}.${IMAGE_TYPE}"
+	echo "Disk image successful ${DIB_IMAGE_NAME}"
 fi
