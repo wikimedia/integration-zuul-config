@@ -342,6 +342,23 @@
          onsuccess: False
          onfailure: False
 
+# mocha-selenium
+#
+# The same as qunit-karma, but running `grunt mochaTest` instead of `grunt karma:main`
+# ALWAYS pair with 'localhost-cleanup'
+# ALWAYS pair with 'global-teardown' (for npm-setup)
+- builder:
+    name: mocha-selenium
+    builders:
+     - prepare-localhost
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
+        cd $MW_INSTALL_PATH
+        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
+        rm -rf node_modules
+        npm install
+        npm run selenium
+
 # mw-selenium
 #
 # Run MW-Selenium tests that are marked with the @integration tag against a
