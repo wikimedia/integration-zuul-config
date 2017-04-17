@@ -148,6 +148,7 @@ dependencies = {
                      'Cite', 'Elastica', 'GeoData', 'BetaFeatures',
                      'SiteMatrix'],
     'CodeEditor': ['WikiEditor'],
+    'CodeMirror': ['WikiEditor', 'VisualEditor'],
     'CollaborationKit': ['EventLogging', 'VisualEditor'],
     'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
                            'UniversalLanguageSelector', 'Wikidata'],
