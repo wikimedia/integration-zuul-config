@@ -42,21 +42,26 @@
             # Replace slashes with dashes:
             NS_PROJECT=${ZUUL_PROJECT////-}
             NS_BRANCH=${ZUUL_BRANCH////-}
+            # Ex: mediawiki-core/REL1_26/tox-jessie
+            # Prefer TRIGGERED_JOB_NAME when it is set
+            NS_JOB=${TRIGGERED_JOB_NAME:-$JOB_NAME}
+
+            # Unique enough to cache native/compiled dependencies
+            CASTOR_BINARIES="${NS_PROJECT}/${NS_BRANCH}/${NS_JOB}/workspace"
 
             # Pill up MediaWiki extensions and skins caches together
             if [[ "$ZUUL_PROJECT" =~ ^mediawiki/(extensions|skins)/ ]]; then
                 NS_PROJECT="castor-mw-ext-and-skins"
             fi
 
-            # Ex: mediawiki-core/REL1_26/tox-jessie
-            # Prefer TRIGGERED_JOB_NAME when it is set
-            NS_JOB=${TRIGGERED_JOB_NAME:-$JOB_NAME}
-
-            CASTOR_NAMESPACE="${NS_PROJECT}/${NS_BRANCH}/${NS_JOB}"
+            CASTOR_NAMESPACE="${NS_PROJECT}/${NS_BRANCH}/${NS_JOB}/home"
 
             # Ex: mediawiki-core/REL1_26/tox-jessie
-            echo "declare -x CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\"" > castor-set-namespace.env
+            rm -f castor-set-namespace.env
+            echo "declare -x CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\"" >> castor-set-namespace.env
             echo "Defined: CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\""
+            echo "declare -x CASTOR_BINARIES=\"$CASTOR_BINARIES\"" >> castor-set-namespace.env
+            echo "Defined: CASTOR_BINARIES=\"$CASTOR_BINARIES\""
 
 # Entry point to load cache from central cache
 #
@@ -75,12 +80,20 @@
 
             . castor-set-namespace.env
 
-            echo "Syncing..."
+            echo "Syncing home dir caches..."
             rsync \
               --archive \
               --compress \
               --contimeout 3 \
               rsync://castor.integration.eqiad.wmflabs:/caches/${CASTOR_NAMESPACE}/ $HOME \
+              || :
+            echo -e "\nDone"
+            echo "Syncing job dir caches..."
+            rsync \
+              --archive \
+              --compress \
+              --contimeout 3 \
+              rsync://castor.integration.eqiad.wmflabs:/caches/${CASTOR_BINARIES}/ "$WORKSPACE" \
               || :
             echo -e "\nDone"
 
@@ -135,24 +148,34 @@
             REMOTE_INSTANCE="${ssh_config[2]}"
 
             # Destination in the central cache
-            DEST="/srv/jenkins-workspace/caches/${CASTOR_NAMESPACE}"
+            DEST_HOME="/srv/jenkins-workspace/caches/${CASTOR_NAMESPACE}"
+            DEST_WORKSPACE="/srv/jenkins-workspace/caches/${CASTOR_BINARIES}"
 
             echo "Ensure cache directories exist on remote $REMOTE_INSTANCE"
             ssh -q -a -T \
               -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
               jenkins@"${REMOTE_INSTANCE}" \
-              'mkdir -v -p .cache/composer .composer/cache .m2/repository .cache/pip/wheels .npm workspace/vendor/bundle'
+              "mkdir -v -p .cache/composer .composer/cache .m2/repository .cache/pip/wheels .npm workspace/vendor/bundle workspace/${TRIGGERED_JOB_NAME}/node_modules"
 
-            echo "Creating directory holding cache:"
-            mkdir -v -p "${DEST}"
+            echo "Creating directories holding caches:"
+            mkdir -v -p "${DEST_HOME}" "${DEST_WORKSPACE}"
 
-            echo -e "Syncing cache\nFrom.. ${REMOTE_INSTANCE}\nTo.... ${DEST}"
+            echo -e "Syncing home dir caches\nFrom.. ${REMOTE_INSTANCE}\nTo.... ${DEST_HOME}"
             rsync \
               --archive \
               --compress \
               --rsh="ssh -a -T  -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
               --delete-delay \
               --relative \
-              jenkins@"${REMOTE_INSTANCE}":.cache/composer :.composer/cache :.m2/repository :.cache/pip/wheels :.npm :workspace/vendor/bundle "${DEST}/"
+              jenkins@"${REMOTE_INSTANCE}":.cache/composer :.composer/cache :.m2/repository :.cache/pip/wheels :.npm "${DEST_HOME}/"
+            echo -e "\nDone"
 
+            echo -e "Syncing job dir caches\nFrom.. ${REMOTE_INSTANCE}\nTo.... ${DEST_WORKSPACE}"
+            rsync \
+              --archive \
+              --compress \
+              --rsh="ssh -a -T  -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
+              --delete-delay \
+              --relative \
+              jenkins@"${REMOTE_INSTANCE}":workspace/vendor/bundle ":workspace/${TRIGGERED_JOB_NAME}/node_modules" "${DEST_WORKSPACE}/"
             echo -e "\nDone"
