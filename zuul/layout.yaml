@@ -9163,3 +9163,10 @@ projects:
   - name: wikidata/build-resources
     template:
       - name: npm
+
+  - name: testing-access-wrapper
+    template:
+     - name: composer-test-package
+    postmerge:
+      - doxygen-publish
+      - phpunit-coverage-publish
