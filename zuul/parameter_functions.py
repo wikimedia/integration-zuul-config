@@ -204,6 +204,7 @@ dependencies = {
     'Score': ['VisualEditor'],
     'SemanticImageInput': ['SemanticMediaWiki'],
     'SemanticSifter': ['SemanticMediaWiki'],
+    'SimpleSAMLphp': ['PluggableAuth'],
     'SimpleSurvey': ['PrefSwitch'],
     'SolrStore': ['SemanticMediaWiki'],
     'SpellingDictionary': ['UniversalLanguageSelector'],
