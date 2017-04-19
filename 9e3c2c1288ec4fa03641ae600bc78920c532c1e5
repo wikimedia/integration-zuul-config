@@ -22,6 +22,81 @@
       "revId": "9e3c2c1288ec4fa03641ae600bc78920c532c1e5",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e506ba4_468bdcc4",
+        "filename": "jjb/castor.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-04-19T09:08:00Z",
+      "side": 1,
+      "message": "Done. Thanks.\n\nAnd obviously both variables ends up being set to the same value. So each caches ends up being synced to both the home directory and the job workspace. Need some further namespacing.",
+      "parentUuid": "4e506ba4_aaf4e850",
+      "range": {
+        "startLine": 50,
+        "startChar": 28,
+        "endLine": 50,
+        "endChar": 29
+      },
+      "revId": "9e3c2c1288ec4fa03641ae600bc78920c532c1e5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e506ba4_06bcf465",
+        "filename": "jjb/castor.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-04-19T09:08:00Z",
+      "side": 1,
+      "message": "Surely doing:\n\n echo \"a\" \u003e file.txt\n echo \"b\" \u003e file.txt\n\nEnds up with only \"b\". I thought I have took care of it yesterday but I guess I got confused at some point. So instead changing it to delete the file and then always append.",
+      "revId": "9e3c2c1288ec4fa03641ae600bc78920c532c1e5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e506ba4_46a2fc3c",
+        "filename": "jjb/castor.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-04-19T09:08:00Z",
+      "side": 1,
+      "message": "For non mediawiki repositories, both DEST_HOME and DEST_JOB ends up being the same.  Thus we save/restore the web cache and the workspace cache at the same place.\n\nI am thus further namespacing them by adding suffix: /home and /workspace",
+      "revId": "9e3c2c1288ec4fa03641ae600bc78920c532c1e5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e506ba4_066b94ef",
+        "filename": "jjb/castor.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-04-19T09:08:00Z",
+      "side": 1,
+      "message": "Forgot to ensure node_modules is present.  Done via mkdir workspace/${TRIGGERED_JOB_NAME}/node_modules",
+      "revId": "9e3c2c1288ec4fa03641ae600bc78920c532c1e5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
