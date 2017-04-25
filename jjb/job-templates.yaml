@@ -1,7 +1,7 @@
 # Generic job-templates
 
-- job: &job_jsonlint
-    name: 'jsonlint'
+- job-template:
+    name: '{name}-jsonlint'
     node: contintLabsSlave && UbuntuTrusty
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
@@ -9,13 +9,6 @@
      - zuul
     builders:
      - jsonlint
-
-- job-template:
-    !!merge : *job_jsonlint
-    name: '{name}-jsonlint'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
 
 - job:
     name: 'jsduck'
