@@ -314,8 +314,7 @@ class TestZuulScheduler(unittest.TestCase):
         # List of jobs allowed in check* pipelines
         safe_jobs = [
             '(php5[35]|json|yaml)lint',
-            'jshint',
-            '.*-(jshint|jsonlint)',
+            '.*-jsonlint',
             '.*-(js|shell|php5[35]|)lint',
             '.*-(tabs|typos)',
             '.*-whitespaces',

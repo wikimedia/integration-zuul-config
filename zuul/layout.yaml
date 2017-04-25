@@ -757,11 +757,6 @@ jobs:
     files:
      - '^.*\.(js|json|css)$'
 
-  - name: ^.*jshint$
-    files:
-     # Matches: .jscsrc, .jshintrc, .jshintignore, and *.js
-     - '^(\.js.*|.*\.js$)'
-
   - name: ^.*jsonlint$
     files:
      # Matches: *.json
@@ -1093,14 +1088,6 @@ project-templates:
       - mwgate-composer-hhvm-jessie
     experimental:
       - mwgate-composer-php70-jessie
-
-  - name: jshint
-    check:
-      - jshint
-    test:
-      - jshint
-    gate-and-submit:
-      - jshint
 
   - name: jsonlint
     check:
