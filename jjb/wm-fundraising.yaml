@@ -1,8 +1,11 @@
 - project:
     name: wikimedia-fundraising-crm
-
     jobs:
       - '{name}-jsonlint'
+      - '{name}-composer-{phpflavor}-{image}':
+          phpflavor:
+              - php55:
+                  image: trusty
 
 - builder:
     name: fundraising-crm-install
