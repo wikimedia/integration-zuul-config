@@ -58,28 +58,3 @@ class TestZuulLayout(unittest.TestCase):
 
         self.maxDiff = None
         self.assertListEqual([], errors)
-
-    def test_mwgate_jsonlint_not_needed_with_npm(self):
-        errors = []
-        for project in self.layout['projects']:
-            try:
-                templates = [
-                    t['name'] for t in project.get('template', {})
-                    if t['name'] in (
-                        'mwgate-jsonlint',
-                        'mwgate-npm',
-                    )
-                ]
-                self.assertFalse(
-                    'mwgate-npm' in templates
-                    and 'mwgate-jsonlint' in templates,
-                    'Project %s in Zuul should not have jsonlint '
-                    '(already has npm)'
-                    % project['name']
-                )
-
-            except AssertionError, e:
-                errors.append(str(e))
-
-        self.maxDiff = None
-        self.assertListEqual([], errors)
