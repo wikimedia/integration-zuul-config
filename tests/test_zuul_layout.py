@@ -66,17 +66,13 @@ class TestZuulLayout(unittest.TestCase):
                 templates = [
                     t['name'] for t in project.get('template', {})
                     if t['name'] in (
-                        'mwgate-jshint',
                         'mwgate-jsonlint',
                         'mwgate-npm',
                     )
                 ]
                 self.assertFalse(
                     'mwgate-npm' in templates
-                    and (
-                        'mwgate-jsonlint' in templates
-                        or 'mwgate-jshint' in templates
-                    ),
+                    and 'mwgate-jsonlint' in templates,
                     'Project %s in Zuul should not have jsonlint/jshint '
                     '(already has npm)'
                     % project['name']

@@ -10,13 +10,6 @@
     builders:
      - jshint
 
-- job-template:
-    !!merge : *job_jshint
-    name: '{name}-jshint'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job: &job_jsonlint
     name: 'jsonlint'
     node: contintLabsSlave && UbuntuTrusty
