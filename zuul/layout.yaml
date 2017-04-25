@@ -1611,14 +1611,12 @@ projects:
       - name: npm
 
   - name: integration/docroot
+    template:
+     - name: npm
     test:
      - composer-php55-trusty
-     - jshint
-     - jsonlint
     gate-and-submit:
      - composer-php55-trusty
-     - jshint
-     - jsonlint
     postmerge:
      - integration-docroot-deploy
 
