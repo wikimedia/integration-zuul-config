@@ -342,6 +342,23 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertEquals(expected, actual,
                           "No project have unsafe jobs in check* pipelines")
 
+    def test_gate_and_submit_swat(self):
+        gs_swat_manager = self.getPipeline('gate-and-submit-swat').manager
+        gs_manager = self.getPipeline('gate-and-submit').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'wmf/1.29.0-wmf.20'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Code-Review+2'
+        event.branch = change.branch
+        event.approvals = [{
+            'description': 'Code-Review', 'type': 'CRVW', 'value': '2'}]
+
+        self.assertTrue(gs_swat_manager.eventMatches(event, change))
+        self.assertFalse(gs_manager.eventMatches(event, change))
+
     def test_recheck_comment_trusted_user(self):
         test_manager = self.getPipeline('test').manager
 

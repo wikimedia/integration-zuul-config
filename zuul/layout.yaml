@@ -561,7 +561,8 @@ pipelines:
   #
   # WARNING: Also update the "gate" pipeline when changing this one.
   #
-  - name: gate-and-submit
+  - &gate_and_submit_pipeline
+    name: gate-and-submit
     description: >
       Patchsets that have been reviewed. Will be merged by Jenkins if tests pass.
     manager: DependentPipelineManager
@@ -572,7 +573,8 @@ pipelines:
     trigger:
       gerrit:
         - event: comment-added
-          branch: (?!^refs/meta/config)
+          branch:
+           - (?!^(refs/meta/config|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}))
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
@@ -590,6 +592,17 @@ pipelines:
     failure:
       gerrit:
         verified: -1
+
+  - !!merge : *gate_and_submit_pipeline
+    name: gate-and-submit-swat
+    trigger:
+      gerrit:
+        - event: comment-added
+          branch: wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}
+          email:
+           - ^(?!l10n-bot@translatewiki\.net).*$
+          approval:
+            - code-review: 2
 
   - name: postmerge
     description: Jobs triggered after a change has been merged.
@@ -886,10 +899,11 @@ project-templates:
      - mwext-testextension-hhvm-composer-jessie
     php5:
      - mwext-testextension-php55-composer-trusty
-    gate-and-submit:
+    gate-and-submit: &extension-unittests-composer-gate-and-submit
      - mwgate-php55lint
      - mwext-testextension-php55-composer-trusty
      - mwext-testextension-hhvm-composer-jessie
+    gate-and-submit-swat: *extension-unittests-composer-gate-and-submit
     experimental:
      - mwext-qunit-composer-jessie
      - mwgate-npm-node-6-jessie
@@ -908,8 +922,11 @@ project-templates:
     php5:
      - mwext-testextension-php55-composer-trusty-non-voting
     gate-and-submit:
+     &extension-unittests-composer-non-voting-gate-and-submit
      - mwgate-php55lint
      - mwgate-composer-validate
+    gate-and-submit-swat:
+     *extension-unittests-composer-non-voting-gate-and-submit
     experimental:
      - mwext-qunit-composer-jessie
      - mwgate-composer-hhvm-jessie
@@ -927,12 +944,13 @@ project-templates:
      - mwgate-composer-validate
     php5:
      - mwext-testextension-php55-trusty
-    gate-and-submit:
+    gate-and-submit: &extension-unittests-generic-gate-and-submit
      - mwgate-php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-php55-trusty
      - mwext-testextension-hhvm-jessie
      - mwgate-composer-validate
+    gate-and-submit-swat: *extension-unittests-generic-gate-and-submit
     experimental:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
@@ -953,10 +971,11 @@ project-templates:
      - mwgate-composer-validate
     php5:
      - mwext-testextension-php55-trusty-non-voting
-    gate-and-submit:
+    gate-and-submit: &extension-unittests-non-voting-gate-and-submit
      - noop
      - mwgate-php55lint
      - mwgate-composer-validate
+    gate-and-submit-swat: *extension-unittests-non-voting-gate-and-submit
     experimental:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
@@ -976,8 +995,9 @@ project-templates:
   - name: extension-selenium-gate
     test:
       - mwext-mw-selenium-jessie
-    gate-and-submit:
+    gate-and-submit: &extension-selenium-gate-gate-and-submit
       - mwext-mw-selenium-jessie
+    gate-and-submit-swat: *extension-selenium-gate-gate-and-submit
 
   - name: extension-gate
     test:
@@ -985,45 +1005,51 @@ project-templates:
       - mediawiki-extensions-qunit-jessie
     php5:
       - mediawiki-extensions-php55-trusty
-    gate-and-submit:
+    gate-and-submit: &extension-gate-gate-and-submit
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-php55-trusty
       - mediawiki-extensions-qunit-jessie
+    gate-and-submit-swat: *extension-gate-gate-and-submit
 
   - name: extension-phan-generic
     test:
      - mwext-php70-phan-jessie
-    gate-and-submit:
+    gate-and-submit: &extension-phan-generic
      - mwext-php70-phan-jessie
+    gate-and-submit-swat: *extension-phan-generic
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
   - name: extension-qunit
     test:
       - 'mwext-{name}-qunit'
-    gate-and-submit:
+    gate-and-submit: &extension-qunit-gate-and-submit
       - 'mwext-{name}-qunit'
+    gate-and-submit-swat: *extension-qunit-gate-and-submit
 
   # Triggers the generic mwext-qunit job
   - name: extension-qunit-generic
     test:
       - mwext-qunit-jessie
-    gate-and-submit:
+    gate-and-submit: &extension-qunit-generic
       - mwext-qunit-jessie
+    gate-and-submit-swat: *extension-qunit-generic
     experimental:
       - mwext-qunit-composer-jessie
 
   - name: extension-qunit-composer
     test:
       - mwext-qunit-composer-jessie
-    gate-and-submit:
+    gate-and-submit: &extension-qunit-composer-gate-and-submit
       - mwext-qunit-composer-jessie
+    gate-and-submit-swat: *extension-qunit-composer-gate-and-submit
 
   - name: skin-tests
     test:
       - mw-testskin
-    gate-and-submit:
+    gate-and-submit: &skin-tests-gate-and-submit
       - mw-testskin
+    gate-and-submit-swat: *skin-tests-gate-and-submit
 
   - name: skin-tests-non-voting
     test:
@@ -1048,9 +1074,10 @@ project-templates:
     test:
      - mwgate-php55lint
      - mwgate-composer-validate
-    gate-and-submit:
+    gate-and-submit: &mw-checks-test-gate-and-submit
      - mwgate-php55lint
      - mwgate-composer-validate
+    gate-and-submit-swat: *mw-checks-test-gate-and-submit
     experimental:
      - mwgate-npm-node-6-jessie
      - mwgate-composer-hhvm-jessie
@@ -1064,9 +1091,10 @@ project-templates:
     test:
       - composer-php55-trusty
       - composer-hhvm-jessie
-    gate-and-submit:
+    gate-and-submit: &composer-test-gate-and-submit
       - composer-php55-trusty
       - composer-hhvm-jessie
+    gate-and-submit-swat: *composer-test-gate-and-submit
     experimental:
       - composer-php70-jessie
 
@@ -1077,19 +1105,21 @@ project-templates:
     test:
       - mwgate-composer-php55-trusty
       - mwgate-composer-hhvm-jessie
-    gate-and-submit:
+    gate-and-submit: &mwgate-composer-gate-and-submit
       - mwgate-composer-php55-trusty
       - mwgate-composer-hhvm-jessie
     experimental:
       - mwgate-composer-php70-jessie
+    gate-and-submit-swat: *mwgate-composer-gate-and-submit
 
   - name: php55lint
     check:
       - php55lint
     test:
       - php55lint
-    gate-and-submit:
+    gate-and-submit: &php55lint-gate-and-submit
       - php55lint
+    gate-and-submit-swat: *php55lint-gate-and-submit
 
   - name: composer-test-package
     check:
@@ -1107,8 +1137,9 @@ project-templates:
   - name: npm
     test:
       - npm-node-6-jessie
-    gate-and-submit:
+    gate-and-submit: &npm-gate-and-submit
       - npm-node-6-jessie
+    gate-and-submit-swat: *npm-gate-and-submit
 
   - name: mwgate-npm
     test:
@@ -1119,8 +1150,9 @@ project-templates:
   - name: rake
     test:
       - rake-jessie
-    gate-and-submit:
+    gate-and-submit: &rake-gate-and-submit
       - rake-jessie
+    gate-and-submit-swat: *rake-gate-and-submit
 
   - name: mwgate-rake
     test:
@@ -1276,7 +1308,7 @@ projects:
     php5:
       # Comment "check php5" to manually run this
       - mediawiki-phpunit-php55-trusty
-    gate-and-submit:
+    gate-and-submit: &mediawiki-core-gate-and-submit
       - mediawiki-core-jsduck
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
@@ -1287,6 +1319,7 @@ projects:
       - mediawiki-core-qunit-selenium-jessie
       - composer-package-validate
       - mediawiki-core-php70-phan-jessie
+    gate-and-submit-swat: *mediawiki-core-gate-and-submit
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
@@ -1319,12 +1352,13 @@ projects:
       - mediawiki-phpunit-hhvm-jessie
     php5:
       - mediawiki-phpunit-php55-trusty
-    gate-and-submit:
+    gate-and-submit: &mediawiki-vendor-gate-and-submit
       - mwgate-php55lint
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-trusty
       - mediawiki-core-qunit-selenium-jessie
       - mwgate-composer-validate
+    gate-and-submit-swat: *mediawiki-vendor-gate-and-submit
     experimental:
       - mwgate-composer-hhvm-jessie
       - mwgate-composer-php55-trusty
@@ -1830,8 +1864,9 @@ projects:
      - name: skin-tests
     test:
      - mediawiki-core-qunit-selenium-jessie
-    gate-and-submit:
+    gate-and-submit: &mediawiki-skins-vector-gate-and-submit
      - mediawiki-core-qunit-selenium-jessie
+    gate-and-submit-swat: *mediawiki-skins-vector-gate-and-submit
 
   - name: mediawiki/skins/VectorV2
     template:
@@ -6515,8 +6550,9 @@ projects:
       - name: mwgate-npm
     test:
       - mwext-PoolCounter-build-jessie
-    gate-and-submit:
+    gate-and-submit: &mediawiki-extensions-poolcounter-gate-and-submit
       - mwext-PoolCounter-build-jessie
+    gate-and-submit-swat: *mediawiki-extensions-poolcounter-gate-and-submit
 
   - name: mediawiki/extensions/Popups
     template:
@@ -6973,9 +7009,10 @@ projects:
     test:
       - mwext-VisualEditor-npm-node-6-jessie
       - mwext-VisualEditor-jsduck
-    gate-and-submit:
+    gate-and-submit: &mediawiki-extensions-visualeditor-gate-and-submit
       - mwext-VisualEditor-npm-node-6-jessie
       - mwext-VisualEditor-jsduck
+    gate-and-submit-swat: *mediawiki-extensions-visualeditor-gate-and-submit
     postmerge:
       - mwext-VisualEditor-publish
 
@@ -7013,7 +7050,7 @@ projects:
       - mwext-Wikibase-repo-tests-sqlite-hhvm-jessie
       - mwext-Wikibase-client-tests-mysql-hhvm-jessie
       - mwext-Wikibase-client-tests-sqlite-hhvm-jessie
-    gate-and-submit:
+    gate-and-submit: &mediawiki-extensions-wikibase-gate-and-submit
       - mwext-mw-selenium-composer-jessie
       - mwext-Wikibase-repo-tests-sqlite-php55-trusty
       - mwext-Wikibase-repo-tests-sqlite-hhvm-jessie
@@ -7021,6 +7058,7 @@ projects:
       - mwext-Wikibase-client-tests-sqlite-php55-trusty
       - mwext-Wikibase-client-tests-mysql-hhvm-jessie
       - mwext-Wikibase-client-tests-sqlite-hhvm-jessie
+    gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
     experimental:
       - mwext-php70-phan-jessie
     postmerge:
@@ -7041,8 +7079,9 @@ projects:
       - name: extension-gate
     test:
       - mwext-testextension-hhvm-jessie
-    gate-and-submit:
+    gate-and-submit: &mediawiki-extensions-wikidata-gate-and-submit
       - mwext-testextension-hhvm-jessie
+    gate-and-submit-swat: *mediawiki-extensions-wikidata-gate-and-submit
 
   - name: mediawiki/extensions/Wikidata.org
     template:
