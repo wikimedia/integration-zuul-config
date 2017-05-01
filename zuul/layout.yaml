@@ -2321,24 +2321,13 @@ projects:
 
   - name: wikimedia/fundraising/crm
     test:
-      - wikimedia-fundraising-crm-jsonlint
-      - php55lint
-      - wikimedia-fundraising-civicrm
-      # TODO: fixups so that we can run composer-validate
-      - noop
-    gate-and-submit:
-      - wikimedia-fundraising-crm-jsonlint
-      - php55lint
-      - wikimedia-fundraising-civicrm
-      # Since jobs above might not trigger due to file filtering and
-      # wikimedia-fundraising-civicrm is not run on deployment branch, we still
-      # need a job to run for Zuul to gate-and-submit
-      # T120881
-      - noop
-    experimental:
-      # lint json and php files using entry points - T163781
       - wikimedia-fundraising-crm-composer-php55-trusty
       - wikimedia-fundraising-crm-npm-node-6-jessie
+      - wikimedia-fundraising-civicrm
+    gate-and-submit:
+      - wikimedia-fundraising-crm-composer-php55-trusty
+      - wikimedia-fundraising-crm-npm-node-6-jessie
+      - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/civicrm
     test:
