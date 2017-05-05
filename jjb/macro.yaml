@@ -608,9 +608,16 @@
         /srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py "{deps}" composer.local.json
 
 # Runs "composer test"
+#
+# Example:
+#
+# builder:
+#  - composer-test:
+#      dir: 'src/extensions/$EXTNAME'
 - builder:
     name: composer-test
     builders:
      - shell: |
+        cd "{dir}"
         [[ -f "composer.json" ]] || exit 0
         COMPOSER_PROCESS_TIMEOUT=600 composer --ansi test
