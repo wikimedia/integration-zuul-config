@@ -165,7 +165,7 @@ dependencies = {
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'ImageMetrics': ['EventLogging'],
-    'JsonConfig': ['Scribunto'],
+    'JsonConfig': ['Scribunto', 'Kartographer'],
     'Kartographer': ['ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
