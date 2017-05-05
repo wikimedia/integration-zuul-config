@@ -138,13 +138,34 @@ class TestZuulScheduler(unittest.TestCase):
         # mwgate-composer-validate
         self.assertTrue(
             any([job for job in definition
-                 if job.startswith(
-                     ('composer', 'composer-', 'mwgate-composer'))
-                 or job == 'mwext-testextension-php55-composer-trusty'
-                 or job == 'mwext-testextension-hhvm-composer-jessie']),
+                 if (
+                     job.startswith(('composer', 'mwgate-composer'))
+                     or (job.startswith('mwext-testextension-')
+                         and 'non-voting' not in job)
+                 )]),
             'Project %s pipeline %s must have either '
             'composer-validate or a composer-* job'
             'has: %s'
+            % (name, pipeline, definition))
+
+    def assertTestextensionAndNoComposerTest(self, name, definition, pipeline):
+        # XXX
+        if pipeline == 'gate-and-submit':
+            return
+
+        hasVotingTests = any([
+            job for job in definition
+            if job.startswith('mwext-testextension-')
+            and 'non-voting' not in job
+            ])
+        hasComposerTest = any([
+            job for job in definition
+            if job.startswith('mwgate-composer-')])
+        self.assertTrue(
+            not (hasVotingTests and hasComposerTest),
+            'Project %s pipeline %s has mwext-testextension-* jobs '
+            'which runs composer test. mwgate-composer-* are not needed. '
+            'Has: %s'
             % (name, pipeline, definition))
 
     def assertProjectHasPhplint(self, name, definition, pipeline):
@@ -196,7 +217,8 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
-                self.assertProjectHasPhp55Test
+                self.assertProjectHasPhp55Test,
+                self.assertTestextensionAndNoComposerTest
             ],
             'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,
