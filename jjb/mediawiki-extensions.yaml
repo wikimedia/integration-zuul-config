@@ -233,6 +233,20 @@
     builders:
      - lint-whitespaces
 
+# composer test in src/extensions/$EXT_NAME
+- builder:
+    name: composer-test-mwextension
+    builders:
+     - composer-validate:
+         dir: 'src/extensions/$EXT_NAME'
+     - composer-update:
+         dir: 'src/extensions/$EXT_NAME'
+     - composer-test:
+         dir: 'src/extensions/$EXT_NAME'
+     # Clear up the above composer install
+     - shell:
+         git -C "src/extensions/$EXT_NAME" clean -xqdf
+
 - job-template: &job_mwext-testextension-image
     name: 'mwext-testextension-{phpflavor}-{image}'
     node: ci-{image}-wikimedia
@@ -245,6 +259,7 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project
+     - composer-test-mwextension
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
     publishers:
@@ -272,6 +287,7 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project-no-vendor
+     - composer-test-mwextension
      - mw-run-phpunit-allexts
     publishers:
      - junit:
