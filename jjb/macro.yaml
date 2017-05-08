@@ -330,6 +330,28 @@
          onsuccess: False
          onfailure: False
 
+# wdio
+
+# Run selenium script if it exists. The localhost vhost is setup by
+# qunit-karma already
+- builder:
+    name: wdio
+    builders:
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
+
+        cd $MW_INSTALL_PATH
+        if [ -f ./tests/selenium/wdio.conf.js ]; then
+            chromedriver --url-base=/wd/hub --port=4444 &
+            # Make sure it is killed to prevent file descriptors leak
+            function kill_chromedriver() {{
+                killall chromedriver > /dev/null
+            }}
+            trap kill_chromedriver EXIT
+
+            ./node_modules/.bin/grunt webdriver:test
+        fi
+
 # mw-selenium
 #
 # Run MW-Selenium tests that are marked with the @integration tag against a
