@@ -145,6 +145,23 @@
      - castor-save
      - archive-log-dir
 
+# Generic qunit and selenium job for extensions.
+# The same as mwext-qunit-jessie but also runs wdio builder
+- job:
+    name: 'mwext-qunit-selenium-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - prepare-mediawiki-zuul-project
+     - qunit-karma
+     - wdio
+    publishers:
+     - castor-save
+     - archive-log-dir
+
 # Generic qunit job for extensions with composer update.
 - job:
     name: 'mwext-qunit-composer-jessie'
