@@ -620,4 +620,9 @@
      - shell: |
         cd "{dir}"
         [[ -f "composer.json" ]] || exit 0
-        COMPOSER_PROCESS_TIMEOUT=600 composer --ansi test
+        if [[ -f "../../{dir}/composer.json" ]];
+        then
+            COMPOSER_PROCESS_TIMEOUT=600 composer --ansi test || echo "Non-Voting"
+        else
+            COMPOSER_PROCESS_TIMEOUT=600 composer --ansi test
+        fi
