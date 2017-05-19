@@ -547,6 +547,15 @@
         composer update --ansi --no-progress --prefer-dist --profile -v
 
 - builder:
+    name: composer-install
+    builders:
+     - shell: |
+        set -u
+        cd "{dir}"
+        [[ -f "composer.json" ]] || exit 0
+        composer install --ansi --no-progress --prefer-dist --profile -v
+
+- builder:
     name: composer-update-no-dev
     builders:
      - shell: |
