@@ -265,6 +265,7 @@ dependencies = {
     'RandomUsersWithAvatars': ['SocialProfile'],
     'RegexFun': ['ParserFunctions', 'Arrays'],
     'RelatedArticles': ['BetaFeatures', 'MobileFrontend'],
+    'RevisionSlider': ['MobileFrontend'],
     'Score': ['VisualEditor'],
     'SemanticLinks': ['VisualEditor'],
     'SemanticPageMaker': ['WikiObjectModel'],
