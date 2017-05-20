@@ -203,6 +203,7 @@ dependencies = {
     'QuickSurveys': ['EventLogging'],
     'QuizGame': ['SocialProfile'],
     'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
+    'RevisionSlider': ['MobileFrontend'],
     'Score': ['VisualEditor'],
     'SemanticImageInput': ['SemanticMediaWiki'],
     'SemanticSifter': ['SemanticMediaWiki'],
