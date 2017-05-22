@@ -200,6 +200,7 @@ dependencies = {
     'Premoderation': ['skins/Vector'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
+    'PropertySuggester': [ 'Wikibase' ],
     'QuickSurveys': ['EventLogging'],
     'QuizGame': ['SocialProfile'],
     'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
