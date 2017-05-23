@@ -26,9 +26,12 @@ include mediawiki::packages::php5
 
 package { 'cron':
     ensure => present,
-    before => Class['contint::hhvm'],
 }
-include contint::hhvm
+if os_version('debian >= jessie') {
+    class { '::contint::hhvm':
+        require => Package['cron'],
+    }
+}
 
 include contint::packages::javascript
 class { '::apt':
