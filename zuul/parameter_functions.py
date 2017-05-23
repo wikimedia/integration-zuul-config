@@ -20,6 +20,7 @@ def set_parameters(item, job, params):
     hhvm_jobs = (
         'mw-testskin',
         'mw-testskin-non-voting',
+        'mw-tools-codesniffer-mwcore-testrun',
         'mediawiki-core-phpcs-trusty',
         )
     php5_jobs = (
