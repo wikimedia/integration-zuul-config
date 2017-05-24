@@ -193,3 +193,25 @@
      - 'integration-composer-check-{phpflavor}':
          phpflavor:
              - php55
+
+- job:
+    name: integration-quibble-docker-test
+    node: DebianJessieDocker
+    triggers:
+        - zuul
+    builders:
+        - shell: |
+            zuul-cloner --version
+            zuul-cloner --color --verbose \
+                --workspace src \
+                https://gerrit.wikimedia.org/r/p \
+                integration/quibble
+        - shell: |
+            cd "src/$ZUUL_PROJECT"
+            docker build -t "$JOB_NAME:$(date --utc  +'%Y%m%d%H%M%S')_build_$BUILD_NUMBER" .
+
+- project:
+    name: 'integration-quibble'
+    jobs:
+        - '{name}-tox-jessie'
+        - 'integration-quibble-docker-test'
