@@ -207,8 +207,22 @@
                 https://gerrit.wikimedia.org/r/p \
                 integration/quibble
         - shell: |
+            echo "$JOB_NAME:$(date --utc  +'%Y%m%d%H%M%S')_build_$BUILD_NUMBER" > image_tag
+        - shell: |
             cd "src/$ZUUL_PROJECT"
-            docker build -t "$JOB_NAME:$(date --utc  +'%Y%m%d%H%M%S')_build_$BUILD_NUMBER" .
+            docker build -t $(cat $WORKSPACE/image_tag) .
+        - shell: |
+            mkdir -p ref/mediawiki
+            git clone --bare https://gerrit.wikimedia.org/r/mediawiki/core ref/mediawiki/core.git || :
+            git clone --bare https://gerrit.wikimedia.org/r/mediawiki/vendor ref/mediawiki/vendor.git || :
+        - shell: |
+            docker run --rm \
+                -v `pwd`/ref:/srv/git:ro \
+                -e ZUUL_URL=https://gerrit.wikimedia.org/r/p \
+                -e ZUUL_BRANCH=master \
+                -e ZUUL_REF=master \
+                $(cat $WORKSPACE/image_tag) \
+                bash -c 'service mysql start && quibble --packages-source vendor --workspace /workspace'
 
 - project:
     name: 'integration-quibble'
