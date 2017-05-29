@@ -222,6 +222,12 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project
+     # When triggered by an extension, run its 'composer test'
+     - conditional-step:
+         condition-kind: boolean-expression
+         condition-expression: '${{ENV,var="EXT_NAME"}}'
+         steps:
+             - composer-test-mwextension
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
     publishers:

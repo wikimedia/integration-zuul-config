@@ -140,6 +140,7 @@ class TestZuulScheduler(unittest.TestCase):
             any([job for job in definition
                  if (
                      job.startswith(('composer', 'mwgate-composer'))
+                     or job.startswith('mediawiki-extensions-')
                      or (job.startswith('mwext-testextension-')
                          and 'non-voting' not in job)
                  )]),
@@ -155,7 +156,8 @@ class TestZuulScheduler(unittest.TestCase):
 
         hasVotingTests = any([
             job for job in definition
-            if job.startswith('mwext-testextension-')
+            if job.startswith(
+                ('mwext-testextension-', 'mediawiki-extensions-'))
             and 'non-voting' not in job
             ])
         hasComposerTest = any([
@@ -172,6 +174,7 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(
             any([job for job in definition
                  if job.endswith(('php55lint')) or
+                 job.startswith('mediawiki-extensions-') or
                  job.startswith(('composer-', 'mwgate-composer'))]),
             'Project %s pipeline %s must have either '
             'phplint or a composer-* job'

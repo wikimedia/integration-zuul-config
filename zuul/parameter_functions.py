@@ -385,6 +385,11 @@ def set_gated_extensions(item, job, params):
         'mediawiki/extensions/' + dep for dep in deps
     )
 
+    # So we can cd $EXT_NAME && composer test - T161895
+    split = params['ZUUL_PROJECT'].split('/')
+    if len(split) == 3 and split[1] == 'extensions':
+        params['EXT_NAME'] = split[-1]
+
 
 def nodepool_params(item, job, params):
     # Instruct Jenkins Gearman plugin to put a node offline on job completion.
