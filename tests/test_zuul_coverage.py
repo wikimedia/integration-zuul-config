@@ -42,6 +42,7 @@ class TestZuulCoverage(unittest.TestCase):
         projects = self.getLayoutProjects()
         missing = [repo for (repo, state) in self._repos.iteritems()
                    if repo.startswith(prefix)
+                   and len(repo.split('/')) == 3  # skip sub repos
                    and state == 'ACTIVE'
                    and repo not in projects]
 
