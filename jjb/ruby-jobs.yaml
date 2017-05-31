@@ -1,43 +1,3 @@
-# Executes a Gem command via Bundler, allowing for some additional options
-#
-# - initialization: Shell script to source before doing anything
-# - bundler-version: Version of Bundler to install/use. Defaults to the latest.
-# - dir: Working directory for Bundler execution
-# - command: Gem/Bundler command to run
-#
-- builder:
-    name: bundle-with-options
-    builders:
-     - shell: |
-         # Change to the given working directory
-         cd "{dir}"
-
-         # Source any given initialization script
-         if [ ! -z '{initialization}' ]; then
-           . '{initialization}'
-         fi
-
-         # Shared cache of gems to avoid hitting rubygems all the time
-         # See https://github.com/bundler/bundler/issues/2856
-         export GEM_HOME="$HOME/.gem/2.0.0"
-
-         # Install bundler
-         if [ '{bundler-version}' != '' ]; then
-           version=(-v '{bundler-version}')
-         else
-           version=()
-         fi
-
-         mkdir -p vendor
-         gem2.0 install --env-shebang -i vendor --no-document "${{version[@]}}" bundler
-
-         # Prepare some paths lookup
-         export GEM_PATH="`pwd`/vendor"
-
-         # Install dependencies
-         vendor/bin/bundle install --verbose
-         vendor/bin/bundle exec {command}
-
 - builder:
     name: bundle-nodepool
     builders:
@@ -91,22 +51,6 @@
          docdest: 'rubygems/{name}'
     publishers:
      - castor-save
-
-- job-template:
-    name: '{name}-bundle17-yard-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    triggers:
-     - zuul
-    builders:
-     - bundle-with-options:
-         initialization: ''
-         command: 'yard'
-         dir: '.'
-         bundler-version: '< 1.8.0'
-     - doc-publish:
-         docsrc: 'doc'
-         docdest: 'rubygems/{name}'
 
 # General MW-Selenium job used to dogfood the builder against MW core.
 - job:
