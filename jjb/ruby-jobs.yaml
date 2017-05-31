@@ -92,22 +92,6 @@
     publishers:
      - castor-save
 
-- job-template:
-    name: '{name}-bundle17-yard-publish'
-    node: contintLabsSlave && UbuntuTrusty
-    defaults: use-remoteonly-zuul
-    triggers:
-     - zuul
-    builders:
-     - bundle-with-options:
-         initialization: ''
-         command: 'yard'
-         dir: '.'
-         bundler-version: '< 1.8.0'
-     - doc-publish:
-         docsrc: 'doc'
-         docdest: 'rubygems/{name}'
-
 # General MW-Selenium job used to dogfood the builder against MW core.
 - job:
     name: 'mediawiki-selenium-integration-jessie'
