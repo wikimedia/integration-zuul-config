@@ -682,7 +682,7 @@ jobs:
   - name: ^mediawiki-core-php70-phan-jessie$
     skip-if:
       - project: '^mediawiki/core$'
-        branch: (?:^(fundraising/)?REL1_2[378]$|^wmf/1\.29\.0-wmf\.5$)
+        branch: (?:^(fundraising/)?REL1_2[78]$)
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/checkstyleResult/'
 
   - name: ^.*rake-jessie$
@@ -692,9 +692,6 @@ jobs:
       - '.*\.rb'
       - '(\.rubocop|\.gemspec|Gemfile)'
       - '.*([Rr]akefile|/spec/)'
-    skip-if:
-      - project: '^VisualEditor/VisualEditor$'
-        branch: (?:^REL1_26$)
 
   # Same for mediawiki/vagrant
   - name: ^mediawiki-vagrant-rake-jessie$
