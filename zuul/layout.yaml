@@ -682,7 +682,7 @@ jobs:
   - name: ^mediawiki-core-php70-phan-jessie$
     skip-if:
       - project: '^mediawiki/core$'
-        branch: (?:^(fundraising/)?REL1_2[378]$|^wmf/1\.29\.0-wmf\.5$)
+        branch: (?:^(fundraising/)?REL1_2[78]$)
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/checkstyleResult/'
 
   - name: ^.*rake-jessie$
@@ -692,9 +692,6 @@ jobs:
       - '.*\.rb'
       - '(\.rubocop|\.gemspec|Gemfile)'
       - '.*([Rr]akefile|/spec/)'
-    skip-if:
-      - project: '^VisualEditor/VisualEditor$'
-        branch: (?:^REL1_26$)
 
   # Same for mediawiki/vagrant
   - name: ^mediawiki-vagrant-rake-jessie$
@@ -739,15 +736,12 @@ jobs:
      - '^.*\.(php|php5|phtml|inc)$'
 
   - name: ^mediawiki.*-hhvm(-composer)?(-trusty|-jessie)?$
-    # Release branches do not support hhvm.
-    branch: (?!REL1_23|fundraising/REL.*)
+    # FIXME does fundraising active branches support HHVM?
+    branch: (?!fundraising/REL.*)
 
   - name: ^mwext.*-hhvm.*$
-    # Release branches do not support hhvm.
-    branch: (?!REL1_23|fundraising/REL.*)
-
-  - name: ^.*php70.*$
-    branch: (?!REL1_2[3-6]|fundraising/REL1_2[3-6]$)
+    # FIXME does fundraising active branches support HHVM?
+    branch: (?!fundraising/REL.*)
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
@@ -766,15 +760,15 @@ jobs:
 
   # Extensions tested together, since 1.25alpha ...
   - name: ^mediawiki-extensions-(qunit|hhvm)(-jessie|trusty)?$
-    branch: (?!REL1_23|fundraising/REL.*)
+    branch: (?!fundraising/REL.*)
     queue-name: mediawiki
 
   - name: ^mediawiki-extensions-php55-trusty$
-    branch: (?!REL1_23|fundraising/REL.*)
+    branch: (?!fundraising/REL.*)
     queue-name: mediawiki
 
   - name: mediawiki-core-phpcs-jessie
-    branch: (?!^REL1_23|^REL1_26|^fundraising/REL)
+    branch: (?!^fundraising/REL)
     files:
      - '^.*\.(json|php|php5|phtml|inc|xml)$'
 
@@ -861,7 +855,7 @@ jobs:
     branch: ^master$
 
   - name: 'mwext-MobileFrontend-npm-run-lint-modules'
-    branch: ^(?!REL1_2[3-8]|wmf/)
+    branch: ^(?!REL1_28]|wmf/)
 
   - name: 'mwext-VisualEditor-publish'
     branch: ^master$
