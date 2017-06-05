@@ -222,13 +222,6 @@
          phpflavor: '{phpflavor}'
      - hhvm-clear-hhbc
      - prepare-mediawiki-zuul-project
-     # When triggered by an extension/skin, run its 'composer test'
-     - conditional-step:
-         condition-kind: regex-match
-         label: '${{ENV,var="ZUUL_PROJECT"}}'
-         regex: '^mediawiki/extensions/.+'
-         steps:
-             - composer-test-mwextension
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
     publishers:

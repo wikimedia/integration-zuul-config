@@ -1002,9 +1002,6 @@ project-templates:
     gate-and-submit-swat: *extension-selenium-gate-gate-and-submit
 
   - name: extension-gate
-    check:
-      - mwgate-php55lint
-      - mwgate-composer-validate
     test:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
@@ -2593,6 +2590,7 @@ projects:
 
   - name: mediawiki/extensions/Cards
     template:
+      - name: mwgate-composer
       - name: extension-gate
       - name: mwgate-npm
 
@@ -2628,6 +2626,7 @@ projects:
 
   - name: mediawiki/extensions/Cite
     template:
+      - name: mwgate-composer
       - name: extension-gate
       - name: mwgate-npm
 
@@ -2669,6 +2668,7 @@ projects:
     template:
       - name: extension-gate
       - name: mwgate-rake
+      - name: mw-checks-test
       - name: mwgate-npm
       - name: extension-phan-generic
     test:
@@ -3020,6 +3020,7 @@ projects:
 
   - name: mediawiki/extensions/Elastica
     template:
+      - name: mw-checks-test
       - name: extension-gate
       - name: mwgate-npm
 
@@ -3089,6 +3090,7 @@ projects:
 
   - name: mediawiki/extensions/Flow
     template:
+     - name: mwgate-composer
      - name: extension-gate
      - name: mwgate-rake
      - name: extension-jsduck
@@ -3510,6 +3512,7 @@ projects:
     template:
       - name: extension-gate
       - name: mwgate-rake
+      - name: mwgate-composer
       - name: mwgate-npm
       - name: extension-selenium
     test:
@@ -3569,6 +3572,7 @@ projects:
 
   - name: mediawiki/extensions/MwEmbedSupport
     template:
+      - name: mwgate-composer
       - name: extension-gate
       - name: mwgate-npm
 
@@ -5124,6 +5128,7 @@ projects:
   - name: mediawiki/extensions/SandboxLink
     template:
       - name: extension-gate
+      - name: mwgate-composer
       - name: mwgate-npm
 
   - name: mediawiki/extensions/Sarcasm
@@ -6247,6 +6252,7 @@ projects:
 
   - name: mediawiki/extensions/PdfHandler
     template:
+      - name: mwgate-composer
       - name: extension-gate
       - name: mwgate-rake
       - name: mwgate-npm
@@ -6479,6 +6485,7 @@ projects:
 
   - name: mediawiki/extensions/SiteMatrix
     template:
+      - name: mwgate-composer
       - name: extension-gate
       - name: mwgate-npm
 
@@ -6584,11 +6591,13 @@ projects:
 
   - name: mediawiki/extensions/Thanks
     template:
+      - name: mwgate-composer
       - name: extension-gate  # T86687
       - name: mwgate-npm
 
   - name: mediawiki/extensions/TimedMediaHandler
     template:
+      - name: mwgate-composer
       - name: extension-gate
       - name: mwgate-npm
 
@@ -6619,6 +6628,7 @@ projects:
 
   - name: mediawiki/extensions/Translate
     template:
+      - name: mwgate-composer
       - name: extension-gate
       - name: mwgate-rake
       - name: mwgate-npm
@@ -6725,6 +6735,7 @@ projects:
     template:
       - name: extension-gate
       - name: mwgate-rake
+      - name: mwgate-composer
       - name: commit-message-validator
     test:
       - mwext-VisualEditor-npm-node-6-jessie
@@ -6877,11 +6888,14 @@ projects:
   - name: mediawiki/extensions/ZeroBanner
     template:
       - name: extension-gate
+      - name: mw-checks-test
       - name: mwgate-npm
 
   - name: mediawiki/extensions/ZeroPortal
     template:
+      - name: mwgate-composer
       - name: extension-gate
+      - name: mw-checks-test
       - name: mwgate-rake
       - name: mwgate-npm
 
