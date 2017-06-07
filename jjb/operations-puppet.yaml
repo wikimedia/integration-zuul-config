@@ -72,6 +72,48 @@
      - archive-tox-logs
      - castor-save
 
+- job:
+    name: 'operations-puppet-tests-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+         #!/bin/bash -eu
+
+         set -x
+
+         rm -rf log
+         rm -rf .env
+
+         cat <<ZUUL > .env
+         ZUUL_URL=$ZUUL_URL
+         ZUUL_PROJECT=$ZUUL_PROJECT
+         ZUUL_COMMIT=$ZUUL_COMMIT
+         ZUUL_REF=$ZUUL_REF
+         HOME=/var/lib/jenkins
+         ZUUL
+
+         mkdir -p "log"
+
+         docker run \
+             --rm --tty \
+             --env-file .env \
+             --volume /srv/git:/srv/git:ro \
+             --volume "$(pwd)"/log:/var/lib/jenkins/.cache/log \
+             contint/operations-puppet
+    publishers:
+     - xunit:
+         types:
+          - junit:
+             pattern: 'log/junit*.xml'
+             # rspec integration is not merged yet
+             skip-if-no-test-files: true
+             stoponerror: false
+     - archive-log-dir
+
 - project:
     name: 'operations-puppet'
     jobs:
