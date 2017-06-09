@@ -988,6 +988,14 @@ project-templates:
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
+  - name: skin-selenium
+    test:
+      - mwext-mw-selenium-jessie-skin
+    postmerge:
+      - mwext-mw-selenium-jessie-skin
+
+  # Template to run per-patch selenium browser test
+  # Intentionally not in gate because it's super slow
   - name: extension-selenium
     test:
       - mwext-mw-selenium-jessie
@@ -1780,6 +1788,7 @@ projects:
      - name: mwgate-composer
      - name: mwgate-npm
      - name: skin-tests
+     - name: skin-selenium
     postmerge:
      - mwext-jsduck-publish
      - mwext-doxygen-publish
