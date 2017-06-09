@@ -1777,9 +1777,13 @@ projects:
 
   - name: mediawiki/skins/MinervaNeue
     template:
-     - name: mwgate-composer
-     - name: mwgate-npm
-     - name: skin-tests
+      - name: extension-gate
+      - name: mwgate-rake
+      - name: mwgate-npm
+      - name: extension-selenium
+    postmerge:
+      - mwext-jsduck-publish
+      - mwext-doxygen-publish
 
   - name: mediawiki/skins/Modern
     template:

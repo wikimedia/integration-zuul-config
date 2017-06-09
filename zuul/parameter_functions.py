@@ -124,6 +124,7 @@ def set_parameters(item, job, params):
 dependencies = {
     # Skins are listed first to highlight the skin dependencies
     'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
+    'skins/MinervaNeue': ['MobileFrontend'],
 
     # Extensions
     # One can add a skin by using: 'skin/XXXXX'
@@ -178,7 +179,7 @@ dependencies = {
     'Math': ['VisualEditor', 'Wikidata'],
     'MathSearch': ['Math'],
     'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
-    'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp'],
+    'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp', 'skins/MinervaNeue'],
     'NamespacePopups': ['PagePopups'],
     'NavigationTiming': ['EventLogging'],
     'NSFileRepo': ['Lockdown'],
