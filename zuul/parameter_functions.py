@@ -53,6 +53,7 @@ def set_parameters(item, job, params):
         'mwext-qunit',
         'mwext-mw-rspec',
         'mwext-mw-selenium',
+        'mwskin-mw-selenium',
         'mw-testskin',
         'mw-testskin-non-voting',
         'mwext-php70-phan-jessie',
