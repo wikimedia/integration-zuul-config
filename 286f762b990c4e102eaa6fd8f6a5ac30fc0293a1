@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e81134c_dd135304",
+        "filename": "dockerfiles/contint-operations-puppet/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-06-13T15:57:45Z",
+      "side": 1,
+      "message": "We can get rid of cucumber.",
+      "revId": "286f762b990c4e102eaa6fd8f6a5ac30fc0293a1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e81134c_3de13ffc",
+        "filename": "dockerfiles/contint-operations-puppet/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-06-13T15:57:45Z",
+      "side": 1,
+      "message": "Most probably all the lib*-dev can be dropped. Would have to verify though.",
+      "revId": "286f762b990c4e102eaa6fd8f6a5ac30fc0293a1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e81134c_9ddceb4c",
+        "filename": "dockerfiles/contint-operations-puppet/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-06-13T15:57:45Z",
+      "side": 1,
+      "message": "All the python3 packages can be removed.  operations/puppet job solely runs on python2 for now.",
+      "revId": "286f762b990c4e102eaa6fd8f6a5ac30fc0293a1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e81134c_fdebb7d9",
+        "filename": "dockerfiles/contint-operations-puppet/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-06-13T15:57:45Z",
+      "side": 1,
+      "message": "We can go with ruby / ruby-dev",
+      "revId": "286f762b990c4e102eaa6fd8f6a5ac30fc0293a1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e81134c_ddf273cd",
+        "filename": "dockerfiles/contint-operations-puppet/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-06-13T15:57:45Z",
+      "side": 1,
+      "message": "ruby-rspec is not needed. We install the rspec gem via bundler/gem.",
+      "revId": "286f762b990c4e102eaa6fd8f6a5ac30fc0293a1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e81134c_7da587b0",
+        "filename": "dockerfiles/contint-operations-puppet/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-06-13T15:57:45Z",
+      "side": 1,
+      "message": "Can you add a comment that it is the uid/gid of the jenkins-deploy user on labs which is the user being on the host?",
+      "revId": "286f762b990c4e102eaa6fd8f6a5ac30fc0293a1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e81134c_5d9a0368",
+        "filename": "dockerfiles/contint-operations-puppet/run.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-06-13T15:57:45Z",
+      "side": 1,
+      "message": "Since we have set -e, when tox fail, \"wait\" will exit non zero and the script will abort there :(\n\nGotta catch \"wait\" non zero exit.",
+      "revId": "286f762b990c4e102eaa6fd8f6a5ac30fc0293a1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e81134c_9db70bd3",
+        "filename": "dockerfiles/contint-operations-puppet/run.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-06-13T15:57:45Z",
+      "side": 1,
+      "message": "The log saving should be in a bash function and registred as a trap EXIT early on. This way if something bad happen, the log will still be archived.\n\nSomething like:\n\n function capture_logs() {\n   mv foo bar\n }\n trap capture_logs EXIT\n\nShould be done before the actual commands are started.",
+      "revId": "286f762b990c4e102eaa6fd8f6a5ac30fc0293a1",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
