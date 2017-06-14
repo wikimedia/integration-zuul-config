@@ -126,6 +126,7 @@ dependencies = {
     # Skins are listed first to highlight the skin dependencies
     'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
     'skins/MinervaNeue': ['MobileFrontend'],
+    'skins/Empty': ['PhpTags'],
 
     # Extensions
     # One can add a skin by using: 'skin/XXXXX'
