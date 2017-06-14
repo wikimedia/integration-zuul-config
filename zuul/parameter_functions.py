@@ -208,7 +208,7 @@ dependencies = {
     'PropertySuggester': ['Wikibase'],
     'QuickSurveys': ['EventLogging'],
     'QuizGame': ['SocialProfile'],
-    'RelatedArticles': ['BetaFeatures', 'Cards', 'MobileFrontend'],
+    'RelatedArticles': ['BetaFeatures', 'MobileFrontend'],
     'Score': ['VisualEditor'],
     'SemanticImageInput': ['SemanticMediaWiki'],
     'SemanticSifter': ['SemanticMediaWiki'],
@@ -337,7 +337,6 @@ def get_dependencies(key, mapping):
 gatedextensions = [
     'AbuseFilter',
     'Babel',
-    'Cards',
     'CheckUser',
     'CirrusSearch',
     'Cite',
