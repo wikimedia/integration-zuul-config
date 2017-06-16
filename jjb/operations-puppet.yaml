@@ -1,3 +1,14 @@
+- publisher:
+    name: email-qa-alerts
+    publishers:
+     - email-ext:
+         recipients: qa-alerts@lists.wikimedia.org
+         attach-build-log: false
+         first-failure: true
+         aborted: true
+         failure: false
+         fixed: true
+
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
@@ -30,13 +41,7 @@
         docsrc: 'doc'
         docdest: 'puppet'
     publishers:
-     - email-ext:
-         recipients: qa-alerts@lists.wikimedia.org
-         attach-build-log: false
-         first-failure: true
-         aborted: true
-         failure: false
-         fixed: true
+     - email-qa-alerts
 
 - job:
     name: 'operations-puppet-tests-jessie'
@@ -71,6 +76,37 @@
      - archive-log-dir
      - archive-tox-logs
      - castor-save
+
+# Runs after merge when package manager dependencies have been updated
+- job:
+    name: operations-puppet-cache-update-jessie
+    node: ci-jessie-wikimedia
+    concurrent: false
+    triggers:
+     - zuul
+    scm:
+     - git:
+         url: '$ZUUL_URL/$ZUUL_PROJECT'
+         reference-repo: '/srv/git/${ZUUL_PROJECT}.git'
+         branches:
+          - '$ZUUL_COMMIT'
+         refspec: '$ZUUL_REF'
+         submodule:
+             disable: true
+    builders:
+     # no castor-load / empty cache
+     - shell: |
+         tox --notest
+         bundle install --clean
+     - trigger-builds:
+         - project: castor-save
+           block: true
+           current-parameters: True
+           predefined-parameters: |
+               TRIGGERED_JOB_NAME=operations-puppet-tests-jessie
+               TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
+    publishers:
+     - email-qa-alerts
 
 - project:
     name: 'operations-puppet'

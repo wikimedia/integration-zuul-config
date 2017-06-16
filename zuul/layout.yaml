@@ -890,6 +890,12 @@ jobs:
     queue-name: archived-repos
     failure-message: 'This repository has been archived and new patches are not being accepted. If you want to maintain it follow https://www.mediawiki.org/wiki/Gerrit/Project_ownership#Requesting_repository_ownership and then change which jobs get run.'
 
+  - name: ^operations-puppet-cache-update-jessie$
+    branch: ^production$
+    files:
+      - tox.ini$
+      - Gemfile$
+
   - name: tox-jessie
     skip-if:
       # Done on master, not ready on deployment branch T145012
@@ -2209,6 +2215,8 @@ projects:
   - name: operations/puppet
     test-prio:
       - operations-puppet-tests-jessie
+    postmerge:
+      - operations-puppet-cache-update-jessie
 
   - name: operations/puppet/cdh
     template:
