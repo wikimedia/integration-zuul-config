@@ -898,6 +898,9 @@ jobs:
       - tox.ini$
       - Gemfile$
 
+  - name: ^operations-puppet-tests-docker$
+    voting: false
+
   - name: tox-jessie
     skip-if:
       # Done on master, not ready on deployment branch T145012
@@ -2217,6 +2220,7 @@ projects:
   - name: operations/puppet
     test-prio:
       - operations-puppet-tests-jessie
+      - operations-puppet-tests-docker
     postmerge:
       - operations-puppet-cache-update-jessie
 
