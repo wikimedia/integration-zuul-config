@@ -143,7 +143,10 @@
             --volume "$(pwd)"/log:/var/lib/jenkins/.cache/log \
             ci-staging-docker-registry01.wmflabs.org/contint/operations-puppet
     wrappers:
-     timeout: 1 # minute
+     - timeout:
+         timeout: 1 # minute
+     - timestamps
+     - ansicolor
     publishers:
      - xunit:
          types:
