@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eux
+set -euxo pipefail
 
 TEMP_DIR=$(mktemp -d)
 LOG_DIR="$HOME/log"
