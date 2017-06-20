@@ -140,8 +140,8 @@
             --rm --tty \
             --env-file .env \
             --volume /srv/git:/srv/git:ro \
-            --volume "$(pwd)"/log:/var/lib/jenkins/.cache/log \
-            ci-staging-docker-registry01.wmflabs.org/contint/operations-puppet
+            --volume "$(pwd)"/log:/var/lib/jenkins/log \
+            ci-staging-docker-registry01.wmflabs.org/contint/operations-puppet:v0.0.2
     wrappers:
      timeout: 1 # minute
     publishers:

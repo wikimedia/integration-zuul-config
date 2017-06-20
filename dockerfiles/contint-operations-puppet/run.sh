@@ -3,7 +3,7 @@
 set -eux
 
 TEMP_DIR=$(mktemp -d)
-LOG_DIR="$HOME/.cache/log"
+LOG_DIR="$HOME/log"
 
 capture_logs() {
     # Save logs
