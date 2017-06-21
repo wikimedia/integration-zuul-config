@@ -176,7 +176,7 @@ dependencies = {
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
     'LightweightRDFa': ['WikiEditor'],
-    'LoginNotify': ['Echo'],
+    'LoginNotify': ['CentralAuth', 'CheckUser', 'Echo'],
     'MassMessage': ['LiquidThreads'],
     'Math': ['VisualEditor', 'Wikidata'],
     'MathSearch': ['Math'],
