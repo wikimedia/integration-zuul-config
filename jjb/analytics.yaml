@@ -23,8 +23,8 @@
           name: 'GIT_COMMIT'
           default: '{release-branch}'
 
-    jdk: 'Ubuntu - OpenJdk 7'
-    node: contintLabsSlave && UbuntuTrusty
+    jdk: 'Ubuntu - OpenJdk 8'
+    node: contintLabsSlave && DebianJessie
     scm:
       - git:
           url: '$GIT_URL/$GIT_PROJECT'
@@ -78,8 +78,8 @@
       - string:
           name: 'RELEASE_VERSION'
 
-    jdk: 'Ubuntu - OpenJdk 7'
-    node: contintLabsSlave && UbuntuTrusty
+    jdk: 'Ubuntu - OpenJdk 8'
+    node: contintLabsSlave && DebianJessie
     scm:
       - git:
           url: '$GIT_URL/$GIT_PROJECT'
@@ -129,7 +129,7 @@
 
 - job:
     name: 'analytics-wikistats'
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul-shallow-clone
     triggers:
         - zuul
