@@ -33,7 +33,6 @@ if os_version('debian >= jessie') {
     }
 }
 
-include contint::packages::javascript
 class { '::apt':
     use_proxy => false,
 }
@@ -71,20 +70,6 @@ include ::imagemagick::install
 # From mediawiki::packages (which we do not want because of texlive)
 require_package('djvulibre-bin')
 
-include contint::packages::ruby
-
-# Install from gem
-if os_version('debian >= jessie') {
-    package { 'jsduck':
-        ensure   => present,
-        provider => 'gem',
-        require  => [
-            Class['::contint::packages::ruby'],
-            Package['build-essential'],
-        ],
-    }
-}
-
 # Overrides
 class standard {
 
@@ -107,11 +92,24 @@ class apache2_allow_execution {
 if os_version('debian >= jessie') {
     include contint::packages::doxygen
     include contint::packages::java
+    include contint::packages::javascript
     include contint::packages::python
+    include contint::packages::ruby
+
 
     # Qunit/Selenium related
     include contint::browsers
 
+
+    # Install from gem
+    package { 'jsduck':
+        ensure   => present,
+        provider => 'gem',
+        require  => [
+            Class['::contint::packages::ruby'],
+            Package['build-essential'],
+        ],
+    }
 
     # FIXME: hack, our manifests no more ship libapache2-mod-php5
     # See T144802
