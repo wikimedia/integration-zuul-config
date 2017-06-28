@@ -22,7 +22,6 @@
      - lint-whitespaces-in:
         dir: '$WORKSPACE'
 
-# ALWAYS pair with 'global-teardown'
 - builder:
     name: npm-install
     builders:
@@ -33,7 +32,6 @@
         rm -rf node_modules
         npm install
 
-# ALWAYS pair with 'global-teardown'
 - builder:
     name: npm
     builders:
@@ -51,8 +49,6 @@
 #
 # MUST run npm-setup.sh before this (e.g. via npm-install macro)
 #
-# ALWAYS pair with 'global-teardown'
-#
 # Example:
 # builders:
 #  - npm-run:
@@ -67,8 +63,6 @@
 
 # Variant that can use a deploy repo for the dependencies.
 # See macro setup-npm-oid below.
-#
-# ALWAYS pair with 'global-teardown'
 - builder:
     name: npm-oid
     builders:
@@ -88,22 +82,6 @@
          cd "$NPM_SET_PATH"  # for deploy: ./src
          npm test
 
-# ALWAYS pair with 'global-teardown'
-- builder:
-    name: global-setup
-    builders:
-     - shell: "/srv/deployment/integration/slave-scripts/bin/global-setup.sh"
-
-- publisher:
-    name: global-teardown
-    publishers:
-     - postbuildscript:
-         builders:
-          - shell: "/srv/deployment/integration/slave-scripts/bin/global-teardown.sh"
-         # Postbuild options are confusing, setting both to false ensures the script always runs.
-         onsuccess: False
-         onfailure: False
-
 # cxserver and parsoid services come with two repositories:
 # eg
 # mediawiki/services/cxserver: the actual source code
@@ -117,8 +95,6 @@
 #   . npm-oid.env
 #
 # Note we run `npm install` so we better have npm installed (ie on labs)
-#
-# ALWAYS pair with 'global-teardown'
 - builder:
     name: setup-npm-oid
     builders:
@@ -306,7 +282,6 @@
 # qunit
 #
 # ALWAYS pair with 'localhost-cleanup'
-# ALWAYS pair with 'global-teardown' (for npm-setup)
 - builder:
     name: qunit-karma
     builders:
