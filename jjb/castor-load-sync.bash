@@ -1,7 +1,6 @@
 # castor-load
 # Load cache from central repository
-
-. castor-set-namespace.env
+set -u
 
 echo "Syncing..."
 rsync \

@@ -1,5 +1,4 @@
 set -eu +x
-. castor-set-namespace.env
 
 ssh_config=($TRIGGERED_SSH_CONNECTION)
 REMOTE_INSTANCE="${ssh_config[2]}"
