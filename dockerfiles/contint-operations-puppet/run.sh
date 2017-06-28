@@ -4,6 +4,7 @@ set -euxo pipefail
 
 TEMP_DIR=$(mktemp -d)
 LOG_DIR="$HOME/log"
+CACHE_DIR="$HOME/.cache"
 
 capture_logs() {
     # Save logs
@@ -25,6 +26,11 @@ git fetch --quiet origin $ZUUL_REF
 git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
+[ -d /cache/.cache ] && {
+    mkdir -p "$CACHE_DIR"
+    cp -R /cache/.cache/* "${CACHE_DIR}/"
+}
+
 # Run tox tests
 {
     set -o pipefail
@@ -35,7 +41,7 @@ PID_ONE=$!
 
 # Run rake tests
 {
-    bundle install --path "${HOME}/.gems" --clean
+    bundle install --clean
     bundle exec rake test | tee "${LOG_DIR}/rake.log"
 } &
 PID_TWO=$!
