@@ -39,13 +39,17 @@
     node: BetaClusterBastion
 
     builders:
-      - global-setup
       - shell: |
-          . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
+          # To clear out temporary directories
+          function global_teardown() {{
+              /srv/deployment/integration/slave-scripts/bin/global-teardown.sh
+          }}
+          . /srv/deployment/integration/slave-scripts/bin/global-setup.sh
+          trap global_teardown EXIT
+
           /usr/local/bin/wmf-beta-update-databases.py
 
     publishers:
-      - global-teardown
       - beta-irc
 
     wrappers:
