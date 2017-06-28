@@ -122,13 +122,10 @@
      - timed: 'H/10 * * * *'
 
     builders:
-      - global-setup
       - shell: |
-          . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
           /usr/local/bin/wmf-beta-autoupdate.py --verbose
 
     publishers:
-      - global-teardown
       - beta-irc
       - email-ext:
           recipients: qa-alerts@lists.wikimedia.org betacluster-alerts@lists.wikimedia.org
