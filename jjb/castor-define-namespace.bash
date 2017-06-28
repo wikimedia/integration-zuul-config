@@ -15,8 +15,7 @@ fi
 # Prefer TRIGGERED_JOB_NAME when it is set
 NS_JOB=${TRIGGERED_JOB_NAME:-$JOB_NAME}
 
-CASTOR_NAMESPACE="${NS_PROJECT}/${NS_BRANCH}/${NS_JOB}"
-
 # Ex: mediawiki-core/REL1_26/tox-jessie
-echo "declare -x CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\"" > castor-set-namespace.env
+CASTOR_NAMESPACE="${NS_PROJECT}/${NS_BRANCH}/${NS_JOB}"
+export CASTOR_NAMESPACE
 echo "Defined: CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\""
