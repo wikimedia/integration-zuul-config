@@ -34,29 +34,8 @@
 - builder:
     name: castor-define-namespace
     builders:
-        - shell: |
-            set -eu +x
-            # castor-env
-            # Forge castor environement
-
-            # Replace slashes with dashes:
-            NS_PROJECT=${ZUUL_PROJECT////-}
-            NS_BRANCH=${ZUUL_BRANCH////-}
-
-            # Pill up MediaWiki extensions and skins caches together
-            if [[ "$ZUUL_PROJECT" =~ ^mediawiki/(extensions|skins)/ ]]; then
-                NS_PROJECT="castor-mw-ext-and-skins"
-            fi
-
-            # Ex: mediawiki-core/REL1_26/tox-jessie
-            # Prefer TRIGGERED_JOB_NAME when it is set
-            NS_JOB=${TRIGGERED_JOB_NAME:-$JOB_NAME}
-
-            CASTOR_NAMESPACE="${NS_PROJECT}/${NS_BRANCH}/${NS_JOB}"
-
-            # Ex: mediawiki-core/REL1_26/tox-jessie
-            echo "declare -x CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\"" > castor-set-namespace.env
-            echo "Defined: CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\""
+        - shell:
+            !include-raw: castor-define-namespace.bash
 
 # Entry point to load cache from central cache
 #
@@ -69,20 +48,9 @@
     name: castor-load
     builders:
         - castor-define-namespace
-        - shell: |
-            # castor-load
-            # Load cache from central repository
+        - shell:
+            !include-raw: castor-load-sync.bash
 
-            . castor-set-namespace.env
-
-            echo "Syncing..."
-            rsync \
-              --archive \
-              --compress \
-              --contimeout 3 \
-              rsync://castor.integration.eqiad.wmflabs:/caches/${CASTOR_NAMESPACE}/ $HOME \
-              || :
-            echo -e "\nDone"
 
 # Job triggered on the central repository instance
 #
@@ -120,39 +88,9 @@
     builders:
         # This is horrible. Will need a better system that just prevent the job
         # from being triggered by the upstream job.
-        - shell: |
-            # Note: described in the parameters: section above
-            if [ "$ZUUL_PIPELINE" != 'gate-and-submit' -a "$ZUUL_PIPELINE" != 'postmerge' ]; then
-                echo "Only saving cache for gate-and-submit or postmerge pipelines"
-                exit 1
-            fi
-        - castor-define-namespace
-        - shell: |
-            set -eu +x
-            . castor-set-namespace.env
-
-            ssh_config=($TRIGGERED_SSH_CONNECTION)
-            REMOTE_INSTANCE="${ssh_config[2]}"
-
-            # Destination in the central cache
-            DEST="/srv/jenkins-workspace/caches/${CASTOR_NAMESPACE}"
-
-            echo "Ensure cache directories exist on remote $REMOTE_INSTANCE"
-            ssh -q -a -T \
-              -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
-              jenkins@"${REMOTE_INSTANCE}" \
-              'mkdir -v -p .cache/composer .composer/cache .m2/repository .cache/pip .npm workspace/vendor/bundle'
-
-            echo "Creating directory holding cache:"
-            mkdir -v -p "${DEST}"
-
-            echo -e "Syncing cache\nFrom.. ${REMOTE_INSTANCE}\nTo.... ${DEST}"
-            rsync \
-              --archive \
-              --compress \
-              --rsh="ssh -a -T  -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
-              --delete-delay \
-              --relative \
-              jenkins@"${REMOTE_INSTANCE}":.cache/composer :.composer/cache :.m2/repository :.cache/pip :.npm :workspace/vendor/bundle "${DEST}/"
-
-            echo -e "\nDone"
+        - shell:
+            !include-raw: castor-save-filter.bash
+        - shell:
+            !include-raw: castor-define-namespace.bash
+        - shell:
+            !include-raw: castor-save-sync.bash
