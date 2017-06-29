@@ -1,0 +1,27 @@
+- job:
+    name: ortiz-test-jessie
+    node: integration-r-lang-01
+    triggers:
+        - zuul
+    scm:
+        - git:
+            url: '$ZUUL_URL/$ZUUL_PROJECT'
+            branches:
+                - '$ZUUL_COMMIT'
+            refspec: '$ZUUL_REF'
+            basedir: src
+            clean:
+                after: true
+            wipe-workspace: true
+    builders:
+        - shell: |
+            R_LIBS_USER="$(pwd)/Rpackages"
+            export R_LIBS_USER
+            mkdir -p "$R_LIBS_USER"
+
+            R --vanilla --quiet CMD build --no-resave-data --no-manual src
+            _R_CHECK_FORCE_SUGGESTS_=0 R --vanilla --quiet CMD check --timings --no-manual *.tar.gz
+            # <blows up because suggested testthat is missing>
+
+            # Lame attempt to install suggestions
+            #R --vanilla --quiet -e 'install.packages("src", repos="http://cran.us.r-project.org", type="source", dependencies=TRUE)'
