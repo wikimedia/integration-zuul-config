@@ -372,12 +372,10 @@ class TestZuulScheduler(unittest.TestCase):
         gs_manager = self.getPipeline('gate-and-submit').manager
 
         change = zuul.model.Change('mediawiki/core')
-        change.branch = 'wmf/1.29.0-wmf.20'
 
         event = zuul.model.TriggerEvent()
         event.type = 'comment-added'
         event.comment = 'Patch Set 1: Code-Review+2'
-        event.branch = change.branch
         event.approvals = [{
             'description': 'Code-Review', 'type': 'CRVW', 'value': '2'}]
 
