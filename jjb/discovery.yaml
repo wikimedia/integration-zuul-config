@@ -1,0 +1,15 @@
+- job:
+    name: ortiz-test-jessie
+    defaults: use-remoteonly-zuul
+    node: integration-r-lang-01
+    triggers:
+        - zuul
+    builders:
+        - shell: |
+            R_LIBS_USER="$(pwd)/Rpackages"
+            export R_LIBS_USER
+            mkdir -p "$R_LIBS_USER"
+
+            R --no-site-file --no-environ --no-save --no-restore --quiet CMD build --no-resave-data --no-manual .
+            R --no-site-file --no-environ --no-save --no-restore --quiet -e 'install.packages(".", repos="http://cran.us.r-project.org", type="source", dependencies=TRUE)'
+            R --no-site-file --no-environ --no-save --no-restore --quiet CMD check --timings --no-manual .
