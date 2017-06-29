@@ -904,6 +904,11 @@ jobs:
   - name: ^operations-puppet-tests-docker$
     voting: false
 
+  # WIP T153856
+  - name: ^ortiz-test-jessie$
+    voting: false
+    # FIXME remove noop gate-and-submit when making it voting
+
   - name: tox-jessie
     skip-if:
       # Done on master, not ready on deployment branch T145012
@@ -2352,6 +2357,12 @@ projects:
     gate-and-submit:
       - translatewiki-rake-jessie
       - composer-hhvm-jessie
+
+  - name: wikimedia/discovery/ortiz
+    test:
+      - ortiz-test-jessie
+    gate-and-submit:
+      - noop
 
   - name: wikimedia/discovery/relevanceForge
     template:
