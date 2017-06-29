@@ -21,6 +21,30 @@
     triggers:
      - zuul
 
+- job: &php-compile-php70
+    name: 'php-compile-php70'
+    node: contintLabsSlave && DebianJessie
+    defaults: use-remoteonly-zuul
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        /usr/bin/phpize7.0 --version
+        /usr/bin/phpize7.0
+        ./configure
+        make
+        REPORT_EXIT_STATUS=1 make test
+    publishers:
+     - archive-test-logs
+
+- job:
+    !!merge : *php-compile-php70
+    name: 'php-compile-php70-jessie'
+    node: ci-jessie-wikimedia
+    triggers:
+     - zuul
+
+
 - job: &php-compile-hhvm
     name: 'php-compile-hhvm'
     node: contintLabsSlave && DebianJessie
