@@ -72,17 +72,18 @@
      - REL1_27
      - REL1_28
     jobs:
-     - mwext-donationinterfacecore-{branch}-testextension-zend55:
+     - mwext-donationinterfacecore-{branch}-zend55-trusty:
 
 - job-template:
-    name: 'mwext-donationinterfacecore-{branch}-testextension-zend55'
-    node: 'contintLabsSlave && phpflavor-php55'
+    name: 'mwext-donationinterfacecore-{branch}-zend55-trusty'
+    node: ci-trusty-wikimedia
     concurrent: true
     triggers:
      - zuul
     builders:
      - assert-phpflavor:
          phpflavor: 'php55'
+     - castor-load
      - prepare-mediawiki-branch:
          branch: '{branch}'
      - mw-fetch-composer-dev
@@ -90,7 +91,7 @@
     publishers:
      - junit:
         results: 'log/junit*.xml'
-     - mw-teardown-mysql
+     - castor-save
      - archive-log-dir
 
 # Parameter:
