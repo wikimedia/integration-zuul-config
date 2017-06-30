@@ -249,7 +249,6 @@
 
 # Expose the current MediaWiki install path in http://localhost:9412
 #
-# ALWAYS pair with 'localhost-cleanup'
 - builder:
     name: prepare-localhost
     builders:
@@ -281,7 +280,6 @@
 
 # qunit
 #
-# ALWAYS pair with 'localhost-cleanup'
 - builder:
     name: qunit-karma
     builders:
@@ -293,17 +291,6 @@
         rm -rf node_modules
         npm install
         ./node_modules/.bin/grunt karma:main
-
-- publisher:
-    name: localhost-cleanup
-    publishers:
-     - postbuildscript:
-         builders:
-           - shell: |
-               rm -f "/srv/localhost-worker/$BUILD_TAG"
-         # Postbuild options are confusing, setting both to false ensures the script always runs.
-         onsuccess: False
-         onfailure: False
 
 # mw-selenium
 #
