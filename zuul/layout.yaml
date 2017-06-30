@@ -710,10 +710,6 @@ jobs:
       - '^puppet/.*'
       - '(^Rakefile$|^Gemfile$)'
 
-  # Experiment for analytics/kraken repository
-  - name: analytics-kraken-maven
-    voting: false
-
   # Experimental building of Debian packages
   # based on jenkins-debian-glue
   - name: ^debian-glue(-non-voting)?$
@@ -1413,10 +1409,6 @@ projects:
   - name: analytics/quarry/web
     template:
       - name: tox-jessie
-
-  - name: analytics/kraken
-    test:
-      - analytics-kraken-maven
 
   - name: analytics/limn-mobile-data
     template:

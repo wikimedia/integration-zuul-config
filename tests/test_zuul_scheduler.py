@@ -291,7 +291,6 @@ class TestZuulScheduler(unittest.TestCase):
                 or project.startswith('operations/')
                 # Weird edge cases:
                 or project in [
-                    'analytics/kraken',
                     'integration/zuul',
                     'mediawiki/debian',
                     ]
