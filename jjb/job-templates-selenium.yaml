@@ -49,7 +49,9 @@
       - timed: "@daily"
 
     builders:
-      - shell: mkdir -p "$WORKSPACE/log/junit"
+      - shell: |
+          rm -fR log
+          mkdir -p "$WORKSPACE/log/junit"
       - shell: |
           # Attempt to figure out MediaWiki branch being used and fetch it out
           # if the extension has the same branch
@@ -116,18 +118,6 @@
 
       - archive:
           artifacts: 'log/*.log, log/junit/*.xml, log/report.html, log/*.png'
-
-      - postbuildscript:
-          builders:
-           - shell: |
-               set +e
-               set +x
-               echo "Removing potential png screenshots under /log/"
-               rm -v -f log/*.png || :
-               echo "Done"
-          # Postbuild options are confusing, setting both to false ensures the script always runs.
-          onsuccess: False
-          onfailure: False
 
     wrappers:
       - ansicolor
