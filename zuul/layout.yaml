@@ -751,12 +751,12 @@ jobs:
   - name: ^mwext-testextension-hhvm
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
-  - name: ^mwext-donationinterfacecore-REL1_(27|28)-testextension-zend55$
+  - name: ^mwext-donationinterfacecore-REL1_(27|28)-zend55-trusty$
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
   # FIXME when made voting, add it to gate-and-submit
-  - name: mwext-donationinterfacecore-REL1_28-testextension-zend55
+  - name: mwext-donationinterfacecore-REL1_28-zend55-trusty
     voting: false
 
   # Jobs testing multiple extensions together
@@ -2964,13 +2964,13 @@ projects:
       - name: extension-unittests-non-voting
       - name: mwgate-npm
     test:
-      - mwext-donationinterfacecore-REL1_27-testextension-zend55
+      - mwext-donationinterfacecore-REL1_27-zend55-trusty
       - mwgate-php55lint
     gate-and-submit:
-      - mwext-donationinterfacecore-REL1_27-testextension-zend55
+      - mwext-donationinterfacecore-REL1_27-zend55-trusty
       - mwgate-php55lint
     experimental:
-      - mwext-donationinterfacecore-REL1_28-testextension-zend55
+      - mwext-donationinterfacecore-REL1_28-zend55-trusty
 
   - name: mediawiki/extensions/DoubleWiki
     template:
