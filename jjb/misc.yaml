@@ -284,6 +284,61 @@
       - workspace-cleanup
 
 - job:
+    name: 'performance-webpagetest-asia'
+    node: WebPerformance
+    defaults: global
+    properties:
+     - build-discarder:
+         days-to-keep: 60
+    concurrent: false
+    scm:
+      - git:
+          url: 'https://gerrit.wikimedia.org/r/p/performance/WebPageTest.git'
+          branches:
+            - master
+          wipe-workspace: true
+    triggers:
+     - timed: 'H * * * *'
+    wrappers:
+      - timeout:
+          timeout: 60
+          abort: true
+      - timestamps
+      - ansicolor
+      # Values from Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/webpagetest/
+      - credentials-binding:
+          - text:
+              credential-id: 'd5ee743e-b2e4-43eb-bc16-0bf11bcdec43'
+              variable: WMF_WPT_KEY
+          - text:
+              credential-id: 'e0131e1d-c45a-468c-b163-439769f21a20'
+              variable: WPT_ORG_WPT_KEY
+          - text:
+              credential-id: 'f9a95f38-76cc-456d-bc8c-2cf126c604c3'
+              variable: WPT_USER
+          - text:
+              credential-id: '867612a5-40cd-4789-9cda-ebfc7da1ef33'
+              variable: WPT_USER_PASSWORD
+    builders:
+     - shell: |
+        #!/bin/bash
+        declare -i RESULT=0
+        # These tests runs on our own WebPageTest instance
+        export STATSV_ENDPOINT="https://www.wikimedia.org/beacon/statsv"
+        export WPT_RUNS="5"
+        export WPT_MOBILE_RUNS="5"
+        npm install --production
+        ./bin/index.js --batch ./scripts/batch/asia.txt
+        # Keep it like this if we wanna have split the
+        # file into two or more
+        RESULT+=$?
+        exit $RESULT
+    publishers:
+      - webpagetest-irc
+      - workspace-cleanup
+
+- job:
     name: 'performance-webpagetest-wpt-org'
     node: WebPerformance
     defaults: global
