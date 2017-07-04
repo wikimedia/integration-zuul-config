@@ -29,6 +29,7 @@
     builders:
       - shell: |
           cd $WORKSPACE/src/wikimedia/fundraising/crm
+          export PATH=$PATH:$WORKSPACE/src/wikimedia/fundraising/civicrm-buildkit/bin
           $WORKSPACE/src/wikimedia/fundraising/crm/vendor/bin/phpunit \
             --log-junit $WORKSPACE/log/junit-phpunit.xml
 
