@@ -753,12 +753,13 @@ jobs:
   - name: ^mwext-testextension-hhvm
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
-  - name: ^mwext-donationinterfacecore-REL1_(27|28)-zend55-trusty$
+  - name: ^mwext-donationinterfacecore-REL1_(27|28)-zend56-jessie$
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
   # FIXME when made voting, add it to gate-and-submit
-  - name: mwext-donationinterfacecore-REL1_28-zend55-trusty
+  # also FIXME: do we actually want to keep testing on 1.28?
+  - name: ^mwext-donationinterfacecore-REL1_28-zend56-jessie$
     voting: false
 
   # Jobs testing multiple extensions together
@@ -2389,36 +2390,36 @@ projects:
 
   - name: wikimedia/fundraising/crm
     test:
-      - wikimedia-fundraising-crm-composer-php55-trusty
+      - wikimedia-fundraising-crm-composer-php56-jessie
       - wikimedia-fundraising-crm-npm-node-6-jessie
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - wikimedia-fundraising-crm-composer-php55-trusty
+      - wikimedia-fundraising-crm-composer-php56-jessie
       - wikimedia-fundraising-crm-npm-node-6-jessie
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/civicrm
     test:
-      - php55lint
+      - php56lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - php55lint
+      - php56lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/drupal
     test:
-      - php55lint
+      - php56lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - php55lint
+      - php56lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/crm/vendor
     test:
-      - php55lint
+      - php56lint
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - php55lint
+      - php56lint
       - wikimedia-fundraising-civicrm
 
   - name: wikimedia/fundraising/php-queue
@@ -2972,13 +2973,13 @@ projects:
       - name: extension-unittests-non-voting
       - name: mwgate-npm
     test:
-      - mwext-donationinterfacecore-REL1_27-zend55-trusty
-      - mwgate-php55lint
+      - mwext-donationinterfacecore-REL1_27-zend56-jessie
+      - mwgate-php56lint
     gate-and-submit:
-      - mwext-donationinterfacecore-REL1_27-zend55-trusty
-      - mwgate-php55lint
+      - mwext-donationinterfacecore-REL1_27-zend56-jessie
+      - mwgate-php56lint
     experimental:
-      - mwext-donationinterfacecore-REL1_28-zend55-trusty
+      - mwext-donationinterfacecore-REL1_28-zend56-jessie
 
   - name: mediawiki/extensions/DoubleWiki
     template:
