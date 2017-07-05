@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8e742343_f2b895e4",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2794
+      },
+      "writtenOn": "2017-07-05T19:07:21Z",
+      "side": 1,
+      "message": "Maybe we can use \"/usr/lib/R/site-library\" or \"/usr/local/lib/R/site-library\"? I think installing r-base on Linux creates those library locations. Is the idea to have a shared, persistent R library on this node or to redownload and reinstall all the dependencies every time?\n\nAlternatively, `R -e \"dir.create(Sys.getenv(\u0027R_LIBS_USER\u0027), recursive\u003dTRUE)\"` would create an appropriate library folder within user homedir (refer to https://stat.ethz.ch/R-manual/R-devel/library/base/html/libPaths.html to see what I mean)",
+      "revId": "e32961227330eaff04851d636334c48fced4ded3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e742343_32029dbf",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 2794
+      },
+      "writtenOn": "2017-07-05T19:07:21Z",
+      "side": 1,
+      "message": "R --vanilla --quiet CMD build --no-resave-data --no-manual ortiz\n\nand should be run outside the ortiz directory",
+      "range": {
+        "startLine": 13,
+        "startChar": 12,
+        "endLine": 13,
+        "endChar": 72
+      },
+      "revId": "e32961227330eaff04851d636334c48fced4ded3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e742343_d2f1d9db",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2794
+      },
+      "writtenOn": "2017-07-05T19:07:21Z",
+      "side": 1,
+      "message": "We should not install the package prior to checking it first. The DESCRIPTION file in the directory has the dependencies list. If I write a script that installs those, perhaps we can use that and reuse it with other repos?\n\nIf I recall correctly, the prior `R CMD build` step should complain if the dependencies aren\u0027t installed. And then `R CMD check` might check if the built package can be installed.",
+      "revId": "e32961227330eaff04851d636334c48fced4ded3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e742343_12268163",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 2794
+      },
+      "writtenOn": "2017-07-05T19:07:21Z",
+      "side": 1,
+      "message": "This should be \"path/to/ortiz_{version}.tar.gz\" (again, working outside the source directory) so if we remove all *.tar.gz, specifying $(ls | grep \".tar.gz\") (as the package to check after running `R CMD build`) should work",
+      "range": {
+        "startLine": 15,
+        "startChar": 64,
+        "endLine": 15,
+        "endChar": 65
+      },
+      "revId": "e32961227330eaff04851d636334c48fced4ded3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
