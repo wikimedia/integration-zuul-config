@@ -266,7 +266,7 @@
       - 'mediawiki-core-npm-node-6-jessie'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
-      - '{name}-php55lint'
+      - '{name}-{phpflavor}lint'
       - 'mediawiki-phpunit-{phpflavor}-{image}': &phpflavor_images
           phpflavor:
               - php55:
@@ -287,11 +287,14 @@
 # gate-and-submit. See T107529.
 - project:
     name: 'mwgate'
+    phpflavor:
+        - 'php55'
+        - 'php56'
     jobs:
         - '{name}-composer-{phpflavor}-{image}': *phpflavor_images
         - '{name}-composer-validate'
         - '{name}-jsduck'
-        - '{name}-php55lint'
+        - '{name}-{phpflavor}lint'
         - '{name}-rake-jessie'
         - '{name}-tox-jessie'
         - '{name}-npm-node-6-jessie'
