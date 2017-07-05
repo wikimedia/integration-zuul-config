@@ -147,7 +147,7 @@
      - archive-log-allow-empty
      - castor-save
 
-- job:
+- job: &phplint
     name: 'php55lint'
     node: contintLabsSlave && phpflavor-php55
     defaults: use-remote-zuul-shallow-clone
@@ -157,7 +157,12 @@
     builders:
      - phplint
 
-- job-template:
+- job:
+    <<: *phplint
+    name: 'php56lint'
+    node: contintLabsSlave && phpflavor-php56
+
+- job-template: &name_phplint
     name: '{name}-php55lint'
     node: contintLabsSlave && phpflavor-php55
     defaults: use-remote-zuul-no-submodules
@@ -169,6 +174,11 @@
      - zuul
     builders:
      - phplint
+
+- job-template:
+    <<: *name_phplint
+    name: '{name}-php56lint'
+    node: contintLabsSlave && phpflavor-php56
 
 # Verify whether there is any leading tabs in files matching 'fileselector'.
 #
