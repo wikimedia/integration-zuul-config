@@ -4,8 +4,8 @@
       - '{name}-npm-node-6-jessie'
       - '{name}-composer-{phpflavor}-{image}':
           phpflavor:
-              - php55:
-                  image: trusty
+              - php56:
+                  image: jessie
 
 - builder:
     name: fundraising-crm-install
@@ -68,22 +68,22 @@
       - archive-log-dir
 
 - project:
-    name: donationinterface-fundraising-branches-php55
+    name: donationinterface-fundraising-branches-php56
     branch:
      - REL1_27
      - REL1_28
     jobs:
-     - mwext-donationinterfacecore-{branch}-zend55-trusty:
+     - mwext-donationinterfacecore-{branch}-zend56-jessie:
 
 - job-template:
-    name: 'mwext-donationinterfacecore-{branch}-zend55-trusty'
-    node: ci-trusty-wikimedia
+    name: 'mwext-donationinterfacecore-{branch}-zend56-jessie'
+    node: ci-jessie-wikimedia
     concurrent: true
     triggers:
      - zuul
     builders:
      - assert-phpflavor:
-         phpflavor: 'php55'
+         phpflavor: 'php56'
      - castor-load
      - prepare-mediawiki-branch:
          branch: '{branch}'
