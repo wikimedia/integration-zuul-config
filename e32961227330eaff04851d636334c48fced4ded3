@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8e742343_d226b910",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-07-05T20:27:29Z",
+      "side": 1,
+      "message": "On Debian:\n\n/usr/lib/R/site-library is for R packages installed via Debian packages (eg: apt-get install r-cran-r6). So that should not be messed up.\n\n/usr/local/lib/R/site-library is for packages installed via R -e \u0027install.packages()\u0027 ie packages local to the machine, outside of Debian packages. That requires root access and the Jenkins user does not have sudo (on purpose).\n\nIn most CI jobs, we use the language package manager to download/install the dependencies which usually end up in the current directory.\n\nThere is some magic happening to eventually save the downloaded/installed material when a change is merged. That is saved in a central cache which can then be used to prepopulate the workspace when a new build start.\n\nI havent found yet where R  install.packages saves the dependencies tarball but I will find out :]\n\nSo yeah essentially: build fresh on each build and latest version from CRAN.\n\n\n\n\n\u003e `R -e \"dir.create(Sys.getenv(\u0027R_LIBS_USER\u0027), recursive\u003dTRUE)\"`\n\nYes that will work. Then mkdir -p works as well :]",
+      "parentUuid": "8e742343_f2b895e4",
+      "revId": "e32961227330eaff04851d636334c48fced4ded3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8e742343_32029dbf",
         "filename": "jjb/discovery.yaml",
         "patchSetId": 2
@@ -30,6 +48,30 @@
       "writtenOn": "2017-07-05T19:07:21Z",
       "side": 1,
       "message": "R --vanilla --quiet CMD build --no-resave-data --no-manual ortiz\n\nand should be run outside the ortiz directory",
+      "range": {
+        "startLine": 13,
+        "startChar": 12,
+        "endLine": 13,
+        "endChar": 72
+      },
+      "revId": "e32961227330eaff04851d636334c48fced4ded3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e742343_72e2659e",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-07-05T20:27:29Z",
+      "side": 1,
+      "message": "Ah nice! I am changing the job to clone the project to /src/ and build that.",
+      "parentUuid": "8e742343_32029dbf",
       "range": {
         "startLine": 13,
         "startChar": 12,
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "8e742343_d4d4664d",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-07-05T20:27:29Z",
+      "side": 1,
+      "message": "`R CMD build` works fine and seems to just generate the tarball.\n\n`R CMD check` then complains about missing Rcpp and testthat.\n\nWhat I am trying to achieve with that install.packages() command is to download/install all the dependencies so that checks works.\n\nI tried with devtools but apparently it fails to recursively install dependencies:\n\n R --vanilla --quiet -e \u0027install.packages(\"devtools\", repos\u003d\"http://cran.us.r-project.org\")\u0027\n R --vanilla --quiet -e \u0027devtools::install_deps(\"src\", repos\u003d\"http://cran.us.r-project.org\", dependencies \u003d TRUE )\u0027\n\nIt tries to install \"testthat\" but fails processing its dependencies:\n\n Installing testthat\n ERROR: dependencies ‘crayon’, ‘praise’, ‘magrittr’ are not available for package ‘testthat’\n\n\nIt is doomed :]",
+      "parentUuid": "8e742343_d2f1d9db",
+      "revId": "e32961227330eaff04851d636334c48fced4ded3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8e742343_12268163",
         "filename": "jjb/discovery.yaml",
         "patchSetId": 2
@@ -70,6 +130,30 @@
       "writtenOn": "2017-07-05T19:07:21Z",
       "side": 1,
       "message": "This should be \"path/to/ortiz_{version}.tar.gz\" (again, working outside the source directory) so if we remove all *.tar.gz, specifying $(ls | grep \".tar.gz\") (as the package to check after running `R CMD build`) should work",
+      "range": {
+        "startLine": 15,
+        "startChar": 64,
+        "endLine": 15,
+        "endChar": 65
+      },
+      "revId": "e32961227330eaff04851d636334c48fced4ded3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e742343_f40402ca",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-07-05T20:27:29Z",
+      "side": 1,
+      "message": "The thing is that the check requires testthat and \"build\" does not install or add it :(\n\nSurely we could blindly install Rcpp and testthat but I would rather avoid hardcoding that in the Jenkins job.",
+      "parentUuid": "8e742343_12268163",
       "range": {
         "startLine": 15,
         "startChar": 64,
