@@ -101,12 +101,21 @@
           bundle exec rake selenium
 
     publishers:
-      - junit:
-          results: 'log/junit/*.xml'
+      - xunit:
+          thresholdsmode: 'number'
+          thresholds:
+              - failed:
+                  unstable: 0
+                  failurenew: 0
+          types:
+              - junit:
+                  pattern: 'log/junit/*.xml'
 
       - email-ext:
           recipients: '{recipients}'
           body: '${{SCRIPT, template="wikimedia.template"}}'
+          failure: true
+          unstable: true
 
       - browsertests-irc
 
