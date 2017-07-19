@@ -184,6 +184,7 @@ dependencies = {
     'MathSearch': ['Math'],
     'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
     'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp',
+                       'skins/Vector',
                        'skins/MinervaNeue'],
     'NamespacePopups': ['PagePopups'],
     'NavigationTiming': ['EventLogging'],
