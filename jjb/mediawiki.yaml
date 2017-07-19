@@ -43,6 +43,13 @@
      - castor-load
      - prepare-mediawiki-zuul-project
      - qunit-karma
+     # Use RelatedArticles' LocalSettings.php if it exists
+     # Needed for RelatedArticles' Selenium tests
+     # See T164721
+     - shell: |
+        if [ -f ./src/extensions/RelatedArticles/tests/browser/LocalSettings.php ]; then
+          echo '<?php include_once "$IP/extensions/RelatedArticles/tests/browser/LocalSettings.php"; ?>' >> ./src/LocalSettings.php
+        fi
      # Run selenium script if it exists. The localhost vhost is setup by
      # qunit-karma already
      - shell: |
