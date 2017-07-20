@@ -1,24 +1,20 @@
-FROM debian:jessie-slim
-COPY share /opt
+FROM docker-registry.wikimedia.org/wikimedia-jessie:latest
 
-RUN apt-key add /opt/wikimedia-archive-keyring.gpg && \
-    cp /opt/wikimedia.list /etc/apt/sources.list.d/wikimedia.list && \
-    cp /opt/wikimedia.pref /etc/apt/preferences.d/wikimedia.pref
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends \
         build-essential \
         bundler \
         git \
-        libmysqlclient-dev \
         locales \
         python-dev \
         python-pip \
         rubygems-integration \
         rake \
         ruby \
-        ruby-dev \
-        && \
+        ruby-dev && \
+        apt-get clean && rm -rf /var/lib/apt/lists/*  && \
         pip install pip==8.1.2 && \
         pip install tox==1.9.2 setuptools && \
         echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
@@ -29,9 +25,12 @@ RUN apt-get update && \
             --home-dir /var/lib/jenkins \
             --create-home jenkins
 
-ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+COPY cache /var/lib/jenkins/.cache
+
+RUN chown -R 2947:500 /var/lib/jenkins/.cache
+
 USER jenkins
 WORKDIR /var/lib/jenkins
 ENTRYPOINT /bin/bash /run.sh
 
-COPY contint-operations-puppet/run.sh /run.sh
+COPY run.sh /run.sh
