@@ -318,6 +318,18 @@
             --format pretty \
             --format junit --out $WORKSPACE/log/junit
 
+# T164721 Run WebdriverIO tests in CI for extensions
+- builder:
+    name: mw-wdio-nodepool
+    builders:
+     - shell: |
+         # Fail whenever $EXT_NAME is not set
+         set -u
+         # Change to the working directory. EXT_NAME is set by Zuul parameters
+         # functions
+         cd src/extensions/$EXT_NAME/tests/browser
+         . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
+
 # Similar to mw-selenium-nodepool job but runs `bundle exec rake spec` instead of `bundle exec cucumber` T146916
 - builder:
     name: mw-rspec-nodepool
