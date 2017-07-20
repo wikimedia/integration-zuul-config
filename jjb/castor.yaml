@@ -1,51 +1,18 @@
 # CASTOR - CAche STORage
 #
-# Let us save package manager caches on a central instance and warm a cache
-# when a job runs on a Nodepool disposable instance.
-#
-
-# Entry point to save to the central cache
+# Emptied due to T171148
 - publisher:
     name: castor-save
     publishers:
-     - postbuildscript:
-         script-only-if-succeeded: True
-         builders:
-          - trigger-builds:
-              - project: castor-save
-                # Pass ZUUL and others
-                current-parameters: True
-                # Pass:
-                # - job name to namespace the central cache
-                # - ssh connection which holds the slave IP to which castor
-                #   will rsync from
-                predefined-parameters: |
-                    TRIGGERED_JOB_NAME=$JOB_NAME
-                    TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
-                # Must be blocking or the instance might be disposed
-                block: true
-                # Ignore any error
-                block-thresholds:
-                    build-step-failure-threshold: 'never'
-                    unstable-threshold: 'never'
-                    failure-threshold: 'never'
+        - postbuildscript:
+            script-only-if-succeed: True
+            builders:
+                - shell: echo "Castor is disabled https://phabricator.wikimedia.org/T171148"
 
-
-# Entry point to load cache from central cache
-#
-# Forge the namespace and rsync from central place.
-#
-# Transfer is done with rsync:// protocol fetching from the 'caches' rsync
-# module which is read-only.
-#
 - builder:
     name: castor-load
     builders:
-        - shell:
-            !include-raw:
-                - castor-define-namespace.bash
-                - castor-load-sync.bash
-
+        - shell: echo "Castor is disabled https://phabricator.wikimedia.org/T171148"
 
 # Job triggered on the central repository instance
 #
