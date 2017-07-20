@@ -7,6 +7,6 @@ rsync \
   --archive \
   --compress \
   --contimeout 3 \
-  rsync://castor.integration.eqiad.wmflabs:/caches/${CASTOR_NAMESPACE}/ $HOME \
+  rsync://castor02.integration.eqiad.wmflabs:/caches/${CASTOR_NAMESPACE}/ $HOME \
   || :
 echo -e "\nDone"
