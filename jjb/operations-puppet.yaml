@@ -122,29 +122,9 @@
         set -x
 
         rm -rf log
-        rm -rf cache
         rm -rf .env
 
-        # XXX: modify castor job before moving to this fully
-        CASTOR_URL=castor02.integration.eqiad.wmflabs
-        NAMESPACE=operations-puppet/production/operations-puppet-tests-jessie
-        CACHE="$(pwd)/cache"
-        BUNDLE_PATH=/cache/workspace/vendor/bundle
-
-        rsync \
-          --archive \
-          --compress \
-          --contimeout 3 \
-          rsync://${CASTOR_URL}:/caches/$NAMESPACE/ $CACHE \
-          || :
-
-        # In case rsync fails
-        mkdir -p "$(pwd)${BUNDLE_PATH}"
-
-        git -C /srv/git/operations/puppet.git remote update -p
-
         cat <<ZUUL > .env
-        BUNDLE_PATH=$BUNDLE_PATH
         ZUUL_URL=$ZUUL_URL
         ZUUL_PROJECT=$ZUUL_PROJECT
         ZUUL_COMMIT=$ZUUL_COMMIT
@@ -157,10 +137,8 @@
         docker run \
             --rm --tty \
             --env-file .env \
-            --volume /srv/git:/srv/git:ro \
             --volume "$(pwd)"/log:/var/lib/jenkins/log \
-            --volume "$CACHE":/cache \
-            ci-staging-docker-registry01.wmflabs.org/contint/operations-puppet:v0.0.4
+            wmfreleng/operations-puppet:0.0.1
     wrappers:
      - timeout:
          timeout: 1 # minute

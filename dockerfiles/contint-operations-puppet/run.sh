@@ -2,34 +2,43 @@
 
 set -euxo pipefail
 
-TEMP_DIR=$(mktemp -d)
+# Has to be in the same directory as in Dockerfile.build because of tox caching
+PUPPET_DIR="/tmp/cache/puppet"
+
 LOG_DIR="$HOME/log"
 CACHE_DIR="$HOME/.cache"
 
 capture_logs() {
     # Save logs
-    mv "${TEMP_DIR}"/puppet/.tox/*/log/*.log "${LOG_DIR}/" || /bin/true
-    mv "${TEMP_DIR}"/puppet/.tox/log/* "${LOG_DIR}/" || /bin/true
+    mv "${PUPPET_DIR}"/.tox/*/log/*.log "${LOG_DIR}/" || /bin/true
+    mv "${PUPPET_DIR}"/.tox/log/* "${LOG_DIR}/" || /bin/true
 }
 
 trap capture_logs EXIT
 
-git clone \
-    --quiet \
-    --reference "/srv/git/${ZUUL_PROJECT}.git" \
-    "$ZUUL_URL/$ZUUL_PROJECT" \
-    "$TEMP_DIR/puppet"
+mkdir -p /tmp/cache
 
-cd "$TEMP_DIR/puppet"
+mv "${CACHE_DIR}/puppet" "$PUPPET_DIR"
+cd "$PUPPET_DIR"
 
-git fetch --quiet origin $ZUUL_REF
+# Prepare patch set from zuul merger
+git remote add zuul "${ZUUL_URL}/${ZUUL_PROJECT}"
+git pull --quiet zuul production
+git fetch --quiet zuul "$ZUUL_REF"
 git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
-[ -d /cache/.cache ] && {
-    mkdir -p "$CACHE_DIR"
-    cp -R /cache/.cache/* "${CACHE_DIR}/"
-}
+# Tox setup
+mv "${CACHE_DIR}/tox" '.tox'
+
+# Bundle setup
+mkdir -p .bundle
+cat <<BUNDLE > .bundle/config
+---
+BUNDLE_PATH: "/var/lib/jenkins/.cache/bundle"
+BUNDLE_CLEAN: true
+BUNDLE_DISABLE_SHARED_GEMS: '1'
+BUNDLE
 
 # Run tox tests
 {
@@ -41,8 +50,9 @@ PID_ONE=$!
 
 # Run rake tests
 {
-    bundle install --clean
+    set -o pipefail
     bundle exec rake test | tee "${LOG_DIR}/rake.log"
+    set +o pipefail
 } &
 PID_TWO=$!
 
