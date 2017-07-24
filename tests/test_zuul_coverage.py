@@ -12,6 +12,27 @@ import yaml
 
 from nose.plugins.attrib import attr
 
+GERRIT_IGNORE = (
+    'All-Users',
+    'analytics/aggregator/data',
+    'analytics/aggregator/projectview/data',
+    'analytics/limn-analytics-data',
+    'analytics/limn-edit-data',
+    'analytics/limn-ee-data',
+    'analytics/limn-extdist-data',
+    'analytics/limn-flow-data',
+    'analytics/limn-multimedia-data',
+    'labs',
+    'labs/maps',
+    'mediawiki/libs',
+    'operations/debs',
+    'wikibase',
+    'wikimedia/education',
+    'wikimedia/security',
+    'wikipedia',
+    'wikipedia/gadgets',
+)
+
 
 @attr('qa')
 class TestZuulCoverage(unittest.TestCase):
@@ -70,6 +91,7 @@ class TestZuulCoverage(unittest.TestCase):
         gerrit_active = set([
             repo for (repo, state) in self._repos.iteritems()
             if state == 'ACTIVE'
+            and repo not in GERRIT_IGNORE
         ])
         self.longMessage = True
         self.assertEqual(
