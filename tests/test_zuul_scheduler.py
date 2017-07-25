@@ -564,6 +564,48 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertFalse(test_manager.eventMatches(event, change))
 
+    def test_recheck_with_inline_comment(self):
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1:\n\n(1 comment)\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_inline_comment_changed_review(self):
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: Code-Review+1\n\n(1 comment)\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_with_inline_comment_removed_review(self):
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1: -Code-Review\n\n(2 comments)\n\nrecheck'
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertTrue(test_manager.eventMatches(event, change))
+
     def test_pipelines_trustiness(self):
         check_manager = self.getPipeline('check').manager
         test_manager = self.getPipeline('test').manager
