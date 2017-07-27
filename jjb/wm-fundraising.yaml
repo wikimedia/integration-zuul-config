@@ -32,20 +32,39 @@
           $WORKSPACE/src/wikimedia/fundraising/crm/vendor/bin/phpunit \
             --log-junit $WORKSPACE/log/junit-phpunit.xml
 
+- publisher:
+    name: fundraising-crm-clean
+    publishers:
+     - postbuildscript:
+         builders:
+           - shell: |
+               # Drop the MySQL databases.
+               $WORKSPACE/src/wikimedia/fundraising/crm/bin/ci-drop-dbs.sh
+
+         # Postbuild options are confusing, setting both to false ensures the script always runs.
+         onsuccess: False
+         onfailure: False
+
+- project:
+    # FIXME: rename
+    name: wikimedia-fundraising-civicrm
+    jobs:
+      - wikimedia-fundraising-civicrm
+
 - job:
-    name: wikimedia-fundraising-civicrm-jessie
-    node: ci-jessie-wikimedia
+    name: wikimedia-fundraising-civicrm
+    # Run on isolated boxes because of messy MySQL behavior and unsafe fetches.
+    node: contintLabsSlave && DebianJessie
     concurrent: true
     triggers:
       - zuul
     builders:
-      - castor-load
       - fundraising-crm-install
       - fundraising-crm-phpunit
     publishers:
+      - fundraising-crm-clean
       - phpunit-junit
       - archive-log-dir
-      - castor-save
 
 - project:
     name: donationinterface-fundraising-branches-php56
