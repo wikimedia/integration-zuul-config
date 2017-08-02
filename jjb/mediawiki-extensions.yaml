@@ -427,3 +427,13 @@
     jobs:
      - '{name}-jsduck'
      - 'mwext-VisualEditor-npm-node-6-jessie'
+
+- job:
+    name: mediawiki-extensions-qa-jessie
+    triggers:
+        - pollscm:
+            cron : '@daily'
+    shell: |
+        git clone --single-branch --depth 1 https://gerrit.wikimedia.org/r/mediawiki/extensions src
+        cd src
+        git submodule update --jobs 4 --depth 1 --init
