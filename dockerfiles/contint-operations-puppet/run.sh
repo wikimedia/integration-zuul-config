@@ -43,7 +43,7 @@ BUNDLE
 # Run tox tests
 {
     set -o pipefail
-    PY_COLORS=1 tox -v | tee "${LOG_DIR}/tox.log"
+    TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v | tee "${LOG_DIR}/tox.log"
     set +o pipefail
 } &
 PID_ONE=$!

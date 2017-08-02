@@ -468,7 +468,7 @@
         rm -fR log
         mkdir -p log
         set -o pipefail
-        PY_COLORS=1 tox -v -e "{venv}" | tee "log/{venv}.log"
+        TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v -e "{venv}" | tee "log/{venv}.log"
         set +o pipefail
 
 - builder:
@@ -478,7 +478,7 @@
          rm -fR log
          mkdir -p log
          set -o pipefail
-         PY_COLORS=1 tox -v | tee "log/stdout.log"
+         TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v | tee "log/stdout.log"
          set +o pipefail
 
 - publisher:

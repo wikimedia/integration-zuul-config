@@ -91,7 +91,7 @@
          rm -fR coverage log
          mkdir -p log
          set -o pipefail
-         PY_COLORS=1 tox -e py27 -- --cover-html --cover-html-dir=coverage/ | tee "log/tox-coverage.log"
+         TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -e py27 -- --cover-html --cover-html-dir=coverage/ | tee "log/tox-coverage.log"
          set +o pipefail
      - cover-publish:
         src: 'coverage'
