@@ -46,19 +46,20 @@
      - zuul-cloner:
          projects: >
              $(cat deps.txt)
-     - ve-submodules-update
+     - ext-skins-submodules-update
 
 # Workaround zuul-cloner not processing submodules
 - builder:
-    name: ve-submodules-update
+    name: ext-skins-submodules-update
     builders:
      - shell: |
-         if grep -q mediawiki/extensions/VisualEditor deps.txt; then
-            cd src/extensions/VisualEditor
-            git submodule foreach git clean -xdff -q
-            git submodule update --init
-            git submodule status
-         fi
+         find src/extensions src/skins -maxdepth 2 \
+            -name .gitmodules \
+            -execdir bash -xe -c '
+                git submodule foreach git clean -xdff -q
+                git submodule update --init
+                git submodule status
+                ' \;
 
 - builder:
     name: prepare-mediawiki-zuul-project
@@ -75,7 +76,7 @@
              mediawiki/vendor
              $(cat deps.txt)
              $(cat deps_skins.txt)
-     - ve-submodules-update
+     - ext-skins-submodules-update
      - shell: "mv deps.txt src/extensions_load.txt"
      - mw-install-mysql
      - mw-apply-settings
@@ -93,7 +94,7 @@
              mediawiki/core
              $(cat deps.txt)
              $(cat deps_skins.txt)
-     - ve-submodules-update
+     - ext-skins-submodules-update
      - shell: "mv deps.txt src/extensions_load.txt"
      - composer-validate:
          dir: 'src'
@@ -120,7 +121,7 @@
              mediawiki/core
              $(cat deps.txt)
              $(cat deps_skins.txt)
-     - ve-submodules-update
+     - ext-skins-submodules-update
      - shell: "mv deps.txt src/extensions_load.txt"
      - composer-validate:
          dir: 'src'
