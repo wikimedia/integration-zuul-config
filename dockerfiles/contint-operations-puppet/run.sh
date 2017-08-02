@@ -29,30 +29,5 @@ if git diff --name-only docker-head Gemfile | grep -q 'Gemfile'; then
     bundle update
 fi;
 
-# Run tox tests
-{
-    set -o pipefail
-    TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v | tee "${LOG_DIR}/tox.log"
-    set +o pipefail
-} &
-PID_ONE=$!
-
-# Run rake tests
-{
-    set -o pipefail
-    bundle exec rake test | tee "${LOG_DIR}/rake.log"
-    set +o pipefail
-} &
-PID_TWO=$!
-
-set +e
-wait $PID_ONE
-EXIT_ONE=$?
-
-wait $PID_TWO
-EXIT_TWO=$?
-set -e
-
-# Exit non-zero if any subcommand exited non-zero
-(( EXIT_ONE == 0 )) || exit 1
-(( EXIT_TWO == 0 )) || exit 2
+# Run tests
+bundle exec rake test | tee "${LOG_DIR}/rake.log"
