@@ -52,6 +52,10 @@
         mkdir -p log
 
         # Install zuul based on /test-requirements.txt and activate venv
+        #
+        export TOX_TESTENV_PASSENV=PY_COLORS
+        export PY_COLORS=1
+
         tox -e py27 -v -v --notest
         . .tox/py27/bin/activate
         zuul-server --version
@@ -108,6 +112,7 @@
 
         # enforce tox color output:
         export PY_COLORS=1
+        export TOX_TESTENV_PASSENV=PY_COLORS
 
         echo "Generating config for proposed patchset..."
         tox -v -e venv -- jenkins-jobs test "$WORKSPACE/config/jjb" -o "$WORKSPACE/output-proposed"

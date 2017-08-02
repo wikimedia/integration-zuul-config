@@ -96,7 +96,7 @@
     builders:
      # no castor-load / empty cache
      - shell: |
-         tox --notest
+         TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox --notest
          bundle install --clean
      - trigger-builds:
          - project: castor-save
