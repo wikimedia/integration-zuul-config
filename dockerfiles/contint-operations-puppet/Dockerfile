@@ -26,8 +26,16 @@ RUN apt-get update && \
             --create-home jenkins
 
 COPY cache /var/lib/jenkins/.cache
+COPY bundle-config /var/lib/jenkins/.cache/bundle-config
 
-RUN chown -R 2947:500 /var/lib/jenkins/.cache
+RUN chown -R 2947:500 /var/lib/jenkins/.cache && \
+          mkdir -p /tmp/cache && \
+          mv /var/lib/jenkins/.cache/puppet /tmp/cache/puppet && \
+          mkdir -p /tmp/cache/puppet/.bundle && \
+          mv /var/lib/jenkins/.cache/bundle-config /tmp/cache/puppet/.bundle/config && \
+          mv /var/lib/jenkins/.cache/tox /tmp/cache/puppet/.tox
+
+
 
 USER jenkins
 WORKDIR /var/lib/jenkins
