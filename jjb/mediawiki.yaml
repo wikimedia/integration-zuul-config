@@ -60,6 +60,7 @@
 
             ./node_modules/.bin/grunt webdriver:test
         fi
+     - assert-no-mediawiki-errors
     publishers:
      - castor-save
      - archive-log-dir
@@ -153,6 +154,7 @@
      - mw-apply-settings
      - mw-fetch-composer-dev
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+     - assert-no-mediawiki-errors
     publishers:
      - phpunit-junit-2
      - archive-log-dir
@@ -185,6 +187,7 @@
      - mw-install-mysql
      - mw-apply-settings
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
+     - assert-no-mediawiki-errors
     publishers:
      - phpunit-junit-2
      - archive-log-dir
@@ -207,6 +210,13 @@
                 https://gerrit.wikimedia.org/r/p \
                 "$ZUUL_PROJECT"
          fi
+
+- builder:
+    name: assert-no-mediawiki-errors
+    builders:
+        - shell:
+            !include-raw:
+                - assert-no-mediawiki-errors.bash
 
 - job-template:
     name: 'mediawiki-extensions-{phpflavor}-{image}'
@@ -232,6 +242,7 @@
              - composer-test-mwextension
      - mw-fetch-composer-dev
      - mw-run-phpunit-allexts
+     - assert-no-mediawiki-errors
     publishers:
      - junit:
         results: 'log/junit*.xml'
@@ -252,6 +263,7 @@
      - castor-load
      - prepare-mediawiki-zuul-project
      - qunit-karma
+     - assert-no-mediawiki-errors
     publishers:
      - castor-save
      - archive-log-dir
