@@ -23,11 +23,19 @@ RUN apt-get update && \
         # This is the uid and gid of the jenkins-deploy user for CI
         useradd -u 2947 -g 500 \
             --home-dir /var/lib/jenkins \
-            --create-home jenkins
+            --create-home jenkins && \
 
 COPY cache /var/lib/jenkins/.cache
+COPY bundle-config /var/lib/jenkins/.cache/bundle-config
 
-RUN chown -R 2947:500 /var/lib/jenkins/.cache
+RUN chown -R 2947:500 /var/lib/jenkins/.cache && \
+          mkdir -p /tmp/cache && \
+          mv /var/lib/jenkins/.cache/puppet /tmp/cache/puppet && \
+          mkdir -p /tmp/cache/puppet/.bundle && \
+          mv /var/lib/jenkins/.cache/bundle-config /tmp/cache/puppet/.bundle/config && \
+          mv /var/lib/jenkins/.cache/tox /tmp/cache/puppet/.tox &&
+
+
 
 USER jenkins
 WORKDIR /var/lib/jenkins
