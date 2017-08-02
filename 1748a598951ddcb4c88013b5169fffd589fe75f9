@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e7eab26_e8d9a584",
+        "filename": "jjb/assert-no-mediawiki-errors.bash",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-08-02T15:25:52Z",
+      "side": 1,
+      "message": "It is a bit hardcoded.  A better way would be to shell out to eval.php and retrieve the variable/log files we are interested in. But I am being lazy.",
+      "revId": "1748a598951ddcb4c88013b5169fffd589fe75f9",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_88cee1b7",
+        "filename": "jjb/assert-no-mediawiki-errors.bash",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-08-02T15:25:52Z",
+      "side": 1,
+      "message": "Experimental for now.  Though I guess it is unlikely we will fix REL branches.",
+      "revId": "1748a598951ddcb4c88013b5169fffd589fe75f9",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_08c3d18d",
+        "filename": "jjb/assert-no-mediawiki-errors.bash",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-08-02T15:25:52Z",
+      "side": 1,
+      "message": "shallow ls errors since it attempts to list all files but some might not exist causing ls to emit an error.",
+      "revId": "1748a598951ddcb4c88013b5169fffd589fe75f9",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_c85aa9f9",
+        "filename": "jjb/assert-no-mediawiki-errors.bash",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-08-02T15:25:52Z",
+      "side": 1,
+      "message": "grep exit 0 when it gets match which would not fail the build. So ignore errors entirely and we then always exit 1.",
+      "revId": "1748a598951ddcb4c88013b5169fffd589fe75f9",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_a8fcfdd5",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-08-02T15:25:52Z",
+      "side": 1,
+      "message": "That is semi new in JJB. I have used it for jjb/castor.yaml and lets one easily test the file locally.  Just:\n\n $ mkdir log; echo \"ERROR\"\u003e log/mw-dberror.log\n $ WORKSPACE\u003d. ZUUL_BRANCH\u003dmaster bash jjb/assert-no-mediawiki-errors.bash\n\n Asserting empty files: mw-dberror.log mw-exception.log mw-error.log\n Dumping file(s) mw-dberror.log\n mw-dberror.log:ERROR\n MediaWiki emitted some errors. Check output above.\n $",
+      "revId": "1748a598951ddcb4c88013b5169fffd589fe75f9",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
