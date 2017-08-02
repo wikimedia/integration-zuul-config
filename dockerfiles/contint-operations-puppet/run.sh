@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -euxo pipefail
 
@@ -6,7 +6,6 @@ set -euxo pipefail
 PUPPET_DIR="/tmp/cache/puppet"
 
 LOG_DIR="$HOME/log"
-CACHE_DIR="$HOME/.cache"
 
 capture_logs() {
     # Save logs
@@ -16,9 +15,6 @@ capture_logs() {
 
 trap capture_logs EXIT
 
-mkdir -p /tmp/cache
-
-mv "${CACHE_DIR}/puppet" "$PUPPET_DIR"
 cd "$PUPPET_DIR"
 
 # Prepare patch set from zuul merger
@@ -28,17 +24,6 @@ git fetch --quiet zuul "$ZUUL_REF"
 git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
-# Tox setup
-mv "${CACHE_DIR}/tox" '.tox'
-
-# Bundle setup
-mkdir -p .bundle
-cat <<BUNDLE > .bundle/config
----
-BUNDLE_PATH: "/var/lib/jenkins/.cache/bundle"
-BUNDLE_CLEAN: true
-BUNDLE_DISABLE_SHARED_GEMS: '1'
-BUNDLE
 
 # Run tox tests
 {
