@@ -25,6 +25,7 @@ COPY .cache-buster /.cache-buster
 RUN mkdir -p /tmp/cache && \
     git clone https://gerrit.wikimedia.org/r/operations/puppet /tmp/cache/puppet && \
     cd /tmp/cache/puppet && \
+    git tag 'docker-head' && \
     bundle install --clean --path="/tmp/cache/bundle" && \
     TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v || /bin/true && \
     mv .tox /tmp/cache/tox
