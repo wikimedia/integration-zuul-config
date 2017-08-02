@@ -24,6 +24,10 @@ git fetch --quiet zuul "$ZUUL_REF"
 git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
+# Update bundle if gemfile changed
+if git diff --name-only docker-head Gemfile | grep -q 'Gemfile'; then
+    bundle update
+fi;
 
 # Run tox tests
 {
