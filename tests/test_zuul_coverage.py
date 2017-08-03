@@ -27,10 +27,13 @@ GERRIT_IGNORE = (
     'mediawiki/libs',
     'operations/debs',
     'wikibase',
+    'wikimedia/annualreport',
     'wikimedia/education',
+    'wikimedia/endowment',  # empty
     'wikimedia/security',
     'wikipedia',
     'wikipedia/gadgets',
+    'wiktionary/anagrimes',  # some legacy perl
 )
 
 
