@@ -62,7 +62,6 @@
              recursive: true
     builders:
      - castor-load
-     - tox-all-envs
      - bundle-nodepool:
          command: rake test
     publishers:
@@ -74,7 +73,8 @@
              skip-if-no-test-files: true
              stoponerror: false
      - archive-log-dir
-     - archive-tox-logs
+     # rake might invokes tox
+     - archive-tox-logs-allow-empty
      # No castor-save. Done postmerge by operations-puppet-cache-update-jessie
 
 # Runs after merge when package manager dependencies have been updated
