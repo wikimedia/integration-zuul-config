@@ -4,6 +4,13 @@
      - archive:
          artifacts: '.tox/*/log/*.log,.tox/log/*'
 
+- publisher:
+    name: archive-tox-logs-allow-empty
+    publishers:
+     - archive:
+         artifacts: '.tox/*/log/*.log,.tox/log/*'
+         allow-empty: true
+
 - job-template:
     name: '{name}-tox-{toxenv}-jessie'
     node: ci-jessie-wikimedia
