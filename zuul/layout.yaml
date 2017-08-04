@@ -906,9 +906,6 @@ jobs:
       - tox.ini$
       - Gemfile$
 
-  - name: ^operations-puppet-tests-docker$
-    voting: false
-
   # WIP T153856
   - name: ^ortiz-rlang$
     voting: false
@@ -2244,7 +2241,6 @@ projects:
 
   - name: operations/puppet
     test-prio:
-      - operations-puppet-tests-jessie
       - operations-puppet-tests-docker
     postmerge:
       - operations-puppet-cache-update-jessie
