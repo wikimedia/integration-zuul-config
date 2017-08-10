@@ -455,7 +455,7 @@
         dir: '$WORKSPACE/src'
      - shell: |
         cd $WORKSPACE/src
-        composer require etsy/phan:0.8 --prefer-dist --dev --no-progress --ansi --profile -v # todo don't hardcode version here
+        composer require etsy/phan:0.8.5 --prefer-dist --dev --no-progress --ansi --profile -v # todo don't hardcode version here
         PHAN=vendor/bin/phan ./tests/phan/bin/phan -m checkstyle
     publishers:
      - castor-save
