@@ -394,7 +394,10 @@
      - shell: |
         cd $WORKSPACE/src
         mkdir -p $WORKSPACE/log
-        composer require etsy/phan:0.8 --prefer-dist --dev --no-progress --ansi --profile -v # todo don't hardcode version here
+        cd $WORKSPACE/src/extensions/$EXT_NAME
+        PHANVERSION= "$(/srv/deployment/integration/slave-scripts/bin/mw-get-phan-version.py)"
+        cd $WORKSPACE/src
+        composer require etsy/phan:$PHANVERSION --prefer-dist --dev --no-progress --ansi --profile -v
         PHAN=$WORKSPACE/src/vendor/bin/phan ./tests/phan/bin/phan ./extensions/$EXT_NAME -m checkstyle
         mv $WORKSPACE/src/extensions/$EXT_NAME/tests/phan/issues/latest $WORKSPACE/log/phan-issues
     publishers:
