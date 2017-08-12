@@ -212,6 +212,7 @@ dependencies = {
     'QuizGame': ['SocialProfile'],
     'RelatedArticles': ['BetaFeatures', 'MobileFrontend'],
     'Score': ['VisualEditor'],
+    'SemanticGenealogy': ['SemanticMediaWiki'],
     'SemanticImageInput': ['SemanticMediaWiki'],
     'SemanticSifter': ['SemanticMediaWiki'],
     'SimpleSAMLphp': ['PluggableAuth'],
