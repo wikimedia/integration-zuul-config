@@ -406,6 +406,50 @@
           failed:
             total-all: 1
 
+- job:
+    name: 'mwext-php70-phan-jessie-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        #!/bin/bash -eu
+
+        set -x
+
+        rm -rf log
+        rm -rf .env
+
+        cat <<ZUUL > .env
+        ZUUL_URL=$ZUUL_URL
+        ZUUL_PROJECT=$ZUUL_PROJECT
+        ZUUL_COMMIT=$ZUUL_COMMIT
+        ZUUL_REF=$ZUUL_REF
+        EXT_DEPENDENCIES=$EXT_DEPENDENCIES
+        ZUUL
+
+        mkdir -p "log"
+
+        docker run \
+            --rm --tty \
+            --env-file .env \
+            --volume "$(pwd)"/log:/var/lib/jenkins/log \
+            wmfreleng/mediawiki-extensions-phan:latest
+    wrappers:
+     - timeout:
+         timeout: 1 # minute
+     - timestamps
+     - ansicolor
+    publishers:
+     - castor-save
+     - checkstyle:
+        pattern: 'log/phan-issues'
+        can-run-on-failed: true
+        thresholds:
+          failed:
+            total-all: 1
 
 - project:
     name: 'mwext-CirrusSearch'
