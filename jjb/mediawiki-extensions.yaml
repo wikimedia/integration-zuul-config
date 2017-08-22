@@ -427,3 +427,36 @@
     jobs:
      - '{name}-jsduck'
      - 'mwext-VisualEditor-npm-node-6-jessie'
+
+# Run RelatedArticles Selenium tests daily targeting beta cluster
+# similar to mediawiki-core-qunit-selenium-jessie
+- job:
+    name: 'selenium-RelatedArticles-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - timed: '@daily'
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    parameters:
+     - string:
+         name: ZUUL_PROJECT
+         default: mediawiki/extensions/RelatedArticles
+     - string:
+         name: ZUUL_BRANCH
+         default: master
+    builders:
+     - castor-load
+     - prepare-mediawiki-zuul-project
+     - qunit-karma
+     - mw-wdio-nodepool
+     - assert-no-mediawiki-errors
+    publishers:
+     - castor-save
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml,log/WDIO.xunit*.xml'
+        # Qunit does not generate Junit file and we might skip selenium
+        allow-empty-results: true
+
