@@ -427,3 +427,45 @@
     jobs:
      - '{name}-jsduck'
      - 'mwext-VisualEditor-npm-node-6-jessie'
+
+# Run RelatedArticles Selenium tests daily targeting beta cluster
+# similar to mediawiki-core-qunit-selenium-jessie
+- job:
+    name: 'selenium-RelatedArticles-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - timed: '@daily'
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    builders:
+     - castor-load
+     - prepare-mediawiki-zuul-project
+     - qunit-karma
+     - mw-wdio-nodepool
+     # Run selenium script if it exists. The localhost vhost is setup by
+     # qunit-karma already
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
+
+        cd $MW_INSTALL_PATH
+        if [ -f ./tests/selenium/wdio.conf.js ]; then
+            chromedriver --url-base=/wd/hub --port=4444 &
+            # Make sure it is killed to prevent file descriptors leak
+            function kill_chromedriver() {{
+                killall chromedriver > /dev/null
+            }}
+            trap kill_chromedriver EXIT
+
+            ./node_modules/.bin/grunt webdriver:test
+        fi
+     - assert-no-mediawiki-errors
+    publishers:
+     - castor-save
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml,log/WDIO.xunit*.xml'
+        # Qunit does not generate Junit file and we might skip selenium
+        allow-empty-results: true
+
