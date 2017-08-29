@@ -18,9 +18,7 @@ trap capture_logs EXIT
 cd "$PUPPET_DIR"
 
 # Prepare patch set from zuul merger
-git remote add zuul "${ZUUL_URL}/${ZUUL_PROJECT}"
-git pull --quiet zuul production
-git fetch --quiet zuul "$ZUUL_REF"
+git fetch --quiet "${ZUUL_URL}/${ZUUL_PROJECT}" "$ZUUL_REF"
 git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
