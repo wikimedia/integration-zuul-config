@@ -212,6 +212,8 @@ dependencies = {
     'QuizGame': ['SocialProfile'],
     'RelatedArticles': ['BetaFeatures', 'MobileFrontend'],
     'Score': ['VisualEditor'],
+    'SemanticLinks': ['VisualEditor'],
+    'SemanticPageMaker': ['WikiObjectModel'],
     'SimpleSAMLphp': ['PluggableAuth'],
     'SimpleSurvey': ['PrefSwitch'],
     'SpellingDictionary': ['UniversalLanguageSelector'],
