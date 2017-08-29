@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 # Make all kinds of artifacts
 RUN mkdir -p /tmp/cache && \
-    git clone https://gerrit.wikimedia.org/r/operations/puppet /tmp/cache/puppet && \
+    git clone --depth 1 https://gerrit.wikimedia.org/r/operations/puppet /tmp/cache/puppet && \
     cd /tmp/cache/puppet && \
     git tag 'docker-head' && \
     bundle install --clean --path="/tmp/cache/bundle" && \
