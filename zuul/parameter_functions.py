@@ -65,6 +65,7 @@ def set_parameters(item, job, params):
 
     # FIXME rather hacky for selenium jobs (T139740, T137112)
     if job.name.startswith(('mediawiki-core-qunit-selenium',
+                            'mwext-mw-rspec',
                             'mwext-mw-selenium')):
         set_mw_dependencies(item, job, params)
         if 'SKIN_DEPENDENCIES' in params and params['SKIN_DEPENDENCIES']:
