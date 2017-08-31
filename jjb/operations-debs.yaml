@@ -188,6 +188,22 @@
     # Reinject Zuul parameters since JJB strip them for some reason
     triggers:
      - zuul
+
+# Alias jobs that would have BACKPORTS=yes injected by Zuul
+- job-template:
+    !!merge : *job_template_debian_glue
+    name: 'debian-glue-backports'
+    # Reinject Zuul parameters since JJB strip them for some reason
+    triggers:
+     - zuul
+
+- job-template:
+    !!merge : *job_template_debian_glue
+    name: 'debian-glue-backports-non-voting'
+    # Reinject Zuul parameters since JJB strip them for some reason
+    triggers:
+     - zuul
+
 #
 # PROJECTS
 #
@@ -198,3 +214,5 @@
     jobs:
         - 'debian-glue'
         - 'debian-glue-non-voting'
+        - 'debian-glue-backports'
+        - 'debian-glue-backports-non-voting'

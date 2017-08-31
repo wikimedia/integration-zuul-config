@@ -736,7 +736,7 @@ jobs:
 
   # Experimental building of Debian packages
   # based on jenkins-debian-glue
-  - name: ^debian-glue(-non-voting)?$
+  - name: ^debian-glue.*
     # Point directly to artifacts
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     # FIXME maybe restrict just to debian/ changes:
@@ -2336,7 +2336,7 @@ projects:
 
   - name: operations/software/cumin
     test:
-      - debian-glue-non-voting
+      - debian-glue-backports-non-voting
     template:
       - name: tox-jessie
 

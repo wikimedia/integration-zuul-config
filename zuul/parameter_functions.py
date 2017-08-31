@@ -107,6 +107,8 @@ def set_parameters(item, job, params):
         nodepool_params(item, job, params)
 
     if 'debian-glue' in job.name:
+        if 'backports' in job.name:  # T173999
+            params['BACKPORTS'] = 'yes'
         # Always set the value to be safe (T144094)
         params['BUILD_TIMEOUT'] = 30  # minutes
         # Finely tweak jenkins-debian-glue parameters
