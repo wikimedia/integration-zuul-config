@@ -162,7 +162,7 @@
 
 # Same as mwext-mw-selenium-jessie but runs `bundle exec rake spec` instead of `bundle exec cucumber` T146916
 - job:
-    name: 'mwext-mw-rspec-jessie'
+    name: 'mwext-ruby-jessie'
     node: ci-jessie-wikimedia
     concurrent: true
     triggers:
@@ -170,7 +170,7 @@
     builders:
      - castor-load
      - prepare-mediawiki-zuul-project
-     - mw-rspec-nodepool
+     - ruby-nodepool
     publishers:
      - castor-save
      - archive-log-dir
