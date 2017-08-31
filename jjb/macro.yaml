@@ -357,9 +357,8 @@
             ./node_modules/.bin/grunt webdriver:test
         fi
 
-# Similar to mw-selenium-nodepool job but runs `bundle exec rake spec` instead of `bundle exec cucumber` T146916
 - builder:
-    name: mw-rspec-nodepool
+    name: ruby-nodepool
     builders:
      - prepare-localhost
      - shell: |
@@ -370,7 +369,7 @@
          cd "src/extensions/$EXT_NAME"
          . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
          bundle install --verbose
-         bundle exec rake spec
+         bundle exec rake test
 
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
