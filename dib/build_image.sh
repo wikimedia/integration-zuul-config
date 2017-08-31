@@ -72,7 +72,7 @@ else
 	export ELEMENTS_PATH="${ELEMENTS_PATH}:elements"
 fi
 
-$DIB_COMMAND -t docker --docker-target wmfcijessie --no-tmpfs ${ELEMENTS[@]}
+$DIB_COMMAND -t docker --docker-target wmfcijessie ${ELEMENTS[@]}
 EXIT_CODE=$?
 if [[ $EXIT_CODE -gt 0 ]]; then
 	>&2 echo "Disk image creation failed (exit: $EXIT_CODE)"
