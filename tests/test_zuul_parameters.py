@@ -25,6 +25,18 @@ class TestZuulSetParameters(unittest.TestCase):
         set_parameters(None, job, params)
         self.assertIn('PBUILDER_USENETWORK', params)
 
+    def test_debian_glue_backports(self):
+        # Zuul injects BACKPORTS=yes - T173999
+        for job_name in (
+                'debian-glue-backports',
+                'debian-glue-backports-non-voting',
+                ):
+            job = FakeJob(job_name)
+            params = {'ZUUL_PROJECT': 'fake_project'}
+            set_parameters(None, job, params)
+            self.assertIn('BACKPORTS', params)
+            self.assertEquals('yes', params['BACKPORTS'])
+
     def test_mw_testskin_parameters(self):
         for job_name in ['mw-testskin', 'mw-testskin-non-voting']:
             job = FakeJob(job_name)
