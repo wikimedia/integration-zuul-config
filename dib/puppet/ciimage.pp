@@ -11,6 +11,11 @@ require_package('git')
 # We have jobs compiling native packages for NodeJs, Python, Ruby..
 require_package('build-essential')
 
+# Invokes apt before anything invokes apt::*
+class { '::apt':
+    use_proxy => false,
+}
+
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
 include jenkins::slave::requisites
@@ -34,9 +39,6 @@ if os_version('debian >= jessie') {
 }
 
 include contint::packages::javascript
-class { '::apt':
-    use_proxy => false,
-}
 include contint::packages::apt
 include contint::packages::php
 
