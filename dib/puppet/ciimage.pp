@@ -27,8 +27,6 @@ include contint::php
 
 include zuul
 
-include mediawiki::packages::php5
-
 package { 'cron':
     ensure => present,
 }
