@@ -1,0 +1,25 @@
+- project:
+    name: marvin
+    jobs:
+        - marvin-npm-node-6-jessie
+
+# Copied from &job_npm-node-6-jessie and {name}-npm-node-6-jessie.
+- job:
+    name: marvin-npm-node-6-jessie
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - job_npm-node-6-jessie-builder
+     - npm-preinstall
+     - shell: |
+         # Install a version of NPM that support package lock files.
+         npm install npm@5
+         npm --version
+         npm install
+         npm test
+    publishers:
+     - archive-log-allow-empty
+     - castor-save

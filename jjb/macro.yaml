@@ -23,24 +23,26 @@
         dir: '$WORKSPACE'
 
 - builder:
-    name: npm-install
+    name: npm-preinstall
     builders:
     - shell: |
         . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
         node --version
         npm --version
         rm -rf node_modules
+
+- builder:
+    name: npm-install
+    builders:
+    - npm-preinstall
+    - shell: |
         npm install
 
 - builder:
     name: npm
     builders:
+    - npm-install
     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
-        node --version
-        npm --version
-        rm -rf node_modules
-        npm install
         npm test
 
 # The npm-run macro is intended to be used when multiple scripts are used

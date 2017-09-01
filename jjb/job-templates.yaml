@@ -48,13 +48,8 @@
     publishers:
      - castor-save
 
-- job: &job_npm-node-6-jessie
-    name: 'npm-node-6-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
+- builder:
+    name: job_npm-node-6-jessie-builder
     builders:
      - assert-node-version-6
      # FIXME: we should save node_modules and run npm prune
@@ -65,6 +60,16 @@
     # Ensure set-env sets CHROME_BIN so that all npm-test jobs
     # can run karma-qunit with karma-chrome-launcher, not just
     # mediawiki-core-qunit.
+
+- job: &job_npm-node-6-jessie
+    name: 'npm-node-6-jessie'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - job_npm-node-6-jessie-builder
      - npm
     publishers:
      - archive-log-allow-empty
