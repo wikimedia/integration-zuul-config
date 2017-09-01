@@ -1451,22 +1451,20 @@ projects:
       - mwgate-php55lint
       - mwgate-composer-validate
     test:
-      - mwgate-php55lint
-      - mwgate-composer-validate
+      - mwgate-composer-hhvm-jessie
+      - mwgate-composer-php55-jessie
       - mediawiki-core-qunit-selenium-jessie
       - mediawiki-phpunit-hhvm-jessie
     php5:
       - mediawiki-phpunit-php55-jessie
     gate-and-submit: &mediawiki-vendor-gate-and-submit
-      - mwgate-php55lint
+      - mwgate-composer-hhvm-jessie
+      - mwgate-composer-php55-jessie
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-jessie
       - mediawiki-core-qunit-selenium-jessie
-      - mwgate-composer-validate
     gate-and-submit-swat: *mediawiki-vendor-gate-and-submit
     experimental:
-      - mwgate-composer-hhvm-jessie
-      - mwgate-composer-php55-jessie
       - mwgate-composer-php70-jessie
 
   - name: analytics/aggregator
@@ -6523,6 +6521,8 @@ projects:
       - name: extension-qunit-generic
       - name: extension-selenium-gate
       - name: mwgate-npm
+    experimental:
+      - mwext-ruby-jessie
 
   - name: mediawiki/extensions/PostEdit
     template:
