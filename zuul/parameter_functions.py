@@ -213,6 +213,7 @@ dependencies = {
     'PropertySuggester': ['Wikibase'],
     'QuickSurveys': ['EventLogging'],
     'QuizGame': ['SocialProfile'],
+    'RegexFun': ['ParserFunctions', 'Arrays'],
     'RelatedArticles': ['BetaFeatures', 'MobileFrontend'],
     'Score': ['VisualEditor'],
     'SemanticLinks': ['VisualEditor'],
