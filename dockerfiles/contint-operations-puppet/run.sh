@@ -6,6 +6,7 @@ set -euxo pipefail
 PUPPET_DIR="/tmp/cache/puppet"
 
 LOG_DIR="$HOME/log"
+export LOG_DIR
 
 capture_logs() {
     # Save logs
