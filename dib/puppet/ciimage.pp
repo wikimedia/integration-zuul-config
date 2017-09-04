@@ -42,17 +42,42 @@ include contint::packages::javascript
 include contint::packages::apt
 include contint::packages::php
 
-if os_version('ubuntu == trusty') {
-    # MediaWiki PHPunit under Zend 5.5 (Trusty) can use 2GBytes. An attempt to
-    # proc_open() invokes fork() which clone the Virtual Memory. Although it is
-    # copy-on-write, Linux still check whether the system will be able to honor
-    # a full allocation.  Allow the Linux memory manager to overcommit memory.
-    #
-    # https://phabricator.wikimedia.org/T125050#3153574
-    # https://www.kernel.org/doc/Documentation/vm/overcommit-accounting
-    sysctl::parameters { 'vm.overcommit_memory':
-        values => { 'vm.overcommit_memory' => 1 },
+if os_version('debian == jessie') {
+    apt::repository { 'aptly-integration-php55':
+        uri        => 'https://integration-aptly.wmflabs.org/repo/',
+        dist       => 'jessie-integration',
+        components => 'php55',
+        source     => false,
+        trust_repo => true,
     }
+    packages { [
+        'php5.5-cli',
+        'php5.5-common',
+        'php5.5-curl',
+        'php5.5-dev',
+        'php5.5-gd',
+        'php5.5-gmp',
+        'php5.5-intl',
+        'php5.5-ldap',
+        'php5.5-mbstring',
+        'php5.5-mcrypt',
+        'php5.5-mysql',
+        'php5.5-sqlite3',
+        'php5.5-tidy',
+        'php5.5-xsl',
+        ]: ensure => present,
+    }
+}
+
+# MediaWiki PHPunit under Zend 5.5 can uses 2GBytes. An attempt to proc_open()
+# invokes fork() which clone the Virtual Memory. Although it is copy-on-write,
+# Linux still check whether the system will be able to honor a full allocation.
+# Allow the Linux memory manager to overcommit memory.
+#
+# https://phabricator.wikimedia.org/T125050#3153574
+# https://www.kernel.org/doc/Documentation/vm/overcommit-accounting
+sysctl::parameters { 'vm.overcommit_memory':
+    values => { 'vm.overcommit_memory' => 1 },
 }
 
 require_package('arcanist')
