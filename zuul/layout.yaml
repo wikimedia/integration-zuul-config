@@ -789,7 +789,7 @@ jobs:
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
 
-  - name: ^mediawiki-extensions-php55-trusty$
+  - name: ^mediawiki-extensions-php55-(trusty|jessie)$
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
 
@@ -956,6 +956,7 @@ project-templates:
      - mwext-testextension-hhvm-composer-jessie
     gate-and-submit-swat: *extension-unittests-composer-gate-and-submit
     experimental:
+     - mwext-testextension-php55-composer-jessie
      - mwext-qunit-composer-jessie
      - mwgate-npm-node-6-jessie
      - mwgate-composer-php70-jessie
@@ -999,6 +1000,7 @@ project-templates:
     experimental:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
+      - mwext-testextension-php55-jessie
       - mwgate-npm-node-6-jessie
       - mwgate-composer-php70-jessie
       - mwext-php70-phan-jessie
@@ -1062,6 +1064,8 @@ project-templates:
       - mediawiki-extensions-php55-trusty
       - mediawiki-extensions-qunit-jessie
     gate-and-submit-swat: *extension-gate-gate-and-submit
+    experimental:
+      - mediawiki-extensions-php55-jessie
 
   - name: extension-phan-generic
     test:
@@ -1135,7 +1139,7 @@ project-templates:
     experimental:
      - mwgate-npm-node-6-jessie
      - mwgate-composer-hhvm-jessie
-     - mwgate-composer-php55-trusty
+     - mwgate-composer-php55-jessie
      - mwgate-composer-php70-jessie
 
   - name: composer-test
@@ -1150,6 +1154,7 @@ project-templates:
       - composer-hhvm-jessie
     gate-and-submit-swat: *composer-test-gate-and-submit
     experimental:
+      - composer-php55-jessie
       - composer-php70-jessie
 
   - name: mwgate-composer
@@ -1163,6 +1168,7 @@ project-templates:
       - mwgate-composer-php55-trusty
       - mwgate-composer-hhvm-jessie
     experimental:
+      - mwgate-composer-php55-jessie
       - mwgate-composer-php70-jessie
     gate-and-submit-swat: *mwgate-composer-gate-and-submit
 
@@ -1186,6 +1192,7 @@ project-templates:
       - composer-package-hhvm-jessie
       - composer-package-php55-trusty
     experimental:
+      - composer-package-php55-jessie
       - composer-package-php70-jessie
 
   - name: npm
@@ -1405,6 +1412,7 @@ projects:
       - mwgate-composer-php70-jessie
       - mediawiki-phpunit-php70-jessie
       - mediawiki-extensions-php70-jessie
+      - mediawiki-phpunit-php55-jessie
 
   - name: mediawiki/debian
     test:
@@ -1435,8 +1443,9 @@ projects:
       - mwgate-composer-validate
     gate-and-submit-swat: *mediawiki-vendor-gate-and-submit
     experimental:
+      - mediawiki-phpunit-php55-jessie
       - mwgate-composer-hhvm-jessie
-      - mwgate-composer-php55-trusty
+      - mwgate-composer-php55-jessie
       - mwgate-composer-php70-jessie
 
   - name: analytics/aggregator
@@ -1619,12 +1628,16 @@ projects:
       - composer-php55-trusty
     postmerge:
      - tox-py27-coverage-publish
+    experimental:
+      - composer-php55-jessie
 
   - name: labs/tools/guc
     test:
       - composer-php55-trusty
     gate-and-submit:
       - composer-php55-trusty
+    experimental:
+      - composer-php55-jessie
 
   - name: labs/tools/Luke081515IRCBot
     test:
@@ -1685,6 +1698,8 @@ projects:
      - composer-php55-trusty
     postmerge:
      - integration-docroot-deploy
+    experimental:
+      - composer-php55-jessie
 
   - name: mediawiki/ruby/api
     template:
@@ -6883,6 +6898,8 @@ projects:
     gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
     experimental:
       - mwext-php70-phan-jessie
+      - mwext-Wikibase-repo-tests-sqlite-php55-jessie
+      - mwext-Wikibase-client-tests-mysql-php55-jessie
     postmerge:
       - mwext-doxygen-publish
       - mwext-jsduck-publish
@@ -7006,7 +7023,7 @@ projects:
       - php-compile-php55
     experimental:
       - php-compile-hhvm-jessie
-      - php-compile-php55-trusty
+      - php-compile-php55-jessie
 
   - name: mediawiki/php/luasandbox
     # no check pipeline since -build runs code :-)
@@ -7020,7 +7037,7 @@ projects:
       - php-compile-php70
     experimental:
       - php-compile-hhvm-test-jessie
-      - php-compile-php55-trusty
+      - php-compile-php55-jessie
       - php-compile-php70-jessie
 
   - name: mediawiki/php/wikidiff2
@@ -7035,7 +7052,7 @@ projects:
       - php-compile-php70
     experimental:
       - php-compile-hhvm-jessie
-      - php-compile-php55-trusty
+      - php-compile-php55-jessie
       - php-compile-php70-jessie
 
   - name: mediawiki/php/wmerrors
@@ -7045,7 +7062,7 @@ projects:
     gate-and-submit:
       - php-compile-php55
     experimental:
-      - php-compile-php55-trusty
+      - php-compile-php55-jessie
 
   - name: mediawiki/oauthclient-php
     template:
@@ -7378,6 +7395,8 @@ projects:
       - oojs-ui-doxygen-publish
       - oojs-ui-coverage
       - oojs-ui-demos-publish
+    experimental:
+      - composer-package-php55-jessie
 
   - name: unicodejs
     template:
