@@ -50,7 +50,7 @@ if os_version('debian == jessie') {
         source     => false,
         trust_repo => true,
     }
-    packages { [
+    package { [
         'php5.5-cli',
         'php5.5-common',
         'php5.5-curl',
