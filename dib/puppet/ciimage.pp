@@ -66,6 +66,7 @@ if os_version('debian == jessie') {
         'php5.5-tidy',
         'php5.5-xsl',
         ]: ensure => present,
+        require   => Apt::Repository['aptly-integration-php55'],
     }
 }
 
