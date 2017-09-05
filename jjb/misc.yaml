@@ -15,7 +15,7 @@
         docsrc: 'doc/html'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
 
-- job:
+- job: &phpunit-coverage-publish
     name: 'phpunit-coverage-publish'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
@@ -39,30 +39,13 @@
 
 - job:
     name: 'remexhtml-phpunit-coverage-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: false
+    !!merge : *phpunit-coverage-publish
     triggers:
-     - zuul
-    builders:
-     - castor-load
-     - composer-update:
-        dir: '.'
-     # Use php5 instead of php (hhvm) because it doesn't do coverage as well as
-     # php5-xdebug. And also slow.
-     - shell: |
-         rm -rf coverage
-         php5 ./vendor/bin/phpunit --coverage-html coverage/
-     - cover-publish:
-        src: 'coverage'
-        dest: '$DOC_PROJECT'
-    publishers:
-     - castor-save
+      - zuul
     wrappers:
       - timeout:
-          timeout: 65 # increased to 65 due to lots of tests
+          timeout: 65 # mins. Increased due to lots of tests
           fail: true
-
 
 - job:
     name: 'unicodejs-publish'
