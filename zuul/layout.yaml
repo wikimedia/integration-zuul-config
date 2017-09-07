@@ -6290,19 +6290,16 @@ projects:
       - graphoid-deploy-npm-node-6-jessie
 
   - name: mediawiki/services/jobrunner
-    # XXX requires php-redis to switch to php5.5 on Jessie
-    # Once done switch back to composer-test-package
     check:
       - composer-package-validate
       - php55lint
     test:
       - composer-package-hhvm-jessie
-      - composer-package-php55-trusty
+      - composer-package-php55-jessie
     gate-and-submit:
       - composer-package-hhvm-jessie
-      - composer-package-php55-trusty
-    experimental:
       - composer-package-php55-jessie
+    experimental:
       - composer-package-php70-jessie
 
   - name: mediawiki/services/mathoid
