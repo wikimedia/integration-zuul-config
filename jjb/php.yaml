@@ -135,20 +135,10 @@
     phpflavor: hhvm
     triggers:
      - zuul
-- job-template:
-    !!merge : *job_composer-phpflavor-image
-    name: '{name}-composer-php55-trusty'
-    image: trusty
-    phpflavor: php55
-    triggers:
-     - zuul
 
 - project:
     name: 'composer-flavored-on-nodepool'
     phpflavor:
-        # Zend 55 is solely on Trusty
-        - php55:
-            image: trusty
         - php55:
             image: jessie
         - php70:
