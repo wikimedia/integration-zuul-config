@@ -965,6 +965,26 @@ project-templates:
      - mwgate-npm-node-6-jessie
      - mwgate-composer-php70-jessie
 
+  # Saem but with php55-composer running on Jessie instead of Trusty
+  - name: extension-unittests-composer-jessie
+    check:
+     - mwgate-php55lint
+     - mwgate-composer-validate
+    test:
+     - mwgate-php55lint
+     - mwext-testextension-hhvm-composer-jessie
+    php5:
+     - mwext-testextension-php55-composer-jessie
+    gate-and-submit: &extension-unittests-composer-jessie-gate-and-submit
+     - mwgate-php55lint
+     - mwext-testextension-php55-composer-jessie
+     - mwext-testextension-hhvm-composer-jessie
+    gate-and-submit-swat: *extension-unittests-composer-jessie-gate-and-submit
+    experimental:
+     - mwext-qunit-composer-jessie
+     - mwgate-npm-node-6-jessie
+     - mwgate-composer-php70-jessie
+
   - name: extension-unittests-composer-non-voting
     check:
      - mwgate-php55lint
@@ -3276,7 +3296,7 @@ projects:
 
   - name: mediawiki/extensions/GitHub
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/Gitweb
@@ -3356,7 +3376,7 @@ projects:
 
   - name: mediawiki/extensions/GoogleLogin
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/GoogleNewsSitemap
@@ -3780,7 +3800,7 @@ projects:
   - name: mediawiki/extensions/OAuthAuthentication
     template:
       - name: mwgate-npm
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
 
   - name: mediawiki/extensions/Offline
     template:
@@ -4087,12 +4107,12 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceFoundation
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/BlueSpiceInsertTemplate
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/BlueSpiceMultiUpload
@@ -4106,17 +4126,17 @@ projects:
 
   - name: mediawiki/extensions/BlueSpicePageVersion
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/BSSMWConnector
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/BlueSpiceSignHere
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/BlueSpiceSMWConnector
@@ -4130,7 +4150,7 @@ projects:
 
   - name: mediawiki/extensions/Bootstrap
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/BreadCrumbs
@@ -4851,7 +4871,7 @@ projects:
 
   - name: mediawiki/extensions/NSFileRepo
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/NukeDPL
@@ -5004,7 +5024,7 @@ projects:
 
   - name: mediawiki/extensions/PhpTagsSMW
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/PhpTagsSPARQL
@@ -5319,7 +5339,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticSifter
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/SemanticWebBrowser
@@ -5555,7 +5575,7 @@ projects:
 
   - name: mediawiki/extensions/TemplateStyles
     template:
-     - name: extension-unittests-composer
+     - name: extension-unittests-composer-jessie
      - name: mwgate-npm
 
   - name: mediawiki/extensions/TestLanguageNameGrammar
@@ -5585,7 +5605,7 @@ projects:
 
   - name: mediawiki/extensions/ThrottleOverride
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/ThumbParser
@@ -6135,7 +6155,7 @@ projects:
 
   - name: mediawiki/extensions/reCaptcha
     template:
-     - name: extension-unittests-composer
+     - name: extension-unittests-composer-jessie
      - name: mwgate-npm
 
   - name: mediawiki/extensions/RecentActivityFeed
@@ -6198,17 +6218,17 @@ projects:
 
   - name: mediawiki/extensions/VIKI
     template:
-     - name: extension-unittests-composer
+     - name: extension-unittests-composer-jessie
      - name: mwgate-npm
 
   - name: mediawiki/extensions/VikiSemanticTitle
     template:
-     - name: extension-unittests-composer
+     - name: extension-unittests-composer-jessie
      - name: mwgate-npm
 
   - name: mediawiki/extensions/VikiTitleIcon
     template:
-     - name: extension-unittests-composer
+     - name: extension-unittests-composer-jessie
      - name: mwgate-npm
 
   - name: mediawiki/extensions/WebCache
@@ -6227,7 +6247,7 @@ projects:
 
   - name: mediawiki/extensions/XenForoAuth
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/XAnalytics
@@ -6513,7 +6533,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticACL
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/SemanticBundle
@@ -6533,7 +6553,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticGenealogy
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/SemanticImageAnnotator
@@ -6576,7 +6596,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticTitle
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/SemanticUpdateOnPurge
@@ -6694,7 +6714,7 @@ projects:
 
   - name: mediawiki/extensions/SideBarMenu
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
@@ -6874,7 +6894,7 @@ projects:
 
   - name: mediawiki/extensions/WebPlatformAuth
     template:
-      - name: extension-unittests-composer
+      - name: extension-unittests-composer-jessie
       - name: mwgate-npm
 
   - name: mediawiki/extensions/WikiEditor
