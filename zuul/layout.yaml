@@ -793,7 +793,7 @@ jobs:
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
 
-  - name: ^mediawiki-extensions-php55-(trusty|jessie)$
+  - name: ^mediawiki-extensions-php55-jessie$
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
 
@@ -1062,14 +1062,12 @@ project-templates:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
     php5:
-      - mediawiki-extensions-php55-trusty
+      - mediawiki-extensions-php55-jessie
     gate-and-submit: &extension-gate-gate-and-submit
       - mediawiki-extensions-hhvm-jessie
-      - mediawiki-extensions-php55-trusty
+      - mediawiki-extensions-php55-jessie
       - mediawiki-extensions-qunit-jessie
     gate-and-submit-swat: *extension-gate-gate-and-submit
-    experimental:
-      - mediawiki-extensions-php55-jessie
 
   - name: extension-phan-generic
     test:
