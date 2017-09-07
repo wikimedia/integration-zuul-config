@@ -62,6 +62,7 @@ if os_version('debian == jessie') {
         'php5.5-mbstring',
         'php5.5-mcrypt',
         'php5.5-mysql',
+        'php5.5-redis',
         'php5.5-sqlite3',
         'php5.5-tidy',
         'php5.5-xsl',
