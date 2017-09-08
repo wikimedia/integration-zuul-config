@@ -14,6 +14,7 @@ import unittest
 import zuul.scheduler
 from zuul.scheduler import ReconfigureEvent
 from zuul.reporter.gerrit import GerritReporter
+from zuul.reporter.smtp import SMTPReporter
 import zuul.model
 
 from zuul.connection import BaseConnection
@@ -52,7 +53,8 @@ class TestZuulScheduler(unittest.TestCase):
         # Scheduler class:
         cls.sched = zuul.scheduler.Scheduler(cfg)
         cls.sched.registerConnections({
-            'gerrit': FakeConnection('gerrit', {})
+            'gerrit': FakeConnection('gerrit', {}),
+            'smtp': FakeConnection('smtp', {}),
         })
         cls.sched._doReconfigureEvent(ReconfigureEvent(cfg))
 
@@ -816,7 +818,7 @@ class TestZuulScheduler(unittest.TestCase):
             'In JJB: add extension to "gatedextensions"')
 
     def test_pipelines_have_report_action_to_gerrit(self):
-        not_reporting = ['post', 'publish']
+        not_reporting = ['post', 'publish', 'qa-weekly']
         required_actions = ['success', 'failure']
         reporting_pipelines = [
             p for p in self.getPipelines()
