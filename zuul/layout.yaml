@@ -609,6 +609,29 @@ pipelines:
     failure:
       gerrit: {}
 
+  - name: qa-weekly
+    description:
+      Run on a daily basis and report on failure.
+    manager: DependentPipelineManager  # XXX so we can change the window
+    source: gerrit
+    precedence: low
+
+    # Restrict it to a single change:
+    window: 1  # initial value
+    window-increase-type: linear  # ADD value below
+    window-increase-factor: 0  # We never increase it
+
+    trigger:
+      timer:
+        # 1am UTC on Saturday (6)
+        time: '0 1 * * 6'
+
+    failure:
+      smtp:
+        from: jenkins-bot@wikimedia.org
+        to: qa-alerts@lists.wikimedia.org
+        subject: 'QA check for {change.project} failed'
+
   # Actual gate (report/vote in Gerrit)
   # Will auto-submit change on success!
   #
@@ -959,6 +982,8 @@ project-templates:
      - mwext-testextension-php55-composer-trusty
      - mwext-testextension-hhvm-composer-jessie
     gate-and-submit-swat: *extension-unittests-composer-gate-and-submit
+    qa-weekly:
+     - mwext-testextension-hhvm-composer-jessie
     experimental:
      - mwext-testextension-php55-composer-jessie
      - mwext-qunit-composer-jessie
@@ -980,6 +1005,8 @@ project-templates:
      - mwext-testextension-php55-composer-jessie
      - mwext-testextension-hhvm-composer-jessie
     gate-and-submit-swat: *extension-unittests-composer-jessie-gate-and-submit
+    qa-weekly:
+     - mwext-testextension-hhvm-composer-jessie
     experimental:
      - mwext-qunit-composer-jessie
      - mwgate-npm-node-6-jessie
@@ -1021,6 +1048,8 @@ project-templates:
      - mwext-testextension-php55-trusty
      - mwext-testextension-hhvm-jessie
     gate-and-submit-swat: *extension-unittests-generic-gate-and-submit
+    qa-weekly:
+     - mwext-testextension-hhvm-jessie
     experimental:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
@@ -1130,6 +1159,8 @@ project-templates:
     gate-and-submit: &skin-tests-gate-and-submit
       - mw-testskin
     gate-and-submit-swat: *skin-tests-gate-and-submit
+    qa-weekly:
+      - mw-testskin
 
   - name: skin-tests-non-voting
     test:
