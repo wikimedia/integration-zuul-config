@@ -742,6 +742,29 @@ pipelines:
     failure:
       gerrit: {}
 
+  - name: qa-weekly
+    description:
+      Run on a daily basis and report on failure.
+    manager: DependentPipelineManager  # XXX so we can change the window
+    source: gerrit
+    precedence: low
+    trigger:
+      timer:
+         # 1am UTC on Saturday (6)
+         - time: '0 1 * * 6'
+
+    # Restrict it to a single change:
+    window: 1  # initial value
+    window-increase-type: exponential # MULTIPLY by value below
+    window-increase-factor: 1  # We never increase it
+
+    failure:
+      smtp:
+        connection: 'smtp'
+        from: jenkins-bot@wikimedia.org
+        to: qa-alerts@lists.wikimedia.org
+        subject: 'QA check failed'
+
   # Actual gate (report/vote in Gerrit)
   # Will auto-submit change on success!
   #
@@ -1232,6 +1255,8 @@ project-templates:
     gate-and-submit-swat: *extension-quibble-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
+    qa-weekly:
+     - quibble-vendor-mysql-php70-docker
     experimental:
       - quibble-vendor-sqlite-php70-docker
       - quibble-vendor-mysql-php73-docker
@@ -1261,6 +1286,8 @@ project-templates:
     gate-and-submit-swat: *extension-quibble-composer-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
+    qa-weekly:
+     - quibble-composer-mysql-php70-docker
     experimental:
       - quibble-composer-sqlite-php70-docker
       - quibble-composer-mysql-php73-docker
@@ -1291,6 +1318,8 @@ project-templates:
     gate-and-submit-swat: *extension-quibble-noselenium-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
+    qa-weekly:
+     - quibble-vendor-mysql-php70-noselenium-docker
     experimental:
       - quibble-vendor-sqlite-php70-noselenium-docker
       - quibble-vendor-mysql-php73-noselenium-docker
@@ -1320,6 +1349,8 @@ project-templates:
     gate-and-submit-swat: *extension-quibble-composer-noselenium-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
+    qa-weekly:
+     - quibble-composer-mysql-php70-noselenium-docker
     experimental:
       - quibble-composer-sqlite-php70-noselenium-docker
       - quibble-composer-mysql-php72-noselenium-docker
@@ -1443,6 +1474,8 @@ project-templates:
     gate-and-submit-swat: *skin-quibble-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
+    qa-weekly:
+     - quibble-vendor-mysql-php70-docker
     experimental:
       - quibble-vendor-sqlite-php70-docker
       - quibble-vendor-mysql-php73-docker
@@ -1472,6 +1505,8 @@ project-templates:
     gate-and-submit-swat: *skin-quibble-composer-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
+    qa-weekly:
+     - quibble-composer-mysql-php70-docker
     experimental:
       - quibble-composer-sqlite-php70-docker
       - quibble-composer-mysql-php72-docker
