@@ -27,7 +27,7 @@ RUN mkdir -p /tmp/cache && \
     cd /tmp/cache/puppet && \
     git tag 'docker-head' && \
     bundle install --clean --path="/tmp/cache/bundle" && \
-    TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v || /bin/true && \
+    TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v --notest && \
     mv .tox /tmp/cache/tox
 
 FROM docker-registry.wikimedia.org/wikimedia-jessie:latest
