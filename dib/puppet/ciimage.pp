@@ -57,6 +57,7 @@ if os_version('debian == jessie') {
         'php5.5-gmp',
         'php5.5-intl',
         'php5.5-ldap',
+        'php5.5-luasandbox',
         'php5.5-mbstring',
         'php5.5-mcrypt',
         'php5.5-mysql',
