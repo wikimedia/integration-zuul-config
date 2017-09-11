@@ -23,10 +23,10 @@ for dockerbuild in "$BASE_DIR"/contint-*/Dockerfile; do
     pushd "$CONTAINER_DIR" &>/dev/null
     info "BUILDING $TAGGED_IMG"
 
-    # This is copied in Dockerfile to ensure that a build step grabs a fresh
-    # copy of the git repo when this script is run rather than using a layer
-    # from the local Docker cache.
-    date --iso=ns > .cache-buster
+    if [ -f "./prebuild.sh" ]
+    then
+        ./prebuild.sh
+    fi
 
     docker build \
         -t "${TAGGED_IMG}" \
