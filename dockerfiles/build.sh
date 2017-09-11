@@ -1,23 +1,27 @@
 #!/usr/bin/env bash
 # Use this file to rebuild all docker images in this repository
+# and tag them with the current timestamp in the format 'vY.m.d.H.M'
 
 set -eu
+
+DOCKER_TAG_DATE='v'`date --utc +%Y.%m.%d.%H.%M`
+DOCKER_HUB_ACCOUNT=wmfreleng
 
 info() {
     printf "[$(tput setaf 3)INFO$(tput sgr 0)] %b\n" "$@"
 }
 
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DOCKER_HUB_USER=wmfreleng
 
 for dockerbuild in "$BASE_DIR"/contint-*/Dockerfile; do
     CONTAINER_DIR="${dockerbuild%/*}"
     CONTAINER_NAME="${CONTAINER_DIR##*/}"
 
-    IMG_TAG="${DOCKER_HUB_USER}/${CONTAINER_NAME:8}"
+    IMG="${DOCKER_HUB_ACCOUNT}/${CONTAINER_NAME:8}"
+    TAGGED_IMG="${IMG}:${DOCKER_TAG_DATE}"
 
     pushd "$CONTAINER_DIR" &>/dev/null
-    info "BUILDING $IMG_TAG"
+    info "BUILDING $TAGGED_IMG"
 
     # This is copied in Dockerfile to ensure that a build step grabs a fresh
     # copy of the git repo when this script is run rather than using a layer
@@ -25,8 +29,10 @@ for dockerbuild in "$BASE_DIR"/contint-*/Dockerfile; do
     date --iso=ns > .cache-buster
 
     docker build \
-        -t "${IMG_TAG}" \
+        -t "${TAGGED_IMG}" \
         -f "Dockerfile" .
+
+    docker tag "${TAGGED_IMG}" "${IMG}:latest"
 
     popd &>/dev/null
 done
