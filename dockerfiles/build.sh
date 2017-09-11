@@ -11,16 +11,15 @@ info() {
     printf "[$(tput setaf 3)INFO$(tput sgr 0)] %b\n" "$@"
 }
 
-BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+buildDockerfile() {
+    DOCKERFILE=$@
+    DOCKERFILE_DIR="${DOCKERFILE%/*}"
+    DOCKERFILE_NAME="${DOCKERFILE_DIR##*/}"
 
-for dockerbuild in "$BASE_DIR"/contint-*/Dockerfile; do
-    CONTAINER_DIR="${dockerbuild%/*}"
-    CONTAINER_NAME="${CONTAINER_DIR##*/}"
-
-    IMG="${DOCKER_HUB_ACCOUNT}/${CONTAINER_NAME:8}"
+    IMG="${DOCKER_HUB_ACCOUNT}/${DOCKERFILE_NAME}"
     TAGGED_IMG="${IMG}:${DOCKER_TAG_DATE}"
 
-    pushd "$CONTAINER_DIR" &>/dev/null
+    pushd "$DOCKERFILE_DIR" &>/dev/null
     info "BUILDING $TAGGED_IMG"
 
     # This is copied in Dockerfile to ensure that a build step grabs a fresh
@@ -35,4 +34,14 @@ for dockerbuild in "$BASE_DIR"/contint-*/Dockerfile; do
     docker tag "${TAGGED_IMG}" "${IMG}:latest"
 
     popd &>/dev/null
-done
+}
+
+BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ $# -eq 0 ]; then
+    for DOCKERFILE in "$BASE_DIR"/*/Dockerfile; do
+        buildDockerfile $DOCKERFILE
+    done
+else
+    buildDockerfile "${BASE_DIR}/$1/Dockerfile"
+fi
