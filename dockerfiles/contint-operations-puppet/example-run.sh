@@ -1,3 +1,5 @@
+#!/bin/bash
+
 docker run \
     --rm --tty \
     --env ZUUL_URL=https://gerrit.wikimedia.org/r \
