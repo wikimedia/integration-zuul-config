@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e7eab26_bae76a3a",
+        "filename": "dockerfiles/tox/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-11T20:56:16Z",
+      "side": 1,
+      "message": "Then we need some more development packages. There is a list at  modules/contint/manifests/packages/python.pp  that is only needed for dependencies that requires a C compilation.\n\n\nAlso need to add python3 and pypy :]",
+      "revId": "a9c0369d047631910a8e64dcba67a0d48d7bdbed",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_da0ef636",
+        "filename": "dockerfiles/tox/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-11T20:56:16Z",
+      "side": 1,
+      "message": "I got tox bumped to 2.5.0\n\nOnce pip has run, you would want to strip its cache. Probably:\n\n rm -fR /root/.cache/pip\n\nAnd IIRC pip install pip deleted /usr/bin/pip and I ended up creating a symlink to /usr/local/bin/pip.  But maybe that is in the PATH anyway.",
+      "revId": "a9c0369d047631910a8e64dcba67a0d48d7bdbed",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_9a186e7c",
+        "filename": "dockerfiles/tox/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-11T20:56:16Z",
+      "side": 1,
+      "message": "Nit pick, I would skip /srv/src and clone under /var/lib/jenkins/src  though that does not really mater.\n\n\nWould it make sense to make it an env variable that can then be easily reused in the shell scripts?  Something like\n\n ENV CI_SRC\u003d/srv/src\n ENV LOG_DIR\u003d/var/lib/jenkins/log\n\n\n\n\nSounds like we could build an intermediate image that would include that snippet since that would be needed pretty much everywhere.",
+      "revId": "a9c0369d047631910a8e64dcba67a0d48d7bdbed",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_ba2c4a90",
+        "filename": "dockerfiles/tox/example-run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-11T20:56:16Z",
+      "side": 1,
+      "message": "$(pwd)  should be surrounded with double quotes in case pwd has a space in it :]\n\nAny reason for the double / in the volume destination?",
+      "revId": "a9c0369d047631910a8e64dcba67a0d48d7bdbed",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
