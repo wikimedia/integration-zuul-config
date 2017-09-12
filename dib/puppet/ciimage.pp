@@ -182,10 +182,27 @@ if os_version('debian >= jessie') {
     }
 
     # services packages and -dev packages for npm modules compilation and test
-    # run. NOTE: hiera must have: service::configuration::use_dev_pkgs: true
-    include graphoid::packages
-    include mathoid::packages
-    include trendingedits::packages
+    # run.
+    # Used to be in services::packages but that is no more supported until a
+    # solution is found in operations/puppet.git
+
+    # graphoid
+    require_package([
+        'libcairo2', 'libgif4', 'libjpeg62-turbo', 'libpango1.0-0',
+        'libcairo2-dev', 'libgif-dev', 'libpango1.0-dev', 'libjpeg62-turbo-dev',
+    ])
+
+    # mathoid
+    require_package([
+        'librsvg2-2',
+        'librsvg2-dev',
+    ])
+
+    # trendingedits
+    require_package([
+        'librdkafka++1', 'librdkafka1',
+        'librdkafka-dev',
+    ])
 }
 
 ensure_packages(['mariadb-client', 'mariadb-server'])
