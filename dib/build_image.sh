@@ -21,14 +21,9 @@ case "${1:-0}" in
 		# base::service_unit from installing services. T129320
 		export FACTER_initsystem='systemd'
 	;;
-	ubuntu)
-		distribution_elements=('ubuntu')
-		export DIB_RELEASE=${DIB_RELEASE:-trusty}
-		export FACTER_initsystem='upstart'
-	;;
 	* | 0)
 		echo "Fatal: Linux distribution not recognized."
-		echo "Usage: $0 <debian|ubuntu>"
+		echo "Usage: $0 <debian>"
 		exit 1
 esac
 DIB_DISTRIBUTION=$1

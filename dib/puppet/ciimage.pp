@@ -30,10 +30,8 @@ include zuul
 package { 'cron':
     ensure => present,
 }
-if os_version('debian >= jessie') {
-    class { '::contint::hhvm':
-        require => Package['cron'],
-    }
+class { '::contint::hhvm':
+    require => Package['cron'],
 }
 
 include contint::packages::javascript
@@ -105,15 +103,13 @@ require_package('djvulibre-bin')
 include contint::packages::ruby
 
 # Install from gem
-if os_version('debian >= jessie') {
-    package { 'jsduck':
-        ensure   => present,
-        provider => 'gem',
-        require  => [
-            Class['::contint::packages::ruby'],
-            Package['build-essential'],
-        ],
-    }
+package { 'jsduck':
+    ensure   => present,
+    provider => 'gem',
+    require  => [
+        Class['::contint::packages::ruby'],
+        Package['build-essential'],
+    ],
 }
 
 # Overrides
@@ -135,75 +131,74 @@ class apache2_allow_execution {
       command => '/bin/chmod +x /usr/sbin/apache2',
   }
 }
-if os_version('debian >= jessie') {
-    include contint::packages::doxygen
-    include contint::packages::java
-    include contint::packages::python
 
-    # Qunit/Selenium related
-    include contint::browsers
+include contint::packages::doxygen
+include contint::packages::java
+include contint::packages::python
+
+# Qunit/Selenium related
+include contint::browsers
 
 
-    # FIXME: hack, our manifests no more ship libapache2-mod-php5
-    # See T144802
-    include ::apache::mod::php5
+# FIXME: hack, our manifests no more ship libapache2-mod-php5
+# See T144802
+include ::apache::mod::php5
 
-    # For Selenium jobs video recording (T113520)
-    require_package('libav-tools')
+# For Selenium jobs video recording (T113520)
+require_package('libav-tools')
 
-    class { 'contint::worker_localhost':
-        owner => 'jenkins',
-    }
-
-    # Augeas rule deals with /etc/logrotate.d/apache2
-    # Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
-    Package['apache2'] ~> Augeas['Apache2 logs']
-
-    # Nasty workaround when running inside a chroot...
-    exec { 'prevent apache2 from executing':
-      refreshonly => true,
-      command     => '/bin/chmod -x /usr/sbin/apache2',
-      onlyif      => '/bin/bash -c "export | grep DIB_"',
-      subscribe   => Package['apache2'],
-      before      => [
-        Service['apache2'],
-        Exec['apache2_hard_restart'],
-      ],
-      require     => [
-        Exec['apache2_test_config_and_restart'],
-      ],
-    }
-
-    stage { 'last': }
-    Stage['main'] -> Stage['last']
-
-    class { 'apache2_allow_execution':
-        stage => last,
-    }
-
-    # services packages and -dev packages for npm modules compilation and test
-    # run.
-    # Used to be in services::packages but that is no more supported until a
-    # solution is found in operations/puppet.git
-
-    # graphoid
-    require_package([
-        'libcairo2', 'libgif4', 'libjpeg62-turbo', 'libpango1.0-0',
-        'libcairo2-dev', 'libgif-dev', 'libpango1.0-dev', 'libjpeg62-turbo-dev',
-    ])
-
-    # mathoid
-    require_package([
-        'librsvg2-2',
-        'librsvg2-dev',
-    ])
-
-    # trendingedits
-    require_package([
-        'librdkafka++1', 'librdkafka1',
-        'librdkafka-dev',
-    ])
+class { 'contint::worker_localhost':
+    owner => 'jenkins',
 }
+
+# Augeas rule deals with /etc/logrotate.d/apache2
+# Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
+Package['apache2'] ~> Augeas['Apache2 logs']
+
+# Nasty workaround when running inside a chroot...
+exec { 'prevent apache2 from executing':
+  refreshonly => true,
+  command     => '/bin/chmod -x /usr/sbin/apache2',
+  onlyif      => '/bin/bash -c "export | grep DIB_"',
+  subscribe   => Package['apache2'],
+  before      => [
+    Service['apache2'],
+    Exec['apache2_hard_restart'],
+  ],
+  require     => [
+    Exec['apache2_test_config_and_restart'],
+  ],
+}
+
+stage { 'last': }
+Stage['main'] -> Stage['last']
+
+class { 'apache2_allow_execution':
+    stage => last,
+}
+
+# services packages and -dev packages for npm modules compilation and test
+# run.
+# Used to be in services::packages but that is no more supported until a
+# solution is found in operations/puppet.git
+
+# graphoid
+require_package([
+    'libcairo2', 'libgif4', 'libjpeg62-turbo', 'libpango1.0-0',
+    'libcairo2-dev', 'libgif-dev', 'libpango1.0-dev', 'libjpeg62-turbo-dev',
+])
+
+# mathoid
+require_package([
+    'librsvg2-2',
+    'librsvg2-dev',
+])
+
+# trendingedits
+require_package([
+    'librdkafka++1', 'librdkafka1',
+    'librdkafka-dev',
+])
 
 ensure_packages(['mariadb-client', 'mariadb-server'])
 
@@ -222,20 +217,18 @@ ensure_packages(['zip', 'unzip'])
 
 ensure_packages(['openjdk-7-jre-headless'])
 
-if os_version('debian >= jessie') {
-    # Following should later be included in contint::packages::ops once GeoIP
-    # is installable.
-    package { ['etcd', 'python-etcd']:
-        ensure => present,
-    }
+# Following should later be included in contint::packages::ops once GeoIP
+# is installable.
+package { ['etcd', 'python-etcd']:
+    ensure => present,
+}
 
-    # We run varnishtest
-    package { 'varnish':
-        ensure => present,
-    }
-    service { 'varnish':
-        require  => Package['varnish'],
-        enable => false,
-    }
+# We run varnishtest
+package { 'varnish':
+    ensure => present,
+}
+service { 'varnish':
+    require  => Package['varnish'],
+    enable => false,
 }
 # end contint::packages::ops

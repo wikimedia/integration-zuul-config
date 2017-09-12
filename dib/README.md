@@ -14,9 +14,5 @@ More aggressively:
 
 And maybe you will have a qcow2 image build!
 
-To build an Ubuntu Trusty image:
-
-   ./build_image.sh ubuntu
-
 See upstream documentation:
 http://docs.openstack.org/developer/diskimage-builder/
