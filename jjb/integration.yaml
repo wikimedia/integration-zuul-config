@@ -134,8 +134,8 @@
 
 # Super basic sanity check for integration/composer repo
 - job-template:
-    name: 'integration-composer-check-{phpflavor}'
-    node: contintLabsSlave && phpflavor-{phpflavor}
+    name: 'integration-composer-check-{phpflavor}-{image}'
+    node: ci-{image}-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -143,6 +143,14 @@
     builders:
      - shell: |
         ./vendor/bin/composer --version
+
+- project:
+    name: 'integration-composer'
+    jobs:
+     - 'integration-composer-check-{phpflavor}-{image}':
+         phpflavor:
+             - php55:
+                 image: jessie
 
 - job:
     name: integration-config-qa
@@ -214,10 +222,3 @@
     name: 'integration-docroot'
     jobs:
      - 'integration-docroot-deploy'
-
-- project:
-    name: 'integration-composer'
-    jobs:
-     - 'integration-composer-check-{phpflavor}':
-         phpflavor:
-             - php55
