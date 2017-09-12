@@ -150,7 +150,7 @@
 
 - job-template:
     name: '{phpflavor}lint'
-    node: contintLabsSlave && phpflavor-{phpflavor}
+    node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -168,7 +168,7 @@
 
 - job-template:
     name: '{name}-{phpflavor}lint'
-    node: contintLabsSlave && phpflavor-{phpflavor}
+    node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul-no-submodules
     concurrent: true
     properties:
