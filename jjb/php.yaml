@@ -34,7 +34,7 @@
 # Includes full validation that packagist.org requires.
 - job:
     name: composer-package-validate
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
 
@@ -50,7 +50,7 @@
 # published on packagist.org.
 - job: &job_composer-validate
     name: composer-validate
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
 
