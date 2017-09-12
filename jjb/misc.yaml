@@ -346,8 +346,7 @@
 # Find out common typos in any files based on list of typos in a /typos file
 - job-template:
     name: '{name}-typos'
-    # Bound to Trusty since we need grep v2.11-8 for -r to not follow symlinks
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
 

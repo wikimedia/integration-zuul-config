@@ -1,7 +1,7 @@
 # Generic job-templates
 - job:
     name: 'jsduck'
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
     triggers:
@@ -14,7 +14,7 @@
 # used as workaround.
 - job-template:
     name: '{name}-jsduck'
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
     defaults: use-remoteonly-zuul
     concurrent: true
     triggers:
@@ -188,7 +188,7 @@
     name: '{name}-tabs'
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
-    node: contintLabsSlave && UbuntuTrusty
+    node: contintLabsSlave && DebianJessie
     triggers:
      - zuul
     builders:
