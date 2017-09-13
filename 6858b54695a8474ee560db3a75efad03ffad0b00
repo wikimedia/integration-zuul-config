@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e7eab26_91436867",
+        "filename": "dockerfiles/contint-operations-puppet/Dockerfile",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-13T08:04:03Z",
+      "side": 1,
+      "message": "We need a full clone or you end up with random breakage when fetching from the zuul-merger.\n\nEg if one send a chain of patches A, B, C you would fetch from the zuul-merger a zuul/ref which is the merge of C into production:\n\n\n (production)-----------------(merge zuul/ref into production)\n   \\---A---B---C (zuul/ref)---/\n\nI clearly remember that \"git fetch zuul/ref\" would end up complaining because it lacks object of A / B and potentially production.\n\n\nIf the goal is to speed up the container creation, we can use a git cache on the host and attach it as a read-only volume to clone from.  I did something like that in quibble:\n\n mkdir -p ref/mediawiki\n git clone --bare mediawiki/core ref/mediawiki/core.git\n git clone --bare mediawiki/vendor ref/mediawiki/vendor.git\n\nThen:\n\n docker run -v `pwd`/ref:/srv/git:ro\n\nAnd inside the container:\n\n git clone --reference /srv/git/mediawiki/core.git\n\nOr\n\n  zuul-cloner --cache-dir /srv/git",
+      "revId": "6858b54695a8474ee560db3a75efad03ffad0b00",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
