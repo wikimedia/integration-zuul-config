@@ -764,7 +764,7 @@ jobs:
     files:
      - '^.*\.(php|php5|phtml|inc)$'
 
-  - name: ^mediawiki.*-hhvm(-composer)?(-trusty|-jessie)?$
+  - name: ^mediawiki.*-hhvm(-composer)?(-jessie)?$
     # FIXME does fundraising active branches support HHVM?
     branch: (?!fundraising/REL.*)
 
@@ -789,7 +789,7 @@ jobs:
   # Jobs testing multiple extensions together
 
   # Extensions tested together, since 1.25alpha ...
-  - name: ^mediawiki-extensions-(qunit|hhvm)(-jessie|trusty)?$
+  - name: ^mediawiki-extensions-(qunit|hhvm)(-jessie)?$
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
 
