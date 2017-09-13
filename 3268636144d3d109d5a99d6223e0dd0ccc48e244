@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e7eab26_7c7fb363",
+        "filename": "dockerfiles/operations-puppet/prebuild.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-13T09:12:22Z",
+      "side": 1,
+      "message": "need to catch potential errors:\n\n set -eu\n\nAnd definitely:\n\n set -o pipefail\n\nIn your code, if the git fails, .cache-buster ends up being empty.",
+      "revId": "3268636144d3d109d5a99d6223e0dd0ccc48e244",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_5cde7771",
+        "filename": "dockerfiles/operations-puppet/prebuild.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-13T09:12:22Z",
+      "side": 1,
+      "message": "The grep/cut are not needed, you can ask for the HEAD of the repo directly:\n\n $ git ls-remote https://gerrit.wikimedia.org/r/operations/puppet HEAD\n 70cc579da506f5ea693618102a40d5a9ef3f96a6\tHEAD\n\n\nFrom the man page, we also want to pass --exit-code to have git ls-remote to exit 2 when it fails.\n\nALSO git ls-remote is slow since upload-pack on the server ends up sending every single references.\n\n\nPotentially one could use instead the Gerrit REST API which ends up being way faster:\n\n\n $ curl https://gerrit.wikimedia.org/r/projects/operations%2Fpuppet/branches/production\n )]}\u0027\n {\n   \"web_links\": [\n     {\n       \"name\": \"diffusion\",\n       \"url\": \"https://phabricator.wikimedia.org/r/branch/operations/puppet;refs/heads/production\"\n     }\n   ],\n   \"ref\": \"refs/heads/production\",\n   \"revision\": \"91cfac8ddb963e3c2ee994b2e5a0328863a77c04\"\n }",
+      "revId": "3268636144d3d109d5a99d6223e0dd0ccc48e244",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
