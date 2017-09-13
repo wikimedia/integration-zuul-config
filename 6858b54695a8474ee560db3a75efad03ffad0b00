@@ -16,6 +16,24 @@
       "revId": "6858b54695a8474ee560db3a75efad03ffad0b00",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_510d0040",
+        "filename": "dockerfiles/contint-operations-puppet/Dockerfile",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 106
+      },
+      "writtenOn": "2017-09-13T08:13:43Z",
+      "side": 1,
+      "message": "\"when fetching from the zuul-merger\".\nDo you mean git://contint2001.wikimedia.org/operations/puppet ? or?\n\ngit fetch zuul/ref should sort out all of the objects that it needs, you can do it in a totally bare repo and literally \"git init \u0026\u0026 git fetch zuul/ref\" and it will fetch the ref correctly / figure out which objects it needs.\n\nThe goal is indeed to speed up the container creation, and run of the container.\nI would be against building something into this image such as a git cache and infact I think the fetching of the code should be done in a seperate container.\nThis allows these test containers to also be run easily on devs machines.\nSee: https://gerrit.wikimedia.org/r/#/c/375834\n\nDo you have any previous tickets of jenkins runs that show the complaining because it lacks object of A / B?",
+      "parentUuid": "4e7eab26_91436867",
+      "revId": "6858b54695a8474ee560db3a75efad03ffad0b00",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
