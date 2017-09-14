@@ -42,5 +42,5 @@ if [ $# -eq 0 ]; then
         buildDockerfile $DOCKERFILE
     done
 else
-    buildDockerfile "${BASE_DIR}/$1/Dockerfile"
+    buildDockerfile "${BASE_DIR}/${1%/}/Dockerfile"
 fi
