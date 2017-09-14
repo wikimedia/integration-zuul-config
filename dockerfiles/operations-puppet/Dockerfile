@@ -3,7 +3,7 @@ FROM docker-registry.wikimedia.org/wikimedia-jessie:latest as builder
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         build-essential \
         bundler \
         git \
@@ -35,7 +35,7 @@ FROM docker-registry.wikimedia.org/wikimedia-jessie:latest
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         build-essential \
         bundler \
         git \
