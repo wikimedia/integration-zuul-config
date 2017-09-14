@@ -6,11 +6,6 @@ USER root
 
 COPY --from=composer /srv/composer /srv/composer
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
-        ca-certificates && \
-    apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
-
 RUN groupadd -r phan && \
     useradd --no-log-init --system --create-home -g phan phan && \
     install -d /srv/phan -o phan -g phan
