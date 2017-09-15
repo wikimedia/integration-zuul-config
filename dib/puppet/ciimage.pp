@@ -102,16 +102,6 @@ require_package('djvulibre-bin')
 
 include contint::packages::ruby
 
-# Install from gem
-package { 'jsduck':
-    ensure   => present,
-    provider => 'gem',
-    require  => [
-        Class['::contint::packages::ruby'],
-        Package['build-essential'],
-    ],
-}
-
 # Overrides
 class standard {
 
