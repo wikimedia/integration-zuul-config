@@ -30,7 +30,7 @@ def deploy_zuul():
                 'Did you log your reload in #wikimedia-releng (e.g. ' +
                 '"!log Reloading Zuul to deploy [hash]")'):
             sudo('git rebase')
-            sudo('/etc/init.d/zuul reload')
+            sudo('service zuul reload')
 
 
 @task
