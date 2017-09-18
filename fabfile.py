@@ -23,6 +23,7 @@ def deploy_zuul():
     env.sudo_user = 'zuul'
     env.host_string = 'contint1001.wikimedia.org'
 
+    do_reload = False
     with cd('/etc/zuul/wikimedia'):
         sudo('git remote update')
         sudo('git --no-pager log -p HEAD..origin/master zuul')
@@ -30,7 +31,11 @@ def deploy_zuul():
                 'Did you log your reload in #wikimedia-releng (e.g. ' +
                 '"!log Reloading Zuul to deploy [hash]")'):
             sudo('git rebase')
-            sudo('/etc/init.d/zuul reload')
+            do_reload = True
+
+    if do_reload:
+        env.sudo_user = None
+        sudo('/usr/sbin/service zuul reload', shell=False)
 
 
 @task
