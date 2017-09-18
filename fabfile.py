@@ -42,6 +42,15 @@ def deploy_slave_scripts():
          "'cd /srv/deployment/integration/slave-scripts && git pull'")
 
 
+@task
+def docker_pull_image(imageName):
+    """Pull a docker image onto the docker slaves"""
+    env.sudo_user = 'root'
+    env.host_string = 'integration-saltmaster.integration.eqiad.wmflabs'
+    sudo("salt -v '*slave-docker*' cmd.run "
+         "'docker pull " + imageName + "'")
+
+
 @task(default=True)
 def help():
     """Usage and list of commands"""
