@@ -5,8 +5,10 @@ Usage:
 * Install fabric (<http://www.fabfile.org/>) via
   pip install --user fabric or a virtualenv
 * Configure your .ssh/config so it can
-  access contint1001.wikimedia.org and uses
-  the proper username and key.
+  access the following hosts and uses
+  the proper username and key:
+   - contint1001.wikimedia.org
+   - integration-saltmaster.integration.eqiad.wmflabs
 * Run $ fab deploy_zuul
 
 """
