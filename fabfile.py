@@ -31,6 +31,7 @@ def deploy_zuul():
                 'Did you log your reload in #wikimedia-releng (e.g. ' +
                 '"!log Reloading Zuul to deploy [hash]")'):
             sudo('git rebase')
+            sudo('git -c gc.auto=128 gc --auto --quiet')
             do_reload = True
 
     if do_reload:
