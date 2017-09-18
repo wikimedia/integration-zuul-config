@@ -19,7 +19,7 @@ RUN apt-get update && \
         pip install pip==8.1.2 && \
         pip install tox==1.9.2 setuptools
 
-COPY .cache-buster /.cache-buster
+COPY .cache-buster-operations-puppet /.cache-buster-operations-puppet
 
 # Make all kinds of artifacts
 RUN mkdir -p /tmp/cache && \
