@@ -32,6 +32,8 @@ buildDockerfile() {
 
     docker tag "${TAGGED_IMG}" "${IMG}:latest"
 
+    rm ./cache-buster-*
+
     popd &>/dev/null
 }
 
