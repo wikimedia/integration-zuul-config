@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e7eab26_1c94538c",
+        "filename": "dockerfiles/composer/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:33:16Z",
+      "side": 1,
+      "message": "php7 seems to be included in wmfreleng/php as of https://gerrit.wikimedia.org/r/#/c/378530/1",
+      "revId": "8f42e14e537e5c71e0c9e57c539f3382c961815e",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_9cf603f5",
+        "filename": "dockerfiles/composer/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:33:16Z",
+      "side": 1,
+      "message": "Poor .git :] I would not have thought about deleting it.",
+      "revId": "8f42e14e537e5c71e0c9e57c539f3382c961815e",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_5c9adbbe",
+        "filename": "dockerfiles/composer/prebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:33:16Z",
+      "side": 1,
+      "message": "There is a pipe so you should:\n\n set -o pipefail\n\nAnd while at it:\n\n set -e",
+      "revId": "8f42e14e537e5c71e0c9e57c539f3382c961815e",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_7c955789",
+        "filename": "dockerfiles/composer/prebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:33:16Z",
+      "side": 1,
+      "message": "From a review of another change, git ls-remote supports references filtering:\n\n $ git ls-remote https://gerrit.wikimedia.org/r/p/integration/composer.git refs/heads/master\n 5edfec8365e31588956eef6bd94f8b181334666c\trefs/heads/master\n\n\nSo that is a single command, and you can skip adding the \u0027set -o pipefail\u0027 :D",
+      "revId": "8f42e14e537e5c71e0c9e57c539f3382c961815e",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
