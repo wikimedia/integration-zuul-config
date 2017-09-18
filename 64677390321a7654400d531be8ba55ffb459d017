@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e7eab26_3c14af43",
+        "filename": "dockerfiles/php/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:04:44Z",
+      "side": 1,
+      "message": "You can craft the file manually, on the jessie slaves we have /etc/apt/sources.list.d/sury-php.list\n\n deb https://packages.sury.org/php/ jessie main",
+      "revId": "64677390321a7654400d531be8ba55ffb459d017",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_dc21eb9e",
+        "filename": "dockerfiles/php/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:04:44Z",
+      "side": 1,
+      "message": "Indeed needed since sury.org redirects HTTP to HTTPS.",
+      "revId": "64677390321a7654400d531be8ba55ffb459d017",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_fc24e7ad",
+        "filename": "dockerfiles/php/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:04:44Z",
+      "side": 1,
+      "message": "Drop that add-apt-repository, lets just COPY a sury php list, this way that is one less package to install :]",
+      "revId": "64677390321a7654400d531be8ba55ffb459d017",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_5c365be5",
+        "filename": "dockerfiles/php/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:04:44Z",
+      "side": 1,
+      "message": "But that is evil! :]  You can retrieve Sury gpg key and then install it manually:\n\n COPY sury.gpg /etc/apt/trusted.gpg.d/php-sury.gpg\n\nAnd --force-yes would no more be needed.",
+      "revId": "64677390321a7654400d531be8ba55ffb459d017",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e7eab26_dc480b69",
+        "filename": "dockerfiles/php/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-18T08:04:44Z",
+      "side": 1,
+      "message": "By shipping the apt config file, we no more need the software-properties-common package.",
+      "revId": "64677390321a7654400d531be8ba55ffb459d017",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
