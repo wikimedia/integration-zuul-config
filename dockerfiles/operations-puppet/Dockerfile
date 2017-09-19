@@ -4,9 +4,16 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+        ca-certificates \
+        git \
+    && \
+    mkdir -p /tmp/cache && \
+    git clone https://gerrit.wikimedia.org/r/operations/puppet /tmp/cache/puppet
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         build-essential \
         bundler \
-        git \
         libmysqlclient-dev \
         locales \
         python-dev \
@@ -22,10 +29,13 @@ RUN apt-get update && \
 COPY .cache-buster-operations-puppet /.cache-buster-operations-puppet
 
 # Make all kinds of artifacts
-RUN mkdir -p /tmp/cache && \
-    git clone https://gerrit.wikimedia.org/r/operations/puppet /tmp/cache/puppet && \
-    cd /tmp/cache/puppet && \
-    git tag 'docker-head' && \
+RUN cd /tmp/cache/puppet && \
+    git remote update && \
+    git prune origin && \
+    git reset --hard $(cut -f1 /.cache-buster-operations-puppet) && \
+    git clean -xqdf && \
+    git tag -f 'docker-head' && \
+    git gc --prune=now && \
     bundle install --clean --path="/tmp/cache/bundle" && \
     TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v --notest && \
     mv .tox /tmp/cache/tox
