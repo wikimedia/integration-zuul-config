@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e7b3738_342176f7",
+        "filename": "dockerfiles/build.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-19T08:40:06Z",
+      "side": 1,
+      "message": "Could be just:\n\n rm -f ./cache-buster*\n\nIf you want to make sure they get deleted after docker build, that should be in a trap:\n\n function delete_cache_buster_files() {\n     rm -f ./cache-buster*\n }\n trap delete_cache_buster_files EXIT",
+      "revId": "958b77b174bc99ad4b9b131101479e81eca6c6b2",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
