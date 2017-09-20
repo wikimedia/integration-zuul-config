@@ -15,7 +15,7 @@ Usage:
 from fabric.api import *  # noqa
 from fabric.contrib.console import confirm
 
-env.sudo_prefix = 'sudo -ni '
+env.sudo_prefix = 'sudo -H '
 env.use_ssh_config = True
 
 
