@@ -406,6 +406,7 @@
     builders:
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh"
 
+# TODO needs a docker version..... Might be nice to have the slave scripts in this repo? :(
 - builder:
     name: mw-fetch-composer-dev
     builders:
@@ -546,6 +547,15 @@
         [[ -f "composer.json" ]] || exit 0
         composer --ansi validate --no-check-publish
 
+- builder:
+    name: composer-validate-docker
+    builders:
+     - shell: |
+        set -u
+        cd "{dir}"
+        [[ -f "composer.json" ]] || exit 0
+        docker run --rm -v "/$PWD://src" wmfreleng/composer:v2017.09.20.13.44 --ansi validate --no-check-publish
+
 # Validate a composer.json so it can be published on packagist.org
 - builder:
     name: composer-validate-package
@@ -571,6 +581,15 @@
         cd "{dir}"
         [[ -f "composer.json" ]] || exit 0
         composer update --ansi --no-progress --prefer-dist --profile -v
+
+- builder:
+    name: composer-update-docker
+    builders:
+     - shell: |
+        set -u
+        cd "{dir}"
+        [[ -f "composer.json" ]] || exit 0
+        docker run --rm -v "/$PWD://src" wmfreleng/composer:v2017.09.20.13.44 update --ansi --no-progress --prefer-dist --profile -v
 
 - builder:
     name: composer-install

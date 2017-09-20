@@ -130,6 +130,30 @@
      - composer-update:
          dir: 'src'
 
+- builder:
+    name: prepare-mediawiki-zuul-project-no-vendor-no-sql-docker
+    builders:
+     - shell: "echo $ZUUL_PROJECT > deps.txt"
+     - shell: "echo -e $EXT_DEPENDENCIES >> deps.txt"
+     - shell: "echo -e $SKIN_DEPENDENCIES > deps_skins.txt"
+     # Use composer to install dependencies instead cloning mediawiki/vendor,
+     # Clone both extensions and skins, but only extensions get listed for the
+     # extensions autoloader in integration/jenkins.git, skins are
+     # automatically injected by MediaWiki upon installation.
+     - zuul-cloner-docker:
+         projects: >
+             mediawiki/core
+             $(cat deps.txt)
+             $(cat deps_skins.txt)
+     - ext-skins-submodules-update
+     - shell: "mv deps.txt src/extensions_load.txt"
+     - composer-validate-docker:
+         dir: 'src'
+     - composer-local-create:
+         deps: 'extensions_load.txt'
+     - composer-update-docker:
+         dir: 'src'
+
 # Generic qunit job for extensions.
 - job:
     name: 'mwext-qunit-jessie'
@@ -416,29 +440,17 @@
      - zuul
     builders:
      - shell: |
-        #!/bin/bash -eu
-
         set -x
-
         rm -rf log
-        rm -rf .env
-
-        cat <<ZUUL > .env
-        ZUUL_URL=$ZUUL_URL
-        ZUUL_PROJECT=$ZUUL_PROJECT
-        ZUUL_COMMIT=$ZUUL_COMMIT
-        ZUUL_REF=$ZUUL_REF
-        EXT_DEPENDENCIES=$EXT_DEPENDENCIES
-        HOME=/var/lib/jenkins
-        ZUUL
-
         mkdir -p "log"
-
-        docker run \
-            --rm --tty \
-            --env-file .env \
-            --volume "$(pwd)"/log:/var/lib/jenkins/log \
-            wmfreleng/mediawiki-extensions-phan:v2017.09.11.19.08
+        rm -rf .env
+        alias mw-phan='docker run --rm -it -v "/$PWD://mediawiki" wmfreleng/mediawiki-phan:v2017.09.20.13.49'
+     - prepare-mediawiki-zuul-project-no-vendor-no-sql
+     - mw-fetch-composer-dev
+     - shell: |
+        cd $WORKSPACE/src
+        mw-phan /mediawiki/extensions/$EXT_NAME -m checkstyle
+        mv $WORKSPACE/src/extensions/$EXT_NAME/tests/phan/issues/latest $WORKSPACE/log/phan-issues
     publishers:
      - checkstyle:
         pattern: 'log/phan-issues'

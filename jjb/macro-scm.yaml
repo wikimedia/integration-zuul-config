@@ -40,6 +40,19 @@
                 https://gerrit.wikimedia.org/r/p \
                 {projects}
 
+- builder:
+    name: zuul-cloner-docker
+    builders:
+        - shell: |
+            docker run --rm wmfreleng/zuul-cloner:v2017.09.20.13.44 --version
+            docker run --rm -v "/$PWD/src://src" wmfreleng/zuul-cloner:v2017.09.20.13.44 \
+                --color \
+                --verbose \
+                --map /zuul-clonemap.yaml \
+                --workspace /src \
+                https://gerrit.wikimedia.org/r/p \
+                {projects}
+
 # Same as above, but uses a different clonemap, and root as workspace
 - builder:
     name: zuul-parsoid-cloner
