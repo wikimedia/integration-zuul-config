@@ -22,8 +22,8 @@ buildDockerfile() {
     pushd "$DOCKERFILE_DIR" &>/dev/null
     info "BUILDING $TAGGED_IMG"
 
-    if [ -x "./prebuild.sh" ]; then
-        ./prebuild.sh
+    if [ -f "./prebuild.sh" ]; then
+        bash ./prebuild.sh
     fi
 
     docker build \
