@@ -4,7 +4,7 @@
 
 set -eu
 
-DOCKER_TAG_DATE='v'`date --utc +%Y.%m.%d.%H.%M`
+DOCKER_TAG_DATE='v'$(date --utc +%Y.%m.%d.%H.%M)
 DOCKER_HUB_ACCOUNT=wmfreleng
 
 info() {
@@ -12,7 +12,7 @@ info() {
 }
 
 buildDockerfile() {
-    DOCKERFILE=$@
+    DOCKERFILE=$1
     DOCKERFILE_DIR="${DOCKERFILE%/*}"
     DOCKERFILE_NAME="${DOCKERFILE_DIR##*/}"
 
@@ -39,7 +39,7 @@ BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ $# -eq 0 ]; then
     for DOCKERFILE in "$BASE_DIR"/*/Dockerfile; do
-        buildDockerfile $DOCKERFILE
+        buildDockerfile "$DOCKERFILE"
     done
 else
     buildDockerfile "${BASE_DIR}/${1%/}/Dockerfile"
