@@ -19,20 +19,21 @@ buildDockerfile() {
     IMG="${DOCKER_HUB_ACCOUNT}/${DOCKERFILE_NAME}"
     TAGGED_IMG="${IMG}:${DOCKER_TAG_DATE}"
 
-    pushd "$DOCKERFILE_DIR" &>/dev/null
-    info "BUILDING $TAGGED_IMG"
+    (
+		cd "$DOCKERFILE_DIR"
+		info "BUILDING $TAGGED_IMG"
 
-    if [ -x "./prebuild.sh" ]; then
-        ./prebuild.sh
-    fi
+		if [ -x "./prebuild.sh" ]; then
+			./prebuild.sh
+		fi
 
-    docker build \
-        -t "${TAGGED_IMG}" \
-        -f "Dockerfile" .
+		docker build \
+			-t "${TAGGED_IMG}" \
+			-f "Dockerfile" .
 
-    docker tag "${TAGGED_IMG}" "${IMG}:latest"
+		docker tag "${TAGGED_IMG}" "${IMG}:latest"
+	)
 
-    popd &>/dev/null
 }
 
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
