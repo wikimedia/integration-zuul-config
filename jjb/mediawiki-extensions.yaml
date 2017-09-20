@@ -412,33 +412,32 @@
     properties:
      - build-discarder:
          days-to-keep: 15
+    parameters:
+     - string:
+         name: BASH_ENV
+         default: $WORKSPACE/.bash_docker_aliases
     triggers:
      - zuul
     builders:
      - shell: |
         #!/bin/bash -eu
-
         set -x
-
         rm -rf log
-        rm -rf .env
-
-        cat <<ZUUL > .env
-        ZUUL_URL=$ZUUL_URL
-        ZUUL_PROJECT=$ZUUL_PROJECT
-        ZUUL_COMMIT=$ZUUL_COMMIT
-        ZUUL_REF=$ZUUL_REF
-        EXT_DEPENDENCIES=$EXT_DEPENDENCIES
-        HOME=/var/lib/jenkins
-        ZUUL
-
         mkdir -p "log"
-
-        docker run \
-            --rm --tty \
-            --env-file .env \
-            --volume "$(pwd)"/log:/var/lib/jenkins/log \
-            wmfreleng/mediawiki-extensions-phan:v2017.09.11.19.08
+        rm -rf .env
+        rm -f $WORKSPACE/.bash_docker_aliases
+     - shell: |
+        #!/bin/bash -eu
+        echo "shopt -s expand_aliases" >> $WORKSPACE/.bash_docker_aliases
+        echo "alias mw-phan='docker run --rm -v \"/$PWD://mediawiki\" -w \"//mediawiki\" wmfreleng/mediawiki-phan:v2017.09.20.13.49'" >> $WORKSPACE/.bash_docker_aliases
+        echo "alias composer='docker run --rm -v \"/$PWD://src\" -w \"//src\"  wmfreleng/composer:v2017.09.20.13.44'" >> $WORKSPACE/.bash_docker_aliases
+        echo "alias zuul-cloner='docker run --rm -v \"/$PWD://src\" -w \"//src\"  wmfreleng/zuul-cloner:v2017.09.20.13.44'" >> $WORKSPACE/.bash_docker_aliases
+     - prepare-mediawiki-zuul-project-no-vendor-no-sql
+     - mw-fetch-composer-dev
+     - shell: |
+        cd $WORKSPACE/src
+        mw-phan /mediawiki/extensions/$EXT_NAME -m checkstyle
+        mv $WORKSPACE/src/extensions/$EXT_NAME/tests/phan/issues/latest $WORKSPACE/log/phan-issues
     publishers:
      - checkstyle:
         pattern: 'log/phan-issues'
