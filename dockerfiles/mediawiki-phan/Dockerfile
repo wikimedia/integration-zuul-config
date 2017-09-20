@@ -9,16 +9,18 @@ COPY --from=composer /srv/composer /srv/composer
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         ca-certificates && \
-    apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* && \
-        mkdir /srv/phan && \
-        cd /srv/phan && \
-        /srv/composer/vendor/bin/composer require etsy/phan:0.8 && \
-        rm -rf ~/.composer
+    apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN groupadd -r phan && useradd --no-log-init -r -g phan phan
+RUN groupadd -r phan && \
+    useradd --no-log-init --system --create-home -g phan phan && \
+    install -d /srv/phan -o phan -g phan
 
 ENV PHAN /srv/phan/vendor/bin/phan
 
 USER phan
+
+RUN  cd /srv/phan && \
+     /srv/composer/vendor/bin/composer require etsy/phan:0.8 && \
+     rm -rf ~/.composer
 
 ENTRYPOINT ["/mediawiki/tests/phan/bin/phan"]
