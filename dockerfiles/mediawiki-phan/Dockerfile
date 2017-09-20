@@ -6,7 +6,11 @@ USER root
 
 COPY --from=composer /srv/composer /srv/composer
 
-RUN mkdir /srv/phan && \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+        ca-certificates && \
+    apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+        mkdir /srv/phan && \
         cd /srv/phan && \
         /srv/composer/vendor/bin/composer require etsy/phan:0.8 && \
         rm -rf ~/.composer
