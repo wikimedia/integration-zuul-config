@@ -46,7 +46,7 @@ class DockerBuilder(object):
 
         if os.path.exists(os.path.join(image_dir, 'prebuild.sh')):
             self.log.info("Prebuild script")
-            subprocess.check_call('./prebuild.sh', cwd=image_dir)
+            subprocess.check_call(['bash', 'prebuild.sh'], cwd=image_dir)
 
         img = '/'.join([DOCKER_HUB_ACCOUNT, image_name])
         tagged_img = ':'.join([img, DOCKER_TAG_DATE])
