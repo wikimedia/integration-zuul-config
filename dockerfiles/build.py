@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import configparser
 from datetime import datetime
 from glob import glob
 import logging
@@ -19,7 +20,9 @@ class DockerBuilder(object):
         self.log = logging.getLogger(self.__class__.__name__)
         logging.basicConfig(level=logging.INFO)
 
+        self.load_config()
         self.parse_args()
+
         if self.args.directory:
             dockerfiles = [
                 os.path.join(os.getcwd(), f, 'Dockerfile')
@@ -28,6 +31,14 @@ class DockerBuilder(object):
         else:
             dockerfiles = self.find_docker_files()
         return all(map(self.build, dockerfiles))
+
+    def load_config(self):
+        config = configparser.ConfigParser()
+        config.read([
+            os.path.join(BASE_DIR, 'build.conf.default'),
+            os.path.join(BASE_DIR, 'build.conf'),
+        ])
+        self.config = config
 
     def parse_args(self):
         parser = argparse.ArgumentParser()
@@ -52,8 +63,13 @@ class DockerBuilder(object):
                 self.log.info("Prebuild script")
                 subprocess.check_call(['bash', 'prebuild.sh'], cwd=image_dir)
 
-            cmd = ['docker', 'build', '-t', tagged_img,
-                   os.path.dirname(dockerfile)]
+            cmd = ['docker', 'build']
+            if self.config.has_option('DEFAULT', 'http_proxy'):
+                cmd.extend([
+                    '--build-arg',
+                    'http_proxy=%s' % self.config.get('DEFAULT', 'http_proxy')
+                    ])
+            cmd.extend(['-t', tagged_img, os.path.dirname(dockerfile)])
             self.log.info(' '.join(cmd))
             subprocess.check_call(cmd)
 
