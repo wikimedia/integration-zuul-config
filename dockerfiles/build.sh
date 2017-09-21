@@ -27,7 +27,9 @@ buildDockerfile() {
 			./prebuild.sh
 		fi
 
+		# shellcheck disable=SC2046,SC2154
 		docker build \
+			$( [ -v http_proxy ] && echo "--build-arg http_proxy='${http_proxy}'") \
 			-t "${TAGGED_IMG}" \
 			-f "Dockerfile" .
 
