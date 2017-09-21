@@ -419,6 +419,28 @@
         thresholds:
           failed:
             total-all: 1
+- job:
+    name: 'mediawiki-core-phpcs-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+     - docker-zuul-env
+     - docker-log-dir
+     - docker-run-with-log:
+        image: 'wmfreleng/mediawiki-phpcs:v2017.09.26.15.45'
+        logdir: '/log'
+    publishers:
+     - checkstyle:
+        pattern: 'log/checkstyle.xml'
+        can-run-on-failed: true
+        thresholds:
+          failed:
+            total-all: 1
 
 # Phan! (T132636)
 - job:
