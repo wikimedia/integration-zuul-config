@@ -4,6 +4,11 @@
 
 set -eu
 
+if [ -f build.env ]; then
+	# shellcheck disable=SC1091
+    . build.env
+fi
+
 DOCKER_TAG_DATE='v'`date --utc +%Y.%m.%d.%H.%M`
 DOCKER_HUB_ACCOUNT=wmfreleng
 
@@ -27,7 +32,9 @@ buildDockerfile() {
 			./prebuild.sh
 		fi
 
+		# shellcheck disable=SC2046,SC2154
 		docker build \
+			$( [ -v http_proxy ] && echo "--build-arg http_proxy='${http_proxy}'") \
 			-t "${TAGGED_IMG}" \
 			-f "Dockerfile" .
 
