@@ -391,8 +391,8 @@
 # Special job to run MW-CS against MediaWiki core.
 # Can't run it through composer because it'll timeout.
 - job:
-    name: 'mediawiki-core-phpcs-jessie'
-    node: ci-jessie-wikimedia
+    name: 'mediawiki-core-phpcs-docker'
+    node: DebianJessieDocker
     concurrent: true
     properties:
      - build-discarder:
@@ -400,19 +400,11 @@
     triggers:
      - zuul
     builders:
-     - castor-load
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-     - composer-update:
-        dir: '$WORKSPACE/src'
-     - shell: |
-        cd $WORKSPACE/src
-        rm -fR "$WORKSPACE/log"
-        mkdir -p "$WORKSPACE/log"
-        vendor/bin/phpcs -p -s --report-full --report-checkstyle=$WORKSPACE/log/checkstyle.xml
+     - docker-zuul-env
+     - docker-log-dir
+     - docker-run-with-log:
+        image: 'wmfreleng/mediawiki-core-phpcs:v2017.#######'
     publishers:
-     - castor-save
      - checkstyle:
         pattern: 'log/checkstyle.xml'
         can-run-on-failed: true
