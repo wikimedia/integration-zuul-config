@@ -1,3 +1,20 @@
+- builder:
+    name: zuul-cloner-docker
+    builders:
+        - shell: |
+            docker run \
+                --rm --tty \
+                --volume "$(pwd)"/src:/src \
+                --volume /srv/git:/srv/git \
+                wmfreleng/zuul-cloner:v2017.09.26.16.09 \
+                --color \
+                --verbose \
+                --map /zuul-clonemap.yaml \
+                --workspace /src \
+                --cache-dir /srv/git \
+                https://gerrit.wikimedia.org/r/p \
+                {projects}
+
 # Build a .env file with ZUUL environment
 # variables for use with docker
 # TODO images shouldn't require passing in HOME=/var/lib/jenkins
@@ -28,8 +45,16 @@
         rm -rf log
         mkdir -m 777 -p "log"
 
+# Create a src directory that will be
+# mounted into a container with --volume
+- builder:
+    name: docker-src-dir
+    builders:
+     - shell: |
+        rm -rf src
+        mkdir -m 777 -p "src"
+
 # Run a docker image with .env and a log
-# directory mounted as /var/lib/jenkins/log
 - builder:
     name: docker-run-with-log
     builders:
@@ -40,4 +65,17 @@
             --rm --tty \
             --env-file .env \
             --volume "$(pwd)"/log:{logdir} \
+            {image}
+# Run a docker image with .env and a log and src directory
+- builder:
+    name: docker-run-with-log-and-src
+    builders:
+     - shell: |
+        #!/bin/bash -eu
+        set -x
+        docker run \
+            --rm --tty \
+            --env-file .env \
+            --volume "$(pwd)"/log:{logdir} \
+            --volume "$(pwd)"/src:{srcdir} \
             {image}

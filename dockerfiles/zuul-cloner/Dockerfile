@@ -15,9 +15,7 @@ RUN git clone --depth 1 https://gerrit.wikimedia.org/r/integration/jenkins /tmp/
     cp /tmp/jenkins/etc/zuul-clonemap.yaml /zuul-clonemap.yaml && \
     rm -rf /tmp/jenkins
 
-RUN groupadd -r zuul-cloner && useradd --no-log-init -r -g zuul-cloner zuul-cloner
-
-USER zuul-cloner
+USER nobody
 
 ENTRYPOINT ["zuul-cloner"]
 CMD ["--help"]
