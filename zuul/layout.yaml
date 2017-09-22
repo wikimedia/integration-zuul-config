@@ -718,6 +718,10 @@ jobs:
         branch: (?:^(fundraising/)?REL1_2[78]$)
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/checkstyleResult/'
 
+  - name: lintr-docker
+    files:
+     - '^.*\.R$'
+
   - name: ^.*rake-jessie$
     files:
       # Uses python re.match() which checks at BEGINNING of the string
@@ -1535,6 +1539,8 @@ projects:
   - name: analytics/wmde/WDCM
     gate-and-submit:
      - noop
+    experimental:
+     - lintr-docker
 
   - name: apps/android/java-mwapi
     test:
