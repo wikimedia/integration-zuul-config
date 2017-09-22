@@ -64,15 +64,14 @@
         ZUUL_PROJECT=$ZUUL_PROJECT
         ZUUL_COMMIT=$ZUUL_COMMIT
         ZUUL_REF=$ZUUL_REF
-        HOME=/var/lib/jenkins
         ZUUL
 
-        mkdir -p "log"
+        mkdir -m 777 -p "log"
 
         docker run \
             --rm --tty \
             --env-file .env \
-            --volume "$(pwd)"/log:/var/lib/jenkins/log \
+            --volume "$(pwd)"/log:/srv/workspace/log \
             wmfreleng/operations-puppet:v2017.09.13.09.23
     wrappers:
      - timeout:
