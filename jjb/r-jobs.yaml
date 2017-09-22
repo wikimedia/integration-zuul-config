@@ -1,0 +1,44 @@
+- job:
+    name: 'lintr-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+    builders:
+     - shell: |
+        #!/bin/bash -eu
+
+        set -x
+
+        rm -rf log
+        rm -rf src
+        rm -rf .env
+
+        cat <<ZUUL > .env
+        ZUUL_URL=$ZUUL_URL
+        ZUUL_PROJECT=$ZUUL_PROJECT
+        ZUUL_COMMIT=$ZUUL_COMMIT
+        ZUUL_REF=$ZUUL_REF
+        ZUUL
+
+        mkdir -m 777 -p "log"
+
+        docker run \
+            --rm --tty \
+            --env-file .env \
+            --volume "$(pwd)"/log:/log \
+            wmfreleng/lintr:v2017.09.26.10.49
+    wrappers:
+     - timeout:
+         timeout: 1 # minute
+     - timestamps
+     - ansicolor
+    publishers:
+     - checkstyle:
+        pattern: 'log/lintr.log'
+        can-run-on-failed: true
+        thresholds:
+          failed:
+            total-all: 1
+     - archive-log-dir
