@@ -39,12 +39,11 @@ include contint::packages::apt
 include contint::packages::php
 
 if os_version('debian == jessie') {
-    apt::repository { 'aptly-integration-php55':
-        uri        => 'https://integration-aptly.wmflabs.org/repo/',
-        dist       => 'jessie-integration',
-        components => 'php55',
+    apt::repository { 'jessie-ci-php55':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => 'jessie-wikimedia',
+        components => 'component/ci',
         source     => false,
-        trust_repo => true,
     }
     package { [
         'php5.5-cli',
@@ -65,7 +64,7 @@ if os_version('debian == jessie') {
         'php5.5-xsl',
         ]: ensure => present,
         require   => [
-          Apt::Repository['aptly-integration-php55'],
+          Apt::Repository['jessie-ci-php55'],
           Exec['apt-get update'],
         ],
     }
