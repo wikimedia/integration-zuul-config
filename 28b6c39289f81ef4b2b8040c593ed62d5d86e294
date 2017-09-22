@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e7b3738_6b24e207",
+        "filename": "dockerfiles/mediawiki-core-phpcs/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2017-09-22T01:30:33Z",
+      "side": 1,
+      "message": "since this is copied from the composer dockerfile and composer is not in the path you likely need to use the full path to composer /srv/composer/vendor/bin/composer",
+      "revId": "28b6c39289f81ef4b2b8040c593ed62d5d86e294",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e7b3738_2b7d7ae4",
+        "filename": "dockerfiles/mediawiki-core-phpcs/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2017-09-22T01:30:33Z",
+      "side": 1,
+      "message": "Not sure if @addshore has a different plan for this at this point (just talked a little bit about it a few hours ago), but with the operations/puppet repo we crate the `log` directory outside of the container and mount it as a volume during run, that way logs are available for jenkins-deploy on the host machine.\n\nThis assumes that the ./log/checkstyle.xml is meant to be consumed/cached by jenkins.",
+      "revId": "28b6c39289f81ef4b2b8040c593ed62d5d86e294",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e7b3738_0b8c3efe",
+        "filename": "dockerfiles/mediawiki-core-phpcs/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2017-09-22T01:30:33Z",
+      "side": 1,
+      "message": "I tried this command in the container on my local machine. Looked like it ran (took Time: 2 mins, 43.37 secs; Memory: 148.01Mb; standard sort of TAP output) but the xml file was just:\n\nnobody@bbddc88d2c1c:/mediawiki$ cat log/checkstyle.xml\n\u003c?xml version\u003d\"1.0\" encoding\u003d\"UTF-8\"?\u003e\n\u003ccheckstyle version\u003d\"3.0.2\"\u003e\n\u003c/checkstyle\u003e",
+      "revId": "28b6c39289f81ef4b2b8040c593ed62d5d86e294",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
