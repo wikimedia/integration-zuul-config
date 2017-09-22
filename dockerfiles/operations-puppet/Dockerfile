@@ -56,25 +56,20 @@ RUN apt-get update && \
         ruby-dev && \
         apt-get clean && rm -rf /var/lib/apt/lists/*  && \
         pip install pip==8.1.2 && \
-        pip install tox==1.9.2 setuptools && \
-        groupadd -g 500 wikidev && \
-        # This is the uid and gid of the jenkins-deploy user for CI
-        useradd -u 2947 -g 500 \
-            --home-dir /var/lib/jenkins \
-            --create-home jenkins
+        pip install tox==1.9.2 setuptools
 
-COPY --from=builder /tmp/cache /var/lib/jenkins/.cache
-COPY bundle-config /var/lib/jenkins/.cache/bundle-config
+COPY --from=builder /tmp/cache /srv/workspace/.cache
+COPY bundle-config /srv/workspace/.cache/bundle-config
 
-RUN chown -R 2947:500 /var/lib/jenkins/.cache && \
+RUN chown -R nobody /srv/workspace/.cache && \
           mkdir -p /tmp/cache && \
-          mv /var/lib/jenkins/.cache/puppet /tmp/cache/puppet && \
+          mv /srv/workspace/.cache/puppet /tmp/cache/puppet && \
           mkdir -p /tmp/cache/puppet/.bundle && \
-          mv /var/lib/jenkins/.cache/bundle-config /tmp/cache/puppet/.bundle/config && \
-          mv /var/lib/jenkins/.cache/tox /tmp/cache/puppet/.tox
+          mv /srv/workspace/.cache/bundle-config /tmp/cache/puppet/.bundle/config && \
+          mv /srv/workspace/.cache/tox /tmp/cache/puppet/.tox
 
-USER jenkins
-WORKDIR /var/lib/jenkins
+USER nobody
+WORKDIR /srv/workspace
 ENTRYPOINT /bin/bash /run.sh
 
 COPY run.sh /run.sh
