@@ -1,0 +1,42 @@
+# Build a .env file with ZUUL environment
+# variables for use with docker
+- builder:
+    name: docker-zuul-env
+    builders:
+     - shell: |
+        #!/bin/bash -eu
+
+        set -x
+
+        rm -rf .env
+
+        cat <<ZUUL > .env
+        ZUUL_URL=$ZUUL_URL
+        ZUUL_PROJECT=$ZUUL_PROJECT
+        ZUUL_COMMIT=$ZUUL_COMMIT
+        ZUUL_REF=$ZUUL_REF
+        HOME=/var/lib/jenkins
+        ZUUL
+
+# Create a log directory that will be
+# mounted into a container with --volume
+- builder:
+    name: docker-log-dir
+    builders:
+     - shell: |
+        rm -rf log
+        mkdir -p "log"
+
+# Run a docker image with .env and a log
+# directory mounted as /var/lib/jenkins/log
+- builder:
+    name: docker-run-with-log
+    builders:
+     - shell: |
+        #!/bin/bash -eu
+        set -x
+        docker run \
+            --rm --tty \
+            --env-file .env \
+            --volume "$(pwd)"/log:/var/lib/jenkins/log \
+            {image}
