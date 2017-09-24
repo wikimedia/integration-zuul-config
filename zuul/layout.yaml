@@ -535,9 +535,6 @@ pipelines:
           # Outreachy interns!
            - ^elaarad@gmail\.com$ # Foxy brown
 
-          # Bots
-           - ^tools\.libraryupgrader@tools\.wmflabs\.org$ # Run by Legoktm
-
         # Let whitelisted users the ability to reenqueue a change in the test
         # pipeline by simply commenting 'recheck' on a change.
         - event: comment-added
@@ -570,6 +567,23 @@ pipelines:
     description: >
       High precedence tests. Will vote +2.
     precedence: high
+
+  - !!merge : *test_pipeline
+    name: test-lowprio
+    description: >
+      Low precedence tests. Will vote +2.
+    precedence: low
+    trigger:
+      gerrit:
+        - event: patchset-created
+          branch: (?!^refs/meta/config)
+
+          # BEWARE:
+          # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
+          # - Also update the email filter of the 'check' pipeline.
+          email: &lowprio_email_list
+          # Bots
+           - ^tools\.libraryupgrader@tools\.wmflabs\.org$ # Run by Legoktm
 
   - name: experimental
     description: >
