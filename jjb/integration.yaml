@@ -192,6 +192,13 @@
         - zuul
     builders:
         - castor-load
+        - shell: |
+            zuul-cloner --version
+            zuul-cloner --color \
+                --cache-dir /srv/git \
+                https://gerrit.wikimedia.org/r/p \
+                integration/config \
+                operations/puppet
         - run-tox:
             venv: dib
         - bundle-nodepool:

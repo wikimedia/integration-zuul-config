@@ -8,8 +8,15 @@ PuppetLint::RakeTask.new :lint do |config|
 	config.log_format = '%{path}:%{line} %{KIND} %{message} (%{check})'
 end
 
+desc 'Run spec for dib/puppet'
+task :dib_spec do
+	Dir.chdir 'dib/puppet' do
+		fail unless system('rake spec')
+	end
+end
+
 desc 'Run all build/tests commands (CI entry point)'
-task test: [:syntax, :lint]
+task test: [:syntax, :lint, :dib_spec]
 
 desc 'Show the help'
 task :help do
