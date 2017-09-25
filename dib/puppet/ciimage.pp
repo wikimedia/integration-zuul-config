@@ -25,7 +25,7 @@ include contint::packages::base
 include contint::composer
 include contint::php
 
-include zuul
+include ::profile::zuul::cloner
 
 package { 'cron':
     ensure => present,
