@@ -110,9 +110,7 @@ include ::apache::mod::php5
 # For Selenium jobs video recording (T113520)
 require_package('libav-tools')
 
-class { 'contint::worker_localhost':
-    owner => 'jenkins',
-}
+include profile::ci::worker_localhost
 
 # Augeas rule deals with /etc/logrotate.d/apache2
 # Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
