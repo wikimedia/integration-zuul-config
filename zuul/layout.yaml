@@ -868,8 +868,10 @@ jobs:
     failure-message: 'FAILURE Failed to compare your patchset with the current configuration.'
     files: '^jjb/.*'
 
-  - name: 'integration-config-tox-dib-jessie'
-    files: '^dib/.*'
+  - name: 'integration-config-dib-jessie'
+    files:
+      - '^(Rakefile|Gemfile)$'
+      - '^dib/.*'
 
   - name: 'integration-zuul-layoutdiff'
     voting: false
@@ -1268,15 +1270,13 @@ projects:
     check:
       - noop
     test:
-      - integration-config-rake-jessie
       - integration-config-tox-jessie
-      - integration-config-tox-dib-jessie
+      - integration-config-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
     gate-and-submit:
-      - integration-config-rake-jessie
       - integration-config-tox-jessie
-      - integration-config-tox-dib-jessie
+      - integration-config-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutvalidation-gate
 

@@ -185,6 +185,22 @@
              </pre>
 
 - job:
+    name: 'integration-config-dib-jessie'
+    node: ci-jessie-wikimedia
+    triggers:
+        - zuul
+    builder:
+        - castor-load
+        - run-tox:
+            venv: dib
+        - bundle-nodepool:
+            command: rake test
+    publishers:
+     - archive-log-dir
+     - archive-tox-logs
+     - castor-save
+
+- job:
     name: 'jenkins-plugin-jdk7-jessie'
     project-type: maven
     jdk: 'Debian - OpenJdk 7'
@@ -212,11 +228,8 @@
      - 'integration-jjb-config-diff'
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation-gate'
-     - '{name}-rake-jessie'
      - '{name}-tox-jessie'
-     - '{name}-tox-{toxenv}-jessie':
-         toxenv:
-            - dib
+     - 'integration-config-dib-jessie'
 
 - project:
     name: 'integration-docroot'
