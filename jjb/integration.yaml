@@ -187,15 +187,28 @@
 - job:
     name: 'integration-config-dib-jessie'
     node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
     triggers:
         - zuul
     builders:
         - castor-load
+        - shell: |
+            zuul-cloner --version
+
+            zuul-cloner --color \
+                --cache-dir  integration/config \
+                --workspace '.' \
+                https://gerrit.wikimedia.org/r/p \
+                integration/config
+
+            zuul-cloner --color \
+                --cache-dir /srv/git \
+                --branch production \
+                https://gerrit.wikimedia.org/r/p \
+                operations/puppet
         - run-tox:
             venv: dib
         - bundle-nodepool:
-            command: rake test
+            command: PUPPET_DIR="$WORKSPACE"/operations/puppet rake test
     publishers:
      - archive-log-dir
      - archive-tox-logs
