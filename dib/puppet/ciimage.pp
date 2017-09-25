@@ -55,7 +55,7 @@ sysctl::parameters { 'vm.overcommit_memory':
     values => { 'vm.overcommit_memory' => 1 },
 }
 
-require_package('arcanist')
+include ::profile::phabricator::arcanist
 
 require_package('php5-xhprof')
 exec { 'Enable PHP module xhprof':
