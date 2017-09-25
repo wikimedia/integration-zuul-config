@@ -194,8 +194,16 @@
         - castor-load
         - run-tox:
             venv: dib
-        - bundle-nodepool:
-            command: rake test
+        # rspec tests require operations/puppet.git
+        - shell: |
+            zuul-cloner --color \
+                --cache-dir /srv/git \
+                --branch production \
+                https://gerrit.wikimedia.org/r/p \
+                operations/puppet
+        - shell: |
+            bundle install --clean
+            PUPPET_DIR="$WORKSPACE"/operations/puppet bundle exec rake test
     publishers:
      - archive-log-dir
      - archive-tox-logs
