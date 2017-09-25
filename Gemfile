@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 3.7.0', require: false
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 3.8.5', require: false
 gem 'puppetlabs_spec_helper', '< 2.0.0', require: false
 
 # Puppet 3.7 fails on ruby 2.2+
