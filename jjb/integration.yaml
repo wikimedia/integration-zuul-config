@@ -187,11 +187,18 @@
 - job:
     name: 'integration-config-dib-jessie'
     node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
     triggers:
         - zuul
     builders:
         - castor-load
+        - shell: |
+            zuul-cloner --version
+            zuul-cloner --color \
+                --cache-dir /srv/git \
+                --project-branch operations/puppet=production \
+                https://gerrit.wikimedia.org/r/p \
+                integration/config \
+                operations/puppet
         - run-tox:
             venv: dib
         - bundle-nodepool:
