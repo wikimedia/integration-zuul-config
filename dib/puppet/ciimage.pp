@@ -79,6 +79,7 @@ include contint::packages::ruby
 class standard {
 
 }
+# Safe defaults
 define diamond::collector(
   $settings    = undef,
   $ensure      = present,
@@ -191,7 +192,7 @@ package { 'varnish':
     ensure => present,
 }
 service { 'varnish':
-    require  => Package['varnish'],
-    enable => false,
+    require => Package['varnish'],
+    enable  => false,
 }
 # end contint::packages::ops
