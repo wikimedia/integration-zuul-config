@@ -35,7 +35,7 @@ class DockerBuilder(object):
         self.args = parser.parse_args()
 
     def find_docker_files(self):
-        return glob(os.path.join(BASE_DIR, '*/Dockerfile'))
+        return sorted(glob(os.path.join(BASE_DIR, '*/Dockerfile')))
 
     def build(self, dockerfile):
         self.log.info('Building %s' % dockerfile)
