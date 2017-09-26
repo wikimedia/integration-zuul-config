@@ -1796,8 +1796,7 @@ projects:
   - name: mediawiki/skins/CustomPage
     template:
      - name: mw-checks-test
-     # Fails in extension registration due to a duplicate entry with
-     # skins/CustomPage (which is a dependency). T153050
+     # file not found
      - name: skin-tests-non-voting
      - name: mwgate-npm
 
@@ -3034,8 +3033,7 @@ projects:
 
   - name: mediawiki/extensions/CustomPage
     template:
-      # Fails in extension registration due to a duplicate entry with
-      # skins/CustomPage (which is a dependency). T153050
+      # file not found in skins/CustomPage
       - name: extension-unittests-non-voting
       - name: mwgate-npm
 
@@ -3963,6 +3961,11 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
 
+  - name: mediawiki/extensions/PhabTaskGraph
+    template:
+      - name: extension-unittests-non-voting
+      - name: mwgate-npm
+
   - name: mediawiki/extensions/PopcornEditor
     template:
       - name: extension-unittests-generic
@@ -4141,6 +4144,11 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
 
+  - name: mediawiki/extensions/BlueSpiceAuthors
+    template:
+      - name: extension-unittests-composer-non-voting
+      - name: mwgate-npm
+
   - name: mediawiki/extensions/BlueSpiceCategoryManager
     template:
       - name: extension-unittests-composer-non-voting
@@ -4157,6 +4165,11 @@ projects:
       - name: mwgate-npm
 
   - name: mediawiki/extensions/BlueSpiceExtendedSearch
+    template:
+      - name: extension-unittests-composer-non-voting
+      - name: mwgate-npm
+
+  - name: mediawiki/extensions/BlueSpiceExtendedStatistics
     template:
       - name: extension-unittests-composer-non-voting
       - name: mwgate-npm
@@ -4187,10 +4200,26 @@ projects:
   - name: mediawiki/extensions/BlueSpicePageAssignments
     template:
       - name: extension-unittests-composer
+      - name: mwgate-npm
+
+  - name: mediawiki/extensions/BlueSpicePageTemplates
+    template:
+      - name: extension-unittests-composer-non-voting
+      - name: mwgate-npm
 
   - name: mediawiki/extensions/BlueSpicePageVersion
     template:
       - name: extension-unittests-composer
+      - name: mwgate-npm
+
+  - name: mediawiki/extensions/BlueSpiceSmartlist
+    template:
+      - name: extension-unittests-composer-non-voting
+      - name: mwgate-npm
+
+  - name: mediawiki/extensions/BlueSpiceUserManager
+    template:
+      - name: extension-unittests-composer-non-voting
       - name: mwgate-npm
 
   - name: mediawiki/extensions/BSSMWConnector
@@ -4263,7 +4292,7 @@ projects:
 
   - name: mediawiki/extensions/CharRangeSpan
     template:
-      - name: extension-unittests-non-voting
+      - name: extension-unittests-generic
       - name: mwgate-npm
 
   - name: mediawiki/extensions/Checkpoint
@@ -5994,6 +6023,7 @@ projects:
   - name: mediawiki/extensions/Wikisource
     template:
       - name: extension-unittests-generic
+      - name: mwgate-npm
 
   - name: mediawiki/extensions/WikiTextLoggedInOut
     template:
