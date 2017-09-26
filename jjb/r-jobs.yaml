@@ -1,4 +1,4 @@
-- job:
+- job: &job_lintr-docker
     name: 'lintr-docker'
     node: DebianJessieDocker
     concurrent: true
@@ -24,3 +24,7 @@
             onsuccess: False
             onfailure: False
      - archive-log-dir
+
+- job:
+    !!merge : *job_lintr-docker
+    name: lintr-docker-non-voting
