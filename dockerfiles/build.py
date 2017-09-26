@@ -60,6 +60,9 @@ class DockerBuilder(object):
         self.log.info(' '.join(cmd))
         subprocess.check_call(cmd)
 
+        for f in glob(os.path.join(image_dir, ".cache-buster*")):
+            os.remove(f)
+
         return True
 
 
