@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e7b3738_5405e711",
+        "filename": "dockerfiles/build.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-26T10:32:35Z",
+      "side": 1,
+      "message": "We already:\n\n from glob import glob",
+      "revId": "139c8b7d3649bc04c5b9af57562f1559fd8c1d8a",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e7b3738_1410bf52",
+        "filename": "dockerfiles/build.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-26T10:32:35Z",
+      "side": 1,
+      "message": "s/glob.glob/glob/  :D\n\nWe have to wrap it the docker commands in a try/finally:\n\n try:\n    docker build\n    docker tag\n finally:\n    map(os.remove,\n        glob(os.path.join(image_dir, \".cache-buster*\"))\n\n\nThat should also catch someone doing a CTRL+C while the build is occuring.",
+      "revId": "139c8b7d3649bc04c5b9af57562f1559fd8c1d8a",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
