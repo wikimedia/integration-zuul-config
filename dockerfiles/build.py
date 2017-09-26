@@ -7,6 +7,7 @@ import logging
 import os.path
 import subprocess
 import sys
+import glob
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOCKER_TAG_DATE = datetime.utcnow().strftime("v%Y.%m.%d.%H.%M")
@@ -59,6 +60,9 @@ class DockerBuilder(object):
         cmd = ['docker', 'tag', tagged_img, '%s:latest' % img]
         self.log.info(' '.join(cmd))
         subprocess.check_call(cmd)
+
+        for f in glob.glob(os.path.join(image_dir, ".cache-buster*")):
+            os.remove(f)
 
         return True
 
