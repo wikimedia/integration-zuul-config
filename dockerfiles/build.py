@@ -51,17 +51,18 @@ class DockerBuilder(object):
         img = '/'.join([DOCKER_HUB_ACCOUNT, image_name])
         tagged_img = ':'.join([img, DOCKER_TAG_DATE])
 
-        cmd = ['docker', 'build', '-t', tagged_img,
-               os.path.dirname(dockerfile)]
-        self.log.info(' '.join(cmd))
-        subprocess.check_call(cmd)
+        try:
+            cmd = ['docker', 'build', '-t', tagged_img,
+                   os.path.dirname(dockerfile)]
+            self.log.info(' '.join(cmd))
+            subprocess.check_call(cmd)
 
-        cmd = ['docker', 'tag', tagged_img, '%s:latest' % img]
-        self.log.info(' '.join(cmd))
-        subprocess.check_call(cmd)
-
-        for f in glob(os.path.join(image_dir, ".cache-buster*")):
-            os.remove(f)
+            cmd = ['docker', 'tag', tagged_img, '%s:latest' % img]
+            self.log.info(' '.join(cmd))
+            subprocess.check_call(cmd)
+        finally:
+            for f in glob(os.path.join(image_dir, ".cache-buster*")):
+                os.remove(f)
 
         return True
 
