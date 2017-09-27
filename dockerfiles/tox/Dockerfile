@@ -13,7 +13,8 @@ RUN pip install pip==8.1.2 && \
     apt-get remove --yes --purge python-pip && \
     ln -s /usr/local/bin/pip /usr/bin/pip && \
     pip install tox==2.5.0 && \
-    pip install setuptools
+    pip install setuptools && \
+    rm -fR "$XDG_CACHE_HOME/pip"
 
 USER nobody
 WORKDIR /src
