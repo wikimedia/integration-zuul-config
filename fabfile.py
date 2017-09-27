@@ -8,7 +8,7 @@ Usage:
   access the following hosts and uses
   the proper username and key:
    - contint1001.wikimedia.org
-   - integration-saltmaster.integration.eqiad.wmflabs
+   - integration-cumin.integration.eqiad.wmflabs
 * Run $ fab deploy_zuul
 
 """
@@ -45,8 +45,8 @@ def deploy_zuul():
 def deploy_slave_scripts():
     """Pull integration/jenkins on CI labs slaves"""
     env.sudo_user = 'root'
-    env.host_string = 'integration-saltmaster.integration.eqiad.wmflabs'
-    sudo("salt -v '*slave*' cmd.run "
+    env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
+    sudo("cumin --force 'name:slave' "
          "'cd /srv/deployment/integration/slave-scripts && git pull'")
 
 
@@ -54,8 +54,8 @@ def deploy_slave_scripts():
 def docker_pull_image(imageName):
     """Pull a docker image onto the docker slaves"""
     env.sudo_user = 'root'
-    env.host_string = 'integration-saltmaster.integration.eqiad.wmflabs'
-    sudo("salt -v '*slave-docker*' cmd.run "
+    env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
+    sudo("cumin --force 'name:slave-docker' "
          "'docker pull " + imageName + "'")
 
 
