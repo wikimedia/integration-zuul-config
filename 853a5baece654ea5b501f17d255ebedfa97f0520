@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0e6af365_b0ad80e9",
+        "filename": "dockerfiles/mediawiki-phpcs/Dockerfile",
+        "patchSetId": 11
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-27T09:05:21Z",
+      "side": 1,
+      "message": "I was waiting for things to settle.\n\nI have a patch in Gerrit for a ci-jessie image https://gerrit.wikimedia.org/r/#/c/378033/   I guess I gotta rebase it :]",
+      "parentUuid": "2e7b3738_66be38fc",
+      "range": {
+        "startLine": 11,
+        "startChar": 11,
+        "endLine": 11,
+        "endChar": 23
+      },
+      "revId": "853a5baece654ea5b501f17d255ebedfa97f0520",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2e7b3738_e6d1c859",
         "filename": "dockerfiles/mediawiki-phpcs/run.sh",
         "patchSetId": 11
@@ -71,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "0e6af365_90a87cda",
+        "filename": "dockerfiles/mediawiki-phpcs/run.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-27T09:05:21Z",
+      "side": 1,
+      "message": "I don\u0027t think you can restrict packages installation. But maybe you can find the phpcs version from composer.json, delete the file then use \u0027composer require\u0027?",
+      "parentUuid": "2e7b3738_e6b228f9",
+      "range": {
+        "startLine": 4,
+        "startChar": 34,
+        "endLine": 4,
+        "endChar": 41
+      },
+      "revId": "853a5baece654ea5b501f17d255ebedfa97f0520",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2e7b3738_664dd83e",
         "filename": "jjb/macro-docker.yaml",
         "patchSetId": 11
@@ -82,6 +130,30 @@
       "writtenOn": "2017-09-26T16:18:01Z",
       "side": 1,
       "message": "I dont know how to initially populate this git cache, but really it is needed for using zuul-cloner :/ otherwise its setup slow...\nBut maybe that is because it is talking directly to gerrit.wikimedia.org. Isnt there a dedicated mirror with all the same refs for use in CI?",
+      "range": {
+        "startLine": 14,
+        "startChar": 28,
+        "endLine": 14,
+        "endChar": 36
+      },
+      "revId": "853a5baece654ea5b501f17d255ebedfa97f0520",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e6af365_706148d0",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-27T09:05:21Z",
+      "side": 1,
+      "message": "On Nodepool images, the git repos are populated via a shell script: https://github.com/wikimedia/integration-config/blob/master/dib/elements/wikimedia/root.d/09-mirror-gerrit-repos\n\nIt has an hardcoded list of repos to clone and then roughly:\n\n git clone --bare https://gerrit/$REPO /srv/git/$REPO\n\nWhich would eg create /srv/git/mediawiki/core.git\n\n\nSupposedly we would need a similar mecanism to create the mirrors on the Docker hosts AND find a way to safely update them from time to time.",
+      "parentUuid": "2e7b3738_664dd83e",
       "range": {
         "startLine": 14,
         "startChar": 28,
