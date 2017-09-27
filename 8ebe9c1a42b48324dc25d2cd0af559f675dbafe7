@@ -22,6 +22,30 @@
       "revId": "8ebe9c1a42b48324dc25d2cd0af559f675dbafe7",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e6af365_b0d2605c",
+        "filename": "dockerfiles/ci-jessie/Dockerfile",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-09-27T09:25:55Z",
+      "side": 1,
+      "message": "apt-get clean deletes the .deb packages from /var/cache/apt/archives\n\nBut the wikimedia-jessie comes with some apt configuration to prevent such caching:\n\n $ cat /etc/apt/apt.conf.d/90clean\n DPkg::Post-Invoke { \"rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true\"; };\n APT::Update::Post-Invoke { \"rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true\"; };\n Dir::Cache::pkgcache \"\";\n Dir::Cache::srcpkgcache \"\";\n\n\nEg, we do not need to apt-get clean :]",
+      "parentUuid": "0e6af365_d0d35463",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 6
+      },
+      "revId": "8ebe9c1a42b48324dc25d2cd0af559f675dbafe7",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
