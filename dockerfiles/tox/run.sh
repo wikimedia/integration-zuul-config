@@ -20,4 +20,4 @@ git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
 # Run tests
-TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v | tee "${LOG_DIR}/stdout.log"
+TOX_TESTENV_PASSENV="PY_COLORS XDG_CACHE_HOME" PY_COLORS=1 tox -v | tee "${LOG_DIR}/stdout.log"
