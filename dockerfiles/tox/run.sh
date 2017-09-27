@@ -2,20 +2,17 @@
 
 set -euxo pipefail
 
-SRC_DIR="/srv/src"
-
-LOG_DIR="$HOME/log"
+LOG_DIR=/log
 export LOG_DIR
 
 capture_logs() {
-    # Save logs
-    mv "${SRC_DIR}"/.tox/*/log/*.log "${LOG_DIR}/" || /bin/true
-    mv "${SRC_DIR}"/.tox/log/* "${LOG_DIR}/" || /bin/true
+    mv /src/.tox/*/log/*.log "${LOG_DIR}" || /bin/true
+    mv /src/.tox/log "${LOG_DIR}" || /bin/true
 }
 
 trap capture_logs EXIT
 
-cd "$SRC_DIR"
+cd /src
 
 git init
 git fetch --depth 2 --quiet "${ZUUL_URL}/${ZUUL_PROJECT}" "$ZUUL_REF"
