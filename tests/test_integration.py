@@ -29,7 +29,10 @@ class IntegrationTests(unittest.TestCase):
         jjb_dir = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             '../jjb')
-        JenkinsJobs(args=['test', jjb_dir, '-o', out_dir]).execute()
+        jjb_test = JenkinsJobs(args=['test', jjb_dir, '-o', out_dir])
+        # Fake the list of plugins to skip retrieval
+        jjb_test.jjb_config.builder['plugins_info'] = []
+        jjb_test.execute()
 
     # Merely to show that the config has been generated in setUpClass
     def test_jjb_generate_jobs(self):
