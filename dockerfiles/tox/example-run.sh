@@ -1,6 +1,6 @@
 #!/bin/bash
 
-install --mode 777 --directory log
+install --mode 777 --directory cache log
 docker run \
     --rm --tty \
     --env ZUUL_URL=https://gerrit.wikimedia.org/r \
@@ -8,4 +8,5 @@ docker run \
     --env ZUUL_COMMIT=master \
     --env ZUUL_REF=master \
     --volume /"$(pwd)"/log://log \
+    --volume /"$(pwd)"/cache://cache \
      wmfreleng/tox:latest
