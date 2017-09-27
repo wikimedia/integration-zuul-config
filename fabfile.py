@@ -46,7 +46,7 @@ def deploy_slave_scripts():
     """Pull integration/jenkins on CI labs slaves"""
     env.sudo_user = 'root'
     env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
-    sudo("cumin --force 'name:slave' "
+    sudo("cumin --force 'name:\"slave-(?!docker|.*android)\"' "
          "'cd /srv/deployment/integration/slave-scripts && git pull'")
 
 
