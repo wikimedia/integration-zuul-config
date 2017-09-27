@@ -1,5 +1,6 @@
 #!/bin/bash
 
+install --mode 777 --directory log
 # Note: this example currently has lots of issues and outputs a big long log
 docker run \
     --rm --tty \
