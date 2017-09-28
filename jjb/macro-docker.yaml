@@ -44,7 +44,16 @@
     builders:
      - shell: |
         rm -rf log
-        mkdir -m 777 -p "log"
+        mkdir -m 2777 -p "log"
+
+# Create a src directory that will be
+# mounted into a container with --volume
+- builder:
+    name: docker-src-dir
+    builders:
+     - shell: |
+        rm -rf src
+        mkdir -m 2777 -p "src"
 
 # Create a cache directory that will be
 # mounted into a container with --volume
@@ -52,7 +61,7 @@
     name: docker-cache-dir
     builders:
      - shell: |
-        mkdir -m 777 -p "cache"
+        mkdir -m 2777 -p "cache"
 
 # Run a docker image with .env and a log
 - builder:
@@ -88,7 +97,7 @@
      - shell: |
         #!/bin/bash -eu
         set -x
-        chmod 777 src
+        chmod 2777 src
         docker run \
             --rm --tty \
             --volume "$(pwd)"/log:{logdir} \
