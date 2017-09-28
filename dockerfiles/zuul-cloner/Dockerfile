@@ -1,10 +1,8 @@
-FROM docker-registry.wikimedia.org/wikimedia-jessie:latest
+FROM wmfreleng/ci-jessie:latest
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         zuul \
-        # zuul doesn't pull this in automatically but clearly needs it
-        git \
         # pin python-pbr https://phabricator.wikimedia.org/T153877
         python-pbr=0.8.2-1 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
