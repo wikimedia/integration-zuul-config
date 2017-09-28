@@ -7,36 +7,36 @@
 # DIB_DEBIAN_USE_DEBOOTSTRAP_CACHE=1 DIB_DEBOOTSTRAP_CACHE=1
 
 if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
-	set -x
+    set -x
 fi
 set -eu
 set -o pipefail
 
 case "${1:-0}" in
-	debian)
-		distribution_elements=('debian' 'debian-systemd')
-		export DIB_RELEASE=${DIB_RELEASE:-jessie}
-		# systemd is not running in the chroot causing our initsystem fact to
-		# misbehave and consider we use an unknown init. That prevents
-		# base::service_unit from installing services. T129320
-		export FACTER_initsystem='systemd'
-	;;
-	* | 0)
-		echo "Fatal: Linux distribution not recognized."
-		echo "Usage: $0 <debian>"
-		exit 1
+    debian)
+        distribution_elements=('debian' 'debian-systemd')
+        export DIB_RELEASE=${DIB_RELEASE:-jessie}
+        # systemd is not running in the chroot causing our initsystem fact to
+        # misbehave and consider we use an unknown init. That prevents
+        # base::service_unit from installing services. T129320
+        export FACTER_initsystem='systemd'
+        ;;
+    * | 0)
+        echo "Fatal: Linux distribution not recognized."
+        echo "Usage: $0 <debian>"
+        exit 1
 esac
 DIB_DISTRIBUTION=$1
 export DIB_DISTRIBUTION_MIRROR=${DIB_DISTRUBITION_MIRROR:-"http://mirrors.wikimedia.org/$DIB_DISTRIBUTION"}
 
 ELEMENTS=(
-	"${distribution_elements[*]}"
-	'cloud-init-datasources'
-	'vm'
-	'devuser'
-	# Custom
-	'wikimedia'
-	)
+    "${distribution_elements[*]}"
+    'cloud-init-datasources'
+    'vm'
+    'devuser'
+    # Custom
+    'wikimedia'
+    )
 export DIB_COMMAND=${DIB_COMMAND:-'disk-image-create'}
 export DIB_IMAGE_CACHE=${DIB_IMAGE_CACHE:-imagecache}  # XXX should be unset by default
 DATE=`date -u +'%Y%m%dT%H%M%SZ'`
@@ -62,16 +62,16 @@ export NODEPOOL_SCRIPTDIR='../nodepool/scripts'
 
 ELEMENTS_PATH=${ELEMENTS_PATH:-}
 if [[ -z "$ELEMENTS_PATH" ]]; then
-	export ELEMENTS_PATH='elements'
+    export ELEMENTS_PATH='elements'
 else
-	export ELEMENTS_PATH="${ELEMENTS_PATH}:elements"
+    export ELEMENTS_PATH="${ELEMENTS_PATH}:elements"
 fi
 
 $DIB_COMMAND -t "$IMAGE_TYPE" --no-tmpfs -o "$DIB_IMAGE_NAME" ${ELEMENTS[@]}
 EXIT_CODE=$?
 if [[ $EXIT_CODE -gt 0 ]]; then
-	>&2 echo "Disk image creation failed (exit: $EXIT_CODE)"
-	exit $EXIT_CODE
+    >&2 echo "Disk image creation failed (exit: $EXIT_CODE)"
+    exit $EXIT_CODE
 else
-	echo "Disk image successful ${DIB_IMAGE_NAME}.${IMAGE_TYPE}"
+    echo "Disk image successful ${DIB_IMAGE_NAME}.${IMAGE_TYPE}"
 fi
