@@ -2,8 +2,8 @@
 set -e
 
 if [ -z "$1" ]; then
-	echo "Usage: $0 <hostname>"
-	exit 1
+    echo "Usage: $0 <hostname>"
+    exit 1
 fi;
 
 set -u
