@@ -806,6 +806,11 @@ jobs:
     files:
      - '^.*\.(json|php|php5|phtml|inc|xml)$'
 
+  - name: mediawiki-core-phpcs-docker
+    branch: (?!^fundraising/REL)
+    files:
+     - '^.*\.(json|php|php5|phtml|inc|xml)$'
+
 
   - name: ^mediawiki-core-npm-node-6-jessie$
     files:
@@ -1388,7 +1393,7 @@ projects:
       - mediawiki-core-php55lint
       - composer-package-validate
     test:
-      - mediawiki-core-phpcs-jessie
+      - mediawiki-core-phpcs-docker
       - mediawiki-core-jsduck
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
@@ -1403,7 +1408,7 @@ projects:
       - mediawiki-core-jsduck
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
-      - mediawiki-core-phpcs-jessie
+      - mediawiki-core-phpcs-docker
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-hhvm-composer-jessie
       - mediawiki-phpunit-php55-jessie
@@ -1421,7 +1426,6 @@ projects:
       - mwgate-composer-php70-jessie
       - mediawiki-phpunit-php70-jessie
       - mediawiki-extensions-php70-jessie
-      - mediawiki-core-phpcs-docker
 
   - name: mediawiki/debian
     test:
