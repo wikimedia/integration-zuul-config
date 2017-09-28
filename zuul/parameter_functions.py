@@ -21,7 +21,6 @@ def set_parameters(item, job, params):
         'mw-testskin',
         'mw-testskin-non-voting',
         'mw-tools-codesniffer-mwcore-testrun',
-        'mediawiki-core-phpcs-jessie',
         )
     php5_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
