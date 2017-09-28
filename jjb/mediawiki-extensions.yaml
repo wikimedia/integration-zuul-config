@@ -406,8 +406,8 @@
             total-all: 1
 
 - job:
-    name: 'mwext-php70-phan-jessie-docker'
-    node: DebianJessieDocker
+    name: 'mwext-php70-phan-docker'
+    node: DebianJessieDocker && m4executor
     concurrent: true
     properties:
      - build-discarder:
@@ -415,30 +415,34 @@
     triggers:
      - zuul
     builders:
+     - docker-log-dir
+     - docker-src-dir
+     - docker-cache-dir
+     - docker-zuul-env
      - shell: |
         #!/bin/bash -eu
 
         set -x
 
-        rm -rf log
-        rm -rf .env
-
-        cat <<ZUUL > .env
-        ZUUL_URL=$ZUUL_URL
-        ZUUL_PROJECT=$ZUUL_PROJECT
-        ZUUL_COMMIT=$ZUUL_COMMIT
-        ZUUL_REF=$ZUUL_REF
-        EXT_DEPENDENCIES=$EXT_DEPENDENCIES
-        HOME=/var/lib/jenkins
-        ZUUL
-
-        mkdir -p "log"
+        echo "EXT_DEPENDENCIES=$EXT_DEPENDENCIES" >> .env
+        echo "SKIN_DEPENDENCIES=$SKIN_DEPENDENCIES" >> .env
 
         docker run \
             --rm --tty \
             --env-file .env \
-            --volume "$(pwd)"/log:/var/lib/jenkins/log \
-            wmfreleng/mediawiki-extensions-phan:v2017.09.11.19.08
+            --volume "$(pwd)"/src:/src \
+            --volume "$(pwd)"/cache:/cache \
+            --volume /srv/git:/srv/git \
+            --entrypoint "bash" \
+            wmfreleng/ci-src-setup:v2017.10.16.15.37 \
+            /srv/setup-mw.sh
+
+        docker run \
+            --rm --tty \
+            --volume "$(pwd)"/src:/mediawiki \
+            wmfreleng/mediawiki-phan:v2017.09.28.22.24 \
+            /$ZUUL_PROJECT -m checkstyle
+
     publishers:
      - checkstyle:
         pattern: 'log/phan-issues'

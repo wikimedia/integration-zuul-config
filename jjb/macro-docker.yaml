@@ -46,6 +46,15 @@
         rm -rf log
         mkdir -m 777 -p "log"
 
+# Create a src directory that will be
+# mounted into a container with --volume
+- builder:
+    name: docker-src-dir
+    builders:
+     - shell: |
+        rm -rf src
+        mkdir -m 777 -p "src"
+
 # Create a cache directory that will be
 # mounted into a container with --volume
 - builder:
