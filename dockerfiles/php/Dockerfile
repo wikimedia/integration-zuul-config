@@ -16,9 +16,7 @@ RUN apt-get update && \
     apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* && \
     rm /etc/apt/sources.list.d/php.list
 
-RUN groupadd -r php && useradd --no-log-init -r -g php php
-
-USER php
+USER nobody
 
 ENTRYPOINT ["php"]
 CMD ["--help"]
