@@ -406,8 +406,8 @@
             total-all: 1
 
 - job:
-    name: 'mwext-php70-phan-jessie-docker'
-    node: DebianJessieDocker
+    name: 'mwext-php70-phan-docker'
+    node: DebianJessieDocker && m4executor
     concurrent: true
     properties:
      - build-discarder:
@@ -415,30 +415,66 @@
     triggers:
      - zuul
     builders:
+     - docker-log-dir
+     - docker-src-dir
+     - docker-cache-dir
+     - docker-zuul-env
      - shell: |
         #!/bin/bash -eu
 
         set -x
 
-        rm -rf log
-        rm -rf .env
+        echo "echo \$ZUUL_PROJECT > /tmp/deps.txt" > setup.sh
+        echo "echo -e \$EXT_DEPENDENCIES >> /tmp/deps.txt" >> setup.sh
+        echo "echo -e \$SKIN_DEPENDENCIES > /tmp/deps_skins.txt" >> setup.sh
 
-        cat <<ZUUL > .env
-        ZUUL_URL=$ZUUL_URL
-        ZUUL_PROJECT=$ZUUL_PROJECT
-        ZUUL_COMMIT=$ZUUL_COMMIT
-        ZUUL_REF=$ZUUL_REF
-        EXT_DEPENDENCIES=$EXT_DEPENDENCIES
-        HOME=/var/lib/jenkins
-        ZUUL
+        echo "cd /src" >> setup.sh
+        echo "zuul-cloner --version" >> setup.sh
+        echo "zuul-cloner \
+            --color \
+            --verbose \
+            --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
+            --workspace /src \
+            --cache-dir /srv/git \
+            https://gerrit.wikimedia.org/r/p \
+            mediawiki/core \
+            mediawiki/vendor \
+            \$(cat /tmp/deps.txt) \
+            \$(cat /tmp/deps_skins.txt)" >> setup.sh
 
-        mkdir -p "log"
+        echo "find extensions skins -maxdepth 2 \
+            -name .gitmodules \
+            -execdir bash -xe -c '
+                git submodule foreach git clean -xdff -q
+                git submodule update --init --recursive
+                git submodule status
+                ' \;" >> setup.sh
+
+        echo "echo \$ZUUL_PROJECT > /tmp/extensions_load.txt" >> setup.sh
+        echo "echo -e \$EXT_DEPENDENCIES >> /tmp/extensions_load.txt" >> setup.sh
+
+        echo "set -u" >> setup.sh
+        echo "composer --ansi validate --no-check-publish" >> setup.sh
+        echo "/srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py \"/tmp/extensions_load.txt\" composer.local.json" >> setup.sh
+        echo "composer update --ansi --no-progress --prefer-dist --profile --no-dev" >> setup.sh
 
         docker run \
             --rm --tty \
             --env-file .env \
-            --volume "$(pwd)"/log:/var/lib/jenkins/log \
-            wmfreleng/mediawiki-extensions-phan:v2017.09.11.19.08
+            --volume "$(pwd)"/src:/src \
+            --volume "$(pwd)"/cache:/cache \
+            --volume "$(pwd)"/srv/git:/srv/git \
+            --volume "$(pwd)"/setup.sh:/setup.sh \
+            --entrypoint "bash" \
+            wmfreleng/ci-src-setup:v2017.09.29.14.06 \
+            setup.sh
+
+        docker run \
+            --rm --tty \
+            --volume "$(pwd)"/src:/mediawiki \
+            wmfreleng/mediawiki-phan:v2017.09.28.22.24 \
+            /$ZUUL_PROJECT -m checkstyle
+
     publishers:
      - checkstyle:
         pattern: 'log/phan-issues'
