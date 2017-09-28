@@ -406,7 +406,7 @@
             total-all: 1
 
 - job:
-    name: 'mwext-php70-phan-jessie-docker'
+    name: 'mwext-php70-phan-docker'
     node: DebianJessieDocker
     concurrent: true
     properties:
@@ -415,30 +415,57 @@
     triggers:
      - zuul
     builders:
+     - docker-log-dir
+     - docker-src-dir
+     - docker-zuul-env
      - shell: |
         #!/bin/bash -eu
 
         set -x
 
-        rm -rf log
-        rm -rf .env
+        echo "echo \$ZUUL_PROJECT > /tmp/deps.txt" > step1.sh
+        echo "echo -e \$EXT_DEPENDENCIES >> /tmp/deps.txt" >> step1.sh
+        echo "echo -e \$SKIN_DEPENDENCIES > /tmp/deps_skins.txt" >> step1.sh
 
-        cat <<ZUUL > .env
-        ZUUL_URL=$ZUUL_URL
-        ZUUL_PROJECT=$ZUUL_PROJECT
-        ZUUL_COMMIT=$ZUUL_COMMIT
-        ZUUL_REF=$ZUUL_REF
-        EXT_DEPENDENCIES=$EXT_DEPENDENCIES
-        HOME=/var/lib/jenkins
-        ZUUL
+        echo "cd /src" >> step1.sh
+        echo "zuul-cloner --version" >> step1.sh
+        echo "zuul-cloner \
+            --color \
+            --verbose \
+            --map /zuul-clonemap.yaml \
+            --workspace /src \
+            --cache-dir /srv/git \
+            https://gerrit.wikimedia.org/r/p \
+            mediawiki/core \
+            mediawiki/vendor \
+            \$(cat /tmp/deps.txt) \
+            \$(cat /tmp/deps_skins.txt)" >> step1.sh
 
-        mkdir -p "log"
+        echo "find extensions skins -maxdepth 2 \
+            -name .gitmodules \
+            -execdir bash -xe -c '
+                git submodule foreach git clean -xdff -q
+                git submodule update --init --recursive
+                git submodule status
+                ' \;" >> step1.sh
 
         docker run \
             --rm --tty \
             --env-file .env \
-            --volume "$(pwd)"/log:/var/lib/jenkins/log \
-            wmfreleng/mediawiki-extensions-phan:v2017.09.11.19.08
+            --volume "$(pwd)"/src:/src \
+            --volume "$(pwd)"/step1.sh:/step1.sh \
+            --entrypoint "bash" \
+            --user "nobody" \
+            wmfreleng/zuul-cloner:v2017.09.26.16.09 \
+            step1.sh
+
+        docker run \
+            --rm --tty \
+            --volume "$(pwd)"/src:/mediawiki \
+            --user "nobody" \
+            wmfreleng/mediawiki-phan:v2017.09.27.10.53 \
+            /$ZUUL_PROJECT -m checkstyle
+
     publishers:
      - checkstyle:
         pattern: 'log/phan-issues'
