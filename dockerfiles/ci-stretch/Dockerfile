@@ -1,6 +1,6 @@
-FROM docker-registry.wikimedia.org/wikimedia-jessie:latest
+FROM docker-registry.wikimedia.org/wikimedia-stretch:latest
 
-# Keep the following in sync with ci-stretch
+# Keep the following in sync with ci-jessie
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Cache directory, honored by multiple softwares
