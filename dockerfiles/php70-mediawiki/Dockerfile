@@ -1,4 +1,4 @@
-FROM wmfreleng/php:latest
+FROM wmfreleng/php70:latest
 
 USER root
 
