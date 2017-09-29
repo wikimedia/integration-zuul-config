@@ -25,7 +25,7 @@ class DockerBuilder(object):
 
         if self.args.directory:
             dockerfiles = [
-                os.path.join(os.getcwd(), f, 'Dockerfile')
+                os.path.join(BASE_DIR, f, 'Dockerfile')
                 for f in self.args.directory
             ]
         else:
