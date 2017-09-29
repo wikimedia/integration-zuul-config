@@ -1,6 +1,6 @@
 FROM wmfreleng/composer:latest as composer
 
-FROM wmfreleng/php-mediawiki:latest
+FROM wmfreleng/php70-mediawiki:latest
 
 USER root
 
