@@ -1,4 +1,4 @@
-FROM docker-registry.wikimedia.org/wikimedia-jessie:latest
+FROM docker-registry.wikimedia.org/wikimedia-stretch:latest
 
 # Keep the following in sync with ci-stretch
 ARG DEBIAN_FRONTEND=noninteractive
