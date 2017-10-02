@@ -738,6 +738,9 @@ jobs:
   - name: ^mediawiki-vagrant-rake-jessie$
     files:
       - '.*'
+  - name: ^puppet-wmf-styleguide-rake-jessie$
+    files:
+      - '.*'
 
   # Ditto for translatewiki which has puppet modules under /puppet
   - name: ^translatewiki-rake-jessie$
@@ -2330,6 +2333,12 @@ projects:
   - name: operations/puppet
     test-prio:
       - operations-puppet-tests-docker
+
+  - name: operations/puppet-lint/wmf_styleguide-check
+    test:
+      - puppet-wmf-styleguide-rake-jessie
+    gate-and-submit:
+      - puppet-wmf-styleguide-rake-jessie
 
   - name: operations/puppet/cdh
     template:
