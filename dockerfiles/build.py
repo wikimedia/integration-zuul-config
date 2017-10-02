@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from collections import defaultdict
 import configparser
 from datetime import datetime
 from glob import glob
@@ -29,13 +30,32 @@ class DockerBuilder(object):
 
         self.load_config()
 
+        recurse = self.args.recurse
+
         if self.args.directory:
-            dockerfiles = [
-                os.path.join(BASE_DIR, f, 'Dockerfile')
-                for f in self.args.directory
-            ]
+            to_build = self.args.directory
         else:
-            dockerfiles = self.find_docker_files()
+            # Base images
+            to_build = ['ci-jessie', 'ci-stretch']
+            # No images provided, so we're building all of them.
+            recurse = True
+
+        images = []
+        for image in to_build:
+            images.append(image)
+            if recurse:
+                tree = self.gen_deps_tree(DOCKER_HUB_ACCOUNT + '/' + image)
+                # Extend build list to sub-images.
+                # Note that we need to strip the "wmfreleng/" prefix
+                images.extend([x.split('/')[1]
+                               for x in self.gen_staged_deps(tree)])
+
+        self.log.info('Will build: %s' % ', '.join(images))
+        dockerfiles = [
+            os.path.join(BASE_DIR, f, 'Dockerfile')
+            for f in images
+        ]
+
         if not all(map(self.build, dockerfiles)):
             return False
 
@@ -69,6 +89,10 @@ class DockerBuilder(object):
             '--update-jjb', action='store_true',
             help='Update tags in jjb yaml files'
         )
+        parser.add_argument(
+            '--recurse', action='store_true',
+            help='Rebuild images that depend on this one'
+        )
         self.args = parser.parse_args()
 
     def find_docker_files(self):
@@ -87,6 +111,94 @@ class DockerBuilder(object):
                 with open(full_fname, 'w') as f:
                     f.write(new_text)
                 self.log.info('Updated %s' % full_fname)
+
+    def gen_deps_tree(self, name):
+        froms = {}
+        for f in self.find_docker_files():
+            image_name = '%s/%s' % (DOCKER_HUB_ACCOUNT,
+                                    os.path.basename(os.path.dirname(f)))
+            with open(f) as fp:
+                froms[image_name] = []
+                for l in fp.readlines():
+                    m = self._parse_FROM(l)
+                    if m:
+                        froms[image_name].append(m['image'])
+                        # Register images not yet known
+                        if m['image'] not in froms:
+                            froms[m['image']] = [None]
+
+            deps = set(froms[image_name])
+            self.log.debug('%s dependenc%s: %s' % (
+                image_name,
+                'y' if (len(deps) == 1) else 'ies',
+                ', '.join(deps)
+            ))
+
+        tree = {}
+
+        def build_tree(tree, parent, froms):
+            childs = [p for (p, v) in froms.items()
+                      if parent in v]
+            for child in childs:
+                tree[child] = {}
+                build_tree(tree[child], child, froms)
+
+        build_tree(tree, None, froms)
+
+        def find_tree(tree, name):
+            if name in tree:
+                return tree[name]
+
+            for subtree in tree.values():
+                found = find_tree(subtree, name)
+                if found is not None:
+                    return found
+
+            return None
+
+        tree = find_tree(tree, name)
+        self.log.debug(tree)
+        return tree
+
+    def gen_staged_deps(self, tree):
+
+        def flatten(stages, depth, deps):
+            depth = depth + 1
+
+            stages[depth].extend(deps.keys())
+            stages[depth] = sorted(set(stages[depth]))
+
+            for sub_deps in deps.values():
+                if sub_deps:
+                    flatten(stages, depth, sub_deps)
+
+        stages = defaultdict(list)
+        flatten(stages, 0, tree)
+
+        for (num, images) in stages.items():
+            self.log.debug('Stage %s: %s' % (num, ', '.join(images)))
+
+        flat = []
+        for stage in sorted(stages):
+            flat.extend(stages[stage])
+        return flat
+
+    def _parse_FROM(self, line):
+        # https://docs.docker.com/engine/reference/builder/#from
+        m = re.match(
+            '''FROM\s+
+                (?P<image>\S+?)
+                (
+                    :(?P<tag>\S+)
+                    |
+                    @(?P<digest>\S+)
+                )?
+                (?:\s+as\s+.+)?
+                \n$
+            ''',
+            line, re.X + re.I)
+        if m:
+            return m.groupdict()
 
     def build(self, dockerfile):
         self.log.debug('Building %s' % dockerfile)
