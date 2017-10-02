@@ -4,8 +4,10 @@ import argparse
 import configparser
 from datetime import datetime
 from glob import glob
+import json
 import logging
 import os.path
+import re
 import subprocess
 import sys
 
@@ -30,6 +32,7 @@ class DockerBuilder(object):
             ]
         else:
             dockerfiles = self.find_docker_files()
+        self.sorted_deps(dockerfiles)
         return all(map(self.build, dockerfiles))
 
     def load_config(self):
@@ -47,6 +50,57 @@ class DockerBuilder(object):
 
     def find_docker_files(self):
         return sorted(glob(os.path.join(BASE_DIR, '*/Dockerfile')))
+
+    def sorted_deps(self, files):
+        froms = {}
+        for f in files:
+            image_name = 'wmfreleng/' + os.path.basename(os.path.dirname(f))
+            with open(f) as fp:
+                froms[image_name] = []
+                for l in fp.readlines():
+                    m = self._parse_FROM(l)
+                    if m:
+                        froms[image_name].append(m['image'])
+                        # Register images not yet known
+                        if m['image'] not in froms:
+                            froms[m['image']] = [None]
+
+        from pprint import pprint
+        pprint(froms)
+
+        tree = {}
+
+        def build_tree(tree, dependency, froms):
+            print('Images depending on: %s' % dependency)
+            childs = [p for (p, v) in froms.items()
+                      if dependency in v]
+            print("Found childs: %s" % childs)
+            for child in childs:
+                tree[child] = {}
+                build_tree(tree[child], child, froms)
+
+        build_tree(tree, None, froms)
+        print(json.dumps(tree))
+
+        import sys
+        sys.exit(0)
+
+    def _parse_FROM(self, line):
+        # https://docs.docker.com/engine/reference/builder/#from
+        m = re.match(
+            '''FROM\s+
+                (?P<image>\S+?)
+                (
+                    :(?P<tag>\S+)
+                    |
+                    @(?P<digest>\S+)
+                )?
+                (?:\s+as\s+.+)?
+                \n$
+            ''',
+            line, re.X + re.I)
+        if m:
+            return m.groupdict()
 
     def build(self, dockerfile):
         self.log.info('Building %s' % dockerfile)
