@@ -17,11 +17,12 @@ DOCKER_HUB_ACCOUNT = 'wmfreleng'
 class DockerBuilder(object):
 
     def run(self):
+        self.parse_args()
+
         self.log = logging.getLogger(self.__class__.__name__)
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=self.args.verbose)
 
         self.load_config()
-        self.parse_args()
 
         if self.args.directory:
             dockerfiles = [
@@ -43,13 +44,16 @@ class DockerBuilder(object):
     def parse_args(self):
         parser = argparse.ArgumentParser()
         parser.add_argument('directory', nargs='*', default=[])
+        parser.add_argument(
+            '-v', '--verbose', action='store_const',
+            const=logging.DEBUG, default=logging.INFO)
         self.args = parser.parse_args()
 
     def find_docker_files(self):
         return sorted(glob(os.path.join(BASE_DIR, '*/Dockerfile')))
 
     def build(self, dockerfile):
-        self.log.info('Building %s' % dockerfile)
+        self.log.debug('Building %s' % dockerfile)
         image_dir = os.path.dirname(dockerfile)
 
         image_name = os.path.relpath(image_dir, BASE_DIR)
