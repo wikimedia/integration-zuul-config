@@ -5,6 +5,7 @@ FROM wmfreleng/php-mediawiki:latest
 USER root
 
 COPY --from=composer /srv/composer /srv/composer
+RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
 
 USER nobody
 COPY run.sh /run.sh
