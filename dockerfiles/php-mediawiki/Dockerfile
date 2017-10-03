@@ -7,7 +7,7 @@ RUN apt-get update && \
         # Needed for composer to install things from dist
         php7.0-zip \
         # Needed for mediawiki
-        php-ast php7.0-dba php7.0-mbstring php7.0-xml && \
+        php-ast php7.0-dba php7.0-mbstring php-redis php7.0-xml && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 USER nobody
