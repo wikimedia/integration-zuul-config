@@ -18,7 +18,7 @@ class { '::apt':
 
 # Jenkins provision jre by itself but it sounds better to have it already in
 # the  image. T126246.
-include jenkins::slave::requisites
+include jenkins::common
 
 include contint::slave_scripts
 include contint::packages::base
@@ -186,12 +186,6 @@ ensure_packages(['netcat-openbsd'])
 
 # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
 ensure_packages(['zip', 'unzip'])
-
-ensure_packages(['openjdk-8-jre-headless'])
-alternatives::select { 'java':
-    path    => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
-    require => Package['openjdk-8-jre-headless'],
-}
 
 # Following should later be included in contint::packages::ops once GeoIP
 # is installable.
