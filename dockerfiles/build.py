@@ -47,6 +47,10 @@ class DockerBuilder(object):
         parser.add_argument(
             '-v', '--verbose', action='store_const',
             const=logging.DEBUG, default=logging.INFO)
+        parser.add_argument(
+            '--no-cache', action='store_true',
+            help='Do not use cache when building the image'
+        )
         self.args = parser.parse_args()
 
     def find_docker_files(self):
@@ -73,6 +77,8 @@ class DockerBuilder(object):
                     '--build-arg',
                     'http_proxy=%s' % self.config.get('DEFAULT', 'http_proxy')
                     ])
+            if self.args.no_cache:
+                cmd.extend(['--no-cache'])
             cmd.extend(['-t', tagged_img, os.path.dirname(dockerfile)])
             self.log.info(' '.join(cmd))
             subprocess.check_call(cmd)
@@ -80,6 +86,9 @@ class DockerBuilder(object):
             cmd = ['docker', 'tag', tagged_img, '%s:latest' % img]
             self.log.info(' '.join(cmd))
             subprocess.check_call(cmd)
+            self.log.info('You can push the images when ready: '
+                          'docker push %s && docker push %s:latest'
+                          % (tagged_img, img))
         finally:
             for f in glob(os.path.join(image_dir, ".cache-buster*")):
                 os.remove(f)
