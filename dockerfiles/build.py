@@ -5,11 +5,13 @@ import configparser
 from datetime import datetime
 from glob import glob
 import logging
-import os.path
+import os
+import re
 import subprocess
 import sys
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+JJB_DIR = os.path.join(os.path.dirname(BASE_DIR), 'jjb')
 DOCKER_TAG_DATE = datetime.utcnow().strftime("v%Y.%m.%d.%H.%M")
 DOCKER_HUB_ACCOUNT = 'wmfreleng'
 
@@ -55,10 +57,28 @@ class DockerBuilder(object):
             '--run-tests', action='store_true',
             help='Run tests in example-run.sh if it exists after building'
         )
+        parser.add_argument(
+            '--update-jjb', action='store_true',
+            help='Update tags in jjb yaml files'
+        )
         self.args = parser.parse_args()
 
     def find_docker_files(self):
         return sorted(glob(os.path.join(BASE_DIR, '*/Dockerfile')))
+
+    def update_jjb(self, img, tagged_img):
+        regex = re.compile('%s:v(.*?)' % img)
+        for fname in os.listdir(JJB_DIR):
+            if not fname.endswith('.yaml'):
+                continue
+            full_fname = os.path.join(JJB_DIR, fname)
+            with open(full_fname, 'r') as f:
+                text = f.read()
+            if regex.search(text):
+                new_text = regex.sub(tagged_img, text)
+                with open(full_fname, 'w') as f:
+                    f.write(new_text)
+                self.log.info('Updated %s' % full_fname)
 
     def build(self, dockerfile):
         self.log.debug('Building %s' % dockerfile)
@@ -101,6 +121,9 @@ class DockerBuilder(object):
                 os.path.exists(os.path.join(image_dir, 'example-run.sh')):
             self.log.info('Running rests')
             subprocess.check_call(['bash', 'example-run.sh'], cwd=image_dir)
+
+        if self.args.update_jjb:
+            self.update_jjb(img, tagged_img)
 
         return True
 
