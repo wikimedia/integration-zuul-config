@@ -38,12 +38,6 @@ include contint::packages::javascript
 include contint::packages::apt
 include contint::packages::php
 
-if os_version('debian == jessie') {
-    apt::repository { 'jessie-ci-php55':
-        ensure       => absent,
-    }
-}
-
 # MediaWiki PHPunit under Zend 5.5 can uses 2GBytes. An attempt to proc_open()
 # invokes fork() which clone the Virtual Memory. Although it is copy-on-write,
 # Linux still check whether the system will be able to honor a full allocation.
