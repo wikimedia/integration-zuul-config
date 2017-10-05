@@ -39,6 +39,18 @@ include contint::packages::apt
 include contint::packages::php
 
 Exec['apt-get update'] -> Package['php5.5-mysql']
+Exec['apt-get update'] -> Package['php5.5-common']
+Exec['apt-get update'] -> Package['php5.5-curl']
+Exec['apt-get update'] -> Package['php5.5-dev']
+Exec['apt-get update'] -> Package['php5.5-gd']
+Exec['apt-get update'] -> Package['php5.5-gmp']
+Exec['apt-get update'] -> Package['php5.5-intl']
+Exec['apt-get update'] -> Package['php5.5-ldap']
+Exec['apt-get update'] -> Package['php5.5-luasandbox']
+Exec['apt-get update'] -> Package['php5.5-mbstring']
+Exec['apt-get update'] -> Package['php5.5-redis']
+Exec['apt-get update'] -> Package['php5.5-tidy']
+
 
 # MediaWiki PHPunit under Zend 5.5 can uses 2GBytes. An attempt to proc_open()
 # invokes fork() which clone the Virtual Memory. Although it is copy-on-write,
