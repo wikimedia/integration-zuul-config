@@ -144,6 +144,23 @@
         image: 'wmfreleng/composer-package:v2017.10.05.02.56'
         logdir: '/log'
 
+- job:
+    name: 'composer-php70-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+     - docker-zuul-env
+     - docker-log-dir
+     - docker-cache-dir
+     - docker-run-with-log-and-workspace-cache:
+        image: 'wmfreleng/composer-test:v2017.10.05.03.56'
+        logdir: '/log'
+
 # Couple jobs with a {name} prefix
 - job-template:
     !!merge : *job_composer-phpflavor-image
