@@ -51,6 +51,10 @@ class DockerBuilder(object):
             '--no-cache', action='store_true',
             help='Do not use cache when building the image'
         )
+        parser.add_argument(
+            '--run-tests', action='store_true',
+            help='Run tests in example-run.sh if it exists after building'
+        )
         self.args = parser.parse_args()
 
     def find_docker_files(self):
@@ -92,6 +96,11 @@ class DockerBuilder(object):
         finally:
             for f in glob(os.path.join(image_dir, ".cache-buster*")):
                 os.remove(f)
+
+        if self.args.run_tests and \
+                os.path.exists(os.path.join(image_dir, 'example-run.sh')):
+            self.log.info('Running rests')
+            subprocess.check_call(['bash', 'example-run.sh'], cwd=image_dir)
 
         return True
 
