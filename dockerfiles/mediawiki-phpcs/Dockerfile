@@ -1,10 +1,4 @@
-FROM wmfreleng/composer:latest as composer
-
-FROM wmfreleng/php:latest
-
-USER root
-
-COPY --from=composer /srv/composer /srv/composer
+FROM wmfreleng/composer:latest
 
 USER nobody
 COPY run.sh /run.sh
