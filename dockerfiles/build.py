@@ -18,6 +18,9 @@ DOCKER_HUB_ACCOUNT = 'wmfreleng'
 
 class DockerBuilder(object):
 
+    def __init__(self):
+        self.pushes = []
+
     def run(self):
         self.parse_args()
 
@@ -33,7 +36,12 @@ class DockerBuilder(object):
             ]
         else:
             dockerfiles = self.find_docker_files()
-        return all(map(self.build, dockerfiles))
+        if not all(map(self.build, dockerfiles)):
+            return False
+
+        self.log.info('You can push the following images when ready: %s'
+                      % ' && '.join('docker push %s'
+                                    % name for name in self.pushes))
 
     def load_config(self):
         config = configparser.ConfigParser()
@@ -110,9 +118,6 @@ class DockerBuilder(object):
             cmd = ['docker', 'tag', tagged_img, '%s:latest' % img]
             self.log.info(' '.join(cmd))
             subprocess.check_call(cmd)
-            self.log.info('You can push the images when ready: '
-                          'docker push %s && docker push %s:latest'
-                          % (tagged_img, img))
         finally:
             for f in glob(os.path.join(image_dir, ".cache-buster*")):
                 os.remove(f)
@@ -121,6 +126,10 @@ class DockerBuilder(object):
                 os.path.exists(os.path.join(image_dir, 'example-run.sh')):
             self.log.info('Running rests')
             subprocess.check_call(['bash', 'example-run.sh'], cwd=image_dir)
+
+        self.pushes.append(tagged_img)
+        self.pushes.append('%s:latest' % img)
+
 
         if self.args.update_jjb:
             self.update_jjb(img, tagged_img)
