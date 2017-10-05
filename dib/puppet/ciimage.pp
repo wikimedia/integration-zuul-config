@@ -179,7 +179,11 @@ ensure_packages(['netcat-openbsd'])
 # For mediawiki/extensions/Collection/OfflineContentGenerator/bundler
 ensure_packages(['zip', 'unzip'])
 
-ensure_packages(['openjdk-7-jre-headless'])
+ensure_packages(['openjdk-8-jre-headless'])
+alternatives::select { 'java':
+    path            => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java',
+    require => Package['openjdk-8-jre-headless'],
+}
 
 # Following should later be included in contint::packages::ops once GeoIP
 # is installable.
