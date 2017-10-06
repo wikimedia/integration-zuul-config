@@ -19,7 +19,8 @@ DOCKER_HUB_ACCOUNT = 'wmfreleng'
 
 class DockerBuilder(object):
 
-    def __init__(self):
+    def __init__(self, base_dir=BASE_DIR):
+        self.base_dir = base_dir
         self.pushes = []
 
     def run(self):
@@ -52,7 +53,7 @@ class DockerBuilder(object):
 
         self.log.info('Will build: %s' % ', '.join(images))
         dockerfiles = [
-            os.path.join(BASE_DIR, f, 'Dockerfile')
+            os.path.join(self.base_dir, f, 'Dockerfile')
             for f in images
         ]
 
@@ -66,8 +67,8 @@ class DockerBuilder(object):
     def load_config(self):
         config = configparser.ConfigParser()
         config.read([
-            os.path.join(BASE_DIR, 'build.conf.default'),
-            os.path.join(BASE_DIR, 'build.conf'),
+            os.path.join(self.base_dir, 'build.conf.default'),
+            os.path.join(self.base_dir, 'build.conf'),
         ])
         self.config = config
 
@@ -96,7 +97,7 @@ class DockerBuilder(object):
         self.args = parser.parse_args()
 
     def find_docker_files(self):
-        return sorted(glob(os.path.join(BASE_DIR, '*/Dockerfile')))
+        return sorted(glob(os.path.join(self.base_dir, '*/Dockerfile')))
 
     def update_jjb(self, img, tagged_img):
         regex = re.compile('%s:v[0-9\.]+' % img)
@@ -204,7 +205,7 @@ class DockerBuilder(object):
         self.log.debug('Building %s' % dockerfile)
         image_dir = os.path.dirname(dockerfile)
 
-        image_name = os.path.relpath(image_dir, BASE_DIR)
+        image_name = os.path.relpath(image_dir, self.base_dir)
         self.log.info('Image name: %s' % image_name)
 
         img = '/'.join([DOCKER_HUB_ACCOUNT, image_name])
