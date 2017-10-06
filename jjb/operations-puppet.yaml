@@ -72,6 +72,57 @@
      - archive-log-dir
      # No castor-save. Done postmerge by operations-puppet-cache-update-jessie
 
+- job:
+    name: 'operations-puppet-wmf-style-guide'
+    node: DebianJessieDocker
+    concurrent: false
+    triggers:
+        - pollscm:
+            cron: '@hourly'
+    scm:
+     - git:
+         url: 'https://gerrit.wikimedia.org/r/p/operations/puppet.git'
+         branches:
+             - production
+         reference-repo: '/srv/git/operations/puppet.git'
+         do-not-fetch-tags: true
+         submodule:
+             disable: true
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            set +x
+            rm -rf .env
+            cat <<ZUUL > .env
+            ZUUL_URL=https://gerrit.wikimedia.org/r/p
+            ZUUL_PROJECT=operations/puppet
+            ZUUL_REF=production
+            HOME=/var/lib/jenkins
+
+            JENKINS_URL=$JENKINS_URL
+            RAKE_TARGET=global:wmf_style
+
+            ZUUL
+            echo "Docker environment variables:"
+            cat .env
+        - docker-log-dir
+        - docker-run-with-log:
+            image: 'wmfreleng/operations-puppet:v2017.10.20.12.47'
+            logdir: '/log'
+    wrappers:
+        - timeout:
+            timeout: 3  # minutes
+        - timestamps
+        - ansicolor
+    publishers:
+        - archive-log-dir
+        - warnings:
+            run-always: true
+            use-previous-build-as-reference: true
+            workspace-file-scanners:
+                - file-pattern: 'log/rake.log'
+                  scanner: 'puppet-lint'
+
 - project:
     name: 'operations-puppet'
     jobs:
