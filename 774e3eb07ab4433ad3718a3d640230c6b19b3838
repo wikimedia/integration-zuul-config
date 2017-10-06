@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e6af365_db5ed77a",
+        "filename": "tox.ini",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-06T19:57:55Z",
+      "side": 1,
+      "message": "tox implies that \"py35\" has basepython\u003dpython3.5.\n\nThat is going to fail on tox-jessie though since it has python3.4.  I guess we can just use python3 and that will be good enough.\n\nMaybe consider creating an env that explicitly hint at the dockerfiles?\n\n [testenv:dockerfiles]\n basepython \u003d python3\n deps \u003d -rdockerfiles/test-requirements.txt\n commands \u003d nosetests dockerfiles/tests {posargs}\n\nWhen a repository has several standalone packages (eg operations/software) a trick is to have /tox.ini to chain out to the subdirectory where another tox.ini is present.\n\n\n [testenv:dockerfiles]\n whitelist_externals \u003d tox\n toxworkdir\u003d{toxinidir}/dockerfiles\n commands \u003d tox -c {toxinidir}/dockerfiles/tox.ini\n\nOr maybe:\n\n [testenv:dockerfiles]\n changedir \u003d dockerfiles\n commands \u003d /usr/bin/env tox",
+      "revId": "774e3eb07ab4433ad3718a3d640230c6b19b3838",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
