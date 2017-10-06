@@ -1,11 +1,17 @@
 #!/bin/bash
 
-install --mode 777 --directory log
+mkdir -m 777 -p log
+rm -rf src
+mkdir -m 777 -p src
+cd src
+git init
+git fetch --quiet --depth 1 "https://gerrit.wikimedia.org/r/utfnormal" "refs/changes/57/375857/1"
+git checkout FETCH_HEAD
+cd ..
+
+mkdir -p log
 docker run \
     --rm --tty \
-    --env ZUUL_URL=https://gerrit.wikimedia.org/r \
-    --env ZUUL_PROJECT=utfnormal \
-    --env ZUUL_COMMIT=668604441afd899efb073ce4c6b5545341ef6582 \
-    --env ZUUL_REF=refs/changes/57/375857/1 \
     --volume /$(pwd)/log://var/lib/jenkins/log \
+    --volume /$(pwd)/src://src \
      wmfreleng/composer-package:latest

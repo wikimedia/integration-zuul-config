@@ -130,6 +130,7 @@
 - job:
     name: 'composer-package-php70-docker'
     node: DebianJessieDocker
+    defaults: use-remote-zuul-shallow-clone-to-src
     concurrent: true
     properties:
      - build-discarder:
@@ -137,11 +138,10 @@
     triggers:
      - zuul
     builders:
-     - docker-zuul-env
      - docker-log-dir
      - docker-cache-dir
-     - docker-run-with-log-and-workspace-cache:
-        image: 'wmfreleng/composer-package:v2017.10.05.05.29'
+     - docker-run-with-log-cache-src:
+        image: 'wmfreleng/composer-package:v2017.10.06.23.41'
         logdir: '/log'
 
 - job:

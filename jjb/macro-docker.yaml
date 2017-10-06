@@ -69,7 +69,7 @@
             --volume "$(pwd)"/log:{logdir} \
             {image}
 
-# Run a docker image with .env and a log and src directory
+# Run a docker image with .env and a log and cache directory
 - builder:
     name: docker-run-with-log-and-workspace-cache
     builders:
@@ -81,4 +81,19 @@
             --env-file .env \
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
+            {image}
+
+# Run a docker image with cache, log, and src directories
+- builder:
+    name: docker-run-with-log-cache-src
+    builders:
+     - shell: |
+        #!/bin/bash -eu
+        set -x
+        chmod 777 src
+        docker run \
+            --rm --tty \
+            --volume "$(pwd)"/log:{logdir} \
+            --volume "$(pwd)"/cache:/cache \
+            --volume "$(pwd)"/src:/src \
             {image}
