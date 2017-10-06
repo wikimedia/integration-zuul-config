@@ -36,6 +36,8 @@
      - castor-load
     maven:
       goals: clean verify
+      # https://integration.wikimedia.org/ci/configureTools/
+      maven-name: 'Maven-3.5.0'
     publishers:
      - castor-save
 
@@ -62,6 +64,8 @@
      - castor-load
     maven:
       goals: '{javadocgoals}'
+      # https://integration.wikimedia.org/ci/configureTools/
+      maven-name: 'Maven-3.5.0'
     postbuilders:
      - doc-publish:
          docsrc: 'target/site/apidocs'
