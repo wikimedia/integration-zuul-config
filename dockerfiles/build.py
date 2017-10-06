@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+# built-in modules
 import argparse
 from collections import defaultdict
 import configparser
@@ -10,6 +11,9 @@ import os
 import re
 import subprocess
 import sys
+
+# From pypi
+import networkx as nx
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 JJB_DIR = os.path.join(os.path.dirname(BASE_DIR), 'jjb')
@@ -40,11 +44,15 @@ class DockerBuilder(object):
             # No images provided, so we're building all of them.
             recurse = True
 
+        self.deps_tree = self.gen_deps_tree()
+
         images = []
         for image in to_build:
             images.append(image)
             if recurse:
-                tree = self.gen_deps_tree(DOCKER_HUB_ACCOUNT + '/' + image)
+                tree = self.find_tree(self.deps_tree,
+                                      DOCKER_HUB_ACCOUNT + '/' + image)
+                self.log.info('Tree for %s: %s' % (image, tree))
                 # Extend build list to sub-images.
                 # Note that we need to strip the "wmfreleng/" prefix
                 images.extend([x.split('/')[1]
@@ -112,7 +120,8 @@ class DockerBuilder(object):
                     f.write(new_text)
                 self.log.info('Updated %s' % full_fname)
 
-    def gen_deps_tree(self, name):
+    def gen_deps_tree(self):
+        self.log.info('Generating dependency tree based on FROM statements')
         froms = {}
         for f in self.find_docker_files():
             image_name = '%s/%s' % (DOCKER_HUB_ACCOUNT,
@@ -144,21 +153,19 @@ class DockerBuilder(object):
                 build_tree(tree[child], child, froms)
 
         build_tree(tree, None, froms)
-
-        def find_tree(tree, name):
-            if name in tree:
-                return tree[name]
-
-            for subtree in tree.values():
-                found = find_tree(subtree, name)
-                if found is not None:
-                    return found
-
-            return None
-
-        tree = find_tree(tree, name)
-        self.log.debug(tree)
+        self.log.debug('Dependency tree: %s' % tree)
         return tree
+
+    def find_tree(self, tree, name):
+        if name in tree:
+            return tree[name]
+
+        for subtree in tree.values():
+            found = self.find_tree(subtree, name)
+            if found is not None:
+                return found
+
+        return None
 
     def gen_staged_deps(self, tree):
 
