@@ -2,6 +2,8 @@
 
 set -euxo pipefail
 
+RAKE_TARGET=${RAKE_TARGET:-test}
+
 # Has to be in the same directory as in Dockerfile.build because of tox caching
 PUPPET_DIR="/tmp/cache/puppet"
 
@@ -31,4 +33,4 @@ if git diff --name-only docker-head Gemfile | grep -q 'Gemfile'; then
 fi;
 
 # Run tests
-bundle exec rake test | tee "${LOG_DIR}/rake.log"
+bundle exec rake "${RAKE_TARGET}" | tee "${LOG_DIR}/rake.log"
