@@ -4,15 +4,20 @@
 # matches the Git repository name.
 - job:
     name: 'doxygen-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
+    defaults: use-remote-zuul-shallow-clone-to-src
     concurrent: false
     triggers:
      - zuul
     builders:
-     - shell: doxygen
+    # This doesn't actually need log or cache...
+     - docker-log-dir
+     - docker-cache-dir
+     - docker-run-with-log-cache-src:
+        image: 'wmfreleng/doxygen:v2017.10.08.00.03'
+        logdir: '/log'
      - doc-publish:
-        docsrc: 'doc/html'
+        docsrc: 'src/doc/html'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
 
 - job: &phpunit-coverage-publish
