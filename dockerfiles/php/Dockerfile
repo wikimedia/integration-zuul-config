@@ -6,8 +6,11 @@ RUN apt-get update && \
         # Needed for composer to install things from dist
         php7.0-zip \
         # Needed by libraries/MediaWiki
-        php-ast php7.0-curl php7.0-dba php7.0-mbstring php-redis php7.0-xml && \
+        php-ast php7.0-curl php7.0-dba php7.0-mbstring php-redis php-xdebug php7.0-xml && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Disable xdebug by default due to its performance impact
+RUN phpdismod xdebug
 
 USER nobody
 

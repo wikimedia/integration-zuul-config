@@ -1,7 +1,6 @@
 #!/bin/bash
 
 mkdir -m 777 -p log
-rm -rf src
 mkdir -m 777 -p src
 cd src
 git init
@@ -15,3 +14,5 @@ docker run \
     --volume /$(pwd)/log://var/lib/jenkins/log \
     --volume /$(pwd)/src://src \
      wmfreleng/composer-package:latest
+rm -rf src
+rm -rf log
