@@ -11,5 +11,9 @@ RUN npm install -g npm@3.8.3
 
 USER nobody
 
+# See <https://docs.npmjs.com/misc/config#environment-variables>
+# and <https://docs.npmjs.com/cli/cache>
+ENV NPM_CONFIG_CACHE=/cache
+
 ENTRYPOINT ["npm"]
 CMD ["--help"]
