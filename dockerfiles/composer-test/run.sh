@@ -10,5 +10,5 @@ git checkout FETCH_HEAD
 git submodule --quiet update --init --recursive
 
 composer --ansi validate --no-check-publish
-composer install --no-progress
+composer install --no-progress --prefer-dist
 composer test
