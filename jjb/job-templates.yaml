@@ -161,6 +161,24 @@
      - archive-log-allow-empty
      - castor-save
 
+- job: &job_npm-node-6-docker
+    name: 'npm-node-6-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-log-dir
+     - docker-cache-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'wmfreleng/npm-test:v2017.10.28.21.15'
+        logdir: '/log'
+    publishers:
+     - archive-log-allow-empty
+
+
 # A very specific job for MobileFrontend which uses a JavaScript test suite
 # which requires mediawiki/core.
 - job-template:
