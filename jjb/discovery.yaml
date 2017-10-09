@@ -26,3 +26,10 @@
             R --vanilla --quiet -e 'options(repos="http://cran.us.r-project.org"); install.packages("devtools")'
             R --vanilla --quiet -e 'options(repos="http://cran.us.r-project.org"); devtools::install_deps("src", dependencies = TRUE )'
             R --vanilla --quiet CMD check --timings --no-manual "$PACKAGE"
+
+- project:
+    name:
+        - discovery-parent-pom
+        - discovery-maven-tool-configs
+    jobs:
+        - '{name}-maven'
