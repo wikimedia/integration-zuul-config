@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e6af365_e8e7440b",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-09T13:07:32Z",
+      "side": 1,
+      "message": "A project require a name. You can give it a random one or something that nicely describe what kind of jobs this project regroup. Eg that one might work:\n\n name: \u0027my super shiny discovery projects\u0027",
+      "revId": "98091a22a93ae9a5e52e302b7198626b865515f4",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e6af365_c8d3602f",
+        "filename": "jjb/discovery.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-09T13:07:32Z",
+      "side": 1,
+      "message": "\u0027{project}\u0027 is a bit too general. What about something like:\n\n\n- job-template:\n    name: \u0027discovery-{project}-maven\u0027\n    ...\n\n\nThen in the project you would:\n\n- project:\n    name: \u0027shinny discovery projects using maven\u0027\n    project:\n        - parent-pom\n        - maven-tool-configs\n    jobs:\n        - \u0027discovery-{project}-maven\u0027\n\nWhich would generates:\n\n* \u0027discovery-parent-pom-maven\u0027\n* \u0027discovery-maven-tool-configs-maven\u0027",
+      "revId": "98091a22a93ae9a5e52e302b7198626b865515f4",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
