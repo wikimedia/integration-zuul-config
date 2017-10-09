@@ -32,7 +32,7 @@
     builders:
      - jsduck
 
-- job-template:
+- job-template: &job_template_maven
     name: '{name}-maven'
     project-type: maven
     jdk: 'Debian - OpenJdk 8'
@@ -52,6 +52,14 @@
       maven-name: 'Maven-3.5.0'
     publishers:
      - castor-save
+
+# Convenience alias with name/project variables
+- job-template:
+    !!merge : *job_template_maven
+    name: '{name}-{project}-maven'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - job: &job_npm-node-6-jessie
     name: 'npm-node-6-jessie'
