@@ -26,3 +26,38 @@
             R --vanilla --quiet -e 'options(repos="http://cran.us.r-project.org"); install.packages("devtools")'
             R --vanilla --quiet -e 'options(repos="http://cran.us.r-project.org"); devtools::install_deps("src", dependencies = TRUE )'
             R --vanilla --quiet CMD check --timings --no-manual "$PACKAGE"
+
+- project:
+    project:
+        - discovery-parent-pom
+        - discovery-maven-tool-configs
+    jobs:
+        - '{project}'
+
+- job-template:
+    name: '{project}'
+    project-type: maven
+    jdk: 'Debian - OpenJdk 8'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    scm:
+     - git-remoteonly-zuul
+    wrappers:
+     - timeout:
+         timeout: 5  # minutes
+         fail: true
+     - timestamps
+     - ansicolor
+    prebuilders:
+     - castor-load
+    maven:
+      goals: clean verify
+      # https://integration.wikimedia.org/ci/configureTools/
+      maven-name: 'Maven-3.5.0'
+    publishers:
+     - castor-save
