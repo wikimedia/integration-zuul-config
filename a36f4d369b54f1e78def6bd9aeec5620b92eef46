@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e6af365_c656ec08",
+        "filename": "dockerfiles/doxygen/Dockerfile",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-09T21:53:14Z",
+      "side": 1,
+      "message": "Either add:\n\n  ARG DEBIAN_FRONTEND\u003dnoninteractive\n\nOr prefix the apt-get install with: DEBIAN_FRONTEND\u003dnoninteractive",
+      "revId": "a36f4d369b54f1e78def6bd9aeec5620b92eef46",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e6af365_8639d4cd",
+        "filename": "dockerfiles/doxygen/example-run.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-09T21:53:14Z",
+      "side": 1,
+      "message": "Avoid cd with a subshell :)\n\n (cd src\n  git init\n  ...\n )\n\nAnyway most probably you could just clone the repo tip?  Then it all becomes:\n\n git clone --depth 1 https://gerrit.wikimedia.org/r/utfnormal",
+      "revId": "a36f4d369b54f1e78def6bd9aeec5620b92eef46",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e6af365_a66ad8af",
+        "filename": "jjb/misc.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-09T21:53:14Z",
+      "side": 1,
+      "message": "Given we clone on the Docker host, the workspaces will fill up quickly, eventually get in a directy state. That has been an issue with the permanent slaves.\n\nI would like to find a way to reliably discard the workspace once the build is completed/aborted. So we start fresh every time.\n\nOne approach was to clone the repo directly inside the container instead. So when one dish the container, the code goes with it.",
+      "revId": "a36f4d369b54f1e78def6bd9aeec5620b92eef46",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
