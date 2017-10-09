@@ -39,12 +39,16 @@
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
     concurrent: true
+    properties:
+     - build-discarder:
+         days-to-keep: 15
     triggers:
      - zuul
     prebuilders:
      - castor-load
     maven:
       goals: clean verify
+      # https://integration.wikimedia.org/ci/configureTools/
       maven-name: 'Maven-3.5.0'
     publishers:
      - castor-save
