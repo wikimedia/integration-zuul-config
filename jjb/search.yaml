@@ -10,30 +10,8 @@
         - ltr
         - repository-swift
     jobs:
-        - 'search-{project}'
+        - '{name}-{project}-maven'
         - 'search-{project}-javadoc-publish'
-
-- job-template:
-    name: 'search-{project}'
-    project-type: maven
-    jdk: 'Debian - OpenJdk 8'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    scm:
-     - git-remoteonly-zuul
-    prebuilders:
-     - castor-load
-    maven:
-      goals: clean verify
-      # https://integration.wikimedia.org/ci/configureTools/
-      maven-name: 'Maven-3.5.0'
-    publishers:
-     - castor-save
 
 - job-template:
     name: 'search-{project}-javadoc-publish'
