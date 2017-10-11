@@ -1206,10 +1206,10 @@ project-templates:
     test:
       - composer-package-hhvm-jessie
       - composer-package-php55-jessie
-      - composer-package-php70-docker
     gate-and-submit:
       - composer-package-hhvm-jessie
       - composer-package-php55-jessie
+    experimental:
       - composer-package-php70-docker
 
   - name: npm
@@ -6380,10 +6380,10 @@ projects:
     test:
       - composer-package-hhvm-jessie
       - composer-package-php55-jessie
-      - composer-package-php70-docker
     gate-and-submit:
       - composer-package-hhvm-jessie
       - composer-package-php55-jessie
+    experimental:
       - composer-package-php70-docker
 
   - name: mediawiki/services/mathoid
@@ -7548,19 +7548,8 @@ projects:
       - name: tox-jessie
 
   - name: avro-php
-    # FIXME: Once supports PHP 7 (T177273), convert to
-    # composer-test-package template
-    check:
-      - composer-package-validate
-      - php55lint
-    test:
-      - composer-package-hhvm-jessie
-      - composer-package-php55-jessie
-    gate-and-submit:
-      - composer-package-hhvm-jessie
-      - composer-package-php55-jessie
-    experimental:
-      - composer-package-php70-docker
+    template:
+     - name: composer-test-package
 
   - name: data-values/value-view
     template:
