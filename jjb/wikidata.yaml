@@ -123,32 +123,10 @@
     jobs:
       - wikidata-gremlin
 
-- job:
-    name: wikidata-query-rdf
-    node: ci-jessie-wikimedia
-    project-type: maven
-    jdk: 'Debian - OpenJdk 8'
-    triggers:
-     - zuul
-    scm:
-     - git-remoteonly-zuul
-    wrappers:
-     - timeout:
-         timeout: 60  # minutes
-         fail: true
-     - timestamps
-     - ansicolor
-    prebuilders:
-     - castor-load
-    maven:
-      goals: clean verify
-    publishers:
-     - castor-save
-
 - project:
     name: wikidata-query-rdf
     jobs:
-      - wikidata-query-rdf
+      - {name}-maven
 
 - project:
     name: wikiba.se
