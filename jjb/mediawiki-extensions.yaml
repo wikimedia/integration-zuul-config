@@ -494,6 +494,9 @@
          . /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
          chromedriver --url-base=/wd/hub --port=4444 &
          cd $MW_INSTALL_PATH
+         set +x
+         export MEDIAWIKI_PASSWORD="$selenium_user_beta"
+         set -x
          MEDIAWIKI_USER='Selenium user' MW_SERVER=https://en.wikipedia.beta.wmflabs.org:443 MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.conf.jenkins.js --spec extensions/RelatedArticles/tests/selenium/specs/*.js
      - assert-no-mediawiki-errors
     publishers:
