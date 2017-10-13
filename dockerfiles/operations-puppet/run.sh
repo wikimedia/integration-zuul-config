@@ -30,5 +30,10 @@ if git diff --name-only docker-head Gemfile | grep -q 'Gemfile'; then
     bundle update
 fi;
 
+# To force color output on non tty
+export TOX_TESTENV_PASSENV='PY_COLORS'
+export PY_COLORS=1
+export SPEC_OPTS='--tty'
+
 # Run tests
 bundle exec rake test | tee "${LOG_DIR}/rake.log"
