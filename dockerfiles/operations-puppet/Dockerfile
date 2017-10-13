@@ -40,7 +40,7 @@ RUN cd /tmp/cache/puppet && \
     TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v --notest && \
     mv .tox /tmp/cache/tox
 
-FROM docker-registry.wikimedia.org/wikimedia-jessie:latest
+FROM wmfreleng/ci-jessie:latest
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
@@ -48,8 +48,6 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
         build-essential \
         bundler \
-        git \
-        locales \
         python-dev \
         python-pip \
         rubygems-integration \
@@ -59,8 +57,6 @@ RUN apt-get update && \
         apt-get clean && rm -rf /var/lib/apt/lists/*  && \
         pip install pip==8.1.2 && \
         pip install tox==1.9.2 setuptools && \
-        echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
-        locale-gen && \
         groupadd -g 500 wikidev && \
         # This is the uid and gid of the jenkins-deploy user for CI
         useradd -u 2947 -g 500 \
