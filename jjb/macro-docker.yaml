@@ -17,7 +17,6 @@
 
 # Build a .env file with ZUUL environment
 # variables for use with docker
-# TODO images shouldn't require passing in HOME=/var/lib/jenkins
 - builder:
     name: docker-zuul-env
     builders:
@@ -33,7 +32,6 @@
         ZUUL_PROJECT=$ZUUL_PROJECT
         ZUUL_COMMIT=$ZUUL_COMMIT
         ZUUL_REF=$ZUUL_REF
-        HOME=/var/lib/jenkins
         ZUUL
 
         # Finally, output for debugging help
