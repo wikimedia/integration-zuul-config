@@ -13,7 +13,24 @@ FIXTURES = os.path.join(BASE_DIR, 'fixtures', 'dockerfiles')
 
 
 class TestDockerfilesBuild(unittest.TestCase):
-    def make_image_name(self, name):
+
+    deps_tree = None
+
+    @classmethod
+    def setUpClass(cls):
+        b = build.DockerBuilder(base_dir=FIXTURES)
+        b.log = logging.getLogger()
+        cls.deps_tree = b.gen_deps_tree()
+
+    @staticmethod
+    def image_deps(image):
+        return build.DockerBuilder.find_subtree(
+            TestDockerfilesBuild.deps_tree,
+            TestDockerfilesBuild.make_image_name(image)
+            )
+
+    @staticmethod
+    def make_image_name(name):
         return os.path.join(build.DOCKER_HUB_ACCOUNT, name)
 
     def test_parse_from(self):
@@ -31,21 +48,13 @@ class TestDockerfilesBuild(unittest.TestCase):
         self.assertTrue(base_file in docker_files)
 
     def test_gen_deps_tree_three_depends_on_two(self):
-        b = build.DockerBuilder(base_dir=FIXTURES)
-        logging.basicConfig(level=logging.DEBUG)
-        b.log = logging.getLogger()
-        base_tree = b.gen_deps_tree(
-            self.make_image_name('ci-fixture-child-two'))
+        base_tree = TestDockerfilesBuild.image_deps('ci-fixture-child-two')
         self.assertTrue(base_tree is not None)
         self.assertTrue(
             self.make_image_name('ci-fixture-child-three') in base_tree.keys())
 
     def test_gen_deps_tree_two_depends_on_base(self):
-        b = build.DockerBuilder(base_dir=FIXTURES)
-        logging.basicConfig(level=logging.DEBUG)
-        b.log = logging.getLogger()
-        base_tree = b.gen_deps_tree(
-            self.make_image_name('ci-fixture'))
+        base_tree = TestDockerfilesBuild.image_deps('ci-fixture')
         self.assertTrue(base_tree is not None)
         two = base_tree.get(self.make_image_name('ci-fixture-child-two'))
         self.assertTrue(two is not None)
