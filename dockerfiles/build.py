@@ -41,11 +41,16 @@ class DockerBuilder(object):
             # No images provided, so we're building all of them.
             recurse = True
 
+        if recurse:
+            deps_tree = self.gen_deps_tree()
+
         images = []
         for image in to_build:
             images.append(image)
             if recurse:
-                tree = self.gen_deps_tree(DOCKER_HUB_ACCOUNT + '/' + image)
+                tree = DockerBuilder.find_subtree(
+                    deps_tree,
+                    DOCKER_HUB_ACCOUNT + '/' + image)
                 # Extend build list to sub-images.
                 # Note that we need to strip the "wmfreleng/" prefix
                 images.extend([x.split('/')[1]
@@ -116,7 +121,7 @@ class DockerBuilder(object):
                     f.write(new_text)
                 self.log.info('Updated %s' % full_fname)
 
-    def gen_deps_tree(self, name):
+    def gen_deps_tree(self):
         froms = {}
         for f in self.find_docker_files():
             image_name = '%s/%s' % (DOCKER_HUB_ACCOUNT,
@@ -149,20 +154,20 @@ class DockerBuilder(object):
 
         build_tree(tree, None, froms)
 
-        def find_tree(tree, name):
-            if name in tree:
-                return tree[name]
-
-            for subtree in tree.values():
-                found = find_tree(subtree, name)
-                if found is not None:
-                    return found
-
-            return None
-
-        tree = find_tree(tree, name)
         self.log.debug(tree)
         return tree
+
+    @staticmethod
+    def find_subtree(tree, root):
+        if root in tree:
+            return tree[root]
+
+        for subtree in tree.values():
+            found = DockerBuilder.find_subtree(subtree, root)
+            if found is not None:
+                return found
+
+        return None
 
     def gen_staged_deps(self, tree):
 
