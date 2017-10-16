@@ -79,6 +79,9 @@ class DockerBuilder(object):
             '-v', '--verbose', action='store_const',
             const=logging.DEBUG, default=logging.INFO)
         parser.add_argument(
+            '-n', '--dry-run', action='store_true',
+            help='Do not run commands')
+        parser.add_argument(
             '--no-cache', action='store_true',
             help='Do not use cache when building the image'
         )
@@ -214,7 +217,7 @@ class DockerBuilder(object):
         try:
             if os.path.exists(os.path.join(image_dir, 'prebuild.sh')):
                 self.log.info("Prebuild script")
-                subprocess.check_call(['bash', 'prebuild.sh'], cwd=image_dir)
+                self.run_cmd(['bash', 'prebuild.sh'], cwd=image_dir)
 
             cmd = ['docker', 'build']
             if self.config.get('DEFAULT', 'http_proxy'):
@@ -225,20 +228,18 @@ class DockerBuilder(object):
             if self.args.no_cache:
                 cmd.extend(['--no-cache'])
             cmd.extend(['-t', tagged_img, os.path.dirname(dockerfile)])
-            self.log.info(' '.join(cmd))
-            subprocess.check_call(cmd)
+            self.run_cmd(cmd)
 
             cmd = ['docker', 'tag', tagged_img, '%s:latest' % img]
-            self.log.info(' '.join(cmd))
-            subprocess.check_call(cmd)
+            self.run_cmd(cmd)
         finally:
             for f in glob(os.path.join(image_dir, ".cache-buster*")):
                 os.remove(f)
 
         if self.args.run_tests and \
                 os.path.exists(os.path.join(image_dir, 'example-run.sh')):
-            self.log.info('Running rests')
-            subprocess.check_call(['bash', 'example-run.sh'], cwd=image_dir)
+            self.log.info('Running tests')
+            self.run_cmd(['bash', 'example-run.sh'], cwd=image_dir)
 
         self.pushes.append(tagged_img)
         self.pushes.append('%s:latest' % img)
@@ -247,6 +248,11 @@ class DockerBuilder(object):
             self.update_jjb(img, tagged_img)
 
         return True
+
+    def run_cmd(self, args, **kwargs):
+        self.log.info('%s' % (' '.join(args)))
+        if not self.args.dry_run:
+            subprocess.check_call(args, **kwargs)
 
 
 if __name__ == '__main__':
