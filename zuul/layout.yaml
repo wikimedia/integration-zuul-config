@@ -1032,7 +1032,7 @@ project-templates:
       - mediawiki-extensions-qunit-jessie
       - mwgate-npm-node-6-jessie
       - mwgate-composer-php70-jessie
-      - mwext-php70-phan-jessie
+      - mwext-php70-phan-docker
 
   - name: extension-unittests-non-voting
     check:
@@ -1096,12 +1096,10 @@ project-templates:
 
   - name: extension-phan-generic
     test:
-     - mwext-php70-phan-jessie
-    gate-and-submit: &extension-phan-generic
-     - mwext-php70-phan-jessie
-    gate-and-submit-swat: *extension-phan-generic
-    experimental:
      - mwext-php70-phan-docker
+    gate-and-submit: &extension-phan-generic
+     - mwext-php70-phan-docker
+    gate-and-submit-swat: *extension-phan-generic
 
   # Template for MediaWiki extensions.
   # Triggers qunit jobs
@@ -6995,7 +6993,6 @@ projects:
       - mwext-Wikibase-client-tests-mysql-hhvm-jessie
     gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
     experimental:
-      - mwext-php70-phan-jessie
       - mwext-ruby-jessie
     postmerge:
       - mwext-doxygen-publish
