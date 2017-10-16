@@ -378,34 +378,6 @@
 
 # Phan! (T153039)
 - job:
-    name: 'mwext-php70-phan-jessie'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - prepare-mediawiki-zuul-project-no-vendor-no-sql
-     - mw-fetch-composer-dev
-     - shell: |
-        cd $WORKSPACE/src
-        mkdir -p $WORKSPACE/log
-        composer require etsy/phan:0.8 --prefer-dist --dev --no-progress --ansi --profile -v # todo don't hardcode version here
-        PHAN=$WORKSPACE/src/vendor/bin/phan ./tests/phan/bin/phan ./extensions/$EXT_NAME -m checkstyle
-        mv $WORKSPACE/src/extensions/$EXT_NAME/tests/phan/issues/latest $WORKSPACE/log/phan-issues
-    publishers:
-     - castor-save
-     - checkstyle:
-        pattern: 'log/phan-issues'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
-
-- job:
     name: 'mwext-php70-phan-docker'
     node: DebianJessieDocker && m4executor
     concurrent: true
