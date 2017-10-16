@@ -122,6 +122,10 @@ class DockerBuilder(object):
                 self.log.info('Updated %s' % full_fname)
 
     def gen_deps_tree(self):
+        return DockerBuilder.build_tree(
+            self.find_from())
+
+    def find_from(self):
         froms = {}
         for f in self.find_docker_files():
             image_name = '%s/%s' % (DOCKER_HUB_ACCOUNT,
@@ -142,7 +146,10 @@ class DockerBuilder(object):
                 'y' if (len(deps) == 1) else 'ies',
                 ', '.join(deps)
             ))
+        return froms
 
+    @staticmethod
+    def build_tree(froms):
         tree = {}
 
         def build_tree(tree, parent, froms):
@@ -153,8 +160,6 @@ class DockerBuilder(object):
                 build_tree(tree[child], child, froms)
 
         build_tree(tree, None, froms)
-
-        self.log.debug(tree)
         return tree
 
     @staticmethod
