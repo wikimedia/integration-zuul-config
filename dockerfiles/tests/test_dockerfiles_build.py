@@ -47,6 +47,27 @@ class TestDockerfilesBuild(unittest.TestCase):
         self.assertTrue(len(docker_files) > 0)
         self.assertTrue(base_file in docker_files)
 
+    def test_find_from(self):
+        b = build.DockerBuilder(base_dir=FIXTURES)
+        b.log = logging.getLogger()
+        self.maxDiff = None
+        self.assertEquals(
+            {
+                'scratch': [None],
+                'debian': ['scratch'],
+                'wmfreleng/ci-fixture': ['scratch'],
+                'wmfreleng/ci-fixture-child-one': ['debian'],
+                'wmfreleng/ci-fixture-child-three': [
+                    'wmfreleng/ci-fixture-child-two'
+                ],
+                'wmfreleng/ci-fixture-child-two': [
+                    'wmfreleng/ci-fixture',
+                    'wmfreleng/ci-fixture-child-one',
+                ]
+            },
+            b.find_from()
+            )
+
     def test_gen_deps_tree_three_depends_on_two(self):
         base_tree = TestDockerfilesBuild.image_deps('ci-fixture-child-two')
         self.assertTrue(base_tree is not None)
