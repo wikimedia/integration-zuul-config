@@ -12,4 +12,5 @@ RUN  cd /srv/phan && \
      composer require etsy/phan:0.8 && \
      rm -rf /cache/*
 
-ENTRYPOINT ["/mediawiki/tests/phan/bin/phan"]
+COPY run.sh /run.sh
+ENTRYPOINT ["/bin/bash", "/run.sh"]
