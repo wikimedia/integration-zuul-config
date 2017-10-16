@@ -6,6 +6,8 @@ RUN install -d /srv/phan -o nobody
 
 ENV PHAN /srv/phan/vendor/bin/phan
 
+RUN echo "umask 0002" >> /etc/bash.bashrc
+
 USER nobody
 
 RUN  cd /srv/phan && \
