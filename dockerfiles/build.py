@@ -126,19 +126,36 @@ class DockerBuilder(object):
             self.find_from())
 
     def find_from(self):
-        froms = {}
-        for f in self.find_docker_files():
-            image_name = '%s/%s' % (DOCKER_HUB_ACCOUNT,
-                                    os.path.basename(os.path.dirname(f)))
+        def image_name(dockerfile_path):
+            return '%s/%s' % (
+                DOCKER_HUB_ACCOUNT,
+                os.path.basename(os.path.dirname(dockerfile_path)))
+
+        # image_name: path to Dockerfile
+        images = {
+            image_name(dockerfile): dockerfile
+            for dockerfile in self.find_docker_files()
+            }
+
+        # Prepopulated with all our image names
+        # image_name: [list of parent images]
+        froms = {
+            image_name: [None]
+            for image_name in images.keys()
+        }
+        # Scratch is the default FROM for images we do not know
+        froms['scratch'] = [None]
+
+        for image_name, f in images.items():
             with open(f) as fp:
                 froms[image_name] = []
                 for l in fp.readlines():
                     m = self._parse_FROM(l)
                     if m:
                         froms[image_name].append(m['image'])
-                        # Register images not yet known
-                        if m['image'] not in froms:
-                            froms[m['image']] = [None]
+                        if m['image'] not in froms and m['image'] != 'scratch':
+                            # An image we do not manage assume scratch
+                            froms[m['image']] = ['scratch']
 
             deps = set(froms[image_name])
             self.log.debug('%s dependenc%s: %s' % (
