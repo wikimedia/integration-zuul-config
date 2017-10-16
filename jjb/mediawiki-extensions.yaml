@@ -419,11 +419,6 @@
      - docker-src-dir
      - docker-cache-dir
      - docker-zuul-env
-     - shell: "echo -e EXT_NAME=$EXT_NAME >> .env"
-     - shell: "echo -e SKIN_NAME=$SKIN_NAME >> .env"
-     - shell: "echo -e EXT_DEPENDENCIES=$EXT_DEPENDENCIES >> .env"
-     - shell: "echo -e SKIN_DEPENDENCIES=$SKIN_DEPENDENCIES >> .env"
-     - shell: "cat .env"
      - shell: |
         #!/bin/bash -eu
 
@@ -442,7 +437,7 @@
         docker run \
             --rm --tty \
             --volume "$(pwd)"/src:/mediawiki \
-            wmfreleng/mediawiki-phan:v2017.09.28.22.24 \
+            wmfreleng/mediawiki-phan:v2017.10.16.20.38 \
             /$ZUUL_PROJECT -m checkstyle
 
     publishers:
