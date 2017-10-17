@@ -724,7 +724,7 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
-  - name: ^mediawiki-core-php70-phan-jessie$
+  - name: ^mediawiki-core-php70-phan-docker$
     skip-if:
       - project: '^mediawiki/core$'
         branch: (?:^(fundraising/)?REL1_2[78]$)
@@ -1413,7 +1413,7 @@ projects:
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-core-qunit-selenium-jessie
       - composer-package-validate
-      - mediawiki-core-php70-phan-jessie
+      - mediawiki-core-php70-phan-docker
     php5:
       # Comment "check php5" to manually run this
       - mediawiki-phpunit-php55-jessie
@@ -1427,7 +1427,7 @@ projects:
       - mediawiki-phpunit-php55-jessie
       - mediawiki-core-qunit-selenium-jessie
       - composer-package-validate
-      - mediawiki-core-php70-phan-jessie
+      - mediawiki-core-php70-phan-docker
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
     postmerge:
       - mediawiki-core-jsduck-publish
@@ -1439,7 +1439,6 @@ projects:
       - mwgate-composer-php70-jessie
       - mediawiki-phpunit-php70-jessie
       - mediawiki-extensions-php70-jessie
-      - mediawiki-core-php70-phan-docker
 
   - name: mediawiki/debian
     test:
