@@ -416,35 +416,6 @@
 
 # Phan! (T132636)
 - job:
-    name: 'mediawiki-core-php70-phan-jessie'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-     - composer-update:
-        dir: '$WORKSPACE/src'
-     - shell: |
-        cd $WORKSPACE/src
-        composer require etsy/phan:0.8 --prefer-dist --dev --no-progress --ansi --profile -v # todo don't hardcode version here
-        PHAN=vendor/bin/phan ./tests/phan/bin/phan -m checkstyle
-    publishers:
-     - castor-save
-     - checkstyle:
-        pattern: 'src/tests/phan/issues/latest'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
-
-- job:
     name: 'mediawiki-core-php70-phan-docker'
     node: DebianJessieDocker && m4executor
     concurrent: true
