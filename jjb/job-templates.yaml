@@ -42,6 +42,18 @@
     properties:
      - build-discarder:
          days-to-keep: 15
+    scm:
+     - git:
+        url: '$ZUUL_URL/$ZUUL_PROJECT'
+        branches:
+         - '$ZUUL_COMMIT'
+        refspec: '$ZUUL_REF'
+        wipe-workspace: false
+        shallow-clone: true
+        clean:
+            after: true
+        submodule:
+            recursive: true
     triggers:
      - zuul
     prebuilders:
