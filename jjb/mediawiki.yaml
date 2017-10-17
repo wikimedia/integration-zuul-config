@@ -443,3 +443,47 @@
         thresholds:
           failed:
             total-all: 1
+
+- job:
+    name: 'mediawiki-core-php70-phan-docker'
+    node: DebianJessieDocker && m4executor
+    concurrent: true
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+     - docker-log-dir
+     - docker-src-dir
+     - docker-cache-dir
+     - docker-zuul-env
+     - shell: |
+        #!/bin/bash -eu
+
+        set -x
+
+        docker run \
+            --rm --tty \
+            --env-file .env \
+            --volume "$(pwd)"/src:/src \
+            --volume "$(pwd)"/cache:/cache \
+            --volume /srv/git:/srv/git \
+            --entrypoint "bash" \
+            wmfreleng/ci-src-setup:v2017.10.17.09.17 \
+            /srv/setup-mw.sh
+
+        docker run \
+            --rm --tty \
+            --volume "$(pwd)"/src:/mediawiki \
+            wmfreleng/mediawiki-phan:v2017.10.16.20.38 \
+            -m checkstyle
+
+    publishers:
+     - castor-save
+     - checkstyle:
+        pattern: 'src/tests/phan/issues/latest'
+        can-run-on-failed: true
+        thresholds:
+          failed:
+            total-all: 1

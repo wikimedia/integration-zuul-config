@@ -64,7 +64,9 @@ RUN apt-get update && \
 COPY --from=clone-integration-jenkins /srv/jenkins/bin /srv/slave-scripts
 COPY --from=clone-integration-jenkins /srv/jenkins/etc/zuul-clonemap.yaml /srv/zuul-clonemap.yaml
 COPY --from=composer /srv/composer /srv/composer
+
 COPY setup-mw.sh /srv/setup-mw.sh
+COPY setup-mwext.sh /srv/setup-mwext.sh
 
 RUN mkdir -p /srv/deployment/integration/slave-scripts/etc && \
     ln -s /srv/slave-scripts /srv/deployment/integration/slave-scripts/bin && \
