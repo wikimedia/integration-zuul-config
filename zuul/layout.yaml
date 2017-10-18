@@ -1248,6 +1248,12 @@ project-templates:
     gate-and-submit:
       - mwext-ruby-jessie
 
+  - name: mediawiki-core-qunit-selenium-jessie
+    test:
+      - mediawiki-core-qunit-selenium-jessie
+    gate-and-submit:
+      - mediawiki-core-qunit-selenium-jessie
+
   - name: puppet-module
     test:
       - puppet-{name}-rake-jessie
@@ -1402,6 +1408,7 @@ projects:
   - name: mediawiki/core
     template:
       - name: extension-gate
+      - name: mediawiki-core-qunit-selenium-jessie
     check:
       - mediawiki-core-php55lint
       - composer-package-validate
@@ -1411,7 +1418,6 @@ projects:
       - mediawiki-core-npm-node-6-jessie
       - mediawiki-core-php55lint
       - mediawiki-phpunit-hhvm-jessie
-      - mediawiki-core-qunit-selenium-jessie
       - composer-package-validate
       - mediawiki-core-php70-phan-docker
     php5:
@@ -1425,7 +1431,6 @@ projects:
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-hhvm-composer-jessie
       - mediawiki-phpunit-php55-jessie
-      - mediawiki-core-qunit-selenium-jessie
       - composer-package-validate
       - mediawiki-core-php70-phan-docker
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
@@ -1451,13 +1456,13 @@ projects:
   - name: mediawiki/vendor
     template:
       - name: extension-gate
+      - name: mediawiki-core-qunit-selenium-jessie
     check:
       - mwgate-php55lint
       - mwgate-composer-validate
     test:
       - mwgate-composer-hhvm-jessie
       - mwgate-composer-php55-jessie
-      - mediawiki-core-qunit-selenium-jessie
       - mediawiki-phpunit-hhvm-jessie
     php5:
       - mediawiki-phpunit-php55-jessie
@@ -1466,7 +1471,6 @@ projects:
       - mwgate-composer-php55-jessie
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-jessie
-      - mediawiki-core-qunit-selenium-jessie
     gate-and-submit-swat: *mediawiki-vendor-gate-and-submit
     experimental:
       - mwgate-composer-php70-jessie
@@ -1990,13 +1994,10 @@ projects:
 
   - name: mediawiki/skins/Vector
     template:
+     - name: mediawiki-core-qunit-selenium-jessie
      - name: mwgate-composer
      - name: mwgate-npm
      - name: skin-tests
-    test:
-     - mediawiki-core-qunit-selenium-jessie
-    gate-and-submit: &mediawiki-skins-vector-gate-and-submit
-     - mediawiki-core-qunit-selenium-jessie
     gate-and-submit-swat: *mediawiki-skins-vector-gate-and-submit
 
   - name: mediawiki/skins/VectorV2
@@ -6557,11 +6558,8 @@ projects:
   - name: mediawiki/extensions/RelatedArticles
     template:
       - name: extension-unittests-generic
+      - name: mediawiki-core-qunit-selenium-jessie
       - name: mwgate-npm
-    test:
-      - mediawiki-core-qunit-selenium-jessie
-    gate-and-submit:
-      - mediawiki-core-qunit-selenium-jessie
 
   - name: mediawiki/extensions/RelatedSites
     template:
