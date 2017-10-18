@@ -1072,13 +1072,6 @@ project-templates:
     postmerge:
       - mwext-mw-selenium-jessie
 
-  - name: extension-selenium-gate
-    test:
-      - mwext-mw-selenium-jessie
-    gate-and-submit: &extension-selenium-gate-gate-and-submit
-      - mwext-mw-selenium-jessie
-    gate-and-submit-swat: *extension-selenium-gate-gate-and-submit
-
   - name: extension-gate
     check:
       - mwgate-php55lint
@@ -6525,8 +6518,12 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: extension-selenium-gate
       - name: mwgate-npm
+    test:
+      - mwext-mw-selenium-jessie
+    gate-and-submit: &extension-selenium-gate-gate-and-submit
+      - mwext-mw-selenium-jessie
+    gate-and-submit-swat: *extension-selenium-gate-gate-and-submit
     experimental:
       - mediawiki-core-qunit-selenium-jessie
       - mwext-ruby-jessie
