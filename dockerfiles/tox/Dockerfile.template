@@ -1,0 +1,16 @@
+FROM {{ "ci-jessie" | image_tag }}
+
+ARG PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN {{ "python-pip pypy" | apt_install }} \
+    && pip install pip==8.1.2 \
+    && {{ "python-pip" | apt_remove }} \
+    && ln -s /usr/local/bin/pip /usr/bin/pip \
+    && pip install tox==2.5.0 \
+    && pip install setuptools \
+    && rm -fR "$XDG_CACHE_HOME/pip"
+
+USER nobody
+WORKDIR /src
+ENTRYPOINT /bin/bash /run.sh
+COPY run.sh /run.sh

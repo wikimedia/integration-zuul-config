@@ -1,0 +1,26 @@
+FROM {{ "ci-jessie" | image_tag }}
+
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
+ENV PUPPET_DIR='/srv/workspace/puppet'
+
+{% set pkgs_to_install = """build-essential bundler python-dev \
+    python-pip rubygems-integration rake ruby ruby-dev ca-certificates libmysqlclient-dev""" %}
+
+RUN {{ pkgs_to_install | apt_install }} \
+    && pip install pip==8.1.2 \
+    && pip install tox==1.9.2 setuptools \
+    && mkdir -p /srv/workspace \
+    && git clone https://gerrit.wikimedia.org/r/operations/puppet "${PUPPET_DIR}" \
+    && cd "${PUPPET_DIR}" \
+    && git tag -f 'docker-head' && git gc --prune=now \
+    && TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v --notest \
+    && bundle install --clean --path="${PUPPET_DIR}/.bundle" \
+    && chown -R nobody "${PUPPET_DIR}"
+
+USER nobody
+WORKDIR /srv/workspace
+ENTRYPOINT /bin/bash /run.sh
+
+COPY bundle-config "${PUPPET_DIR}/.bundle/bundle-config"
+COPY run.sh /run.sh
