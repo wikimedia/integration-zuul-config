@@ -2,7 +2,7 @@ FROM wmfreleng/ci-jessie:latest
 
 # Install nodejs-legacy to provide /usr/bin/node alias
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         nodejs-legacy npm && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 

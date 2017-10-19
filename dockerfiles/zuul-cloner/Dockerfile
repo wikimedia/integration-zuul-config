@@ -1,7 +1,7 @@
 FROM wmfreleng/ci-jessie:latest
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         zuul \
         # pin python-pbr https://phabricator.wikimedia.org/T153877
         python-pbr=0.8.2-1 && \
