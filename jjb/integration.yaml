@@ -219,6 +219,17 @@
      - castor-save
 
 - job:
+    name: 'integration-docker-build'
+    node: contint1001
+    defaults: use-remote-zuul-shallow-clone
+    triggers:
+        - zuul
+    builders:
+        - shell: |
+            cd dockerfiles
+            ./build.py --no-cache -v
+
+- job:
     name: 'jenkins-plugin-jdk7-jessie'
     project-type: maven
     jdk: 'Debian - OpenJdk 7'
