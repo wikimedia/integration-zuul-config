@@ -900,6 +900,10 @@ jobs:
       - '^(Rakefile|Gemfile)$'
       - '^dib/.*'
 
+  - name: 'integration-docker-build'
+    files:
+      - '^dockerfiles/.*'
+
   - name: 'integration-zuul-layoutdiff'
     voting: false
     # Note how the messages are mixed up. Gotta change the job exit code.
@@ -1306,6 +1310,8 @@ projects:
       - integration-zuul-layoutvalidation-gate
     experimental:
       - integration-config-tox-docker
+    postmerge:
+      - integration-docker-build
 
   - name: integration/composer
     test:
