@@ -267,5 +267,5 @@ class DockerBuilder(object):
 
 if __name__ == '__main__':
     builder = DockerBuilder()
-    if not builder.run():
+    if builder.run() is False:
         sys.exit(1)
