@@ -1,7 +1,7 @@
 FROM wmfreleng/ci-jessie:latest
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         # The r language itself
         r-base \
         # Needed to build lintr

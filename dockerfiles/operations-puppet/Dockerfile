@@ -3,7 +3,7 @@ FROM docker-registry.wikimedia.org/wikimedia-jessie:latest as builder
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         ca-certificates \
         git \
     && \
@@ -11,7 +11,7 @@ RUN apt-get update && \
     git clone https://gerrit.wikimedia.org/r/operations/puppet /tmp/cache/puppet
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         build-essential \
         bundler \
         libmysqlclient-dev \
@@ -45,7 +45,7 @@ FROM wmfreleng/ci-jessie:latest
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes \
         build-essential \
         bundler \
         python-dev \

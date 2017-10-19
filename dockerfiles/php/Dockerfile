@@ -1,7 +1,7 @@
 FROM wmfreleng/ci-stretch:latest
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         php7.0-cli \
         # Needed for composer to install things from dist
         php7.0-zip \

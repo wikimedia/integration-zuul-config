@@ -15,13 +15,13 @@ FROM wmfreleng/ci-jessie
 COPY sury-php.gpg /etc/apt/trusted.gpg.d/php.gpg
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         # Required by sury per https://packages.sury.org/php/README.txt
         apt-transport-https lsb-release && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list && \
     # Only update the source we have added to save time
     apt-get update -o Dir::Etc::sourcelist="sources.list.d/php.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         php7.0-cli && \
     apt-get remove --yes \
         apt-transport-https lsb-release && \
@@ -30,13 +30,13 @@ RUN apt-get update && \
 
 # wmfreleng/php-mediawiki
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         # Required by sury per https://packages.sury.org/php/README.txt
         apt-transport-https lsb-release && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list && \
     # Only update the source we have added to save time
     apt-get update -o Dir::Etc::sourcelist="sources.list.d/php.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         # Needed for composer to install things from dist
         php7.0-zip \
         # Needed for mediawiki
@@ -49,13 +49,13 @@ RUN apt-get update && \
 # TODO python image?
 # TODO is python2 and 3 needed for the slave scripts?
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         python python3 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # zuul-cloner
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends \
+    apt-get install --yes \
         zuul \
         # pin python-pbr https://phabricator.wikimedia.org/T153877
         python-pbr=0.8.2-1 && \
