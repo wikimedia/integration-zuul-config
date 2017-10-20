@@ -897,6 +897,9 @@ jobs:
       - '^(Rakefile|Gemfile)$'
       - '^dib/.*'
 
+  - name: 'integration-config-tox-docker'
+    voting: false  # experimental T179208
+
   - name: 'integration-zuul-layoutdiff'
     voting: false
     # Note how the messages are mixed up. Gotta change the job exit code.
@@ -1294,17 +1297,17 @@ projects:
     check:
       - noop
     test:
+      - integration-config-tox-docker
       - integration-config-tox-jessie
       - integration-config-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutdiff
     gate-and-submit:
+      - integration-config-tox-docker
       - integration-config-tox-jessie
       - integration-config-dib-jessie
       - integration-jjb-config-diff
       - integration-zuul-layoutvalidation-gate
-    experimental:
-      - integration-config-tox-docker
 
   - name: integration/composer
     test:
