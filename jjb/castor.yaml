@@ -22,6 +22,7 @@
                 predefined-parameters: |
                     TRIGGERED_JOB_NAME=$JOB_NAME
                     TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
+                    TRIGGERED_WORKSPACE=$WORKSPACE
                 # Must be blocking or the instance might be disposed
                 block: true
                 # Ignore any error
@@ -46,6 +47,17 @@
                 - castor-define-namespace.bash
                 - castor-load-sync.bash
 
+- builder:
+    name: docker-castor-load
+    builders:
+        - docker-cache-dir
+        - shell: |
+            /usr/bin/env > .env
+            docker run --rm --tty \
+                --env-file .env \
+                --volume "${WORKSPACE}/cache":/cache \
+                wmfreleng/castor:v2017.10.24.18.57 \
+                load
 
 # Job triggered on the central repository instance
 #
@@ -67,6 +79,9 @@
             name: TRIGGERED_JOB_NAME
             description: 'JOB_NAME of upstream job'
         - string:
+            name: TRIGGERED_WORKSPACE
+            description: 'WORKSPACE of upstream job'
+        - string:
             name: ZUUL_PIPELINE
             description: 'Name of Zuul pipeline. Must be gate-and-submit or postmerge to actually save cache.'
     wrappers:
@@ -78,6 +93,7 @@
         - timestamps
         - ssh-agent-credentials:
             users:
+             - 'ae711ff4-813e-4462-9a27-21bdbd4fdcb9'  # jenkins-deploy
              - 'nodepool-dib-jenkins'
 
     builders:
