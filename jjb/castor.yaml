@@ -30,6 +30,43 @@
                     unstable-threshold: 'never'
                     failure-threshold: 'never'
 
+- publisher:
+    name: castor-save-workspace-cache
+    publishers:
+     - postbuildscript:
+         script-only-if-succeeded: True
+         builders:
+          - trigger-builds:
+              - project: castor-save-workspace-cache
+                # Pass ZUUL and others
+                current-parameters: True
+                # Pass:
+                # - job name to namespace the central cache
+                # - ssh connection which holds the slave IP to which castor
+                #   will rsync from
+                predefined-parameters: |
+                    TRIGGERED_JOB_NAME=$JOB_NAME
+                    TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
+                    TRIGGERED_WORKSPACE=$WORKSPACE
+                # Must be blocking or the instance might be disposed
+                block: true
+                # Ignore any error
+                block-thresholds:
+                    build-step-failure-threshold: 'never'
+                    unstable-threshold: 'never'
+                    failure-threshold: 'never'
+     - postbuildscript:
+         script-only-if-succeeded: false
+         mark-unstable-if-failed: false
+         builders:
+             # Delete /cache material that just have been saved. Do that inside
+             # as a container since files are owned by 'nobody'
+             - shell: |
+                 echo "Clearing $WORKSPACE/cache"
+                 docker run --rm --tty \
+                     --env-file .env \
+                     --volume "$(pwd)"/cache:/cache \
+                          'wmfreleng/castor:v2017.10.30.16.04' clear || :
 
 # Entry point to load cache from central cache
 #
@@ -46,13 +83,24 @@
                 - castor-define-namespace.bash
                 - castor-load-sync.bash
 
+- builder:
+    name: docker-castor-load
+    builders:
+        - docker-cache-dir
+        - shell: |
+            /usr/bin/env > .env
+            docker run --rm --tty \
+                --env-file .env \
+                --volume "${WORKSPACE}/cache":/cache \
+                wmfreleng/castor:v2017.10.30.16.04 \
+                load
 
 # Job triggered on the central repository instance
 #
 # Rsync from an instance using the Nodepool 'jenkins' credential.  The ssh key
 # is made available via an ssh-agent and injected by Jenkins credentials store.
 #
-- job:
+- job: &job_castor_save
     name: castor-save
     node: castor02
     concurrent: true
@@ -89,3 +137,26 @@
             !include-raw:
                 - castor-define-namespace.bash
                 - castor-save-sync.bash
+
+- job:
+    !!merge : *job_castor_save
+    name: castor-save-workspace-cache
+    wrappers:
+        - ansicolor
+        - timeout:
+            timeout: 1  # minutes
+            abort: false
+            fail: false
+        - timestamps
+        - ssh-agent-credentials:
+            users:
+             - 'ae711ff4-813e-4462-9a27-21bdbd4fdcb9'  # jenkins-deploy
+    builders:
+        # This is horrible. Will need a better system that just prevent the job
+        # from being triggered by the upstream job.
+        - shell:
+            !include-raw: castor-save-filter.bash
+        - shell:
+            !include-raw:
+                - castor-define-namespace.bash
+                - castor-save-workspacecache.bash
