@@ -100,3 +100,20 @@
             --volume "$(pwd)"/cache:/cache \
             --volume "$(pwd)"/src:/src \
             {image}
+
+# Use a docker image to clone for a MediaWiki extension
+- builder:
+    name: docker-ci-src-setup-mwext
+    builders:
+     - shell: |
+        #!/bin/bash -eu
+        set -x
+        docker run \
+            --rm --tty \
+            --env-file .env \
+            --volume "$(pwd)"/src:/src \
+            --volume "$(pwd)"/cache:/cache \
+            --volume /srv/git:/srv/git \
+            --entrypoint "bash" \
+            wmfreleng/ci-src-setup:v2017.10.17.09.17 \
+            /srv/setup-mwext.sh
