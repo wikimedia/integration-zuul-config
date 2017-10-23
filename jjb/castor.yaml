@@ -46,6 +46,16 @@
                 - castor-define-namespace.bash
                 - castor-load-sync.bash
 
+- builder:
+    name: docker-castor-load
+    builders:
+        - shell: |
+            /usr/bin/env > .env
+            docker run -rm --tty
+                --env-file .env \
+                --volume "$(WORKSPACE)/cache":/cache \
+                wmfreleng/castor:latest \
+                load
 
 # Job triggered on the central repository instance
 #
