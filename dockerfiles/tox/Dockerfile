@@ -3,6 +3,7 @@ FROM wmfreleng/ci-jessie:latest
 RUN apt-get update && \
     apt-get install --yes \
         python-pip \
+        python3-pip \
         pypy \
         && \
     rm -rf /var/lib/apt/lists/*
@@ -10,7 +11,7 @@ RUN apt-get update && \
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1
 
 RUN pip install pip==8.1.2 && \
-    apt-get remove --yes --purge python-pip && \
+    apt-get remove --yes --purge python-pip python3-pip && \
     ln -s /usr/local/bin/pip /usr/bin/pip && \
     pip install tox==2.5.0 && \
     pip install setuptools && \
