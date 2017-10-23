@@ -10,7 +10,19 @@ capture_logs() {
     mv /src/.tox/log "${LOG_DIR}" || /bin/true
 }
 
-trap capture_logs EXIT
+fix_cache_permissions() {
+    # CI runs has nobody:wikidev and the docker host would need access to
+    # files. pip creates its cache with restrictive permissions.
+    find "$XDG_CACHE_HOME" -type d -not -perm '/g+rx' -print0|xargs -0 --no-run-if-empty chmod g+rx
+    find "$XDG_CACHE_HOME" -type f -not -perm '/g+r' -print0|xargs -0 --no-run-if-empty chmod g+r
+}
+
+handle_exit() {
+    capture_logs
+    fix_cache_permissions
+}
+
+trap handle_exit EXIT
 
 cd /src
 
