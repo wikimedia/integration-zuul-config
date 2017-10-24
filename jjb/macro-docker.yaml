@@ -117,3 +117,18 @@
             --entrypoint "bash" \
             wmfreleng/ci-src-setup:v2017.10.17.09.17 \
             /srv/setup-mwext.sh
+
+# Use a docker image to clone the repository into /src
+- builder:
+    name: docker-ci-src-setup-simple
+    builders:
+     - shell: |
+        #!/bin/bash -eu
+        set -x
+        docker run \
+            --rm --tty \
+            --env-file .env \
+            --volume "$(pwd)"/src:/src \
+            --volume "$(pwd)"/cache:/cache \
+            --volume /srv/git:/srv/git \
+            wmfreleng/ci-src-setup-simple:v2017.10.28.06.19
