@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8e5d03d5_ec331f5e",
+        "filename": "dockerfiles/ci-src-setup-simple/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-25T08:34:07Z",
+      "side": 1,
+      "message": "That actually runs:\n\n sh -c \u0027/bin/bash /run.sh\u0027\n\nI think you want:\n\n ENTRYPOINT [ \u0027/bin/bash\u0027, \u0027/run.sh\u0027 ]",
+      "revId": "41c05b45bdca13918e356dccb9c70bac288939bc",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e5d03d5_cc1503a1",
+        "filename": "dockerfiles/ci-src-setup-simple/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-25T08:34:07Z",
+      "side": 1,
+      "message": "/src can have left overs files from a previous build. On the Docker host we cant delete them since they are owned by nobody and Jenkins uses jenkins-deploy.\n\nSo we might want to prune the content of src before setting up git?  I guess we can:\n\n # Wipe the source workspace\n find /src -delete",
+      "revId": "41c05b45bdca13918e356dccb9c70bac288939bc",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e5d03d5_6c408fa9",
+        "filename": "dockerfiles/ci-src-setup-simple/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-25T08:34:07Z",
+      "side": 1,
+      "message": "While at it, you should be able to pass \"--depth 1\" to \"git submodule update\"\n\nstretch ships git 2.11.0 which supports it.",
+      "revId": "41c05b45bdca13918e356dccb9c70bac288939bc",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
