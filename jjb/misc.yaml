@@ -30,7 +30,9 @@
      # php5-xdebug. And also slow.
      - shell: |
          rm -rf coverage
-         php5 ./vendor/bin/phpunit --coverage-html coverage/
+         php5 ./vendor/bin/phpunit --coverage-clover clover.xml --coverage-html coverage/
+         mv clover.xml coverage/clover.xml
+
      - cover-publish:
         src: 'coverage'
         dest: '$DOC_PROJECT'
