@@ -372,6 +372,10 @@
         # can be a PHP Fatal error, of a segfault, for example.
         test -f cover/index.html
 
+        if [ -s "log/clover.xml" ]; then
+            cp log/clover.xml "$WORKSPACE/cover/clover.xml"
+        fi
+
      - cover-publish:
          src: 'cover'
          dest: 'mediawiki-core/$ZUUL_BRANCH/php'
