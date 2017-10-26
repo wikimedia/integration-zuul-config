@@ -373,6 +373,10 @@
         # can be a PHP Fatal error, of a segfault, for example.
         test -f cover/index.html
 
+        if [ -s "log/clover.xml" ]; then
+            /srv/deployment/integration/slave-scripts/bin/clover-edit.py log/clover.xml --name "MediaWiki core" --remove-full-info --save "$WORKSPACE/cover/clover.xml"
+        fi
+
      - cover-publish:
          src: 'cover'
          dest: 'mediawiki-core/$ZUUL_BRANCH/php'
