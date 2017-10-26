@@ -42,6 +42,16 @@
 - job:
     name: 'remexhtml-phpunit-coverage-publish'
     !!merge : *phpunit-coverage-publish
+    builders:
+     - castor-load
+     - composer-update:
+        dir: '.'
+     # Use php7 instead of php5 because it should be faster (T179055)
+     - shell: |
+         rm -rf coverage
+         php7 ./vendor/bin/phpunit --coverage-clover clover.xml --coverage-html coverage/
+         mv clover.xml coverage/clover.xml
+
     triggers:
       - zuul
     wrappers:
