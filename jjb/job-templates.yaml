@@ -35,6 +35,7 @@
 - job-template: &job_template_maven
     name: '{name}-maven'
     project-type: maven
+    root_pom_var: 'pom.xml'
     jdk: 'Debian - OpenJdk 8'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
@@ -62,6 +63,7 @@
       goals: clean verify
       # https://integration.wikimedia.org/ci/configureTools/
       maven-name: 'Maven-3.5.0'
+      root-pom: '{obj:root_pom_var}'
     publishers:
      - castor-save
 
