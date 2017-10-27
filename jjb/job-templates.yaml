@@ -73,8 +73,8 @@
     triggers:
      - zuul
 
-- job-template:
-    name: '{name}-{project}-maven-site-publish'
+- job-template: &job_template_maven_site_publish
+    name: '{name}-maven-site-publish'
     project-type: maven
     jdk: 'Debian - OpenJdk 8'
     node: ci-jessie-wikimedia
@@ -95,9 +95,19 @@
     postbuilders:
      - doc-publish:
          docsrc: 'target/staging'
-         docdest: '{name}-{project}'
+         docdest: '{name}'
     publishers:
      - castor-save
+
+- job-template:
+    !!merge : *job_template_maven_site_publish
+    name: '{name}-{project}-maven-site-publish'
+    postbuilders:
+     - doc-publish:
+         docsrc: 'target/staging'
+         docdest: '{name}-{project}'
+    triggers:
+     - zuul
 
 - job: &job_npm-node-6-jessie
     name: 'npm-node-6-jessie'
