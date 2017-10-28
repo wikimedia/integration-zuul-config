@@ -9,5 +9,5 @@ cd /src
 node --version
 npm --version
 rm -rf node_modules
-npm install
+npm install --no-progress
 npm test
