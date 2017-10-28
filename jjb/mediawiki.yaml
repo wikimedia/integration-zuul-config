@@ -402,9 +402,11 @@
     builders:
      - docker-zuul-env
      - docker-log-dir
+     - docker-src-dir
      - docker-cache-dir
-     - docker-run-with-log-and-workspace-cache:
-        image: 'wmfreleng/mediawiki-phpcs:v2017.10.10.17.57'
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'wmfreleng/mediawiki-phpcs:v2017.10.28.06.43'
         logdir: '/log'
     publishers:
      - checkstyle:
