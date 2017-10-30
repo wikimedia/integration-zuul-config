@@ -110,8 +110,6 @@ class DockerBuilder(object):
     def update_jjb(self, img, tagged_img):
         regex = re.compile('%s:v[0-9\.]+' % img)
         for fname in os.listdir(JJB_DIR):
-            if not fname.endswith('.yaml'):
-                continue
             full_fname = os.path.join(JJB_DIR, fname)
             with open(full_fname, 'r') as f:
                 text = f.read()
