@@ -64,8 +64,8 @@
     triggers:
      - zuul
 
-- job-template:
-    name: '{name}-tox-docker'
+- job-template: &job_tox-docker
+    name: 'tox-docker'
     node: DebianJessieDocker
     concurrent: true
     triggers:
@@ -85,6 +85,12 @@
     publishers:
         - archive-log-dir
         - castor-save-workspace-cache
+
+- job-template:
+    !!merge : *job_tox-docker
+    name: '{name}-tox-docker'
+    triggers:
+        - zuul
 
 # Call tox env 'doc' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
@@ -132,6 +138,7 @@
 - project:
     name: common-tox-jobs
     jobs:
+     - 'tox-docker'
      - 'tox-jessie'
      - 'tox-{toxenv}-jessie':
          toxenv:
