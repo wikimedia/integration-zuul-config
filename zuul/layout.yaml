@@ -959,7 +959,7 @@ jobs:
     voting: false
     # FIXME remove noop gate-and-submit when making it voting
 
-  - name: tox-jessie
+  - name: ^(tox-jessie|tox-docker)$
     skip-if:
       # Done on master, not ready on deployment branch T145012
       #
@@ -1261,12 +1261,16 @@ project-templates:
      - tox-jessie
     gate-and-submit:
      - tox-jessie
+    experimental:
+     - tox-docker
 
   - name: mwgate-tox-jessie
     test:
      - mwgate-tox-jessie
     gate-and-submit:
      - mwgate-tox-jessie
+    experimental:
+     - mwgate-tox-docker
 
   - name: commit-message-validator
     check:
@@ -1317,6 +1321,8 @@ projects:
       - tox-jessie
     gate-and-submit:
       - tox-jessie
+    experimental:
+      - tox-docker
 
   - name: integration/jenkinsci/android-emulator-plugin
     test:
@@ -1540,6 +1546,8 @@ projects:
      - tox-jessie
     gate-and-submit:
      - tox-jessie
+    experimental:
+     - tox-docker
 
   - name: analytics/wmde/scripts
     test:
@@ -1639,6 +1647,8 @@ projects:
      - tox-jessie
      - debian-glue
      - php55lint
+    experimental:
+     - tox-docker
 
   - name: labs/tools/crosswatch
     template:
@@ -2064,6 +2074,8 @@ projects:
       - tox-jessie
     gate-and-submit:
       - tox-jessie
+    experimental:
+      - tox-docker
     postmerge:
       - mw-tools-releng-tox-doc-publish
 
@@ -2378,6 +2390,8 @@ projects:
       - name: puppet-module
     test:
       - tox-jessie
+    experimental:
+      - tox-docker
 
   - name: operations/puppet/mariadb
     template:
@@ -2392,6 +2406,8 @@ projects:
       - name: puppet-module
     test:
       - tox-jessie
+    experimental:
+      - tox-docker
 
   - name: operations/puppet/wikimetrics
     template:
@@ -2540,6 +2556,7 @@ projects:
       - noop
     experimental:
       - tox-jessie
+      - tox-docker
 
   - name: wikimedia/fundraising/tools
     test:
@@ -2548,6 +2565,9 @@ projects:
       - tox-jessie
       # tox-jessie is skipped on 'deploy' branch (WIP T145012)
       - noop
+    experimental:
+      # tox-docker is skipped on 'deploy' branch (WIP T145012)
+      - tox-docker
 
   - name: wikimedia/fundraising/crm
     test:
