@@ -1318,15 +1318,11 @@ projects:
 
   - name: integration/commit-message-validator
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: integration/dashboard
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
-    experimental:
-      - tox-docker
+    template:
+      - name: tox-docker
 
   - name: integration/jenkinsci/android-emulator-plugin
     test:
@@ -1343,7 +1339,7 @@ projects:
   - name: integration/jenkins
     template:
       - name: composer-test
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: integration/phpunit
     template:
@@ -1546,12 +1542,8 @@ projects:
       - analytics-wikistats2-npm-node-6-jessie
 
   - name: analytics/wikimetrics
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
-    experimental:
-     - tox-docker
+    template:
+      - name: tox-docker
 
   - name: analytics/wmde/scripts
     test:
@@ -1643,16 +1635,14 @@ projects:
       - noop
 
   - name: labs/toollabs
+    template:
+      - name: tox-docker
     test:
-     - tox-jessie
      - debian-glue
      - php55lint
     gate-and-submit:
-     - tox-jessie
      - debian-glue
      - php55lint
-    experimental:
-     - tox-docker
 
   - name: labs/tools/crosswatch
     template:
@@ -2388,10 +2378,7 @@ projects:
   - name: operations/puppet/kafkatee
     template:
       - name: puppet-module
-    test:
-      - tox-jessie
-    experimental:
-      - tox-docker
+      - name: tox-docker
 
   - name: operations/puppet/mariadb
     template:
@@ -2404,10 +2391,7 @@ projects:
   - name: operations/puppet/varnishkafka
     template:
       - name: puppet-module
-    test:
-      - tox-jessie
-    experimental:
-      - tox-docker
+      - name: tox-docker
 
   - name: operations/puppet/wikimetrics
     template:
@@ -2555,7 +2539,6 @@ projects:
     gate-and-submit:
       - noop
     experimental:
-      - tox-jessie
       - tox-docker
 
   - name: wikimedia/fundraising/tools
