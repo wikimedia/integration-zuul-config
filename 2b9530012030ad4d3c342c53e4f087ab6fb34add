@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6e5a8fde_b5cd5564",
+        "filename": "dockerfiles/tox-pyspark/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 776
+      },
+      "writtenOn": "2017-10-31T22:09:25Z",
+      "side": 1,
+      "message": "yea it does, i didn\u0027t mean to commit that. The thing is though i setup apt-cacher-ng which was failing to proxy https. Even though i added the gpg check to ensure we really downloaded what we think we did, i still wanted to grab it over https. \n\nAnyways i\u0027ve swapped this out to https and removing the proxy from the url like intended.",
+      "parentUuid": "6e5a8fde_b2fecb33",
+      "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e5a8fde_f29a0317",
         "filename": "dockerfiles/tox-pyspark/Dockerfile",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "6e5a8fde_b5c6b54c",
+        "filename": "dockerfiles/tox-pyspark/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 776
+      },
+      "writtenOn": "2017-10-31T22:09:25Z",
+      "side": 1,
+      "message": "turns out i didn\u0027t need to install gnupg, because apt depends on it. Removed from above. I did add a line here to drop wget though.",
+      "parentUuid": "6e5a8fde_f29a0317",
+      "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e5a8fde_7285b39e",
         "filename": "dockerfiles/tox-pyspark/run.sh",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2017-10-31T20:47:08Z",
       "side": 1,
       "message": "We found out earlier today that mv causes issues. It preserves owner/permissions. That later causes troubles due to uid mismatch between the container and the jenkins user on the host :(\n\nI78e0d711ca0cc619db495dcea3d0ba1b8b4e46f6\n\nOr in short replace mv  with cp --recursive.",
+      "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_90bf07f6",
+        "filename": "dockerfiles/tox-pyspark/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 776
+      },
+      "writtenOn": "2017-10-31T22:09:25Z",
+      "side": 1,
+      "message": "per IRC, removed this script in favor of setting and ENV var and using the other patch to let that pass through to tox.",
+      "parentUuid": "6e5a8fde_7285b39e",
       "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
