@@ -6567,11 +6567,16 @@ projects:
     gate-and-submit-swat: *mediawiki-extensions-poolcounter-gate-and-submit
 
   - name: mediawiki/extensions/Popups
+    # FIXME: Popups runs qunit in "npm test" (T179425), so it
+    # can't use mwgate-npm docker variant
+    test:
+      - mwgate-npm-node-6-jessie
+    gate-and-submit:
+      - mwgate-npm-node-6-jessie
     template:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
       - name: mediawiki-core-qunit-selenium-jessie
-      - name: mwgate-npm
 
   - name: mediawiki/extensions/PostEdit
     template:
