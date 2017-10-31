@@ -4,9 +4,6 @@ set -euxo pipefail
 
 RAKE_TARGET=${RAKE_TARGET:-test}
 
-# Has to be in the same directory as in Dockerfile.build because of tox caching
-PUPPET_DIR="/tmp/cache/puppet"
-
 LOG_DIR="/srv/workspace/log"
 export LOG_DIR
 
