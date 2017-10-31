@@ -3,8 +3,11 @@ FROM wmfreleng/ci-jessie:latest
 RUN apt-get update && \
     apt-get install --yes \
         python-pip \
+        python-dev \
         python3-pip \
+        python3-dev \
         pypy \
+        gcc g++ libc-dev make \
         && \
     rm -rf /var/lib/apt/lists/*
 
