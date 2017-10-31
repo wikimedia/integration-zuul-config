@@ -15,7 +15,7 @@
     name: 'tox-docker'
     node: DebianJessieDocker
     concurrent: true
-    docker_image_var: 'wmfreleng/tox:v2017.11.10.21.35'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
     triggers:
         - zuul
     builders:
@@ -42,7 +42,7 @@
 - job-template:
     !!merge : *job_tox-docker
     name: '{name}-tox-{toxenv}-docker'
-    docker_image_varimage: 'wmfreleng/tox:v2017.11.10.21.35'
+    docker_image_varimage: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
     triggers:
         - zuul
     builders:

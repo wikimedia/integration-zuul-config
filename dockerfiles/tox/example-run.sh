@@ -11,13 +11,13 @@ for project in analytics/quarry/web labs/tools/crosswatch; do
         --env ZUUL_COMMIT=master \
         --env ZUUL_REF=master \
         --volume /"$(pwd)"/log://log \
-         wmfreleng/tox:latest
+        docker-registry.wikimedia.org/releng/tox:latest
     err+=$?
 done
 
 # Ensure we can compile 'netifaces' and a wheel is hold in the cache
 docker run --rm --tty \
-    --entrypoint=/bin/bash wmfreleng/tox:latest \
+    --entrypoint=/bin/bash docker-registry.wikimedia.org/releng/tox:latest \
     -c 'pip install --disable-pip-version-check --target /src/install --cache-dir /src/cache -v netifaces && find /src/cache -name "netifaces-*.whl"'
 err+=$?
 
