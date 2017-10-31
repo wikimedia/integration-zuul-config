@@ -1,6 +1,6 @@
 #!/bin/bash
 
-install --mode 777 --directory log
+install --mode 2777 --directory log
 docker run \
     --rm --tty \
     --env ZUUL_URL=https://gerrit.wikimedia.org/r \

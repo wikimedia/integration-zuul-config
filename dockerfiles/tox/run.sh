@@ -2,12 +2,19 @@
 
 set -euxo pipefail
 
+umask 002
+
 LOG_DIR=/log
 export LOG_DIR
 
 capture_logs() {
-    mv /src/.tox/*/log/*.log "${LOG_DIR}" || /bin/true
-    mv /src/.tox/log "${LOG_DIR}" || /bin/true
+    # XXX unlike `mv`, `cp` does not preserve permissions and hence the
+    # destination files will inherit the group thanks to log having setgid.
+    #
+    # XXX later tox version supports specifying the envs log directory
+    #
+    cp --recursive /src/.tox/*/log/*.log "${LOG_DIR}" || /bin/true
+    cp --recursive /src/.tox/log "${LOG_DIR}" || /bin/true
 }
 
 trap capture_logs EXIT
