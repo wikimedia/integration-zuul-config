@@ -181,6 +181,13 @@
     publishers:
      - archive-log-allow-empty
 
+- job-template:
+    !!merge : *job_npm-node-6-docker
+    name: '{name}-npm-node-6-docker'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 
 # A very specific job for MobileFrontend which uses a JavaScript test suite
 # which requires mediawiki/core.
