@@ -1318,15 +1318,11 @@ projects:
 
   - name: integration/commit-message-validator
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: integration/dashboard
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
-    experimental:
-      - tox-docker
+    template:
+      - name: tox-docker
 
   - name: integration/jenkinsci/android-emulator-plugin
     test:
@@ -1351,7 +1347,7 @@ projects:
 
   - name: integration/quibble
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: integration/uprightdiff
     test:
@@ -1479,11 +1475,11 @@ projects:
 
   - name: analytics/aggregator
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: analytics/blog
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: analytics/dashiki
     experimental:
@@ -1491,15 +1487,15 @@ projects:
 
   - name: analytics/geowiki
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: analytics/quarry/web
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: analytics/limn-mobile-data
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: analytics/limn-language-data
     test:
@@ -1519,7 +1515,7 @@ projects:
 
   - name: analytics/multimedia
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: analytics/refinery/source
     test:
@@ -1529,7 +1525,7 @@ projects:
 
   - name: analytics/reportupdater
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: analytics/wikistats
     test:
@@ -1546,12 +1542,8 @@ projects:
       - analytics-wikistats2-npm-node-6-jessie
 
   - name: analytics/wikimetrics
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
-    experimental:
-     - tox-docker
+    template:
+      - name: tox-docker
 
   - name: analytics/wmde/scripts
     test:
@@ -1643,16 +1635,14 @@ projects:
       - noop
 
   - name: labs/toollabs
+    template:
+      - name: tox-docker
     test:
-     - tox-jessie
      - debian-glue
      - php55lint
     gate-and-submit:
-     - tox-jessie
      - debian-glue
      - php55lint
-    experimental:
-     - tox-docker
 
   - name: labs/tools/crosswatch
     template:
@@ -2046,7 +2036,7 @@ projects:
 
   - name: mediawiki/tools/cookiecutter-library
     template:
-     - name: tox-jessie
+     - name: tox-docker
 
   - name: mediawiki/tools/dippybird
     test:
@@ -2067,7 +2057,7 @@ projects:
   - name: mediawiki/tools/release
     template:
       - name: composer-test
-      - name: tox-jessie
+      - name: tox-docker
     test:
       - php55lint
     gate-and-submit:
@@ -2101,7 +2091,7 @@ projects:
   # With vim Tabularize plugin: Tab /test:
   - name: operations/debs/adminbot
     template:
-      - name: tox-jessie
+      - name: tox-docker
     test:
       - debian-glue-non-voting
   - { name: operations/debs/archiva,                         test: ['debian-glue-non-voting'] }
@@ -2388,10 +2378,7 @@ projects:
   - name: operations/puppet/kafkatee
     template:
       - name: puppet-module
-    test:
-      - tox-jessie
-    experimental:
-      - tox-docker
+      - name: tox-docker
 
   - name: operations/puppet/mariadb
     template:
@@ -2404,10 +2391,7 @@ projects:
   - name: operations/puppet/varnishkafka
     template:
       - name: puppet-module
-    test:
-      - tox-jessie
-    experimental:
-      - tox-docker
+      - name: tox-docker
 
   - name: operations/puppet/wikimetrics
     template:
@@ -2555,7 +2539,6 @@ projects:
     gate-and-submit:
       - noop
     experimental:
-      - tox-jessie
       - tox-docker
 
   - name: wikimedia/fundraising/tools
