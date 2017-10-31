@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e5a8fde_b2fecb33",
+        "filename": "dockerfiles/tox-pyspark/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-31T20:47:08Z",
+      "side": 1,
+      "message": "Sounds like the IP of your Docker bridge :)  Probably want the real hostname instead.\n\nYou can create a /dockerfiles/build.conf with something like:\n\n [DEFAULT]\n http_proxy\u003dhttp://192.168.1.2:3142/\n\n\nThe build.py script would then inject http_proxy has a build argument to \u0027docker build\u0027 which happens to recognize it.",
+      "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_f29a0317",
+        "filename": "dockerfiles/tox-pyspark/Dockerfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-31T20:47:08Z",
+      "side": 1,
+      "message": "Most probably you can then purge the gnupg package.",
+      "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_7285b39e",
+        "filename": "dockerfiles/tox-pyspark/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-31T20:47:08Z",
+      "side": 1,
+      "message": "We found out earlier today that mv causes issues. It preserves owner/permissions. That later causes troubles due to uid mismatch between the container and the jenkins user on the host :(\n\nI78e0d711ca0cc619db495dcea3d0ba1b8b4e46f6\n\nOr in short replace mv  with cp --recursive.",
+      "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_32673b24",
+        "filename": "dockerfiles/tox-pyspark/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-31T20:47:08Z",
+      "side": 1,
+      "message": "+1 ;)",
+      "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_5253d743",
+        "filename": "jjb/python-jobs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-10-31T20:47:08Z",
+      "side": 1,
+      "message": "Or how to use \u0027tox-docker\u0027 but selectively pick a different image when needed.\n\nI LOVE THAT :]",
+      "revId": "2b9530012030ad4d3c342c53e4f087ab6fb34add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
