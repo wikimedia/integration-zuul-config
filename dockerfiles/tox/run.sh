@@ -26,5 +26,6 @@ git fetch --depth 2 --quiet "${ZUUL_URL}/${ZUUL_PROJECT}" "$ZUUL_REF"
 git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
-# Run tests
-TOX_TESTENV_PASSENV="PY_COLORS XDG_CACHE_HOME" PY_COLORS=1 tox -v | tee "${LOG_DIR}/stdout.log"
+# Run tests. Pass all environment variables to tox since the environment here
+# is already pretty restrictive.
+TOX_TESTENV_PASSENV="*" PY_COLORS=1 tox -v | tee "${LOG_DIR}/stdout.log"
