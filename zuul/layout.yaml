@@ -2082,12 +2082,8 @@ projects:
       - php55lint
 
   - name: mediawiki/tools/releng
-    test:
-      - tox-jessie
-    gate-and-submit:
-      - tox-jessie
-    experimental:
-      - tox-docker
+    template:
+      - name: tox-docker
     postmerge:
       - mw-tools-releng-tox-doc-publish
 
