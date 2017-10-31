@@ -56,8 +56,8 @@
         export TOX_TESTENV_PASSENV=PY_COLORS
         export PY_COLORS=1
 
-        tox -e py27 -v -v --notest
-        . .tox/py27/bin/activate
+        tox -e zuul_tests -v -v --notest
+        . .tox/zuul_tests/bin/activate
         zuul-server --version
 
         zuul-server -c tests/fixtures/zuul-dummy.conf -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/current.txt
