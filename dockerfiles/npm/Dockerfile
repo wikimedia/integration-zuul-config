@@ -6,6 +6,8 @@ RUN apt-get update && \
         nodejs-legacy npm \
         # ruby/etc for jsduck
         ruby ruby2.1 ruby2.1-dev rubygems-integration build-essential && \
+        gem install jsduck && \
+        apt-get remove -y build-essential && apt-get autoremove -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # DO NOT CHANGE VERSION WITHOUT INVOLVING Krinkle OR hashar
@@ -13,8 +15,6 @@ RUN npm install -g npm@3.8.3
 
 # If no volume is mounted, make sure /cache exists
 RUN install --directory /cache --owner nobody
-
-RUN gem install jsduck
 
 USER nobody
 

@@ -5,7 +5,7 @@ mkdir -m 777 -p src
 mkdir -m 777 -p cache
 cd src
 git init
-git fetch --quiet --depth 1 "https://gerrit.wikimedia.org/r/mediawiki/extensions/Flow" "refs/changes/93/382793/1"
+git fetch --quiet --depth 1 "https://gerrit.wikimedia.org/r/mediawiki/skins/MinervaNeue" "refs/changes/01/387501/1"
 git checkout FETCH_HEAD
 cd ..
 
