@@ -8,6 +8,7 @@ RUN apt-get update && \
         python3-dev \
         pypy \
         gcc g++ libc-dev make \
+        libmysqlclient-dev \
         && \
     rm -rf /var/lib/apt/lists/*
 
