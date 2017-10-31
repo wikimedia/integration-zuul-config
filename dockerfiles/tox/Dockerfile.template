@@ -1,0 +1,20 @@
+FROM {{ "ci-jessie" | image_tag }}
+{% set pkg_list = ['pypy', 'gcc', 'g++', 'libc-dev', 'make', 'libmysqlclient-dev'] -%}
+{% for suffix in ['dev', 'pip', 'wheel'] -%}
+{% do pkg_list.append('python-' ~ suffix) %}
+{% do pkg_list.append('python3-' ~ suffix) %}
+{% endfor %}
+ARG PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN {{ pkg_list | join(" ") | apt_install }} \
+    && pip install pip==8.1.2 && pip3 install pip=8.1.2 \
+    && {{ "python-pip python3-pip" | apt_remove }} \
+    && ln -s /usr/local/bin/pip /usr/bin/pip \
+    && pip install tox==2.6.0 \
+    && pip install setuptools \
+    && rm -fR "$XDG_CACHE_HOME/pip"
+
+USER nobody
+WORKDIR /src
+ENTRYPOINT ["/run.sh"]
+COPY run.sh /run.sh
