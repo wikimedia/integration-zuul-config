@@ -15,3 +15,13 @@
     jobs:
         - '{name}-maven':
             root_pom_var: jvm-packages/pom.xml
+
+- project:
+    name: search-mjolnir
+    jobs:
+        - '{name}-tox-docker':
+            docker_image_var: wmfreleng/tox-pyspark:v2017.11.07.12.13
+        # Sadly this does not test the python code with the jvm code, instead
+        # using the last release of the jvm code, But it's a good start.
+        - '{name}-maven':
+            root_pom_var: jvm/pom.xml

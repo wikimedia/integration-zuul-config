@@ -68,6 +68,7 @@
     name: 'tox-docker'
     node: DebianJessieDocker
     concurrent: true
+    docker_image_var: 'wmfreleng/tox:v2017.11.01.16.28'
     triggers:
         - zuul
     builders:
@@ -75,7 +76,7 @@
         - docker-zuul-env
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: 'wmfreleng/tox:v2017.11.01.16.28'
+            image: '{obj:docker_image_var}'
             logdir: '/log'
     wrappers:
         - timeout:
