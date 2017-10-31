@@ -10,6 +10,7 @@ RUN apt-get update && \
         python3-wheel \
         pypy \
         gcc g++ libc-dev make \
+        libmysqlclient-dev \
         && \
     rm -rf /var/lib/apt/lists/*
 

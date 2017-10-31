@@ -2,15 +2,17 @@
 declare -i err=0
 
 install --mode 2777 --directory log
-docker run \
-    --rm --tty \
-    --env ZUUL_URL=https://gerrit.wikimedia.org/r \
-    --env ZUUL_PROJECT=analytics/quarry/web \
-    --env ZUUL_COMMIT=master \
-    --env ZUUL_REF=master \
-    --volume /"$(pwd)"/log://log \
-     wmfreleng/tox:latest
-err+=$?
+for project in analytics/quarry/web wikimedia/fundraising/tools; do
+    docker run \
+        --rm --tty \
+        --env ZUUL_URL=https://gerrit.wikimedia.org/r \
+        --env ZUUL_PROJECT="$project" \
+        --env ZUUL_COMMIT=master \
+        --env ZUUL_REF=master \
+        --volume /"$(pwd)"/log://log \
+         wmfreleng/tox:latest
+    err+=$?
+done
 
 # Ensure we can compile 'netifaces' and a wheel is hold in the cache
 docker run --rm --tty \
