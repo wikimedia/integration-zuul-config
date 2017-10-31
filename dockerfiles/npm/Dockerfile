@@ -3,7 +3,9 @@ FROM wmfreleng/ci-jessie:latest
 # Install nodejs-legacy to provide /usr/bin/node alias
 RUN apt-get update && \
     apt-get install --yes \
-        nodejs-legacy npm && \
+        nodejs-legacy npm \
+        # ruby/etc for jsduck
+        ruby ruby2.1 ruby2.1-dev rubygems-integration build-essential && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # DO NOT CHANGE VERSION WITHOUT INVOLVING Krinkle OR hashar
@@ -11,6 +13,8 @@ RUN npm install -g npm@3.8.3
 
 # If no volume is mounted, make sure /cache exists
 RUN install --directory /cache --owner nobody
+
+RUN gem install jsduck
 
 USER nobody
 
