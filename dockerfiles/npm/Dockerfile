@@ -21,6 +21,7 @@ USER nobody
 # See <https://docs.npmjs.com/misc/config#environment-variables>
 # and <https://docs.npmjs.com/cli/cache>
 ENV NPM_CONFIG_CACHE=/cache
+ENV BABEL_CACHE_PATH=$XDG_CACHE_HOME/babel-cache.json
 
 ENTRYPOINT ["npm"]
 CMD ["--help"]
