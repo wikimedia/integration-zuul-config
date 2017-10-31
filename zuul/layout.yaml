@@ -959,15 +959,14 @@ jobs:
     voting: false
     # FIXME remove noop gate-and-submit when making it voting
 
-  - name: ^(tox-jessie|tox-docker)$
+  - name: ^fundraising-tools-tox-(jessie|docker)$
     skip-if:
       # Done on master, not ready on deployment branch T145012
       #
       # FIXME drop the 'noop' job from gate-and-submit when the skip rule is
       # removed.
       #
-      - project: ^wikimedia/fundraising/tools$
-        branch: ^deploy$
+      - branch: ^deploy$
 
 project-templates:
 
@@ -2543,15 +2542,15 @@ projects:
 
   - name: wikimedia/fundraising/tools
     test:
-      - tox-jessie
+      - fundraising-tools-tox-jessie
     gate-and-submit:
-      - tox-jessie
+      - fundraising-tools-tox-jessie
       # tox-jessie is skipped on 'deploy' branch (WIP T145012)
       - noop
     experimental:
       # tox-docker is skipped on 'deploy' branch (WIP T145012)
       # XXX fails due to lack of mysql_config - T179392
-      - tox-docker
+      - fundraising-tools-tox-docker
 
   - name: wikimedia/fundraising/crm
     test:
