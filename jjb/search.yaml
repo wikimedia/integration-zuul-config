@@ -15,3 +15,11 @@
     jobs:
         - '{name}-maven':
             root_pom_var: jvm-packages/pom.xml
+
+- project:
+    name: search-mjolnir
+    jobs:
+        - '{name}-tox-docker':
+            # TODO: need releng to verify image and push so this
+            # can be versioned to not-latest
+            docker_image_var: tox-pyspark:latest
