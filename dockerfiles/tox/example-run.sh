@@ -5,6 +5,7 @@ install --mode 2777 --directory log
 for project in analytics/quarry/web labs/tools/crosswatch; do
     docker run \
         --rm --tty \
+        --env JENKINS_URL=1 \
         --env ZUUL_URL=https://gerrit.wikimedia.org/r \
         --env ZUUL_PROJECT="$project" \
         --env ZUUL_COMMIT=master \
