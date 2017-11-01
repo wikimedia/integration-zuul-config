@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e5a8fde_b2f562b7",
+        "filename": "dockerfiles/tox-pyspark/example-run.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-01T21:51:19Z",
+      "side": 1,
+      "message": "To remove a warning emitted by tox:\n\n WARNING:could not copy distfile to /nonexistent/.tox/distshare\n\nCan you add the following?\n\n --env JENKINS_URL\u003d1 \\\n\n\nI found that a few hours ago in the wmfreleng/tox image :]\n\n\n(DONE)",
+      "revId": "c0135d4a59c0cc2da9679b144da4f8975e9e8ff4",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_4f9a4568",
+        "filename": "dockerfiles/tox-pyspark/example-run.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-01T21:51:19Z",
+      "side": 1,
+      "message": "We can test locally against https://gerrit.wikimedia.org/r/#/c/387831/4  by replacing those ZUUL_ things:\n\n\n ZUUL_COMMIT\u003de4d4c798a9a7821eb48788cdfeb8de0a12a75d44\n ZUUL_REF\u003drefs/changes/31/387831/4\n\n(DONE)",
+      "revId": "c0135d4a59c0cc2da9679b144da4f8975e9e8ff4",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_728cca3a",
+        "filename": "dockerfiles/tox-pyspark/example-run.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-01T21:51:19Z",
+      "side": 1,
+      "message": "pip creates a cache dir that is not readable by anybody:\n\n drwx------ 4 nobody nogroup dockerfiles/tox-pyspark/cache/pip\n\nFor the tox image I have added it to .dockerignore:\n\n echo cache \u003e dockerfiles/tox-pyspark/.dockerignore\n\n(DONE)",
+      "revId": "c0135d4a59c0cc2da9679b144da4f8975e9e8ff4",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
