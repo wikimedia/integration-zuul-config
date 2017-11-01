@@ -7044,15 +7044,10 @@ projects:
       - mwext-jsduck-publish
 
   - name: mediawiki/extensions/WikibaseJavaScriptApi
+    # Despite the naming, this is not a MediaWiki extension,
+    # it is an independent library.
     template:
-      - name: extension-qunit-composer
-      - name: extension-unittests-composer
-    test:
-      - mwgate-npm-node-6-jessie  # requires PhantomJS - T179465
-    gate-and-submit:
-      - mwgate-npm-node-6-jessie  # requires PhantomJS - T179465
-    experimental:
-      - npm-node-6-docker
+      - name: npm
 
   - name: mediawiki/extensions/Wikidata
     template:
