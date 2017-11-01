@@ -7047,7 +7047,12 @@ projects:
     template:
       - name: extension-qunit-composer
       - name: extension-unittests-composer
-      - name: mwgate-npm
+    test:
+      - mwgate-npm-node-6-jessie  # requires PhantomJS - T179465
+    gate-and-submit:
+      - mwgate-npm-node-6-jessie  # requires PhantomJS - T179465
+    experimental:
+      - npm-node-6-docker
 
   - name: mediawiki/extensions/Wikidata
     template:
