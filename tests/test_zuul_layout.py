@@ -45,6 +45,12 @@ class TestZuulLayout(unittest.TestCase):
                     # Skip sub repositories
                     continue
 
+                if project['name'] == \
+                        'mediawiki/extensions/WikibaseJavaScriptApi':
+                    # Despite the naming, this repo is an independent library,
+                    # not a MediaWiki extension.
+                    continue
+
                 has_extension_unittests = any([
                     template['name'].startswith(one_of_templates)
                     for template in project.get('template', {})
