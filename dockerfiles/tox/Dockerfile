@@ -26,5 +26,5 @@ RUN pip install pip==8.1.2 && \
 
 USER nobody
 WORKDIR /src
-ENTRYPOINT /bin/bash /run.sh
+ENTRYPOINT ["/bin/bash", "/run.sh"]
 COPY run.sh /run.sh

@@ -75,8 +75,9 @@
         - docker-zuul-env
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: 'wmfreleng/tox:v2017.11.01.16.28'
+            image: 'wmfreleng/tox:v2017.11.02.16.40'
             logdir: '/log'
+            run_args: '{obj:args|}'
     wrappers:
         - timeout:
             timeout: 3  # minutes
@@ -89,6 +90,12 @@
 - job-template:
     !!merge : *job_tox-docker
     name: '{name}-tox-docker'
+    triggers:
+        - zuul
+
+- job-template:
+    !!merge : *job_tox-docker
+    name: '{name}-tox-{toxenv}-docker'
     triggers:
         - zuul
 
