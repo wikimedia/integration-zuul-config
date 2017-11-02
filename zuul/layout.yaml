@@ -2323,15 +2323,15 @@ projects:
 
   - name: operations/docker-images/toollabs-images
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/dumps
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/dumps/import-tools
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/mediawiki-config
     check:
@@ -2404,39 +2404,39 @@ projects:
   # Voting V+2 so ops dont idle waiting for CI to report.
   - name: operations/software
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/software/conftool
     template:
-      - name: tox-jessie
+      - name: tox-jessie  # requires etcd to be installed for integration tests
 
   - name: operations/software/cumin
     test:
       - debian-glue-backports-non-voting
     template:
-      - name: tox-jessie
+      - name: tox-jessie  # times out
 
   - name: operations/docker-images/docker-pkg
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/software/elasticsearch-tool
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/software/etcd-mirror
     template:
-      - name: tox-jessie
+      - name: tox-docker
     test:
       - debian-glue-non-voting
 
   - name: operations/software/ircyall
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/software/labsdb-auditor
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/software/nginx
     test:
@@ -2444,15 +2444,15 @@ projects:
 
   - name: operations/software/puppet-compiler
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/software/service-checker
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/software/tools-manifest
     template:
-      - name: tox-jessie
+      - name: tox-docker
     test:
       - debian-glue
     gate-and-submit:
@@ -2460,7 +2460,7 @@ projects:
 
   - name: operations/software/tools-webservice
     template:
-      - name: tox-jessie
+      - name: tox-docker
     test:
       - debian-glue
     gate-and-submit:
@@ -2468,11 +2468,11 @@ projects:
 
   - name: operations/software/hhvm_exporter
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: operations/switchdc
     template:
-      - name: tox-jessie
+      - name: tox-docker
 
   - name: research/recommendation-api
     template:
