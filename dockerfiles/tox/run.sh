@@ -25,4 +25,4 @@ trap capture_tox_logs EXIT
 
 # Run tests. Pass all environment variables to tox since the environment here
 # is already pretty restrictive.
-TOX_TESTENV_PASSENV="*" PY_COLORS=1 tox -v
+TOX_TESTENV_PASSENV="*" PY_COLORS=1 tox -v "${@}"
