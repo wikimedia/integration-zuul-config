@@ -28,4 +28,4 @@ git submodule --quiet update --init --recursive
 
 # Run tests. Pass all environment variables to tox since the environment here
 # is already pretty restrictive.
-TOX_TESTENV_PASSENV="*" PY_COLORS=1 tox -v | tee "${LOG_DIR}/stdout.log"
+TOX_TESTENV_PASSENV="*" PY_COLORS=1 tox -v "${@}" | tee "${LOG_DIR}/stdout.log"
