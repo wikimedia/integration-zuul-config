@@ -44,8 +44,9 @@
      - castor-load
      - shell: |
          export PYWIKIBOT2_DIR=$WORKSPACE
-         export TOX_TESTENV_PASSENV=PY_COLORS
          export PY_COLORS=1
+         export TOX_TESTENV_PASSENV='PYWIKIBOT2_DIR PY_COLORS'
+
          tox -e venv -- pip install --upgrade ndg-httpsclient
          tox -e venv -- python -m generate_family_file 'http://en.wikipedia.beta.wmflabs.org/' 'wpbeta' 'y'
          tox -e venv -- python -m generate_user_files -dir:$WORKSPACE -family:wpbeta -lang:en -v
