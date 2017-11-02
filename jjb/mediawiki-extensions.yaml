@@ -432,10 +432,10 @@
      - '{name}-jsduck'
      - 'mwext-VisualEditor-npm-node-6-jessie'
 
-# Run RelatedArticles Selenium tests daily targeting beta cluster
+# Run Selenium tests daily targeting beta cluster
 # similar to mediawiki-core-qunit-selenium-jessie
-- job:
-    name: 'selenium-RelatedArticles-jessie'
+- job-template:
+    name: 'selenium-{name}-jessie'
     node: ci-jessie-wikimedia
     concurrent: true
     triggers:
@@ -478,3 +478,9 @@
         # Qunit does not generate Junit file and we might skip selenium
         allow-empty-results: true
 
+- project:
+    name: RelatedArticles
+    repository: mediawiki/extensions/RelatedArticles
+
+    jobs:
+     - 'selenium-{name}-jessie'
