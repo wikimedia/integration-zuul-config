@@ -7600,7 +7600,7 @@ projects:
 
   - name: wikibase/javascript-api
     template:
-      - name: npm   # requires PhantomJS - T179465
+      - name: npm   # requires PhantomJS - T179465 / T179360
 
   - name: wikibase/wikiba.se
     test:
@@ -7631,7 +7631,10 @@ projects:
     template:
      - name: mwgate-composer
      - name: extension-qunit-composer
-     - name: mwgate-npm
+    test:
+     - mwgate-npm-node-6-jessie  # requires PhantomJS - T179465 / T179360
+    gate-and-submit:
+     - mwgate-npm-node-6-jessie  # requires PhantomJS - T179465 / T179360
 
   - name: wikidata/build-resources
     template:
