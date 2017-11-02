@@ -733,7 +733,7 @@ jobs:
     files:
      - '^.*\.R$'
 
-  - name: ^apps-android-wikipedia-tox-(docker|jessie)$
+  - name: apps-android-wikipedia-tox-docker
     files:
      - '^.*\.py$'
      - '^tox\.ini$'
@@ -1577,16 +1577,14 @@ projects:
   - name: apps/android/wikipedia
     test:
       - apps-android-wikipedia-npm-node-6-jessie
-      - apps-android-wikipedia-tox-jessie
+      - apps-android-wikipedia-tox-docker
       - apps-android-wikipedia-test
     gate-and-submit:
       - apps-android-wikipedia-npm-node-6-jessie
-      - apps-android-wikipedia-tox-jessie
+      - apps-android-wikipedia-tox-docker
       - apps-android-wikipedia-test
     postmerge:
       - apps-android-wikipedia-publish
-    experimental:
-      - apps-android-wikipedia-tox-docker
 
   - name: apps/ios/wikipedia
     template:
