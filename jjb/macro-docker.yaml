@@ -73,6 +73,12 @@
             {image}
 
 # Run a docker image with .env and a log and cache directory
+#
+# Parameters:
+#
+# image: the Docker image to run (eg: wmfreleng/php)
+# run_args (optional): arguments passed to `docker run`.
+#                      XXX must start with a leading space
 - builder:
     name: docker-run-with-log-and-workspace-cache
     builders:
@@ -84,7 +90,7 @@
             --env-file .env \
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
-            {image}
+            {image}{obj:run_args|}
 
 # Run a docker image with cache, log, and src directories
 - builder:
