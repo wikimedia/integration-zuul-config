@@ -2417,6 +2417,10 @@ projects:
       - debian-glue-backports-non-voting
     template:
       - name: tox-jessie  # times out
+    postmerge:
+      - cumin-tox-sphinx-publish
+    publish:
+      - cumin-tox-sphinx-publish
 
   - name: operations/docker-images/docker-pkg
     template:

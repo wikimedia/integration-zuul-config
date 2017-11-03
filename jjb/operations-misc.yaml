@@ -48,3 +48,11 @@
          dir: '.'
     publishers:
      - castor-save
+
+- project:
+    name: 'cumin'
+    jobs:
+        - '{name}-tox-{venv}-publish':
+            venv: 'sphinx'
+            docsrc: 'doc/build/html'
+            docdest: 'cumin/$DOC_SUBPATH'
