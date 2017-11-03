@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e5a8fde_860a5623",
+        "filename": "dockerfiles/tox/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-03T17:18:59Z",
+      "side": 1,
+      "message": "So in theory that is better. The way I understand it is that:\n\n ENTRYPOINT /bin/bash /run.sh\n\nReally does:\n\n /bin/sh -c \u0027/bin/bash /run.sh\u0027\n\nAnd sh does not pass signals.\n\nWe can probably skip invoking /bin/bash as well and just do:\n\n ENTRYPOINT [\"/run.sh\"]",
+      "revId": "5f807849b2adb83404db0f450cfb015695e65636",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_460d3e38",
+        "filename": "dockerfiles/tox/run.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-03T17:18:59Z",
+      "side": 1,
+      "message": "The 2 euros question:\n\nWhat happens when there is no argument passed?",
+      "revId": "5f807849b2adb83404db0f450cfb015695e65636",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_a622f2a0",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-03T17:18:59Z",
+      "side": 1,
+      "message": "As I wrote it, one has to include the space when invoking the macro eg:\n\n docker-run-with-log-and-workspace-cache:\n    image: wmfreleng/tox\n    run_args: \" -e flake8\"\n               ^\n\nMaybe I should create yet another macro that would include a space between the variables:\n\n {image} {run_args}",
+      "revId": "5f807849b2adb83404db0f450cfb015695e65636",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_661cfa6a",
+        "filename": "jjb/python-jobs.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-03T17:18:59Z",
+      "side": 1,
+      "message": "XXX there is a space at the beginning of the string :(",
+      "revId": "5f807849b2adb83404db0f450cfb015695e65636",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e5a8fde_8621f69c",
+        "filename": "jjb/pywikibot.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-03T17:18:59Z",
+      "side": 1,
+      "message": "Can probably use a YAML alias to avoid duplication with the block above. Then the -jessie jobs are going to be deleted anyway.",
+      "revId": "5f807849b2adb83404db0f450cfb015695e65636",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
