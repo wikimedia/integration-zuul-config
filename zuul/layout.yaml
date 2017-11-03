@@ -1219,6 +1219,16 @@ project-templates:
     experimental:
       - npm-node-6-docker
 
+  - name: npm-service-pipeline
+    test:
+      - npm-node-6-jessie
+    gate-and-submit: &npm-service-pipeline-gate-and-submit
+      - npm-node-6-jessie
+    gate-and-submit-swat: *npm-service-pipeline-gate-and-submit
+    experimental:
+      - npm-node-6-docker
+      - service-pipeline-test-only
+
   - name: mwgate-npm
     test:
       - mwgate-npm-node-6-docker
@@ -6475,7 +6485,7 @@ projects:
 
   - name: mediawiki/services/mathoid
     template:
-      - name: npm
+      - name: npm-service-pipeline
 
   - name: mediawiki/services/mathoid/deploy
     test:
