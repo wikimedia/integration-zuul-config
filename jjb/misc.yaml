@@ -68,6 +68,22 @@
      - castor-save
 
 - job:
+    name: 'unicodejs-tag-publish'
+    node: ci-jessie-wikimedia
+    defaults: use-remote-zuul-shallow-clone
+    concurrent: false
+    triggers:
+     - zuul-post
+    builders:
+     # No cache restore/save (castor) for tags
+     - npm-install
+     - npm-run:
+         script: doc
+     - doc-publish:
+        docsrc: 'docs'
+        docdest: 'unicodejs/$DOC_SUBPATH'
+
+- job:
     name: 'unicodejs-coverage'
     node: ci-jessie-wikimedia
     defaults: use-remote-zuul-shallow-clone
