@@ -18,7 +18,7 @@ docker run \
     --volume /"$(pwd)"/log://var/lib/jenkins/log \
     --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/src://src \
-     wmfreleng/npm-test:latest \
+    docker-registry.wikimedia.org/releng/npm-test:latest \
         doc
 
 if grep -q JSDuck src/docs/index.html; then
@@ -33,4 +33,4 @@ docker run \
     --volume /"$(pwd)"/log://var/lib/jenkins/log \
     --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/src://src \
-     wmfreleng/npm-test:latest
+    docker-registry.wikimedia.org/releng/npm-test:latest
