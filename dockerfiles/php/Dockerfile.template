@@ -1,0 +1,10 @@
+FROM {{ "ci-stretch" | image_tag }}
+
+RUN {{ "php7.0-cli php7.0-zip php-ast php7.0-curl "
+    "php7.0-dba php7.0-mbstring php-redis php7.0-sqlite3 php-xdebug php7.0-xml" | apt_install }} \
+    && phpdismod xdebug # Disable xdebug by default due to its performance impact
+
+USER nobody
+
+ENTRYPOINT ["php"]
+CMD ["--help"]
