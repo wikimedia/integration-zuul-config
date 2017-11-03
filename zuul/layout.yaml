@@ -2068,7 +2068,7 @@ projects:
     template:
       - name: tox-docker
     postmerge:
-      - mw-tools-releng-tox-doc-publish
+      - mw-tools-releng-tox-publish
 
   - name: mediawiki/vagrant
     test:
@@ -2417,6 +2417,10 @@ projects:
       - debian-glue-backports-non-voting
     template:
       - name: tox-jessie  # times out
+    postmerge:
+      - cumin-tox-sphinx-publish
+    publish:
+      - cumin-tox-sphinx-publish
 
   - name: operations/docker-images/docker-pkg
     template:
@@ -7284,7 +7288,7 @@ projects:
       - pywikibot-core-tox-nose34-jessie
       - pywikibot-core-tox-doc-jessie
     postmerge:
-      - pywikibot-core-tox-doc-publish
+      - pywikibot-core-tox-publish
 
   - name: pywikibot/i18n
     test:

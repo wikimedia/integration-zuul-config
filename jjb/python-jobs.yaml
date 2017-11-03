@@ -92,10 +92,10 @@
     triggers:
         - zuul
 
-# Call tox env 'doc' to generate documentation in labs and publish to
-# doc.wikimedia.org using an intermediate rsync repository in labs.
+# Call tox env 'docvenv' (default: 'doc' to generate documentation in labs and
+# publish to doc.wikimedia.org using an intermediate rsync repository in labs.
 - job-template:
-    name: '{name}-tox-doc-publish'
+    name: '{name}-tox-publish'
     node: ci-jessie-wikimedia
     defaults: use-remoteonly-zuul
     triggers:
@@ -103,7 +103,7 @@
     builders:
      - castor-load
      - run-tox:
-         venv: doc
+         venv: '{obj:docenv|doc}'
      - doc-publish:
         docsrc: '{docsrc}'
         docdest: '{docdest}'
