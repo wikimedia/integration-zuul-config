@@ -1,0 +1,15 @@
+FROM {{ "ci-jessie" | image_tag }}
+
+# DO NOT CHANGE VERSION WITHOUT INVOLVING Krinkle OR hashar
+ARG NPM_VERSION="3.8.3"
+
+# Install nodejs-legacy to provide /usr/bin/node alias
+# Also install ruby2.1 for jsduck
+RUN {{ "nodejs-legacy npm ruby ruby2.1 ruby2.1-dev rubygems-integration build-essential" | apt_install }} \
+    && npm install -g npm@${NPM_VERSION} && gem install jsduck \
+    && {{ "build-essential" | apt_remove }}
+
+USER nobody
+
+ENTRYPOINT ["npm"]
+CMD ["--help"]
