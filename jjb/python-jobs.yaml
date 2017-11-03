@@ -94,6 +94,7 @@
 
 # Call tox env 'docvenv' (default: 'doc' to generate documentation in labs and
 # publish to doc.wikimedia.org using an intermediate rsync repository in labs.
+# Intended for changes being merged, eg in 'postmerge'
 - job-template:
     name: '{name}-tox-publish'
     node: ci-jessie-wikimedia
@@ -111,6 +112,30 @@
     publishers:
      - castor-save
      - archive-log-dir
+
+# Same but for ref-update, eg in 'publish'
+- job-template:
+    name: '{name}-tox-tag-publish'
+    node: ci-jessie-wikimedia
+    defaults: use-remoteonly-zuul
+    triggers:
+     - zuul-post
+    builders:
+    # No cache restore/save (castor) for tags
+     - run-tox:
+         venv: '{obj:docenv|doc}'
+     - doc-publish:
+        docsrc: '{docsrc}'
+        docdest: '{docdest}'
+    publishers:
+     - archive-log-dir
+
+# Publish jobs for merged changes and tags
+- job-group:
+    name: 'tox-publish'
+    jobs:
+        - '{name}-tox-publish'
+        - '{name}-tox-tag-publish'
 
 - job:
     name: 'tox-py27-coverage-publish'
