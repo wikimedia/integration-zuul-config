@@ -1,3 +1,91 @@
+- job:
+    name: 'wikimedia-portals-build'
+    node: ci-jessie-wikimedia
+    concurrent: false
+    triggers:
+     # Run every monday at 7am.
+     - timed: 'H 7 * * 1'
+    parameters:
+        # Zuul parameters for Castor
+        - string:
+            name: 'ZUUL_BRANCH'
+            default: 'master'
+        - string:
+            name: 'ZUUL_PROJECT'
+            default: 'wikimedia/portals'
+        - string:
+            name: 'ZUUL_PIPELINE'
+            default: 'postmerge'
+    scm:
+        - git:
+            url: https://gerrit.wikimedia.org/r/wikimedia/portals
+            branches:
+                - master
+            refspec: master
+            wipe-workspace: false  # Not needed on Nodepool instances
+            clean:
+                after: true
+            submodule:
+                disable: false
+    builders:
+        - assert-node-version-6
+        - castor-load
+        - npm-install
+        - npm-run:
+            script: test
+        - npm-run:
+            script: build-all-portals
+        ## now create and publish a gerrit patch
+        ## then publish the artifacts to castor?
+        - shell: |
+            git add -A
+
+            # Gerrit commit hook to generate Change-Id automatically
+            curl -Lo .git/hooks/commit-msg \
+                https://gerrit.wikimedia.org/r/tools/hooks/commit-msg
+            chmod u+x .git/hooks/commit-msg
+
+            GIT_AUTHOR_NAME=PortalsBuilder
+            GIT_COMMITTER_NAME=PortalsBuilder
+            GIT_AUTHOR_EMAIL=releng@lists.wikimedia.org
+            GIT_COMMITTER_EMAIL=releng@lists.wikimedia.org
+
+            date=$(TZ=C date --rfc-3339=seconds)
+            git commit -m "Assets build - $date"
+
+            # We do not know Gerrit SSH host fingerprint
+            mkdir -p ~/.ssh
+            echo -ne 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\n' >> ~/.ssh/config
+
+            git push \
+                ssh://portalsbuilder@gerrit.wikimedia.org:29418/wikimedia/portals.git \
+                HEAD:refs/publish/master
+    wrappers:
+        - ansicolor
+        - timeout:
+            timeout: 15 # minutes
+        - timestamps
+        - ssh-agent-credentials:
+            users:
+                - 'portalsbuilder'
+    publishers:
+        - archive-log-allow-empty
+        - email-ext:
+            recipients: hashar@free.fr jan.drewniak@gmail.com
+            content-type: html
+            body: |
+                ${SCRIPT, template="wikimedia.template"}
+                <a href="https://gerrit.wikimedia.org/r/#/q/project:wikimedia/portals+owner:portalsbuilder">
+                    Gerrit changes by PortalsBuilder</a>
+                <h2>Changes since last build</h2>
+                <p>
+                ${CHANGES_SINCE_LAST_BUILD}</p>
+                <h2>Console output</h2>
+                <pre>
+                ${BUILD_LOG}
+                </pre>
+        - castor-save
+
 - project:
     name: wikimedia-portals
     jobs:
