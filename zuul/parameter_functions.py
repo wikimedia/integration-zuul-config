@@ -241,7 +241,6 @@ dependencies = {
     'UniversalLanguageSelector': ['EventLogging'],
     'UploadWizard': ['WikimediaMessages', 'EventLogging', 'AbuseFilter',
                      'SpamBlacklist'],
-    'VectorBeta': ['EventLogging'],
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite'],
