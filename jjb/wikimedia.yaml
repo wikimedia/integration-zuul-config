@@ -1,3 +1,75 @@
+- job:
+    name: 'wikimedia-portals-build'
+    node: ci-jessie-wikimedia
+    concurrent: false
+    triggers:
+     # Run every monday at 7am.
+     - timed: 'H 7 * * 1'
+    parameters:
+        # Zuul parameters for Castor
+        - string:
+            name: 'ZUUL_BRANCH'
+            default: 'master'
+        - string:
+            name: 'ZUUL_PROJECT'
+            default: 'wikimedia/portals'
+        - string:
+            name: 'ZUUL_PIPELINE'
+            default: 'postmerge'
+    scm:
+        - git:
+            url: https://gerrit.wikimedia.org/r/wikimedia/portals
+            branches:
+                - 300a8d9152a2a969ddbbcec8341e27b7fb069126
+            refspec: 'refs/changes/79/389479/1'
+            wipe-workspace: false  # Not needed on Nodepool instances
+            clean:
+                after: true
+            submodule:
+                disable: false
+    builders:
+        - assert-node-version-6
+        - castor-load
+        - npm-install
+        - npm-run:
+            script: test
+        - npm-run:
+            script: build-all-portals
+        ## now create and publish a gerrit patch
+        ## then publish the artifacts to castor?
+        - shell: |
+            # Gerrit commit hook to generate Change-Id automatically
+            scp -p -P 29418 portalsbuilder@gerrit.wikimedia.org:hooks/commit-msg .git/hooks/
+
+            date=$(TZ=C date --rfc-3339=seconds)
+            git add -A -m "Assets build - $date"
+            git push ssh://portalsbuilder@gerrit.wikimedia.org:29418/wikimedia/portals.git HEAD:refs/publish/master
+    wrappers:
+        - ansicolor
+        - timeout:
+            timeout: 15 # minutes
+        - timestamps
+        - ssh-agent-credentials:
+            users:
+                - 'portalsbuilder'
+    publishers:
+        - archive-log-allow-empty
+        - email-ext:
+            recipients: hashar@free.fr jan.drewniak@gmail.com
+            content-type: html
+            body: |
+                ${SCRIPT, template="wikimedia.template"}
+                <a href="https://gerrit.wikimedia.org/r/#/q/project:wikimedia/portals+owner:portalsbuilder">
+                    Gerrit changes by PortalsBuilder</a>
+                <h2>Changes since last build</h2>
+                <p>
+                ${CHANGES_SINCE_LAST_BUILD}</p>
+                <h2>Console output</h2>
+                <pre>
+                ${BUILD_LOG}
+                </pre>
+        - castor-save
+
 - project:
     name: wikimedia-portals
     jobs:
