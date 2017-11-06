@@ -142,6 +142,7 @@ dependencies = {
     'BlueSpiceExtendedFilelist': ['BlueSpiceFoundation'],
     'BlueSpiceExtendedSearch': ['BlueSpiceFoundation'],
     'BlueSpiceExtensions': ['BlueSpiceFoundation'],
+    'BlueSpiceFoundation': ['ExtJSBase'],
     'BlueSpiceInsertTemplate': ['BlueSpiceFoundation'],
     'BlueSpiceMultiUpload': ['BlueSpiceFoundation'],
     'BlueSpicePageAssignments': ['BlueSpiceFoundation'],
