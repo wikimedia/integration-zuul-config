@@ -202,9 +202,11 @@ class TestMwDependencies(unittest.TestCase):
         deps = self.fetch_dependencies(
             job_name='mw-testskin',
             project='mediawiki/skins/BlueSpiceSkin')
+        extDep1 = 'mediawiki/extensions/BlueSpiceFoundation'
+        extDep2 = extDep1 + '\\nmediawiki/extensions/ExtJSBase'
         self.assertDictContainsSubset(
             {
                 'SKIN_NAME': 'BlueSpiceSkin',
-                'EXT_DEPENDENCIES': 'mediawiki/extensions/BlueSpiceFoundation',
+                'EXT_DEPENDENCIES': extDep2,
             },
             deps)
