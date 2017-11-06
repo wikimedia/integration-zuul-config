@@ -1,4 +1,29 @@
+- job-template:
+    name: 'wikimedia-portals-build'
+    triggers:
+     # Run every monday at 7am.
+     - timed: 'H 7 * * 1'
+    builders:
+        - assert-node-version-6
+        - castor-load
+        - npm-install
+        - npm-run:
+            script: test
+        - npm-run:
+            script: build-all-portals
+        ## now create and publish a gerrit patch
+        ## then publish the artifacts to castor?
+        - shell: |
+            git add -A -m "build commit... add $(date --utc)?"
+            git push ssh://portals-builder@gerrit.wikimedia.org:29418/wikimedia/portals.git HEAD:refs/publish/master
+    publishers:
+        ## throw the artifacts on a server somewhere?
+        - archive:
+            artifacts: 'prod/*'
+        - castor-save
+
 - project:
     name: wikimedia-portals
     jobs:
         - '{name}-npm-node-6-jessie'
+        - 'wikimedia-portals-build'
