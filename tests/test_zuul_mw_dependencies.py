@@ -205,6 +205,8 @@ class TestMwDependencies(unittest.TestCase):
         self.assertDictContainsSubset(
             {
                 'SKIN_NAME': 'BlueSpiceSkin',
-                'EXT_DEPENDENCIES': 'mediawiki/extensions/BlueSpiceFoundation',
+                'EXT_DEPENDENCIES':
+                                   'mediawiki/extensions/BlueSpiceFoundation' +
+                                   '\\nmediawiki/extensions/ExtJSBase',
             },
             deps)
