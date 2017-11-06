@@ -180,6 +180,7 @@ dependencies = {
     'BlueSpiceInsertFile': ['BlueSpiceFoundation'],
     'BlueSpiceInsertLink': ['BlueSpiceFoundation'],
     'BlueSpiceInsertMagic': ['BlueSpiceFoundation'],
+    'BlueSpiceFoundation': ['ExtJSBase'],
     'BlueSpiceInsertTemplate': ['BlueSpiceFoundation'],
     'BlueSpiceInterWikiLinks': ['BlueSpiceFoundation'],
     'BlueSpiceMenues': ['BlueSpiceFoundation'],
