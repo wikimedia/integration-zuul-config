@@ -123,6 +123,7 @@ def set_parameters(item, job, params):
         elif (params['ZUUL_PROJECT'] == 'operations/debs/varnish4'):
             # VTC tests take forever
             params['BUILD_TIMEOUT'] = 60  # minutes
+            params['DEB_BUILD_OPTIONS'] = 'parallel=12'
         elif (params['ZUUL_PROJECT'] ==
                 'operations/debs/contenttranslation/giella-sme'):
             # Heavy build T143546
