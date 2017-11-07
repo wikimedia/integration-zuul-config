@@ -52,6 +52,8 @@
 - project:
     name: 'cumin'
     jobs:
+        - '{name}-tox-docker':
+            build_timeout: 6 # minutes
         - tox-publish:
             docenv: 'sphinx'
             docsrc: 'doc/build/html'

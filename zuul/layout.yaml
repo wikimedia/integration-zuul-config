@@ -2452,8 +2452,9 @@ projects:
   - name: operations/software/cumin
     test:
       - debian-glue-backports-non-voting
-    template:
-      - name: tox-jessie  # times out
+      - cumin-tox-docker
+    gate-and-submit:
+      - cumin-tox-docker
     postmerge:
       - cumin-tox-publish
     publish:

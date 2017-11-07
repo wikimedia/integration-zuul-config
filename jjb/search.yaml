@@ -21,6 +21,7 @@
     jobs:
         - '{name}-tox-docker':
             docker_image_var: wmfreleng/tox-pyspark:v2017.11.07.12.13
+            build_timeout: 6 # minutes
         # Sadly this does not test the python code with the jvm code, instead
         # using the last release of the jvm code, But it's a good start.
         - '{name}-maven':
