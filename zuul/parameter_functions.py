@@ -113,6 +113,9 @@ def set_parameters(item, job, params):
             # Uses dh_virtualenv which needs access to pypy.python.org
             params['PBUILDER_USENETWORK'] = 'yes'
             params['DEB_BUILD_OPTIONS'] = 'nocheck'
+        elif (params['ZUUL_PROJECT'] == 'operations/debs/varnish4')
+            # VTC tests take forever
+            params['BUILD_TIMEOUT'] = 60  # minutes
         elif (params['ZUUL_PROJECT'] ==
                 'operations/debs/contenttranslation/giella-sme'):
             # Heavy build T143546
