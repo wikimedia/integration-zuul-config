@@ -104,6 +104,13 @@ def set_parameters(item, job, params):
         nodepool_params(item, job, params)
 
     if 'debian-glue' in job.name:
+
+        # XXX
+        # When adding new paramters, make sure the env variable is added as an
+        # env_keep in the sudo policy:
+        # https://horizon.wikimedia.org/project/sudo/
+        #
+
         if 'backports' in job.name:  # T173999
             params['BACKPORTS'] = 'yes'
         # Always set the value to be safe (T144094)
