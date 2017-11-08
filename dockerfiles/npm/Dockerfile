@@ -6,7 +6,7 @@ RUN apt-get update && \
         nodejs-legacy npm \
         # ruby/etc for jsduck
         ruby ruby2.1 ruby2.1-dev rubygems-integration build-essential && \
-        gem install jsduck && \
+        gem install --no-rdoc --no-ri jsduck && \
         apt-get remove -y build-essential && apt-get autoremove -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
