@@ -23,6 +23,18 @@ git submodule --quiet update --init --recursive
 
 trap capture_tox_logs EXIT
 
-# Run tests. Pass all environment variables to tox since the environment here
-# is already pretty restrictive.
-TOX_TESTENV_PASSENV="*" PY_COLORS=1 tox -v "${@}"
+function relay_signals() {
+    for signal ; do
+        trap 'kill -$signal $tox_pid; wait $tox_pid' "$signal"
+    done
+}
+
+# Run tests.
+# Pass all environment variables to tox since the environment here is already
+# pretty restrictive.
+# tox is backgrounded in bash job control to let bash handles traps (eg
+# SIGTERM) immediately. That is merely to capture the testenv log files.
+TOX_TESTENV_PASSENV="*" PY_COLORS=1 tox -v "${@}" &
+tox_pid=$!
+relay_signals SIGINT SIGTERM
+wait "$tox_pid"
