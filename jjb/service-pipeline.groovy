@@ -38,7 +38,7 @@ node(nodeLabel) {
 
   def run = {
     timeout(time: 20, unit: 'MINUTES') {
-      sh "docker run $fullName"
+      sh "exec docker run $fullName"
     }
   }
 

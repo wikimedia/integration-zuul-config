@@ -394,14 +394,13 @@
      - docker-ci-src-setup-mwext
      - shell: |
         #!/bin/bash -eu
-
         set -x
-
-        docker run \
-            --rm --tty \
+        exec docker run \
+            --rm \
             --volume "$(pwd)"/src:/mediawiki \
             wmfreleng/mediawiki-phan:v2017.10.16.20.38 \
             /$ZUUL_PROJECT -m checkstyle
+        # nothing else can be executed due to exec
 
     publishers:
      - checkstyle:

@@ -66,11 +66,12 @@
      - shell: |
         #!/bin/bash -eu
         set -x
-        docker run \
-            --rm --tty \
+        exec docker run \
+            --rm \
             --env-file .env \
             --volume "$(pwd)"/log:{logdir} \
             {image}
+        # nothing else can be executed due to exec
 
 # Run a docker image with .env and a log and cache directory
 - builder:
@@ -79,12 +80,13 @@
      - shell: |
         #!/bin/bash -eu
         set -x
-        docker run \
-            --rm --tty \
+        exec docker run \
+            --rm \
             --env-file .env \
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
             {image}
+        # nothing else can be executed due to exec
 
 # Run a docker image with cache, log, and src directories
 - builder:
@@ -94,12 +96,13 @@
         #!/bin/bash -eu
         set -x
         chmod 2777 src
-        docker run \
-            --rm --tty \
+        exec docker run \
+            --rm \
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
             --volume "$(pwd)"/src:/src \
             {image}
+        # nothing else can be executed due to exec
 
 # Use a docker image to clone for a MediaWiki extension
 - builder:
@@ -108,8 +111,8 @@
      - shell: |
         #!/bin/bash -eu
         set -x
-        docker run \
-            --rm --tty \
+        exec docker run \
+            --rm \
             --env-file .env \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
@@ -117,6 +120,7 @@
             --entrypoint "bash" \
             wmfreleng/ci-src-setup:v2017.10.17.09.17 \
             /srv/setup-mwext.sh
+        # nothing else can be executed due to exec
 
 # Use a docker image to clone the repository into /src
 - builder:
@@ -125,10 +129,11 @@
      - shell: |
         #!/bin/bash -eu
         set -x
-        docker run \
-            --rm --tty \
+        exec docker run \
+            --rm \
             --env-file .env \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
             --volume /srv/git:/srv/git \
             wmfreleng/ci-src-setup-simple:v2017.10.28.06.19
+        # nothing else can be executed due to exec
