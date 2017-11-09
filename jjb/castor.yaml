@@ -63,10 +63,11 @@
          builders:
              - shell: |
                  echo "Clearing $WORKSPACE/cache"
-                 docker run --rm --tty \
+                 exec docker run --rm \
                      --env-file .env \
                      --volume "$(pwd)"/cache:/cache \
                           'wmfreleng/castor:v2017.10.30.21.03' clear || :
+                 # nothing else can be executed due to exec
 
 # Entry point to load cache from central cache
 #
@@ -89,11 +90,12 @@
         - docker-cache-dir
         - shell: |
             /usr/bin/env > .env
-            docker run --rm --tty \
+            exec docker run --rm \
                 --env-file .env \
                 --volume "${WORKSPACE}/cache":/cache \
                 wmfreleng/castor:v2017.10.30.21.03 \
                 load
+                # nothing else can be executed due to exec
 
 # Job triggered on the central repository instance
 #
