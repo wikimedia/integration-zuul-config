@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6e5a8fde_a4d5d348",
+        "filename": "dockerfiles/tox/run.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-11-10T12:26:01Z",
+      "side": 1,
+      "message": "there is race condition there. By the time the trap trigger, the child might have exited.\n\nIt is easier to just:\n\n  exec tox\n\nThen the trap does not trigger since bash is replaced by tox.",
+      "revId": "90c414535d503c465a6f5d37f31080899b371b99",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
