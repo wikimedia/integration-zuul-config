@@ -405,7 +405,6 @@
     triggers:
      - zuul
     builders:
-     - docker-zuul-env
      - docker-log-dir
      - docker-src-dir
      - docker-cache-dir
@@ -435,13 +434,12 @@
      - docker-log-dir
      - docker-src-dir
      - docker-cache-dir
-     - docker-zuul-env
      - shell: |
         #!/bin/bash -eu
         set -x
         exec docker run \
             --rm \
-            --env-file .env \
+            --env-file <(/usr/bin/env) \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
             --volume /srv/git:/srv/git \
