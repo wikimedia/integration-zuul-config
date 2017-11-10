@@ -1,31 +1,13 @@
-- job-template:
-    name: 'selenium-{name}'
+- defaults:
+    name: selenium
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+
     project-type: matrix
     path_to_ci_yml: tests/browser/ci.yml
     yaml-strategy:
       exclude-key: 'exclude'
       filename: '{path_to_ci_yml}'
-    axes:
-      - axis:
-          type: label-expression
-          name: label
-          values:
-            - BrowserTests
-      - axis:
-          name: BROWSER
-          type: yaml
-          filename: '{path_to_ci_yml}'
-      - axis:
-          name: MEDIAWIKI_ENVIRONMENT
-          type: yaml
-          filename: '{path_to_ci_yml}'
-      - axis:
-          name: PLATFORM
-          type: yaml
-          filename: '{path_to_ci_yml}'
-
-    # Label for the parent job
-    node: BrowserTests
 
     repository_host: 'gerrit.wikimedia.org/r'
 
@@ -47,6 +29,60 @@
 
     triggers:
       - timed: "@daily"
+
+    publishers:
+      - xunit:
+          thresholdsmode: 'number'
+          thresholds:
+              - failed:
+                  unstable: 0
+                  failurenew: 0
+          types:
+              - junit:
+                  pattern: 'log/junit/*.xml'
+
+      - email-ext:
+          recipients: '{recipients}'
+          body: '${{SCRIPT, template="wikimedia.template"}}'
+          failure: true
+          unstable: true
+
+      - browsertests-irc
+
+      - performance:
+          failed-threshold: -1
+          unstable-threshold: -1
+          report:
+           - junit: log/junit/*.xml
+
+      - archive:
+          artifacts: 'log/*.log, log/junit/*.xml, log/report.html, log/*.png'
+
+- job-template:
+    name: 'selenium-{name}'
+    defaults: selenium
+
+    axes:
+      - axis:
+          type: label-expression
+          name: label
+          values:
+            - BrowserTests
+      - axis:
+          name: BROWSER
+          type: yaml
+          filename: '{path_to_ci_yml}'
+      - axis:
+          name: MEDIAWIKI_ENVIRONMENT
+          type: yaml
+          filename: '{path_to_ci_yml}'
+      - axis:
+          name: PLATFORM
+          type: yaml
+          filename: '{path_to_ci_yml}'
+
+    # Label for the parent job
+    node: BrowserTests
 
     builders:
       - shell: |
@@ -100,34 +136,6 @@
           # run the tests
           bundle exec rake selenium
 
-    publishers:
-      - xunit:
-          thresholdsmode: 'number'
-          thresholds:
-              - failed:
-                  unstable: 0
-                  failurenew: 0
-          types:
-              - junit:
-                  pattern: 'log/junit/*.xml'
-
-      - email-ext:
-          recipients: '{recipients}'
-          body: '${{SCRIPT, template="wikimedia.template"}}'
-          failure: true
-          unstable: true
-
-      - browsertests-irc
-
-      - performance:
-          failed-threshold: -1
-          unstable-threshold: -1
-          report:
-           - junit: log/junit/*.xml
-
-      - archive:
-          artifacts: 'log/*.log, log/junit/*.xml, log/report.html, log/*.png'
-
     wrappers:
       - ansicolor
       - timeout:
@@ -148,3 +156,110 @@
           - text:
               credential-id: sauce-ondemand-access-key
               variable: SAUCE_ONDEMAND_ACCESS_KEY
+
+- job-template:
+    name: 'selenium-{name}-chrome'
+    defaults: selenium
+
+    axes:
+      - axis:
+          type: label-expression
+          name: label
+          values:
+            - DebianJessie && contintLabsSlave
+      - axis:
+          name: BROWSER
+          type: yaml
+          filename: '{path_to_ci_yml}'
+      - axis:
+          name: MEDIAWIKI_ENVIRONMENT
+          type: yaml
+          filename: '{path_to_ci_yml}'
+      - axis:
+          name: PLATFORM
+          type: yaml
+          filename: '{path_to_ci_yml}'
+
+    # Label for the parent job
+    node: DebianJessie && contintLabsSlave
+
+    builders:
+      - shell: |
+          rm -fR log
+          mkdir -p "$WORKSPACE/log/junit"
+      - shell: |
+          # Attempt to figure out MediaWiki branch being used and fetch it out
+          # if the extension has the same branch
+          if [[ "$MEDIAWIKI_ENVIRONMENT" == "beta"* ]]; then
+            export MEDIAWIKI_API_URL="https://en.wikipedia.beta.wmflabs.org/w/api.php"
+          elif [ "$MEDIAWIKI_ENVIRONMENT" = "mediawiki" ]; then
+            export MEDIAWIKI_API_URL="https://www.mediawiki.org/w/api.php"
+          elif [ "$MEDIAWIKI_ENVIRONMENT" = "test" ]; then
+            export MEDIAWIKI_API_URL="https://test.wikipedia.org/w/api.php"
+          else
+            echo "MEDIAWIKI_ENVIRONMENT $MEDIAWIKI_ENVIRONMENT not supported!"
+            exit 1
+          fi
+          MEDIAWIKI_GIT_BRANCH=$(/srv/deployment/integration/slave-scripts/bin/mw-api-siteinfo.py "$MEDIAWIKI_API_URL" git_branch)
+
+          git checkout -f "origin/$MEDIAWIKI_GIT_BRANCH" || {{
+              echo "origin/$MEDIAWIKI_GIT_BRANCH branch does not exist."
+              echo "Fallbacking to master branch..."
+              MEDIAWIKI_GIT_BRANCH='master'
+              git checkout -f origin/$MEDIAWIKI_GIT_BRANCH
+          }}
+          git reset --hard "origin/$MEDIAWIKI_GIT_BRANCH"
+          git clean -x -q -d -f
+      - shell: |
+          RUBY_VERSION=$(ruby -e 'print RbConfig::CONFIG["ruby_version"]')
+          export GEM_HOME="$HOME/.gem/$RUBY_VERSION"
+          bundle install --verbose
+
+          # credentials
+          export SAUCE_ONDEMAND_USERNAME=wikimedia-jenkins
+          if [[ "$MEDIAWIKI_ENVIRONMENT" == "beta"* ]]; then
+            echo MEDIAWIKI_PASSWORD="\$selenium_user_beta"
+            set +x
+            export MEDIAWIKI_PASSWORD="$selenium_user_beta"
+            set -x
+          elif [ "$MEDIAWIKI_ENVIRONMENT" = "mediawiki" ] || [ "$MEDIAWIKI_ENVIRONMENT" = "test" ]; then
+            echo MEDIAWIKI_PASSWORD="\$selenium_user_production"
+            set +x
+            export MEDIAWIKI_PASSWORD="$selenium_user_production"
+            set -x
+          else
+            echo "MEDIAWIKI_ENVIRONMENT $MEDIAWIKI_ENVIRONMENT not supported!"
+            exit 1
+          fi
+
+          # screenshots
+          export SCREENSHOT_FAILURES=true
+          export SCREENSHOT_FAILURES_PATH="$WORKSPACE/log"
+
+          # videos
+          export SKIP_TMPFS=1
+          export HEADLESS=true
+          export HEADLESS_DISPLAY=$((70 + EXECUTOR_NUMBER % 20))
+          export HEADLESS_DESTROY_AT_EXIT=true
+          export HEADLESS_CAPTURE_PATH="$WORKSPACE/log"
+
+          # run the tests
+          bundle exec rake selenium
+
+    wrappers:
+      - ansicolor
+      - timeout:
+          timeout: 180
+      - timestamps
+      # Wiki usernames and passwords are hold in Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/selenium/
+      - credentials-binding:
+          - text:
+              credential-id: mediawiki-captcha-bypass-password
+              variable: MEDIAWIKI_CAPTCHA_BYPASS_PASSWORD
+          - text:
+              credential-id: selenium-user-beta
+              variable: selenium_user_beta
+          - text:
+              credential-id: selenium-user-production
+              variable: selenium_user_production
