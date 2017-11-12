@@ -228,6 +228,7 @@ dependencies = {
     'SemanticPageMaker': ['WikiObjectModel'],
     'SimpleSAMLphp': ['PluggableAuth'],
     'SimpleSurvey': ['PrefSwitch'],
+    'SpamDiffTool': ['SpamBlacklist'],
     'SpellingDictionary': ['UniversalLanguageSelector'],
     'Spreadsheet': ['PHPExcel'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
