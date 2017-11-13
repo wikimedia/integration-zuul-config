@@ -1,27 +1,49 @@
-- job: &job-service-pipeline
+- job:
+    name: 'trigger-service-pipeline'
+    defaults: global
+    node: ServicePipelineProduction
+    parameters: &service-pipeline-parameters
+      - string:
+          name: ZUUL_URL
+      - string:
+          name: ZUUL_PROJECT
+      - string:
+          name: ZUUL_COMMIT
+      - string:
+          name: ZUUL_REF
+    builders:
+      - trigger-builds:
+        - project: service-pipeline
+          current-parameters: true
+          block: true
+          same-node: true
+
+- job:
+    name: 'trigger-service-pipeline-test-only'
+    defaults: global
+    node: DebianJessieDocker
+    parameters: *service-pipeline-parameters
+    builders:
+      - trigger-builds:
+        - project: service-pipeline-test-only
+          current-parameters: true
+          block: true
+          same-node: true
+
+- job:
     name: 'service-pipeline'
     defaults: global
     project-type: pipeline
-    parameters:
-      - string: 
-          name: ZUUL_URL
-          default: https://gerrit.wikimedia.org/r
-      - string:
-          name: ZUUL_PROJECT
-          default: mediawiki/services/mathoid
-      - string:
-          name: ZUUL_COMMIT
-          default: ce18f7a9e18cc60b4162506612d2192ac8c2b8d6
-      - string:
-          name: ZUUL_REF
-          default: refs/changes/19/376319/3
+    parameters: *service-pipeline-parameters
     dsl: !include-raw:
       - service-pipeline-production.groovy
       - service-pipeline.groovy
 
 - job:
-    <<: *job-service-pipeline
     name: 'service-pipeline-test-only'
+    defaults: global
+    project-type: pipeline
+    parameters: *service-pipeline-parameters
     dsl: !include-raw:
       - service-pipeline-test.groovy
       - service-pipeline.groovy
