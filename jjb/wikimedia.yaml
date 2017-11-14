@@ -4,7 +4,7 @@
     concurrent: false
     triggers:
      # Run every monday at 7am.
-     - timed: 'H 7 * * 1'
+     - timed: 'H 9 * * 1'
     parameters:
         # Zuul parameters for Castor
         - string:
@@ -71,7 +71,7 @@
     publishers:
         - archive-log-allow-empty
         - email-ext:
-            recipients: hashar@free.fr jan.drewniak@gmail.com
+            recipients: hashar@free.fr jdrewniak@wikimedia.org dtankersley@wikimedia.org
             content-type: html
             body: |
                 ${SCRIPT, template="wikimedia.template"}
