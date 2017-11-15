@@ -19,7 +19,7 @@ cd /src
 git init
 git fetch --depth 2 --quiet "${ZUUL_URL}/${ZUUL_PROJECT}" "$ZUUL_REF"
 git checkout --quiet FETCH_HEAD
-git submodule --quiet update --init --recursive
+git submodule --quiet update --jobs 8 --init --recursive
 
 trap capture_tox_logs EXIT
 

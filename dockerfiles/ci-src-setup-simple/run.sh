@@ -9,4 +9,4 @@ cd /src
 git init
 git fetch --quiet --depth 1 "${ZUUL_URL}/${ZUUL_PROJECT}" "$ZUUL_REF"
 git checkout FETCH_HEAD
-git submodule --quiet update --init --recursive
+git submodule --quiet update --jobs 8 --init --recursive

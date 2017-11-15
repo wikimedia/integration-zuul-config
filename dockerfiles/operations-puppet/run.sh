@@ -22,7 +22,7 @@ git remote add zuul "${ZUUL_URL}/${ZUUL_PROJECT}"
 git pull --quiet zuul production
 git fetch --quiet zuul "$ZUUL_REF"
 git checkout --quiet FETCH_HEAD
-git submodule --quiet update --init --recursive
+git submodule --quiet update --jobs 6 --init --recursive
 
 # Update bundle if gemfile changed
 if git diff --name-only docker-head Gemfile | grep -q 'Gemfile'; then
