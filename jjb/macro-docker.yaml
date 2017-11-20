@@ -1,3 +1,38 @@
+# Build a .env file with ZUUL environment
+# variables for use with docker
+- builder:
+    name: docker-zuul-env
+    builders:
+     - shell: |
+        #!/bin/bash -e
+
+        set -x
+
+        rm -rf .env
+
+        cat <<ZUUL > .env
+        ZUUL_URL=$ZUUL_URL
+        ZUUL_PROJECT=$ZUUL_PROJECT
+        ZUUL_COMMIT=$ZUUL_COMMIT
+        ZUUL_REF=$ZUUL_REF
+        ZUUL_BRANCH=$ZUUL_BRANCH
+        ZUUL_CHANGES=$ZUUL_CHANGES
+        ZUUL_CHANGE_IDS=$ZUUL_CHANGE_IDS
+        ZUUL_CHANGE=$ZUUL_CHANGE
+        ZUUL_PATCHSET=$ZUUL_PATCHSET
+        ZUUL_VOTING=$ZUUL_VOTING
+        ZUUL_PIPELINE=$ZUUL_PIPELINE
+        ZUUL_UUID=$ZUUL_UUID
+        EXT_NAME=$EXT_NAME
+        SKIN_NAME=$SKIN_NAME
+        EXT_DEPENDENCIES=$EXT_DEPENDENCIES
+        SKIN_DEPENDENCIES=$SKIN_DEPENDENCIES
+        JENKINS_URL=$JENKINS_URL
+        ZUUL
+
+        # Finally, output for debugging help
+        cat .env
+
 # Create a log directory that will be
 # mounted into a container with --volume
 - builder:
@@ -33,7 +68,7 @@
         set -x
         exec docker run \
             --rm \
-            --env-file <(/usr/bin/env) \
+            --env-file .env \
             --volume "$(pwd)"/log:{logdir} \
             {image}
         # nothing else can be executed due to exec
@@ -53,7 +88,7 @@
         set -x
         exec docker run \
             --rm \
-            --env-file <(/usr/bin/env) \
+            --env-file .env \
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
             {image}{obj:run_args|}
@@ -84,7 +119,7 @@
         set -x
         exec docker run \
             --rm \
-            --env-file <(/usr/bin/env) \
+            --env-file .env \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
             --volume /srv/git:/srv/git \
@@ -102,7 +137,7 @@
         set -x
         exec docker run \
             --rm \
-            --env-file <(/usr/bin/env) \
+            --env-file .env \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
             --volume /srv/git:/srv/git \
