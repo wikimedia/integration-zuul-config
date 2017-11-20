@@ -2176,6 +2176,14 @@ projects:
     template:
       - name: tox-jessie  # requires Java JDK 8+ for bin/keytool
 
+  - name: operations/calico-cni
+    test:
+      - debian-glue-non-voting
+
+  - name: operations/containers
+    test:
+      - debian-glue-non-voting
+
   # TIP:
   # gerrit ls-projects -p operations/debs/
   # Nice alignement in vim obtained via: !column -t
@@ -2251,7 +2259,9 @@ projects:
   - { name: operations/debs/pkg-php/php,                     test: ['debian-glue-non-voting'] }
   - { name: operations/debs/pkg-php/php-defaults,            test: ['debian-glue-non-voting'] }
   - { name: operations/debs/pkg-php/php-redis,               test: ['debian-glue-non-voting'] }
+  - { name: operations/debs/prometheus,                      test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-apache-exporter,      test: ['debian-glue-non-voting'] }
+  - { name: operations/debs/prometheus-jmx-exporter,         test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-memcached-exporter,   test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-redis-exporter,       test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-snmp-exporter,        test: ['debian-glue-non-voting'] }
@@ -2296,6 +2306,7 @@ projects:
   - { name: operations/debs/ruby-parallel,                   test: ['debian-glue-non-voting'] }
   - { name: operations/debs/salt,                            test: ['debian-glue-non-voting'] }
   - { name: operations/debs/search-qa,                       test: ['debian-glue-non-voting'] }
+  - { name: operations/debs/spark2,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/squid,                           test: ['debian-glue-non-voting'] }
   - { name: operations/debs/StatsD,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/statsite,                        test: ['debian-glue-non-voting'] }
