@@ -64,7 +64,7 @@
              - shell: |
                  echo "Clearing $WORKSPACE/cache"
                  exec docker run --rm \
-                     --env-file <(/usr/bin/env) \
+                     --env-file .env \
                      --volume "$(pwd)"/cache:/cache \
                           'wmfreleng/castor:v2017.10.30.21.03' clear || :
                  # nothing else can be executed due to exec
@@ -89,8 +89,9 @@
     builders:
         - docker-cache-dir
         - shell: |
+            /usr/bin/env > .env
             exec docker run --rm \
-                --env-file <(/usr/bin/env) \
+                --env-file .env \
                 --volume "${WORKSPACE}/cache":/cache \
                 wmfreleng/castor:v2017.10.30.21.03 \
                 load
