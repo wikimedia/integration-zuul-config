@@ -5,8 +5,8 @@ set -euxo pipefail
 umask 002
 
 echo $ZUUL_PROJECT > /tmp/deps.txt
-echo -e $EXT_DEPENDENCIES >> /tmp/deps.txt
-echo -e $SKIN_DEPENDENCIES > /tmp/deps_skins.txt
+echo -e "${EXT_DEPENDENCIES:-}" >> /tmp/deps.txt
+echo -e "${SKIN_DEPENDENCIES:-}" > /tmp/deps_skins.txt
 
 cd /src
 
@@ -32,7 +32,7 @@ find extensions skins -maxdepth 2 \
                 ' \;
 
 echo $ZUUL_PROJECT > /tmp/extensions_load.txt
-echo -e $EXT_DEPENDENCIES >> /tmp/extensions_load.txt
+echo -e "${EXT_DEPENDENCIES:-}" >> /tmp/extensions_load.txt
 
 set -u
 
