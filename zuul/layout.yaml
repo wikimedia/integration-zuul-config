@@ -3414,8 +3414,10 @@ projects:
       - mwext-jsduck-publish
 
   - name: eventlogging
-    template:
-      - name: tox-jessie  # compiling confluent-kafka requires librdkafka/rdkafka.h
+    test:
+      - eventlogging-tox-docker
+    gate-and-submit:
+      - eventlogging-tox-docker
 
   - name: mediawiki/extensions/EventBus
     template:
