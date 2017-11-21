@@ -2177,8 +2177,10 @@ projects:
       - name: npm
 
   - name: cergen
-    template:
-      - name: tox-jessie  # requires Java JDK 8+ for bin/keytool
+    test:
+      - cergen-tox-docker
+    gate-and-submit:
+      - cergen-tox-docker
 
   - name: operations/calico-cni
     test:
