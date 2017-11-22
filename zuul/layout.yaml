@@ -2530,8 +2530,10 @@ projects:
       - name: archived
 
   - name: operations/software/conftool
-    template:
-      - name: tox-jessie  # requires etcd to be installed for integration tests
+    test:
+      - conftool-tox-docker
+    gate-and-submit:
+      - conftool-tox-docker
 
   - name: operations/software/cumin
     test:
