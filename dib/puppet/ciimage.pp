@@ -95,7 +95,7 @@ include contint::packages::java
 include contint::packages::python
 
 # Qunit/Selenium related
-include contint::browsers
+include profile::ci::browsers
 
 
 # FIXME: hack, our manifests no more ship libapache2-mod-php5
