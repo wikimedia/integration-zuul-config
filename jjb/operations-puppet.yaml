@@ -104,11 +104,16 @@
     publishers:
         - archive-log-dir
         - warnings:
-            run-always: true
             use-previous-build-as-reference: true
             workspace-file-scanners:
                 - file-pattern: 'log/rake.log'
                   scanner: 'puppet-lint'
+            total-thresholds:
+                unstable:
+                    total-all: 1
+            new-thresholds:
+                failed:
+                    new-all: 1
 
 - project:
     name: 'operations-puppet'
