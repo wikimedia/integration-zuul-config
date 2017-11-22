@@ -30,7 +30,7 @@ include ::profile::zuul::cloner
 package { 'cron':
     ensure => present,
 }
-class { '::contint::hhvm':
+class { '::profile::contint::hhvm':
     require => Package['cron'],
 }
 
