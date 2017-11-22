@@ -102,7 +102,12 @@
             # Always build against the debian/changelog indicated distribution,
             # gives freedom to developers to pick the Distribution the package
             # will be build against.
-            export distribution=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
+            distribution=$(dpkg-parsechangelog --show-field distribution -lsource/debian/changelog)
+            if [ "$distribution" == "UNRELEASED" ]; then
+                # Take the previous one - T181120
+                distribution=$(dpkg-parsechangelog  --show-field distribution --count 1 --offset 1 -lsource/debian/changelog)
+            fi
+            export distribution
             echo "*** Distribution set from debian/changelog to $distribution ***"
 
             # FIXME would be for postmerge pipeline later on?
