@@ -73,7 +73,7 @@
 
 - job:
     name: 'operations-puppet-wmf-style-guide'
-    node: DebianJessieDocker
+    node: DebianJessie
     concurrent: false
     triggers:
         - pollscm:
@@ -83,31 +83,20 @@
          url: 'https://gerrit.wikimedia.org/r/p/operations/puppet.git'
          branches:
              - production
-         reference-repo: '/srv/git/operations/puppet.git'
+         basedir: 'src'
+         wipe-workspace: true
+         shallow-clone: true
          do-not-fetch-tags: true
          submodule:
              disable: true
     builders:
         - shell: |
-            #!/bin/bash -eu
-            set +x
-            rm -rf .env
-            cat <<ZUUL > .env
-            ZUUL_URL=https://gerrit.wikimedia.org/r/p
-            ZUUL_PROJECT=operations/puppet
-            ZUUL_REF=production
-            HOME=/var/lib/jenkins
-
-            JENKINS_URL=$JENKINS_URL
-            RAKE_TARGET=global:wmf_style
-
-            ZUUL
-            echo "Docker environment variables:"
-            cat .env
-        - docker-log-dir
-        - docker-run-with-log:
-            image: 'wmfreleng/operations-puppet:v2017.10.20.12.47'
-            logdir: '/srv/workspace/log'
+            set -o pipefail
+            rm -fR log
+            mkdir -p log
+            cd src
+            bundle install --path ../bundle
+            bundle exec rake global:wmf_style | tee "$WORKSPACE/log/rake.log"
     wrappers:
         - timeout:
             timeout: 3  # minutes
