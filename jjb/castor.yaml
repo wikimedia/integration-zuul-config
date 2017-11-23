@@ -64,7 +64,7 @@
              - shell: |
                  echo "Clearing $WORKSPACE/cache"
                  exec docker run --rm \
-                     --env-file <(/usr/bin/env) \
+                     --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
                      --volume "$(pwd)"/cache:/cache \
                           'wmfreleng/castor:v2017.10.30.21.03' clear || :
                  # nothing else can be executed due to exec
@@ -90,7 +90,7 @@
         - docker-cache-dir
         - shell: |
             exec docker run --rm \
-                --env-file <(/usr/bin/env) \
+                --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
                 --volume "${WORKSPACE}/cache":/cache \
                 wmfreleng/castor:v2017.10.30.21.03 \
                 load
