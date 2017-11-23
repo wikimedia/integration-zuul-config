@@ -1745,12 +1745,13 @@ projects:
 
   - name: labs/tools/heritage
     template:
-      - name: tox-jessie  # pywikibot tries to write to $HOME
       - name: npm
     test:
       - composer-php55-jessie
+      - labs-tools-heritage-tox-docker
     gate-and-submit:
       - composer-php55-jessie
+      - labs-tools-heritage-tox-docker
     postmerge:
      - tox-py27-coverage-publish
 
