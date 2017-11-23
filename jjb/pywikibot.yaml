@@ -1,6 +1,5 @@
 - project:
     name: pywikibot-core
-
     jobs:
      - '{name}-tox-docker':
          docker_image_var: wmfreleng/tox-pywikibot:v2017.11.23.15.59
@@ -15,6 +14,22 @@
                  build_timeout: 4 # minutes
              - nose
              - nose34
+- job-group:
+    name: pywikibot-tox
+    jobs:
+        - '{name}-tox-docker':
+            docker_image_var: wmfreleng/tox-pywikibot:v2017.11.23.15.59
+
+# Begin of pywikibot bots
+- project:
+    name: pywikibot-FLOSSbot
+    jobs:
+        - pywikibot-tox
+- project:
+    name: pywikibot-xqbot
+    jobs:
+        - pywikibot-tox
+# End of pywikibot bots
 
 - project:
     name: pywikibot-i18n
