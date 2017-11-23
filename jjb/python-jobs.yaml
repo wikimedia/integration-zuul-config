@@ -95,13 +95,14 @@
 - job-template:
     !!merge : *job_tox-docker
     name: '{name}-tox-{toxenv}-docker'
+    docker_image_varimage: 'wmfreleng/tox:v2017.11.10.21.35'
     triggers:
         - zuul
     builders:
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: 'wmfreleng/tox:v2017.11.10.21.35'
+            image: '{obj:docker_image_var}'
             logdir: '/log'
             run_args: ' -e "{toxenv}"'
 

@@ -2,18 +2,17 @@
     name: pywikibot-core
 
     jobs:
-     - '{name}-tox-jessie'
+     - '{name}-tox-docker':
+         docker_image_var: wmfreleng/tox-pywikibot:v2017.11.23.15.59
+         build_timeout: 4 # minutes
      - '{name}-tox-publish':
         docsrc: 'docs/_build/html'
         docdest: 'pywikibot'
-     - '{name}-tox-{toxenv}-jessie':
-         toxenv:
-          - doc
-          - nose
-          - nose34
      - '{name}-tox-{toxenv}-docker':
+         docker_image_var: wmfreleng/tox-pywikibot:v2017.11.23.15.59
          toxenv:
-             - doc
+             - doc:
+                 build_timeout: 4 # minutes
              - nose
              - nose34
 

@@ -7418,23 +7418,19 @@ projects:
 
   - name: pywikibot/core
     check:
-      - pywikibot-core-tox-jessie
+      - pywikibot-core-tox-docker
     test:
-      - pywikibot-core-tox-jessie
-      - pywikibot-core-tox-nose-jessie
-      - pywikibot-core-tox-nose34-jessie
-      - pywikibot-core-tox-doc-jessie
-    gate-and-submit:
-      - pywikibot-core-tox-jessie
-      - pywikibot-core-tox-nose-jessie
-      - pywikibot-core-tox-nose34-jessie
-      - pywikibot-core-tox-doc-jessie
-    postmerge:
-      - pywikibot-core-tox-publish
-    experimental:
+      - pywikibot-core-tox-docker
       - pywikibot-core-tox-nose-docker
       - pywikibot-core-tox-nose34-docker
       - pywikibot-core-tox-doc-docker
+    gate-and-submit:
+      - pywikibot-core-tox-docker
+      - pywikibot-core-tox-nose-docker
+      - pywikibot-core-tox-nose34-docker
+      - pywikibot-core-tox-doc-docker
+    postmerge:
+      - pywikibot-core-tox-publish
 
   - name: pywikibot/i18n
     test:
