@@ -32,6 +32,11 @@
 # End of pywikibot bots
 
 - project:
+    name: pywikibot-wikibase
+    jobs:
+        - pywikibot-tox
+
+- project:
     name: pywikibot-i18n
     jobs:
      - '{name}-npm-node-6-jessie'
@@ -73,12 +78,3 @@
          tox -e venv -- python setup.py nosetests --tests tests --verbosity=2 -a '"family=wpbeta,code=en"'
     publishers:
         - castor-save
-
-- project:
-    name: pywikibot-wikibase
-
-    jobs:
-     - '{name}-tox-{toxenv}-jessie':
-         toxenv:
-          - nose
-          - nose34
