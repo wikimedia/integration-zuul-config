@@ -11,59 +11,6 @@
          artifacts: '**/.tox/*/log/*.log,**/.tox/log/*'
          allow-empty: true
 
-- job-template:
-    name: '{name}-tox-{toxenv}-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - run-tox:
-         venv: '{toxenv}'
-    publishers:
-     - archive-log-dir
-     - castor-save
-
-# Same for Jessie
-- job-template:
-    name: 'tox-{toxenv}-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - run-tox:
-         venv: '{toxenv}'
-    publishers:
-     - archive-log-dir
-     - castor-save
-
-- job-template: &job_tox-jessie
-    name: 'tox-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - tox-all-envs
-    publishers:
-     - archive-log-dir
-     - archive-tox-logs
-     - castor-save
-
-- job-template:
-    !!merge : *job_tox-jessie
-    name: '{name}-tox-jessie'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job-template: &job_tox-docker
     name: 'tox-docker'
     node: DebianJessieDocker
@@ -178,10 +125,6 @@
     name: common-tox-jobs
     jobs:
      - 'tox-docker'
-     - 'tox-jessie'
-     - 'tox-{toxenv}-jessie':
-         toxenv:
-             - doc
 
 - job:
     name: 'commit-message-validator'
