@@ -2839,11 +2839,11 @@ projects:
 
   - name: mediawiki/extensions/ArticlePlaceholder
     # FIXME: ArticlePlaceholder runs qunit in "npm test" (T180171), so it
-    # can't use mwgate-npm docker variant
+    # can't the generic mwgate-npm-docker
     test:
-      - mwgate-npm-node-6-jessie
+      - mwgate-npm-browser-node-6-docker
     gate-and-submit:
-      - mwgate-npm-node-6-jessie
+      - mwgate-npm-browser-node-6-docker
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
