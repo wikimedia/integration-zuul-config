@@ -7741,8 +7741,10 @@ projects:
       - npm-node-6-jessie
 
   - name: wikibase/javascript-api
-    template:
-      - name: npm   # requires PhantomJS - T179465 / T179360
+    test:
+      - wikibase-javascript-api-npm-browser-node-6-docker
+    gate-and-submit:
+      - wikibase-javascript-api-npm-browser-node-6-docker
 
   - name: wikibase/wikiba.se
     test:
@@ -7774,9 +7776,9 @@ projects:
      - name: mwgate-composer
      - name: extension-qunit-composer
     test:
-     - mwgate-npm-node-6-jessie  # requires PhantomJS - T179465 / T179360
+     - mwgate-npm-browser-node-6-docker
     gate-and-submit:
-     - mwgate-npm-node-6-jessie  # requires PhantomJS - T179465 / T179360
+     - mwgate-npm-browser-node-6-docker
 
   - name: wikidata/build-resources
     template:

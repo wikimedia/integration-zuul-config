@@ -163,10 +163,11 @@
      - archive-log-allow-empty
      - castor-save
 
-- job: &job_npm-node-6-docker
+- job-template: &job_npm-node-6-docker
     name: 'npm-node-6-docker'
     node: DebianJessieDocker
     concurrent: true
+    docker_image_var: 'wmfreleng/npm-test:v2017.11.10.22.15'
     triggers:
      - zuul
     builders:
@@ -175,14 +176,27 @@
      - docker-cache-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'wmfreleng/npm-test:v2017.11.10.22.15'
+        image: '{obj:docker_image_var}'
         logdir: '/log'
     publishers:
      - archive-log-allow-empty
 
+- project:
+    name: 'generic-npm-job'
+    jobs:
+        - 'npm-node-6-docker'
+
 - job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-node-6-docker'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+- job-template:
+    !!merge : *job_npm-node-6-docker
+    name: '{name}-npm-browser-node-6-docker'
+    docker_image_var: 'wmfreleng/npm-browser-test:v2017.11.24.13.40'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
