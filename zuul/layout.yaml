@@ -1291,14 +1291,6 @@ project-templates:
     gate-and-submit:
      - tox-docker
 
-  - name: tox-jessie
-    test:
-     - tox-jessie
-    gate-and-submit:
-     - tox-jessie
-    experimental:
-     - tox-docker
-
   - name: mwgate-tox-docker
     test:
      - mwgate-tox-docker
@@ -2531,12 +2523,16 @@ projects:
       - name: archived
 
   - name: operations/software/conftool
-    template:
-      - name: tox-jessie  # requires etcd to be installed for integration tests
     test:
       - debian-glue
+        # requires etcd to be installed for integration tests
+      - tox-jessie
     gate-and-submit:
       - debian-glue
+        # requires etcd to be installed for integration tests
+      - tox-jessie
+    experimental:
+      - tox-docker
 
   - name: operations/software/cumin
     test:
