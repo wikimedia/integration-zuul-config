@@ -4545,12 +4545,6 @@ projects:
       - name: mwgate-npm
 
   - name: mediawiki/extensions/DataTypes
-    # FIXME: DataTypes runs qunit in "npm test" (T180172), so it
-    # can't use mwgate-npm docker variant
-    test:
-      - mwgate-npm-node-6-jessie
-    gate-and-submit:
-      - mwgate-npm-node-6-jessie
     template:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
