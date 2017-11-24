@@ -33,11 +33,15 @@
         - npm-install
         - npm-run:
             script: test
+        - shell: |
+            git submodule update --init --remote
         - npm-run:
             script: build-all-portals
         ## now create and publish a gerrit patch
         ## then publish the artifacts to castor?
         - shell: |
+            cd prod
+
             git add -A
 
             # Gerrit commit hook to generate Change-Id automatically
@@ -58,7 +62,7 @@
             echo -ne 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\n' >> ~/.ssh/config
 
             git push \
-                ssh://portalsbuilder@gerrit.wikimedia.org:29418/wikimedia/portals.git \
+                ssh://portalsbuilder@gerrit.wikimedia.org:29418/wikimedia/portals/deploy.git \
                 HEAD:refs/publish/master
     wrappers:
         - ansicolor
