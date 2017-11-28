@@ -37,8 +37,27 @@ GERRIT_IGNORE = (
     'wiktionary/anagrimes',  # some legacy perl
 )
 
-GERRIT_REPOS = {}
-ZUUL_PROJECTS = []
+# Dummy classes to hide dict/list representation.
+#
+# nose.plugins.xunit describes the tests and expands its arguments, the Gerrit
+# and Zuul projects ends up being happened to each testcase which causes a huge
+# xml file.
+# Hidding the actual content by overriding __repr__ ensure we have a manageable
+# file size.
+
+
+class GerritRepos(dict):
+    def __repr__(self):
+        return "<gerrit active repos>"
+
+
+class ZuulProjects(list):
+    def __repr__(self):
+        return "<zuul projects>"
+
+# Globals, initialized in setup()
+GERRIT_REPOS = None
+ZUUL_PROJECTS = None
 
 
 def getGerritRepos():
@@ -49,7 +68,7 @@ def getGerritRepos():
     return {
         name: meta['state']
         for (name, meta) in json.load(req).iteritems()
-    }
+        }
 
 
 def getZuulLayoutProjects():
@@ -64,13 +83,12 @@ def getZuulLayoutProjects():
 def setup():
     global GERRIT_REPOS
     global ZUUL_PROJECTS
-    GERRIT_REPOS = getGerritRepos()
-    ZUUL_PROJECTS = getZuulLayoutProjects()
+    # Make them custom dict and list that hide __repr__(). See note above
+    GERRIT_REPOS = GerritRepos(getGerritRepos())
+    ZUUL_PROJECTS = ZuulProjects(getZuulLayoutProjects())
 
 
 test = unittest.TestCase('__init__')
-test.maxDiff = None
-test.longMessage = True
 qa = True  # attribute for nose filtering
 
 
@@ -97,21 +115,26 @@ def test_all_skins_have_gate_and_submit():
 
 @attr('qa')
 def test_zuul_projects_are_in_gerrit():
-    zuul = set(ZUUL_PROJECTS)
-    gerrit = set(GERRIT_REPOS)
-    test.assertEqual(
-        [], sorted((zuul & gerrit) ^ zuul),
-        'Projects configured in Zuul but no more active in Gerrit')
+    """All projects in Zuul layout.yaml must be active in Gerrit"""
+    for zuul_project in sorted(ZUUL_PROJECTS):
+        test.assertIn.__func__.description = (
+            "Zuul project is in Gerrit: %s" % zuul_project)
+        yield test.assertIn, zuul_project, GERRIT_REPOS, (
+            '%s is not active in Gerrit' % zuul_project)
+    del(test.assertIn.__func__.description)
 
 
 @attr('qa')
 def test_gerrit_active_projects_are_in_zuul():
-    zuul = set(ZUUL_PROJECTS)
+    """All Gerrit active projects are in Zuul layout.yaml"""
     gerrit_active = set([
         repo for (repo, state) in GERRIT_REPOS.iteritems()
         if state == 'ACTIVE'
         and repo not in GERRIT_IGNORE
     ])
-    test.assertEqual(
-        [], sorted((zuul & gerrit_active) ^ gerrit_active),
-        'Projects in Gerrit are all configured in Gerrit')
+    for gerrit_project in gerrit_active:
+        test.assertIn.__func__.description = (
+            "Gerrit project is in Zuul: %s" % gerrit_project)
+        yield test.assertIn, gerrit_project, ZUUL_PROJECTS, (
+            '%s is not configured in Zuul' % gerrit_project)
+    del(test.assertIn.__func__.description)
