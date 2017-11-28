@@ -93,25 +93,18 @@ test = unittest.TestCase('__init__')
 qa = True  # attribute for nose filtering
 
 
-def assert_have_gate_and_submit(prefix):
-    missing = [repo for (repo, state) in GERRIT_REPOS.iteritems()
-               if repo.startswith(prefix)
-               and len(repo.split('/')) == 3  # skip sub repos
-               and state == 'ACTIVE'
-               and repo not in ZUUL_PROJECTS]
-    test.assertEqual(
-        [], sorted(missing),
-        '%s %s are not configured in zuul' % (len(missing), prefix))
-
-
 @attr('qa')
-def test_all_extensions_have_gate_and_submit():
-    assert_have_gate_and_submit('mediawiki/extensions/')
-
-
-@attr('qa')
-def test_all_skins_have_gate_and_submit():
-    assert_have_gate_and_submit('mediawiki/skins/')
+def test_mediawiki_repos_are_configured():
+    repos = [repo for (repo, state) in GERRIT_REPOS.iteritems()
+             if repo.startswith(('mediawiki/extensions', 'mediawiki/skins'))
+             and len(repo.split('/')) == 3  # skip sub repos
+             and state == 'ACTIVE']
+    for repo in sorted(repos):
+        test.assertIn.__func__.description = (
+            'Mediawiki repo is in Zuul: %s' % repo)
+        yield test.assertIn, repo, ZUUL_PROJECTS, (
+            '%s is not configured in Zuul' % repo)
+    del(test.assertIn.__func__.description)
 
 
 @attr('qa')
