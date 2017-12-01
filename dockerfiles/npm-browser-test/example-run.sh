@@ -15,6 +15,7 @@ docker run \
     --rm --tty \
     --volume /"$(pwd)"/log://var/lib/jenkins/log \
     --volume /"$(pwd)"/cache://cache \
+    --volume /"$(pwd)"/log://log \
     --volume /"$(pwd)"/src://src \
      wmfreleng/npm-browser-test:latest
 rm -rf log
