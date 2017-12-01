@@ -1,5 +1,5 @@
 node('ServicePipelineProduction') {
-  def blubberConfig = 'pipeline/blubber.yaml'
+  def blubberConfig = 'dist/pipeline/blubber.yaml'
 
   def dockerRegistry = 'docker-registry.discovery.wmnet'
   def dockerCredential = 'docker-registry-uploader'
