@@ -5,7 +5,8 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 ENV PUPPET_DIR='/srv/workspace/puppet'
 
 {% set pkgs_to_install = """build-essential bundler python-dev \
-    python-pip rubygems-integration rake ruby ruby-dev ca-certificates libmysqlclient-dev""" %}
+    python-pip rubygems-integration rake ruby ruby-dev ca-certificates libmysqlclient-dev \
+    mtail""" %}
 
 RUN {{ pkgs_to_install | apt_install }} \
     && pip install pip==8.1.2 \
