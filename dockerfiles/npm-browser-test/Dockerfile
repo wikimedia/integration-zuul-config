@@ -4,6 +4,7 @@ USER root
 RUN apt-get update && \
     apt-get install --yes \
         chromium \
+        chromium-driver \
         firefox-esr \
         phantomjs \
         xvfb \
