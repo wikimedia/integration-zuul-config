@@ -23,5 +23,10 @@ USER nobody
 ENV NPM_CONFIG_CACHE=/cache
 ENV BABEL_CACHE_PATH=$XDG_CACHE_HOME/babel-cache.json
 
+# We do not allocate a pseudo-tty with Docker since that disable signal
+# proxying. Force color output for supports-colors
+# https://www.npmjs.com/package/supports-color
+ENV FORCE_COLOR=1
+
 ENTRYPOINT ["npm"]
 CMD ["--help"]
