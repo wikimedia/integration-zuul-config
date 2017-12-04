@@ -96,33 +96,6 @@
                image: jessie
         phpunit-params: '--group Wikibase,WikibaseClient'
 
-- job:
-    name: wikidata-gremlin
-    project-type: maven
-    node: ci-jessie-wikimedia
-    jdk: 'Debian - OpenJdk 7'
-    triggers:
-     - zuul
-    scm:
-     - git-remoteonly-zuul
-    wrappers:
-     - timeout:
-         timeout: 60  # minutes
-         fail: true
-     - timestamps
-     - ansicolor
-    prebuilders:
-     - castor-load
-    maven:
-      goals: clean verify
-    publishers:
-     - castor-save
-
-- project:
-    name: wikidata-gremlin
-    jobs:
-      - wikidata-gremlin
-
 - project:
     name: wikibase-javascript-api
     jobs:
