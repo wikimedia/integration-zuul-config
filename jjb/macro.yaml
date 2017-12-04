@@ -404,20 +404,6 @@
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-fetch-composer-dev.sh"
 
 - builder:
-    name: fetch-composer-dev
-    builders:
-     - shell: |
-        #!/bin/bash -eu
-        # Load require-dev packages on top of vendor (T92605, T112895)
-        set -xo pipefail
-        # Set --ignore-platform-reqs to prevent composer from evaluating unrelated dependencies
-        # already present in composer.json (needed for operations/mediawiki-config due to
-        # https://github.com/perftools/xhgui/issues/192).
-        export HTTP_PROXY_REQUEST_FULLURI=false
-        export HTTPS_PROXY_REQUEST_FULLURI=false
-        node /srv/deployment/integration/slave-scripts/tools/composer-dev-args.js "$(pwd)/composer.json" | xargs --verbose composer require --dev --ansi --no-progress --ignore-platform-reqs --prefer-dist -v
-
-- builder:
     name: mw-run-update-script
     builders:
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
