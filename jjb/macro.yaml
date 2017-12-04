@@ -421,7 +421,7 @@
         # Set --ignore-platform-reqs to prevent composer from evaluating unrelated dependencies
         # already present in composer.json (needed for operations/mediawiki-config due to
         # https://github.com/perftools/xhgui/issues/192).
-        node /srv/deployment/integration/slave-scripts/tools/composer-dev-args.js "$(pwd)/composer.json" | xargs --verbose composer require --dev --ansi --no-progress --ignore-platform-reqs --prefer-dist -v
+        jq -r '.["require-dev"]|to_entries|map([.key,"\"" + .value + "\""])[]|join("=")' "$(pwd)/composer.json" | xargs --verbose composer require --dev --ansi --no-progress --ignore-platform-reqs --prefer-dist -v
 
 - builder:
     name: mw-run-update-script
