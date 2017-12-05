@@ -6,9 +6,12 @@ COPY --from=npm-jessie /usr/local/lib/node_modules/npm/ /usr/local/lib/node_modu
 # Manually link since COPY copies symlink destination instead of the actual symlink
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 
+# python-minimal for node-gyp
+# ruby/etc for jsduck
 RUN apt-get update && \
     apt-get install --yes \
         nodejs-legacy \
+        python-minimal \
         ruby ruby-dev rubygems-integration build-essential && \
         gem install --no-rdoc --no-ri jsduck && \
         apt-get remove -y build-essential && apt-get autoremove -y && \

@@ -1,10 +1,13 @@
 FROM wmfreleng/ci-jessie:latest
 
 # Install nodejs-legacy to provide /usr/bin/node alias
+#
+# python-minimal for node-gyp
+# ruby/etc for jsduck
 RUN apt-get update && \
     apt-get install --yes \
         nodejs-legacy npm \
-        # ruby/etc for jsduck
+        python-minimal \
         ruby ruby2.1 ruby2.1-dev rubygems-integration build-essential && \
         gem install --no-rdoc --no-ri jsduck && \
         apt-get remove -y build-essential && apt-get autoremove -y && \
