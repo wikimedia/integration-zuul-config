@@ -2,7 +2,7 @@ FROM wmfreleng/ci-jessie:latest
 
 # Install nodejs-legacy to provide /usr/bin/node alias
 #
-# python-minimal for node-gyp
+# build-essential/python-minimal for node-gyp
 # ruby/etc for jsduck
 RUN apt-get update && \
     apt-get install --yes \
@@ -10,7 +10,6 @@ RUN apt-get update && \
         python-minimal \
         ruby ruby2.1 ruby2.1-dev rubygems-integration build-essential && \
         gem install --no-rdoc --no-ri jsduck && \
-        apt-get remove -y build-essential && apt-get autoremove -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # DO NOT CHANGE VERSION WITHOUT INVOLVING Krinkle OR hashar

@@ -14,7 +14,6 @@ RUN apt-get update && \
         python-minimal \
         ruby ruby-dev rubygems-integration build-essential && \
         gem install --no-rdoc --no-ri jsduck && \
-        apt-get remove -y build-essential && apt-get autoremove -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # If no volume is mounted, make sure /cache exists
