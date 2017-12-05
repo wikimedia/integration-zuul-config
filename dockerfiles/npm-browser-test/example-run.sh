@@ -7,7 +7,7 @@ mkdir -m 777 -p src
 mkdir -m 777 -p cache
 cd src
 git init
-git fetch --quiet --depth 1 https://gerrit.wikimedia.org/r/data-values/value-view
+git fetch --quiet --depth 1 https://gerrit.wikimedia.org/r/VisualEditor/VisualEditor
 git checkout FETCH_HEAD
 cd ..
 
