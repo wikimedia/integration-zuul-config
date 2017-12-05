@@ -1,21 +1,2 @@
-#!/bin/bash
 
-set -euo pipefail
-
-mkdir -m 777 -p log
-mkdir -m 777 -p src
-mkdir -m 777 -p cache
-cd src
-git init
-git fetch --quiet --depth 1 https://gerrit.wikimedia.org/r/data-values/value-view
-git checkout FETCH_HEAD
-cd ..
-
-docker run \
-    --rm --tty \
-    --volume /"$(pwd)"/log://var/lib/jenkins/log \
-    --volume /"$(pwd)"/cache://cache \
-    --volume /"$(pwd)"/log://log \
-    --volume /"$(pwd)"/src://src \
-     wmfreleng/npm-browser-test:latest
-rm -rf log
+NDQKCgo4YWlsaW5nIGFnYWluLCB3aGF0IHNob3VsZCBJIGNoYW5eW91IHNldCB0aGUgdmFsdWUgcmVhbGx5IGhpZ2ggYW5kIGl0IHN0aWxsIHN0b3BwZWQuIE15IGd1ZXNzIGlzIHlvdSBtaWdodCBoYXZlbXByb3ZlIHRoaXMgcXVlc3Rpb24KYXNrZWQgQXByIDIgJzEzIGF0IDIzOjQwCgpUb29Db29MCjYsNzkwNjIyMzcKMQpjYWxsIGl0IGZyb20gdGhlIGNvbW1hbmQgbGluZSwgbm8gdGltZSBsaW1pdCB0aGF0IHdheSDigJMgdXNlcjU1Nzg0NiBBcHIgMiAnMTMgYXQgMjM6NDIKMgpzZXRfdGltZV9saW1pdCgwKSBhdCB0aGUgYmVnaW5pbmcgb2YgeW91ciBzY3JpcHQgd2lsbCBkaXNhYmxlIHRoZSB0aW1lIGxpbWl0LiBCdXQgeW91IGNhbiBoYXZlIG90aGVyIHJlYXNvbiBmb3IgYSBwcmVtYXR1cmUgc3RvcC4gSXQgY2FuIGJlIGEgcHJvYmxlbSB3aXRoIHlvdXIgREIgb3IgYSBwcm9ibGVtIHdpdGggdGhlIG1lbW9yeSAoaWYgeW91IGFyZSBjcmVhdGluZyBhIGxvdCBvIGEgbWVtb3J5IGlzc3VlLiDigJMgTWlrZSBCcmFudCBBcHIgMiAnMTMgYXQgMjM6NTEKc2hvdyAzIG1vcWYgWF4X2V4ZWN1dGlvbl90aW1lIHRvIDUwMDAwMDAwMDAwIGFuZCB5ZXQgaXQgc3RvcGVkIGF0IGNlcnRhaW4gcG9pbnQsIEkgZG9udCBrbm93IHdoYXQgZWxzZSBjb3VsZCBsaW1pdCB0aGUgZXhlY3V0aW9uIHRpbWUsIEkgaGF2ZSBiZWVuIHJ1bm5pbmcgdGhpcyBhIGxvdCBvZiB0aW1lcyBhbmQgSSBhbSB0aXJlZCBvZiB3YWl0aW5nIGFuZCBmY2hlY2tlZCB0aGUgZm9yIFBIUCBlcnJvcnMgaW4gdGhlIHBocCBmb2xkZXIgb2YgeGFtcHAgYnV0IGl0IGRpZG50IHNob3cgYW55dGhpbmcgYXQgdGhlIHRpbWUgdGhlIHNjcmlwdCBzdG9wcGVkLCBldmVyeXRpbWUgaXQggcmVjb3JkcyDigJMgVG9vQ29vTCBBcHIgMiAnMTMgYXQgMjM6NDUKMQpZb3Ugc2hvdWxkIHNob3cgeW91ciBjb2RlLiBNeSBndWVzcyBpcyB0aGF0IHF1ZXJ5IGV4ZWN1d
