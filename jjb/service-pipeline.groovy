@@ -33,7 +33,7 @@ node('ServicePipelineProduction') {
 
   def build = { variant ->
     def labels = imageLabels.collect { "--label '${it}'" }.join(' ')
-    sh "blubber $blubberConfig $variant | docker build -t $fullName $labels -f - ."
+    sh "blubber $blubberConfig $variant | docker build --pull --tag $fullName $labels --file - ."
   }
 
   def run = {
