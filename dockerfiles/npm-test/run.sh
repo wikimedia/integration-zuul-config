@@ -8,6 +8,6 @@ cd /src
 
 node --version
 npm --version
-rm -rf node_modules
+npm prune
 npm install --no-progress
 npm test
