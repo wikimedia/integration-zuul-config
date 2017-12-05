@@ -265,8 +265,6 @@ dependencies = {
     'WikibaseQuality': ['Wikibase'],
     'WikibaseQualityConstraints': ['Wikibase', 'WikibaseQuality'],
     'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
-    'Wikidata': ['CirrusSearch', 'cldr', 'Elastica',
-                 'GeoData', 'Scribunto'],
     'Wikidata.org': ['Wikibase'],
     'WikidataPageBanner': ['Wikidata'],
     'WikimediaBadges': ['Wikibase'],
