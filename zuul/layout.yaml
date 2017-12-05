@@ -1238,13 +1238,12 @@ project-templates:
 
   - name: npm-service-pipeline
     test:
-      - npm-node-6-jessie
-    gate-and-submit: &npm-service-pipeline-gate-and-submit
-      - npm-node-6-jessie
-    gate-and-submit-swat: *npm-service-pipeline-gate-and-submit
-    experimental:
-      - npm-node-6-docker
       - trigger-service-pipeline-test-only
+    gate-and-submit: &npm-service-pipeline-gate-and-submit
+      - trigger-service-pipeline-test-only
+    gate-and-submit-swat: *npm-service-pipeline-gate-and-submit
+    postmerge:
+      - trigger-service-pipeline
 
   - name: mwgate-npm
     test:
