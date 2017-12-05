@@ -8,6 +8,5 @@ cd /src
 
 node --version
 npm --version
-rm -rf node_modules
-npm install --no-progress
+npm install --no-progress --clean
 npm test
