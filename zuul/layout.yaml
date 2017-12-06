@@ -7158,8 +7158,7 @@ projects:
   - name: mediawiki/extensions/Wikibase
     template:
       - name: mwgate-npm
-      - name: extension-unittests-composer
-      - name: extension-qunit-composer
+      - name: extension-gate
       - name: extension-phan-generic
       - name: mwgate-rake
     php5:  # 'check php5'
@@ -7188,14 +7187,7 @@ projects:
 
   - name: mediawiki/extensions/Wikidata
     template:
-      - name: extension-unittests-generic
-      - name: extension-qunit-generic
-      - name: extension-gate
-    test:
-      - mwext-testextension-hhvm-jessie
-    gate-and-submit: &mediawiki-extensions-wikidata-gate-and-submit
-      - mwext-testextension-hhvm-jessie
-    gate-and-submit-swat: *mediawiki-extensions-wikidata-gate-and-submit
+      - name: archived
 
   - name: mediawiki/extensions/Wikidata.org
     template:
