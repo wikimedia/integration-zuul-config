@@ -3,18 +3,30 @@
 - builder:
     name: docker-log-dir
     builders:
-     - shell: |
-        rm -rf log
-        mkdir -m 2777 -p "log"
+     - docker-wipe-dir:
+         dir: log
 
 # Create a src directory that will be
 # mounted into a container with --volume
 - builder:
     name: docker-src-dir
     builders:
+     - docker-wipe-dir:
+         dir: src
+
+- builder:
+    name: docker-wipe-dir
+    builders:
      - shell: |
-        rm -rf src
-        mkdir -m 2777 -p "src"
+
+         set -eux
+         exec docker run \
+             --rm \
+             -v "$WORKSPACE":/workspace \
+             --entrypoint=/bin/rm \
+             docker-registry.wikimedia.org/wikimedia-stretch:latest \
+             -fR "/workspace/{dir}"
+         mkdir -m 2777 -p "{dir}"
 
 # Create a cache directory that will be
 # mounted into a container with --volume
