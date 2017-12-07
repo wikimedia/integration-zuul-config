@@ -185,6 +185,7 @@ dependencies = {
     'FlaggedRevs': ['Scribunto'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
+    'GraphViz': ['ImageMap'],
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'ImageMetrics': ['EventLogging'],
