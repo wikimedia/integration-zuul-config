@@ -675,6 +675,7 @@ class TestZuulScheduler(unittest.TestCase):
             (True, ['foo/task.rb']),
             (True, ['module/spec/foo']),
             (True, ['Gemfile.lock']),
+            (True, ['mediawiki_api.gemspec']),
 
             (False, ['foo.php']),
         ]
