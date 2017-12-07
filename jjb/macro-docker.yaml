@@ -3,18 +3,31 @@
 - builder:
     name: docker-log-dir
     builders:
-     - shell: |
-        rm -rf log
-        mkdir -m 2777 -p "log"
+     - docker-wipe-dir:
+         dir: log
 
 # Create a src directory that will be
 # mounted into a container with --volume
 - builder:
     name: docker-src-dir
     builders:
+     - docker-wipe-dir:
+         dir: src
+
+# Delete content of a directory under $WORKSPACE as 'nobody'
+- builder:
+    name: docker-wipe-dir
+    builders:
      - shell: |
-        rm -rf src
-        mkdir -m 2777 -p "src"
+         set -eux
+         mkdir -m 2777 -p "{dir}"
+         docker run \
+             --rm \
+             --user=nobody \
+             -v "$WORKSPACE":/workspace \
+             --entrypoint=/usr/bin/find \
+             docker-registry.wikimedia.org/wikimedia-stretch:latest \
+             "/workspace/{dir}" -mindepth 1 -delete
 
 # Create a cache directory that will be
 # mounted into a container with --volume
