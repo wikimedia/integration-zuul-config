@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eee3df47_ac3ee6b2",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 2173,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2017-12-08T23:30:15Z",
+      "side": 1,
+      "message": "Jobs prefixed with mwgate- are solely for mediawiki extensions and skins. That is to get changes made on them to depend on each other when one CR+2.\n\nThe -jessie jobs are run on labs instances being discarded (Nodepool) which is legacy. When possible we switch to use a Docker container instead when one exist.\n\nAnd there is one! So you can replace the jobs with:\n\n - composer-php70-docker\n\n\nLastly, postmerge is run after a change has been submitted / merged in the repository.  That would happen after a user has voted CR+2, the job enter gate-and-submit and if the job pass the change get merged.\n\nSince we know the job passed, there is no need to run it again after the change got merged :]",
+      "revId": "da4e08ac677b18db127a81b453c293dba93997da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
