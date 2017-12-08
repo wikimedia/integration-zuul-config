@@ -82,6 +82,7 @@
         chmod 2777 src
         exec docker run \
             --rm \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
             --volume "$(pwd)"/src:/src \
