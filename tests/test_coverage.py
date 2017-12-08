@@ -125,12 +125,12 @@ def test_zuul_projects_are_in_gerrit():
 @attr('qa')
 def test_gerrit_active_projects_are_in_zuul():
     """All Gerrit active projects are in Zuul layout.yaml"""
-    gerrit_active = set([
+    gerrit_active = [
         repo for (repo, state) in GERRIT_REPOS.iteritems()
         if state == 'ACTIVE'
         and repo not in GERRIT_IGNORE
-    ])
-    for gerrit_project in gerrit_active:
+    ]
+    for gerrit_project in sorted(gerrit_active):
         test.assertIn.__func__.description = (
             "Gerrit project is in Zuul: %s" % gerrit_project)
         yield test.assertIn, gerrit_project, ZUUL_PROJECTS
