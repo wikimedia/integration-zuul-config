@@ -1,34 +1,8 @@
 # This file holds the configuration for all MediaWiki core related jobs.
 
 # Note that mediawiki/core branches may have a lot of submodules, we thus
-# use a specific git macro to prevents Jenkins from updating all the
-# submodules we do not care about. See bug 42455.
-
-- job-template:
-    name: 'mediawiki-core-npm-node-6-jessie'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - shell: |
-         zuul-cloner --version
-         zuul-cloner --color \
-           --verbose \
-           --workspace src \
-           --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
-           --cache-dir /srv/git \
-           https://gerrit.wikimedia.org/r/p \
-           mediawiki/core
-     - shell: |
-         node --version
-         npm --version
-         cd src/
-         npm install
-         npm test
-    publishers:
-     - castor-save
+# usually need to NOT process submodules (eg: zuul-cloner).
+# See https://phabricator.wikimedia.org/T44455
 
 - job-template:
     name: 'mediawiki-core-qunit-selenium-jessie'
@@ -259,7 +233,7 @@
     jobs:
       - 'mediawiki-core-qunit-selenium-jessie'
       - 'mediawiki-core-jsduck'
-      - 'mediawiki-core-npm-node-6-jessie'
+      - 'mediawiki-core-npm-node-6-docker'
       - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
       - '{name}-{phpflavor}lint':
