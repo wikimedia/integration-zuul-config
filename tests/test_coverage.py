@@ -50,9 +50,15 @@ class GerritRepos(dict):
     def __repr__(self):
         return "<gerrit active repos>"
 
+    def __str__(self):
+        return "<gerrit active repos>"
+
 
 class ZuulProjects(list):
     def __repr__(self):
+        return "<zuul projects>"
+
+    def __str__(self):
         return "<zuul projects>"
 
 
@@ -94,7 +100,7 @@ qa = True  # attribute for nose filtering
 
 
 @attr('qa')
-def test_mediawiki_repos_are_configured():
+def test_repo_in_zuul():
     repos = [repo for (repo, state) in GERRIT_REPOS.iteritems()
              if repo.startswith(('mediawiki/extensions', 'mediawiki/skins'))
              and len(repo.split('/')) == 3  # skip sub repos
@@ -102,8 +108,7 @@ def test_mediawiki_repos_are_configured():
     for repo in sorted(repos):
         test.assertIn.__func__.description = (
             'Mediawiki repo is in Zuul: %s' % repo)
-        yield test.assertIn, repo, ZUUL_PROJECTS, (
-            '%s is not configured in Zuul' % repo)
+        yield test.assertIn, repo, ZUUL_PROJECTS
     del(test.assertIn.__func__.description)
 
 
@@ -113,8 +118,7 @@ def test_zuul_projects_are_in_gerrit():
     for zuul_project in sorted(ZUUL_PROJECTS):
         test.assertIn.__func__.description = (
             "Zuul project is in Gerrit: %s" % zuul_project)
-        yield test.assertIn, zuul_project, GERRIT_REPOS, (
-            '%s is not active in Gerrit' % zuul_project)
+        yield test.assertIn, zuul_project, GERRIT_REPOS
     del(test.assertIn.__func__.description)
 
 
@@ -129,6 +133,5 @@ def test_gerrit_active_projects_are_in_zuul():
     for gerrit_project in gerrit_active:
         test.assertIn.__func__.description = (
             "Gerrit project is in Zuul: %s" % gerrit_project)
-        yield test.assertIn, gerrit_project, ZUUL_PROJECTS, (
-            '%s is not configured in Zuul' % gerrit_project)
+        yield test.assertIn, gerrit_project, ZUUL_PROJECTS
     del(test.assertIn.__func__.description)
