@@ -34,3 +34,29 @@ class TestSetGatedExtensions(unittest.TestCase):
         set_gated_extensions(None, gate_job, params)
         self.assertIn('\\nmediawiki/extensions/SomeExt',
                       params['EXT_DEPENDENCIES'])
+
+    def test_wikibase_master(self):
+        params = {
+            'ZUUL_PIPELINE': 'test',
+            'ZUUL_PROJECT': 'mediawiki/core',
+            'ZUUL_BRANCH': 'master',
+        }
+        gate_job = FakeJob('mediawiki-extensions-foo')
+        set_gated_extensions(None, gate_job, params)
+        self.assertIn('\\nmediawiki/extensions/Wikibase',
+                      params['EXT_DEPENDENCIES'])
+        self.assertNotIn('\\nmediawiki/extensions/Wikidata',
+                         params['EXT_DEPENDENCIES'])
+
+    def test_wikibase_onethirty(self):
+        params = {
+            'ZUUL_PIPELINE': 'test',
+            'ZUUL_PROJECT': 'mediawiki/core',
+            'ZUUL_BRANCH': 'REL1_30',
+        }
+        gate_job = FakeJob('mediawiki-extensions-foo')
+        set_gated_extensions(None, gate_job, params)
+        self.assertIn('\\nmediawiki/extensions/Wikidata',
+                      params['EXT_DEPENDENCIES'])
+        self.assertNotIn('\\nmediawiki/extensions/Wikibase',
+                         params['EXT_DEPENDENCIES'])
