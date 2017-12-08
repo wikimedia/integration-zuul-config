@@ -18,6 +18,7 @@ class TestSetGatedExtensions(unittest.TestCase):
         params = {
             'ZUUL_PIPELINE': 'test',
             'ZUUL_PROJECT': 'mediawiki/core',
+            'ZUUL_BRANCH': 'master',
         }
         gate_job = FakeJob('mediawiki-extensions-foo')
         set_gated_extensions(None, gate_job, params)
@@ -27,6 +28,7 @@ class TestSetGatedExtensions(unittest.TestCase):
         params = {
             'ZUUL_PIPELINE': 'experimental',
             'ZUUL_PROJECT': 'mediawiki/extensions/SomeExt',
+            'ZUUL_BRANCH': 'master',
         }
         gate_job = FakeJob('mediawiki-extensions-foo')
         set_gated_extensions(None, gate_job, params)
