@@ -399,6 +399,7 @@ gatedextensions = [
     'Translate',
     'UniversalLanguageSelector',
     'VisualEditor',
+    # Note: pre-1.31 this is switched out for Wikidata build extension
     'Wikibase',
     'ZeroBanner',
     'ZeroPortal',
@@ -417,6 +418,11 @@ def set_gated_extensions(item, job, params):
         deps.append(params['ZUUL_PROJECT'].split('/')[-1])
 
     deps.extend(gatedextensions)
+    # Prior to 1.31, we need to use the "Wikidata" build extension
+    use_wikidata = ('REL1_27', 'REL1_29', 'REL1_30')
+    if params['ZUUL_BRANCH'] in use_wikidata:
+        deps.remove('Wikibase')
+        deps.append('Wikidata')
     deps = sorted(list(set(deps)))
 
     params['EXT_DEPENDENCIES'] = '\\n'.join(
