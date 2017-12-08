@@ -6646,8 +6646,10 @@ projects:
       - name: tox-docker
 
   - name: mediawiki/services/trending-edits
-    template:
-      - name: npm  # requires a few lib*-dev
+    test:
+      - trending-edits-npm-node-6-docker
+    gate-and-submit:
+      - trending-edits-npm-node-6-docker
 
   - name: mediawiki/services/trending-edits/deploy
     test:
