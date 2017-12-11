@@ -195,6 +195,22 @@
      - zuul
 
 - job-template:
+    !!merge : *job_npm-node-6-docker
+    name: '{name}-npm-run-{script}-node-6-docker'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: '{obj:docker_image_var}'
+        logdir: '/log'
+        run_args: ' {script}'
+
+- job-template:
     name: 'mediawiki-core-npm-node-6-docker'
     !!merge : *job_npm-node-6-docker
 
