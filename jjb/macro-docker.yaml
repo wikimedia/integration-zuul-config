@@ -73,6 +73,12 @@
         # nothing else can be executed due to exec
 
 # Run a docker image with cache, log, and src directories
+#
+# Parameter:
+#
+# image: the Docker image to run (eg: releng/php)
+# run_args (optional): arguments passed to `docker run`.
+#                      XXX must start with a leading space
 - builder:
     name: docker-run-with-log-cache-src
     builders:
@@ -86,7 +92,7 @@
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
             --volume "$(pwd)"/src:/src \
-            {image}
+            {image}{obj:run_args|}
         # nothing else can be executed due to exec
 
 # Use a docker image to clone for a MediaWiki extension
