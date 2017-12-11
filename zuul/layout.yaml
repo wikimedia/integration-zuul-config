@@ -1224,15 +1224,6 @@ project-templates:
       - composer-package-php55-jessie
       - composer-package-php70-docker
 
-  - name: npm
-    test:
-      - npm-node-6-jessie
-    gate-and-submit: &npm-gate-and-submit
-      - npm-node-6-jessie
-    gate-and-submit-swat: *npm-gate-and-submit
-    experimental:
-      - npm-node-6-docker
-
   - name: npm-docker
     test:
       - npm-node-6-docker
@@ -1535,13 +1526,15 @@ projects:
      - php55lint
 
   - name: analytics/mediawiki-storage
-    template:
+    test:
       # > bower install
       # /src/node_modules/bower/lib/node_modules/mkdirp/index.js:89
       # Error: EACCES: permission denied, mkdir '/nonexistent'
       #
       # Might be fixable by setting XDG_CONFIG_HOME
-      - name: npm
+      - npm-node-6-jessie
+    gate-and-submit:
+      - npm-node-6-jessie
 
   - name: analytics/multimedia
     template:
