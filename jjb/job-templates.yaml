@@ -195,6 +195,19 @@
      - zuul
 
 - job-template:
+    !!merge : *job_npm-node-6-docker
+    name: '{name}-npm-run-{script}-node-6-docker'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+    parameters:
+        # Recognized by the npm-test entrypoint
+        - string:
+            name: NPM_RUN_SCRIPT
+            description: "Passed to 'npm run-script' as a single argument"
+            default: "{script}"
+
+- job-template:
     name: 'mediawiki-core-npm-node-6-docker'
     !!merge : *job_npm-node-6-docker
 
