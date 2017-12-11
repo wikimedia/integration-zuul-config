@@ -127,8 +127,8 @@
     publishers:
      - castor-save
 
-- job:
-    name: 'composer-package-php70-docker'
+- job-template:
+    name: 'composer-package-{phpflavor}-docker'
     node: DebianJessieDocker
     concurrent: true
     properties:
@@ -142,11 +142,11 @@
      - docker-cache-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'wmfreleng/composer-package:v2017.10.28.07.05'
+        image: '{image}'
         logdir: '/log'
 
-- job:
-    name: 'composer-php70-docker'
+- job-template:
+    name: 'composer-{phpflavor}-docker'
     node: DebianJessieDocker
     concurrent: true
     properties:
@@ -160,7 +160,7 @@
      - docker-cache-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'wmfreleng/composer-test:v2017.10.28.06.23'
+        image: '{image}'
         logdir: '/log'
 
 # Couple jobs with a {name} prefix
@@ -186,3 +186,19 @@
     jobs:
      - 'composer-package-{phpflavor}-{image}'
      - 'composer-{phpflavor}-{image}'
+
+- project:
+    name: 'composer-flavored-on-docker'
+    jobs:
+        - 'composer-package-{phpflavor}-docker':
+            phpflavor:
+                - php55:
+                    image: docker-registry.wikimedia.org/releng/composer-package-php55:0.1.0
+                - php70:
+                    image: wmfreleng/composer-package:v2017.10.28.07.05
+        - 'composer-{phpflavor}-docker':
+            phpflavor:
+                - php55:
+                    image: docker-registry.wikimedia.org/releng/composer-test-php55:0.1.0
+                - php70:
+                    image: wmfreleng/composer-test:v2017.10.28.06.23
