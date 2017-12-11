@@ -665,10 +665,6 @@ class TestZuulScheduler(unittest.TestCase):
             change.files.extend(files)
             return change
 
-        event = zuul.model.TriggerEvent()
-        event.type = 'patchset-created'
-        event.account = {'email': 'johndoe@wikimedia.org'}
-
         cases = [
             (True, ['rakefile']),
             (True, ['tests/browser/Rakefile']),
