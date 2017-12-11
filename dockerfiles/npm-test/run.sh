@@ -10,4 +10,4 @@ node --version
 npm --version
 rm -rf node_modules
 npm install --no-progress
-npm test
+npm run-script "${NPM_RUN_SCRIPT:-test}"
