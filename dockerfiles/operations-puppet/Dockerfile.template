@@ -10,15 +10,15 @@ ENV PUPPET_DIR='/srv/workspace/puppet'
 RUN {{ pkgs_to_install | apt_install }} \
     && pip install pip==8.1.2 \
     && pip install tox==1.9.2 setuptools \
-    && mkdir -p /srv/workspace \
-    && git clone https://gerrit.wikimedia.org/r/operations/puppet "${PUPPET_DIR}" \
+    && install --owner=nobody --group=nogroup --directory /srv/workspace
+
+USER nobody
+RUN git clone https://gerrit.wikimedia.org/r/operations/puppet "${PUPPET_DIR}" \
     && cd "${PUPPET_DIR}" \
     && git tag -f 'docker-head' && git gc --prune=now \
     && TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v --notest \
     && bundle install --clean --path="${PUPPET_DIR}/.bundle" \
-    && chown -R nobody "${PUPPET_DIR}"
 
-USER nobody
 WORKDIR /srv/workspace
 ENTRYPOINT /bin/bash /run.sh
 
