@@ -15,4 +15,4 @@ docker run \
     --volume /"$(pwd)"/log://var/lib/jenkins/log \
     --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/src://src \
-     wmfreleng/npm-test-trending-edits:latest
+     wmfreleng/npm-test-librdkafka:latest
