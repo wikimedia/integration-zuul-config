@@ -251,7 +251,7 @@ dependencies = {
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
     'TwnMainPage': ['Translate'],
-    'TwoColConflict': ['BetaFeatures', 'WikiEditor'],
+    'TwoColConflict': ['BetaFeatures', 'EventLogging', 'WikiEditor'],
     'UniversalLanguageSelector': ['EventLogging'],
     'UploadWizard': ['WikimediaMessages', 'EventLogging', 'AbuseFilter',
                      'SpamBlacklist'],
