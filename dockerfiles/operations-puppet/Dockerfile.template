@@ -17,7 +17,7 @@ RUN git clone https://gerrit.wikimedia.org/r/operations/puppet "${PUPPET_DIR}" \
     && cd "${PUPPET_DIR}" \
     && git tag -f 'docker-head' && git gc --prune=now \
     && TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v --notest \
-    && bundle install --clean --path="${PUPPET_DIR}/.bundle" \
+    && bundle install --clean --path="${PUPPET_DIR}/.bundle"
 
 WORKDIR /srv/workspace
 ENTRYPOINT /bin/bash /run.sh
