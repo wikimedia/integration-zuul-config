@@ -50,19 +50,17 @@ def deploy_docker():
         return
 
     with cd('/tmp'):
-        env.sudo_user = 'jenkins-slave'
-
         docker_pkg = '/srv/deployment/docker-pkg/venv/bin/docker-pkg'
         docker_pkg_config = '/etc/docker-pkg/integration.yaml'
         dockerfiles = '/etc/zuul/wikimedia/dockerfiles'
         cmd = '{} -c {} {}'.format(docker_pkg, docker_pkg_config, dockerfiles)
 
-        sudo(cmd)
+        run(cmd)
 
-        sudo('cat /tmp/docker-pkg-build.log')
+        run('cat /tmp/docker-pkg-build.log')
 
         if confirm('delete build log?'):
-            sudo('rm /tmp/docker-pkg-build.log')
+            run('rm /tmp/docker-pkg-build.log')
 
 
 @task
