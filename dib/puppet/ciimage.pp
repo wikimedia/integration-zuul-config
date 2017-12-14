@@ -105,7 +105,7 @@ include ::apache::mod::php5
 # For Selenium jobs video recording (T113520)
 require_package('libav-tools')
 
-class { 'contint::worker_localhost':
+class { 'profile::ci::worker_localhost':
     owner => 'jenkins',
 }
 
