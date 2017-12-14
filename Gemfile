@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 3.8.5', require: false
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.8.2', require: false
 gem 'puppet-lint', '2.0.2'
 gem 'puppetlabs_spec_helper', '< 2.0.0', require: false
 gem 'rspec-puppet', '~> 2.6.0'
