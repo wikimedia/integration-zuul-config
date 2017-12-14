@@ -1,0 +1,15 @@
+FROM docker-registry.wikimedia.org/releng/ci-jessie:latest
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# pin python-pbr https://phabricator.wikimedia.org/T153877
+RUN {{ "zuul python-pbr=0.8.2-1" | apt_install }}
+
+RUN git clone --depth 1 https://gerrit.wikimedia.org/r/integration/jenkins /tmp/jenkins && \
+    cp /tmp/jenkins/etc/zuul-clonemap.yaml /zuul-clonemap.yaml && \
+    rm -rf /tmp/jenkins
+
+USER nobody
+
+ENTRYPOINT ["zuul-cloner"]
+CMD ["--help"]
