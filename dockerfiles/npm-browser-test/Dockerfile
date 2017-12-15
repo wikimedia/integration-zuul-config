@@ -23,6 +23,10 @@ ENV CHROME_BIN=/usr/bin/chromium
 # Firefox wrapper introduced above to set HOME to a writable directory
 ENV FIREFOX_BIN=/usr/local/bin/firefox
 
+# Prevent puppeteer from downloading a bundled Chromium and use the one from
+# Debian package - T179552
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
+
 # Can't change namespaces inside an unprivileged container, then we are already
 # in a namespace so just disable Chromium sandboxing
 ENV CHROMIUM_FLAGS="--no-sandbox"
