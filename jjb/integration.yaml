@@ -169,11 +169,15 @@
     publishers:
      - archive-log-dir
      - archive-tox-logs
-     - junit:
-         results: 'log/junit*.xml'
+     - xunit:
+         types:
+             - junit:
+                 pattern: 'log/junit*.xml'
      - email-ext:
          recipients: hashar@free.fr qa-alerts@lists.wikimedia.org
          content-type: html
+         failure: true
+         unstable: true
          body: |
              ${SCRIPT, template="wikimedia.template"}
              <h2>Changes since last build</h2>
