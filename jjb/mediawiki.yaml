@@ -262,6 +262,8 @@
         - '{name}-composer-{phpflavor}-{image}': *phpflavor_images
         - '{name}-composer-package-{phpflavor}-docker': &phpflavor_docker
             phpflavor:
+                - hhvm:
+                    image: docker-registry.wikimedia.org/releng/composer-package-hhvm:0.1.0
                 - php55:
                     image: docker-registry.wikimedia.org/releng/composer-package-php55:0.1.0
                 - php70:

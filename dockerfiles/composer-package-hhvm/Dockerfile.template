@@ -1,0 +1,7 @@
+FROM wmfreleng/composer-package
+
+FROM docker-registry.wikimedia.org/releng/composer-hhvm:latest
+
+USER nobody
+COPY --from=wmfreleng/composer-package /run.sh /run.sh
+ENTRYPOINT /bin/bash /run.sh
