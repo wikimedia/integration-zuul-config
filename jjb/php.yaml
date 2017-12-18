@@ -127,7 +127,7 @@
     publishers:
      - castor-save
 
-- job-template:
+- job-template: &composer-package-phpflavor-docker
     name: 'composer-package-{phpflavor}-docker'
     node: DebianJessieDocker
     concurrent: true
@@ -146,6 +146,12 @@
         logdir: '/log'
 
 - job-template:
+    !!merge : *composer-package-phpflavor-docker
+    name: '{name}-composer-package-{phpflavor}-docker'
+    triggers:
+     - zuul
+
+- job-template: &composer-phpflavor-docker
     name: 'composer-{phpflavor}-docker'
     node: DebianJessieDocker
     concurrent: true
@@ -163,6 +169,12 @@
         image: '{image}'
         logdir: '/log'
 
+- job-template:
+    !!merge : *composer-phpflavor-docker
+    name: '{name}-composer-{phpflavor}-docker'
+    triggers:
+     - zuul
+
 # Couple jobs with a {name} prefix
 - job-template:
     !!merge : *job_composer-phpflavor-image
@@ -175,8 +187,6 @@
 - project:
     name: 'composer-flavored-on-nodepool'
     phpflavor:
-        - php55:
-            image: jessie
         - php56:
             image: jessie
         - php70:
