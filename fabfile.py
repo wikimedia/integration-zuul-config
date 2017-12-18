@@ -21,17 +21,18 @@ env.use_ssh_config = True
 
 def _update_integration_config(
         diff_dir='zuul', log_msg='Reloading Zuul to deploy [hash]'):
-    env.sudo_user = 'zuul'
-    with cd('/etc/zuul/wikimedia'):
-        sudo('git remote update')
-        sudo('git --no-pager log -p HEAD..origin/master {}'.format(diff_dir))
-        if confirm('Does the diff look good?') and confirm(
-                'Did you log your reload in #wikimedia-releng (e.g. ' +
-                '"!log {}")'.format(log_msg)):
-            sudo('git rebase')
-            sudo('git -c gc.auto=128 gc --auto --quiet')
+    with settings(sudo_user='zuul'):
+        with cd('/etc/zuul/wikimedia'):
+            sudo('git remote update')
+            sudo('git --no-pager log -p HEAD..origin/master {}'.format(
+                diff_dir))
+            if confirm('Does the diff look good?') and confirm(
+                    'Did you log your reload in #wikimedia-releng (e.g. ' +
+                    '"!log {}")'.format(log_msg)):
+                sudo('git rebase')
+                sudo('git -c gc.auto=128 gc --auto --quiet')
 
-            return True
+                return True
 
     return False
 
@@ -49,20 +50,20 @@ def deploy_docker():
     if not updated:
         return
 
-    with cd('/tmp'):
-        env.sudo_user = 'jenkins-slave'
+    with settings(sudo_user='jenkins-slave'):
+        with cd('/tmp'):
+            docker_pkg = '/srv/deployment/docker-pkg/venv/bin/docker-pkg'
+            docker_pkg_config = '/etc/docker-pkg/integration.yaml'
+            dockerfiles = '/etc/zuul/wikimedia/dockerfiles'
+            cmd = '{} -c {} {}'.format(
+                docker_pkg, docker_pkg_config, dockerfiles)
 
-        docker_pkg = '/srv/deployment/docker-pkg/venv/bin/docker-pkg'
-        docker_pkg_config = '/etc/docker-pkg/integration.yaml'
-        dockerfiles = '/etc/zuul/wikimedia/dockerfiles'
-        cmd = '{} -c {} {}'.format(docker_pkg, docker_pkg_config, dockerfiles)
+            sudo(cmd)
 
-        sudo(cmd)
+            sudo('cat /tmp/docker-pkg-build.log')
 
-        sudo('cat /tmp/docker-pkg-build.log')
-
-        if confirm('delete build log?'):
-            sudo('rm /tmp/docker-pkg-build.log')
+            if confirm('delete build log?'):
+                sudo('rm /tmp/docker-pkg-build.log')
 
 
 @task
@@ -71,26 +72,26 @@ def deploy_zuul():
     env.host_string = 'contint1001.wikimedia.org'
 
     if _update_integration_config():
-        env.sudo_user = 'root'
-        sudo('/usr/sbin/service zuul reload', shell=False)
+        with settings(sudo_user='root'):
+            sudo('/usr/sbin/service zuul reload', shell=False)
 
 
 @task
 def deploy_slave_scripts():
     """Pull integration/jenkins on CI labs slaves"""
-    env.sudo_user = 'root'
-    env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
-    sudo("cumin --force 'name:\"slave-(?!docker|.*android)\"' "
-         "'cd /srv/deployment/integration/slave-scripts && git pull'")
+    with settings(sudo_user='root'):
+        env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
+        sudo("cumin --force 'name:\"slave-(?!docker|.*android)\"' "
+             "'cd /srv/deployment/integration/slave-scripts && git pull'")
 
 
 @task
 def docker_pull_image(imageName):
     """Pull a docker image onto the docker slaves"""
-    env.sudo_user = 'root'
-    env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
-    sudo("cumin --force 'name:slave-docker' "
-         "'docker pull " + imageName + "'")
+    with settings(sudo_user='root'):
+        env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
+        sudo("cumin --force 'name:slave-docker' "
+             "'docker pull " + imageName + "'")
 
 
 @task(default=True)
