@@ -1001,7 +1001,7 @@ project-templates:
     experimental:
      - mwext-qunit-composer-jessie
      - mwgate-npm-node-6-docker
-     - mwgate-composer-php70-jessie
+     - mwgate-composer-php70-docker
 
   - name: extension-unittests-composer-non-voting
     check:
@@ -1021,7 +1021,7 @@ project-templates:
      *extension-unittests-composer-non-voting-gate-and-submit
     experimental:
      - mwext-qunit-composer-jessie
-     - mwgate-composer-php70-jessie
+     - mwgate-composer-php70-docker
 
   - name: extension-unittests-generic
     check:
@@ -1043,7 +1043,7 @@ project-templates:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
       - mwgate-npm-node-6-docker
-      - mwgate-composer-php70-jessie
+      - mwgate-composer-php70-docker
       - mwext-php70-phan-docker
 
   - name: extension-unittests-non-voting
@@ -1066,7 +1066,7 @@ project-templates:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
       - mwgate-npm-node-6-docker
-      - mwgate-composer-php70-jessie
+      - mwgate-composer-php70-docker
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1173,7 +1173,7 @@ project-templates:
      - mwgate-npm-node-6-docker
      - mwgate-composer-hhvm-jessie
      - mwgate-composer-php55-docker
-     - mwgate-composer-php70-jessie
+     - mwgate-composer-php70-docker
 
   - name: composer-test
     check:
@@ -1199,7 +1199,7 @@ project-templates:
       - mwgate-composer-php55-docker
       - mwgate-composer-hhvm-jessie
     experimental:
-      - mwgate-composer-php70-jessie
+      - mwgate-composer-php70-docker
     gate-and-submit-swat: *mwgate-composer-gate-and-submit
 
   - name: php55lint
@@ -1454,7 +1454,7 @@ projects:
       - mediawiki-core-tag-doxygen-publish
     experimental:
       # Experimental php version
-      - mwgate-composer-php70-jessie
+      - mwgate-composer-php70-docker
       - mediawiki-phpunit-php70-jessie
       - mediawiki-extensions-php70-jessie
 
@@ -1486,7 +1486,7 @@ projects:
       - mediawiki-phpunit-php55-jessie
     gate-and-submit-swat: *mediawiki-vendor-gate-and-submit
     experimental:
-      - mwgate-composer-php70-jessie
+      - mwgate-composer-php70-docker
 
   - name: analytics/aggregator
     template:
