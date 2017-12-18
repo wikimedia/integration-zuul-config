@@ -1172,7 +1172,7 @@ project-templates:
     experimental:
      - mwgate-npm-node-6-docker
      - mwgate-composer-hhvm-jessie
-     - mwgate-composer-php55-jessie
+     - mwgate-composer-php55-docker
      - mwgate-composer-php70-jessie
 
   - name: composer-test
@@ -1180,10 +1180,10 @@ project-templates:
       - php55lint
       - composer-validate
     test:
-      - composer-php55-jessie
+      - composer-php55-docker
       - composer-hhvm-jessie
     gate-and-submit: &composer-test-gate-and-submit
-      - composer-php55-jessie
+      - composer-php55-docker
       - composer-hhvm-jessie
       - composer-php70-docker
     gate-and-submit-swat: *composer-test-gate-and-submit
@@ -1193,10 +1193,10 @@ project-templates:
       - mwgate-php55lint
       - mwgate-composer-validate
     test:
-      - mwgate-composer-php55-jessie
+      - mwgate-composer-php55-docker
       - mwgate-composer-hhvm-jessie
     gate-and-submit: &mwgate-composer-gate-and-submit
-      - mwgate-composer-php55-jessie
+      - mwgate-composer-php55-docker
       - mwgate-composer-hhvm-jessie
     experimental:
       - mwgate-composer-php70-jessie
@@ -1217,11 +1217,11 @@ project-templates:
       - php55lint
     test:
       - composer-package-hhvm-jessie
-      - composer-package-php55-jessie
+      - composer-package-php55-docker
       - composer-package-php70-docker
     gate-and-submit:
       - composer-package-hhvm-jessie
-      - composer-package-php55-jessie
+      - composer-package-php55-docker
       - composer-package-php70-docker
 
   - name: npm-docker
@@ -1475,13 +1475,13 @@ projects:
       - mwgate-composer-validate
     test:
       - mwgate-composer-hhvm-jessie
-      - mwgate-composer-php55-jessie
+      - mwgate-composer-php55-docker
       - mediawiki-phpunit-hhvm-jessie
     php5:
       - mediawiki-phpunit-php55-jessie
     gate-and-submit: &mediawiki-vendor-gate-and-submit
       - mwgate-composer-hhvm-jessie
-      - mwgate-composer-php55-jessie
+      - mwgate-composer-php55-docker
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-jessie
     gate-and-submit-swat: *mediawiki-vendor-gate-and-submit
@@ -1740,10 +1740,10 @@ projects:
     template:
       - name: npm-docker
     test:
-      - composer-php55-jessie
+      - composer-php55-docker
       - labs-tools-heritage-tox-docker
     gate-and-submit:
-      - composer-php55-jessie
+      - composer-php55-docker
       - labs-tools-heritage-tox-docker
     postmerge:
      - tox-py27-coverage-publish
@@ -1816,9 +1816,9 @@ projects:
     template:
      - name: npm-docker
     test:
-     - composer-php55-jessie
+     - composer-php55-docker
     gate-and-submit:
-     - composer-php55-jessie
+     - composer-php55-docker
     postmerge:
      - integration-docroot-deploy
 
@@ -6589,11 +6589,11 @@ projects:
       - php55lint
     test:
       - composer-package-hhvm-jessie
-      - composer-package-php55-jessie
+      - composer-package-php55-docker
       - composer-package-php70-docker
     gate-and-submit:
       - composer-package-hhvm-jessie
-      - composer-package-php55-jessie
+      - composer-package-php55-docker
       - composer-package-php70-docker
 
   - name: mediawiki/services/mathoid
@@ -7707,11 +7707,11 @@ projects:
     test:
       - oojs-ui-npm-run-jenkins-node-6-jessie
       - oojs-ui-rake-jessie
-      - composer-package-php55-jessie
+      - composer-package-php55-docker
     gate-and-submit:
       - oojs-ui-npm-run-jenkins-node-6-jessie
       - oojs-ui-rake-jessie
-      - composer-package-php55-jessie
+      - composer-package-php55-docker
     postmerge:
       - oojs-ui-jsduck-publish
       - oojs-ui-doxygen-publish
@@ -7791,10 +7791,10 @@ projects:
       - php55lint
     test:
       - composer-package-hhvm-jessie
-      - composer-package-php55-jessie
+      - composer-package-php55-docker
     gate-and-submit:
       - composer-package-hhvm-jessie
-      - composer-package-php55-jessie
+      - composer-package-php55-docker
     experimental:
       - composer-package-php70-docker
 
