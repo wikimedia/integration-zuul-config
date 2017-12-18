@@ -1,4 +1,4 @@
-FROM wmfreleng/ci-stretch:latest
+FROM docker-registry.wikimedia.org/releng/ci-stretch
 
 USER nobody
 COPY run.sh /run.sh
