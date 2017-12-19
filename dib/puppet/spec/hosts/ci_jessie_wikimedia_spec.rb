@@ -21,6 +21,9 @@ end
 describe 'ci-jessie-wikimedia' do
     let(:facts) { {
         :initsystem => 'systemd',
+        :operatingsystem => 'debian',
+        :operatingsystemmajrelease => 8,
+        :lsbdistcodename => 'jessie',
         :lsbdistrelease => '8.9',
         :lsbdistid => 'Debian',
     } }
