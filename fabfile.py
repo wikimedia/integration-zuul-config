@@ -50,20 +50,19 @@ def deploy_docker():
     if not updated:
         return
 
-    with settings(sudo_user='jenkins-slave'):
-        with cd('/tmp'):
-            docker_pkg = '/srv/deployment/docker-pkg/venv/bin/docker-pkg'
-            docker_pkg_config = '/etc/docker-pkg/integration.yaml'
-            dockerfiles = '/etc/zuul/wikimedia/dockerfiles'
-            cmd = '{} -c {} {}'.format(
-                docker_pkg, docker_pkg_config, dockerfiles)
+    with cd('/tmp'):
+        docker_pkg = '/srv/deployment/docker-pkg/venv/bin/docker-pkg'
+        docker_pkg_config = '/etc/docker-pkg/integration.yaml'
+        dockerfiles = '/etc/zuul/wikimedia/dockerfiles'
+        cmd = '{} -c {} {}'.format(
+            docker_pkg, docker_pkg_config, dockerfiles)
 
-            sudo(cmd)
+        sudo(cmd)
 
-            sudo('cat /tmp/docker-pkg-build.log')
+        sudo('cat /tmp/docker-pkg-build.log')
 
-            if confirm('delete build log?'):
-                sudo('rm /tmp/docker-pkg-build.log')
+        if confirm('delete build log?'):
+            sudo('rm /tmp/docker-pkg-build.log')
 
 
 @task
