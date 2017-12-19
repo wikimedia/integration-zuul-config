@@ -1,0 +1,10 @@
+FROM docker-registry.wikimedia.org/releng/ci-stretch:latest
+
+USER root
+
+RUN {{ "hhvm" | apt_install }}
+
+USER nobody
+
+ENTRYPOINT ["hhvm"]
+CMD ["--help"]
