@@ -13,6 +13,11 @@ RSpec.configure do |c|
     end
 end
 
+if ENV['PUPPET_DEBUG']
+    Puppet::Util::Log.level = :debug
+    Puppet::Util::Log.newdestination(:console)
+end
+
 describe 'ci-jessie-wikimedia' do
     let(:facts) { {
         :initsystem => 'systemd',
