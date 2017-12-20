@@ -4,6 +4,16 @@ USER root
 
 RUN {{ "hhvm" | apt_install }}
 
+COPY hhvm.ini /hhvm.ini
+
+RUN tee --append /etc/hhvm/php.ini < /hhvm.ini \
+    && touch /hhvm.hhbc \
+    && chwon nobody /hhvm.hhbc \
+    && printf '<?php\necho "HHVM execution works\\n";\n' > /smoketest.php \
+    && su -s '/bin/sh' -c 'hhvm /smoketest.php' nobody \
+    && echo -n > /hhvm.hhbc \
+    && rm /smoketest.php /hhvm.ini
+
 USER nobody
 
 ENTRYPOINT ["hhvm"]
