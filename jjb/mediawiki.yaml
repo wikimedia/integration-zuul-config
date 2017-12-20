@@ -431,7 +431,7 @@
         set -x
         exec docker run \
             --rm \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
             --volume /srv/git:/srv/git \

@@ -64,7 +64,7 @@
              - shell: |
                  echo "Clearing $WORKSPACE/cache"
                  exec docker run --rm \
-                     --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
+                     --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
                      --volume "$(pwd)"/cache:/cache \
                          'docker-registry.wikimedia.org/releng/castor:0.1.3' clear || :
                  # nothing else can be executed due to exec
@@ -90,7 +90,7 @@
         - docker-cache-dir
         - shell: |
             exec docker run --rm \
-                --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
+                --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
                 --volume "${WORKSPACE}/cache":/cache \
                 docker-registry.wikimedia.org/releng/castor:0.1.3 \
                 load
