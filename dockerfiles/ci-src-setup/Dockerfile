@@ -22,7 +22,7 @@ RUN apt-get update && \
     # Only update the source we have added to save time
     apt-get update -o Dir::Etc::sourcelist="sources.list.d/php.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
     apt-get install --yes \
-        php7.0-cli && \
+        php-cli && \
     apt-get remove --yes \
         apt-transport-https lsb-release && \
     apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* && \
@@ -38,9 +38,9 @@ RUN apt-get update && \
     apt-get update -o Dir::Etc::sourcelist="sources.list.d/php.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" && \
     apt-get install --yes \
         # Needed for composer to install things from dist
-        php7.0-zip \
-        # Needed for mediawiki
-        php-ast php7.0-mbstring php7.0-xml && \
+        php-zip \
+        # Needed for mediawiki / extensions
+        php-ast php-mbstring php-xml php-curl && \
     apt-get remove --yes --purge \
         apt-transport-https lsb-release && \
     apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* && \
