@@ -3,8 +3,8 @@ FROM {{ registry }}/wikimedia-stretch
 RUN {{ "rsync" | apt_install }} \
     && mkdir -p /castor
 
-COPY jjb/castor-define-namespace.bash /castor/
-COPY jjb/castor-load-sync.bash /castor/
+COPY castor-define-namespace.bash /castor/
+COPY castor-load-sync.bash /castor/
 COPY run.bash /run.bash
 
 USER nobody
