@@ -268,7 +268,14 @@
                     image: docker-registry.wikimedia.org/releng/composer-package-php55:0.1.0
                 - php70:
                     image: wmfreleng/composer-package:v2017.10.28.07.05
-        - '{name}-composer-{phpflavor}-docker': *phpflavor_docker
+        - '{name}-composer-{phpflavor}-docker':
+            phpflavor:
+                - hhvm:
+                    image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.1.0
+                - php55:
+                    image: docker-registry.wikimedia.org/releng/composer-test-php55:0.1.0
+                - php70:
+                    image: wmfreleng/composer-test:v2017.10.28.06.23
         - '{name}-composer-validate'
         - '{name}-jsduck'
         - '{name}-{phpflavor}lint':
