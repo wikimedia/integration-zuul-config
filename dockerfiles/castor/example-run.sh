@@ -22,5 +22,5 @@ assert $'Defined: CASTOR_NAMESPACE="mediawiki-core/master/dosomething"\r' docker
     --env ZUUL_PROJECT=mediawiki/core \
     --env ZUUL_BRANCH=master \
     --env JOB_NAME=dosomething \
-    wmfreleng/castor:latest \
+    docker-registry.wikimedia.org/releng/castor:latest \
     config
