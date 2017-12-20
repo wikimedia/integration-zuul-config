@@ -421,6 +421,10 @@
          name: ZUUL_BRANCH
          default: master
     wrappers:
+      - ansicolor
+      - timeout:
+          timeout: 180
+      - timestamps
       # Wiki usernames and passwords are hold in Jenkins credentials store
       # https://integration.wikimedia.org/ci/credentials/store/system/domain/selenium/
       - credentials-binding:
