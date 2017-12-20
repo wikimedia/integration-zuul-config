@@ -66,7 +66,7 @@
                  exec docker run --rm \
                      --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
                      --volume "$(pwd)"/cache:/cache \
-                          'wmfreleng/castor:v2017.10.30.21.03' clear || :
+                         'docker-registry.wikimedia.org/releng/castor:0.1.0' clear || :
                  # nothing else can be executed due to exec
 
 # Entry point to load cache from central cache
@@ -92,7 +92,7 @@
             exec docker run --rm \
                 --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
                 --volume "${WORKSPACE}/cache":/cache \
-                wmfreleng/castor:v2017.10.30.21.03 \
+                docker-registry.wikimedia.org/releng/castor:0.1.0 \
                 load
                 # nothing else can be executed due to exec
 
