@@ -14,6 +14,10 @@ RUN tee --append /etc/hhvm/php.ini < /hhvm.ini \
     && echo -n > /hhvm.hhbc \
     && rm /smoketest.php /hhvm.ini
 
+# So that we always use the proper path even without a ini file (php -n)
+ENV HHVM_REPO_CENTRAL_PATH=/hhvm.hhbc
+RUN php -n -r 'echo "HHVM works without an ini file\n";'
+
 USER nobody
 
 ENTRYPOINT ["hhvm"]
