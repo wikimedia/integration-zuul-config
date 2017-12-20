@@ -1,0 +1,1 @@
+../../jjb/castor-define-namespace.bash
