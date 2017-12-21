@@ -1,4 +1,4 @@
-FROM wmfreleng/php:latest
+FROM docker-registry.wikimedia.org/releng/php:latest
 
 USER root
 
