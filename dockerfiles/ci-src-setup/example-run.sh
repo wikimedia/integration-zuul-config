@@ -8,5 +8,5 @@ docker run \
     --env ZUUL_REF=refs/changes/08/371108/4 \
     --env EXT_DEPENDENCIES=mediawiki/extensions/BetaFeatures \
     --entrypoint "bash" \
-    wmfreleng/ci-src-setup:latest \
+    docker-registry.wikimedia.org/releng/ci-src-setup:latest \
     //srv/setup-mwext.sh
