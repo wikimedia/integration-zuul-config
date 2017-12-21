@@ -1,6 +1,6 @@
 FROM wmfreleng/composer:latest as composer
 
-FROM docker-registry.wikimedia.org/releng/hhvm:latest
+FROM {{ "hhvm" | image_tag }}
 
 COPY --from=composer /srv/composer /srv/composer
 COPY --from=composer /.cache-buster-composer /.cache-buster-composer
