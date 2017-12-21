@@ -1,6 +1,6 @@
 FROM wmfreleng/composer-package
 
-FROM docker-registry.wikimedia.org/releng/composer-hhvm:latest
+FROM {{ "composer-hhvm" | image_tag }}
 
 USER nobody
 COPY --from=wmfreleng/composer-package /run.sh /run.sh
