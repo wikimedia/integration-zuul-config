@@ -11,4 +11,4 @@ docker run \
     --env ZUUL_REF=master \
     --volume /"$(pwd)"/log://log \
     --volume /"$(pwd)"/cache://cache \
-     wmfreleng/tox-eventlogging:latest
+    docker-registry.wikimedia.org/releng/tox-eventlogging:latest
