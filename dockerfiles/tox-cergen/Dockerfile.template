@@ -1,0 +1,6 @@
+FROM {{ "tox" | image_tag }}
+
+USER root
+RUN {{ "openjdk-8-jre-headless libssl-dev" | apt_install }}
+
+USER nobody
