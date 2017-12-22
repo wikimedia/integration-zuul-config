@@ -1,4 +1,4 @@
-FROM {{ 'npm' | image_tag }}
+FROM wmfreleng/npm:latest
 
 USER nobody
 COPY run.sh /run.sh
