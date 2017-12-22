@@ -8,5 +8,5 @@ docker run \
     --env ZUUL_PROJECT=analytics/wmde/WDCM \
     --env ZUUL_COMMIT=7c680069cfb5b1511826f35ce4a2c29598507ec6 \
     --env ZUUL_REF=refs/changes/06/380306/2 \
-    --volume /$(pwd)/log://log \
-     wmfreleng/lintr:latest
+    --volume "/$(pwd)/log"://log \
+    docker-registry.wikimedia.org/releng/lintr:latest
