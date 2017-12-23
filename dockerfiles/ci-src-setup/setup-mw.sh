@@ -17,4 +17,4 @@ zuul-cloner \
 cd /src
 
 [[ -f "composer.json" ]] || exit 0
-composer update --ansi --no-progress --prefer-dist --profile -v
+composer update --ansi --no-progress --prefer-dist --profile --ignore-platform-reqs -v
