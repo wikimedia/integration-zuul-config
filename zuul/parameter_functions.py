@@ -280,6 +280,7 @@ dependencies = {
     'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
     'Wikidata.org': ['Wikibase'],
     'WikidataPageBanner': ['Wikibase'],
+    'WikiEditor': ['EventLogging'],
     'WikimediaBadges': ['Wikibase'],
     'WikimediaEvents': ['EventLogging'],
     'wikihiero': ['VisualEditor'],
