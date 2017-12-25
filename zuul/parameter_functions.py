@@ -245,7 +245,7 @@ dependencies = {
     'SportsTeams': ['SocialProfile', 'UserStatus'],
     'Spreadsheet': ['PHPExcel'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
-    'TitleBlacklist': ['AntiSpoof'],
+    'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TheWikipediaLibrary': ['Echo'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
