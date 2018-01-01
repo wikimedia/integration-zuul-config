@@ -205,6 +205,7 @@ dependencies = {
     'NamespacePopups': ['PagePopups'],
     'NavigationTiming': ['EventLogging'],
     'NSFileRepo': ['Lockdown'],
+    'Newsletter': ['Echo'],
     'NewUsersList': ['SocialProfile'],
     'NumberOfComments': ['Comments'],
     'OpenIDConnect': ['PluggableAuth'],
