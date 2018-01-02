@@ -12,14 +12,14 @@ mkdir -m 777 -p cache
  git checkout FETCH_HEAD
 )
 
-# NPM_RUN_SCRIPT=doc => npm run-script doc
+# Arguments are passed to 'npm run-script',eg 'doc'
 docker run \
     --rm --tty \
-    -e NPM_RUN_SCRIPT=doc \
     --volume /"$(pwd)"/log://var/lib/jenkins/log \
     --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/src://src \
-     wmfreleng/npm-test:latest
+     wmfreleng/npm-test:latest \
+        doc
 
 if grep -q JSDuck src/docs/index.html; then
     echo "JSDuck documentation has been generated"
