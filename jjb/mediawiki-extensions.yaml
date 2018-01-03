@@ -465,3 +465,64 @@
 
     jobs:
      - 'selenium-{name}-jessie'
+
+- job:
+    name: 'mwext-phpunit-coverage-publish'
+    node: contintLabsSlave && DebianJessie
+    builders:
+     - prepare-mediawiki-zuul-project
+     - mw-fetch-composer-dev
+     - mw-run-phpunit-allexts
+     # FIXME should use the mw-phpunit.sh wrapper
+     - shell: |
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
+        mkdir -p log
+        rm -f log/clover.xml log/clover.bz2
+
+        rm -fR "$WORKSPACE/cover"
+        mkdir -p "$WORKSPACE/cover"
+
+        # We need to edit suite.xml to use the proper coverage paths.
+        # Since this will only run for extensions, it's safe to use $DOC_BASENAME as a shortcut
+        # to the extension directory name.
+        /srv/deployment/integration/slave-scripts/bin/suite-edit.py $MW_INSTALL_PATH/tests/phpunit/suite.xml --cover-extension "$DOC_BASENAME"
+
+        nice -n 19 \
+            php -d zend_extension=xdebug.so \
+                $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
+                    --testsuite extensions \
+                    --coverage-clover log/clover.xml \
+                    --coverage-html "$WORKSPACE/cover" \
+            || :
+        # Above: Use "|| :" to ignore any non-zero exist status
+        # We want to publish code coverage even in case one of there
+        # being PHPUnit test failures. Normal test failures are not
+        # fatal and PHPUnit will stil generate console output, clover
+        # reports and and html reports. However don't blindly
+        # make the job pass either because if we do, then cover-publish
+        # will end up syncing an empty directory, which deletes the
+        # coverage report from doc.wikimedia.org. In case of "real" failure,
+        # let the job fail and don't publish a new report. "real" failures
+        # can be a PHP Fatal error, of a segfault, for example.
+        test -f cover/index.html
+
+        if [ -s "log/clover.xml" ]; then
+            cp log/clover.xml "$WORKSPACE/cover/clover.xml"
+        fi
+
+     - cover-publish:
+         src: 'cover'
+         dest: '$DOC_PROJECT'
+    publishers:
+     - archive:
+         artifacts: 'log/*'
+     - cloverphp:
+         xml-location: 'log/clover.xml'
+     - mw-teardown
+     - beta-irc  # Spam #wikimedia-releng on failure
+    triggers:
+     - timed: '0 3,15 * * *'
+    wrappers:
+     - ansicolor
+     - timestamps
