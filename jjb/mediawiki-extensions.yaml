@@ -489,7 +489,7 @@
         /srv/deployment/integration/slave-scripts/bin/suite-edit.py $MW_INSTALL_PATH/tests/phpunit/suite.xml --cover-extension "$DOC_BASENAME"
 
         nice -n 19 \
-            php -d zend_extension=xdebug.so \
+            php7.0 -d zend_extension=xdebug.so \
                 $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
                     --testsuite extensions \
                     --coverage-clover log/clover.xml \
