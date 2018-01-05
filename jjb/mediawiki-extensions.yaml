@@ -471,6 +471,11 @@
     node: contintLabsSlave && DebianJessie
     concurrent: false
     builders:
+     - shell: |
+        # XXX: MediaWiki auto-enables any skins it can find
+        # But we only want to enable the skins that this extension
+        # needs, so remove any other skins that might be laying around.
+        rm -rf "$WORKSPACE/src/skins/"
      - prepare-mediawiki-zuul-project
      - mw-fetch-composer-dev
      # FIXME should use the mw-phpunit.sh wrapper
