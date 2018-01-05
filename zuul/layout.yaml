@@ -851,6 +851,10 @@ jobs:
     files:
      - '^(\.js.*|\.stylelintrc|.*\.(css|js|json|less)$)'
 
+    # Only generate coverage information for master
+  - name: ^.*-coverage-publish$
+    branch: master
+
   - name: jsduck
     files:
      - '^.*\.(js|json|css)$'
