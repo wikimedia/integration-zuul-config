@@ -112,8 +112,11 @@
          rm -fR coverage log
          mkdir -p log
          set -o pipefail
-         TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -e py27 -- --cover-html --cover-html-dir=coverage/ | tee "log/tox-coverage.log"
+         TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -e py27 -- --cover-html --cover-html-dir=coverage/ --cover-xml | tee "log/tox-coverage.log"
          set +o pipefail
+         mv coverage.xml log/coverage.xml
+         /srv/deployment/integration/slave-scripts/bin/cobertura-clover-transform.py log/coverage.xml -o log/clover.xml
+         cp log/clover.xml coverage/clover.xml
      - cover-publish:
         src: 'coverage'
         dest: '$DOC_PROJECT'
