@@ -283,6 +283,25 @@
      - castor-save
 
 - job-template:
+    name: '{name}-deploy-npm-node-6-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    docker_image_var: 'wmfreleng/npm-test-deploy:v000'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-src-dir
+        - docker-log-dir
+        - docker-ci-src-setup-simple
+        - docker-run-with-log-cache-src:
+           image: '{obj:docker_image_var}'
+           logdir: '/log'
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+
+- job-template:
     name: '{phpflavor}lint'
     node: contintLabsSlave && DebianJessie
     defaults: use-remote-zuul-shallow-clone
