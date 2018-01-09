@@ -7,6 +7,34 @@
          bundle install --clean
          bundle exec {command}
 
+- job-template: &job_rake-docker
+    name: 'rake-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    docker_image_var: 'docker-registry.wikimedia.org/releng/rake:0.1.0'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: '{obj:docker_image_var}'
+            logdir: '/log'
+    wrappers:
+        - timeout:
+            timeout: '{obj:build_timeout|3}'  # minutes
+        - timestamps
+        - ansicolor
+    publishers:
+        - archive-log-dir
+        - castor-save-workspace-cache
+
+- job-template:
+    !!merge : *job_rake-docker
+    name: '{name}-rake-docker'
+    triggers:
+        - zuul
+
 # Run `bundle exec rake test` on Nodepool Jessie instances.
 - job: &job_rake-jessie
     name: 'rake-jessie'
@@ -32,6 +60,7 @@
 - project:
     name: common-rake-job
     jobs:
+     - rake-docker
      - rake-jessie
 
 # Call bundle 'yard' to generate documentation in labs and publish to

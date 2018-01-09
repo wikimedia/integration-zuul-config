@@ -757,7 +757,7 @@ jobs:
      - '^tox\.ini$'
 
 
-  - name: ^.*rake-jessie$
+  - name: ^.*rake-(docker|jessie)$
     files:
       # Uses python re.match() which checks at BEGINNING of the string
       - '.*\.pp$'
@@ -766,15 +766,15 @@ jobs:
       - '.*([Rr]akefile|/spec/)'
 
   # Same for mediawiki/vagrant
-  - name: ^mediawiki-vagrant-rake-jessie$
+  - name: ^mediawiki-vagrant-rake-(docker|jessie)$
     files:
       - '.*'
-  - name: ^puppet-wmf-styleguide-rake-jessie$
+  - name: ^puppet-wmf-styleguide-rake-(docker|jessie)$
     files:
       - '.*'
 
   # Ditto for translatewiki which has puppet modules under /puppet
-  - name: ^translatewiki-rake-jessie$
+  - name: ^translatewiki-rake-(docker|jessie)$
     files:
       - '^\.puppet-lint\.rc$'
       - '^puppet/.*'
@@ -1264,12 +1264,16 @@ project-templates:
     gate-and-submit: &rake-gate-and-submit
       - rake-jessie
     gate-and-submit-swat: *rake-gate-and-submit
+    experimental:
+      - rake-docker
 
   - name: mwgate-rake
     test:
       - mwgate-rake-jessie
     gate-and-submit:
       - mwgate-rake-jessie
+    experimental:
+      - mwgate-rake-docker
 
   - name: mwext-ruby-jessie
     test:
@@ -1289,6 +1293,8 @@ project-templates:
     test:
       - puppet-{name}-rake-jessie
     gate-and-submit:
+      - puppet-{name}-rake-jessie
+    experimental:
       - puppet-{name}-rake-jessie
 
   - name: tox-docker
@@ -2185,6 +2191,8 @@ projects:
       - mediawiki-vagrant-rake-jessie
     postmerge:
       - mediawiki-vagrant-puppet-doc-publish
+    experimental:
+      - mediawiki-vagrant-rake-docker
 
   - name: node-rdkafka-statsd
     template:
@@ -2493,6 +2501,8 @@ projects:
       - puppet-wmf-styleguide-rake-jessie
     gate-and-submit:
       - puppet-wmf-styleguide-rake-jessie
+    experimental:
+      - puppet-wmf-styleguide-rake-docker
 
   - name: operations/puppet/cdh
     template:
@@ -2666,6 +2676,8 @@ projects:
     gate-and-submit:
       - translatewiki-rake-jessie
       - translatewiki-composer-hhvm-jessie
+    experimental:
+      - translatewiki-rake-docker
 
   - name: wikimedia-ui-base
     template:
@@ -7933,6 +7945,8 @@ projects:
       - oojs-ui-doxygen-publish
       - oojs-ui-coverage
       - oojs-ui-demos-publish
+    experimental:
+      - oojs-ui-rake-docker
 
   - name: sink_nova_ldap
     template:
@@ -7966,6 +7980,8 @@ projects:
       - visualeditor-rake-jessie
     postmerge:
       - visualeditor-coverage
+    experimental:
+      - visualeditor-rake-docker
 
   - name: wikidata/query/rdf
     test:
