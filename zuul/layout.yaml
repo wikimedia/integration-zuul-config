@@ -790,6 +790,8 @@ jobs:
     skip-if:
       - project: '^integration/uprightdiff$'
         branch: ^master$
+      - project: '^integration/zuul$'
+        branch: (?!^debian/)
       - project: '^operations/software/cumin$'
         branch: ^master$
 
@@ -1382,7 +1384,7 @@ projects:
 
   - name: integration/zuul
     test:
-      - debian-glue-non-voting
+      - debian-glue
 
   - name: mapdata
     test:
