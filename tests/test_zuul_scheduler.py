@@ -651,13 +651,13 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
-    def test_rake_jessie_files_filters(self):
+    def test_rake_docker_files_filters(self):
         # FIXME: should be more generic
         jobs_tree = [t for (p, t) in
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'mediawiki/ruby/api'][0]
         rake_jessie_job = [j for j in jobs_tree.getJobs()
-                           if j.name == 'rake-jessie'][0]
+                           if j.name.endswith('rake-docker')][0]
 
         def change_with_files(files):
             change = zuul.model.Change('mediawiki/ruby/api')
@@ -682,11 +682,11 @@ class TestZuulScheduler(unittest.TestCase):
                 if expect:
                     self.assertTrue(
                         rake_jessie_job.changeMatches(change),
-                        'rake-jessie should run with files: %s' % files)
+                        'rake-docker should run with files: %s' % files)
                 else:
                     self.assertFalse(
                         rake_jessie_job.changeMatches(change),
-                        'rake-jessie should NOT run with files: %s' % files)
+                        'rake-docker should NOT run with files: %s' % files)
             except AssertionError, e:
                 errors.append(str(e))
 
