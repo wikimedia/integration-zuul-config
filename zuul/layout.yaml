@@ -774,7 +774,7 @@ jobs:
       - '.*'
 
   # Ditto for translatewiki which has puppet modules under /puppet
-  - name: ^translatewiki-rake-(docker|jessie)$
+  - name: ^translatewiki-rake-docker$
     files:
       - '^\.puppet-lint\.rc$'
       - '^puppet/.*'
@@ -2667,13 +2667,11 @@ projects:
 
   - name: translatewiki
     test:
-      - translatewiki-rake-jessie
+      - translatewiki-rake-docker
       - translatewiki-composer-hhvm-jessie
     gate-and-submit:
-      - translatewiki-rake-jessie
-      - translatewiki-composer-hhvm-jessie
-    experimental:
       - translatewiki-rake-docker
+      - translatewiki-composer-hhvm-jessie
 
   - name: wikimedia-ui-base
     template:
