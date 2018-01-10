@@ -1258,15 +1258,6 @@ project-templates:
     gate-and-submit:
       - mwgate-npm-node-6-docker
 
-  - name: rake
-    test:
-      - rake-jessie
-    gate-and-submit: &rake-gate-and-submit
-      - rake-jessie
-    gate-and-submit-swat: *rake-gate-and-submit
-    experimental:
-      - rake-docker
-
   - name: mwgate-rake
     test:
       - mwgate-rake-jessie
@@ -1841,17 +1832,19 @@ projects:
      - integration-docroot-deploy
 
   - name: mediawiki/ruby/api
-    template:
-      - name: rake
+    test:
+      - mediawiki-ruby-api-rake-docker
+    gate-and-submit:
+      - mediawiki-ruby-api-rake-docker
     postmerge:
      - mediawiki-ruby-api-bundle-yard-publish
 
   - name: mediawiki/selenium
-    template:
-      - name: rake
     test:
+     - mediawiki-selenium-rake-docker
      - mediawiki-selenium-integration-jessie
     gate-and-submit:
+     - mediawiki-selenium-rake-docker
      - mediawiki-selenium-integration-jessie
     postmerge:
      - mediawiki-selenium-bundle-yard-publish
