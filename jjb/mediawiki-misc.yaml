@@ -33,7 +33,8 @@
 - project:
     name: 'mediawiki-vagrant'
     jobs:
-     - '{name}-rake-docker'
+     - '{name}-rake-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/rake-vagrant:0.1.0
      - '{name}-rake-jessie'
      - 'mediawiki-vagrant-puppet-doc-publish'
 
