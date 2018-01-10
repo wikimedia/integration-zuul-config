@@ -11,5 +11,5 @@ git fetch --depth 2 --quiet "${ZUUL_URL}/${ZUUL_PROJECT}" "$ZUUL_REF"
 git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
-bundle install --path .bundle
+bundle install --clean --path "${XDG_CACHE_HOME}/bundle"
 exec bundle exec rake test

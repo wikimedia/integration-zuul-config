@@ -2,6 +2,7 @@
 
 set -euxo pipefail
 
+install --mode 2777 --directory cache
 install --mode 2777 --directory log
 docker run \
     --rm --tty \
@@ -10,5 +11,6 @@ docker run \
     --env ZUUL_PROJECT=mediawiki/ruby/api \
     --env ZUUL_COMMIT=master \
     --env ZUUL_REF=master \
+    --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/log://log \
     docker-registry.wikimedia.org/releng/rake:latest
