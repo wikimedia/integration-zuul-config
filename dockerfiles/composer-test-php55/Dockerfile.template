@@ -1,7 +1,7 @@
-FROM wmfreleng/composer-test
+FROM {{ "composer-test" | image_tag }} as composer-test
 
 FROM {{ "composer-php55" | image_tag }}
 
 USER nobody
-COPY --from=wmfreleng/composer-test /run.sh /run.sh
+COPY --from=composer-test /run.sh /run.sh
 ENTRYPOINT /bin/bash /run.sh
