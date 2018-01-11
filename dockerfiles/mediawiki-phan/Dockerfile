@@ -1,4 +1,4 @@
-FROM wmfreleng/composer:latest
+FROM {{ "composer" | image_tag }}
 
 USER root
 
