@@ -35,33 +35,10 @@
     triggers:
         - zuul
 
-# Run `bundle exec rake test` on Nodepool Jessie instances.
-- job: &job_rake-jessie
-    name: 'rake-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - bundle-nodepool:
-         command: rake test
-    publishers:
-     - castor-save
-
-- job-template:
-    !!merge : *job_rake-jessie
-    name: '{name}-rake-jessie'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - project:
     name: common-rake-job
     jobs:
      - rake-docker
-     - rake-jessie
 
 # Call bundle 'yard' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.

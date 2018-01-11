@@ -656,7 +656,7 @@ class TestZuulScheduler(unittest.TestCase):
         jobs_tree = [t for (p, t) in
                      self.getPipeline('test').job_trees.iteritems()
                      if p.name == 'mediawiki/ruby/api'][0]
-        rake_jessie_job = [j for j in jobs_tree.getJobs()
+        rake_docker_job = [j for j in jobs_tree.getJobs()
                            if j.name.endswith('rake-docker')][0]
 
         def change_with_files(files):
@@ -681,11 +681,11 @@ class TestZuulScheduler(unittest.TestCase):
             try:
                 if expect:
                     self.assertTrue(
-                        rake_jessie_job.changeMatches(change),
+                        rake_docker_job.changeMatches(change),
                         'rake-docker should run with files: %s' % files)
                 else:
                     self.assertFalse(
-                        rake_jessie_job.changeMatches(change),
+                        rake_docker_job.changeMatches(change),
                         'rake-docker should NOT run with files: %s' % files)
             except AssertionError, e:
                 errors.append(str(e))
