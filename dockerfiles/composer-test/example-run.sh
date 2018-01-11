@@ -1,18 +1,18 @@
 #!/bin/bash
 
-mkdir -m 2777 -p log src cache
+set -eux -o pipefail
 
-git init src
-git -C src fetch --quiet --depth 1 \
-    "https://gerrit.wikimedia.org/r/integration/jenkins" \
-    "refs/changes/31/316231/4"
-git -C src checkout FETCH_HEAD
+mkdir -m 2777 -p log src cache
+(
+cd src
+git init
+git fetch --quiet --depth 1 "https://gerrit.wikimedia.org/r/integration/jenkins" "master"
+git checkout FETCH_HEAD
+)
 
 docker run \
     --rm --tty \
-    --volume /$(pwd)/log:/log \
-    --volume /$(pwd)/cache:/cache \
-    --volume /$(pwd)/src:/src \
-    wmfreleng/composer-test:latest
-
-rm -rf src log cache
+    --volume "/$(pwd)/cache:/cache" \
+    --volume "/$(pwd)/log:/log" \
+    --volume "/$(pwd)/src:/src" \
+    docker-registry.wikimedia.org/releng/composer-test:latest
