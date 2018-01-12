@@ -1,4 +1,4 @@
-FROM wmfreleng/composer:latest
+FROM {{ "composer" | image_tag }}
 
 USER root
 
@@ -13,4 +13,4 @@ RUN  cd /srv/phan && \
      rm -rf /cache/*
 
 COPY run.sh /run.sh
-ENTRYPOINT ["/bin/bash", "/run.sh"]
+ENTRYPOINT ["/run.sh"]
