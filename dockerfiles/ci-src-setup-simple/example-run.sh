@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 install --mode 777 --directory log
 docker run \
     --rm --tty \
@@ -7,5 +9,5 @@ docker run \
     --env ZUUL_PROJECT=integration/jenkins \
     --env ZUUL_COMMIT=7a4ee7963a15dbdc5d5afb363600d63574bb31a0 \
     --env ZUUL_REF=refs/changes/31/316231/4 \
-    --volume /$(pwd)/log://var/lib/jenkins/log \
-     wmfreleng/ci-src-setup-simple:latest
+    --volume "/$(pwd)/log"://var/lib/jenkins/log \
+    docker-registry.wikimedia.org/releng/ci-src-setup-simple:latest
