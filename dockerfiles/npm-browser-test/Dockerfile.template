@@ -1,15 +1,7 @@
-FROM wmfreleng/npm-test-stretch:latest
+FROM {{ "npm-test-stretch" | image_tag }}
 
 USER root
-RUN apt-get update && \
-    apt-get install --yes \
-        chromium \
-        chromium-driver \
-        firefox-esr \
-        phantomjs \
-        xvfb \
-    && \
-        apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN {{ "chromium chromium-driver firefox-esr phantomjs xvfb" | apt_install }}
 
 COPY firefox /usr/local/bin/firefox
 
