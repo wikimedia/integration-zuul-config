@@ -17,7 +17,7 @@ for repo in kartotherian tilerator; do
         --volume /"$(pwd)/log-$repo"://var/lib/jenkins/log \
         --volume /"$(pwd)"/cache://cache \
         --volume /"$(pwd)/src-$repo"://src \
-         wmfreleng/npm-test-maps-service:latest || {
+        docker-registry.wikimedia.org/releng/npm-test-maps-service:latest || {
             err="$err$repo failed "
         }
 done
