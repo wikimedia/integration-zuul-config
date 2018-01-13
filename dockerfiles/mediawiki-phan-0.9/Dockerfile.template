@@ -1,0 +1,27 @@
+FROM {{ "composer-71" | image_tag }}
+
+USER root
+
+RUN install -d /srv/phan -o nobody
+
+# Install php7.0 dev for phpize, and php-pear for pecl
+# pecl allows us to install the newer versions of ast
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+        php7.0-dev php-pear make && \
+    pecl install ast && \
+    apt-get remove --yes \
+        php7.0-dev php-pear make && \
+    apt-get autoremove --yes && apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    mv /usr/lib/php/20151012/ast.so
+
+ENV PHAN /srv/phan/vendor/bin/phan
+
+USER nobody
+
+RUN  cd /srv/phan && \
+     composer require phan/phan:0.9.7 && \
+     rm -rf /cache/*
+
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]
