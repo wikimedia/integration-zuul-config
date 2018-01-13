@@ -172,6 +172,68 @@
           aborted: true
           failure: true
           fixed: true
+#TODO actually trigger them after update
+#      - trigger:
+#          project: beta-core-browsertests
+
+- job-template:
+    name: beta-core-browsertests-addshore-test
+    defaults: beta
+    node: ci-jessie-wikimedia
+
+    # Do not run concurrently with upstream jobs
+    #block-upstream: true#TODO uncomment
+
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    # Just get core, we dont need extensions, vendor or sql
+    builders:
+     # get core (only)
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+     # npm install
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
+        cd $MW_INSTALL_PATH
+        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
+        rm -rf node_modules
+        npm install
+        #./node_modules/.bin/grunt karma:main
+     # Ripped and altered from mw-wdio-nodepool
+     - shell: |
+        . /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
+        # TODO switch the server based on job name, allows triggering jobs for other beta sites..
+        # TODO needs login details..
+
+        export MW_SERVER="https://deployment.wikimedia.beta.wmflabs.org"
+        export MW_SCRIPT_PATH="/w"
+
+        cd $MW_INSTALL_PATH
+        if [ -f ./tests/selenium/wdio.conf.js ]; then
+            chromedriver --url-base=/wd/hub --port=4444 &
+            # Make sure it is killed to prevent file descriptors leak
+            #TODO jjb wouldn't let me build the job with the kill commands...
+
+            ./node_modules/.bin/grunt webdriver:test
+        fi
+     - assert-no-mediawiki-errors
+    publishers:
+     #- castor-save
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml,log/WDIO.xunit*.xml'
+        # Qunit does not generate Junit file and we might skip selenium
+        allow-empty-results: true
+     #- beta-irc#TODO uncomment
+     #- email-ext:#TODO uncomment
+     #    recipients: qa-alerts@lists.wikimedia.org betacluster-alerts@lists.wikimedia.org
+     #    content-type: 'html'
+     #    attach-build-log: false
+     #    aborted: true
+     #    failure: true
+     #    fixed: true
 
 # Also used in mediawiki-core-code-coverage
 - publisher:
@@ -197,3 +259,4 @@
      - beta-mediawiki-config-update-eqiad
      - beta-scap-eqiad
      - beta-update-databases-eqiad
+     - beta-core-browsertests-addshore-test
