@@ -2783,9 +2783,13 @@ projects:
       - name: composer-test
 
   - name: wikimedia/wikimania-scholarships
-    template:
-     - name: npm-docker
-     - name: composer-test
+    check:
+      - php56lint
+      - composer-validate
+    test: &wikimania-scholarships-test
+      - npm-node-6-docker
+      - composer-php56-jessie
+    gate-and-submit: *wikimania-scholarships-test
 
   - name: wikimedia/textcat
     template:
