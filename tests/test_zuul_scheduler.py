@@ -174,6 +174,7 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(
             any([job for job in definition
                  if job.endswith(('php55lint')) or
+                 job.endswith(('php56lint')) or
                  job.startswith('mediawiki-extensions-') or
                  job.startswith(('composer-', 'mwgate-composer'))]),
             'Project %s pipeline %s must have either '
@@ -337,8 +338,8 @@ class TestZuulScheduler(unittest.TestCase):
 
         # List of jobs allowed in check* pipelines
         safe_jobs = [
-            '(php5[35]|yaml)lint',
-            '.*-(js|shell|php5[35]|)lint',
+            '(php5[56]|yaml)lint',
+            '.*-(js|shell|php5[56]|)lint',
             '.*-(tabs|typos)',
             '.*-whitespaces',
             'noop',
