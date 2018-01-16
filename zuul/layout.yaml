@@ -766,7 +766,7 @@ jobs:
       - '.*([Rr]akefile|/spec/)'
 
   # Same for mediawiki/vagrant
-  - name: ^mediawiki-vagrant-rake-(docker|jessie)$
+  - name: ^mediawiki-vagrant-rake-docker$
     files:
       - '.*'
   - name: ^puppet-wmf-styleguide-rake-docker$
@@ -2175,13 +2175,12 @@ projects:
 
   - name: mediawiki/vagrant
     test:
-      - mediawiki-vagrant-rake-jessie
+      - mediawiki-vagrant-rake-docker
     gate-and-submit:
-      - mediawiki-vagrant-rake-jessie
+      - mediawiki-vagrant-rake-docker
     postmerge:
       - mediawiki-vagrant-puppet-doc-publish
     experimental:
-      - mediawiki-vagrant-rake-docker
 
   - name: node-rdkafka-statsd
     template:
