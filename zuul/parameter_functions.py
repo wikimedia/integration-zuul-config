@@ -174,7 +174,7 @@ dependencies = {
     'BlueSpiceInsertLink': ['BlueSpiceFoundation'],
     'BlueSpiceInsertMagic': ['BlueSpiceFoundation'],
     'BlueSpiceInsertTemplate': ['BlueSpiceFoundation'],
-    'BlueSpiceInterWikiLinks': ['BlueSpiceFoundation'],
+    'BlueSpiceInterWikiLinks': ['BlueSpiceFoundation', 'WikiAdmin'],
     'BlueSpiceMenues': ['BlueSpiceFoundation'],
     'BlueSpiceMultiUpload': ['BlueSpiceFoundation'],
     'BlueSpiceNamespaceCSS': ['BlueSpiceFoundation'],
