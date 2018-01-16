@@ -1,0 +1,7 @@
+FROM {{ "ci-jessie" | image_tag }}
+
+RUN {{ "doxygen graphviz" | apt_install }}
+
+COPY run.sh /run.sh
+
+ENTRYPOINT ["/run.sh"]

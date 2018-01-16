@@ -338,16 +338,21 @@
 
 - job:
     name: 'mwext-doxygen-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - shell: doxygen
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/doxygen:0.1.0
+         logdir: '/log'
      - doc-publish:
-        docsrc: 'docs/php'
+        docsrc: 'src/docs/php'
         docdest: '$DOC_BASENAME/$DOC_SUBPATH/php'
+    archive:
+     - archive-log-allow-empty
 
 # Phan! (T153039)
 - job:

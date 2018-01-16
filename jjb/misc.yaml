@@ -4,16 +4,21 @@
 # matches the Git repository name.
 - job:
     name: 'doxygen-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - shell: doxygen
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/doxygen:0.1.0
+         logdir: '/log'
      - doc-publish:
-        docsrc: 'doc/html'
+        docsrc: 'src/doc/html'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
+    archive:
+     - archive-log-allow-empty
 
 - job: &phpunit-coverage-publish
     name: 'phpunit-coverage-publish'
@@ -194,16 +199,21 @@
 
 - job:
     name: 'oojs-ui-doxygen-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - shell: doxygen
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/doxygen:0.1.0
+         logdir: '/log'
      - doc-publish:
         docsrc: 'doc/html'
         docdest: 'oojs-ui/$DOC_SUBPATH/php'
+    archive:
+     - archive-log-allow-empty
 
 - job:
     name: 'oojs-ui-demos-publish'
