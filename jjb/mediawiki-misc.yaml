@@ -1,20 +1,23 @@
 - job-template:
     name: 'mediawiki-vagrant-puppet-doc-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - castor-load
-     # BUNDLE_PATH is injected by Zuul
-     - bundle-nodepool:
-         command: 'rake doc'
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/rake-vagrant:0.2.1'
+         logdir: '/log'
+         run_args: ' doc'
      - doc-publish:
-        docsrc: 'doc'
+        docsrc: 'src/doc'
         docdest: 'mediawiki-vagrant'
     publishers:
-     - castor-save
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
 
 - project:
     name: 'mediawiki-ruby-api'
