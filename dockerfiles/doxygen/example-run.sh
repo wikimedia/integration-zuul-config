@@ -20,7 +20,7 @@ docker run \
     --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/src://src \
     -e ZUUL_URL=https://gerrit.wikimedia.org/r/ \
-    -e ZUUL_PROJECT=mediawiki/oauthclient-php \
+    -e ZUUL_PROJECT=oojs/ui \
     -e ZUUL_REF=master \
     docker-registry.wikimedia.org/releng/doxygen:latest
 
