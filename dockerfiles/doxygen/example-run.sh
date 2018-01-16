@@ -6,12 +6,6 @@ mkdir -m 777 -p log
 mkdir -m 777 -p src
 mkdir -m 777 -p cache
 
-(cd src
- git init
- git fetch --quiet --depth 1 "https://gerrit.wikimedia.org/r/mediawiki/oauthclient-php"
- git checkout FETCH_HEAD
-)
-
 echo "Cleaning generated documentation in /src/doc"
 docker run \
     --rm --tty \
@@ -25,6 +19,9 @@ docker run \
     --volume /"$(pwd)"/log://var/lib/jenkins/log \
     --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/src://src \
+    -e ZUUL_URL=https://gerrit.wikimedia.org/r/ \
+    -e ZUUL_PROJECT=mediawiki/oauthclient-php \
+    -e ZUUL_REF=master \
     docker-registry.wikimedia.org/releng/doxygen:latest
 
 set +x
