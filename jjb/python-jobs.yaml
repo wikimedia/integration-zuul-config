@@ -58,35 +58,40 @@
 # Intended for changes being merged, eg in 'postmerge'
 - job-template:
     name: '{name}-tox-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
+    node: DebianJessieDocker
     triggers:
      - zuul
     builders:
-     - castor-load
-     - run-tox:
-         venv: '{obj:docenv|doc}'
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+         logdir: '/log'
+         run_args: ' -e "{obj:docenv|doc}"'
      - doc-publish:
-        docsrc: '{docsrc}'
+        docsrc: 'src/{docsrc}'
         docdest: '{docdest}'
-
     publishers:
-     - castor-save
+     - castor-save-workspace-cache
      - archive-log-dir
 
 # Same but for ref-update, eg in 'publish'
 - job-template:
     name: '{name}-tox-tag-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
+    node: DebianJessieDocker
     triggers:
      - zuul-post
     builders:
     # No cache restore/save (castor) for tags
-     - run-tox:
-         venv: '{obj:docenv|doc}'
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+         logdir: '/log'
+         run_args: ' -e "{obj:docenv|doc}"'
      - doc-publish:
-        docsrc: '{docsrc}'
+        docsrc: 'src/{docsrc}'
         docdest: '{docdest}'
     publishers:
      - archive-log-dir
