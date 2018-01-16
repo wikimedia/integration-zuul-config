@@ -12,4 +12,4 @@ git checkout --quiet FETCH_HEAD
 git submodule --quiet update --init --recursive
 
 bundle install --clean --path "${XDG_CACHE_HOME}/bundle"
-exec bundle exec rake test
+exec bundle exec rake "${@:-test}"
