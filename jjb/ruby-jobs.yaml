@@ -44,19 +44,23 @@
 # doc.wikimedia.org using an intermediate rsync repository in labs.
 - job-template:
     name: '{name}-bundle-yard-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
+    node: DebianJessieDocker
     triggers:
      - zuul
     builders:
-     - castor-load
-     - bundle-nodepool:
-         command: 'yard'
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/rake:0.2.1'
+         logdir: '/log'
+         run_args: ' yard'
      - doc-publish:
-         docsrc: 'doc'
+         docsrc: 'src/doc'
          docdest: 'rubygems/{name}'
     publishers:
-     - castor-save
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
 
 # General MW-Selenium job used to dogfood the builder against MW core.
 - job:
