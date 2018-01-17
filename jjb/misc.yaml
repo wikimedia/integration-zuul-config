@@ -142,37 +142,44 @@
 
 - job:
     name: 'oojs-core-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - castor-load
-     - npm-install
-     - npm-run:
-         script: doc
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/npm-test:0.2.0'
+         logdir: '/log'
+         run_args: ' doc'
      - doc-publish:
-        docsrc: 'docs'
+        docsrc: 'src/docs'
         docdest: 'oojs/$DOC_SUBPATH'
     publishers:
-     - castor-save
+     - castor-save-workspace-cache
 
 - job:
     name: 'oojs-core-coverage'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - castor-load
-     - npm
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.1.0'
+         logdir: '/log'
      - cover-publish:
-        src: 'coverage'
+        src: 'src/coverage'
         dest: 'oojs'
     publishers:
-     - castor-save
+     - castor-save-workspace-cache
 
 - job:
     name: 'oojs-ui-jsduck-publish'
