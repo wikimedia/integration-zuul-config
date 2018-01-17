@@ -59,36 +59,43 @@
 
 - job:
     name: 'unicodejs-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - castor-load
-     - npm-install
-     - npm-run:
-         script: doc
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/npm-test:0.2.0'
+         logdir: '/log'
+         run_args: ' doc'
      - doc-publish:
-        docsrc: 'docs'
+        docsrc: 'src/docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
     publishers:
-     - castor-save
+     - castor-save-workspace-cache
 
 - job:
     name: 'unicodejs-tag-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul-post
     builders:
      # No cache restore/save (castor) for tags
-     - npm-install
-     - npm-run:
-         script: doc
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/npm-test:0.2.0'
+         logdir: '/log'
+         run_args: ' doc'
      - doc-publish:
-        docsrc: 'docs'
+        docsrc: 'src/docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
 
 - job:
