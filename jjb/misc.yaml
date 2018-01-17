@@ -100,19 +100,23 @@
 
 - job:
     name: 'unicodejs-coverage'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - castor-load
-     - npm
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.1.0'
+         logdir: '/log'
      - cover-publish:
-        src: 'coverage'
+        src: 'src/coverage'
         dest: 'unicodejs'
     publishers:
-     - castor-save
+     - castor-save-workspace-cache
 
 - project:
     name: eventlogging
