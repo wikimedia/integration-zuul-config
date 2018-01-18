@@ -140,6 +140,7 @@ dependencies = {
     # One can add a skin by using: 'skin/XXXXX'
     '3D': ['MultimediaViewer'],
     'AbuseFilter': ['AntiSpoof'],
+    'AdvancedSearch': ['CirrusSearch'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
