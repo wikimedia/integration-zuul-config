@@ -385,6 +385,35 @@
      - ansicolor
      - timestamps
 
+# Per-patch coverage for MediaWiki core.
+- job:
+    name: 'mediawiki-phpunit-coverage-patch'
+    node: contintLabsSlave && DebianJessie
+    builders:
+     - zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/vendor
+     - mw-install-sqlite
+     - mw-apply-settings
+     - mw-fetch-composer-dev
+     - shell: |
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
+        cd $MW_INSTALL_PATH
+        composer require mediawiki/phpunit-patch-coverage 0.0.3 --no-progress
+        # FIXME This is terrible, but composer require creates a dirty diff.
+        git checkout composer.json
+        ./vendor/bin/phpunit-patch-coverage check --command \
+            "php -d zend_extension=xdebug.so tests/phpunit/phpunit.php"
+
+    triggers:
+     - zuul
+    wrappers:
+     - ansicolor
+     - timestamps
+
+
 # Special job to run MW-CS against MediaWiki core.
 # Can't run it through composer because it'll timeout.
 - job:
