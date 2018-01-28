@@ -618,9 +618,6 @@ pipelines:
         - event: patchset-created
           branch: (?!^refs/meta/config)
           email: *email_whitelist
-        - event: comment-added
-          comment: (?im)^Patch Set \d+:\n\n\s*check coverage\.?\s*$
-          email: *email_whitelist
 
     success-message: 'PHP test coverage increased (or stayed the same)'
     success:
@@ -774,6 +771,7 @@ jobs:
     skip-if:
       - project: '^mediawiki/core$'
         branch: (?:^(fundraising/)?REL1_2[78]$)
+    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/checkstyleResult/'
 
   - name: lintr-docker
     files:
@@ -880,7 +878,7 @@ jobs:
 
     # Only run patch coverage if a PHP file was
     # changed on master.
-  - name: ^.*-phpunit-coverage-patch$
+  - name: mediawiki-phpunit-coverage-patch
     branch: master
     files:
      - '^.*\.php$'
@@ -925,6 +923,10 @@ jobs:
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
 
+  - name: apps-android-java-mwapi
+    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
+    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
+
   - name: beta-mediawiki-config-update-eqiad
     branch: ^master$
     success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
@@ -933,7 +935,7 @@ jobs:
   - name: mediawiki-vagrant-puppet-doc-publish
     branch: ^master$
 
-  - name: parsoidsvc-doc-docker-publish
+  - name: parsoidsvc-source-jsduck-publish
     branch: ^master$
     success-message: 'SUCCESS Deployed documentation to https://doc.wikimedia.org/Parsoid/master/'
     failure-message: 'FAILURE Failed to deploy documentation :-/'
@@ -969,10 +971,10 @@ jobs:
   - name: 'mwext-jsduck-publish'
     branch: ^master$
 
-  - name: 'mwext-MobileFrontend-npm-run-lint-modules-docker'
+  - name: 'mwext-MobileFrontend-npm-run-lint-modules'
     branch: ^(?!REL1_28]|wmf/)
 
-  - name: 'mwext-VisualEditor-docker-publish'
+  - name: 'mwext-VisualEditor-publish'
     branch: ^master$
 
   - name: 'mediawiki-selenium-bundle-yard-publish'
@@ -992,7 +994,7 @@ jobs:
   - name: mediawiki-core-jsduck-docker
     branch: ^(REL.*|master)$
 
-  - name: mediawiki-core-jsduck-docker-publish
+  - name: mediawiki-core-jsduck-publish
     branch: ^(REL.*|master)$
 
   # Job to ease reviews of MW-CS changes
@@ -1016,7 +1018,7 @@ jobs:
     voting: false
     # FIXME remove noop gate-and-submit when making it voting
 
-  - name: ^fundraising-tools-tox-docker$
+  - name: ^fundraising-tools-tox-(jessie|docker)$
     skip-if:
       # Done on master, not ready on deployment branch T145012
       #
@@ -1065,18 +1067,6 @@ project-templates:
     experimental:
      - mwext-qunit-composer-jessie
      - mwgate-composer-php70-docker
-
-  - name: extension-seccheck
-    test:
-     - mwext-php70-phan-seccheck-docker
-    gate-and-submit:
-     - mwext-php70-phan-seccheck-docker
-    gate-and-submit-swat:
-     - mwext-php70-phan-seccheck-docker
-
-  - name: extension-seccheck-non-voting
-    test:
-     - mwext-php70-phan-seccheck-docker-non-voting
 
   - name: extension-unittests-generic
     check:
@@ -1191,12 +1181,6 @@ project-templates:
       - mwext-qunit-composer-jessie
     gate-and-submit-swat: *extension-qunit-composer-gate-and-submit
 
-  - name: extension-coverage
-    postmerge:
-      - mwext-phpunit-coverage-publish
-    coverage:
-      - mwext-phpunit-coverage-patch
-
   - name: skin-tests
     test:
       - mw-testskin
@@ -1227,7 +1211,7 @@ project-templates:
     gate-and-submit-swat: *mw-checks-test-gate-and-submit
     experimental:
      - mwgate-npm-node-6-docker
-     - mwgate-composer-hhvm-docker
+     - mwgate-composer-hhvm-jessie
      - mwgate-composer-php55-docker
      - mwgate-composer-php70-docker
 
@@ -1237,10 +1221,10 @@ project-templates:
       - composer-validate
     test:
       - composer-php55-docker
-      - composer-hhvm-docker
+      - composer-hhvm-jessie
     gate-and-submit: &composer-test-gate-and-submit
       - composer-php55-docker
-      - composer-hhvm-docker
+      - composer-hhvm-jessie
       - composer-php70-docker
     gate-and-submit-swat: *composer-test-gate-and-submit
 
@@ -1250,10 +1234,10 @@ project-templates:
       - mwgate-composer-validate
     test:
       - mwgate-composer-php55-docker
-      - mwgate-composer-hhvm-docker
+      - mwgate-composer-hhvm-jessie
     gate-and-submit: &mwgate-composer-gate-and-submit
       - mwgate-composer-php55-docker
-      - mwgate-composer-hhvm-docker
+      - mwgate-composer-hhvm-jessie
     experimental:
       - mwgate-composer-php70-docker
     gate-and-submit-swat: *mwgate-composer-gate-and-submit
@@ -1272,11 +1256,11 @@ project-templates:
       - composer-package-validate
       - php55lint
     test:
-      - composer-package-hhvm-docker
+      - composer-package-hhvm-jessie
       - composer-package-php55-docker
       - composer-package-php70-docker
     gate-and-submit:
-      - composer-package-hhvm-docker
+      - composer-package-hhvm-jessie
       - composer-package-php55-docker
       - composer-package-php70-docker
 
@@ -1376,9 +1360,9 @@ projects:
 
   - name: integration/composer
     test:
-      - integration-composer-check-php55-docker
+      - integration-composer-check-php55-jessie
     gate-and-submit:
-      - integration-composer-check-php55-docker
+      - integration-composer-check-php55-jessie
 
   - name: integration/commit-message-validator
     template:
@@ -1390,15 +1374,15 @@ projects:
 
   - name: integration/jenkinsci/android-emulator-plugin
     test:
-      - jenkins-plugin-android-emulator-maven-java8-docker
+      - jenkins-plugin-jdk7-jessie
     gate-and-submit:
-      - jenkins-plugin-android-emulator-maven-java8-docker
+      - jenkins-plugin-jdk7-jessie
 
   - name: integration/jenkinsci/postbuildscript-plugin
     test:
-      - jenkins-plugin-postbuildscript-maven-java8-docker
+      - jenkins-plugin-jdk7-jessie
     gate-and-submit:
-      - jenkins-plugin-postbuildscript-maven-java8-docker
+      - jenkins-plugin-jdk7-jessie
 
   - name: integration/jenkins
     template:
@@ -1501,7 +1485,7 @@ projects:
     coverage:
       - mediawiki-phpunit-coverage-patch
     postmerge:
-      - mediawiki-core-jsduck-docker-publish
+      - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
     publish:
       - mediawiki-core-tag-doxygen-publish
@@ -1527,13 +1511,13 @@ projects:
       - mwgate-php55lint
       - mwgate-composer-validate
     test:
-      - mwgate-composer-hhvm-docker
+      - mwgate-composer-hhvm-jessie
       - mwgate-composer-php55-docker
       - mediawiki-phpunit-hhvm-jessie
     php5:
       - mediawiki-phpunit-php55-jessie
     gate-and-submit: &mediawiki-vendor-gate-and-submit
-      - mwgate-composer-hhvm-docker
+      - mwgate-composer-hhvm-jessie
       - mwgate-composer-php55-docker
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-jessie
@@ -1589,9 +1573,9 @@ projects:
 
   - name: analytics/refinery/source
     test:
-     - analytics-refinery-maven-java8-docker
+     - analytics-refinery-maven
     gate-and-submit:
-     - analytics-refinery-maven-java8-docker
+     - analytics-refinery-maven
 
   - name: analytics/reportupdater
     template:
@@ -1670,8 +1654,10 @@ projects:
      - noop
 
   - name: apps/android/java-mwapi
-    template:
-      - name: archived
+    test:
+      - apps-android-java-mwapi
+    gate-and-submit:
+      - apps-android-java-mwapi
 
   - name: apps/android/wikipedia
     test:
@@ -1688,10 +1674,6 @@ projects:
   - name: apps/ios/wikipedia
     template:
       - name: archived
-
-  - name: labs/codesearch
-    template:
-      - name: tox-docker
 
   - name: labs/incubator
     test:
@@ -1804,9 +1786,9 @@ projects:
 
   - name: labs/tools/guc
     test:
-      - composer-php56-docker
+      - composer-php56-jessie
     gate-and-submit:
-      - composer-php56-docker
+      - composer-php56-jessie
 
   - name: labs/tools/Luke081515IRCBot
     test:
@@ -2195,9 +2177,9 @@ projects:
 
   - name: mediawiki/tools/mwdumper
     test:
-      - mwdumper-maven-java8-docker
+      - mwdumper-maven
     gate-and-submit:
-      - mwdumper-maven-java8-docker
+      - mwdumper-maven
 
   - name: mediawiki/tools/phpunit-patch-coverage
     template:
@@ -2538,11 +2520,11 @@ projects:
       - composer-validate
     test-prio:
       - operations-mw-config-php55lint
-      - operations-mw-config-composer-test-docker
+      - operations-mw-config-composer-hhvm-jessie
       - operations-mw-config-typos
     gate-and-submit:
       - operations-mw-config-php55lint
-      - operations-mw-config-composer-test-docker
+      - operations-mw-config-composer-hhvm-jessie
       - operations-mw-config-typos
     postmerge:
       - beta-mediawiki-config-update-eqiad
@@ -2725,10 +2707,10 @@ projects:
   - name: translatewiki
     test:
       - translatewiki-rake-docker
-      - translatewiki-composer-hhvm-docker
+      - translatewiki-composer-hhvm-jessie
     gate-and-submit:
       - translatewiki-rake-docker
-      - translatewiki-composer-hhvm-docker
+      - translatewiki-composer-hhvm-jessie
 
   - name: wikimedia-ui-base
     template:
@@ -2736,19 +2718,19 @@ projects:
 
   - name: wikimedia/discovery/discovery-parent-pom
     test:
-      - discovery-parent-pom-maven-java8-docker
+      - discovery-parent-pom-maven
     gate-and-submit:
-      - discovery-parent-pom-maven-java8-docker
+      - discovery-parent-pom-maven
     postmerge:
-      - discovery-parent-pom-maven-java8-docker-site-publish
+      - discovery-parent-pom-maven-site-publish
 
   - name: wikimedia/discovery/discovery-maven-tool-configs
     test:
-      - discovery-maven-tool-configs-maven-java8-docker
+      - discovery-maven-tool-configs-maven
     gate-and-submit:
-      - discovery-maven-tool-configs-maven-java8-docker
+      - discovery-maven-tool-configs-maven
     postmerge:
-      - discovery-maven-tool-configs-maven-java8-docker-site-publish
+      - discovery-maven-tool-configs-maven-site-publish
 
   - name: wikimedia/discovery/ortiz
     test:
@@ -2786,18 +2768,22 @@ projects:
 
   - name: wikimedia/fundraising/tools
     test:
-      - fundraising-tools-tox-docker
+      - fundraising-tools-tox-jessie
     gate-and-submit:
-      - fundraising-tools-tox-docker
-      # fundraising-tools-tox-docker is skipped on 'deploy' branch (WIP T145012)
+      - fundraising-tools-tox-jessie
+      # fundraising-tools-tox-jessie is skipped on 'deploy' branch (WIP T145012)
       - noop
+    experimental:
+      # fundraising-tools-tox-docker is skipped on 'deploy' branch (WIP T145012)
+      # XXX fails when attempting to connect to MySQL
+      - fundraising-tools-tox-docker
 
   - name: wikimedia/fundraising/crm
     test:
-      - wikimedia-fundraising-crm-composer-php56-docker
+      - wikimedia-fundraising-crm-composer-php56-jessie
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - wikimedia-fundraising-crm-composer-php56-docker
+      - wikimedia-fundraising-crm-composer-php56-jessie
       - wikimedia-fundraising-civicrm
     experimental:
       - wikimedia-fundraising-civicrm-jessie
@@ -2846,7 +2832,7 @@ projects:
       - composer-validate
     test: &wikimania-scholarships-test
       - npm-node-6-docker
-      - composer-php56-docker
+      - composer-php56-jessie
     gate-and-submit: *wikimania-scholarships-test
 
   - name: wikimedia/textcat
@@ -2869,7 +2855,8 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/AccountInfo
     template:
@@ -2896,7 +2883,8 @@ projects:
       - name: extension-unittests-generic
       - name: mediawiki-core-qunit-selenium-jessie
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/AdminLinks
     template:
@@ -2915,7 +2903,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Annotator
     template:
@@ -2954,9 +2943,10 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
-      - name: extension-coverage
     experimental:
       - mwext-mw-selenium-composer-jessie
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Arrays
     template:
@@ -2978,7 +2968,8 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/BaseHooks
     template:
@@ -2989,7 +2980,8 @@ projects:
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/BlameMaps
     template:
@@ -3017,7 +3009,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Buggy
     template:
@@ -3038,7 +3031,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/CategoryTagSorter
     template:
@@ -3070,21 +3064,20 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Cite
     template:
       - name: extension-gate
       - name: mwgate-npm
       - name: extension-phan-generic
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/CiteThisPage
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/Citoid
     template:
@@ -3096,7 +3089,8 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/CentralAuth
     template:
@@ -3104,7 +3098,8 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-rake
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
     experimental:
       - mediawiki-core-qunit-selenium-jessie
       - mwext-mw-selenium-jessie
@@ -3126,9 +3121,10 @@ projects:
       - name: extension-gate
       - name: mwgate-npm
       - name: extension-phan-generic
-      - name: extension-coverage
     test:
       - mwext-CirrusSearch-whitespaces
+    postmerge:
+      - mwext-phpunit-coverage-publish
     experimental:
       - mediawiki-core-qunit-selenium-jessie
 
@@ -3155,11 +3151,11 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/CodeEditor
     template:
-      - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
 
@@ -3172,23 +3168,25 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Cognate
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/CollaborationKit
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
     postmerge:
       - mwext-doxygen-publish
       - mwext-jsduck-publish
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/CollapsibleVector
     template:
@@ -3199,7 +3197,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
@@ -3225,7 +3224,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Configure
     template:
@@ -3242,15 +3242,16 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
-      - name: extension-seccheck-non-voting
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/ContentTranslation
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/ContributionScores
     template:
@@ -3405,7 +3406,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/DonationInterface
     template:
@@ -3419,7 +3421,6 @@ projects:
       - mwext-donationinterfacecore-REL1_27-zend56-jessie
       - mwgate-php56lint
     experimental:
-      - mediawiki-core-qunit-selenium-jessie
       - mwext-donationinterfacecore-REL1_28-zend56-jessie
 
   - name: mediawiki/extensions/DoubleWiki
@@ -3454,7 +3455,8 @@ projects:
       - name: mediawiki-core-qunit-selenium-jessie
       - name: mwext-ruby-jessie
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/EditAccount
     template:
@@ -3495,7 +3497,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Elastica
     template:
@@ -3513,7 +3516,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/EmailAuthorization
     template:
@@ -3534,7 +3538,8 @@ projects:
     template:
       - name: extension-unittests-non-voting
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/EventLogging
     template:
@@ -3543,8 +3548,8 @@ projects:
       - name: extension-qunit-generic
       - name: extension-jsduck
       - name: mwgate-npm
-      - name: extension-coverage
     postmerge:
+      - mwext-phpunit-coverage-publish
       - mwext-jsduck-publish
 
   - name: eventlogging
@@ -3571,7 +3576,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/FeaturedFeeds
     template:
@@ -3589,11 +3595,11 @@ projects:
      - name: mwgate-rake
      - name: extension-jsduck
      - name: mwgate-npm
-     - name: extension-coverage
     experimental:
      - mediawiki-core-qunit-selenium-jessie
     postmerge:
      - mwext-jsduck-publish
+     - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Form
     template:
@@ -3618,8 +3624,9 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
-      - name: extension-seccheck-non-voting
+    postmerge:
+      - mwext-phpunit-coverage-publish
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Gather
     template:
@@ -3650,7 +3657,8 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/GeoGebra
     template:
@@ -3691,13 +3699,15 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/GlobalPreferences
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/GlobalUsage
     template:
@@ -3772,13 +3782,15 @@ projects:
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/GraphViz
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/GuidedTour
     template:
@@ -3794,7 +3806,8 @@ projects:
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/HAWelcome
     template:
@@ -3828,7 +3841,6 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/ImportArticles
     template:
@@ -3849,7 +3861,6 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/Insider
     template:
@@ -3860,7 +3871,6 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/InterwikiSorting
     template:
@@ -3873,27 +3883,22 @@ projects:
       - name: extension-unittests-non-voting
       - name: mwgate-npm
 
-  - name: mediawiki/extensions/JADE
-    template:
-      - name: extension-unittests-generic
-      - name: mwgate-npm
-      - name: extension-coverage
-
   - name: mediawiki/extensions/JsonConfig
     template:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Kartographer
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
     postmerge:
       - mwext-doxygen-publish
       - mwext-jsduck-publish
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
@@ -3944,7 +3949,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/LiquidThreads
     template:
@@ -3960,14 +3966,14 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/LoginNotify
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Mailgun
     template:
@@ -3983,7 +3989,8 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-rake
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
     experimental:
       - mediawiki-core-qunit-selenium-jessie
       - mwext-mw-selenium-jessie
@@ -4010,8 +4017,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
-      - name: extension-phan-generic
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/MassMessageEmail
     template:
@@ -4049,14 +4056,14 @@ projects:
       - name: mwgate-rake
       - name: mwgate-npm
       - name: extension-selenium
-      - name: extension-coverage
     test:
-      - mwext-MobileFrontend-npm-run-lint-modules-docker
+      - mwext-MobileFrontend-npm-run-lint-modules
     gate-and-submit:
-      - mwext-MobileFrontend-npm-run-lint-modules-docker
+      - mwext-MobileFrontend-npm-run-lint-modules
     postmerge:
       - mwext-jsduck-publish
       - mwext-doxygen-publish
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/MobileApp
     template:
@@ -4104,7 +4111,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/MultimediaViewer
     template:
@@ -4185,7 +4193,6 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/NumberOfComments
     template:
@@ -4241,11 +4248,12 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
     test:
       - mediawiki-core-qunit-selenium-jessie
     gate-and-submit:
       - mediawiki-core-qunit-selenium-jessie
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/PageAssessments
     template:
@@ -4261,7 +4269,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/PagedTiffHandler
     template:
@@ -4272,7 +4281,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/PagePopups
     template:
@@ -4284,9 +4294,10 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-rake
       - name: mwgate-npm
-      - name: extension-coverage
     experimental:
       - mediawiki-core-qunit-selenium-jessie
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/ParentPage
     template:
@@ -4298,7 +4309,6 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/ParserMigration
     template:
@@ -4422,7 +4432,8 @@ projects:
       - name: extension-unittests-generic
       - name: extension-phan-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/ArticleIndex
     template:
@@ -4687,6 +4698,11 @@ projects:
       - name: extension-unittests-composer
       - name: mwgate-npm
 
+  - name: mediawiki/extensions/BlueSpiceRSSFeeder
+    template:
+      - name: extension-unittests-composer
+      - name: mwgate-npm
+
   - name: mediawiki/extensions/BlueSpiceSaferEdit
     template:
       - name: extension-unittests-composer-non-voting
@@ -4938,6 +4954,10 @@ projects:
       - name: mwgate-npm
 
   - name: mediawiki/extensions/DjangoAnalytics
+    template:
+      - name: extension-unittests-generic
+
+  - name: mediawiki/extensions/DonationInterface/vendor
     template:
       - name: extension-unittests-generic
 
@@ -5359,7 +5379,8 @@ projects:
 
   - name: mediawiki/extensions/Minifier
     template:
-      - name: archived
+      - name: extension-unittests-generic
+      - name: mwgate-npm
 
   - name: mediawiki/extensions/Model
     template:
@@ -5474,7 +5495,8 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/NukeDPL
     template:
@@ -5735,13 +5757,15 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-selenium
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/QuickSearchLookup
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/QuickGV
     template:
@@ -5928,7 +5952,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticComments
     template:
-      - name: archived
+      - name: extension-unittests-generic
 
   - name: mediawiki/extensions/SemanticHighcharts
     template:
@@ -6179,7 +6203,8 @@ projects:
     template:
      - name: extension-unittests-composer
      - name: mwgate-npm
-     - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/TestLanguageNameGrammar
     template:
@@ -6261,7 +6286,8 @@ projects:
       - name: mwgate-npm
       - name: extension-selenium
       - name: extension-phan-generic
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/TwoFactorAuthentication
     template:
@@ -6444,7 +6470,8 @@ projects:
       - name: extension-qunit-generic
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikibaseLexeme
     template:
@@ -6461,39 +6488,42 @@ projects:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
       - name: mwgate-npm
-      - name: extension-coverage
     check:
       - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
       - composer-package-validate
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikibaseQualityConstraints
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
       - name: mwgate-npm
-      - name: extension-coverage
     check:
       - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
       - composer-package-validate
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikibaseQualityExternalValidation
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
       - name: mwgate-npm
-      - name: extension-coverage
     check:
       - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
       - composer-package-validate
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikibaseMediaInfo
     template:
@@ -6730,7 +6760,8 @@ projects:
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/PaginateText
     template:
@@ -6889,14 +6920,6 @@ projects:
 
 # End of new currently disabled extensions checks from mass extension import - Addshore
 #
-  - name: 3d2png
-    experimental:
-      - 3d2png-npm-node-6-docker
-
-  - name: 3d2png/deploy
-    experimental:
-      - 3d2png-deploy-npm-node-6-jessie
-
   - name: mediawiki/services/change-propagation
     experimental:
       # Needs nc, redis-cli and maybe zookeper
@@ -6907,9 +6930,7 @@ projects:
       - change-propagation-deploy-npm-node-6-jessie
 
   - name: mediawiki/services/chromium-render
-    test:
-      - chromium-render-npm-browser-node-6-docker
-    gate-and-submit:
+    experimental:
       - chromium-render-npm-browser-node-6-docker
 
   - name: mediawiki/services/citoid
@@ -6989,7 +7010,7 @@ projects:
       - parsoidsvc-source-roundtrip-test-check-jessie
       - parsoidsvc-source-npm-node-6-jessie
     postmerge:
-      - parsoidsvc-doc-docker-publish
+      - parsoidsvc-source-jsduck-publish
 
   - name: mediawiki/services/parsoid/deploy
     test:
@@ -7035,7 +7056,6 @@ projects:
     template:
       - name: extension-gate
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/PerformanceInspector
     template:
@@ -7077,7 +7097,6 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/PoolCounter
     template:
@@ -7096,7 +7115,8 @@ projects:
       - name: extension-qunit-generic
       - name: mediawiki-core-qunit-selenium-jessie
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/PostEdit
     template:
@@ -7106,7 +7126,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Quiz
     template:
@@ -7136,7 +7157,6 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/ReplaceSet
     template:
@@ -7219,7 +7239,8 @@ projects:
 
   - name: mediawiki/extensions/SemanticPageMaker
     template:
-      - name: archived
+      - name: extension-unittests-composer-non-voting
+      - name: mwgate-npm
 
   - name: mediawiki/extensions/SemanticPageSeries
     template:
@@ -7284,7 +7305,6 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/SpamDiffTool
     template:
@@ -7305,7 +7325,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/StrategyWiki
     template:
@@ -7349,7 +7370,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/SideBarMenu
     template:
@@ -7361,7 +7383,6 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/TemplateData
     template:
@@ -7392,7 +7413,6 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/TitleKey
     template:
@@ -7454,7 +7474,8 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/UploadBlacklist
     template:
@@ -7467,7 +7488,8 @@ projects:
       - name: extension-qunit-generic
       - name: mwgate-npm
       - name: mwgate-tox-docker
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/UserDailyContribs
     template:
@@ -7523,7 +7545,7 @@ projects:
       - mwext-VisualEditor-jsduck-docker
     gate-and-submit-swat: *mediawiki-extensions-visualeditor-gate-and-submit
     postmerge:
-      - mwext-VisualEditor-docker-publish
+      - mwext-VisualEditor-publish
     experimental:
       - mediawiki-core-qunit-selenium-jessie
 
@@ -7539,12 +7561,10 @@ projects:
 
   - name: mediawiki/extensions/WikiEditor
     template:
-      - name: extension-gate
       - name: extension-qunit-generic
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
-      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/Wikibase
     template:
@@ -7614,13 +7634,15 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikimediaEvents
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikimediaIncubator
     template:
@@ -7647,14 +7669,16 @@ projects:
 
   - name: mediawiki/extensions/WikiObjectModel
     template:
-      - name: archived
+      - name: extension-unittests-generic
+      - name: mwgate-npm
 
   - name: mediawiki/extensions/Wikispeech
     template:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
       - name: mwgate-npm
-      - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Workflow
     template:
@@ -7679,44 +7703,41 @@ projects:
   - name: mediawiki/php/luasandbox
     # no check pipeline since -build runs code :-)
     test:
-      - php-compile-hhvm-jessie-docker
-      - php-compile-hhvm-stretch-docker
-      - php-compile-php55-docker
-      - php-compile-php70-docker
-      - php-compile-php71-docker
-      - php-compile-php72-docker
+      - php-compile-hhvm-test
+      - php-compile-php55
+      - php-compile-php70
     gate-and-submit:
-      - php-compile-hhvm-jessie-docker
-      - php-compile-hhvm-stretch-docker
-      - php-compile-php55-docker
-      - php-compile-php70-docker
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-    postmerge:
-      - doxygen-publish
+      - php-compile-hhvm-test
+      - php-compile-php55
+      - php-compile-php70
+    experimental:
+      - php-compile-hhvm-test-jessie
+      - php-compile-php55-jessie
+      - php-compile-php70-jessie
 
   - name: mediawiki/php/wikidiff2
+    # no check pipeline since -build runs code :-)
     test:
-      - php-compile-hhvm-jessie-docker
-      - php-compile-hhvm-stretch-docker
-      - php-compile-php55-docker
-      - php-compile-php70-docker
-      - php-compile-php71-docker
-      - php-compile-php72-docker
+      - php-compile-hhvm
+      - php-compile-php55
+      - php-compile-php70
     gate-and-submit:
-      - php-compile-hhvm-jessie-docker
-      - php-compile-hhvm-stretch-docker
-      - php-compile-php55-docker
-      - php-compile-php70-docker
-      - php-compile-php71-docker
-      - php-compile-php72-docker
+      - php-compile-hhvm
+      - php-compile-php55
+      - php-compile-php70
+    experimental:
+      - php-compile-hhvm-jessie
+      - php-compile-php55-jessie
+      - php-compile-php70-jessie
 
   - name: mediawiki/php/wmerrors
     # no check pipeline since -build runs code :-)
     test:
-      - php-compile-php55-docker
+      - php-compile-php55
     gate-and-submit:
-      - php-compile-php55-docker
+      - php-compile-php55
+    experimental:
+      - php-compile-php55-jessie
 
   - name: mediawiki/oauthclient-php
     template:
@@ -8021,48 +8042,56 @@ projects:
 
   - name: search/extra
     test:
-      - search-extra-maven-java8-docker
+      - search-extra-maven
     gate-and-submit:
-      - search-extra-maven-java8-docker
+      - search-extra-maven
     postmerge:
-      - search-extra-maven-java8-docker-site-publish
+      - search-extra-maven-site-publish
 
   - name: search/highlighter
     test:
-      - search-highlighter-maven-java8-docker
+      - search-highlighter-maven
     gate-and-submit:
-      - search-highlighter-maven-java8-docker
+      - search-highlighter-maven
     postmerge:
-      - search-highlighter-maven-java8-docker-site-publish
+      - search-highlighter-maven-site-publish
 
   - name: search/ltr
-    template:
-      - name: archived
+    test:
+      - search-ltr-maven
+    gate-and-submit:
+      - search-ltr-maven
+    postmerge:
+      - search-ltr-maven-site-publish
 
   - name: search/repository-swift
-    template:
-      - name: archived
+    test:
+      - search-repository-swift-maven
+    gate-and-submit:
+      - search-repository-swift-maven
+    postmerge:
+      - search-repository-swift-maven-site-publish
 
   - name: search/xgboost
     test:
       - search-xgboost-maven
     gate-and-submit:
       - search-xgboost-maven
-    experimental:
-      - search-xgboost-maven-java8-docker
 
   - name: search/MjoLniR
     test:
       - search-mjolnir-tox-docker
-      - search-mjolnir-maven-java8-docker
+      - search-mjolnir-maven
     gate-and-submit:
       - search-mjolnir-tox-docker
-      - search-mjolnir-maven-java8-docker
+      - search-mjolnir-maven
 
   - name: oojs/core
     test:
+      - oojs-core-jsduck-docker
       - oojs-core-npm-browser-node-6-docker
     gate-and-submit:
+      - oojs-core-jsduck-docker
       - oojs-core-npm-browser-node-6-docker
     postmerge:
       - oojs-core-publish
@@ -8143,9 +8172,9 @@ projects:
 
   - name: wikibase/wikiba.se
     test:
-      - wikiba.se-composer-php56-docker
+      - wikiba.se-composer-php56-jessie
     gate-and-submit:
-      - wikiba.se-composer-php56-docker
+      - wikiba.se-composer-php56-jessie
 
   - name: wikibase/property-suggester-scripts
     template:
@@ -8162,10 +8191,10 @@ projects:
       - composer-package-validate
       - php55lint
     test:
-      - composer-package-hhvm-docker # strict standard issue T157213
+      - composer-package-hhvm-jessie  # strict standard issue T157213
       - composer-package-php55-docker
     gate-and-submit:
-      - composer-package-hhvm-docker # strict standard issue T157213
+      - composer-package-hhvm-jessie  # strict standard issue T157213
       - composer-package-php55-docker
     experimental:
       - composer-package-php70-docker
