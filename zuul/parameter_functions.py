@@ -216,6 +216,7 @@ dependencies = {
     'FanBoxes': ['SocialProfile'],
     'FileAnnotations': ['EventLogging'],
     'FlaggedRevs': ['Scribunto'],
+    'Flow': ['Echo'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GraphViz': ['ImageMap'],
