@@ -606,6 +606,26 @@ pipelines:
       High precedence tests. Will vote +2.
     precedence: high
 
+  # Separate pipeline for slower PHPUnit coverage jobs
+  - name: coverage
+    description: >
+      Jobs that check patch PHPUnit code coverage.
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: low
+    trigger:
+      gerrit:
+        - event: patchset-created
+          branch: (?!^refs/meta/config)
+          email: *email_whitelist
+
+    success-message: 'Code coverage increased (or stayed the same)'
+    success:
+      gerrit: {}
+    failure-message: 'Code coverage decreased :-('
+    failure:
+      gerrit: {}
+
   - name: experimental
     description: >
       Jobs manually triggered by whitelisted users commenting 'check experimental'.
@@ -853,6 +873,14 @@ jobs:
     branch: (?!^fundraising/REL)
     files:
      - '^.*\.(json|php|php5|phtml|inc|xml)$'
+
+    # Only run patch coverage if a PHP file was
+    # changed on master.
+  - name: mediawiki-phpunit-coverage-patch
+    branch: master
+    files:
+     - '^.*\.php$'
+
 
 
   - name: ^mediawiki-core-npm-node-6-docker$
@@ -1460,6 +1488,8 @@ projects:
       - composer-package-validate
       - mediawiki-core-php70-phan-docker
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
+    coverage:
+      - mediawiki-phpunit-coverage-patch
     postmerge:
       - mediawiki-core-jsduck-publish
       - mediawiki-core-doxygen-publish
@@ -1470,7 +1500,6 @@ projects:
       - mwgate-composer-php70-docker
       - mediawiki-phpunit-php70-jessie
       - mediawiki-extensions-php70-jessie
-      - mediawiki-phpunit-coverage-patch
 
   - name: mediawiki/debian
     test:
