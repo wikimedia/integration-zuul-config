@@ -609,7 +609,7 @@ pipelines:
   # Separate pipeline for slower PHPUnit coverage jobs
   - name: coverage
     description: >
-      Jobs that check patch PHPUnit code coverage.
+      Jobs that check patch PHP test coverage.
     manager: IndependentPipelineManager
     source: gerrit
     precedence: low
@@ -619,10 +619,10 @@ pipelines:
           branch: (?!^refs/meta/config)
           email: *email_whitelist
 
-    success-message: 'Code coverage increased (or stayed the same)'
+    success-message: 'PHP test coverage increased (or stayed the same)'
     success:
       gerrit: {}
-    failure-message: 'Code coverage decreased :-('
+    failure-message: 'PHP test coverage decreased :-('
     failure:
       gerrit: {}
 
