@@ -2192,6 +2192,12 @@ projects:
     gate-and-submit:
       - mwdumper-maven
 
+  - name: mediawiki/tools/phpunit-patch-coverage
+    template:
+     - name: composer-test-package
+    postmerge:
+      - phpunit-coverage-publish
+
   - name: mediawiki/tools/release
     template:
       - name: composer-test
