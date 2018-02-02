@@ -3,6 +3,6 @@ FROM {{ "npm-test" | image_tag }} as npm-test
 
 FROM {{ "npm-stretch" | image_tag }}
 
-USER nobody
+USER node
 COPY --from=npm-test /run.sh /run.sh
 ENTRYPOINT ["/run.sh"]
