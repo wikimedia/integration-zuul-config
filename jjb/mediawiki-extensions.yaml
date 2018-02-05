@@ -117,9 +117,7 @@
      - shell: |
         . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
         # We need to edit suite.xml to use the proper coverage paths.
-        # Since this will only run for extensions, it's safe to use $DOC_BASENAME as a shortcut
-        # to the extension directory name.
-        /srv/deployment/integration/slave-scripts/bin/suite-edit.py $MW_INSTALL_PATH/tests/phpunit/suite.xml --cover-extension "$DOC_BASENAME"
+        /srv/deployment/integration/slave-scripts/bin/suite-edit.py $MW_INSTALL_PATH/tests/phpunit/suite.xml --cover-extension "$EXT_NAME"
 
 
 # Generic qunit job for extensions.
@@ -539,6 +537,29 @@
      - 'selenium-{name}-jessie'
 
 - job:
+    name: 'mwext-phpunit-coverage-patch'
+    node: contintLabsSlave && DebianJessie
+    concurrent: false
+    builders:
+     - prepare-mwext-coverage
+     - shell: |
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
+        cd $WORKSPACE/src/extensions/$EXT_NAME
+        composer require mediawiki/phpunit-patch-coverage 0.0.5 --no-progress
+        # FIXME This is terrible, but composer require creates a dirty diff.
+        git checkout composer.json
+        ./vendor/bin/phpunit-patch-coverage check --command \
+            "php7.0 -d zend_extension=xdebug.so $MW_INSTALL_PATH/tests/phpunit/phpunit.php"
+
+    triggers:
+     - zuul
+    wrappers:
+     - ansicolor
+     - timestamps
+
+
+- job:
     name: 'mwext-phpunit-coverage-publish'
     node: contintLabsSlave && DebianJessie
     concurrent: false
@@ -559,7 +580,7 @@
                     --testsuite extensions \
                     --coverage-clover log/clover.xml \
                     --coverage-html "$WORKSPACE/cover" \
-                    "$MW_INSTALL_PATH/extensions/$DOC_BASENAME/tests/phpunit" \
+                    "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" \
             || :
         # Above: Use "|| :" to ignore any non-zero exist status
         # We want to publish code coverage even in case one of there
@@ -579,6 +600,7 @@
 
      - cover-extensions-publish:
          src: 'cover'
+         # Should be equivalent to $EXT_NAME
          dest: '$DOC_BASENAME'
     publishers:
      - archive:
