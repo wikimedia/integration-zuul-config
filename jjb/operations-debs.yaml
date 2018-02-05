@@ -18,13 +18,17 @@
 - builder:
     name: debian-glue-lintian
     builders:
+      # We might consider adding --warnings
+      # --skip-lintian comes from mika/lintian
+      # https://github.com/mika/jenkins-debian-glue/commit/e2beae591bada6a91ffd33a45e6c7a451dc33c3a
       - shell: |
-          # We might consider adding --warnings
-          set -o pipefail
-          /usr/bin/lintian-junit-report --filename lintian.txt *.changes > lintian.xml
-          set +o pipefail
-          # For human consumption when looking at the build console
-          cat lintian.txt
+          suffix=.lintian.txt
+          for x in *$suffix; do
+            echo "Converting lintian file $x"
+            # For human consumption when looking at the build console
+            cat "$x"
+            /usr/bin/lintian-junit-report --skip-lintian --filename "$x" *.changes > "${x/$suffix/.lintian.xml}"
+          done
 
 # Piuparts test installation / removal of a package
 #
@@ -143,6 +147,14 @@
             #
             export DIST=$distribution
             . /etc/pbuilderrc
+
+            # Copy Wikimedia and Debian glue hooks under a common directory
+            rm -fR pbuilder_hooks
+            mkdir pbuilder_hooks
+            cp /usr/share/jenkins-debian-glue/pbuilder-hookdir/* pbuilder_hooks/
+            cp "$HOOKDIR"/* pbuilder_hooks/
+            export PBUILDER_HOOKDIR="$(pwd)/pbuilder_hooks/"
+
             export COWBUILDER_BASE="$BASEPATH"
             export BUILDRESULT="$WORKSPACE/binaries"
             export SKIP_COWBUILDER_UPDATE="true"
@@ -158,8 +170,11 @@
             cat /etc/pbuilderrc > job-pbuilderrc
             echo "BUILDRESULT=$BUILDRESULT" >> job-pbuilderrc
 
-            export PBUILDER_CONFIG="$WORKSPACE/job-pbuilderrc"
+            echo "*** Overriding HOOKDIR ***"
+            echo "HOOKDIR=$PBUILDER_HOOKDIR" >> job-pbuilderrc
 
+            export PBUILDER_CONFIG="$WORKSPACE/job-pbuilderrc"
+            export LINTIAN=true
             /usr/bin/build-and-provide-package
         # Linters
         - debian-glue-lintian
@@ -179,13 +194,13 @@
                   failure: 0
           types:
               - junit:
-                  pattern: 'lintian.xml'
+                  pattern: '*lintian.xml'
       # FIXME should convert UNSTABLE to FAILED.
       # FIXME disabled due to T141454 T148664
       #- tap:
       #    results: piuparts.tap
       - archive:
-          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.buildinfo,*.changes,debc.txt,lintian.txt,lintian.xml,piuparts.txt,piuparts.tap'
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.buildinfo,*.changes,debc.txt,*lintian.txt,*lintian.xml,piuparts.txt,piuparts.tap'
 
 - job-template:
     !!merge : *job_template_debian_glue
