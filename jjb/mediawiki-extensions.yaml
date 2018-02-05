@@ -103,6 +103,25 @@
      - composer-update:
          dir: 'src'
 
+- builder:
+    name: prepare-mwext-coverage
+    builders:
+     - shell: |
+        # XXX: MediaWiki auto-enables any skins it can find
+        # But we only want to enable the skins that this extension
+        # needs, so remove any other skins that might be laying around.
+        rm -rf "$WORKSPACE/src/skins/"
+     - prepare-mediawiki-zuul-project
+     - mw-fetch-composer-dev
+     # FIXME should use the mw-phpunit.sh wrapper
+     - shell: |
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+        # We need to edit suite.xml to use the proper coverage paths.
+        # Since this will only run for extensions, it's safe to use $DOC_BASENAME as a shortcut
+        # to the extension directory name.
+        /srv/deployment/integration/slave-scripts/bin/suite-edit.py $MW_INSTALL_PATH/tests/phpunit/suite.xml --cover-extension "$DOC_BASENAME"
+
+
 # Generic qunit job for extensions.
 - job:
     name: 'mwext-qunit-jessie'
@@ -484,14 +503,7 @@
     node: contintLabsSlave && DebianJessie
     concurrent: false
     builders:
-     - shell: |
-        # XXX: MediaWiki auto-enables any skins it can find
-        # But we only want to enable the skins that this extension
-        # needs, so remove any other skins that might be laying around.
-        rm -rf "$WORKSPACE/src/skins/"
-     - prepare-mediawiki-zuul-project
-     - mw-fetch-composer-dev
-     # FIXME should use the mw-phpunit.sh wrapper
+     - prepare-mwext-coverage
      - shell: |
         . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
@@ -500,11 +512,6 @@
 
         rm -fR "$WORKSPACE/cover"
         mkdir -p "$WORKSPACE/cover"
-
-        # We need to edit suite.xml to use the proper coverage paths.
-        # Since this will only run for extensions, it's safe to use $DOC_BASENAME as a shortcut
-        # to the extension directory name.
-        /srv/deployment/integration/slave-scripts/bin/suite-edit.py $MW_INSTALL_PATH/tests/phpunit/suite.xml --cover-extension "$DOC_BASENAME"
 
         nice -n 19 \
             php7.0 -d zend_extension=xdebug.so \
