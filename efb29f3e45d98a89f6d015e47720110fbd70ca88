@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3290878_e1ab662b",
+        "filename": "jjb/operations-debs.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 824
+      },
+      "writtenOn": "2018-02-06T11:27:37Z",
+      "side": 1,
+      "message": "this is definitely not correct. It\u0027s a syntax error in fact saying \"bad substitution\". The ${parameter:-word} construct means\n\n   Use \"word\" iff $parameter is not already set\n\nI am not sure how it is meant to be used here and if WIKIMEDIA is already set but you either want\n\n   if [ ${WIKIMEDIA} \u003d\u003d \"yes\" ]; then\n\nor\n\n    if [ ${WIKIMEDIA:-\"no\" \u003d\u003d \"yes\" ]; then\n\ndepending on whether the variable is guaranteed to have been set or not",
+      "range": {
+        "startLine": 176,
+        "startChar": 21,
+        "endLine": 176,
+        "endChar": 30
+      },
+      "revId": "efb29f3e45d98a89f6d015e47720110fbd70ca88",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    }
+  ]
+}
