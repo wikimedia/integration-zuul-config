@@ -22,6 +22,30 @@
       "revId": "efb29f3e45d98a89f6d015e47720110fbd70ca88",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8d6112d_a9164bd2",
+        "filename": "jjb/operations-debs.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-02-06T15:12:29Z",
+      "side": 1,
+      "message": "Sorry I really needed a nap.\n\nIn that long shell snippet, we do source /etc/pbuidlerrc which is generated via package_builder and has:\n\n WIKIMEDIA\u003d${WIKIMEDIA:-\"no\"}\n\nSo the variable is set, and defaults to \"no\".\n\n\nREADME, pbuilderrc, D01apt.wikimedia.org either mention setting \"yes\" or react to \"yes\". So I am gonna align on that and thus:\n\n if [ \"$WIKIMEDIA\" \u003d\u003d \"yes\" ]\n\n:]\n\n\nThank you Alexandros",
+      "parentUuid": "a3290878_e1ab662b",
+      "range": {
+        "startLine": 176,
+        "startChar": 21,
+        "endLine": 176,
+        "endChar": 30
+      },
+      "revId": "efb29f3e45d98a89f6d015e47720110fbd70ca88",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
     }
   ]
 }
