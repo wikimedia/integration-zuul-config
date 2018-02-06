@@ -173,6 +173,13 @@
             echo "*** Overriding HOOKDIR ***"
             echo "HOOKDIR=$PBUILDER_HOOKDIR" >> job-pbuilderrc
 
+            if [ "$WIKIMEDIA" == "yes" ]; then
+                # Use lintian profile from the build host as provided by
+                # package_builder puppet module. T186587
+                export USER_BINDMOUNTS="/usr/share/lintian/profiles/wikimedia /usr/share/lintian/vendors/wikimedia"
+                export LINTIAN_OPTIONS="--profile wikimedia"
+            fi
+
             export PBUILDER_CONFIG="$WORKSPACE/job-pbuilderrc"
             export LINTIAN=true
             /usr/bin/build-and-provide-package
