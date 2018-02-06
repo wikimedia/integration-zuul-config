@@ -318,6 +318,7 @@ dependencies = {
     'WikiEditor': ['EventLogging'],
     'WikimediaBadges': ['Wikibase'],
     'WikimediaEvents': ['EventLogging'],
+    'Wikisource': ['Wikibase'],
     'wikihiero': ['VisualEditor'],
     'ZeroBanner': ['Echo', 'JsonConfig', 'MobileFrontend', 'VisualEditor',
                    'ZeroPortal'],
