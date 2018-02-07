@@ -17,7 +17,7 @@ RUN {{ "apt-transport-https" | apt_install }}
 RUN echo "deb https://packages.sury.org/php/ jessie main" > /etc/apt/sources.list.d/php.list \
     # php7.0-zip needed by composer to install things from dist
     # others php packages are needed by mediawiki/libraries
-    && {{ "php7.0-cli php7.0-curl php7.0-zip php-ast php7.0-mbstring php7.0-xml" | apt_install }} \
+    && {{ "php7.0-cli php7.0-curl php7.0-gd php7.0-zip php-ast php7.0-mbstring php7.0-xml" | apt_install }} \
     && apt-get purge --yes apt-transport-https \
     && rm /etc/apt/sources.list.d/php.list
 
