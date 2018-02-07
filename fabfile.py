@@ -57,12 +57,12 @@ def deploy_docker():
         cmd = '{} -c {} {}'.format(
             docker_pkg, docker_pkg_config, dockerfiles)
 
-        sudo(cmd)
+        run(cmd)
 
-        sudo('cat /tmp/docker-pkg-build.log')
+        run('cat /tmp/docker-pkg-build.log')
 
         if confirm('delete build log?'):
-            sudo('rm /tmp/docker-pkg-build.log')
+            run('rm /tmp/docker-pkg-build.log')
 
 
 @task
