@@ -425,7 +425,7 @@
         set -x
         exec docker run \
             --rm \
-            --env EXT_NAME=$EXT_NAME
+            --env EXT_NAME=$EXT_NAME \
             --volume "$(pwd)"/src:/mediawiki \
             docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.1.0 \
             -m checkstyle
@@ -433,7 +433,7 @@
 
     publishers:
      - checkstyle:
-        pattern: '$WORKSPACE/src/seccheck-issues'
+        pattern: 'src/seccheck-issues'
         can-run-on-failed: true
         thresholds:
           failed:
