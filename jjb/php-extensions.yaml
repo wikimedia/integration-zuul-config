@@ -38,6 +38,24 @@
      - archive-test-logs
 
 - job:
+    name: 'php-compile-php70-docker'
+    node: DebianJessieDocker
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - shell: |
+        #!/bin/bash -eu
+        set -x
+        exec docker run \
+            --rm \
+            --volume "$(pwd)"/src:/src \
+            docker-registry.wikimedia.org/releng/php-compile:0.1.0 \
+        # nothing else can be executed due to exec
+
+
+- job:
     !!merge : *php-compile-php70
     name: 'php-compile-php70-jessie'
     node: ci-jessie-wikimedia
