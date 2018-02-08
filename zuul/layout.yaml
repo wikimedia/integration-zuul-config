@@ -814,6 +814,8 @@ jobs:
     # FIXME maybe restrict just to debian/ changes:
     #files: 'debian/.*'
     skip-if:
+      - project: '^operations/debs/jenkins-debian-glue$'
+        branch: (?!^debian/)
       - project: '^integration/uprightdiff$'
         branch: ^master$
       - project: '^integration/zuul$'
@@ -2280,7 +2282,11 @@ projects:
   - { name: operations/debs/hhvm,                             test: ['debian-glue-non-voting'] }
   - { name: operations/debs/ircd-ratbox,                      test: ['debian-glue-non-voting'] }
   - { name: operations/debs/ircecho,                          test: ['debian-glue-non-voting'] }
-  - { name: operations/debs/jenkins-debian-glue,              test: ['debian-glue-non-voting'] }
+  - name: operations/debs/jenkins-debian-glue
+    test:
+      - debian-glue
+    gate-and-submit:
+      - debian-glue
   - { name: operations/debs/jetty-runner,                     test: ['debian-glue-non-voting'] }
   - { name: operations/debs/jmxtrans,                         test: ['debian-glue-non-voting'] }
   - { name: operations/debs/jvm-tools,                        test: ['debian-glue-non-voting'] }
