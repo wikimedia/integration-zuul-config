@@ -10,7 +10,7 @@
 - project:
     name: chromium-render
     jobs:
-     - '{name}-npm-browser-node-6-docker'
+     - 'chromium-render-npm-browser-node-6-docker'
 
 - project:
     name: 'citoid'
@@ -78,3 +78,36 @@
      - '{name}-{repository}-npm-node-6-jessie'
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.1.0
+
+# Copied from {name}-npm-browser-node-6-docker. All this does is add an
+# environment variable.
+- job-template:
+    name: chromium-render-npm-browser-node-6-docker
+    node: DebianJessieDocker
+    docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.1.1
+    triggers:
+      - zuul
+    concurrent: true
+    parameters:
+     # Configure the Puppeteer install script to use the Debian system Chromium
+     # install instead of NPM.
+     #
+     # Additional background: Chromium, a dependency of the project, is packaged
+     # by Puppeteer and is the preferred installation to use for development.
+     # However, as an outcome of T178189 and T178570, Puppeteer's installation
+     # process should skip Chromium in CI tests as well as in production and
+     # instead use the Debian system package instead. See T179552.
+     - string:
+         name: 'PUPPETEER_SKIP_CHROMIUM_DOWNLOAD'
+         default: 'true'
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: '{obj:docker_image_var}'
+        logdir: '/log'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
