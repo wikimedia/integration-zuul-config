@@ -10,7 +10,7 @@
 - project:
     name: chromium-render
     jobs:
-     - '{name}-npm-browser-node-6-docker'
+     - 'chromium-render-npm-browser-node-6-docker'
 
 - project:
     name: 'citoid'
@@ -78,3 +78,47 @@
      - '{name}-{repository}-npm-node-6-jessie'
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.1.0
+
+# Copied from {name}-npm-browser-node-6-docker.
+- job-template:
+    name: chromium-render-npm-browser-node-6-docker
+    node: DebianJessieDocker
+    docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.1.1
+    triggers:
+      - zuul
+    concurrent: true
+    parameters:
+     # Configure the Puppeteer install script to use the Debian system Chromium
+     # install instead of NPM.
+     #
+     # Additional background: Chromium, a dependency of the project, is packaged
+     # by Puppeteer and as an outcome of T178189 and T178570, Puppeteer's
+     # installation process should not be tampered with. i.e., `npm install`
+     # should be permitted to execute normally for _production_. For test
+     # builds, the Debian system package is used. See T179552.
+     - string:
+         name: 'PUPPETEER_SKIP_CHROMIUM_DOWNLOAD'
+         default: 'true'
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - shell: |
+        # Configure the Puppeteer launcher used by the tests to use the Debian
+        # system Chromium install.
+        python << 'eof'
+        import yaml
+        with open('src/config.yaml', 'r+') as f:
+          cfg = yaml.load(f)
+          cfg['services'][0]['conf']['puppeteer_options']['executablePath'] = '/usr/bin/chromium'
+          f.seek(0)
+          yaml.dump(cfg, f)
+          f.truncate()
+        eof
+     - docker-run-with-log-cache-src:
+        image: '{obj:docker_image_var}'
+        logdir: '/log'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
