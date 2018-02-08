@@ -97,6 +97,11 @@ def set_parameters(item, job, params):
     if job.name.endswith('-publish'):
         set_doc_variables(item, job, params)
 
+    # Prevent puppeteer from downloading Chromium, we use the Debian package
+    # instead.  T179552 T186748
+    if params['ZUUL_PROJECT'].startswith('mediawiki/services/chromium-render'):
+        params['PUPPETEER_SKIP_CHROMIUM_DOWNLOAD'] = 'true'
+
     if 'debian-glue' in job.name:
 
         # XXX
