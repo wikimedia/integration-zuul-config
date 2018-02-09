@@ -316,7 +316,10 @@
     triggers:
      - zuul
     builders:
-     - jsduck
+     - shell: |
+        echo "Running JSDuck..."
+        jsduck --version
+        jsduck
      - doc-publish:
         docsrc: 'docs'
         docdest: '$DOC_BASENAME/$ZUUL_BRANCH/js'
