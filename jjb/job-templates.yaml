@@ -1,17 +1,3 @@
-# Generic job-templates
-- job:
-    name: 'jsduck'
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-
-# Deprecated non-generic jsduck job. You should use the above 'jsduck' job.
-# For repos that need to preserve workspace or have submodules, this is
-# used as workaround.
 - job-template:
     name: '{name}-jsduck'
     node: contintLabsSlave && DebianJessie
