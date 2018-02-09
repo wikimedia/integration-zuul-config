@@ -1,0 +1,8 @@
+FROM {{ "sury-php" | image_tag }}
+
+RUN {{ "php7.2-cli" | apt_install }}
+
+USER nobody
+
+ENTRYPOINT ["php"]
+CMD ["--help"]

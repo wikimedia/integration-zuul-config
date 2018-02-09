@@ -8,6 +8,7 @@ FROM {{ "composer" | image_tag }} as composer
 FROM {{ "ci-jessie" | image_tag }}
 
 # releng/php
+# TODO: Get this from sury-php?
 COPY sury-php.gpg /etc/apt/trusted.gpg.d/php.gpg
 # Sury uses https and requires lsb per https://packages.sury.org/php/README.txt
 RUN {{ "apt-transport-https" | apt_install }}
