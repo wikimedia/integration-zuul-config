@@ -893,7 +893,7 @@ jobs:
   - name: ^.*-coverage-publish$
     branch: master
 
-  - name: ^.*-jsduck($|-jessie)$
+  - name: ^.*-jsduck($|-docker|-jessie)$
     files:
      - '^.*\.(js|json|css)$'
 
@@ -992,6 +992,8 @@ jobs:
     queue-name: mediawiki
 
   - name: mediawiki-core-jsduck
+    branch: ^(REL.*|master)$
+  - name: mediawiki-core-jsduck-docker
     branch: ^(REL.*|master)$
 
   - name: mediawiki-core-jsduck-publish
@@ -1490,6 +1492,7 @@ projects:
     publish:
       - mediawiki-core-tag-doxygen-publish
     experimental:
+      - mediawiki-core-jsduck-docker
       # Experimental php version
       - mwgate-composer-php70-docker
       - mediawiki-phpunit-php70-jessie
@@ -7539,6 +7542,7 @@ projects:
       - mwext-VisualEditor-publish
     experimental:
       - mediawiki-core-qunit-selenium-jessie
+      - mwext-VisualEditor-jsduck-docker
 
   - name: mediawiki/extensions/WebChat
     template:
@@ -8087,6 +8091,8 @@ projects:
     postmerge:
       - oojs-core-publish
       - oojs-core-coverage
+    experimental:
+      - oojs-core-jsduck-docker
 
   - name: oojs/ui
     # composer hhvm is already run by npm-run-jenkins T155483
@@ -8124,6 +8130,8 @@ projects:
       - unicodejs-coverage
     publish:
       - unicodejs-tag-publish
+    experimental:
+      - unicodejs-jsduck-docker
 
   - name: VisualEditor/VisualEditor
     test:
