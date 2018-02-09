@@ -37,8 +37,8 @@
     publishers:
      - archive-test-logs
 
-- job:
-    name: 'php-compile-php70-docker'
+- job-template:
+    name: 'php-compile-{name}-docker'
     node: DebianJessieDocker
     triggers:
      - zuul
@@ -51,8 +51,26 @@
         exec docker run \
             --rm \
             --volume "$(pwd)"/src:/src \
-            docker-registry.wikimedia.org/releng/php-compile:0.1.0 \
+            docker-registry.wikimedia.org/releng/{image} \
         # nothing else can be executed due to exec
+
+- project:
+    name: php70
+    jobs:
+      - 'php-compile-{name}-docker':
+          image: php-compile:0.1.0
+
+- project:
+    name: php71
+    jobs:
+      - 'php-compile-{name}-docker':
+          image: php71-compile:0.1.0
+
+- project:
+    name: php72
+    jobs:
+      - 'php-compile-{name}-docker':
+          image: php72-compile:0.1.0
 
 
 - job:
