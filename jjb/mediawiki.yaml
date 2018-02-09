@@ -27,19 +27,6 @@
         # Qunit does not generate Junit file and we might skip selenium
         allow-empty-results: true
 
-- job-template:
-    name: 'mediawiki-core-jsduck'
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remote-zuul-no-submodules
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - jsduck
-
 - job:
     name: 'mediawiki-core-jsduck-publish'
     node: ci-jessie-wikimedia
@@ -232,7 +219,6 @@
         - php55
     jobs:
       - 'mediawiki-core-qunit-selenium-jessie'
-      - 'mediawiki-core-jsduck'
       - '{name}-jsduck-docker'
       - 'mediawiki-core-npm-node-6-docker'
       - 'mediawiki-core-jsduck-publish'

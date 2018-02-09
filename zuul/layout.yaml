@@ -991,8 +991,6 @@ jobs:
   - name: mediawiki-core-qunit-selenium-jessie
     queue-name: mediawiki
 
-  - name: mediawiki-core-jsduck
-    branch: ^(REL.*|master)$
   - name: mediawiki-core-jsduck-docker
     branch: ^(REL.*|master)$
 
@@ -1464,7 +1462,7 @@ projects:
       - composer-package-validate
     test:
       - mediawiki-core-phpcs-docker
-      - mediawiki-core-jsduck
+      - mediawiki-core-jsduck-docker
       - mediawiki-core-npm-node-6-docker
       - mediawiki-core-php55lint
       - mediawiki-phpunit-hhvm-jessie
@@ -1474,7 +1472,7 @@ projects:
       # Comment "check php5" to manually run this
       - mediawiki-phpunit-php55-jessie
     gate-and-submit: &mediawiki-core-gate-and-submit
-      - mediawiki-core-jsduck
+      - mediawiki-core-jsduck-docker
       - mediawiki-core-npm-node-6-docker
       - mediawiki-core-php55lint
       - mediawiki-core-phpcs-docker
@@ -1492,7 +1490,6 @@ projects:
     publish:
       - mediawiki-core-tag-doxygen-publish
     experimental:
-      - mediawiki-core-jsduck-docker
       # Experimental php version
       - mwgate-composer-php70-docker
       - mediawiki-phpunit-php70-jessie
