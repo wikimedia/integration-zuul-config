@@ -310,19 +310,22 @@
 
 - job:
     name: 'mwext-jsduck-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - shell: |
-        echo "Running JSDuck..."
-        jsduck --version
-        jsduck
+     - docker-log-dir
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/jsduck:0.1.0
+         logdir: '/log'
      - doc-publish:
-        docsrc: 'docs'
+        docsrc: 'src/docs'
         docdest: '$DOC_BASENAME/$ZUUL_BRANCH/js'
+    archive:
+     - archive-log-allow-empty
 
 - job-template:
     name: 'mwext-PoolCounter-build-jessie'
