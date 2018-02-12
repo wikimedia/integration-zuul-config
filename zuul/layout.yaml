@@ -618,6 +618,9 @@ pipelines:
         - event: patchset-created
           branch: (?!^refs/meta/config)
           email: *email_whitelist
+        - event: comment-added
+          comment: (?im)^Patch Set \d+:\n\n\s*check coverage\.?\s*$
+          email: *email_whitelist
 
     success-message: 'PHP test coverage increased (or stayed the same)'
     success:
