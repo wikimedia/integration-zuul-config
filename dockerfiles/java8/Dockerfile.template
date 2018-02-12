@@ -1,0 +1,12 @@
+FROM {{ "ci-stretch" | image_tag }}
+
+RUN {{ "openjdk-8-jdk-headless maven" | apt_install }}
+
+COPY mvn /usr/local/bin/mvn
+COPY settings.xml /settings.xml
+COPY run.sh /run.sh
+
+USER nobody
+WORKDIR /src
+CMD ["clean package"]
+ENTRYPOINT ["/run.sh"]
