@@ -1,12 +1,3 @@
-- builder:
-    name: bundle-nodepool
-    builders:
-     - shell: |
-         # We clean up unused gems that might be injected by castor
-         # Installs under BUNDLE_PATH injected by Zuul
-         bundle install --clean
-         bundle exec {command}
-
 - job-template: &job_rake-docker
     name: 'rake-docker'
     node: DebianJessieDocker

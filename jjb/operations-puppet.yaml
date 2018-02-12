@@ -12,34 +12,43 @@
 # Documentation for our puppet repository
 - job-template:
     name: 'operations-puppet-doc'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
+    node: DebianJessieDocker
     concurrent: false  # dont want to race doc creation!
-
-    # BUNDLE_PATH is usually injected by Zuul but this job is triggered by Jenkins
-    parameters:
-      - string:
-          name: 'BUNDLE_PATH'
-          default: '/home/jenkins/workspace/vendor/bundle'
-
     triggers:
      - pollscm:
          cron: '@hourly'
+    # Solely used for polling
     scm:
      - git:
          url: 'https://gerrit.wikimedia.org/r/p/operations/puppet.git'
          branches:
              - production
          reference-repo: '/srv/git/operations/puppet.git'
+         basedir: gitpolling
          submodule:
              disable: false
              recursive: true
+    parameters:
+        - string:
+            name: 'ZUUL_URL'
+            default: 'https://gerrit.wikimedia.org/r/p'
+        - string:
+            name: 'ZUUL_PROJECT'
+            default: 'operations/puppet'
+        - string:
+            name: 'ZUUL_REF'
+            default: 'production'
     builders:
-     - bundle-nodepool:
-         command: 'rake global:doc'
-     - doc-publish:
-        docsrc: 'doc'
-        docdest: 'puppet'
+        - docker-log-dir
+        - docker-src-dir
+        - docker-cache-dir
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/rake:0.2.1
+            logdir: '/log'
+            run_args: ' global:doc'
+        - doc-publish:
+            docsrc: 'src/doc'
+            docdest: 'puppet'
     publishers:
      - email-qa-alerts
 
