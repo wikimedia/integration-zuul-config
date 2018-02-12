@@ -49,6 +49,23 @@
     publishers:
      - castor-save
 
+- job-template:
+    name: '{name}-maven-java8-docker'
+    node: DebianJessieDocker
+    triggers:
+        - zuul
+    goals: 'clean package'
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: docker-registry.wikimedia.org/releng/java8:0.1.1
+            logdir: '/log'
+            run_args: '{obj:goals}'
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+
 # Convenience alias with name/project variables
 - job-template:
     !!merge : *job_template_maven
