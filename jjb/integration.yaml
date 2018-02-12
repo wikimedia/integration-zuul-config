@@ -154,7 +154,7 @@
 
 - job:
     name: integration-config-qa
-    node: ci-jessie-wikimedia
+    node: DebianJessieDocker
     triggers:
      - timed: '0 3 * * *'
     scm:
@@ -162,13 +162,24 @@
          url: 'https://gerrit.wikimedia.org/r/p/integration/config.git'
          branches:
              - master
-         reference-repo: '/srv/git/integration/config.git'
+    parameters:
+        - string:
+            name: 'ZUUL_URL'
+            default: 'https://gerrit.wikimedia.org/r/p'
+        - string:
+            name: 'ZUUL_PROJECT'
+            default: 'integration/config'
+        - string:
+            name: 'ZUUL_REF'
+            default: 'master'
     builders:
-     - run-tox:
-         venv: qa
+     - docker-log-dir
+     - docker-run-with-log-and-workspace-cache:
+         image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+         logdir: '/log'
+         run_args: ' -e qa -- --xunit-file=/log/junit-qa.xml'
     publishers:
      - archive-log-dir
-     - archive-tox-logs
      - xunit:
          types:
              - junit:
