@@ -177,7 +177,7 @@
      - docker-run-with-log-and-workspace-cache:
          image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
          logdir: '/log'
-         run_args: ' -e qa -- --xunit-file=/log/junit-qa.xml'
+         run_args: '-e qa -- --xunit-file=/log/junit-qa.xml'
     publishers:
      - archive-log-dir
      - xunit:
