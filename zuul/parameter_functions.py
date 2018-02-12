@@ -20,7 +20,6 @@ def set_parameters(item, job, params):
     hhvm_jobs = (
         'mw-testskin',
         'mw-testskin-non-voting',
-        'mw-tools-codesniffer-mwcore-testrun',
         )
     php5_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
