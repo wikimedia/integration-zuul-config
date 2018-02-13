@@ -138,7 +138,7 @@ dependencies = {
     # Extensions
     # One can add a skin by using: 'skin/XXXXX'
     '3D': ['MultimediaViewer'],
-    'AbuseFilter': ['AntiSpoof'],
+    'AbuseFilter': ['AntiSpoof', 'CodeEditor'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
