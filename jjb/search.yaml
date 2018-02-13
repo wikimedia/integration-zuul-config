@@ -13,8 +13,8 @@
 - project:
     name: search-xgboost
     jobs:
-        - '{name}-maven':
-            root_pom_var: jvm-packages/pom.xml
+        - '{name}-maven-java8-docker':
+            maven_args: --file jvm-packages/pom.xml clean verify
 
 - project:
     name: search-mjolnir
@@ -24,5 +24,5 @@
             build_timeout: 10 # minutes, xgboost takes a while to compile T184754
         # Sadly this does not test the python code with the jvm code, instead
         # using the last release of the jvm code, But it's a good start.
-        - '{name}-maven':
-            root_pom_var: jvm/pom.xml
+        - '{name}-maven-java8-docker':
+            maven_args: --file jvm/pom.xml clean verify
