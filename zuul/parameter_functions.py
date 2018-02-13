@@ -437,6 +437,7 @@ gatedextensions = [
     'VisualEditor',
     # Note: pre-1.31 this is switched out for Wikidata build extension
     'Wikibase',
+    'WikiEditor',
     'ZeroBanner',
     'ZeroPortal',
 ]
