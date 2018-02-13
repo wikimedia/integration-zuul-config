@@ -55,14 +55,14 @@
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
     triggers:
         - zuul
-    goals: 'clean verify'
+    maven_args: 'clean verify'
     builders:
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{obj:docker_image_var}'
             logdir: '/log'
-            run_args: '{obj:goals}'
+            run_args: '{obj:maven_args}'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
