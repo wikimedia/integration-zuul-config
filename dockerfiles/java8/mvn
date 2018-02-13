@@ -1,2 +1,8 @@
-#!/bin/dash
-/usr/bin/mvn -gs /settings.xml "$@"
+#!/bin/bash
+mvn_opts=()
+if [[ $- != *i* ]]; then
+    # bash is not interactive
+    mvn_opts+=('--batch-mode')
+fi
+
+/usr/bin/mvn "${mvn_opts[@]}" -gs /settings.xml "$@"
