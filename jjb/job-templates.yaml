@@ -52,6 +52,7 @@
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
     node: DebianJessieDocker
+    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
     triggers:
         - zuul
     goals: 'clean package'
@@ -59,7 +60,7 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: docker-registry.wikimedia.org/releng/java8:0.3.2
+            image: '{obj:docker_image_var}'
             logdir: '/log'
             run_args: '{obj:goals}'
     publishers:
