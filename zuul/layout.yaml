@@ -1184,6 +1184,12 @@ project-templates:
       - mwext-qunit-composer-jessie
     gate-and-submit-swat: *extension-qunit-composer-gate-and-submit
 
+  - name: extension-coverage
+    postmerge:
+      - mwext-phpunit-coverage-publish
+    coverage:
+      - mwext-phpunit-coverage-patch
+
   - name: skin-tests
     test:
       - mw-testskin
@@ -2858,8 +2864,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/AccountInfo
     template:
@@ -2886,8 +2891,7 @@ projects:
       - name: extension-unittests-generic
       - name: mediawiki-core-qunit-selenium-jessie
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/AdminLinks
     template:
@@ -2906,8 +2910,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Annotator
     template:
@@ -2946,10 +2949,9 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
+      - name: extension-coverage
     experimental:
       - mwext-mw-selenium-composer-jessie
-    postmerge:
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Arrays
     template:
@@ -2971,8 +2973,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/BaseHooks
     template:
@@ -2983,8 +2984,7 @@ projects:
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/BlameMaps
     template:
@@ -3012,8 +3012,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Buggy
     template:
@@ -3034,8 +3033,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/CategoryTagSorter
     template:
@@ -3067,8 +3065,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Cite
     template:
@@ -3092,8 +3089,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/CentralAuth
     template:
@@ -3101,8 +3097,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-rake
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
     experimental:
       - mediawiki-core-qunit-selenium-jessie
       - mwext-mw-selenium-jessie
@@ -3124,10 +3119,9 @@ projects:
       - name: extension-gate
       - name: mwgate-npm
       - name: extension-phan-generic
+      - name: extension-coverage
     test:
       - mwext-CirrusSearch-whitespaces
-    postmerge:
-      - mwext-phpunit-coverage-publish
     experimental:
       - mediawiki-core-qunit-selenium-jessie
 
@@ -3154,8 +3148,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/CodeEditor
     template:
@@ -3171,25 +3164,23 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Cognate
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/CollaborationKit
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-coverage
     postmerge:
       - mwext-doxygen-publish
       - mwext-jsduck-publish
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/CollapsibleVector
     template:
@@ -3200,8 +3191,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
@@ -3227,8 +3217,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Configure
     template:
@@ -3245,16 +3234,14 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/ContentTranslation
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
       - name: extension-qunit-generic
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/ContributionScores
     template:
@@ -3409,8 +3396,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/DonationInterface
     template:
@@ -3458,8 +3444,7 @@ projects:
       - name: mediawiki-core-qunit-selenium-jessie
       - name: mwext-ruby-jessie
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/EditAccount
     template:
@@ -3500,8 +3485,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Elastica
     template:
@@ -3519,8 +3503,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/EmailAuthorization
     template:
@@ -3541,8 +3524,7 @@ projects:
     template:
       - name: extension-unittests-non-voting
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/EventLogging
     template:
@@ -3551,8 +3533,8 @@ projects:
       - name: extension-qunit-generic
       - name: extension-jsduck
       - name: mwgate-npm
+      - name: extension-coverage
     postmerge:
-      - mwext-phpunit-coverage-publish
       - mwext-jsduck-publish
 
   - name: eventlogging
@@ -3579,8 +3561,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/FeaturedFeeds
     template:
@@ -3598,11 +3579,11 @@ projects:
      - name: mwgate-rake
      - name: extension-jsduck
      - name: mwgate-npm
+     - name: extension-coverage
     experimental:
      - mediawiki-core-qunit-selenium-jessie
     postmerge:
      - mwext-jsduck-publish
-     - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/Form
     template:
@@ -3627,9 +3608,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Gather
     template:
@@ -3660,8 +3639,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/GeoGebra
     template:
@@ -3702,15 +3680,13 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/GlobalPreferences
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/GlobalUsage
     template:
@@ -3785,15 +3761,13 @@ projects:
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/GraphViz
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/GuidedTour
     template:
@@ -3809,8 +3783,7 @@ projects:
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/HAWelcome
     template:
@@ -3891,17 +3864,16 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Kartographer
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-coverage
     postmerge:
       - mwext-doxygen-publish
       - mwext-jsduck-publish
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
@@ -3952,10 +3924,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
-    coverage:
-      - mwext-phpunit-coverage-patch
+      - name: extension-coverage
 
   - name: mediawiki/extensions/LiquidThreads
     template:
@@ -3977,8 +3946,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Mailgun
     template:
@@ -3994,8 +3962,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-rake
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
     experimental:
       - mediawiki-core-qunit-selenium-jessie
       - mwext-mw-selenium-jessie
@@ -4022,8 +3989,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/MassMessageEmail
     template:
@@ -4061,6 +4027,7 @@ projects:
       - name: mwgate-rake
       - name: mwgate-npm
       - name: extension-selenium
+      - name: extension-coverage
     test:
       - mwext-MobileFrontend-npm-run-lint-modules
     gate-and-submit:
@@ -4068,7 +4035,6 @@ projects:
     postmerge:
       - mwext-jsduck-publish
       - mwext-doxygen-publish
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/MobileApp
     template:
@@ -4116,8 +4082,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/MultimediaViewer
     template:
@@ -4253,12 +4218,11 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-coverage
     test:
       - mediawiki-core-qunit-selenium-jessie
     gate-and-submit:
       - mediawiki-core-qunit-selenium-jessie
-    postmerge:
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/PageAssessments
     template:
@@ -4274,8 +4238,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/PagedTiffHandler
     template:
@@ -4286,8 +4249,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/PagePopups
     template:
@@ -4299,10 +4261,9 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-rake
       - name: mwgate-npm
+      - name: extension-coverage
     experimental:
       - mediawiki-core-qunit-selenium-jessie
-    postmerge:
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/ParentPage
     template:
@@ -4437,8 +4398,7 @@ projects:
       - name: extension-unittests-generic
       - name: extension-phan-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/ArticleIndex
     template:
@@ -5491,8 +5451,7 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/NukeDPL
     template:
@@ -5753,15 +5712,13 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-selenium
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/QuickSearchLookup
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/QuickGV
     template:
@@ -6199,8 +6156,7 @@ projects:
     template:
      - name: extension-unittests-composer
      - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+     - name: extension-coverage
 
   - name: mediawiki/extensions/TestLanguageNameGrammar
     template:
@@ -6282,8 +6238,7 @@ projects:
       - name: mwgate-npm
       - name: extension-selenium
       - name: extension-phan-generic
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/TwoFactorAuthentication
     template:
@@ -6466,8 +6421,7 @@ projects:
       - name: extension-qunit-generic
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/WikibaseLexeme
     template:
@@ -6484,42 +6438,39 @@ projects:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
       - name: mwgate-npm
+      - name: extension-coverage
     check:
       - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
       - composer-package-validate
-    postmerge:
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikibaseQualityConstraints
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
       - name: mwgate-npm
+      - name: extension-coverage
     check:
       - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
       - composer-package-validate
-    postmerge:
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikibaseQualityExternalValidation
     template:
       - name: extension-unittests-composer
       - name: extension-qunit-composer
       - name: mwgate-npm
+      - name: extension-coverage
     check:
       - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
       - composer-package-validate
-    postmerge:
-      - mwext-phpunit-coverage-publish
 
   - name: mediawiki/extensions/WikibaseMediaInfo
     template:
@@ -6756,8 +6707,7 @@ projects:
     template:
       - name: mwgate-npm
       - name: extension-unittests-generic
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/PaginateText
     template:
@@ -7111,8 +7061,7 @@ projects:
       - name: extension-qunit-generic
       - name: mediawiki-core-qunit-selenium-jessie
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/PostEdit
     template:
@@ -7122,8 +7071,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Quiz
     template:
@@ -7321,8 +7269,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/StrategyWiki
     template:
@@ -7366,8 +7313,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/SideBarMenu
     template:
@@ -7470,8 +7416,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/UploadBlacklist
     template:
@@ -7484,8 +7429,7 @@ projects:
       - name: extension-qunit-generic
       - name: mwgate-npm
       - name: mwgate-tox-docker
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/UserDailyContribs
     template:
@@ -7630,15 +7574,13 @@ projects:
     template:
       - name: extension-unittests-composer
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/WikimediaEvents
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/WikimediaIncubator
     template:
@@ -7673,8 +7615,7 @@ projects:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
       - name: mwgate-npm
-    postmerge:
-      - mwext-phpunit-coverage-publish
+      - name: extension-coverage
 
   - name: mediawiki/extensions/Workflow
     template:
