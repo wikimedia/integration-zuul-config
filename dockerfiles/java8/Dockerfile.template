@@ -21,6 +21,11 @@ RUN /usr/local/bin/mvn --version
 COPY settings.xml /settings.xml
 COPY run.sh /run.sh
 
+# wikidata/query/rdf relies on npm
+# See <https://docs.npmjs.com/misc/config#environment-variables>
+# and <https://docs.npmjs.com/cli/cache>
+ENV NPM_CONFIG_CACHE=/cache
+
 USER nobody
 WORKDIR /src
 CMD ["clean package"]
