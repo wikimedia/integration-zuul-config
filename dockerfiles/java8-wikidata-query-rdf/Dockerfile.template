@@ -1,6 +1,8 @@
 FROM {{ "java8" | image_tag }}
 
+USER root
 RUN {{ "phantomjs" | apt_install }}
+USER nobody
 
 # wikidata/query/rdf relies on npm
 # See <https://docs.npmjs.com/misc/config#environment-variables>
