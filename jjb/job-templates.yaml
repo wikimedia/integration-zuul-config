@@ -49,7 +49,7 @@
     publishers:
      - castor-save
 
-- job-template:
+- job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
     node: DebianJessieDocker
     triggers:
@@ -66,10 +66,16 @@
         - archive-log-allow-empty
         - castor-save-workspace-cache
 
-# Convenience alias with name/project variables
+# Convenience aliases with name/project variables
 - job-template:
     !!merge : *job_template_maven
     name: '{name}-{project}-maven'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+- job-template:
+    !!merge : *job_template_maven-java8-docker
+    name: '{name}-{project}-maven-java8-docker'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
