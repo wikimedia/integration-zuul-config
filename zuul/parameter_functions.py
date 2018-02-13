@@ -412,6 +412,7 @@ gatedextensions = [
     'CirrusSearch',
     'Cite',
     'cldr',
+    'CodeEditor',
     'ConfirmEdit',
     'Echo',
     'Elastica',
