@@ -1,8 +1,10 @@
 #!/bin/bash
+set -eu
+
 mvn_opts=()
 if [[ $- != *i* ]]; then
     # bash is not interactive
     mvn_opts+=('--batch-mode')
 fi
 
-/usr/bin/mvn "${mvn_opts[@]}" -gs /settings.xml "$@"
+"$MAVEN_BIN" "${mvn_opts[@]}" -gs /settings.xml "$@"
