@@ -40,4 +40,4 @@ composer --ansi validate --no-check-publish
 /srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py "/tmp/extensions_load.txt" composer.local.json
 composer update --ansi --no-progress --prefer-dist --profile --no-dev
 cd /src/extensions/$EXT_NAME
-composer update --ansi --no-progress --prefer-dist --profile --no-dev
+composer update --ansi --no-progress --prefer-dist --profile
