@@ -410,7 +410,7 @@
           failed:
             total-all: 1
 
-- job:
+- job: &job_mwext-php70-phan-seccheck-docker
     name: 'mwext-php70-phan-seccheck-docker'
     node: DebianJessieDocker && m4executor
     concurrent: true
@@ -443,6 +443,12 @@
           failed:
             total-all: 1
 
+- job:
+    name: 'mwext-php70-phan-seccheck-docker-non-voting'
+    !!merge : *job_mwext-php70-phan-seccheck-docker
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 - project:
     name: 'mwext-CirrusSearch'

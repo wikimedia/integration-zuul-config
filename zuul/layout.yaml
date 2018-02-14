@@ -1071,6 +1071,18 @@ project-templates:
      - mwext-qunit-composer-jessie
      - mwgate-composer-php70-docker
 
+  - name: extension-seccheck
+    test:
+     - mwext-php70-phan-seccheck-docker
+    gate-and-submit:
+     - mwext-php70-phan-seccheck-docker
+    gate-and-submit-swat:
+     - mwext-php70-phan-seccheck-docker
+
+  - name: extension-seccheck-non-voting
+    test:
+     - mwext-php70-phan-seccheck-docker-non-voting
+
   - name: extension-unittests-generic
     check:
      - mwgate-php55lint
@@ -3072,12 +3084,14 @@ projects:
       - name: extension-gate
       - name: mwgate-npm
       - name: extension-phan-generic
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/CiteThisPage
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/Citoid
     template:
@@ -3236,6 +3250,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-coverage
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/ContentTranslation
     template:
@@ -3610,6 +3625,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-coverage
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/Gather
     template:
@@ -3818,6 +3834,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/ImportArticles
     template:
@@ -3838,6 +3855,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/Insider
     template:
@@ -3848,6 +3866,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/InterwikiSorting
     template:
@@ -3941,6 +3960,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/LoginNotify
     template:
@@ -4165,6 +4185,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/NumberOfComments
     template:
@@ -4277,6 +4298,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/ParserMigration
     template:
@@ -7004,6 +7026,7 @@ projects:
     template:
       - name: extension-gate
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/PerformanceInspector
     template:
@@ -7045,6 +7068,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/PoolCounter
     template:
@@ -7103,6 +7127,7 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/ReplaceSet
     template:
@@ -7251,6 +7276,7 @@ projects:
       - name: extension-gate
       - name: extension-unittests-generic
       - name: mwgate-npm
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/SpamDiffTool
     template:
@@ -7327,6 +7353,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/TemplateData
     template:
@@ -7357,6 +7384,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/TitleKey
     template:
@@ -7508,6 +7536,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-phan-generic
+      - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/Wikibase
     template:
