@@ -7,8 +7,8 @@ docker run \
     --env JENKINS_URL=1 \
     --env ZUUL_URL=https://gerrit.wikimedia.org/r \
     --env ZUUL_PROJECT=search/MjoLniR \
-    --env ZUUL_COMMIT=master \
-    --env ZUUL_REF=master \
+    --env ZUUL_COMMIT=refs/changes/03/410403/1 \
+    --env ZUUL_REF=refs/changes/03/410403/1 \
     --volume /"$(pwd)"/log://log \
     --volume /"$(pwd)"/cache://cache \
-    docker-registry.wikimedia.org/releng/tox-pyspark:latest
+    docker-registry.wikimedia.org/releng/tox-pyspark:0.1.0

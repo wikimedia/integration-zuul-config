@@ -1,0 +1,108 @@
+<settings>
+
+  <localRepository>${env.XDG_CACHE_HOME}/m2</localRepository>
+
+  <profiles>
+    <profile>
+      <id>download-sources</id>
+      <properties>
+        <downloadSources>true</downloadSources>
+      </properties>
+    </profile>
+    <profile>
+      <id>force-wikimedia-archiva</id>
+      <repositories>
+        <!-- disable Maven central -->
+        <repository>
+          <id>central</id>
+          <url>http://repo1.maven.org/maven2</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <!-- Repository information for archiva.wikimedia.org. -->
+        <repository>
+          <id>wikimedia.mirrored</id>
+          <name>Wikimedia Mirrored Repository</name>
+          <url>https://archiva.wikimedia.org/repository/mirrored</url>
+          <releases>
+            <enabled>false</enabled>
+            <checksumPolicy>fail</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
+          <id>wikimedia.releases</id>
+          <name>Wikimedia Release Repository</name>
+          <url>https://archiva.wikimedia.org/repository/releases</url>
+          <releases>
+            <enabled>true</enabled>
+            <checksumPolicy>fail</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
+          <id>wikimedia.snaphots</id>
+          <name>Wikimedia Snapshot Repository</name>
+          <url>https://archiva.wikimedia.org/repository/snapshots</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+        </repository>
+
+        <repository>
+            <id>wikimedia.python</id>
+            <name>Wikimedia Python Repository</name>
+            <url>https://archiva.wikimedia.org/repository/python</url>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>fail</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+      </repositories>
+
+      <pluginRepositories>
+        <!-- disable Maven central -->
+        <pluginRepository>
+          <id>central</id>
+          <url>http://repo1.maven.org/maven2</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+          <id>wikimedia.mirrored</id>
+          <name>Wikimedia Mirrored Repository</name>
+          <url>https://archiva.wikimedia.org/repository/mirrored/</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>force-wikimedia-archiva</activeProfile>
+    <activeProfile>download-sources</activeProfile>
+  </activeProfiles>
+
+</settings>
