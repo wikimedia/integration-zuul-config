@@ -32,6 +32,24 @@
      - '{name}-tabs':
          fileselector: '*'
 
+- job:
+    name: 'operations-mw-config-composer-test-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-src-dir
+        - docker-ci-src-setup-simple
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.2.1
+            logdir: '/log'
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+
 - project:
     name: 'operations-mw-config'
     jobs:
