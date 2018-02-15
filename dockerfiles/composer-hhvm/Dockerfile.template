@@ -7,6 +7,8 @@ COPY --from=composer /srv/composer /srv/composer
 USER root
 RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
 
+RUN {{ "jq" | apt_install }}
+
 USER nobody
 
 ENTRYPOINT ["/srv/composer/vendor/bin/composer"]
