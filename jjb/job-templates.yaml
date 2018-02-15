@@ -59,7 +59,8 @@
     builders:
         - docker-castor-load
         - docker-log-dir
-        - docker-run-with-log-and-workspace-cache:
+        - docker-src-dir
+        - docker-run-with-log-cache-src:
             image: '{obj:docker_image_var}'
             logdir: '/log'
             run_args: '{obj:maven_args}'
@@ -106,6 +107,36 @@
          docdest: '{name}'
     publishers:
      - castor-save
+
+- job-template:
+    name: '{name}-maven-java8-docker-site-publish'
+    maven_args: 'clean install site site:stage'
+    !!merge : *job_template_maven-java8-docker
+    triggers:
+        - zuul
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+        - postbuildscript:
+              builders:
+                  - doc-publish:
+                      docsrc: 'src/target/staging'
+                      docdest: 'DOCKER-{name}'
+
+- job-template:
+    name: '{name}-{project}-maven-java8-docker-site-publish'
+    maven_args: 'clean install site site:stage'
+    !!merge : *job_template_maven-java8-docker
+    triggers:
+        - zuul
+    publishers:
+        - castor-save-workspace-cache
+        - postbuildscript:
+              builders:
+                  - doc-publish:
+                      docsrc: 'src/target/staging'
+                      docdest: 'DOCKER-{name}-{project}'
+        - archive-log-allow-empty
 
 - job-template:
     !!merge : *job_template_maven_site_publish
