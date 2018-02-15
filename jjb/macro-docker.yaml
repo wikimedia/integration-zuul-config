@@ -45,6 +45,7 @@
         #!/bin/bash -eu
         set -x
         exec docker run \
+            {obj:docker_run_options|} \
             --rm \
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/log:{logdir} \
@@ -64,6 +65,7 @@
         #!/bin/bash -eu
         set -x
         exec docker run \
+            {obj:docker_run_options|} \
             --rm \
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/log:{logdir} \
@@ -85,6 +87,7 @@
         set -x
         chmod 2777 src
         exec docker run \
+            {obj:docker_run_options|} \
             --rm \
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/log:{logdir} \
