@@ -6,6 +6,12 @@ RUN git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/composer.gi
     && rm -rf /srv/composer/.git \
     && ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
 
+# Script to 'composer require' solely dev dependencies. Copied to /srv/composer
+# since child containers usually: COPY --from=composer /srv/composer /srv/composer
+COPY composer-install-dev-only.bash /srv/composer/composer-install-dev-only
+
+RUN {{ "jq" | apt_install }}
+
 USER nobody
 
 # If a later dockerfile enables xdebug, don't
