@@ -6,6 +6,8 @@ RUN git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/composer.gi
     && rm -rf /srv/composer/.git \
     && ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
 
+RUN {{ "jq" | apt_install }}
+
 USER nobody
 
 # If a later dockerfile enables xdebug, don't
