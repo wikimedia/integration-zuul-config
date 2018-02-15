@@ -107,6 +107,47 @@
     publishers:
      - castor-save
 
+# Same as '{name}-maven-java8-docker' but src is bindmounted so we can later
+# retrieve the site from /src/target/ and push it to doc.wikimedia.org
+- job-template:
+    name: '{name}-maven-java8-docker-site-publish'
+    node: DebianJessieDocker
+    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
+    triggers:
+        - zuul
+    maven_args: '-DskipTests -Dmaven.test.skip=true clean install site site:stage'
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-src-dir
+        - docker-run-with-log-cache-src:
+            image: '{obj:docker_image_var}'
+            logdir: '/log'
+            run_args: '{obj:maven_args}'
+    publishers:
+        - postbuildscript:
+              builders:
+                  - doc-publish:
+                      docsrc: 'src/target/staging'
+                      docdest: '{name}'
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+
+- job-template:
+    name: '{name}-{project}-maven-java8-docker-site-publish'
+    maven_args: 'clean install site site:stage'
+    !!merge : *job_template_maven-java8-docker
+    triggers:
+        - zuul
+    publishers:
+        - postbuildscript:
+              builders:
+                  - doc-publish:
+                      docsrc: 'src/target/staging'
+                      docdest: '{name}-{project}'
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+
 - job-template:
     !!merge : *job_template_maven_site_publish
     name: '{name}-{project}-maven-site-publish'
