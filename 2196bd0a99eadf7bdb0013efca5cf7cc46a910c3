@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "79f607c8_1e1d7c55",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 2426
+      },
+      "writtenOn": "2018-02-15T00:15:32Z",
+      "side": 1,
+      "message": "My apologies. This comment became outdated in another patchset and I forgot update it. Fixed.",
+      "parentUuid": "acf60a7d_73067b11",
+      "revId": "2196bd0a99eadf7bdb0013efca5cf7cc46a910c3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ea316a1_c1c35be2",
         "filename": "jjb/mediawiki-services.yaml",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2018-02-14T22:37:44Z",
       "side": 1,
       "message": "docker-ci-src-setup-simple runs a container which fetch and checkout the patchset. It runs as the \"nobody\" user just like all CI containers.\n\nThe python snippet there is run on the host as user \"jenkins-deploy\" and it will not be able to run to src/config.yaml which is owned by \"nobody\".\n\n\nIn 2a890a16dddd0cfc7e94911b1435bc059b3cd32a we have added the executablePath option to config.prod.yaml  CI invokes service-runner which default to use config.yaml (a symlink to config-dev.yaml).\n\nReading the service-runner doc, its configuration system supports looking up environment variable:\n\n  field: \u0027{env(ENV_VAR_NAME[,default_value])}\u0027\n\nSo tentatively in config-dev.yaml we could add:\n\n puppeteer_options:\n  executablePath: \u0027{env(CHROME_BIN[,XXXX])}\u0027\n\nThe docker-registry.wikimedia.org/releng/npm-browser-test container already sets CHROME_BIN\u003d/usr/bin/chromium\n\nThe issue though is what to use for XXXX. If its empty the executablePath will be empty and I guess puppeteer will bails out trying to execute \u0027\u0027 :-(\n\n\n-----\n\nAnother possibility is to hack some code in chromium-render to have it set the executablePath whenever it detects it is running under CI. Typically JENKINS_URL environment variable would be set, but that makes it non obvious to reproduce locally since one has to remember which variable to set to trigger that code path :(",
+      "revId": "2196bd0a99eadf7bdb0013efca5cf7cc46a910c3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f472d936_07d2d61c",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 2426
+      },
+      "writtenOn": "2018-02-15T00:15:32Z",
+      "side": 1,
+      "message": "As I understand it, both nobody and jenkins-deploy are members of the wikidev group and src/confg.yaml grants group write permissions. However, I believe your next point makes this one moot!\n\n\u003e env(CHROME_BIN)\n\nBrilliant suggestion! (Note: for my posterity, the docs at https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/services/service-runner are outdated. Use https://github.com/wikimedia/service-runner.) Unfortunately, this configuration is parsed in the test service before passing to the service runner. Fortunately, however, the \"fix\" was easy! :D\n\nTest build is here (which fails for lint failures I\u0027ve addressed in another patchset): https://integration.wikimedia.org/ci/job/chromium-render-npm-browser-node-6-docker/52/console",
+      "parentUuid": "3ea316a1_c1c35be2",
       "revId": "2196bd0a99eadf7bdb0013efca5cf7cc46a910c3",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
