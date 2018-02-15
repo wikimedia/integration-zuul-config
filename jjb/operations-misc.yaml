@@ -32,6 +32,32 @@
      - '{name}-tabs':
          fileselector: '*'
 
+- job:
+    name: 'operations-mw-config-composer-test-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-src-dir
+        - docker-ci-src-setup-simple
+        # Install solely the require-dev dependencies
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.1
+            docker_run_options: '--entrypoint=/srv/composer/composer-install-dev-only'
+            run_args: '/src --profile --ignore-platform-reqs'
+            logdir: '/log'
+        # Now in /src, just run composer test
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.1
+            run_args: '--ansi --working-dir=/src test'
+            logdir: '/log'
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+
 - project:
     name: 'operations-mw-config'
     jobs:
