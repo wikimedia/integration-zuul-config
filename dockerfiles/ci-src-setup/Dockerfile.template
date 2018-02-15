@@ -30,6 +30,8 @@ RUN {{ "python python3" | apt_install }}
 # pin python-pbr https://phabricator.wikimedia.org/T153877
 RUN {{ "zuul python-pbr=0.8.2-1" | apt_install }}
 
+RUN {{ "jq" | apt_install }}
+
 COPY --from=clone-integration-jenkins /srv/jenkins/bin /srv/slave-scripts
 COPY --from=clone-integration-jenkins /srv/jenkins/etc/zuul-clonemap.yaml /srv/zuul-clonemap.yaml
 COPY --from=composer /srv/composer /srv/composer
