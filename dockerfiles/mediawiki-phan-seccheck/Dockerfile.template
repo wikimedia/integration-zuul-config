@@ -1,5 +1,7 @@
 FROM {{ "composer" | image_tag }}
 
+COPY get_version.php /usr/local/bin/get_version.php
+
 USER nobody
 
 # Warm up composer cache
