@@ -468,7 +468,10 @@
     name: 'translatewiki'
 
     jobs:
-     - '{name}-composer-hhvm-jessie'
+     - '{name}-composer-{phpflavor}-docker':
+         phpflavor:
+             - hhvm:
+                 image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.2.1
      - '{name}-rake-docker'
 
 # Find out common typos in any files based on list of typos in a /typos file
