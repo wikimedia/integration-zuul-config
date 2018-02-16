@@ -43,7 +43,7 @@
         - docker-log-dir
         - docker-src-dir
         - docker-ci-src-setup-simple
-        # Install solely the require-dev dependencies
+        # Install solely the require-dev dependencies (T85947)
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.1
             docker_run_options: '--entrypoint=/srv/composer/composer-install-dev-only'
@@ -64,28 +64,6 @@
      - '{name}-{phpflavor}lint':
          phpflavor: 'php55'
      - '{name}-typos'
-
-# Runs 'composer validate' and 'composer test', for the
-# operations/mediawiki-config repo. Uses fetch-composer-dev to install require-dev
-# packages while preserving non-dev packages from vendor in Git. (T85947)
-# Avoid generic jobs to ensure it stays out of the
-# MediaWiki gate-and-submit queue. (T101908)
-- job:
-    name: 'operations-mw-config-composer-hhvm-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - composer-validate:
-         dir: '.'
-     - fetch-composer-dev
-     - composer-test:
-         dir: '.'
-    publishers:
-     - castor-save
 
 - project:
     name: 'cumin'
