@@ -1,0 +1,29 @@
+FROM {{ "ci-jessie" | image_tag }}
+
+# zip is needed for composer to install things from dist
+# others are libraries/MediaWiki related
+{% set packages|replace('\n', ' ') -%}
+php5-cli
+php5-curl
+php5-dev
+php5-gd
+php5-gmp
+php5-intl
+php5-mcrypt
+php5-mysql
+php5-redis
+php5-sqlite
+php5-tidy
+php5-xdebug
+php5-xsl
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+# Disable xdebug by default due to its performance impact
+RUN php5dismod xdebug
+
+USER nobody
+
+ENTRYPOINT ["php"]
+CMD ["--help"]
