@@ -137,6 +137,7 @@
     triggers:
      - zuul
     builders:
+     - docker-castor-load
      - docker-log-dir
      - docker-src-dir
      - docker-cache-dir
@@ -144,6 +145,8 @@
      - docker-run-with-log-cache-src:
         image: '{image}'
         logdir: '/log'
+    publishers:
+     - castor-save-workspace-cache
 
 - job-template:
     !!merge : *composer-package-phpflavor-docker
@@ -161,6 +164,7 @@
     triggers:
      - zuul
     builders:
+     - docker-castor-load
      - docker-log-dir
      - docker-src-dir
      - docker-cache-dir
@@ -168,6 +172,8 @@
      - docker-run-with-log-cache-src:
         image: '{image}'
         logdir: '/log'
+    publishers:
+     - castor-save-workspace-cache
 
 - job-template:
     !!merge : *composer-phpflavor-docker
