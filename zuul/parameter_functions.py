@@ -83,6 +83,10 @@ def set_parameters(item, job, params):
     ):
         params['MW_COMPOSER_MERGE_MW_IN_VENDOR'] = 1
 
+    # At least parallel-lint is slow under HHVM
+    if params['ZUUL_PROJECT'].startswith('mediawiki/vendor'):
+        params['COMPOSER_PROCESS_TIMEOUT'] = 600
+
     if job.name.startswith('mediawiki-extensions-'):
         set_gated_extensions(item, job, params)
 
