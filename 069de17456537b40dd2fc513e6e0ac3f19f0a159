@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a9ab1f8b_4edeb1bc",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4704,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-02-16T11:22:26Z",
+      "side": 1,
+      "message": "The BlueSpice* extensions depends on the BlueSpiceFoundation extension.  That is defined in zuul/parameter_functions.py and the good news is that it is already there:\n\n     \u0027BlueSpiceRSSFeeder\u0027: [\u0027BlueSpiceFoundation\u0027],\n\nSo that part is good.",
+      "revId": "069de17456537b40dd2fc513e6e0ac3f19f0a159",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "95a07f51_476f6dec",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4843,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-02-16T11:22:26Z",
+      "side": 1,
+      "message": "I am not sure what that software is about, but it just had a single commit two years ago.\n\nAnyway, despite the name, that is solely a Javascript application. So there should be just \"mwgate-npm\".",
+      "revId": "069de17456537b40dd2fc513e6e0ac3f19f0a159",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "393b9dda_df51413d",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4849,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-02-16T11:22:26Z",
+      "side": 1,
+      "message": "OfflineContentGenerator/node_modules\n\nThat is a collection of node modules tentatively for OfflineContentGenerator.  Wikimedia has phased out that project as far as I understand it and the repo hasn\u0027t got any update in two years.\n\nProbably it should be archived.  Maybe we can try filling a task to ask archiving it and add whoever knows what OfflineContentGenerator is for.",
+      "revId": "069de17456537b40dd2fc513e6e0ac3f19f0a159",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eaae70b8_68aed6dc",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 4972,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-02-16T11:22:26Z",
+      "side": 1,
+      "message": "That is a commit of composer dependencies for the Donation interface extension. DonationInterface as a more specific job because it has to be tested with the REL1_27 branch.\n\nSupposedly, we would need to adjust that job to use the DonationInterface/vendor repository instead of downloading dependencies from composer. Then we would trigger the job on both repo (DonationInterface and DonationInterface/vendor).\n\nThat should be done in a different patch/change and it is a bit more complicated to achieve.  We probably want a subtask in Phabricator and talk to Wikimedia fundraising tech team about it.",
+      "revId": "069de17456537b40dd2fc513e6e0ac3f19f0a159",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
