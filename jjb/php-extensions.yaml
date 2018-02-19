@@ -16,6 +16,18 @@
         # nothing else can be executed due to exec
 
 - project:
+   name: hhvm-stretch
+   jobs:
+     - 'php-compile-{name}-docker':
+         image: hhvm-compile:0.1.0
+
+- project:
+   name: hhvm-jessie
+   jobs:
+     - 'php-compile-{name}-docker':
+         image: hhvm-jessie-compile:0.1.0
+
+- project:
     name: php55
     jobs:
       - 'php-compile-{name}-docker':
@@ -52,19 +64,13 @@
          hphpize
          cmake .
          make
-- job:
-    !!merge : *php-compile-hhvm
-    name: 'php-compile-hhvm-jessie'
-    node: ci-jessie-wikimedia
-    triggers:
-     - zuul
 
 - publisher:
     name: archive-test-logs
     publishers:
-     - archive:
-         artifacts: 'tests/*.log'
-         allow-empty: true
+      - archive:
+          artifacts: 'tests/*.log'
+          allow-empty: true
 
 # Version that runs the HHVM tests using a kind
 # of hack.
@@ -84,10 +90,3 @@
          REPORT_EXIT_STATUS=1 ./hhvm-test.sh run-tests.php
     publishers:
      - archive-test-logs
-
-- job:
-    !!merge : *php-compile-hhvm-test
-    name: php-compile-hhvm-test-jessie
-    node: ci-jessie-wikimedia
-    triggers:
-     - zuul
