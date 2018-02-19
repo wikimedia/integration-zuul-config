@@ -70,63 +70,6 @@
     triggers:
      - zuul
 
-# Runs "composer update" and "composer test" but on disposable instances
-# maintained by Nodepool.
-- job-template: &job_composer-phpflavor-image
-    name: 'composer-{phpflavor}-{image}'
-    node: ci-{image}-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - castor-load
-     - composer-validate:
-        dir: '.'
-     - composer-update:
-        dir: '.'
-     - composer-test:
-        dir: '.'
-    publishers:
-     - castor-save
-
-- job-template:
-    !!merge : *job_composer-phpflavor-image
-    name: '{name}-composer-{phpflavor}-{image}'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
-# Same as 'composer-package-{phpflavor}'. Runs "composer update" and "composer
-# test" for libraries that are published as composer packages but on disposable
-# instances maintained by Nodepool.
-- job-template:
-    name: 'composer-package-{phpflavor}-{image}'
-    node: ci-{image}-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - castor-load
-     - composer-validate-package
-     - composer-update:
-        dir: '.'
-     - composer-test:
-        dir: '.'
-    publishers:
-     - castor-save
-
 - job-template: &composer-package-phpflavor-docker
     name: 'composer-package-{phpflavor}-docker'
     node: DebianJessieDocker
@@ -180,26 +123,6 @@
     name: '{name}-composer-{phpflavor}-docker'
     triggers:
      - zuul
-
-# Couple jobs with a {name} prefix
-- job-template:
-    !!merge : *job_composer-phpflavor-image
-    name: '{name}-composer-hhvm-jessie'
-    image: jessie
-    phpflavor: hhvm
-    triggers:
-     - zuul
-
-- project:
-    name: 'composer-flavored-on-nodepool'
-    phpflavor:
-        - hhvm:
-            image: jessie
-        - php70:
-            image: jessie
-    jobs:
-     - 'composer-package-{phpflavor}-{image}'
-     - 'composer-{phpflavor}-{image}'
 
 - project:
     name: 'composer-flavored-on-docker'
