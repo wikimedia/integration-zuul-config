@@ -1,0 +1,29 @@
+FROM {{ "hhvm-jessie" | image_tag }}
+
+USER root
+
+RUN echo "deb-src http://apt.wikimedia.org/wikimedia/ jessie-wikimedia main" > /etc/apt/sources.list.d/src.list \
+    && apt-get update \
+    && apt-get -y build-dep hhvm \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/src.list
+
+# libthai is for wikidiff2, and
+# liblua5.1 is for luasandbox
+{% set packages|replace('\n', ' ') -%}
+hhvm-dev
+build-essential
+pkg-config
+php5-dev
+libboost-dev
+libtbb-dev
+libthai-dev
+liblua5.1-dev
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+USER nobody
+
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]
