@@ -278,7 +278,6 @@ dependencies = {
     'RevisionSlider': ['MobileFrontend'],
     'Score': ['VisualEditor'],
     'SemanticLinks': ['VisualEditor'],
-    'SemanticPageMaker': ['WikiObjectModel'],
     'SiteMetrics': ['SocialProfile'],
     'SiteScout': ['Comments', 'SocialProfile', 'VoteNY'],
     'SimpleSAMLphp': ['PluggableAuth'],
