@@ -7693,22 +7693,20 @@ projects:
       - doxygen-publish
 
   - name: mediawiki/php/wikidiff2
-    # no check pipeline since -build runs code :-)
     test:
-      - php-compile-hhvm
+      - php-compile-hhvm-jessie-docker
+      - php-compile-hhvm-stretch-docker
       - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
     gate-and-submit:
-      - php-compile-hhvm
+      - php-compile-hhvm-jessie-docker
+      - php-compile-hhvm-stretch-docker
       - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
-    experimental:
-      - php-compile-hhvm-jessie-docker
-      - php-compile-hhvm-stretch-docker
 
   - name: mediawiki/php/wmerrors
     # no check pipeline since -build runs code :-)
