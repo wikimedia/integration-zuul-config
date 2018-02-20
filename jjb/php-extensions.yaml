@@ -14,13 +14,6 @@
     publishers:
      - archive-test-logs
 
-- job:
-    !!merge : *php-compile-php55
-    name: 'php-compile-php55-jessie'
-    node: ci-jessie-wikimedia
-    triggers:
-     - zuul
-
 - job-template:
     name: 'php-compile-{name}-docker'
     node: DebianJessieDocker
@@ -37,6 +30,12 @@
             --volume "$(pwd)"/src:/src \
             docker-registry.wikimedia.org/releng/{image} \
         # nothing else can be executed due to exec
+
+- project:
+    name: php55
+    jobs:
+      - 'php-compile-{name}-docker':
+          image: php55-compile:0.1.0
 
 - project:
     name: php70
