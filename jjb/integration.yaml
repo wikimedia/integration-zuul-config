@@ -233,28 +233,6 @@
      - archive-tox-logs
      - castor-save
 
-- job:
-    name: 'jenkins-plugin-jdk7-jessie'
-    project-type: maven
-    jdk: 'Debian - OpenJdk 7'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    prebuilders:
-     - castor-load
-    maven:
-      goals: clean package
-    publishers:
-     - castor-save
-     - junit:
-         results: 'target/surefire-reports/TEST-*.xml'
-         allow-empty-results: true
-     - archive:
-         artifacts: 'target/*.hpi'
-
-
 - project:
     name: 'integration-config'
     jobs:
@@ -268,3 +246,13 @@
     name: 'integration-docroot'
     jobs:
      - 'integration-docroot-deploy'
+
+- project:
+    name: jenkins-plugin-android-emulator
+    jobs:
+        - '{name}-maven-java8-docker'
+
+- project:
+    name: jenkins-plugin-postbuildscript
+    jobs:
+        - '{name}-maven-java8-docker'
