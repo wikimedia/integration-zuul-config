@@ -7676,19 +7676,18 @@ projects:
     # no check pipeline since -build runs code :-)
     test:
       - php-compile-hhvm-test
-      - php-compile-php55
+      - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
     gate-and-submit:
       - php-compile-hhvm-test
-      - php-compile-php55
+      - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
     experimental:
       - php-compile-hhvm-test-jessie
-      - php-compile-php55-docker
     postmerge:
       - doxygen-publish
 
@@ -7696,27 +7695,24 @@ projects:
     # no check pipeline since -build runs code :-)
     test:
       - php-compile-hhvm
-      - php-compile-php55
+      - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
     gate-and-submit:
       - php-compile-hhvm
-      - php-compile-php55
+      - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
     experimental:
       - php-compile-hhvm-jessie
-      - php-compile-php55-docker
 
   - name: mediawiki/php/wmerrors
     # no check pipeline since -build runs code :-)
     test:
-      - php-compile-php55
+      - php-compile-php55-docker
     gate-and-submit:
-      - php-compile-php55
-    experimental:
       - php-compile-php55-docker
 
   - name: mediawiki/oauthclient-php

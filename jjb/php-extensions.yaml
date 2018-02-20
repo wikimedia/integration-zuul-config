@@ -1,19 +1,3 @@
-- job: &php-compile-php55
-    name: 'php-compile-php55'
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remoteonly-zuul
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        /usr/bin/phpize5.5 --version
-        /usr/bin/phpize5.5
-        ./configure
-        make
-        REPORT_EXIT_STATUS=1 make test
-    publishers:
-     - archive-test-logs
-
 - job-template:
     name: 'php-compile-{name}-docker'
     node: DebianJessieDocker
