@@ -7675,20 +7675,19 @@ projects:
   - name: mediawiki/php/luasandbox
     # no check pipeline since -build runs code :-)
     test:
-      - php-compile-hhvm-test
+      - php-compile-hhvm-jessie-docker
+      - php-compile-hhvm-stretch-docker
       - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
     gate-and-submit:
-      - php-compile-hhvm-test
+      - php-compile-hhvm-jessie-docker
+      - php-compile-hhvm-stretch-docker
       - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
-    experimental:
-      - php-compile-hhvm-jessie-docker
-      - php-compile-hhvm-stretch-docker
     postmerge:
       - doxygen-publish
 
