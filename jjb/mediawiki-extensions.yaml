@@ -525,9 +525,15 @@
         results: 'log/junit*.xml,log/WDIO.xunit*.xml'
         # Qunit does not generate Junit file and we might skip selenium
         allow-empty-results: true
+     - email-ext:
+        recipients: '{recipients}'
+        body: '${{SCRIPT, template="wikimedia.template"}}'
+        failure: true
+        unstable: true
 
 - project:
     name: CirrusSearch
+    recipients: dcausse@wikimedia.org ebernhardson@wikimedia.org qa-alerts@lists.wikimedia.org # @dcausse @EBernhardson
     repository: mediawiki/extensions/CirrusSearch
 
     jobs:
@@ -536,6 +542,7 @@
 
 - project:
     name: RelatedArticles
+    recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
     repository: mediawiki/extensions/RelatedArticles
 
     jobs:
@@ -543,6 +550,7 @@
 
 - project:
     name: Popups
+    recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
     repository: mediawiki/extensions/Popups
 
     jobs:
