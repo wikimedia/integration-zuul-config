@@ -1,4 +1,13 @@
 - project:
+    name: '3d2png'
+    repository:
+     - deploy
+    jobs:
+     - '{name}-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-3d2png:0.1.0
+     - '{name}-{repository}-npm-node-6-jessie'
+
+- project:
     name: 'change-propagation'
     repository:
      - deploy
