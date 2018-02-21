@@ -1,0 +1,18 @@
+FROM {{ "npm-test" | image_tag }}
+
+USER root
+
+{% set deps|replace('\n', ' ') -%}
+pkg-config
+libcairo2-dev
+libjpeg-dev
+libxi-dev
+libgif-dev
+libglu1-mesa-dev
+libglew-dev
+libpng12-dev
+{%- endset -%}
+
+RUN {{ deps | apt_install }}
+
+USER nobody
