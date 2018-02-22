@@ -1020,7 +1020,7 @@ jobs:
     voting: false
     # FIXME remove noop gate-and-submit when making it voting
 
-  - name: ^fundraising-tools-tox-(jessie|docker)$
+  - name: ^fundraising-tools-tox-docker$
     skip-if:
       # Done on master, not ready on deployment branch T145012
       #
@@ -2792,15 +2792,11 @@ projects:
 
   - name: wikimedia/fundraising/tools
     test:
-      - fundraising-tools-tox-jessie
-    gate-and-submit:
-      - fundraising-tools-tox-jessie
-      # fundraising-tools-tox-jessie is skipped on 'deploy' branch (WIP T145012)
-      - noop
-    experimental:
-      # fundraising-tools-tox-docker is skipped on 'deploy' branch (WIP T145012)
-      # XXX fails when attempting to connect to MySQL
       - fundraising-tools-tox-docker
+    gate-and-submit:
+      - fundraising-tools-tox-docker
+      # fundraising-tools-tox-docker is skipped on 'deploy' branch (WIP T145012)
+      - noop
 
   - name: wikimedia/fundraising/crm
     test:

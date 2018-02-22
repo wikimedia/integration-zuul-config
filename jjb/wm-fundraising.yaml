@@ -151,21 +151,6 @@
     jobs:
      - '{name}-npm-node-6-docker'
 
-# Test suite requires a MySQL server
-- job:
-    name: 'fundraising-tools-tox-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - tox-all-envs
-    publishers:
-     - archive-log-dir
-     - archive-tox-logs
-     - castor-save
 - project:
     name: fundraising-tools
     jobs:
