@@ -944,7 +944,7 @@ jobs:
     success-message: 'SUCCESS View https://integration.wikimedia.org/ or https://doc.wikimedia.org/. Deployed'
     failure-message: 'FAILURE Failed to deploy. Please contact a continuous integration team member to fixup the docroot on the destination server.'
 
-  - name: 'integration-jjb-config-diff'
+  - name: '^integration-jjb-config-diff(-docker)?$'
     success-message: 'SUCCESS Review the XML difference.'
     failure-message: 'FAILURE Failed to compare your patchset with the current configuration.'
     files: '^jjb/.*'
@@ -1373,6 +1373,7 @@ projects:
       - integration-config-tox-docker
       - integration-config-dib-jessie
       - integration-jjb-config-diff
+      - integration-jjb-config-diff-docker
       - integration-zuul-layoutvalidation-gate
 
   - name: integration/composer
