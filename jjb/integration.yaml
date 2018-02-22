@@ -132,6 +132,27 @@
         echo "Done."
         echo "Carefully review the diff above before deploying the jobs and merging the patch"
 
+# XXX this should be a tool in our integration/config
+- job-template:
+    name: 'integration-jjb-config-diff-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        # we need a full clone
+        - docker-zuul-cloner:
+            projects: >
+                integration/config
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+            docker_run_options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/jjb/diff.sh'
+            logdir: '/log'
+    publishers:
+        - castor-save-workspace-cache
+
 # Super basic sanity check for integration/composer repo
 - job-template:
     name: 'integration-composer-check-{phpflavor}-docker'
@@ -240,6 +261,7 @@
     name: 'integration-config'
     jobs:
      - 'integration-jjb-config-diff'
+     - 'integration-jjb-config-diff-docker'
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation-gate'
      - '{name}-tox-docker'
