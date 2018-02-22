@@ -191,7 +191,7 @@ dependencies = {
     'BlueSpiceSMWConnector': ['BlueSpiceFoundation'],
     'BlueSpiceSaferEdit': ['BlueSpiceFoundation'],
     'BlueSpiceSignHere': ['BlueSpiceFoundation'],
-    'BlueSpiceSmartlist': ['BlueSpiceFoundation'],
+    'BlueSpiceSmartList': ['BlueSpiceFoundation'],
     'BlueSpiceSubPageTree': ['BlueSpiceFoundation'],
     'BlueSpiceTagCloud': ['BlueSpiceFoundation'],
     'BlueSpiceUEModulePDF': ['BlueSpiceFoundation'],
