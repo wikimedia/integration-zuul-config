@@ -122,15 +122,62 @@
         tox -v -e venv -- jenkins-jobs test "$WORKSPACE/config/jjb" -o "$WORKSPACE/output-parent"
 
         echo "--------------------------------------------"
-        echo "File changed:"
+        echo "file changed:"
         echo "--------------------------------------------"
         colordiff --brief output-parent output-proposed || :
         echo "--------------------------------------------"
-        echo "Full diff:"
+        echo "full diff:"
         echo "--------------------------------------------"
         colordiff --new-file -u output-parent output-proposed || :
-        echo "Done."
-        echo "Carefully review the diff above before deploying the jobs and merging the patch"
+        echo "done."
+        echo "carefully review the diff above before deploying the jobs and merging the patch"
+
+- job-template:
+    name: 'integration-jjb-config-diff-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-src-dir
+        - docker-wipe-dir:
+            dir: output-parent
+        - docker-wipe-dir:
+            dir: output-proposed
+        - docker-ci-src-setup-simple
+        - shell: echo "Generating config for proposed patch"
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+            docker_run_options: '--env TOX_TESTENV_PASSENV="*" --entrypoint=tox -v "$(pwd)/output-proposed"'
+            run_args: '-v -e jenkins-jobs -- --conf tests/fixtures/jjb-disable-query-plugins.conf test config/jjb -o /output-proposed'
+            logdir: '/log'
+        - shell: echo "Generating config for previous patch"
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/ci-stretch:0.1.1'
+            docker_run_options: '--entrypoint=git'
+            run_args: 'checkout HEAD^'
+            logdir: '/log'
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+            docker_run_options: '--env TOX_TESTENV_PASSENV="*" --entrypoint=tox -v "$(pwd)/output-parent"'
+            run_args: '-v -e jenkins-jobs -- test config/jjb -o /output-parent'
+            logdir: '/log'
+            docker_run_options: '--entrypoint=tox -v "$(pwd)/output-parent" -v "$(pwd)/output-proposed"'
+        - shell: |
+            echo "--------------------------------------------"
+            echo "file changed:"
+            echo "--------------------------------------------"
+            colordiff --brief output-parent output-proposed || :
+            echo "--------------------------------------------"
+            echo "full diff:"
+            echo "--------------------------------------------"
+            colordiff --new-file -u output-parent output-proposed || :
+            echo "done."
+            echo "carefully review the diff above before deploying the jobs and merging the patch"
+    publishers:
+        - castor-save-workspace-cache
 
 # Super basic sanity check for integration/composer repo
 - job-template:
@@ -240,6 +287,7 @@
     name: 'integration-config'
     jobs:
      - 'integration-jjb-config-diff'
+     - 'integration-jjb-config-diff-docker'
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation-gate'
      - '{name}-tox-docker'
