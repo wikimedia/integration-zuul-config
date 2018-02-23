@@ -925,10 +925,6 @@ jobs:
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
 
-  - name: apps-android-java-mwapi
-    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
-    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
-
   - name: beta-mediawiki-config-update-eqiad
     branch: ^master$
     success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
@@ -1674,10 +1670,8 @@ projects:
      - noop
 
   - name: apps/android/java-mwapi
-    test:
-      - apps-android-java-mwapi
-    gate-and-submit:
-      - apps-android-java-mwapi
+    template:
+      - name: archived
 
   - name: apps/android/wikipedia
     test:
