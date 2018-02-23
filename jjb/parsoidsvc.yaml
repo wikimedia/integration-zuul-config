@@ -146,31 +146,26 @@
      - archive-log-allow-empty
      - castor-save
 
-- job-template:
-    name: parsoidsvc-{repository}-jsduck-publish
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+- job:
+    name: parsoidsvc-doc-docker-publish
+    node: DebianJessieDocker
     concurrent: false
     triggers:
-     - zuul
+        - zuul
     builders:
-     - assert-node-version-6
-     - castor-load
-     - setup-npm-oid:
-         repository: '{repository}'
-     - shell: |
-         node --version
-         npm --version
-         set -e
-         . npm-oid.env
-         ln -s "$NPM_SET_PATH/docs" generated-docs
-         cd "$NPM_SET_PATH"
-         npm run doc
-     - doc-publish:
-         docsrc: 'generated-docs'
-         docdest: 'Parsoid/$DOC_SUBPATH'
+        - docker-castor-load
+        - docker-src-dir
+        - docker-log-dir
+        - docker-ci-src-setup-simple
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+            logdir: '/log'
+            run_args: 'doc'
+        - doc-publish:
+            docsrc: 'src/docs'
+            docdest: 'Parsoid/master'
     publishers:
-     - castor-save
+        - castor-save-workspace-cache
 
 - project:
     name: parsoidsvc
@@ -182,8 +177,4 @@
         - 'parsoidsvc-{repository}-parse-tool-check-jessie'
         - 'parsoidsvc-{repository}-roundtrip-test-check-jessie'
         - 'parsoidsvc-{repository}-npm-node-6-jessie'
-        - 'parsoidsvc-{repository}-jsduck-publish':
-            # We only publish doc of the 'source' repo
-            repository:
-                - source
         - parsoidsvc-hhvm-parsertests-jessie
