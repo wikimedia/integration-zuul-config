@@ -342,22 +342,26 @@
      - castor-save
 
 - job:
-    name: 'mwext-VisualEditor-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
+    name: 'mwext-VisualEditor-docker-publish'
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - castor-load
-     - npm-install
-     - npm-run:
-         script: doc
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/npm-test:0.3.0
+         run_args: 'doc'
+         logdir: '/log'
      - doc-publish:
-        docsrc: 'docs'
+        docsrc: 'src/docs'
         docdest: 'VisualEditor/$ZUUL_BRANCH'
     publishers:
-     - castor-save
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
 
 - job:
     name: 'mwext-doxygen-publish'

@@ -972,7 +972,7 @@ jobs:
   - name: 'mwext-MobileFrontend-npm-run-lint-modules-docker'
     branch: ^(?!REL1_28]|wmf/)
 
-  - name: 'mwext-VisualEditor-publish'
+  - name: 'mwext-VisualEditor-docker-publish'
     branch: ^master$
 
   - name: 'mediawiki-selenium-bundle-yard-publish'
@@ -7523,7 +7523,7 @@ projects:
       - mwext-VisualEditor-jsduck-docker
     gate-and-submit-swat: *mediawiki-extensions-visualeditor-gate-and-submit
     postmerge:
-      - mwext-VisualEditor-publish
+      - mwext-VisualEditor-docker-publish
     experimental:
       - mediawiki-core-qunit-selenium-jessie
 
