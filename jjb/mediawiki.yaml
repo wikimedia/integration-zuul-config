@@ -28,26 +28,30 @@
         allow-empty-results: true
 
 - job:
-    name: 'mediawiki-core-jsduck-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-no-submodules
+    name: 'mediawiki-core-jsduck-docker-publish'
+    node: DebianJessieDocker
     concurrent: false
     properties:
-     - build-discarder:
-         days-to-keep: 15
+        - build-discarder:
+            days-to-keep: 15
     triggers:
-     - zuul
+        - zuul
     builders:
-     - assert-env-doc_subpath
-     - castor-load
-     - npm-install
-     - npm-run:
-         script: doc
-     - doc-publish:
-        docsrc: 'docs/js'
-        docdest: 'mediawiki-core/$DOC_SUBPATH/js'
+        - assert-env-doc_subpath
+        - docker-castor-load
+        - docker-log-dir
+        - docker-src-dir
+        - docker-ci-src-setup-simple
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/npm-test:0.3.0
+            run_args: 'doc'
+            logdir: '/log'
+        - doc-publish:
+           docsrc: 'src/docs/js'
+           docdest: 'mediawiki-core/$DOC_SUBPATH/js'
     publishers:
-     - castor-save
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
 
 # Should be converted to poll scm (TT115755)
 - job: &mediawiki-core-doxygen-publish
@@ -221,7 +225,6 @@
       - 'mediawiki-core-qunit-selenium-jessie'
       - '{name}-jsduck-docker'
       - 'mediawiki-core-npm-node-6-docker'
-      - 'mediawiki-core-jsduck-publish'
       - 'mediawiki-core-doxygen-publish'
       - '{name}-{phpflavor}lint':
           phpflavor: php55

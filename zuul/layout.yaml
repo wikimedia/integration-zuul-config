@@ -992,7 +992,7 @@ jobs:
   - name: mediawiki-core-jsduck-docker
     branch: ^(REL.*|master)$
 
-  - name: mediawiki-core-jsduck-publish
+  - name: mediawiki-core-jsduck-docker-publish
     branch: ^(REL.*|master)$
 
   # Job to ease reviews of MW-CS changes
@@ -1501,7 +1501,7 @@ projects:
     coverage:
       - mediawiki-phpunit-coverage-patch
     postmerge:
-      - mediawiki-core-jsduck-publish
+      - mediawiki-core-jsduck-docker-publish
       - mediawiki-core-doxygen-publish
     publish:
       - mediawiki-core-tag-doxygen-publish
