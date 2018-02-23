@@ -47,9 +47,59 @@
     publishers:
      - castor-save
 
+- job: &phpunit-coverage-docker-publish
+    name: 'phpunit-coverage-docker-publish'
+    node: DebianJessieDocker
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+
+     #
+     # Use php5 instead of php (hhvm) because it doesn't do coverage as
+     # well as php5-xdebug. And also slow.
+     #
+
+     # composer install
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/composer-php56:0.1.0
+         docker_run_options: '--workdir /src'
+         # prefer-dist to get cacheable content
+         run_args: 'install --no-progress --prefer-dist'
+         logdir: /log
+     # phpunit coverage
+     - docker-ci-src-setup-simple:
+         image: docker-registry.wikimedia.org/releng/php56:0.1.0
+         docker_run_options: '--workdir /src'
+         logdir: /log
+         run_args: >
+             -d zend_extension=xdebug.so
+            ./vendor/bin/phpunit
+                --coverage-clover /log/coverage/clover.xml
+                --coverage-html /log/coverage
+#    - cover-publish:
+#       src: 'log/coverage'
+#       dest: '$DOC_PROJECT'
+    publishers:
+     - castor-save-workspace-cache
+
 - job:
     name: 'remexhtml-phpunit-coverage-publish'
     !!merge : *phpunit-coverage-publish
+    triggers:
+      - zuul
+    wrappers:
+      - timeout:
+          timeout: 90 # mins. Increased due to lots of tests
+          fail: true
+
+- job:
+    name: 'remexhtml-phpunit-coverage-docker-publish'
+    !!merge : *phpunit-coverage-docker-publish
     triggers:
       - zuul
     wrappers:
