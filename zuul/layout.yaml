@@ -969,7 +969,7 @@ jobs:
   - name: 'mwext-jsduck-publish'
     branch: ^master$
 
-  - name: 'mwext-MobileFrontend-npm-run-lint-modules'
+  - name: 'mwext-MobileFrontend-npm-run-lint-modules-docker'
     branch: ^(?!REL1_28]|wmf/)
 
   - name: 'mwext-VisualEditor-publish'
@@ -4051,9 +4051,9 @@ projects:
       - name: extension-selenium
       - name: extension-coverage
     test:
-      - mwext-MobileFrontend-npm-run-lint-modules
+      - mwext-MobileFrontend-npm-run-lint-modules-docker
     gate-and-submit:
-      - mwext-MobileFrontend-npm-run-lint-modules
+      - mwext-MobileFrontend-npm-run-lint-modules-docker
     postmerge:
       - mwext-jsduck-publish
       - mwext-doxygen-publish
