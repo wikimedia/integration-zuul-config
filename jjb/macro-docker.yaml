@@ -129,3 +129,23 @@
             --volume /srv/git:/srv/git \
             docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.1.0
         # nothing else can be executed due to exec
+
+- builder:
+    name: docker-zuul-cloner
+    builders:
+     - docker-src-dir
+     - shell: |
+         #!/bin/bash -eux
+         exec docker run \
+             --rm \
+             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+             --volume "$(pwd)"/src:/src \
+             --volume /srv/git:/srv/git:ro \
+             docker-registry.wikimedia.org/releng/zuul-cloner:0.1.1 \
+                 --color --verbose \
+                 --map /zuul-clonemap.yaml \
+                 --workspace /src \
+                 --cache-dir /srv/git \
+                 https://gerrit.wikimedia.org/r/p \
+                 {projects}
+         # nothing else can be executed due to exec
