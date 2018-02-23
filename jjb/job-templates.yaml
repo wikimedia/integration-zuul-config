@@ -281,6 +281,36 @@
      - archive-log-allow-empty
      - castor-save
 
+# A very specific job for MobileFrontend which uses a JavaScript test suite
+# which requires mediawiki/core.
+- job-template:
+    name: 'mwext-MobileFrontend-npm-run-lint-modules-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-log-dir
+     - docker-zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/extensions/MobileFrontend
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/npm-php:0.1.0
+         docker_run_options: '--workdir /src/extensions/MobileFrontend'
+         run_args: 'install'
+         logdir: '/log'
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/npm-php:0.1.0
+         docker_run_options: '--workdir /src/extensions/MobileFrontend'
+         run_args: 'run-script lint:modules'
+         logdir: '/log'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+
+
 - job-template:
     name: '{name}-{repository}-npm-node-6-jessie'
     node: ci-jessie-wikimedia
