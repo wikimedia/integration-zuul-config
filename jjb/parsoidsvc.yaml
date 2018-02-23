@@ -169,12 +169,18 @@
 
 - project:
     name: parsoidsvc
-    # job templates are shared by both repositories
     repository:
-     - source  # mediawiki/services/parsoid
      - deploy  # mediawiki/services/parsoid/deploy
     jobs:
+        # For the deploy repo:
         - 'parsoidsvc-{repository}-parse-tool-check-jessie'
         - 'parsoidsvc-{repository}-roundtrip-test-check-jessie'
         - 'parsoidsvc-{repository}-npm-node-6-jessie'
+        # Specific integration job
         - parsoidsvc-hhvm-parsertests-jessie
+        # For the source repo
+        - '{name}-npm-node-6-docker'
+        - '{name}-npm-run-{script}-node-6-docker':
+            script:
+                - roundtrip
+                - toolcheck
