@@ -224,6 +224,7 @@ dependencies = {
     'FileAnnotations': ['EventLogging'],
     'FlaggedRevs': ['Scribunto'],
     'Flow': ['AbuseFilter', 'Echo'],
+    'GeoData': ['CirrusSearch'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GraphViz': ['ImageMap'],
