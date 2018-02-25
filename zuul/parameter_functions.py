@@ -254,6 +254,7 @@ dependencies = {
     'OpenStackManager': ['LdapAuthentication'],
     'PageTriage': ['WikiLove'],
     'PageViewInfo': ['Graph'],
+    'ParserFunctions': ['Scribunto'],
     'PhpTagsFunctions': ['PhpTags'],
     'PhpTagsSPARQL': ['PhpTags'],
     'PhpTagsSMW': ['PhpTags'],
