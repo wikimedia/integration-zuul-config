@@ -490,7 +490,7 @@
     parameters:
      - string:
          name: ZUUL_PROJECT
-         default: mediawiki/extensions/{name}
+         default: '{repository}'
      - string:
          name: ZUUL_BRANCH
          default: master
@@ -532,13 +532,20 @@
         unstable: true
 
 - project:
+    name: MediaWiki
+    recipients: qa-alerts@lists.wikimedia.org zfilipin@wikimedia.org # @zeljkofilipin
+    repository: mediawiki/core
+
+    jobs:
+     - 'selenium-{name}-jessie'
+
+- project:
     name: CirrusSearch
     recipients: dcausse@wikimedia.org ebernhardson@wikimedia.org qa-alerts@lists.wikimedia.org # @dcausse @EBernhardson
     repository: mediawiki/extensions/CirrusSearch
 
     jobs:
      - 'selenium-{name}-jessie'
-
 
 - project:
     name: RelatedArticles
@@ -555,6 +562,8 @@
 
     jobs:
      - 'selenium-{name}-jessie'
+
+# mwext-phpunit-coverage
 
 - job:
     name: 'mwext-phpunit-coverage-patch'
