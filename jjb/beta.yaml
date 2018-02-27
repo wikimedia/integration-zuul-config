@@ -88,6 +88,7 @@
 
     builders:
      - shell: /usr/local/bin/wmf-beta-mwconfig-update
+     - shell: /usr/bin/scap sync "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
 
     properties:
      - build-discarder:
@@ -102,8 +103,6 @@
           aborted: true
           failure: false
           fixed: true
-      - trigger:
-          project: beta-scap-eqiad
 
 # Job updating MediaWiki core+extensions code and refreshing the message
 #
@@ -126,8 +125,8 @@
      - timed: 'H/10 * * * *'
 
     builders:
-      - shell: |
-          /usr/local/bin/wmf-beta-autoupdate.py --verbose
+      - shell: /usr/local/bin/wmf-beta-autoupdate.py --verbose
+      - shell: /usr/bin/scap sync "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
 
     publishers:
       - beta-irc
@@ -137,40 +136,6 @@
           first-failure: true
           aborted: true
           failure: false
-          fixed: true
-      - trigger:
-          project: beta-scap-eqiad
-
-- job-template:
-    name: beta-scap-eqiad
-    defaults: beta
-    node: BetaClusterBastion
-
-    # Do not run concurrently with upstream jobs
-    block-upstream: true
-
-    builders:
-      - shell: |
-          /usr/bin/scap sync "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
-
-    properties:
-     - build-discarder:
-         days-to-keep: 7
-
-    wrappers:
-      - ansicolor
-      - timestamps
-      - timeout:
-          timeout: 45
-
-    publishers:
-      - beta-irc
-      - email-ext:
-          recipients: qa-alerts@lists.wikimedia.org betacluster-alerts@lists.wikimedia.org
-          content-type: 'html'
-          attach-build-log: false
-          aborted: true
-          failure: true
           fixed: true
 
 # Also used in mediawiki-core-code-coverage
@@ -195,5 +160,4 @@
     jobs:
      - beta-code-update-eqiad
      - beta-mediawiki-config-update-eqiad
-     - beta-scap-eqiad
      - beta-update-databases-eqiad
