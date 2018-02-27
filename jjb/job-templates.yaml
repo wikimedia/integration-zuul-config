@@ -116,7 +116,9 @@
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
     triggers:
         - zuul
-    maven_args: '-DskipTests -Dmaven.test.skip=true clean install site site:stage'
+    # We skip tests and integrations tests
+    # https://maven.apache.org/surefire/maven-failsafe-plugin/verify-mojo.html
+    maven_args: '-DskipTests -DskipITS -Dmaven.test.skip=true clean install site site:stage'
     builders:
         - docker-castor-load
         - docker-log-dir
