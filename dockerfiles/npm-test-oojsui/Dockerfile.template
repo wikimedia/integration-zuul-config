@@ -1,0 +1,28 @@
+FROM {{ "composer" | image_tag }} as composer
+
+FROM {{ "npm-browser-test" | image_tag }}
+
+USER root
+
+COPY --from=composer /srv/composer /srv/composer
+# Manually link since COPY copies symlink destination instead of the actual symlink
+RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
+
+{% set deps|replace('\n', ' ') -%}
+gifsicle
+libpng-dev
+optipng
+phantomjs
+php7.0-cli
+php7.0-mbstring
+php7.0-xml
+php7.0-zip
+pkg-config
+{%- endset -%}
+
+RUN {{ deps | apt_install }}
+
+# phantomjs crashes when there is no DISPLAY
+ENV QT_QPA_PLATFORM=offscreen
+
+USER nobody
