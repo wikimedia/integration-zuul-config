@@ -6,12 +6,14 @@ mkdir -m 2777 -p log
 mkdir -m 2777 -p src
 mkdir -m 2777 -p cache
 
-#(
-#cd src
-#git init
-#git fetch --quiet --depth 1 "https://gerrit.wikimedia.org/r/oojs/ui"
-#git checkout FETCH_HEAD
-#)
+docker run \
+    --rm --tty \
+    --env ZUUL_URL=https://gerrit.wikimedia.org/r \
+    --env ZUUL_PROJECT=oojs/ui \
+    --env ZUUL_COMMIT=master \
+    --env ZUUL_REF=master \
+    --volume "/$(pwd)/src://src" \
+        docker-registry.wikimedia.org/releng/ci-src-setup-simple:latest
 
 docker run \
     --rm --tty \
