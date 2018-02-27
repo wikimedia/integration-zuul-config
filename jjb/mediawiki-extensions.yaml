@@ -490,7 +490,7 @@
     parameters:
      - string:
          name: ZUUL_PROJECT
-         default: mediawiki/extensions/{name}
+         default: '{repository}'
      - string:
          name: ZUUL_BRANCH
          default: master
@@ -512,11 +512,13 @@
      - shell: |
          . /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
          chromedriver --url-base=/wd/hub --port=4444 &
-         cd $MW_INSTALL_PATH
+         cd "$MW_INSTALL_PATH"
          set +x
          export MEDIAWIKI_PASSWORD="$selenium_user_beta"
          set -x
-         MEDIAWIKI_USER='Selenium user' MW_SERVER=https://en.wikipedia.beta.wmflabs.org:443 MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.conf.jenkins.js --spec extensions/{name}/tests/selenium/specs/*.js
+         files_with_trailing_comma="$(find tests/selenium/specs/*.js -print0 | tr '\0' ,)"
+         files=${files_with_trailing_comma::${#files_with_trailing_comma}-1}
+         MEDIAWIKI_USER='Selenium user' MW_SERVER=https://en.wikipedia.beta.wmflabs.org:443 MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.conf.jenkins.js --spec "$files"
      - assert-no-mediawiki-errors
     publishers:
      - castor-save
@@ -532,16 +534,26 @@
         unstable: true
 
 - project:
+    name: MediaWiki
+    folder: ''
+    recipients: qa-alerts@lists.wikimedia.org zfilipin@wikimedia.org # @zeljkofilipin
+    repository: mediawiki/core
+
+    jobs:
+     - 'selenium-{name}-jessie'
+
+- project:
     name: CirrusSearch
+    folder: extensions/CirrusSearch/
     recipients: dcausse@wikimedia.org ebernhardson@wikimedia.org qa-alerts@lists.wikimedia.org # @dcausse @EBernhardson
     repository: mediawiki/extensions/CirrusSearch
 
     jobs:
      - 'selenium-{name}-jessie'
 
-
 - project:
     name: RelatedArticles
+    folder: extensions/RelatedArticles/
     recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
     repository: mediawiki/extensions/RelatedArticles
 
@@ -550,11 +562,14 @@
 
 - project:
     name: Popups
+    folder: extensions/Popups/
     recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
     repository: mediawiki/extensions/Popups
 
     jobs:
      - 'selenium-{name}-jessie'
+
+# mwext-phpunit-coverage
 
 - job:
     name: 'mwext-phpunit-coverage-patch'
