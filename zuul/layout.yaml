@@ -8090,14 +8090,14 @@ projects:
 
   - name: oojs/ui
     # composer hhvm is already run by npm-run-jenkins T155483
+    template:
+     - name: composer-test-package
     test:
       - oojs-ui-npm-run-jenkins-node-6-jessie
       - oojs-ui-rake-docker
-      - composer-package-php55-docker
     gate-and-submit:
       - oojs-ui-npm-run-jenkins-node-6-jessie
       - oojs-ui-rake-docker
-      - composer-package-php55-docker
     postmerge:
       - oojs-ui-jsduck-publish
       - oojs-ui-doxygen-publish
