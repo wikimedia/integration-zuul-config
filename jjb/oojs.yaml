@@ -1,12 +1,9 @@
 - project:
     name: oojs-ui
     jobs:
-        # 'npm jenkins' also runs composer so we would need a dedicated image
-        - '{name}-npm-run-{script}-node-6-jessie':
-            script:
-                - jenkins
         - '{name}-npm-run-{script}-node-6-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/npm-test-oojsui:0.1.1
+            # 'npm jenkins' also runs composer under Zend PHP 7.0
             script:
                 - jenkins
         - '{name}-rake-docker'
