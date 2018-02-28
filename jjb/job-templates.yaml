@@ -51,7 +51,9 @@
 
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
-    node: DebianJessieDocker
+    # m4executor label are slaves with 4GBytes memory. Lot of our Java
+    # repositories require extra memory such as mjolnir or refinery.
+    node: DebianJessieDocker && m4executor
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
     triggers:
         - zuul
@@ -112,7 +114,9 @@
 # retrieve the site from /src/target/ and push it to doc.wikimedia.org
 - job-template:
     name: '{name}-maven-java8-docker-site-publish'
-    node: DebianJessieDocker
+    # m4executor label are slaves with 4GBytes memory. Lot of our Java
+    # repositories require extra memory such as mjolnir or refinery.
+    node: DebianJessieDocker && m4executor
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
     triggers:
         - zuul
