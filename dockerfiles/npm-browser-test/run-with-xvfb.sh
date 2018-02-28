@@ -33,7 +33,7 @@ trap 'kill -SIGINT $run_pid $chromedriver_pid; wait $run_pid $chromedriver_pid' 
 trap 'kill -SIGTERM $run_pid $chromedriver_pid; wait $run_pid $chromedriver_pid' SIGTERM
 trap terminate_bg_process EXIT
 
-/run.sh &
+/run.sh "${@}" &
 run_pid=$!
 
 wait $run_pid
