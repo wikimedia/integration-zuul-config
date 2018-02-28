@@ -2837,8 +2837,12 @@ projects:
       - name: tox-docker
 
   - name: wikimedia/fundraising/SmashPig
-    template:
-      - name: composer-test
+    test:
+      - composer-php56-docker
+      - composer-php70-docker
+    gate-and-submit:
+      - composer-php56-docker
+      - composer-php70-docker
 
   - name: wikimedia/wikimania-scholarships
     check:
