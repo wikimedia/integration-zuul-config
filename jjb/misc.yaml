@@ -194,38 +194,33 @@
      - castor-save-workspace-cache
 
 - job:
-    name: 'oojs-ui-jsduck-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
+    name: 'oojs-ui-publish'
+    node: DebianJessieDocker
     concurrent: false
     triggers:
      - zuul
     builders:
-     - castor-load
-     - npm-install
-     - npm-run:
-         script: doc
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/npm-test-oojsui:0.1.1'
+         # npm run-script jenkins runs 'npm test' and 'jsduck'
+         run_args: 'jenkins'
+         logdir: '/log'
+     # Publish everything in a single job!
+     - cover-publish:
+        src: 'src/coverage'
+        dest: 'oojs-ui'
      - doc-publish:
-        docsrc: 'docs'
+        docsrc: 'src/demos'
+        docdest: 'oojs-ui/$DOC_SUBPATH/demos'
+     - doc-publish:
+        docsrc: 'src/docs'
         docdest: 'oojs-ui/$DOC_SUBPATH/js'
     publishers:
-     - castor-save
-
-- job:
-    name: 'oojs-ui-coverage'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - npm
-     - cover-publish:
-        src: 'coverage'
-        dest: 'oojs-ui'
-    publishers:
-     - castor-save
+     - castor-save-workspace-cache
 
 - job:
     name: 'oojs-ui-doxygen-publish'
@@ -244,24 +239,6 @@
         docdest: 'oojs-ui/$DOC_SUBPATH/php'
     archive:
      - archive-log-allow-empty
-
-- job:
-    name: 'oojs-ui-demos-publish'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - npm-install
-     - npm-run:
-         script: demos
-     - doc-publish:
-        docsrc: 'demos'
-        docdest: 'oojs-ui/$DOC_SUBPATH/demos'
-    publishers:
-     - castor-save
 
 - job:
     name: 'visualeditor-coverage'
