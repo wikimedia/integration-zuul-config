@@ -20,4 +20,5 @@ docker run \
     --volume /"$(pwd)"/log://var/lib/jenkins/log \
     --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/src://src \
-    docker-registry.wikimedia.org/releng/npm-test-oojsui:latest
+    docker-registry.wikimedia.org/releng/npm-test-oojsui:latest \
+        jenkins
