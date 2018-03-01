@@ -129,3 +129,65 @@
                 - php56:
                     image: docker-registry.wikimedia.org/releng/composer-test-php56:0.1.0
 
+- job:
+    name: 'wikidata-query-gui-build'
+    node: ci-jessie-wikimedia
+    concurrent: false
+    triggers:
+     - zuul
+    parameters:
+        # Zuul parameters for Castor
+        - string:
+            name: 'ZUUL_BRANCH'
+            default: 'master'
+        - string:
+            name: 'ZUUL_PROJECT'
+            default: 'wikidata/query/gui'
+        - string:
+            name: 'ZUUL_PIPELINE'
+            default: 'postmerge'
+    scm:
+        - git:
+            url: https://gerrit.wikimedia.org/r/wikidata/query/gui
+            branches:
+                - master
+            refspec: master
+            wipe-workspace: false  # Not needed on Nodepool instances
+            clean:
+                after: true
+            submodule:
+                disable: false
+    builders:
+        - assert-node-version-6
+        - castor-load
+        - npm-install
+        ## now create and publish a gerrit patch
+        ## then publish the artifacts to castor?
+        - shell: |
+            # Gerrit commit hook to generate Change-Id automatically
+            curl -Lo .git/hooks/commit-msg \
+                https://gerrit.wikimedia.org/r/tools/hooks/commit-msg
+            chmod u+x .git/hooks/commit-msg
+
+            GIT_AUTHOR_NAME=WDQSGuiBuilder
+            GIT_COMMITTER_NAME=WDQSGuiBuilder
+            GIT_AUTHOR_EMAIL=smalyshev+wdqsgui@wikimedia.org
+            GIT_COMMITTER_EMAIL=smalyshev+wdqsgui@wikimedia.org
+
+            # We do not know Gerrit SSH host fingerprint
+            mkdir -p ~/.ssh
+            echo -ne 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\n' >> ~/.ssh/config
+            
+            grunt deploy
+    wrappers:
+        - ansicolor
+        - timeout:
+            timeout: 5 # minutes
+        - timestamps
+        - ssh-agent-credentials:
+            users:
+                - 'wdqsguibuilder'
+    publishers:
+        - archive-log-allow-empty
+        - castor-save
+
