@@ -53,35 +53,71 @@
         - archive-log-allow-empty
         - castor-save-workspace-cache
 
-# Should be converted to poll scm (TT115755)
-- job: &mediawiki-core-doxygen-publish
-    name: 'mediawiki-core-doxygen-publish'
-    node: ci-jessie-wikimedia
+- job:
+    name: 'mediawiki-core-doxygen-docker'
+    node: DebianJessieDocker
+    # We dont want to overload CI when multiple branches have been updated
     concurrent: false
     triggers:
-     - zuul
+        - pollscm:
+            cron: '@hourly'
+    scm:
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git'
+            do-not-fetch-tags: true
+            branches:
+                - :^origin/master
+                - :^origin/REL\d+_\d+
+            clean:
+                before: true
+                after: true
+            basedir: src
+            # Checkout to a local branch with 'origin/' stripped. That also set
+            # GIT_LOCAL_BRANCH which we use later to publish the documentation.
+            local-branch: '**'
     builders:
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-setup.sh"
-     - assert-env-doc_subpath
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - shell: |
-         rm -rf build/doc
-         TARGET_BASEDIR="$WORKSPACE/build/doc" /srv/deployment/integration/slave-scripts/tools/mwcore-docgen.sh
-     - doc-publish:
-         docsrc: 'build/doc/html'
-         docdest: 'mediawiki-core/$DOC_SUBPATH/php'
-
-# Same but allow concurrent build for tags
-- job:
-    !!merge : *mediawiki-core-doxygen-publish
-    name: 'mediawiki-core-tag-doxygen-publish'
-    concurrent: true
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
+        - docker-log-dir
+        - shell: |
+            install -d -m 777 log/build/
+        - shell: |
+            rm -fR src/vendor && mkdir -p src/vendor
+            git clone \
+                --depth 1 \
+                --reference /srv/git/mediawiki/vendor.git \
+                --branch "$GIT_LOCAL_BRANCH" \
+                -- \
+                https://gerrit.wikimedia.org/r/p/mediawiki/vendor.git \
+                src/vendor
+        - shell: |
+            touch src/LocalSettings.php
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/doxygen:0.3.0
+            docker_run_options: '--workdir /src --entrypoint=/usr/bin/php'
+            logdir: '/log'
+            run_args: |
+                maintenance/mwdocgen.php \
+                    --no-extensions \
+                    --output /log/build \
+                    --version "$GIT_LOCAL_BRANCH" \
+                    1> >(tee console.txt) \
+                    2> >(tee errors.txt >&2)
+            # IO redirections happen on the host.
+            #
+            # stderr is sent as stdin to a tee FIFO which write back to stderr
+            # allowing to display and capture stderr.
+        - shell: |
+            # We want stdout/stderr published on doc.wikimedia.org
+            install -m 666 console.txt log/build/
+            install -m 666 errors.txt log/build/
+        - doc-publish:
+            docsrc: 'log/build/html'
+            docdest: 'mediawiki-core/${GIT_LOCAL_BRANCH}/php'
+        - docker-wipe-dir:
+            dir: log/build
+    publishers:
+        - archive:
+            artifacts: 'console.txt,errors.txt'
+            allow-empty: true
 
 # Runs all MediaWiki PHPUnit tests on Nodepool
 - job-template:
