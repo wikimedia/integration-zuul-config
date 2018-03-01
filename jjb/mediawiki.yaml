@@ -83,6 +83,55 @@
     triggers:
      - zuul
 
+- job:
+    name: 'mediawiki-core-doxygen'
+    node: DebianJessieDocker
+#    triggers:
+#        - pollscm:
+#            cron: '@hourly'
+    scm:
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git'
+            reference-repo: /srv/git/mediawiki/core.git
+            do-not-fetch-tags: true
+            branches:
+                - :^origin/master
+            #XXX - :^origin/REL\d+_\d+
+            clean:
+                before: true
+                after: true
+            basedir: src
+            # Checkout to a local branch with 'origin/' stripped. That also set
+            # GIT_LOCAL_BRANCH which we use later to publish the documentation.
+            local-branch: ''
+    builders:
+        - docker-log-dir
+        - shell: |
+            rm -fR src/vendor && mkdir -p src/vendor
+            git clone \
+                --depth 1 \
+                --reference /srv/git/mediawiki/vendor.git \
+                --branch "$GIT_LOCAL_BRANCH" \
+                -- \
+                https://gerrit.wikimedia.org/r/p/mediawiki/vendor.git \
+                src/vendor
+        - shell: |
+            touch src/LocalSettings.php
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/doxygen:0.3.0
+            docker_run_options: '--workdir /src --entrypoint=/usr/bin/php'
+            logdir: '/log'
+            run_args: |
+                maintenance/mwdocgen.php \
+                    --no-extensions \
+                    --output /log/build
+                    --version "$GIT_LOCAL_BRANCH"
+#        - doc-publish:
+#            docsrc: 'log/build'
+#            docdest: 'DOCKER-mediawiki-core/${GIT_LOCAL_BRANCH}/php'
+#        - docker-wipe-dir:
+#            dir: log/build
+
 # Runs all MediaWiki PHPUnit tests on Nodepool
 - job-template:
     name: 'mediawiki-phpunit-{phpflavor}-{image}'
