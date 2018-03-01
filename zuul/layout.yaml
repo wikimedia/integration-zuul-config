@@ -982,9 +982,6 @@ jobs:
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
     branch: ^master$
 
-  - name: mediawiki-core-doxygen-publish
-    branch: ^(master|REL.*|refs/tags/(?!wmf).*)$ # REL is bug 50325
-
   - name: mediawiki-phpunit-hhvm-jessie
     queue-name: mediawiki
 
@@ -1505,9 +1502,6 @@ projects:
       - mediawiki-phpunit-coverage-patch
     postmerge:
       - mediawiki-core-jsduck-docker-publish
-      - mediawiki-core-doxygen-publish
-    publish:
-      - mediawiki-core-tag-doxygen-publish
     experimental:
       # Experimental php version
       - mwgate-composer-php70-docker
