@@ -77,63 +77,6 @@
      - archive-log-dir
 
 - job-template:
-    name: 'integration-jjb-config-diff'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    scm:
-      # We need our copy of Jenkins job builder which closely follow upstream HEAD
-      - git:
-          url: 'https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder.git'
-          wipe-workspace: false
-          clean:
-              after: true
-          branches:
-           - master
-      - git:
-          url: '$ZUUL_URL/integration/config'
-          branches:
-           - '$ZUUL_COMMIT'
-          refspec: '$ZUUL_REF'
-          basedir: 'config'
-          wipe-workspace: false
-          clean:
-              after: true
-    publishers:
-     - archive-tox-logs
-     - castor-save
-    builders:
-     - castor-load
-     - shell: |
-        echo "Cleaning out previous output directories"
-        rm -fR "output-parent" output-proposed
-        mkdir -p "output-parent" output-proposed
-
-        # enforce tox color output:
-        export PY_COLORS=1
-        export TOX_TESTENV_PASSENV=PY_COLORS
-
-        echo "Generating config for proposed patchset..."
-        tox -v -e venv -- jenkins-jobs test "$WORKSPACE/config/jjb" -o "$WORKSPACE/output-proposed"
-
-        echo "Generating reference config from parent..."
-        (cd $WORKSPACE/config; git checkout HEAD^)
-        tox -v -e venv -- jenkins-jobs test "$WORKSPACE/config/jjb" -o "$WORKSPACE/output-parent"
-
-        echo "--------------------------------------------"
-        echo "File changed:"
-        echo "--------------------------------------------"
-        colordiff --brief output-parent output-proposed || :
-        echo "--------------------------------------------"
-        echo "Full diff:"
-        echo "--------------------------------------------"
-        colordiff --new-file -u output-parent output-proposed || :
-        echo "Done."
-        echo "Carefully review the diff above before deploying the jobs and merging the patch"
-
-# XXX this should be a tool in our integration/config
-- job-template:
     name: 'integration-jjb-config-diff-docker'
     node: DebianJessieDocker
     concurrent: true
@@ -260,7 +203,6 @@
 - project:
     name: 'integration-config'
     jobs:
-     - 'integration-jjb-config-diff'
      - 'integration-jjb-config-diff-docker'
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation-gate'
