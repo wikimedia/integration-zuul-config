@@ -93,9 +93,9 @@ class TestMwDependencies(unittest.TestCase):
             job_name='mwext-mw-selenium-jessie'))
 
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mw-testskin'))
+            job_name='mwskin-testskin-hhvm-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mw-testskin-non-voting'))
+            job_name='mwskin-testskin-hhvm-jessie-non-voting'))
 
         self.assertMissingDependencies(self.fetch_dependencies(
             job_name='mediawiki-core-phplint'))
@@ -200,7 +200,7 @@ class TestMwDependencies(unittest.TestCase):
 
     def test_inject_extension_on_a_skin(self):
         deps = self.fetch_dependencies(
-            job_name='mw-testskin',
+            job_name='mwskin-testskin-php70-jessie',
             project='mediawiki/skins/BlueSpiceSkin')
         self.assertDictContainsSubset(
             {
