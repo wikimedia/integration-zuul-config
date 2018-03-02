@@ -87,3 +87,29 @@
      - '{name}-{repository}-npm-node-6-jessie'
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.1.0
+
+- job-template:
+    name: 'mobileapps-diff-test'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - pollscm:
+        cron: '@hourly'
+    scm:
+     - git:
+        url: https://phabricator.wikimedia.org/diffusion/GMOA
+        branches:
+          - master # Hardcode to branch so pollscm works properly.
+    builders:
+     - shell: npm run -s test:diff
+    publishers:
+     - irc-wikimedia-ri-ci
+
+- publisher:
+    name: irc-wikimedia-ri-ci
+    publishers:
+     - ircbot:
+         message-type: summary-scm-fail
+         channels:
+             - name: '#wikimedia-ri-ci'
+               notify-only: true
