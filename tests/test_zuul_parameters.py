@@ -36,11 +36,3 @@ class TestZuulSetParameters(unittest.TestCase):
             set_parameters(None, job, params)
             self.assertIn('BACKPORTS', params)
             self.assertEquals('yes', params['BACKPORTS'])
-
-    def test_mw_testskin_parameters(self):
-        for job_name in ['mw-testskin', 'mw-testskin-non-voting']:
-            job = FakeJob(job_name)
-            params = {'ZUUL_PROJECT': 'mediawiki/extensions/Vector'}
-            set_parameters(None, job, params)
-            self.assertIn('PHP_BIN', params)
-            self.assertEqual('hhvm', params['PHP_BIN'])

@@ -17,10 +17,6 @@ def set_parameters(item, job, params):
     # Xvfb display provided via puppet
     params['DISPLAY'] = ':94'
 
-    hhvm_jobs = (
-        'mw-testskin',
-        'mw-testskin-non-voting',
-        )
     php5_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
         'mediawiki-core-qunit-selenium-jessie',
@@ -38,9 +34,6 @@ def set_parameters(item, job, params):
         params['PHP_BIN'] = 'php7.0'
     elif 'hhvm' in job.name:
         params['PHP_BIN'] = 'hhvm'
-    elif job.name in hhvm_jobs:
-        # T126394: This should always be HHVM
-        params['PHP_BIN'] = 'hhvm'
     elif job.name in php5_jobs:
         params['PHP_BIN'] = 'php5'
 
@@ -54,8 +47,7 @@ def set_parameters(item, job, params):
         'mwext-ruby-jessie',
         'mwext-mw-selenium',
         'mwskin-mw-selenium',
-        'mw-testskin',
-        'mw-testskin-non-voting',
+        'mwskin-testskin',
         'mwext-php70-phan',
         'mwext-phpunit-coverage',
         )

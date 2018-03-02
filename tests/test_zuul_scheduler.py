@@ -196,10 +196,9 @@ class TestZuulScheduler(unittest.TestCase):
             return
         self.assertTrue(
             any([job for job in definition
-                 if job == 'mw-testskin'
-                 or job == 'mw-testskin-non-voting']),
-            'Project %s pipeline %s must have either '
-            'mw-testskin or mw-testskin-non-voting'
+                 if job.startswith('mwskin-testskin')]),
+            'Project %s pipeline %s must have job '
+            'starting with mwskin-testskin'
             % (name, pipeline)
             )
 
