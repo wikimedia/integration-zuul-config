@@ -281,6 +281,7 @@ dependencies = {
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TheWikipediaLibrary': ['Echo'],
+    'Thanks': ['Echo'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
