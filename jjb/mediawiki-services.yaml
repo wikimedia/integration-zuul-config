@@ -76,3 +76,29 @@
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.1.0
      - '{name}-deploy-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.0
+
+- job-template:
+    name: 'mobileapps-periodic-test'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - pollscm:
+        cron: '@hourly'
+    scm:
+     - git:
+        url: https://phabricator.wikimedia.org/diffusion/GMOA
+        branches:
+          - master # Hardcode to branch so pollscm works properly.
+    builders:
+     - shell: npm run -s periodic
+    publishers:
+     - irc-wikimedia-ri-ci
+
+- publisher:
+    name: irc-wikimedia-ri-ci
+    publishers:
+     - ircbot:
+         message-type: summary-scm-fail
+         channels:
+             - name: '#wikimedia-ri-ci'
+               notify-only: true
