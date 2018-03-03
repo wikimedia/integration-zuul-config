@@ -1,5 +1,6 @@
 #!/bin/bash -eu
-
+# Clones mediawiki/core into the right place, then runs composer update to
+# install regular dependencies and development dependencies.
 set -euxo pipefail
 
 umask 002
