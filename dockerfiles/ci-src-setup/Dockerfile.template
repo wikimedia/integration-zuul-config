@@ -1,8 +1,3 @@
-FROM {{ "ci-jessie" | image_tag }} as clone-integration-jenkins
-
-RUN git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/jenkins.git /srv/jenkins && \
-    rm -rf /srv/jenkins/.git
-
 FROM {{ "composer" | image_tag }} as composer
 
 FROM {{ "ci-jessie" | image_tag }}
@@ -32,8 +27,8 @@ RUN {{ "zuul python-pbr=0.8.2-1" | apt_install }}
 
 RUN {{ "jq" | apt_install }}
 
-COPY --from=clone-integration-jenkins /srv/jenkins/bin /srv/slave-scripts
-COPY --from=clone-integration-jenkins /srv/jenkins/etc/zuul-clonemap.yaml /srv/zuul-clonemap.yaml
+COPY --from={{ "integration-jenkins" | image_tag }} /srv/slave-scripts /srv/slave-scripts
+COPY --from={{ "integration-jenkins" | image_tag }} /srv/zuul-clonemap.yaml /srv/zuul-clonemap.yaml
 COPY --from=composer /srv/composer /srv/composer
 
 COPY setup-mw.sh /srv/setup-mw.sh
