@@ -1,8 +1,5 @@
 #!/bin/bash -eu
-# Clones repositories into the right place, validates core's composer.json,
-# creates a composer.local.json with only extension dependencies, runs composer update
-# to remove any extraneous dependencies in mediawiki/vendor, then installs any local
-# development dependencies for the extension itself.
+# Clones repositories into the right place, and does nothing else.
 set -euxo pipefail
 
 umask 002
@@ -36,11 +33,3 @@ find extensions skins -maxdepth 2 \
 
 echo $ZUUL_PROJECT > /tmp/extensions_load.txt
 echo -e "${EXT_DEPENDENCIES:-}" >> /tmp/extensions_load.txt
-
-set -u
-
-composer --ansi validate --no-check-publish
-/srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py "/tmp/extensions_load.txt" composer.local.json
-composer update --ansi --no-progress --prefer-dist --profile --no-dev
-cd /src/extensions/$EXT_NAME
-composer update --ansi --no-progress --prefer-dist --profile
