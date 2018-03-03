@@ -1,0 +1,10 @@
+FROM {{ "composer" | image_tag }}
+
+USER root
+
+COPY --from={{ "integration-jenkins" | image_tag }} /srv/deployment/integration/slave-scripts /srv/deployment/integration/slave-scripts
+
+USER nobody
+
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]
