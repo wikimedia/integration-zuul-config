@@ -94,10 +94,15 @@
     scm:
         - git:
             url: 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git'
-            do-not-fetch-tags: true
             branches:
                 - :^origin/master
                 - :^origin/REL\d+_\d+
+                # > 1.27.4
+                - :^refs/tags/1\.27\.([^1234]|1\d)$
+                # > 1.29.2
+                - :^refs/tags/1\.29\.([^12]|1\d)$
+                # >= 1.30.0
+                - :^refs/tags/\d+\.[^12]\d.\d+$
             clean:
                 before: true
                 after: true
