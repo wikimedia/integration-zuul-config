@@ -1,0 +1,6 @@
+FROM {{ "rake" | image_tag }}
+
+USER root
+RUN {{ "libevent-dev" | apt_install }}
+
+USER nobody
