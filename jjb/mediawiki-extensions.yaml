@@ -327,22 +327,6 @@
     archive:
      - archive-log-allow-empty
 
-- job-template:
-    name: 'mwext-PoolCounter-build-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - shell: |
-        cd daemon
-        make test
-    publishers:
-     - archive:
-         artifacts: daemon/poolcounterd
-     - castor-save
-
 - job:
     name: 'mwext-VisualEditor-docker-publish'
     node: DebianJessieDocker
