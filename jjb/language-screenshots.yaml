@@ -1,7 +1,9 @@
 - job:
     name: language-screenshots-VisualEditor
     project-type: matrix
-    node: ci-jessie-wikimedia
+    # For the parent project.
+    # The combinations are run on hosts based on the "label" axis.
+    node: DebianJessieDocker
     properties:
      - build-discarder:
          days-to-keep: 31  # ~ 2 * 2 weeks sprints
@@ -27,7 +29,7 @@
           type: label-expression
           name: label
           values:
-            - ci-jessie-wikimedia
+            - DebianJessieDocker
       - axis:
           name: BROWSER
           type: yaml
@@ -49,42 +51,28 @@
               recursive: true
     builders:
       #- castor-load # TODO: enable caching
-      - shell: |
-          # credentials for screenshots
-          export SAUCE_ONDEMAND_USERNAME=wikimedia-jenkins
-
-          # check installed dependencies
-          node -v
-          npm -v
-          /usr/lib/chromium/chromedriver -v
-          /usr/lib/chromium/chromium --version
-          ruby -v
-
-          # install npm dependencies
-          npm install
-
-          # add chromedriver to PATH
-          PATH=/usr/lib/chromium:$PATH
-          which chromedriver
-
-          # screenshot all the things
-          node_modules/.bin/grunt screenshots-all || echo "Uh oh. Mocha failed: $?"
-
-          # install ruby dependencies
-          export BUNDLE_PATH='/home/jenkins/workspace/vendor/bundle'
-          bundle install --verbose
-
-          # upload all the things
-          export MEDIAWIKI_API_UPLOAD_URL=https://commons.wikimedia.org/w/api.php
-          export MEDIAWIKI_USER=LanguageScreenshotBot
-          set +x
-          export MEDIAWIKI_PASSWORD="$LanguageScreenshotBot"
-          set -x
-          bundle exec upload
+        - docker-src-dir
+        - docker-log-dir
+        - docker-ci-src-setup-simple
+        # screenshot all the things
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.1.2'
+            # credentials for screenshots
+            docker_run_options: '--env SAUCE_ONDEMAND_USERNAME=wikimedia-jenkins'
+            logdir: '/log'
+            # npm run-script screenshots-all
+            run_args: screenshots-all
+        # Upload all the things
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/rake:0.2.1'
+            # Options for commons_upload gem
+            docker_run_options: '--env MEDIAWIKI_API_UPLOAD_URL=https://commons.wikimedia.org/w/api.php --env MEDIAWIKI_USER=LanguageScreenshotBot --env MEDIAWIKI_PASSWORD="$LanguageScreenshotBot"'
+            # bundle exec rake ...
+            run_args: commons_upload
     publishers:
       #- castor-save # TODO: enable caching
       - email-ext:
           recipients: qa-alerts@lists.wikimedia.org # TODO: job owners wanted
           body: '${SCRIPT, template="wikimedia.template"}'
       - archive:
-          artifacts: 'screenshots/*.png'
+          artifacts: 'src/screenshots/*.png'
