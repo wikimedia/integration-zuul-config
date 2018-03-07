@@ -1,35 +1,41 @@
 - job:
     name: language-screenshots-VisualEditor
-
     project-type: matrix
-
+    node: ci-jessie-wikimedia
+    properties:
+     - build-discarder:
+         days-to-keep: 31  # ~ 2 * 2 weeks sprints
+    wrappers:
+      - ansicolor
+      - timeout:
+          timeout: 600 # 10 hours
+      - timestamps
+      # Wiki usernames and passwords are hold in Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/selenium/
+      - credentials-binding:
+          - text:
+              credential-id: LanguageScreenshotBot
+              variable: LanguageScreenshotBot
+          - text:
+              credential-id: sauce-ondemand-access-key
+              variable: SAUCE_ONDEMAND_ACCESS_KEY
     yaml-strategy:
       exclude-key: 'exclude'
       filename: build/screenshots.yml
-
     axes:
       - axis:
           type: label-expression
           name: label
           values:
             - ci-jessie-wikimedia
-
       - axis:
           name: BROWSER
           type: yaml
           filename: build/screenshots.yml
-
       - axis:
           name: PLATFORM
           type: yaml
           filename: build/screenshots.yml
-
-    node: ci-jessie-wikimedia
-
-    properties:
-     - build-discarder:
-         days-to-keep: 31  # ~ 2 * 2 weeks sprints
-
     scm:
       - git:
           url: https://gerrit.wikimedia.org/r/mediawiki/extensions/VisualEditor
@@ -41,10 +47,8 @@
           prune: true            # prune remote obsoletes branches
           submodule:
               recursive: true
-
     builders:
       #- castor-load # TODO: enable caching
-
       - shell: |
           # credentials for screenshots
           export SAUCE_ONDEMAND_USERNAME=wikimedia-jenkins
@@ -77,31 +81,10 @@
           export MEDIAWIKI_PASSWORD="$LanguageScreenshotBot"
           set -x
           bundle exec upload
-
     publishers:
       #- castor-save # TODO: enable caching
-
       - email-ext:
           recipients: qa-alerts@lists.wikimedia.org # TODO: job owners wanted
           body: '${SCRIPT, template="wikimedia.template"}'
-
       - archive:
           artifacts: 'screenshots/*.png'
-
-    wrappers:
-      - ansicolor
-
-      - timeout:
-          timeout: 600 # 10 hours
-
-      - timestamps
-
-      # Wiki usernames and passwords are hold in Jenkins credentials store
-      # https://integration.wikimedia.org/ci/credential-store/domain/selenium/
-      - credentials-binding:
-          - text:
-              credential-id: LanguageScreenshotBot
-              variable: LanguageScreenshotBot
-          - text:
-              credential-id: sauce-ondemand-access-key
-              variable: SAUCE_ONDEMAND_ACCESS_KEY
