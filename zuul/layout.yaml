@@ -803,6 +803,11 @@ jobs:
     files:
       - '.*'
 
+  # rake compiles PoolCounter daemon
+  - name: ^mwext-PoolCounter-rake-docker$
+    files:
+      - '.*'
+
   # Ditto for translatewiki which has puppet modules under /puppet
   - name: ^translatewiki-rake-docker$
     files:
@@ -7107,12 +7112,13 @@ projects:
 
   - name: mediawiki/extensions/PoolCounter
     template:
-      - name: mwgate-rake
       - name: extension-unittests-generic
       - name: mwgate-npm
     test:
+      - mwext-PoolCounter-rake-docker
       - mwext-PoolCounter-build-jessie
     gate-and-submit: &mediawiki-extensions-poolcounter-gate-and-submit
+      - mwext-PoolCounter-rake-docker
       - mwext-PoolCounter-build-jessie
     gate-and-submit-swat: *mediawiki-extensions-poolcounter-gate-and-submit
 
