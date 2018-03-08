@@ -173,11 +173,20 @@
      - deploy  # mediawiki/services/parsoid/deploy
     jobs:
         # For the deploy repo:
+        # - Nodepool
         - 'parsoidsvc-{repository}-parse-tool-check-jessie'
         - 'parsoidsvc-{repository}-roundtrip-test-check-jessie'
         - 'parsoidsvc-{repository}-npm-node-6-jessie'
+        # - Docker
+        - '{name}-deploy-npm-node-6-docker'
+        - '{name}-deploy-npm-run-{script}-node-6-docker':
+            script:
+                - roundtrip
+                - toolcheck
+
         # Specific integration job
         - parsoidsvc-hhvm-parsertests-jessie
+
         # For the source repo
         - '{name}-npm-node-6-docker'
         - '{name}-npm-run-{script}-node-6-docker':
