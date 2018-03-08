@@ -229,7 +229,7 @@
     triggers:
      - zuul
 
-- job-template:
+- job-template: &job_npm-run-script-node-6-docker
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-run-{script}-node-6-docker'
     # Reinject Zuul parameters since JJB strip for some reason
@@ -244,6 +244,16 @@
         image: '{obj:docker_image_var}'
         logdir: '/log'
         run_args: '{script}'
+
+# Variant for MediaWiki services /deploy repos
+- job-template:
+    !!merge : *job_npm-run-script-node-6-docker
+    name: '{name}-deploy-npm-run-{script}-node-6-docker'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.4.0'
+    docker_run_options_var: '--entrypoint=/run-oid.sh'
 
 - job-template:
     name: 'mediawiki-core-npm-node-6-docker'
