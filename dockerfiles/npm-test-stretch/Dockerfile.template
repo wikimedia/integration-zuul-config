@@ -5,4 +5,6 @@ FROM {{ "npm-stretch" | image_tag }}
 
 USER nobody
 COPY --from=npm-test /run.sh /run.sh
+COPY --from=npm-test /run-oid.sh /run-oid.sh
+COPY --from=npm-test /npm-install-dev.py /npm-install-dev.py
 ENTRYPOINT ["/run.sh"]
