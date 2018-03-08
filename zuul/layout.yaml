@@ -652,9 +652,8 @@ pipelines:
 
   - name: php5
     description: >
-      Jobs manually triggered by whitelisted users commenting 'check php5'.
-      Useful for running PHP5 tests that are only part of gate-and-submit.
-      This queue was formerly called "zend", so 'check zend' also works.
+      Jobs manually triggered by whitelisted users commenting 'check php'.
+      Useful for running PHP tests that are only part of gate-and-submit.
     manager: IndependentPipelineManager
     source: gerrit
     trigger:
@@ -662,10 +661,10 @@ pipelines:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check (php5?|zend)\.?\s*$
           email: *email_whitelist
-    success-message: 'PHP5 build succeeded.'
+    success-message: 'PHP build succeeded.'
     success:
       gerrit: {}
-    failure-message: 'PHP5 build failed.'
+    failure-message: 'PHP build failed.'
     failure:
       gerrit: {}
 
@@ -777,6 +776,21 @@ jobs:
       - project: '^mediawiki/core$'
         branch: (?:^(fundraising/)?REL1_2[78]$)
 
+  # Run PHP 7.0 MediaWiki PHPUnit on 1.31+
+  - name: ^mediawiki-(extensions|phpunit)-php70-jessie$
+    skip-if:
+      - branch: (?:^(fundraising/)?REL1_(2[789]|30)$)
+
+  # Run PHP 7.0 MediaWiki PHPUnit on 1.31+
+  - name: ^mwext-testextension-php70.*$
+    skip-if:
+      - branch: (?:^REL1_(2[789]|30)$)
+
+  # Run PHP 7.0 MediaWiki PHPUnit on 1.31+
+  - name: ^mwskin-testskin-php70.*$
+    skip-if:
+      - branch: (?:^REL1_(2[789]|30)$)
+
   - name: lintr-docker
     files:
      - '^.*\.R$'
@@ -857,7 +871,7 @@ jobs:
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^mwext-testextension-hhvm
+  - name: ^mwext-testextension-(hhvm|php70)
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
   - name: ^mwext-donationinterfacecore-REL1_(27|28)-zend56-jessie$
@@ -1038,12 +1052,13 @@ project-templates:
     test:
      - mwgate-php55lint
      - mwext-testextension-hhvm-composer-jessie
-     - mwext-testextension-php70-composer-jessie-non-voting
     php5:
+     - mwext-testextension-php70-composer-jessie
      - mwext-testextension-php55-composer-jessie
     gate-and-submit: &extension-unittests-composer-gate-and-submit
      - mwgate-php55lint
      - mwext-testextension-php55-composer-jessie
+     - mwext-testextension-php70-composer-jessie
      - mwext-testextension-hhvm-composer-jessie
     gate-and-submit-swat: *extension-unittests-composer-gate-and-submit
     experimental:
@@ -1061,6 +1076,7 @@ project-templates:
      - mwgate-composer-validate
     php5:
      - mwext-testextension-php55-composer-jessie-non-voting
+     - mwext-testextension-php70-composer-jessie-non-voting
     gate-and-submit:
      &extension-unittests-composer-non-voting-gate-and-submit
      - mwgate-php55lint
@@ -1091,13 +1107,14 @@ project-templates:
      - php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-hhvm-jessie
-     - mwext-testextension-php70-jessie-non-voting
     php5:
      - mwext-testextension-php55-jessie
+     - mwext-testextension-php70-jessie
     gate-and-submit: &extension-unittests-generic-gate-and-submit
      - mwgate-php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-php55-jessie
+     - mwext-testextension-php70-jessie
      - mwext-testextension-hhvm-jessie
     gate-and-submit-swat: *extension-unittests-generic-gate-and-submit
     experimental:
@@ -1116,6 +1133,7 @@ project-templates:
      - mwgate-php55lint
      # Extensions tests with core+vendor
      - mwext-testextension-hhvm-jessie-non-voting
+     - mwext-testextension-php70-jessie-non-voting
      - mwgate-composer-validate
     php5:
      - mwext-testextension-php55-jessie-non-voting
@@ -1156,13 +1174,14 @@ project-templates:
     test:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
-      - mwext-testextension-php70-jessie-non-voting
     php5:
       - mediawiki-extensions-php55-jessie
+      - mediawiki-extensions-php70-jessie
     gate-and-submit: &extension-gate-gate-and-submit
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-php55-jessie
       - mediawiki-extensions-qunit-jessie
+      - mediawiki-extensions-php70-jessie
     gate-and-submit-swat: *extension-gate-gate-and-submit
 
   - name: extension-phan-generic
@@ -1199,11 +1218,12 @@ project-templates:
   - name: skin-tests
     test:
       - mwskin-testskin-hhvm-jessie
-      - mwskin-testskin-php70-jessie-non-voting
     php5:
+      - mwskin-testskin-php70-jessie
       - mwskin-testskin-php55-jessie
     gate-and-submit: &skin-tests-gate-and-submit
       - mwskin-testskin-php55-jessie
+      - mwskin-testskin-php70-jessie
       - mwskin-testskin-hhvm-jessie
     gate-and-submit-swat: *skin-tests-gate-and-submit
 
@@ -1492,6 +1512,7 @@ projects:
     php5:
       # Comment "check php5" to manually run this
       - mediawiki-phpunit-php55-jessie
+      - mediawiki-phpunit-php70-jessie
     gate-and-submit: &mediawiki-core-gate-and-submit
       - mediawiki-core-jsduck-docker
       - mediawiki-core-npm-node-6-docker
@@ -1500,6 +1521,7 @@ projects:
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-hhvm-composer-jessie
       - mediawiki-phpunit-php55-jessie
+      - mediawiki-phpunit-php70-jessie
       - composer-package-validate
       - mediawiki-core-php70-phan-docker
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
@@ -1510,8 +1532,6 @@ projects:
     experimental:
       # Experimental php version
       - mwgate-composer-php70-docker
-      - mediawiki-phpunit-php70-jessie
-      - mediawiki-extensions-php70-jessie
 
   - name: mediawiki/debian
     test:
@@ -1533,12 +1553,14 @@ projects:
       - mwgate-composer-php55-docker
       - mediawiki-phpunit-hhvm-jessie
     php5:
+      - mediawiki-phpunit-php70-jessie
       - mediawiki-phpunit-php55-jessie
     gate-and-submit: &mediawiki-vendor-gate-and-submit
       - mwgate-composer-hhvm-docker
       - mwgate-composer-php55-docker
       - mediawiki-phpunit-hhvm-jessie
       - mediawiki-phpunit-php55-jessie
+      - mediawiki-phpunit-php70-jessie
     gate-and-submit-swat: *mediawiki-vendor-gate-and-submit
     experimental:
       - mwgate-composer-php70-docker
