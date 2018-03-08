@@ -6,6 +6,8 @@
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-3d2png:0.1.2
      - '{name}-{repository}-npm-node-6-jessie'
+     - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-3d2png:0.2.0
 
 - project:
     name: 'change-propagation'
@@ -15,11 +17,15 @@
      - '{name}-{repository}-npm-node-6-jessie'
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.1.0
+     - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.0
 
 - project:
     name: chromium-render
     jobs:
      - '{name}-npm-browser-node-6-docker'
+     - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.2.0
 
 - project:
     name: 'citoid'
@@ -27,6 +33,7 @@
      - deploy
     jobs:
      - '{name}-{repository}-npm-node-6-jessie'
+     - '{name}-deploy-npm-node-6-docker'
 
 - project:
     # mediawiki/services/cxserver.git
@@ -35,6 +42,7 @@
      - deploy  # mediawiki/services/cxserver/deploy
     jobs:
      - '{name}-{repository}-npm-node-6-jessie'
+     - '{name}-deploy-npm-node-6-docker'
 
 - project:
     name: 'graphoid'
@@ -44,6 +52,8 @@
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-graphoid:0.1.0
      - '{name}-{repository}-npm-node-6-jessie'
+     - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-graphoid:0.2.0
 
 - project:
     name: 'kartotherian'
@@ -53,6 +63,8 @@
      - '{name}-{repository}-npm-node-6-jessie'
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.1.0
+     - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.0
 
 - project:
     name: 'mathoid'
@@ -62,6 +74,8 @@
      - '{name}-{repository}-npm-node-6-jessie'
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-mathoid:0.1.0
+     - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-mathoid:0.2.0
 
 - project:
     name: 'mobileapps'
@@ -69,6 +83,7 @@
      - deploy
     jobs:
      - '{name}-{repository}-npm-node-6-jessie'
+     - '{name}-deploy-npm-node-6-docker'
 
 - project:
     name: 'tilerator'
@@ -78,6 +93,8 @@
      - '{name}-{repository}-npm-node-6-jessie'
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.1.0
+     - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.0
 
 - project:
     name: 'trending-edits'
@@ -87,3 +104,5 @@
      - '{name}-{repository}-npm-node-6-jessie'
      - '{name}-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.1.0
+     - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.0
