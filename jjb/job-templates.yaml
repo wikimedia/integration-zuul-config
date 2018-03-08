@@ -191,6 +191,7 @@
     node: DebianJessieDocker
     concurrent: true
     docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+    docker_run_options_var: ''
     triggers:
      - zuul
     builders:
@@ -199,6 +200,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
+        docker_run_options: '{obj:docker_run_options_var}'
         image: '{obj:docker_image_var}'
         logdir: '/log'
     publishers:
@@ -214,6 +216,16 @@
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-node-6-docker'
     # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+# Variant for MediaWiki services /deploy repos
+# We only need to install devDependencies, and use a different entry point
+- job-template:
+    !!merge : *job_npm-node-6-docker
+    name: '{name}-deploy-npm-node-6-docker'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.4.0'
+    docker_run_options_var: '--entrypoint=/run-oid.sh'
     triggers:
      - zuul
 
