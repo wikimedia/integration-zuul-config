@@ -278,7 +278,6 @@ dependencies = {
     'SpamDiffTool': ['SpamBlacklist'],
     'SpellingDictionary': ['UniversalLanguageSelector'],
     'SportsTeams': ['SocialProfile', 'UserStatus'],
-    'Spreadsheet': ['PHPExcel'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'TimedMediaHandler': ['MwEmbedSupport'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
