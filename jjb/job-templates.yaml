@@ -310,27 +310,6 @@
      - archive-log-allow-empty
      - castor-save-workspace-cache
 
-
-- job-template:
-    name: '{name}-{repository}-npm-node-6-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - assert-node-version-6
-     # FIXME: we should save node_modules and run npm prune
-     - castor-load
-     - shell: |
-         # For archiving build artifacts
-         mkdir -p "$WORKSPACE/log"
-     - npm-oid:
-         repository: '{repository}'
-    publishers:
-     - archive-log-allow-empty
-     - castor-save
-
 - job-template:
     name: '{phpflavor}lint'
     node: contintLabsSlave && DebianJessie
