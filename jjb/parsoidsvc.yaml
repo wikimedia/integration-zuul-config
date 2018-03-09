@@ -59,93 +59,6 @@
         - archive-log-allow-empty
         - castor-save
 
-- job-template:
-    name: parsoidsvc-{repository}-parse-tool-check-jessie
-    defaults: use-remoteonly-zuul
-    node: ci-jessie-wikimedia
-    concurrent: true
-    wrappers:
-        - timeout:
-            timeout: 5
-            fail: true
-        - timestamps
-        - ansicolor
-    triggers:
-        - zuul
-    builders:
-        - assert-node-version-6
-        - castor-load
-        - setup-npm-oid:
-            repository: '{repository}'
-        - shell: |
-            # If any of these commands fail, something is wrong
-            set -e
-            . npm-oid.env
-            cd "$NPM_SET_PATH"
-            npm run toolcheck
-    publishers:
-     - castor-save
-
-- job-template:
-    name: parsoidsvc-{repository}-roundtrip-test-check-jessie
-    defaults: use-remoteonly-zuul
-    node: ci-jessie-wikimedia
-    concurrent: true
-    wrappers:
-        - timeout:
-            timeout: 10
-            fail: true
-        - timestamps
-        - ansicolor
-    triggers:
-        - zuul
-    builders:
-        - assert-node-version-6
-        - castor-load
-        - setup-npm-oid:
-            repository: '{repository}'
-        - shell: |
-            # If any of these commands fail, something is wrong
-            set -e
-            . npm-oid.env
-            cd "$NPM_SET_PATH"
-            npm run roundtrip
-    publishers:
-     - castor-save
-
-- job-template:
-    name: parsoidsvc-{repository}-npm-node-6-jessie
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    wrappers:
-        - timeout:
-            timeout: 20
-            fail: true
-        - timestamps
-        - ansicolor
-    triggers:
-        - zuul
-    builders:
-    - assert-node-version-6
-    - castor-load
-    - shell: |
-        # For archiving build artifacts
-        mkdir -p "$WORKSPACE/log"
-    - setup-npm-oid:
-        repository: '{repository}'
-    - shell: |
-        node --version
-        npm --version
-        set -e
-        . npm-oid.env
-        cd "$NPM_SET_PATH"
-        npm test
-        npm run doc
-    publishers:
-     - archive-log-allow-empty
-     - castor-save
-
 - job:
     name: parsoidsvc-doc-docker-publish
     node: DebianJessieDocker
@@ -169,14 +82,8 @@
 
 - project:
     name: parsoidsvc
-    repository:
-     - deploy  # mediawiki/services/parsoid/deploy
     jobs:
         # For the deploy repo:
-        # - Nodepool
-        - 'parsoidsvc-{repository}-parse-tool-check-jessie'
-        - 'parsoidsvc-{repository}-roundtrip-test-check-jessie'
-        - 'parsoidsvc-{repository}-npm-node-6-jessie'
         # - Docker
         - '{name}-deploy-npm-node-6-docker':
             docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.5.0'
