@@ -178,8 +178,10 @@
         - 'parsoidsvc-{repository}-roundtrip-test-check-jessie'
         - 'parsoidsvc-{repository}-npm-node-6-jessie'
         # - Docker
-        - '{name}-deploy-npm-node-6-docker'
+        - '{name}-deploy-npm-node-6-docker':
+            docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.5.0'
         - '{name}-deploy-npm-run-{script}-node-6-docker':
+            docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.5.0'
             script:
                 - roundtrip
                 - toolcheck

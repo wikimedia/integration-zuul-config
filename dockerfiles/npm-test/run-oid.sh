@@ -26,7 +26,14 @@ npm --version
 
 echo "Injecting dev dependencies from source repo into deploy node_modules"
 cd /src
-/npm-install-dev.py
+if [ -e 'npm-shrinkwrap.json' ]; then
+    # Parsoid is probably the sole example
+    echo 'npm-shrinkwrap.json detected'
+    npm install --only=dev
+else
+    # Use whatever version matched in package.json devDependencies
+    /npm-install-dev.py
+fi
 
 # grunt.loadNpmTasks() does not honor NODE_PATH so fake it
 # https://github.com/gruntjs/grunt-cli/pull/18
