@@ -1,3 +1,72 @@
+- builder:
+    name: run-parsoid-parsertests
+    builders:
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/hhvm:0.1.3
+            docker_run_options: '--workdir /src'
+            logdir: '/log'
+            run_args: |
+                /src/tests/parser/parserTests.php \
+                --conf /log/LocalSettings.php \
+                --quiet \
+                --color=yes \
+                --file '{file}'
+
+# Runs MediaWiki core @master PHP parser tests
+- job-template:
+    name: parsoidsvc-hhvm-parsertests-docker
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-src-dir
+        - docker-log-dir
+        - docker-zuul-cloner:
+            projects: >
+                mediawiki/core
+                mediawiki/vendor
+                mediawiki/extensions/Cite
+                mediawiki/extensions/MwEmbedSupport
+                mediawiki/extensions/TimedMediaHandler
+                mediawiki/services/parsoid
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/hhvm:0.1.3
+            docker_run_options: '--workdir /src'
+            logdir: '/log'
+            run_args: |
+                /src/maintenance/install.php \
+                --with-extensions \
+                --confpath /log \
+                --dbtype sqlite \
+                --dbpath /log \
+                --dbname wikidb \
+                --pass testpass \
+                TestWiki WikiAdmin
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.1
+            docker_run_options: '--workdir /src'
+            logdir: '/log'
+            run_args: |
+                update \
+                --ansi \
+                --no-progress \
+                --prefer-dist \
+                --profile \
+                -- \
+                    nikic/php-parser \
+                    phpunit/phpunit
+        - run-parsoid-parsertests:
+            file: /src/mediawiki/services/parsoid/tests/parserTests.txt
+        - run-parsoid-parsertests:
+            file: /src/mediawiki/services/parsoid/tests/citeParserTests.txt
+        - run-parsoid-parsertests:
+            file: /src/mediawiki/services/parsoid/tests/timedMediaHandlerParserTests.txt
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+
 # Runs MediaWiki core @master PHP parser tests
 - job-template:
     name: parsoidsvc-hhvm-parsertests-jessie
@@ -83,6 +152,8 @@
 - project:
     name: parsoidsvc
     jobs:
+        - parsoidsvc-hhvm-parsertests-docker
+
         # For the deploy repo:
         # - Docker
         - '{name}-deploy-npm-node-6-docker':
