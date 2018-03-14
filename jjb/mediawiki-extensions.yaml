@@ -80,30 +80,6 @@
      - mw-run-update-script
 
 - builder:
-    name: prepare-mediawiki-zuul-project-no-vendor-no-sql
-    builders:
-     - shell: "echo $ZUUL_PROJECT > deps.txt"
-     - shell: "echo -e $EXT_DEPENDENCIES >> deps.txt"
-     - shell: "echo -e $SKIN_DEPENDENCIES > deps_skins.txt"
-     # Use composer to install dependencies instead cloning mediawiki/vendor,
-     # Clone both extensions and skins, but only extensions get listed for the
-     # extensions autoloader in integration/jenkins.git, skins are
-     # automatically injected by MediaWiki upon installation.
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             $(cat deps.txt)
-             $(cat deps_skins.txt)
-     - ext-skins-submodules-update
-     - shell: "mv deps.txt src/extensions_load.txt"
-     - composer-validate:
-         dir: 'src'
-     - composer-local-create:
-         deps: 'extensions_load.txt'
-     - composer-update:
-         dir: 'src'
-
-- builder:
     name: prepare-mwext-coverage
     builders:
      - shell: |
