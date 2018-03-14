@@ -543,8 +543,7 @@
 
 - job:
     name: 'mwext-phpunit-coverage-patch'
-    node: contintLabsSlave && DebianJessie
-    concurrent: false
+    node: ci-jessie-wikimedia
     builders:
      - prepare-mwext-coverage
      - shell: |
@@ -566,7 +565,7 @@
 
 - job:
     name: 'mwext-phpunit-coverage-publish'
-    node: contintLabsSlave && DebianJessie
+    node: ci-jessie-wikimedia
     concurrent: false
     builders:
      - prepare-mwext-coverage
