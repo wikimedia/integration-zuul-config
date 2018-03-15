@@ -6,4 +6,4 @@ set -euxo pipefail
 
 cd /src
 jsduck --version
-jsduck
+npm run doc
