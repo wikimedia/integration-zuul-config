@@ -906,7 +906,19 @@ jobs:
     files:
      - '^.*\.php$'
 
-
+  # For coverage report jobs, we only want one build at a time.
+  #
+  # That is the equivalent of concurrent: false in Jenkins but handled by Zuul
+  # instead. Else the job get added to the Jenkins build queue and Nodepool
+  # instances get held while waiting. A race condition eventually cause the
+  # instance to be consumed and the queued job in Jenkins never find an
+  # executor to run on.
+  - name: mwext-phpunit-coverage-patch
+    mutex: mwext-phpunit-coverage-patch
+  - name: mwext-phpunit-coverage-publish
+    mutex: mwext-phpunit-coverage-publish
+  - name: mediawiki-phpunit-coverage-patch
+    mutex: mediawiki-phpunit-coverage-patch
 
   - name: ^mediawiki-core-npm-node-6-docker$
     files:
