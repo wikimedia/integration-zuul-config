@@ -279,6 +279,7 @@ dependencies = {
     'SpellingDictionary': ['UniversalLanguageSelector'],
     'SportsTeams': ['SocialProfile', 'UserStatus'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
+    'TemplateWizard': ['TemplateData', 'WikiEditor'],
     'TimedMediaHandler': ['MwEmbedSupport'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TheWikipediaLibrary': ['Echo'],
