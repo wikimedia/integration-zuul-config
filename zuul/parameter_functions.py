@@ -279,6 +279,7 @@ dependencies = {
     'SportsTeams': ['SocialProfile', 'UserStatus'],
     'Spreadsheet': ['PHPExcel'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
+    'TemplateWizard': ['TemplateData', 'WikiEditor'],
     'TimedMediaHandler': ['MwEmbedSupport'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TheWikipediaLibrary': ['Echo'],
