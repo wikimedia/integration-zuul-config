@@ -120,6 +120,8 @@
       - '{name}-maven-site-publish'
       - '{name}-maven-java8-docker-site-publish':
           docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.1.2
+          # We need tests for org.wikidata.query.rdf.tool.Proxy - T190042
+          maven_args: 'clean install site site:stage'
 
 - project:
     name: wikiba.se
