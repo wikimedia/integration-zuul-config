@@ -11,8 +11,6 @@
 - project:
     name: search-xgboost
     jobs:
-        - '{name}-maven':
-            root_pom_var: jvm-packages/pom.xml
         - '{name}-maven-java8-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/java8-xgboost:0.1.1
             maven_args: --file jvm-packages/pom.xml clean verify
