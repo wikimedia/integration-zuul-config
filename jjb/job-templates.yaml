@@ -86,29 +86,6 @@
         - archive-log-allow-empty
         - castor-save-workspace-cache
 
-- job-template:
-    name: '{name}-npm-run-{script}-node-6-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - assert-node-version-6
-     # FIXME: we should save node_modules and run npm prune
-     - castor-load
-     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
-         # For archiving build artifacts
-         mkdir -p "$WORKSPACE/log"
-         node --version
-         npm --version
-         npm install
-         npm run-script {script}
-    publishers:
-     - archive-log-allow-empty
-     - castor-save
-
 - job-template: &job_npm-node-6-docker
     name: 'npm-node-6-docker'
     node: DebianJessieDocker
