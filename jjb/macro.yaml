@@ -283,20 +283,6 @@
             ./node_modules/.bin/grunt webdriver:test
         fi
 
-- builder:
-    name: ruby-nodepool
-    builders:
-     - prepare-localhost
-     - shell: |
-         # Fail whenever $EXT_NAME is not set
-         set -u
-         # Change to the working directory. EXT_NAME is set by Zuul parameters
-         # functions
-         cd "src/extensions/$EXT_NAME"
-         . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
-         bundle install --verbose
-         bundle exec rake test
-
 # - src: (without trailing slash)
 # - project: (usually repo name or a custom title like "VisualEditor") - will be escaped
 # - version: (usually branch name) - will be escaped

@@ -136,7 +136,16 @@
     builders:
      - castor-load
      - prepare-mediawiki-zuul-project
-     - ruby-nodepool
+     - prepare-localhost
+     - shell: |
+         # Fail whenever $EXT_NAME is not set
+         set -u
+         # Change to the working directory. EXT_NAME is set by Zuul parameters
+         # functions
+         cd "src/extensions/$EXT_NAME"
+         . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
+         bundle install --verbose
+         bundle exec rake test
     publishers:
      - castor-save
      - archive-log-dir
