@@ -1177,7 +1177,6 @@ project-templates:
       - mwext-mw-selenium-jessie
     experimental:
       - mediawiki-core-qunit-selenium-jessie
-      - mwext-ruby-jessie
 
   - name: extension-gate
     check:
@@ -1344,12 +1343,6 @@ project-templates:
       - mwgate-rake-docker
     gate-and-submit:
       - mwgate-rake-docker
-
-  - name: mwext-ruby-jessie
-    test:
-      - mwext-ruby-jessie
-    gate-and-submit:
-      - mwext-ruby-jessie
 
   - name: mediawiki-core-qunit-selenium-jessie
     test:
@@ -3138,7 +3131,6 @@ projects:
     experimental:
       - mediawiki-core-qunit-selenium-jessie
       - mwext-mw-selenium-jessie
-      - mwext-ruby-jessie
 
   - name: mediawiki/extensions/CentralNotice
     template:
@@ -3149,7 +3141,6 @@ projects:
     experimental:
       - mediawiki-core-qunit-selenium-jessie
       - mwext-mw-selenium-jessie
-      - mwext-ruby-jessie
 
   - name: mediawiki/extensions/CirrusSearch
     template:
@@ -3482,9 +3473,12 @@ projects:
       - name: extension-unittests-generic
       - name: extension-qunit-generic
       - name: mediawiki-core-qunit-selenium-jessie
-      - name: mwext-ruby-jessie
       - name: mwgate-npm
       - name: extension-coverage
+    test:
+      - mwext-ruby-jessie
+    gate-and-submit:
+      - mwext-ruby-jessie
 
   - name: mediawiki/extensions/EditAccount
     template:
@@ -3665,7 +3659,6 @@ projects:
       - name: mwgate-npm
     experimental:
       - mediawiki-core-qunit-selenium-jessie
-      - mwext-ruby-jessie
 
   - name: mediawiki/extensions/Genealogy
     template:
@@ -4026,7 +4019,6 @@ projects:
     experimental:
       - mediawiki-core-qunit-selenium-jessie
       - mwext-mw-selenium-jessie
-      - mwext-ruby-jessie
 
   # Non-voting due to T87390
   - name: mediawiki/extensions/MathSearch
@@ -7637,7 +7629,6 @@ projects:
     gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
     experimental:
       - mediawiki-core-qunit-selenium-jessie
-      - mwext-ruby-jessie
     postmerge:
       - mwext-doxygen-publish
       - mwext-jsduck-publish
