@@ -14,41 +14,6 @@
     archive:
      - archive-log-allow-empty
 
-- job-template: &job_template_maven
-    name: '{name}-maven'
-    project-type: maven
-    root_pom_var: 'pom.xml'
-    jdk: 'Debian - OpenJdk 8'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    scm:
-     - git:
-        url: '$ZUUL_URL/$ZUUL_PROJECT'
-        branches:
-         - '$ZUUL_COMMIT'
-        refspec: '$ZUUL_REF'
-        wipe-workspace: false
-        shallow-clone: true
-        clean:
-            after: true
-        submodule:
-            recursive: true
-    triggers:
-     - zuul
-    prebuilders:
-     - castor-load
-    maven:
-      goals: clean verify
-      # https://integration.wikimedia.org/ci/configureTools/
-      maven-name: 'Maven-3.5.0'
-      root-pom: '{obj:root_pom_var}'
-    publishers:
-     - castor-save
-
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
     # m4executor label are slaves with 4GBytes memory. Lot of our Java
@@ -70,45 +35,13 @@
         - archive-log-allow-empty
         - castor-save-workspace-cache
 
-# Convenience aliases with name/project variables
-- job-template:
-    !!merge : *job_template_maven
-    name: '{name}-{project}-maven'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
+# Convenience alias with name/project variables
 - job-template:
     !!merge : *job_template_maven-java8-docker
     name: '{name}-{project}-maven-java8-docker'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-
-- job-template: &job_template_maven_site_publish
-    name: '{name}-maven-site-publish'
-    project-type: maven
-    jdk: 'Debian - OpenJdk 8'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    scm:
-     - git-remoteonly-zuul
-    prebuilders:
-     - castor-load
-    maven:
-      goals: 'clean install site site:stage'
-      # https://integration.wikimedia.org/ci/configureTools/
-      maven-name: 'Maven-3.5.0'
-    postbuilders:
-     - doc-publish:
-         docsrc: 'target/staging'
-         docdest: '{name}'
-    publishers:
-     - castor-save
 
 # Same as '{name}-maven-java8-docker' but src is bindmounted so we can later
 # retrieve the site from /src/target/ and push it to doc.wikimedia.org
@@ -152,16 +85,6 @@
                       docdest: '{name}-{project}'
         - archive-log-allow-empty
         - castor-save-workspace-cache
-
-- job-template:
-    !!merge : *job_template_maven_site_publish
-    name: '{name}-{project}-maven-site-publish'
-    postbuilders:
-     - doc-publish:
-         docsrc: 'target/staging'
-         docdest: '{name}-{project}'
-    triggers:
-     - zuul
 
 - job-template:
     name: '{name}-npm-run-{script}-node-6-jessie'
