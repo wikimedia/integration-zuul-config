@@ -8226,19 +8226,8 @@ projects:
       - name: tox-docker
 
   - name: avro-php
-    # FIXME: Once supports PHP 7 (T177273), convert to
-    # composer-test-package template
-    check:
-      - composer-package-validate
-      - php55lint
-    test:
-      - composer-package-hhvm-docker # strict standard issue T157213
-      - composer-package-php55-docker
-    gate-and-submit:
-      - composer-package-hhvm-docker # strict standard issue T157213
-      - composer-package-php55-docker
-    experimental:
-      - composer-package-php70-docker
+    template:
+     - name: composer-test-package
 
   - name: data-values/value-view
     test:
