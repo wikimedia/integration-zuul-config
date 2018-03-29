@@ -1,0 +1,82 @@
+FROM {{ "composer" | image_tag }} as composer
+FROM {{ "npm-stretch" | image_tag }} as npm-stretch
+
+FROM {{ "ci-stretch" | image_tag }}
+
+# Slight digression compared to npm-stretch
+ENV NPM_CONFIG_CACHE=/cache/npm
+
+USER root
+
+#############################
+#  Inject composer and npm  #
+#############################
+COPY --from=composer /srv/composer /srv/composer
+# Manually link since COPY copies symlink destination instead of the actual symlink
+RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
+COPY --from=npm-stretch /usr/local/lib/node_modules/npm/ /usr/local/lib/node_modules/npm/
+# Manually link since COPY copies symlink destination instead of the actual symlink
+RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+
+#############################
+#  Debian packages we need  #
+#############################
+{% set quibble_deps|replace('\n', ' ') -%}
+python3
+python3-setuptools
+python3-pip
+python3-wheel
+{%- endset -%}
+
+# Some Zuul dependencies from Debian, rest will be installed from PYPI
+{% set zuul_deps|replace('\n', ' ') -%}
+python3-babel
+python3-docutils
+python3-ecdsa
+python3-extras
+python3-lockfile
+python3-paste
+python3-crypto
+python3-pbr
+python3-prettytable
+python3-tz
+python3-tzlocal
+python3-voluptuous
+python3-webob
+python3-yaml
+{%- endset -%}
+
+{% set mediawiki_deps|replace('\n', ' ') -%}
+php-cli
+php-gd
+php-intl
+php-mbstring
+php-mysql
+php-sqlite3
+php-xml
+php-zip
+djvulibre-bin
+mariadb-server
+nodejs-legacy
+{%- endset -%}
+
+{% set browsers_deps|replace('\n', ' ') -%}
+chromedriver
+chromium
+xvfb
+xauth
+{%- endset -%}
+
+{% set alldeps = quibble_deps + " " + zuul_deps + " " + mediawiki_deps + " " + browsers_deps -%}
+RUN {{ alldeps | apt_install }} \
+    && pip3 install git+https://gerrit.wikimedia.org/r/p/integration/zuul.git#egg=zuul \
+    && pip3 install git+https://gerrit.wikimedia.org/r/p/integration/quibble.git#egg=quibble \
+    && rm -fR "$XDG_CACHE_HOME"/pip \
+    && apt-get purge -y python3-pip python3-wheel \
+    && apt-get autoremove -y --purge
+
+# Unprivileged
+RUN install --directory /workspace --owner=nobody --group=nogroup
+USER nobody
+WORKDIR /workspace
+ENTRYPOINT ["/usr/local/bin/quibble"]
