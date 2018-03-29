@@ -508,3 +508,19 @@
         thresholds:
           failed:
             total-all: 1
+
+- job:
+    name: mediawiki-core-quibble-vendor-mysql-php7-docker
+    node: DebianJessieDocker && m4executor
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.2
+            logdir: '/log'
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
