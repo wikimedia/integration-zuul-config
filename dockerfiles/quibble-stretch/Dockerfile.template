@@ -29,35 +29,33 @@ python3-wheel
 {%- endset -%}
 
 # Some Zuul dependencies from Debian, rest will be installed from PYPI
+# NOTE quibble embeds a copy of zuul cloner and does not rely on the whole
+# Debian package.
 {% set zuul_deps|replace('\n', ' ') -%}
-python3-babel
-python3-docutils
-python3-ecdsa
 python3-extras
-python3-lockfile
-python3-paste
-python3-crypto
-python3-pbr
-python3-prettytable
-python3-tz
-python3-tzlocal
-python3-voluptuous
-python3-webob
+python3-six
+python3-git
 python3-yaml
 {%- endset -%}
 
 {% set mediawiki_deps|replace('\n', ' ') -%}
+php-apcu
 php-cli
+php-curl
 php-gd
 php-intl
 php-mbstring
 php-mysql
 php-sqlite3
+php-tidy
 php-xml
 php-zip
 djvulibre-bin
+imagemagick
+libimage-exiftool-perl
 mariadb-server
 nodejs-legacy
+tidy
 {%- endset -%}
 
 {% set browsers_deps|replace('\n', ' ') -%}
@@ -69,7 +67,6 @@ xauth
 
 {% set alldeps = quibble_deps + " " + zuul_deps + " " + mediawiki_deps + " " + browsers_deps -%}
 RUN {{ alldeps | apt_install }} \
-    && pip3 install git+https://gerrit.wikimedia.org/r/p/integration/zuul.git#egg=zuul \
     && pip3 install git+https://gerrit.wikimedia.org/r/p/integration/quibble.git#egg=quibble \
     && rm -fR "$XDG_CACHE_HOME"/pip \
     && apt-get purge -y python3-pip python3-wheel \
