@@ -29,30 +29,24 @@ python3-wheel
 {%- endset -%}
 
 # Some Zuul dependencies from Debian, rest will be installed from PYPI
+# NOTE quibble embeds a copy of zuul cloner and does not rely on the whole
+# Debian package.
 {% set zuul_deps|replace('\n', ' ') -%}
-python3-babel
-python3-docutils
-python3-ecdsa
 python3-extras
-python3-lockfile
-python3-paste
-python3-crypto
-python3-pbr
-python3-prettytable
-python3-tz
-python3-tzlocal
-python3-voluptuous
-python3-webob
+python3-six
+python3-git
 python3-yaml
 {%- endset -%}
 
 {% set mediawiki_deps|replace('\n', ' ') -%}
+php-apcu
 php-cli
 php-gd
 php-intl
 php-mbstring
 php-mysql
 php-sqlite3
+php-tidy
 php-xml
 php-zip
 djvulibre-bin
