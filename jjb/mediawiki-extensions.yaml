@@ -446,6 +446,26 @@
     jobs:
      - '{name}-jsduck-docker'
 
+# similar to mediawiki-core-qunit-selenium-jessie, but
+# running composer update for extension.
+- job:
+    name: 'mwext-node-selenium-composer-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    builders:
+     - castor-load
+     - prepare-mediawiki-zuul-project-no-vendor
+     - mw-wdio-nodepool
+     - assert-no-mediawiki-errors
+    publishers:
+     - castor-save
+     - archive-log-dir
+
 # Run Selenium tests daily targeting beta cluster
 # similar to mediawiki-core-qunit-selenium-jessie
 - job-template:
