@@ -509,8 +509,8 @@
           failed:
             total-all: 1
 
-- job:
-    name: mediawiki-core-quibble-vendor-mysql-php7-docker
+- job-template:
+    name: mediawiki-core-quibble-{packages-source}-mysql-php7-docker
     node: DebianJessieDocker && m4executor
     concurrent: true
     triggers:
@@ -521,7 +521,16 @@
         - docker-run-with-log-and-workspace-cache:
             image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.4
             docker_run_options: '--volume /srv/git:/srv/git:ro'
+            run_args: '--packages-source "{packages-source}"'
             logdir: '/log'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+
+- project:
+    name: quibble-jobs
+    packages-source:
+        - composer
+        - vendor
+    jobs:
+        - mediawiki-core-quibble-{packages-source}-mysql-php7-docker
