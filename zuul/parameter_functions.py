@@ -16,6 +16,9 @@ def set_parameters(item, job, params):
 
     # Xvfb display provided via puppet
     params['DISPLAY'] = ':94'
+    if '-quibble-' in job.name:
+        # Quibble takes care of it
+        del(params['DISPLAY'])
 
     php5_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
