@@ -777,9 +777,6 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
-  - name: ^mwext-mw-selenium-node-composer-jessie$
-    voting: false
-
   - name: ^mediawiki-core-php70-phan-docker$
     skip-if:
       - project: '^mediawiki/core$'
@@ -1188,8 +1185,8 @@ project-templates:
   - name: extension-node-selenium-composer
     test:
       - mwext-mw-selenium-node-composer-jessie
-    #gate-and-submit:
-    #  - mwext-mw-selenium-node-composer-jessie
+    gate-and-submit:
+      - mwext-mw-selenium-node-composer-jessie
 
   - name: extension-gate
     check:
