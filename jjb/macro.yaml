@@ -273,14 +273,7 @@
 
         cd $MW_INSTALL_PATH
         if [ -f ./tests/selenium/wdio.conf.js ]; then
-            chromedriver --url-base=/wd/hub --port=4444 &
-            # Make sure it is killed to prevent file descriptors leak
-            function kill_chromedriver() {
-                killall chromedriver > /dev/null
-            }
-            trap kill_chromedriver EXIT
-
-            ./node_modules/.bin/grunt webdriver:test
+          npm run selenium
         fi
 
 # - src: (without trailing slash)
