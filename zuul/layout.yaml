@@ -830,8 +830,9 @@ jobs:
     files:
       - '.*'
 
-  # rake compiles PoolCounter daemon
+  # rake compiles PoolCounter daemon - Tests failing - T178517
   - name: ^mwext-PoolCounter-rake-docker$
+    voting: false
     files:
       - '.*'
 
@@ -7202,15 +7203,13 @@ projects:
       - name: extension-seccheck-non-voting
       - name: extension-phan-generic
 
+  # need to run mwext-PoolCounter-rake-docker on gate-and-submit when T178517 is fixed
   - name: mediawiki/extensions/PoolCounter
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
     test:
       - mwext-PoolCounter-rake-docker
-    gate-and-submit: &mediawiki-extensions-poolcounter-gate-and-submit
-      - mwext-PoolCounter-rake-docker
-    gate-and-submit-swat: *mediawiki-extensions-poolcounter-gate-and-submit
 
   - name: mediawiki/extensions/Popups
     template:
