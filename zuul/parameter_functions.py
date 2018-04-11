@@ -286,7 +286,7 @@ dependencies = {
     'TimedMediaHandler': ['MwEmbedSupport'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TheWikipediaLibrary': ['Echo'],
-    'Thanks': ['Echo'],
+    'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
