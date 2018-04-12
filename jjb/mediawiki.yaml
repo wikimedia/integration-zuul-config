@@ -510,7 +510,7 @@
             total-all: 1
 
 - job-template:
-    name: mediawiki-core-quibble-{packages-source}-mysql-php7-docker
+    name: mediawiki-core-quibble-{packages-source}-mysql-{php}-docker
     node: DebianJessieDocker && m4executor
     concurrent: true
     triggers:
@@ -519,7 +519,7 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.6
+            image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
             run_args: '--packages-source "{packages-source}"'
             logdir: '/log'
@@ -532,5 +532,10 @@
     packages-source:
         - composer
         - vendor
+    php:
+        - php55:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.6
+        - php70:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.6
     jobs:
-        - mediawiki-core-quibble-{packages-source}-mysql-php7-docker
+        - mediawiki-core-quibble-{packages-source}-mysql-{php}-docker
