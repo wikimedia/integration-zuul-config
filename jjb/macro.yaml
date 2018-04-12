@@ -276,6 +276,7 @@
             chromedriver --url-base=/wd/hub --port=4444 &
             # Make sure it is killed to prevent file descriptors leak
             function kill_chromedriver() {
+                killall ffmpeg > /dev/null
                 killall chromedriver > /dev/null
             }
             trap kill_chromedriver EXIT
