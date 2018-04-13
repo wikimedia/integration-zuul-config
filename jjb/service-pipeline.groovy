@@ -1,5 +1,6 @@
 node('ServicePipelineProduction') {
   def blubberConfig = 'dist/pipeline/blubber.yaml'
+  def helmConfig = 'dist/pipeline/helm.yaml'
 
   def dockerRegistry = 'docker-registry.discovery.wmnet'
   def dockerCredential = 'docker-registry-uploader'
@@ -31,19 +32,38 @@ node('ServicePipelineProduction') {
     ]
   ]
 
-  def build = { variant ->
+  def buildImage = { variant ->
     def labels = imageLabels.collect { "--label '${it}'" }.join(' ')
     sh "blubber $blubberConfig $variant | docker build --pull --tag $fullName $labels --file - ."
   }
 
-  def run = {
+  def runImage = {
     timeout(time: 20, unit: 'MINUTES') {
       sh "exec docker run $fullName"
     }
   }
 
-  def publish = {
+  def publishImage = {
     sh "sudo /usr/local/bin/docker-pusher $fullName"
+  }
+
+  def testDeployment = {
+    def config = readYaml(file: helmConfig)
+    def release = "${name}-${tag}"
+    def timeout = 120
+    def overrides = [
+      "docker.registry=${dockerRegistry}",
+      "docker.pull_policy=Never",
+      "main_app.image=${dockerRepository}/${name}",
+      "main_app.version=${tag}",
+    ].collect { "--set '${it}'" }.join(' ')
+
+    try {
+      sh "helm install ${overrides} -n ${release} --wait --timeout ${timeout} ${config.chart}"
+      sh "helm test ${release}"
+    } finally {
+      sh "helm delete ${release}"
+    }
   }
 
   stage('Checkout patch') {
@@ -51,18 +71,24 @@ node('ServicePipelineProduction') {
   }
 
   stage('Build test image') {
-    build('test')
+    buildImage('test')
   }
 
   stage('Run test image') {
-    run()
+    runImage()
   }
 
-  if (buildProductionImage) {
-    stage('Build production image') {
-      build('production')
-    }
+  stage('Build production image') {
+    buildImage('production')
+  }
 
+  if (testProductionImage) {
+    stage('Test deployment') {
+      testDeployment()
+    }
+  }
+
+  if (pushProductionImage) {
     stage('Register production image') {
       publish()
     }
