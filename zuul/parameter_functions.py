@@ -20,7 +20,7 @@ def set_parameters(item, job, params):
         # Quibble takes care of it
         del(params['DISPLAY'])
 
-    php5_jobs = (
+    php7_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
         'mediawiki-core-qunit-selenium-jessie',
         'mwext-qunit-jessie',
@@ -37,8 +37,8 @@ def set_parameters(item, job, params):
         params['PHP_BIN'] = 'php7.0'
     elif 'hhvm' in job.name:
         params['PHP_BIN'] = 'hhvm'
-    elif job.name in php5_jobs:
-        params['PHP_BIN'] = 'php5'
+    elif job.name in php7_jobs:
+        params['PHP_BIN'] = 'php7.0'
 
     if job.name.endswith('node-6-jessie'):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
