@@ -1,1 +1,2 @@
-def buildProductionImage = true
+def pushProductionImage = true
+def testProductionImage = false
