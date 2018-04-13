@@ -1,7 +1,8 @@
-node('ServicePipelineProduction') {
+node('ServicePipelineK8s') {
   def blubberConfig = 'dist/pipeline/blubber.yaml'
+  def helmConfig = 'dist/pipeline/helm.yaml'
+  def servicePort = 31000 + env.EXECUTOR_NUMBER.toInteger()
 
-  def dockerRegistry = 'docker-registry.discovery.wmnet'
   def dockerCredential = 'docker-registry-uploader'
   def dockerRepository = 'wikimedia'
 
@@ -31,19 +32,47 @@ node('ServicePipelineProduction') {
     ]
   ]
 
-  def build = { variant ->
-    def labels = imageLabels.collect { "--label '${it}'" }.join(' ')
-    sh "blubber $blubberConfig $variant | docker build --pull --tag $fullName $labels --file - ."
+  // Shell argument quoting ripped off from
+  // https://issues.jenkins-ci.org/browse/JENKINS-44231#comment-323802
+  //
+  def arg = { s -> "'" + s.replace("'", "'\\''") + "'" }
+
+  def buildImage = { variant ->
+    def labels = imageLabels.collect { "--label ${arg(it)}" }.join(' ')
+    sh "blubber $blubberConfig $variant | docker build --pull --tag ${arg(fullName)} $labels --file - ."
   }
 
-  def run = {
+  def runImage = {
     timeout(time: 20, unit: 'MINUTES') {
-      sh "exec docker run $fullName"
+      sh "exec docker run ${arg(fullName)}"
     }
   }
 
-  def publish = {
-    sh "sudo /usr/local/bin/docker-pusher $fullName"
+  def publishImage = {
+    sh "sudo /usr/local/bin/docker-pusher ${arg(fullName)}"
+  }
+
+  def testDeployment = {
+    def config = readYaml(file: helmConfig)
+
+    assert config.chart : "you must define 'chart: <helm chart url>' in ${helmConfig}"
+
+    def release = "${name}-${tag}"
+    def timeout = 120
+    def overrides = [
+      "docker.registry=${dockerRegistry}",
+      "docker.pull_policy=IfNotPresent",
+      "main_app.image=${dockerRepository}/${name}",
+      "main_app.version=${tag}",
+      "service.port=${servicePort}",
+    ].collect { "--set ${arg(it)}" }.join(' ')
+
+    try {
+      sh "helm install ${overrides} -n ${arg(release)} --debug --wait --timeout ${timeout} ${arg(config.chart)}"
+      sh "helm test --cleanup ${arg(release)}"
+    } finally {
+      sh "helm delete --purge ${arg(release)}"
+    }
   }
 
   stage('Checkout patch') {
@@ -51,18 +80,24 @@ node('ServicePipelineProduction') {
   }
 
   stage('Build test image') {
-    build('test')
+    buildImage('test')
   }
 
   stage('Run test image') {
-    run()
+    runImage()
   }
 
-  if (buildProductionImage) {
-    stage('Build production image') {
-      build('production')
-    }
+  stage('Build production image') {
+    buildImage('production')
+  }
 
+  if (testProductionImage) {
+    stage('Test deployment') {
+      testDeployment()
+    }
+  }
+
+  if (pushProductionImage) {
     stage('Register production image') {
       publish()
     }
