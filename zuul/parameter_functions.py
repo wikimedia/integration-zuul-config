@@ -238,6 +238,7 @@ dependencies = {
     'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
     'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp',
                        'skins/MinervaNeue'],
+    'MultimediaViewer': ['BetaFeatures'],
     'NamespacePopups': ['PagePopups'],
     'NavigationTiming': ['EventLogging'],
     'NSFileRepo': ['Lockdown'],
