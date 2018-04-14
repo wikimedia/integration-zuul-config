@@ -371,7 +371,7 @@
         mkdir -p "$WORKSPACE/cover"
 
         nice -n 19 \
-            php -d zend_extension=xdebug.so \
+            php7.0 -d zend_extension=xdebug.so \
                 $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
                     --exclude-group Dump,Broken,ParserFuzz,Stub \
                     --coverage-clover log/clover.xml \
