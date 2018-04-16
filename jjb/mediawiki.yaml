@@ -341,6 +341,9 @@
      - string:
          name: 'ZUUL_URL'
          default: 'https://gerrit.wikimedia.org/r/p'
+     - string:
+         name: 'PHP_BIN'
+         default: 'php7.0'
     builders:
      - zuul-cloner:
          projects: >
@@ -371,7 +374,7 @@
         mkdir -p "$WORKSPACE/cover"
 
         nice -n 19 \
-            php7.0 -d zend_extension=xdebug.so \
+            php -d zend_extension=xdebug.so \
                 $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
                     --exclude-group Dump,Broken,ParserFuzz,Stub \
                     --coverage-clover log/clover.xml \
