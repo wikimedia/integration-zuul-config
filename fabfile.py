@@ -20,7 +20,7 @@ env.use_ssh_config = True
 
 
 def _update_integration_config(
-        diff_dir='zuul', log_msg='Reloading Zuul to deploy [hash]'):
+        diff_dir='zuul', log_msg='Reloading Zuul to deploy [url]'):
     with settings(sudo_user='zuul'):
         with cd('/etc/zuul/wikimedia'):
             sudo('git remote update')
@@ -44,7 +44,7 @@ def deploy_docker():
 
     updated = _update_integration_config(
         diff_dir='dockerfiles',
-        log_msg='Updating docker-pkg files on contint1001 for [hash]'
+        log_msg='Updating docker-pkg files on contint1001 for [url]'
     )
 
     if not updated:
