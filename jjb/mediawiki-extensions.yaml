@@ -111,6 +111,23 @@
      - castor-save
      - archive-log-dir
 
+# Temporary clone of above job to
+# test with PHP 7
+- job:
+    name: 'mwext-qunit-php70-jessie'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - castor-load
+     - prepare-mediawiki-zuul-project
+     - qunit-karma
+    publishers:
+     - castor-save
+     - archive-log-dir
+
+
 # Generic qunit job for extensions with composer update.
 - job:
     name: 'mwext-qunit-composer-jessie'
