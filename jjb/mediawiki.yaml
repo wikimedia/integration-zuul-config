@@ -513,7 +513,7 @@
             total-all: 1
 
 - job-template:
-    name: mediawiki-core-quibble-{packages-source}-{database}-{php}-docker
+    name: quibble-{packages-source}-{database}-{php}-docker
     node: DebianJessieDocker && m4executor
     concurrent: true
     triggers:
@@ -546,4 +546,4 @@
         - hhvm:
             docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.7
     jobs:
-        - mediawiki-core-quibble-{packages-source}-{database}-{php}-docker
+        - quibble-{packages-source}-{database}-{php}-docker
