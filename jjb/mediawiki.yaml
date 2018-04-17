@@ -530,6 +530,55 @@
         - archive-log-allow-empty
         - castor-save-workspace-cache
 
+- job:
+    name: 'quibble-integration'
+    project-type: matrix
+    execution-strategy:
+        sequential: true
+    axes:
+        - axis:
+            type: label-expression
+            name: label
+            values:
+                - contint1001
+        - axis:
+            name: ZUUL_BRANCH
+            type: user-defined
+            values:
+                - master
+                - REL1_30
+                - REL1_29
+                - REL1_27
+        - axis:
+            name: packagessource
+            type: user-defined
+            values:
+                - composer
+                - vendor
+        - axis:
+            name: database
+            type: user-defined
+            values:
+                - mysql
+                - sqlite
+        - axis:
+            name: php
+            type: user-defined
+            values:
+                - php55
+                - php70
+                - hhvm
+    builders:
+        - trigger-builds:
+            - project: 'quibble-${packagessource}-${database}-${php}-docker'
+              block: true
+              predefined-parameters: |
+                    projectName=quibble-${packagessource}-${database}-${php}-docker
+                    ZUUL_URL=https://gerrit.wikimedia.org/r/p
+                    ZUUL_PROJECT=mediawiki/core
+                    ZUUL_BRANCH=$ZUUL_BRANCH
+                    ZUUL_REF=$ZUUL_BRANCH
+
 - project:
     name: quibble-jobs
     packages-source:
