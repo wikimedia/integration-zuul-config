@@ -912,7 +912,7 @@ jobs:
     queue-name: mediawiki
 
   - name: mediawiki-core-phpcs-docker
-    branch: (?!^fundraising/REL)
+    branch: (?!^fundraising/REL|master)  # replaced by quibble
     files:
      - '^.*\.(json|php|php5|phtml|inc|xml)$'
 
@@ -937,9 +937,19 @@ jobs:
   - name: mediawiki-phpunit-coverage-patch
     mutex: mediawiki-phpunit-coverage-patch
 
+  # Quibble jobs should not be run on non master branches yet.
+  - name: ^quibble-.*-docker$
+    skip-if:
+      - project: '^mediawiki/core$'
+        branch: (?!master)
+
   - name: ^mediawiki-core-npm-node-6-docker$
+    branch: ^(?!master)  # replaced by quibble
     files:
      - '^(\.js.*|\.stylelintrc|.*\.(css|js|json|less)$)'
+
+  - name: ^mediawiki-core-php70lint$
+    branch: ^(?!master)  # replaced by quibble (composer test)
 
     # Only generate coverage information for master
   - name: ^.*-coverage-publish$
@@ -1032,6 +1042,7 @@ jobs:
     queue-name: mediawiki
 
   - name: mediawiki-core-qunit-selenium-jessie
+    branch: ^(?!master)  # superseeded by quibble
     queue-name: mediawiki
 
   - name: mediawiki-core-jsduck-docker
@@ -1540,19 +1551,25 @@ projects:
   - name: mediawiki/core
     template:
       - name: extension-gate
+      # in master, supersseded by quibble:
       - name: mediawiki-core-qunit-selenium-jessie
     check:
       - mediawiki-core-php55lint
       - mediawiki-core-php70lint
       - composer-package-validate
     test:
+      - quibble-composer-mysql-php70-docker
+      - quibble-vendor-mysql-php70-docker
+
+      # In master, superseeded by quibble jobs above
       - mediawiki-core-phpcs-docker
-      - mediawiki-core-jsduck-docker
       - mediawiki-core-npm-node-6-docker
-      - mediawiki-core-php55lint
       - mediawiki-core-php70lint
-      - mediawiki-phpunit-hhvm-jessie
+
       - composer-package-validate
+      - mediawiki-core-jsduck-docker
+      - mediawiki-core-php55lint
+      - mediawiki-phpunit-hhvm-jessie
       - mediawiki-core-php70-phan-docker
     php5:
       # Comment "check php5" to manually run this
@@ -1578,8 +1595,6 @@ projects:
     experimental:
       # Experimental php version
       - mwgate-composer-php70-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-vendor-mysql-php70-docker
       - quibble-composer-mysql-php55-docker
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-sqlite-php70-docker
