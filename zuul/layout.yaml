@@ -806,6 +806,11 @@ jobs:
     skip-if:
       - branch: (?:^(REL1_(2[789]|30)|wmf/1\.31\.0-wmf\.24)$)
 
+  # Run MediaWiki PHP 5.5 tests on MW < 1.31
+  # TODO: Drop master from this list
+  - name: ^(mediawiki|mwext|mwskin).*php55.*$
+    branch: ^(REL1_(2[789]|30)|master)$
+
   - name: lintr-docker
     files:
      - '^.*\.R$'
