@@ -908,3 +908,50 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertDictEqual(
             {}, errors, "\nNon MediaWiki projects must not have jobs "
                         "in common with the mediawiki queue.")
+
+    def test_mwcore_switch_to_quibble(self):
+        expected = {
+            'composer-package-validate': True,
+            'mediawiki-core-jsduck-docker': True,
+            'mediawiki-core-php55lint': True,
+            'mediawiki-core-php70-phan-docker': True,
+            'mediawiki-extensions-hhvm-jessie': True,
+            'mediawiki-extensions-qunit-jessie': True,
+            'mediawiki-phpunit-hhvm-jessie': True,
+            'quibble-composer-mysql-php70-docker': True,
+            'quibble-vendor-mysql-php70-docker': True,
+
+            # Migrated on master
+            'mediawiki-core-phpcs-docker': False,
+            'mediawiki-core-qunit-selenium-jessie': False,
+            'mediawiki-core-npm-node-6-docker': False,
+            'mediawiki-core-php70lint': False,
+        }
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+        change.files.extend(['foo.php', 'composer.json'])
+
+        job_tree = [t for (p, t)
+                    in self.getPipeline('test').job_trees.iteritems()
+                    if p.name == 'mediawiki/core'][0]
+        jobs = job_tree.getJobs()
+
+        for job in jobs:
+            self.assertEqual(
+                expected[job.name],
+                job.changeMatches(change),
+                '%s expected match == %s but change matching returned %s' % (
+                    job.name, expected[job.name], job.changeMatches(change))
+                )
+
+        change.branch = 'REL1_30'
+        for job in jobs:
+            if job.name.startswith('quibble'):
+                self.assertFalse(
+                    job.changeMatches(change),
+                    'Quibble must not trigger on %s' % change.branch)
+            else:
+                self.assertTrue(
+                    job.changeMatches(change),
+                    '%s must trigger on %s' % (job.name, change.branch))
