@@ -100,7 +100,21 @@ include profile::ci::browsers
 
 # FIXME: hack, our manifests no more ship libapache2-mod-php{5,7}
 # See T144802
-include ::apache::mod::php7
+# First, we really don't want PHP 5.
+apache::mod_conf { 'php5':
+    ensure => 'absent',
+}
+package { 'libapache2-mod-php5':
+    ensure => 'absent',
+}
+class { 'apache::mod::php7':
+    ensure  => 'present',
+    require => [
+      Apache::Mod_conf['php5'],
+      Package['libapache2-mod-php5'],
+    ],
+}
+
 
 # For Selenium jobs video recording (T113520)
 require_package('libav-tools')
@@ -108,6 +122,7 @@ require_package('libav-tools')
 class { 'profile::ci::worker_localhost':
     owner => 'jenkins',
 }
+
 
 # Augeas rule deals with /etc/logrotate.d/apache2
 # Sent to puppet.git https://gerrit.wikimedia.org/r/#/c/291024/
