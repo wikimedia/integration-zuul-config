@@ -98,9 +98,9 @@ include contint::packages::python
 include profile::ci::browsers
 
 
-# FIXME: hack, our manifests no more ship libapache2-mod-php5
+# FIXME: hack, our manifests no more ship libapache2-mod-php{5,7}
 # See T144802
-include ::apache::mod::php5
+include ::apache::mod::php7
 
 # For Selenium jobs video recording (T113520)
 require_package('libav-tools')
