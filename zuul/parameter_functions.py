@@ -16,7 +16,7 @@ def set_parameters(item, job, params):
 
     # Xvfb display provided via puppet
     params['DISPLAY'] = ':94'
-    if '-quibble-' in job.name:
+    if job.name.startswith('quibble-'):
         # Quibble takes care of it
         del(params['DISPLAY'])
 
