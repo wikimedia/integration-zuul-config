@@ -27,4 +27,6 @@ RUN echo "deb http://apt.wikimedia.org/wikimedia jessie-wikimedia component/ci" 
         > /etc/apt/sources.list.d/jessie-ci-php55.list && \
     {{ php55_packages | apt_install }}
 
+COPY 99-enable_gc-off.ini /etc/php/5.5/cli/conf.d/99-enable_gc-off.ini
+
 USER nobody
