@@ -72,6 +72,23 @@ RUN {{ alldeps | apt_install }} \
     && apt-get purge -y python3-pip python3-wheel \
     && apt-get autoremove -y --purge
 
+# tidy from Jessie
+# Provided on https://integration.wikimedia.org/oldtidy/ until a Debian package
+# is made available:
+#  https://phabricator.wikimedia.org/T191771
+#  https://gerrit.wikimedia.org/r/#/c/425257/
+COPY antoine_musso.gpg /tmp/antoine_musso.gpg
+COPY php-oldtidy.sh /usr/local/bin/php-oldtidy
+RUN mkdir -p /usr/local/lib/oldtidy \
+    && cd /usr/local/lib/oldtidy \
+    && curl --silent -O https://integration.wikimedia.org/oldtidy/libtidy-0.99.so \
+    && curl --silent -O https://integration.wikimedia.org/oldtidy/libtidy-0.99.so.gpg \
+    && gpgv --keyring /tmp/antoine_musso.gpg libtidy-0.99.so.gpg libtidy-0.99.so \
+    && rm /tmp/antoine_musso.gpg libtidy-0.99.so.gpg \
+    && ln -s libtidy-0.99.so libtidy.so.5 \
+    && update-alternatives --install /usr/bin/php php /usr/local/bin/php-oldtidy 1000 \
+    && php -i|grep 'libTidy Release => 25 March 2009'
+
 # Unprivileged
 RUN install --directory /workspace --owner=nobody --group=nogroup
 USER nobody
