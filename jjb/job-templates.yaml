@@ -158,22 +158,6 @@
     docker_run_options_var: '--entrypoint=/run-oid.sh'
 
 - job-template:
-    name: 'mediawiki-core-npm-node-6-docker'
-    !!merge : *job_npm-node-6-docker
-
-    # Instruct wmfreleng/ci-src-setup-simple to skip processing submodules.
-    # mediawiki/core wmf branches have a lot of submodules and we dont need to
-    # run npm tests for them.
-    parameters:
-        - string:
-            name: GIT_NO_SUBMODULES
-            default: "1"
-
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
-- job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-browser-node-6-docker'
     docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.1.2'
