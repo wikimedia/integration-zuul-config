@@ -917,37 +917,22 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-extensions-hhvm-jessie': True,
             'mediawiki-extensions-qunit-jessie': True,
-            'mediawiki-phpunit-hhvm-jessie': True,
             'quibble-composer-mysql-php70-docker': True,
             'quibble-vendor-mysql-php70-docker': True,
-
-            # Migrated on master
-            'mediawiki-core-phpcs-docker': False,
-            'mediawiki-core-qunit-selenium-jessie': False,
-            'mediawiki-core-npm-node-6-docker': False,
-            'mediawiki-core-php70lint': False,
+            'quibble-vendor-mysql-hhvm-docker': True,
         }
         expected_gate = {
             'composer-package-validate': True,
             'mediawiki-core-jsduck-docker': True,
-            'mediawiki-core-php55lint': True,
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-extensions-hhvm-jessie': True,
             'mediawiki-extensions-php55-jessie': True,
             'mediawiki-extensions-php70-jessie': True,
             'mediawiki-extensions-qunit-jessie': True,
-            'mediawiki-phpunit-hhvm-jessie': True,
-            'mediawiki-phpunit-php55-jessie': True,
             'quibble-composer-mysql-php70-docker': True,
             'quibble-vendor-mysql-php70-docker': True,
-
-            # Migrated on master
-            'mediawiki-core-npm-node-6-docker': False,
-            'mediawiki-core-php70lint': False,
-            'mediawiki-core-phpcs-docker': False,
-            'mediawiki-core-qunit-selenium-jessie': False,
-            'mediawiki-phpunit-php70-composer-jessie': False,
-            'mediawiki-phpunit-php70-jessie': False,
+            'quibble-vendor-mysql-php55-docker': True,
+            'quibble-vendor-mysql-hhvm-docker': True,
         }
 
         change = zuul.model.Change('mediawiki/core')
