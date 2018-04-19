@@ -796,6 +796,14 @@ jobs:
     skip-if:
       - branch: (?:^((fundraising/)?REL1_(2[789]|30)|wmf/1\.31\.0-wmf\.24)$)
 
+  # Per above, not on branches before REL1_31
+  # In master, superseeded by quibble
+  # => Only used in REL1_31
+  - name: ^mediawiki-phpunit-php70-composer-jessie$
+    branch: ^REL1_31$
+  - name: ^mediawiki-phpunit-php70-jessie$
+    branch: ^REL1_31$
+
   # Run PHP 7.0 MediaWiki PHPUnit on 1.31+
   - name: ^mwext-testextension-php70.*$
     skip-if:
@@ -1576,15 +1584,20 @@ projects:
       - mediawiki-phpunit-php55-jessie
       - mediawiki-phpunit-php70-jessie
     gate-and-submit: &mediawiki-core-gate-and-submit
-      - mediawiki-core-jsduck-docker
-      - mediawiki-core-npm-node-6-docker
-      - mediawiki-core-php55lint
-      - mediawiki-core-php70lint
+      - quibble-composer-mysql-php70-docker
+      - quibble-vendor-mysql-php70-docker
+
+      # In master, superseeded by quibble jobs above
       - mediawiki-core-phpcs-docker
-      - mediawiki-phpunit-hhvm-jessie
+      - mediawiki-core-npm-node-6-docker
+      - mediawiki-core-php70lint
       - mediawiki-phpunit-php70-composer-jessie
-      - mediawiki-phpunit-php55-jessie
       - mediawiki-phpunit-php70-jessie
+
+      - mediawiki-core-jsduck-docker
+      - mediawiki-core-php55lint
+      - mediawiki-phpunit-hhvm-jessie
+      - mediawiki-phpunit-php55-jessie
       - composer-package-validate
       - mediawiki-core-php70-phan-docker
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
