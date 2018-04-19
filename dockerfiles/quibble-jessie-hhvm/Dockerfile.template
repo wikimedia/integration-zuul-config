@@ -2,7 +2,7 @@ FROM {{ "quibble-jessie" | image_tag }}
 
 USER root
 
-RUN {{ "hhvm" | apt_install }}
+RUN {{ "hhvm hhvm-luasandbox hhvm-tidy hhvm-wikidiff2" | apt_install }}
 
 COPY hhvm.ini /hhvm.ini
 
