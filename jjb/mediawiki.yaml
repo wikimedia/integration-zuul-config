@@ -443,34 +443,6 @@
      - ansicolor
      - timestamps
 
-
-# Special job to run MW-CS against MediaWiki core.
-# Can't run it through composer because it'll timeout.
-- job:
-    name: 'mediawiki-core-phpcs-docker'
-    node: DebianJessieDocker
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - docker-log-dir
-     - docker-src-dir
-     - docker-cache-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phpcs:0.1.0'
-        logdir: '/log'
-    publishers:
-     - checkstyle:
-        pattern: 'log/checkstyle.xml'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
-
 # Phan! (T132636)
 - job:
     name: 'mediawiki-core-php70-phan-docker'
