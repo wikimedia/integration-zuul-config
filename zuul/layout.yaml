@@ -796,14 +796,6 @@ jobs:
     skip-if:
       - branch: (?:^((fundraising/)?REL1_(2[789]|30)|wmf/1\.31\.0-wmf\.24)$)
 
-  # Per above, not on branches before REL1_31
-  # In master, superseeded by quibble
-  # => Only used in REL1_31
-  - name: ^mediawiki-phpunit-php70-composer-jessie$
-    branch: ^REL1_31$
-  - name: ^mediawiki-phpunit-php70-jessie$
-    branch: ^REL1_31$
-
   # Run PHP 7.0 MediaWiki PHPUnit on 1.31+
   - name: ^mwext-testextension-php70.*$
     skip-if:
@@ -920,7 +912,7 @@ jobs:
     queue-name: mediawiki
 
   - name: mediawiki-core-phpcs-docker
-    branch: (?!^fundraising/REL|master)  # replaced by quibble
+    branch: (?!^fundraising/REL)
     files:
      - '^.*\.(json|php|php5|phtml|inc|xml)$'
 
@@ -945,19 +937,9 @@ jobs:
   - name: mediawiki-phpunit-coverage-patch
     mutex: mediawiki-phpunit-coverage-patch
 
-  # Quibble jobs should not be run on non master branches yet.
-  - name: ^quibble-.*-docker$
-    skip-if:
-      - project: '^mediawiki/core$'
-        branch: (?!master)
-
   - name: ^mediawiki-core-npm-node-6-docker$
-    branch: ^(?!master)  # replaced by quibble
     files:
      - '^(\.js.*|\.stylelintrc|.*\.(css|js|json|less)$)'
-
-  - name: ^mediawiki-core-php70lint$
-    branch: ^(?!master)  # replaced by quibble (composer test)
 
     # Only generate coverage information for master
   - name: ^.*-coverage-publish$
@@ -1050,7 +1032,6 @@ jobs:
     queue-name: mediawiki
 
   - name: mediawiki-core-qunit-selenium-jessie
-    branch: ^(?!master)  # superseeded by quibble
     queue-name: mediawiki
 
   - name: mediawiki-core-jsduck-docker
@@ -1559,45 +1540,34 @@ projects:
   - name: mediawiki/core
     template:
       - name: extension-gate
-      # in master, supersseded by quibble:
       - name: mediawiki-core-qunit-selenium-jessie
     check:
       - mediawiki-core-php55lint
       - mediawiki-core-php70lint
       - composer-package-validate
     test:
-      - quibble-composer-mysql-php70-docker
-      - quibble-vendor-mysql-php70-docker
-
-      # In master, superseeded by quibble jobs above
       - mediawiki-core-phpcs-docker
-      - mediawiki-core-npm-node-6-docker
-      - mediawiki-core-php70lint
-
-      - composer-package-validate
       - mediawiki-core-jsduck-docker
+      - mediawiki-core-npm-node-6-docker
       - mediawiki-core-php55lint
+      - mediawiki-core-php70lint
       - mediawiki-phpunit-hhvm-jessie
+      - composer-package-validate
       - mediawiki-core-php70-phan-docker
     php5:
       # Comment "check php5" to manually run this
       - mediawiki-phpunit-php55-jessie
       - mediawiki-phpunit-php70-jessie
     gate-and-submit: &mediawiki-core-gate-and-submit
-      - quibble-composer-mysql-php70-docker
-      - quibble-vendor-mysql-php70-docker
-
-      # In master, superseeded by quibble jobs above
-      - mediawiki-core-phpcs-docker
-      - mediawiki-core-npm-node-6-docker
-      - mediawiki-core-php70lint
-      - mediawiki-phpunit-php70-composer-jessie
-      - mediawiki-phpunit-php70-jessie
-
       - mediawiki-core-jsduck-docker
+      - mediawiki-core-npm-node-6-docker
       - mediawiki-core-php55lint
+      - mediawiki-core-php70lint
+      - mediawiki-core-phpcs-docker
       - mediawiki-phpunit-hhvm-jessie
+      - mediawiki-phpunit-php70-composer-jessie
       - mediawiki-phpunit-php55-jessie
+      - mediawiki-phpunit-php70-jessie
       - composer-package-validate
       - mediawiki-core-php70-phan-docker
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
@@ -1608,6 +1578,8 @@ projects:
     experimental:
       # Experimental php version
       - mwgate-composer-php70-docker
+      - quibble-composer-mysql-php70-docker
+      - quibble-vendor-mysql-php70-docker
       - quibble-composer-mysql-php55-docker
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-sqlite-php70-docker
