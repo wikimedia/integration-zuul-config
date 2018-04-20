@@ -932,12 +932,6 @@ jobs:
   - name: mediawiki-phpunit-coverage-patch
     mutex: mediawiki-phpunit-coverage-patch
 
-  # Quibble jobs should not be run on non master branches yet.
-  - name: ^quibble-.*-docker$
-    skip-if:
-      - project: '^mediawiki/core$'
-        branch: (?!master)
-
     # Only generate coverage information for master
   - name: ^.*-coverage-publish$
     branch: master
