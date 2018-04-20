@@ -966,14 +966,3 @@ class TestZuulScheduler(unittest.TestCase):
                     job.name, expected_gate[job.name],
                     job.changeMatches(change))
                 )
-
-        change.branch = 'REL1_30'
-        for job in test_jobs:
-            if job.name.startswith('quibble'):
-                self.assertFalse(
-                    job.changeMatches(change),
-                    'Quibble must not trigger on %s' % change.branch)
-            else:
-                self.assertTrue(
-                    job.changeMatches(change),
-                    '%s must trigger on %s' % (job.name, change.branch))
