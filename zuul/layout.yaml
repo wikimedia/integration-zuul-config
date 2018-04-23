@@ -1272,6 +1272,24 @@ project-templates:
       - mwskin-testskin-php55-jessie-non-voting
       - mwskin-testskin-php70-jessie-non-voting
 
+  - name: quibble-vendor
+    check:
+      - mwgate-php55lint
+      - mwgate-php70lint
+      - mwgate-composer-validate
+    php5:
+      - quibble-vendor-mysql-php55-docker
+      - quibble-vendor-mysql-php70-docker
+    test:
+      - quibble-vendor-mysql-hhvm-docker
+    gate-and-submit: &quibble-vendor-gate-and-submit
+      - quibble-vendor-mysql-hhvm-docker
+      - quibble-vendor-mysql-php55-docker
+      - quibble-vendor-mysql-php70-docker
+    gate-and-submit-swat: *quibble-vendor-gate-and-submit
+    experimental:
+      - quibble-vendor-sqlite-php70-docker
+
   - name: extension-jsduck
     test:
      - mwgate-jsduck-docker
@@ -2200,21 +2218,10 @@ projects:
 
   - name: mediawiki/skins/Vector
     template:
-     - name: mwgate-composer
-     - name: mwgate-npm
-     - name: skin-tests
-    test:
-     - mediawiki-core-qunit-selenium-jessie
-    gate-and-submit: &mediawiki-skins-vector-gate-and-submit
-     - mediawiki-core-qunit-selenium-jessie
-    gate-and-submit-swat: *mediawiki-skins-vector-gate-and-submit
+     - name: quibble-vendor
     experimental:
      - quibble-composer-mysql-php70-docker
-     - quibble-vendor-mysql-php70-docker
      - quibble-composer-mysql-php55-docker
-     - quibble-vendor-mysql-php55-docker
-     - quibble-vendor-sqlite-php70-docker
-     - quibble-vendor-mysql-hhvm-docker
 
   - name: mediawiki/skins/VectorV2
     template:
