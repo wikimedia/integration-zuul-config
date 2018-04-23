@@ -33,6 +33,7 @@ class TestZuulLayout(unittest.TestCase):
             'extension-unittests',
             'skin-tests',
             'extension-gate',
+            'quibble-vendor',
             )
         errors = []
         for project in self.layout['projects']:

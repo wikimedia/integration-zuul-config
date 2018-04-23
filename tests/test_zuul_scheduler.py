@@ -260,10 +260,12 @@ class TestZuulScheduler(unittest.TestCase):
             project_def = all_defs[project_name]
 
             # If the project is archived, skip it
-            if 'gate-and-submit' in project_def \
-                    and 'fail-archived-repositories' \
-                        in project_def['gate-and-submit']:
-                continue
+            if 'gate-and-submit' in project_def:
+                gate_jobs = project_def['gate-and-submit']
+                if 'fail-archived-repositories' in gate_jobs:
+                    continue
+                if 'quibble-vendor-mysql-php70-docker' in gate_jobs:
+                    continue
 
             # Pipelines that must be set
             requirements = set()
