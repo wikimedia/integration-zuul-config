@@ -1086,9 +1086,7 @@ project-templates:
      - mwext-testextension-hhvm-composer-jessie
     gate-and-submit-swat: *extension-unittests-composer-gate-and-submit
     experimental:
-     - mwext-qunit-composer-jessie
-     - mwgate-npm-node-6-docker
-     - mwgate-composer-php70-docker
+     - quibble-composer-mysql-php70-docker
 
   - name: extension-unittests-composer-non-voting
     check:
@@ -1111,8 +1109,7 @@ project-templates:
     gate-and-submit-swat:
      *extension-unittests-composer-non-voting-gate-and-submit
     experimental:
-     - mwext-qunit-composer-jessie
-     - mwgate-composer-php70-docker
+     - quibble-composer-mysql-php70-docker
 
   - name: extension-seccheck
     test:
@@ -1150,8 +1147,7 @@ project-templates:
     experimental:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
-      - mwgate-npm-node-6-docker
-      - mwgate-composer-php70-docker
+      - quibble-vendor-mysql-php70-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
@@ -1178,8 +1174,7 @@ project-templates:
     experimental:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
-      - mwgate-npm-node-6-docker
-      - mwgate-composer-php70-docker
+      - quibble-vendor-mysql-php70-docker
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1265,12 +1260,20 @@ project-templates:
       - mwskin-testskin-php70-jessie
       - mwskin-testskin-hhvm-jessie
     gate-and-submit-swat: *skin-tests-gate-and-submit
+    experimental:
+      - quibble-vendor-mysql-hhvm-docker
+      - quibble-vendor-mysql-php55-docker
+      - quibble-vendor-mysql-php70-docker
 
   - name: skin-tests-non-voting
     test:
       - mwskin-testskin-hhvm-jessie-non-voting
       - mwskin-testskin-php55-jessie-non-voting
       - mwskin-testskin-php70-jessie-non-voting
+    experimental:
+      - quibble-vendor-mysql-hhvm-docker
+      - quibble-vendor-mysql-php55-docker
+      - quibble-vendor-mysql-php70-docker
 
   - name: quibble-vendor
     check:
