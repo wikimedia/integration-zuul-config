@@ -53,6 +53,7 @@ def set_parameters(item, job, params):
         'mwskin-testskin',
         'mwext-php70-phan',
         'mwext-phpunit-coverage',
+        'quibble',
         )
     if job.name.startswith(mw_deps_jobs_starting_with):
         set_mw_dependencies(item, job, params)
