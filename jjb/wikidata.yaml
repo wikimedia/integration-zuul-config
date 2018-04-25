@@ -167,11 +167,6 @@
         ## now create and publish a gerrit patch
         ## then publish the artifacts to castor?
         - shell: |
-            # Gerrit commit hook to generate Change-Id automatically
-            curl -Lo .git/hooks/commit-msg \
-                https://gerrit.wikimedia.org/r/tools/hooks/commit-msg
-            chmod u+x .git/hooks/commit-msg
-
             GIT_AUTHOR_NAME=WDQSGuiBuilder
             GIT_COMMITTER_NAME=WDQSGuiBuilder
             GIT_AUTHOR_EMAIL=smalyshev+wdqsgui@wikimedia.org
@@ -179,13 +174,13 @@
 
             # We do not know Gerrit SSH host fingerprint
             mkdir -p ~/.ssh
-            echo -ne 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\n' >> ~/.ssh/config
+            echo -ne 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\nUser wdqsguibuilder\n' >> ~/.ssh/config
 
             npm run deploy
     wrappers:
         - ansicolor
         - timeout:
-            timeout: 5 # minutes
+            timeout: 15 # minutes
         - timestamps
         - ssh-agent-credentials:
             users:
