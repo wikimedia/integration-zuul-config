@@ -370,6 +370,10 @@
      - shell: |
         #!/bin/bash -eu
         set -x
+        if [ ! -f "src/extensions/$EXT_NAME/tests/phan/config.php" ]; then
+            echo "Phan config not found\n"
+            exit 0
+        fi
         exec docker run \
             --rm \
             --volume "$(pwd)"/src:/mediawiki \
