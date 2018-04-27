@@ -89,6 +89,8 @@ RUN mkdir -p /usr/local/lib/oldtidy \
     && update-alternatives --install /usr/bin/php php /usr/local/bin/php-oldtidy 1000 \
     && php -i|grep 'libTidy Release => 25 March 2009'
 
+COPY mariadb.cnf /etc/mysql/mariadb.conf.d/80-mediawiki.cnf
+
 # Unprivileged
 RUN install --directory /workspace --owner=nobody --group=nogroup
 USER nobody
