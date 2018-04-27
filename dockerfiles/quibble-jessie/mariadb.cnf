@@ -4,6 +4,10 @@
 
 [mysqld]
 
+# Enforce real utf8 over the latin1 default that comes in Jessie
+character_set_server = utf8mb4
+collation-server = utf8mb4_general_ci
+
 # Stricter mode T119371
 # Note: should also be set in MediaWiki via $wgSQLMode
 sql_mode = 'TRADITIONAL'
