@@ -2,7 +2,16 @@
 # MariaDB extra settings for Stretch
 #
 
+[client]
+# Stretch defaults to utf8mb4. T193222
+default-character-set = Latin1
+
+
 [mysqld]
+
+# Stretch defaults to utf8mb4. T193222
+character-set-server = latin1
+collation-server = latin1_swedish_ci
 
 # Stricter mode T119371
 # Note: should also be set in MediaWiki via $wgSQLMode
