@@ -2,7 +2,19 @@
 # MariaDB extra settings for Jessie
 #
 
+[client]
+
+# Jessie defaults to Latin1 but we never know. T193222
+default-character-set = Latin1
+
+
 [mysqld]
+
+# Jessie defaults to Latin1 but we never know. T193222
+character-set-server = latin1
+character_set_server = latin1
+collation-server = latin1_swedish_ci
+collation_server = latin1_swedish_ci
 
 # Stricter mode T119371
 # Note: should also be set in MediaWiki via $wgSQLMode
