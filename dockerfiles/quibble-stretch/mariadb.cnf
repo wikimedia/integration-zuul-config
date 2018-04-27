@@ -1,0 +1,15 @@
+#
+# MariaDB extra settings for Stretch
+#
+
+[mysqld]
+
+# Newest InnoDB file format
+innodb_file_format = Barracuda
+
+# With character-set-server = utf8mb4, a VARCHAR(255) ends up being too long.
+innodb_large_prefix = 1
+
+# Stricter mode
+# Note: should also be set in MediaWiki via $wgSQLMode
+sql_mode = 'TRADITIONAL'

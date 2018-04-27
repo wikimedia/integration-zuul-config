@@ -61,6 +61,8 @@ RUN {{ alldeps | apt_install }} \
     && apt-get purge -y python3-pip python3-wheel \
     && apt-get autoremove -y --purge
 
+COPY mariadb.cnf /etc/mysql/conf.d/zzz-mediawiki.cnf
+
 RUN ln -s /usr/lib/chromium/chromedriver /usr/bin/chromedriver
 
 # Unprivileged
