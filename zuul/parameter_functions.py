@@ -26,6 +26,10 @@ def set_parameters(item, job, params):
         'mwext-qunit-jessie',
         'mwext-qunit-composer-jessie',
         'mediawiki-extensions-qunit-jessie',
+        # PHPUnit coverage should use PHP 7:
+        'mediawiki-phpunit-coverage-patch',
+        'mwext-phpunit-coverage-patch',
+        'mwext-phpunit-coverage-publish',
         )
 
     # Sets a $PHP_BIN variable based on the job name
