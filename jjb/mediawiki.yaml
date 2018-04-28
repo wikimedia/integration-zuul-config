@@ -431,12 +431,16 @@
         . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
 
         cd $MW_INSTALL_PATH
-        composer require mediawiki/phpunit-patch-coverage 0.0.6 --no-progress
+        composer require mediawiki/phpunit-patch-coverage 0.0.7 --no-progress
         # FIXME This is terrible, but composer require creates a dirty diff.
         git checkout composer.json
         ./vendor/bin/phpunit-patch-coverage check --command \
-            "php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php"
+            "php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php" \
+            --html coverage.html
 
+    publishers:
+     - archive:
+         artifacts: 'src/coverage.html'
     triggers:
      - zuul
     wrappers:
