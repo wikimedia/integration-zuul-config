@@ -1221,6 +1221,14 @@ project-templates:
      - mwext-php70-phan-docker
     gate-and-submit-swat: *extension-phan-generic
 
+  - name: skin-phan
+    test:
+     - mwskin-php70-phan-docker
+    gate-and-submit: &skin-phan-generic
+     - mwskin-php70-phan-docker
+    gate-and-submit-swat: *skin-phan-generic
+
+
   # Template for MediaWiki extensions.
   # Triggers the generic mwext-qunit job
   - name: extension-qunit-generic
@@ -2095,6 +2103,7 @@ projects:
 
   - name: mediawiki/skins/MonoBook
     template:
+     - name: skin-phan
      - name: quibble-vendor
 
   - name: mediawiki/skins/Nimbus
@@ -2159,6 +2168,7 @@ projects:
   - name: mediawiki/skins/Vector
     template:
      - name: quibble-vendor
+     - name: skin-phan
     experimental:
      - quibble-composer-mysql-php70-docker
      - quibble-composer-mysql-php55-docker

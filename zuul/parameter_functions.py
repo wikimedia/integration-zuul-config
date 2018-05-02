@@ -56,6 +56,7 @@ def set_parameters(item, job, params):
         'mwskin-mw-selenium',
         'mwskin-testskin',
         'mwext-php70-phan',
+        'mwskin-php70-phan',
         'mwext-phpunit-coverage',
         'quibble',
         )
