@@ -366,6 +366,9 @@ def set_mw_dependencies(item, job, params):
     if len(split) != 3:
         return
 
+    # extensions/Foo, skins/Bar
+    params['THING_SUBNAME'] = '/'.join(split[1:3])
+
     if split[1] == 'skins':
         # Lookup key in 'dependencies'. Example: 'skins/Vector'
         dep_key = 'skins' + '/' + split[-1]
