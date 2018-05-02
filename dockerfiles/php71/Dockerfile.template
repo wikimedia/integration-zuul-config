@@ -1,6 +1,25 @@
 FROM {{ "sury-php" | image_tag }}
 
-RUN {{ "php7.1-cli" | apt_install }}
+# zip is needed for composer to install things from dist
+# others are libraries/MediaWiki related
+# php7.1-gd isn't installable, so it's skipped.
+{% set packages|replace('\n', ' ') -%}
+php7.1-cli
+php7.1-zip
+php-ast
+php7.1-curl
+php7.1-dba
+php7.1-mbstring
+php-redis
+php7.1-sqlite3
+php-xdebug
+php7.1-xml
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+# Disable xdebug by default due to its performance impact
+RUN phpdismod xdebug
 
 USER nobody
 
