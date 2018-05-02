@@ -96,7 +96,7 @@
             {image} {obj:run_args|}
         # nothing else can be executed due to exec
 
-# Use a docker image to clone for a MediaWiki extension
+# Use a docker image to clone for a MediaWiki extension or skin
 - builder:
     name: docker-ci-src-setup-mwext
     builders:
@@ -110,7 +110,7 @@
             --volume "$(pwd)"/cache:/cache \
             --volume /srv/git:/srv/git \
             --entrypoint "bash" \
-            docker-registry.wikimedia.org/releng/ci-src-setup:0.2.3 \
+            docker-registry.wikimedia.org/releng/ci-src-setup:0.2.5 \
             /srv/setup-mwext.sh
         # nothing else can be executed due to exec
 

@@ -353,7 +353,7 @@
      - archive-log-allow-empty
 
 # Phan! (T153039)
-- job:
+- job: &job_mwext-php70-phan-docker
     name: 'mwext-php70-phan-docker'
     node: DebianJessieDocker && m4executor
     concurrent: true
@@ -370,7 +370,7 @@
      - shell: |
         #!/bin/bash -eu
         set -x
-        if [ ! -f "src/extensions/$EXT_NAME/tests/phan/config.php" ]; then
+        if [ ! -f "src/$THING_SUBNAME/tests/phan/config.php" ]; then
             echo "Phan config not found\n"
             exit 0
         fi
@@ -388,6 +388,14 @@
         thresholds:
           failed:
             total-all: 1
+
+- job:
+    name: 'mwskin-php70-phan-docker'
+    !!merge : *job_mwext-php70-phan-docker
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 
 - job: &job_mwext-php70-phan-seccheck-docker
     name: 'mwext-php70-phan-seccheck-docker'
