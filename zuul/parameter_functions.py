@@ -219,6 +219,7 @@ dependencies = {
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr', 'WikiEditor'],
+    'Echo': ['CentralAuth', 'EducationProgram', 'EventLogging'],
     'ElectronPdfService': ['Collection'],
     'FanBoxes': ['SocialProfile'],
     'FileAnnotations': ['EventLogging'],
