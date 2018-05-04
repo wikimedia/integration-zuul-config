@@ -520,7 +520,7 @@
          set +x
          export MEDIAWIKI_PASSWORD="$selenium_user_beta"
          set -x
-         MEDIAWIKI_USER='Selenium user' MW_SERVER=https://en.wikipedia.beta.wmflabs.org:443 MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.conf.js --spec extensions/{name}/tests/selenium/specs/*.js
+         MEDIAWIKI_USER='Selenium user' MW_SERVER=https://en.wikipedia.beta.wmflabs.org:443 MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.smoke.js --spec extensions/{name}/tests/selenium/specs/*.js
      - assert-no-mediawiki-errors
     publishers:
      - castor-save
