@@ -151,6 +151,10 @@
 
     builders:
       - shell: |
+          LOCKFILE="/var/lock/scap.operations_mediawiki-config.lock"
+          if [ -O "$LOCKFILE" ]; then
+            rm "$LOCKFILE"
+          fi
           /usr/bin/scap sync "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
 
     properties:
