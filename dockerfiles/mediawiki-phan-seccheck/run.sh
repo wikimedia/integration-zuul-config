@@ -5,7 +5,12 @@ set -euxo pipefail
 umask 002
 
 cd /mediawiki/extensions/$EXT_NAME
-composer require --dev mediawiki/phan-taint-check-plugin $(get_version.php)
+if ! jq -e '.extra."phan-taint-check-plugin"' composer.json; then
+    echo "phan-taint-check-plugin not configured"
+    exit 0
+fi
+
+composer require --dev mediawiki/phan-taint-check-plugin $(jq -r '.extra."phan-taint-check-plugin"' composer.json)
 
 SECCHECK_MODE=${SECCHECK_MODE:-seccheck-fast-mwext}
 
