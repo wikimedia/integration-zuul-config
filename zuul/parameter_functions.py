@@ -281,6 +281,7 @@ dependencies = {
     'ReplaceText': ['AdminLinks'],
     'RevisionSlider': ['MobileFrontend'],
     'Score': ['VisualEditor'],
+    'Scribunto': ['SyntaxHighlight_GeSHi'],
     'SemanticLinks': ['VisualEditor'],
     'SiteMetrics': ['SocialProfile'],
     'SiteScout': ['Comments', 'SocialProfile', 'VoteNY'],
