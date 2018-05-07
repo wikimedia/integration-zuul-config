@@ -1664,10 +1664,8 @@ projects:
      - noop
 
   - name: analytics/limn-wikidata-data
-    test:
-     - php55lint
-    gate-and-submit:
-     - php55lint
+    template:
+      - name: php55lint
 
   - name: analytics/mediawiki-storage
     test:
@@ -1708,11 +1706,8 @@ projects:
       - name: tox-docker
 
   - name: analytics/wmde/scripts
-    test:
-     - php55lint
-    gate-and-submit:
-     - noop
-     - php55lint
+    template:
+      - name: php55lint
 
   - name: analytics/wmde/toolkit-analyzer
     gate-and-submit:
@@ -1786,10 +1781,8 @@ projects:
       - name: tox-docker
 
   - name: labs/incubator
-    test:
-     - php55lint
-    gate-and-submit:
-     - php55lint
+    template:
+      - name: php55lint
 
 
   - name: labs/libraryupgrader
@@ -1831,12 +1824,11 @@ projects:
   - name: labs/toollabs
     template:
       - name: tox-docker
+      - name: php55lint
     test:
      - debian-glue
-     - php55lint
     gate-and-submit:
      - debian-glue
-     - php55lint
 
   - name: labs/tools/bub
     template:
@@ -1901,10 +1893,8 @@ projects:
       - composer-php56-docker
 
   - name: labs/tools/Luke081515IRCBot
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: labs/tools/ptable
     template:
@@ -2202,10 +2192,8 @@ projects:
      - name: quibble-vendor
 
   - name: mediawiki/tools/code-utils
-    test:
-     - php55lint
-    gate-and-submit:
-     - php55lint
+    template:
+      - name: php55lint
 
   - name: mediawiki/tools/codesniffer
     template:
@@ -2220,10 +2208,8 @@ projects:
      - name: tox-docker
 
   - name: mediawiki/tools/dippybird
-    test:
-     - php55lint
-    gate-and-submit:
-     - php55lint
+    template:
+      - name: php55lint
 
   - name: mediawiki/tools/minus-x
     template:
@@ -2245,10 +2231,7 @@ projects:
     template:
       - name: composer-test
       - name: tox-docker
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+      - name: php55lint
 
   - name: mediawiki/tools/releng
     template:
@@ -2453,13 +2436,10 @@ projects:
   - { name: operations/debs/wikimedia-search-qa,              test: ['debian-glue-non-voting'] }
   - { name: operations/debs/wikimedia-task-appserver,         test: ['debian-glue-non-voting'] }
   - name: operations/debs/wikistats
-    check:
-      - php55lint
+    template:
+      - name: php55lint
     test:
-     - php55lint
      - debian-glue-non-voting
-    gate-and-submit:
-     - php55lint
 
   # Content translation related packages
   - { name: operations/debs/contenttranslation/apertium,           test: ['debian-glue'] }
@@ -7310,58 +7290,40 @@ projects:
       - phpunit-coverage-docker-publish
 
   - name: phabricator/arcanist
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: phabricator/extensions
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: phabricator/extensions/BurnDownCharts
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: phabricator/extensions/Sprint
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: phabricator/extensions/security
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: phabricator/libphutil
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: phabricator/phabricator
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: phabricator/test
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: phabricator/tools
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: pywikibot/compat
     template:
@@ -7414,10 +7376,8 @@ projects:
       - pywikibot-FLOSSbot-tox-docker
 
   - name: qrpedia
-    test:
-      - php55lint
-    gate-and-submit:
-      - php55lint
+    template:
+      - name: php55lint
 
   - name: cdb
     template:
