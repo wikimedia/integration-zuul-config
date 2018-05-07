@@ -239,7 +239,8 @@ class TestZuulScheduler(unittest.TestCase):
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasPhp55Test,
-                self.assertTestextensionAndNoComposerTest
+                self.assertTestextensionAndNoComposerTest,
+                self.assertProjectHasExperimentalPhan
             ],
             'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,

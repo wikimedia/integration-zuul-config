@@ -1089,6 +1089,7 @@ project-templates:
     gate-and-submit-swat: *extension-unittests-composer-gate-and-submit
     experimental:
      - quibble-composer-mysql-php70-docker
+     - mwext-php70-phan-docker
 
   - name: extension-unittests-composer-non-voting
     check:
@@ -1111,6 +1112,7 @@ project-templates:
     gate-and-submit-swat:
      *extension-unittests-composer-non-voting-gate-and-submit
     experimental:
+     - mwext-php70-phan-docker
      - quibble-composer-mysql-php70-docker
 
   - name: extension-seccheck
@@ -1125,7 +1127,7 @@ project-templates:
     test:
      - mwext-php70-phan-seccheck-docker-non-voting
 
-  # Same as quibble-vendor, but with experimental jobs
+  # Runs quibble, and includes experimental jobs
   # that are for extensions.
   - name: extension-quibble
     check:
@@ -1195,6 +1197,7 @@ project-templates:
      - mwgate-composer-validate
     gate-and-submit-swat: *extension-unittests-non-voting-gate-and-submit
     experimental:
+      - mwext-php70-phan-docker
       - quibble-vendor-mysql-php70-docker
 
   # Template to run per-patch selenium browser test
@@ -1238,6 +1241,8 @@ project-templates:
       - mediawiki-extensions-qunit-jessie
       - mediawiki-extensions-php70-jessie
     gate-and-submit-swat: *extension-gate-gate-and-submit
+    experimental:
+      - mwext-php70-phan-docker
 
   - name: extension-phan-generic
     test:
@@ -1276,7 +1281,7 @@ project-templates:
     coverage:
       - mwext-phpunit-coverage-patch
 
-  # Same as quibble-vendor, but with experimental jobs
+  # Runs quibble, and includes experimental jobs
   # that are for skins.
   - name: skin-quibble
     check:
@@ -1326,24 +1331,6 @@ project-templates:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
       - mwskin-php70-phan-docker
-
-  - name: quibble-vendor
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
-    php5:
-      - quibble-vendor-mysql-php55-docker
-      - quibble-vendor-mysql-php70-docker
-    test:
-      - quibble-vendor-mysql-hhvm-docker
-    gate-and-submit: &quibble-vendor-gate-and-submit
-      - quibble-vendor-mysql-hhvm-docker
-      - quibble-vendor-mysql-php55-docker
-      - quibble-vendor-mysql-php70-docker
-    gate-and-submit-swat: *quibble-vendor-gate-and-submit
-    experimental:
-      - quibble-vendor-sqlite-php70-docker
 
   - name: extension-jsduck
     test:
@@ -2942,7 +2929,7 @@ projects:
 
   - name: mediawiki/extensions/AccountInfo
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ActiveAbstract
     template:
@@ -2955,16 +2942,16 @@ projects:
 
   - name: mediawiki/extensions/AddMessages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AdvancedSearch
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/AdminLinks
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Agora
     template:
@@ -2995,7 +2982,7 @@ projects:
 
   - name: mediawiki/extensions/ApprovedRevs
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ArticleFeedback
     template:
@@ -3023,15 +3010,15 @@ projects:
 
   - name: mediawiki/extensions/Arrays
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ArticleRatings
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Athena
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Babel
     template:
@@ -3044,11 +3031,11 @@ projects:
 
   - name: mediawiki/extensions/BaseHooks
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/BetaFeatures
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/BlameMaps
@@ -3057,11 +3044,11 @@ projects:
 
   - name: mediawiki/extensions/BlogPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/BoilerPlate
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/BookManager
     template:
@@ -3073,16 +3060,16 @@ projects:
 
   - name: mediawiki/extensions/BounceHandler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/Buggy
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Calendar
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Campaigns
     template:
@@ -3091,30 +3078,30 @@ projects:
 
   - name: mediawiki/extensions/Capiunto
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/CategoryTagSorter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CategoryTree
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck-non-voting
 
   - name: mediawiki/extensions/CategoryWatch
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ChangeAuthor
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CharInsert
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CheckUser
     template:
@@ -3132,13 +3119,13 @@ projects:
 
   - name: mediawiki/extensions/CiteThisPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Citoid
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/cldr
     template:
@@ -3149,7 +3136,7 @@ projects:
 
   - name: mediawiki/extensions/CentralAuth
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: mwgate-rake
       - name: extension-coverage
     experimental:
@@ -3158,7 +3145,7 @@ projects:
 
   - name: mediawiki/extensions/CentralNotice
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: mwgate-rake
     experimental:
       - mediawiki-core-qunit-selenium-jessie
@@ -3177,7 +3164,7 @@ projects:
 
   - name: mediawiki/extensions/CleanChanges
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ClickTracking
     template:
@@ -3185,15 +3172,15 @@ projects:
 
   - name: mediawiki/extensions/ClientSide
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CommentStreams
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CookieWarning
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/CodeEditor
@@ -3206,11 +3193,11 @@ projects:
 
   - name: mediawiki/extensions/CodeMirror
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CodeReview
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/Cognate
@@ -3222,7 +3209,7 @@ projects:
 
   - name: mediawiki/extensions/CollaborationKit
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
     postmerge:
       - mwext-doxygen-publish
@@ -3230,11 +3217,11 @@ projects:
 
   - name: mediawiki/extensions/CollapsibleVector
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/Collection
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
@@ -3259,12 +3246,12 @@ projects:
 
   - name: mediawiki/extensions/CommonsMetadata
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/Configure
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ConfirmAccount
     template:
@@ -3288,15 +3275,15 @@ projects:
 
   - name: mediawiki/extensions/ContributionScores
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ContributionsList
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CommonMessages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CommunityApplications
     template:
@@ -3308,15 +3295,15 @@ projects:
 
   - name: mediawiki/extensions/CommunityVoice
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ContactPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FlickrAPI
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FundraisingChart
     template:
@@ -3337,15 +3324,15 @@ projects:
 
   - name: mediawiki/extensions/CreditsSource
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CreatePageUw
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CreateUserPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CustomData
     template:
@@ -3363,59 +3350,59 @@ projects:
 
   - name: mediawiki/extensions/D3Loader
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Dashiki
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DateDiff
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DebateTree
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DebugMode
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DebugTemplates
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DeleteBatch
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DeletePagesForGood
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DeleteUserPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DisableAccount
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Disambiguator
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DiscussionThreading
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DismissableSiteNotice
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DisplayTitle
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/DonationInterface
@@ -3434,19 +3421,19 @@ projects:
 
   - name: mediawiki/extensions/DoubleWiki
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Drafts
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DynamicSidebar
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DumpHTML
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/E3Experiments
     template:
@@ -3468,15 +3455,15 @@ projects:
 
   - name: mediawiki/extensions/EditAccount
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Editcount
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EditcountAdditions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EditNotify
     template:
@@ -3490,15 +3477,15 @@ projects:
 
   - name: mediawiki/extensions/EditPageTracking
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EditUser
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EducationProgram
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/Elastica
@@ -3508,26 +3495,26 @@ projects:
 
   - name: mediawiki/extensions/ElectronPdfService
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: mediawiki-core-qunit-selenium-jessie
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/EmailAuth
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/EmailAuthorization
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EmailCapture
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EmailDiff
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EtherEditor
     template:
@@ -3554,12 +3541,12 @@ projects:
 
   - name: mediawiki/extensions/EventBus
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/ExtJSBase
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ExpandTemplates
     template:
@@ -3567,12 +3554,12 @@ projects:
 
   - name: mediawiki/extensions/ExtensionDistributor
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/FeaturedFeeds
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FlaggedRevs
     template:
@@ -3593,23 +3580,23 @@ projects:
 
   - name: mediawiki/extensions/Form
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FormPreloadPostCache
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FundraiserLandingPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FundraisingTranslateWorkflow
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Gadgets
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
       - name: extension-phan-generic
       - name: extension-seccheck
@@ -3621,18 +3608,18 @@ projects:
   - name: mediawiki/extensions/GettingStarted
     template:
       - name: mwgate-rake
-      - name: quibble-vendor
+      - name: extension-quibble
     experimental:
       - mediawiki-core-qunit-selenium-jessie
 
   - name: mediawiki/extensions/Genealogy
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/GeoCrumbs
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GeoData
     template:
@@ -3644,11 +3631,11 @@ projects:
 
   - name: mediawiki/extensions/GeoGebra
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Git2Pages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GitHub
     template:
@@ -3656,19 +3643,19 @@ projects:
 
   - name: mediawiki/extensions/Gitweb
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GlobalBlocking
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GlobalContributions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GlobalContribs
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GlobalCssJs
     template:
@@ -3690,11 +3677,11 @@ projects:
 
   - name: mediawiki/extensions/GlobalUserPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GoogleAdSense
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GoogleAPIClient
     template:
@@ -3702,11 +3689,11 @@ projects:
 
   - name: mediawiki/extensions/GoogleAnalyticsMetrics
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GoogleAnalyticsTopPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GoogleAppEngine
     template:
@@ -3715,7 +3702,7 @@ projects:
 
   - name: mediawiki/extensions/GoogleCustomWikiSearch
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GoogleGeocode
     template:
@@ -3729,7 +3716,7 @@ projects:
 
   - name: mediawiki/extensions/GoogleNewsSitemap
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GooglePlaces
     template:
@@ -3738,11 +3725,11 @@ projects:
 
   - name: mediawiki/extensions/GoogleSiteSearch
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GPGMail
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Graph
     template:
@@ -3769,70 +3756,70 @@ projects:
 
   - name: mediawiki/extensions/GWToolset
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/HAWelcome
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HelpPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HighlightjsIntegration
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Hreflang
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/I18nTags
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Ids
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ImageMap
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/ImportArticles
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ImportFreeImages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ImportUsers
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/InputBox
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/Insider
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Interwiki
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/InterwikiSorting
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/intersection
@@ -3842,7 +3829,7 @@ projects:
 
   - name: mediawiki/extensions/JADE
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/JsonConfig
@@ -3854,7 +3841,7 @@ projects:
 
   - name: mediawiki/extensions/Kartographer
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
     postmerge:
       - mwext-doxygen-publish
@@ -3862,11 +3849,11 @@ projects:
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LandingCheck
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LanguageTool
     template:
@@ -3880,11 +3867,11 @@ projects:
 
   - name: mediawiki/extensions/LdapAuthentication
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LdapGroups
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Lingo
     template:
@@ -3898,7 +3885,7 @@ projects:
 
   - name: mediawiki/extensions/LinkTarget
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Linter
     template:
@@ -3908,27 +3895,27 @@ projects:
 
   - name: mediawiki/extensions/LiquidThreads
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Listings
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LocalisationUpdate
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/LoginNotify
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-coverage
 
   - name: mediawiki/extensions/Mailgun
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Mantle
     template:
@@ -3953,25 +3940,25 @@ projects:
 
   - name: mediawiki/extensions/MapSources
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MassAction
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MassMessage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/MassMessageEmail
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MarkAsHelpful
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MediaWikiFarm
     template:
@@ -3980,15 +3967,15 @@ projects:
 
   - name: mediawiki/extensions/Memento
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MinimumNameLength
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MixedNamespaceSearchSuggestions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MobileFrontend
     template:
@@ -4013,29 +4000,29 @@ projects:
 
   - name: mediawiki/extensions/MolHandler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FileImporter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-coverage
 
   - name: mediawiki/extensions/FileExporter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MP3MediaHandler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MessageCommons
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MetaMaster
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MultiLanguageManager
     template:
@@ -4044,7 +4031,7 @@ projects:
 
   - name: mediawiki/extensions/MultiMaps
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/MultimediaViewer
@@ -4071,11 +4058,11 @@ projects:
 
   - name: mediawiki/extensions/MWVersionInfo
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NaturalLanguageList
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NavigationTiming
     template:
@@ -4086,23 +4073,23 @@ projects:
 
   - name: mediawiki/extensions/NewestPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NewUserActions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NewUserMessage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NewUserNotif
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NoBogusUserpages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NoCat
     template:
@@ -4119,11 +4106,11 @@ projects:
 
   - name: mediawiki/extensions/NotebookViewer
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Nuke
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck
 
@@ -4133,7 +4120,7 @@ projects:
 
   - name: mediawiki/extensions/OATHAuth
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck
 
@@ -4143,11 +4130,11 @@ projects:
 
   - name: mediawiki/extensions/OAuth
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OAuthAuthentication
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Offline
     template:
@@ -4188,33 +4175,33 @@ projects:
 
   - name: mediawiki/extensions/PageAssessments
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageBlock
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageForms
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/PagedTiffHandler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageImages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/PagePopups
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageTriage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: mwgate-rake
       - name: extension-coverage
     experimental:
@@ -4222,7 +4209,7 @@ projects:
 
   - name: mediawiki/extensions/ParentPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ParserFunctions
     template:
@@ -4234,12 +4221,12 @@ projects:
 
   - name: mediawiki/extensions/ParserMigration
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/Patroller
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PCRGUIInserts
     template:
@@ -4248,25 +4235,25 @@ projects:
 
   - name: mediawiki/extensions/Petition
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PhabTaskGraph
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PopcornEditor
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Prezi
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
 # Start of new currently disabled extensions checks from mass extension import - Addshore
 
   - name: mediawiki/extensions/AbsenteeLandlord
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AccessControl
     template:
@@ -4283,7 +4270,7 @@ projects:
 
   - name: mediawiki/extensions/AddHTMLMetaAndTitle
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AddThis
     template:
@@ -4292,7 +4279,7 @@ projects:
 
   - name: mediawiki/extensions/AdManager
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Ads
     template:
@@ -4308,7 +4295,7 @@ projects:
 
   - name: mediawiki/extensions/AJAXPoll
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AkismetKlik
     template:
@@ -4317,11 +4304,11 @@ projects:
 
   - name: mediawiki/extensions/AllTimeZones
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AnchorHandler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ApiExplorer
     template:
@@ -4329,7 +4316,7 @@ projects:
 
   - name: mediawiki/extensions/ApiFeatureUsage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ApiSVGProxy
     template:
@@ -4337,17 +4324,17 @@ projects:
 
   - name: mediawiki/extensions/ArticleCreationWorkflow
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-coverage
 
   - name: mediawiki/extensions/ArticleIndex
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ArticleToCategory2
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AssertEdit
     template:
@@ -4355,11 +4342,11 @@ projects:
 
   - name: mediawiki/extensions/Auth_remoteuser
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AuthorProtect
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AutoCategoriseUploads
     template:
@@ -4368,11 +4355,11 @@ projects:
 
   - name: mediawiki/extensions/AutoCreateCategoryPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AutoGallery
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AutomaticBoardWelcome
     template:
@@ -4380,11 +4367,11 @@ projects:
 
   - name: mediawiki/extensions/AutoProxyBlock
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Awesomeness
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/AWS
     template:
@@ -4392,7 +4379,7 @@ projects:
 
   - name: mediawiki/extensions/BatchUserRights
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/BayesianFilter
     template:
@@ -4400,11 +4387,11 @@ projects:
 
   - name: mediawiki/extensions/BiblioPlus
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/BibManager
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Blackout
     template:
@@ -4413,7 +4400,7 @@ projects:
 
   - name: mediawiki/extensions/BlockAndNuke
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/BlueSpiceAbout
     template:
@@ -4680,27 +4667,27 @@ projects:
 
   - name: mediawiki/extensions/BreadCrumbs2
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/BrickipediaExtra
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Carp
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Cargo
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CategorySlideShow
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CategorySortHeaders
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CategoryTests
     template:
@@ -4715,11 +4702,11 @@ projects:
 
   - name: mediawiki/extensions/CharRangeSpan
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Checkpoint
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CloseWikis
     template:
@@ -4728,7 +4715,7 @@ projects:
 
   - name: mediawiki/extensions/CloneDiff
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Commentbox
     template:
@@ -4741,43 +4728,43 @@ projects:
 
   - name: mediawiki/extensions/Comments
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CommunityTwitter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ConditionalShowSection
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CongressLookup
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Contest
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Contributors
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Convert2Wiki
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CopyToClipboard
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CreatePage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CreateRedirect
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/CreditTab
     template:
@@ -4790,7 +4777,7 @@ projects:
 
   - name: mediawiki/extensions/CSS
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DataTransfer
     template:
@@ -4803,19 +4790,19 @@ projects:
 
   - name: mediawiki/extensions/DeleteOwn
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Description2
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DeviceMapLogCapture
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Diagnosis
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Dice
     template:
@@ -4823,7 +4810,7 @@ projects:
 
   - name: mediawiki/extensions/DidYouKnow
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DidYouMean
     template:
@@ -4832,27 +4819,27 @@ projects:
 
   - name: mediawiki/extensions/DisqusTag
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DjangoAnalytics
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DownloadCounter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DPLforum
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Duplicator
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/DynamicPageList
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EditSubpages
     template:
@@ -4861,39 +4848,39 @@ projects:
 
   - name: mediawiki/extensions/EnhanceContactForm
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ErrorHandler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/EtherpadLite
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/examples
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ExternalArticles
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ExternalData
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ExtraLanguageLink
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ExtTab
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FanBoxes
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FeedsFromPrivateWikis
     template:
@@ -4901,19 +4888,19 @@ projects:
 
   - name: mediawiki/extensions/FileAnnotations
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FilterListUsers
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FirstSteps
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FlvHandler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ForcePreview
     template:
@@ -4922,7 +4909,7 @@ projects:
 
   - name: mediawiki/extensions/FormatDates
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/FormatNum
     template:
@@ -4930,7 +4917,7 @@ projects:
 
   - name: mediawiki/extensions/FormelApplet
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Foxway
     template:
@@ -4938,7 +4925,7 @@ projects:
 
   - name: mediawiki/extensions/FundraisingEmailUnsubscribe
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Genderize
     template:
@@ -4947,27 +4934,27 @@ projects:
 
   - name: mediawiki/extensions/GlobalNotice
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GlobalUserGroups
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GlobalUserrights
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/googleAnalytics
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GoogleDocs4MW
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GoogleDocTag
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GoogleMaps
     template:
@@ -4975,55 +4962,55 @@ projects:
 
   - name: mediawiki/extensions/GooglePlusOne
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/GroupsSidebar
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HashTables
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HeaderTabs
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HelpCommons
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HidePrefix
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HostStats
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Hovergallery
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HSTS
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HTMLets
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/HTMLTags
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/IframePage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/IfTemplates
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ImageLink
     template:
@@ -5037,27 +5024,27 @@ projects:
 
   - name: mediawiki/extensions/ImageRating
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ImageTweaks
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/IndexFunction
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/InlineCategorizer
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/InteractiveBlockMessage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Interlanguage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/InterwikiMagic
     template:
@@ -5065,19 +5052,19 @@ projects:
 
   - name: mediawiki/extensions/InviteSignup
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Josa
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/JSBreadCrumbs
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/JsonData
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LanguageSelector
     template:
@@ -5086,7 +5073,7 @@ projects:
 
   - name: mediawiki/extensions/LanguageTag
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Less
     template:
@@ -5099,7 +5086,7 @@ projects:
 
   - name: mediawiki/extensions/LifeWebCore
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LightweightRDFa
     template:
@@ -5111,15 +5098,15 @@ projects:
 
   - name: mediawiki/extensions/LinkFilter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LinkSuggest
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ListSignup
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LiveTranslate
     template:
@@ -5128,55 +5115,55 @@ projects:
 
   - name: mediawiki/extensions/Lockdown
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LockDownEnglishPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LogEntry
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LogoFunctions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LookupUser
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LoopFunctions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Loops
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MagicNoCache
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MagicNumberedHeadings
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Maintenance
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MaintenanceShell
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MassEditRegex
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MediaFunctions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MediaWikiAuth
     template:
@@ -5185,7 +5172,7 @@ projects:
 
   - name: mediawiki/extensions/MediaWikiChat
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Minifier
     template:
@@ -5193,7 +5180,7 @@ projects:
 
   - name: mediawiki/extensions/Model
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MOOC
     template:
@@ -5212,43 +5199,43 @@ projects:
 
   - name: mediawiki/extensions/MsLinks
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MSSQLBackCompat
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MsUpload
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MultimediaPlayer
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MultiUpload
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/MyVariables
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NamespaceHTML
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NamespacePaths
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NamespacePopups
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NamespaceRelations
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NamespaceSidebar
     template:
@@ -5257,19 +5244,19 @@ projects:
 
   - name: mediawiki/extensions/Negref
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NetworkAuth
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/News
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NewsBox
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NewSignupPage
     template:
@@ -5278,15 +5265,15 @@ projects:
 
   - name: mediawiki/extensions/Newsletter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NewUsersList
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NoTitle
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NSFileRepo
     template:
@@ -5296,59 +5283,59 @@ projects:
 
   - name: mediawiki/extensions/NukeDPL
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NumberFormat
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NumberOfWikis
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Numbertext
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/NumerAlpha
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OdbcDatabase
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OfflineImportLexicon
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OnlineStatus
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OnlineStatusBar
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OnlyRecentRecentChanges
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OpenGraphMeta
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OpenStreetMapSlippyMap
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OracleTextSearch
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OrphanedTalkPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Oversight
     template:
@@ -5356,7 +5343,7 @@ projects:
 
   - name: mediawiki/extensions/PageCreationNotif
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageDisqus
     template:
@@ -5365,43 +5352,43 @@ projects:
 
   - name: mediawiki/extensions/PageInCat
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageLanguage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageNameFormula
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageNotice
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageSchemas
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PageTools
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PanScroll
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PdfExport
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PerPageLicense
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PGFTikZ
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Phalanx
     template:
@@ -5409,7 +5396,7 @@ projects:
 
   - name: mediawiki/extensions/PhpHighlight
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PhpTagsMaps
     template:
@@ -5437,19 +5424,19 @@ projects:
 
   - name: mediawiki/extensions/PipeEscape
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Poll
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PollNY
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Polyglot
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PrefStats
     template:
@@ -5483,7 +5470,7 @@ projects:
 
   - name: mediawiki/extensions/ProtectSite
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PubSubHubbub
     template:
@@ -5492,11 +5479,11 @@ projects:
 
   - name: mediawiki/extensions/PurgeClickThrough
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Push
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PushToWatch
     template:
@@ -5504,71 +5491,71 @@ projects:
 
   - name: mediawiki/extensions/Quantcast
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/QuickResponse
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/QuickSurveys
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: mwgate-rake
       - name: extension-selenium
       - name: extension-coverage
 
   - name: mediawiki/extensions/QuickSearchLookup
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/QuickGV
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/QuizGame
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/QuizTabulate
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomArea
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomFeaturedUser
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomGameUnit
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomImage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomImageByCategory
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomInCategory
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomSelection
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomUsersWithAvatars
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ReadingLists
     template:
@@ -5577,7 +5564,7 @@ projects:
 
   - name: mediawiki/extensions/ReassignEdits
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Reflect
     template:
@@ -5586,15 +5573,15 @@ projects:
 
   - name: mediawiki/extensions/RefreshSpecial
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RegexBlock
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RegexFun
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RegexFunctions
     template:
@@ -5603,7 +5590,7 @@ projects:
 
   - name: mediawiki/extensions/RelatedLinks
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RelationLinks
     template:
@@ -5628,15 +5615,15 @@ projects:
 
   - name: mediawiki/extensions/RightFunctions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RT
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SafeDelete
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SandboxLink
     template:
@@ -5645,15 +5632,15 @@ projects:
 
   - name: mediawiki/extensions/Sarcasm
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ScanSet
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Screenplay
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SearchRealnames
     template:
@@ -5661,15 +5648,15 @@ projects:
 
   - name: mediawiki/extensions/SectionDisqus
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SecureAuth
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SecureHTML
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SecurePasswords
     template:
@@ -5682,15 +5669,15 @@ projects:
 
   - name: mediawiki/extensions/SearchStats
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SelectCategory
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SelectTag
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SemanticComments
     template:
@@ -5703,7 +5690,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticRating
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SemanticSifter
     template:
@@ -5712,7 +5699,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticWebBrowser
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SharedCssJs
     template:
@@ -5720,39 +5707,39 @@ projects:
 
   - name: mediawiki/extensions/SharedHelpPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ShoutWikiAds
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ShoutWikiAPI
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ShowMe
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SidebarDonateBox
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SignWritingMediaWikiPlugin
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SimpleChanges
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SimpleSecurity
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SimpleSort
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SimpleSurvey
     template:
@@ -5760,7 +5747,7 @@ projects:
 
   - name: mediawiki/extensions/SiteMetrics
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SiteSettings
     template:
@@ -5774,19 +5761,19 @@ projects:
 
   - name: mediawiki/extensions/SkinPerNamespace
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SlimboxThumbs
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SmiteSpam
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SmoothGallery
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Snippet
     template:
@@ -5799,11 +5786,11 @@ projects:
 
   - name: mediawiki/extensions/SocialProfile
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SoftwareVersion
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SolrStore
     template:
@@ -5812,23 +5799,23 @@ projects:
 
   - name: mediawiki/extensions/SoundManager2Button
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SpamRegex
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Spark
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Special404
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SpellingApi
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SpellingDictionary
     template:
@@ -5842,7 +5829,7 @@ projects:
 
   - name: mediawiki/extensions/SportsTeams
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SSLClientAuthentication
     template:
@@ -5851,39 +5838,39 @@ projects:
 
   - name: mediawiki/extensions/StaffEdits
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/StaffPowers
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/StalkerLog
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/StarterWiki
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/StatCounter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/StlHandler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/StringFunctionsEscaped
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SubpageFun
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Suhosin
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SwarmExport
     template:
@@ -5891,19 +5878,19 @@ projects:
 
   - name: mediawiki/extensions/SwiftMailer
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Tabber
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Tabs
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TemplateInfo
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TemplateStyles
     template:
@@ -5913,11 +5900,11 @@ projects:
 
   - name: mediawiki/extensions/TestLanguageNameGrammar
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TextScroller
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Theme
     template:
@@ -5930,11 +5917,11 @@ projects:
 
   - name: mediawiki/extensions/TheWikipediaLibrary
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ThrottleOverride
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ThumbParser
     template:
@@ -5942,11 +5929,11 @@ projects:
 
   - name: mediawiki/extensions/TimelineTable
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TimeMachine
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TimezoneSelector
     template:
@@ -5965,11 +5952,11 @@ projects:
 
   - name: mediawiki/extensions/TweetANew
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TwitterCards
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TwitterLogin
     template:
@@ -5978,7 +5965,7 @@ projects:
 
   - name: mediawiki/extensions/TwoColConflict
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-selenium
       - name: extension-phan-generic
       - name: extension-coverage
@@ -5989,7 +5976,7 @@ projects:
 
   - name: mediawiki/extensions/UIFeedback
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UnCaptcha
     template:
@@ -6002,48 +5989,48 @@ projects:
 
   - name: mediawiki/extensions/UnusedRedirects
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UpdateMediaWiki
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UploadLocal
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UploadLogo
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UploadsLink
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UrlGetParameters
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UrlShortener
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/URNames
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UserExport
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UserFunctions
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UserGroups
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/USERNAME
     template:
@@ -6051,11 +6038,11 @@ projects:
 
   - name: mediawiki/extensions/UserPageEditProtection
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UserPageViewTracker
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UserSnoop
     template:
@@ -6063,19 +6050,19 @@ projects:
 
   - name: mediawiki/extensions/UserStatus
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Video
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ViewFiles
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Views
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/VisualChat
     template:
@@ -6083,31 +6070,31 @@ projects:
 
   - name: mediawiki/extensions/VoteNY
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WantedPagesFromNS
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WatchSubpages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WhitelistPages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WhiteSpace
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WhoIsWatching
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Whoops
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Widgets
     template:
@@ -6116,7 +6103,7 @@ projects:
 
   - name: mediawiki/extensions/WikiArticleFeeds
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikibaseMobile
     template:
@@ -6128,7 +6115,7 @@ projects:
 
   - name: mediawiki/extensions/WikiCategoryTagCloud
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikidataEntitySuggester
     template:
@@ -6211,11 +6198,11 @@ projects:
 
   - name: mediawiki/extensions/WikiLovesMonuments
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikipediaExtracts
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikiPinger
     template:
@@ -6232,7 +6219,7 @@ projects:
 
   - name: mediawiki/extensions/WikiTextLoggedInOut
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikiTwidget
     template:
@@ -6245,7 +6232,7 @@ projects:
 
   - name: mediawiki/extensions/WindowsAzureStorage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/XMLContentExtension
     template:
@@ -6253,15 +6240,15 @@ projects:
 
   - name: mediawiki/extensions/YetAnotherKeywords
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/YotpoReviews
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/YouTube
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ArticleComments
     template:
@@ -6274,7 +6261,7 @@ projects:
 
   - name: mediawiki/extensions/Challenge
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/ContributorsAddon
     template:
@@ -6283,23 +6270,23 @@ projects:
 
   - name: mediawiki/extensions/EditSimilar
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/Farmer
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Favorites
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/FixedHeaderTable
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/GoToShell
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   # Depends on SemanticForms which is on GitHub
   - name: mediawiki/extensions/HierarchyBuilder
@@ -6309,7 +6296,7 @@ projects:
 
   - name: mediawiki/extensions/HitCounters
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   # Require $wgNamespacesWithSubpages set to TRUE in the MAIN namespace.
   - name: mediawiki/extensions/Html2Wiki
@@ -6338,11 +6325,11 @@ projects:
 
   - name: mediawiki/extensions/LDAPAuthorization
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/LastUserLogin
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/LinkSuggest2
     template:
@@ -6351,15 +6338,15 @@ projects:
 
   - name: mediawiki/extensions/Link_Attributes
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/MadLib
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/MiniInvite
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/MobileDetect
     template:
@@ -6368,7 +6355,7 @@ projects:
 
   - name: mediawiki/extensions/MsCalendar
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/MsCatSelect
     template:
@@ -6377,19 +6364,19 @@ projects:
 
   - name: mediawiki/extensions/MsInsert
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/MsWikiEditor
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/MultiBoilerplate
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/OOJsUIAjaxLogin
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-jsduck
 
   - name: mediawiki/extensions/PagesList
@@ -6425,15 +6412,15 @@ projects:
 
   - name: mediawiki/extensions/PluggableSSO
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/PopupPages
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/PureWikiDeletion
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/reCaptcha
     template:
@@ -6442,7 +6429,7 @@ projects:
 
   - name: mediawiki/extensions/RecentActivityFeed
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/RevealEmail
     template:
@@ -6450,7 +6437,7 @@ projects:
 
   - name: mediawiki/extensions/SacredText
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/SemanticDependency
     template:
@@ -6469,19 +6456,19 @@ projects:
 
   - name: mediawiki/extensions/SiteScout
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/SpecialNamespaces
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/Teahouse
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/Tooltip
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/TopLists
     template:
@@ -6490,15 +6477,15 @@ projects:
 
   - name: mediawiki/extensions/TopTenPages
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/VersionCompare
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/VIKI
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/VikiSemanticTitle
     template:
@@ -6516,19 +6503,19 @@ projects:
 
   - name: mediawiki/extensions/WhosOnline
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/WikEdDiff
     template:
-     - name: quibble-vendor
+     - name: extension-quibble
 
   - name: mediawiki/extensions/XenForoAuth
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/XAnalytics
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ZeroRatedMobileAccess
     template:
@@ -6536,7 +6523,7 @@ projects:
 
   - name: mediawiki/extensions/ZoomableImages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/normal
     template:
@@ -6680,7 +6667,7 @@ projects:
 
   - name: mediawiki/extensions/ParsoidBatchAPI
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PdfHandler
     template:
@@ -6691,7 +6678,7 @@ projects:
 
   - name: mediawiki/extensions/PerformanceInspector
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PhpTags
     template:
@@ -6724,14 +6711,14 @@ projects:
 
   - name: mediawiki/extensions/Poem
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
 
   # need to run mwext-PoolCounter-rake-docker on gate-and-submit when T178517 is fixed
   - name: mediawiki/extensions/PoolCounter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
     test:
       - mwext-PoolCounter-rake-docker
 
@@ -6755,7 +6742,7 @@ projects:
 
   - name: mediawiki/extensions/Quiz
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/RandomRootPage
     template:
@@ -6767,44 +6754,44 @@ projects:
 
   - name: mediawiki/extensions/RelatedArticles
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: mediawiki-core-qunit-selenium-jessie
 
   - name: mediawiki/extensions/RelatedSites
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Renameuser
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-seccheck-non-voting
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/ReplaceSet
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ReplaceText
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
 
   - name: mediawiki/extensions/RSS
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Score
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: mwgate-npm
 
   - name: mediawiki/extensions/SearchExtraNS
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SecurePoll
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SemanticACL
     template:
@@ -6813,7 +6800,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticBundle
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SemanticDrilldown
     template:
@@ -6870,7 +6857,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticTitle
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SemanticUpdateOnPurge
     template:
@@ -6883,7 +6870,7 @@ projects:
 
   - name: mediawiki/extensions/Scribunto
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/ShortUrl
     template:
@@ -6896,7 +6883,7 @@ projects:
 
   - name: mediawiki/extensions/SimpleFarm
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SiteMatrix
     template:
@@ -6905,11 +6892,11 @@ projects:
 
   - name: mediawiki/extensions/SkinPerPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Solarium
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SpamBlacklist
     template:
@@ -6921,7 +6908,7 @@ projects:
 
   - name: mediawiki/extensions/SpamDiffTool
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Spreadsheet
     template:
@@ -6930,11 +6917,11 @@ projects:
 
   - name: mediawiki/extensions/StickToThatLanguage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/StopForumSpam
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/StrategyWiki
@@ -6943,23 +6930,23 @@ projects:
 
   - name: mediawiki/extensions/SubPageList3
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SubpageSortkey
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Sudo
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Survey
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SVGEdit
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/SwiftCloudFiles
     template:
@@ -6967,11 +6954,11 @@ projects:
 
   - name: mediawiki/extensions/TemplateSandbox
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TextExtracts
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/SideBarMenu
@@ -6981,13 +6968,13 @@ projects:
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TemplateData
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-jsduck
       - name: extension-coverage
     postmerge:
@@ -6995,7 +6982,7 @@ projects:
 
   - name: mediawiki/extensions/TemplateWizard
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Thanks
     template:
@@ -7010,7 +6997,7 @@ projects:
 
   - name: mediawiki/extensions/timeline
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
@@ -7022,15 +7009,15 @@ projects:
 
   - name: mediawiki/extensions/TitleKey
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TocTree
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/TorBlock
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Translate
     template:
@@ -7054,19 +7041,19 @@ projects:
 
   - name: mediawiki/extensions/TwnMainPage
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OpenBadges
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/OpenLayers
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UnicodeConverter
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     template:
@@ -7077,7 +7064,7 @@ projects:
 
   - name: mediawiki/extensions/UploadBlacklist
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UploadWizard
     template:
@@ -7093,19 +7080,19 @@ projects:
 
   - name: mediawiki/extensions/UserMerge
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UserOptionStats
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/UserThrottle
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Variables
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Vector
     template:
@@ -7117,11 +7104,11 @@ projects:
 
   - name: mediawiki/extensions/VipsScaler
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/VirtualKeyboard
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/VisualEditor
     template:
@@ -7141,7 +7128,7 @@ projects:
 
   - name: mediawiki/extensions/WebChat
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WebPlatformAuth
     template:
@@ -7199,7 +7186,7 @@ projects:
 
   - name: mediawiki/extensions/WikiForum
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikiLexicalData
     template:
@@ -7210,11 +7197,11 @@ projects:
 
   - name: mediawiki/extensions/WikiLove
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/wikihiero
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikimediaBadges
     template:
@@ -7224,7 +7211,7 @@ projects:
 
   - name: mediawiki/extensions/WikimediaEvents
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
       - name: extension-coverage
 
   - name: mediawiki/extensions/WikimediaIncubator
@@ -7234,11 +7221,11 @@ projects:
 
   - name: mediawiki/extensions/WikimediaMaintenance
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikimediaMessages
     template:
-      - name: quibble-vendor
+      - name: extension-quibble
 
   - name: mediawiki/extensions/WikimediaShopLink
     template:

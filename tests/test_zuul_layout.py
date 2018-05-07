@@ -31,6 +31,7 @@ class TestZuulLayout(unittest.TestCase):
         one_of_templates = (
             'archived',
             'extension-unittests',
+            'extension-quibble',
             'skin-tests',
             'skin-quibble',
             'extension-gate',
