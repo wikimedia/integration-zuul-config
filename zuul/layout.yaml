@@ -1125,6 +1125,29 @@ project-templates:
     test:
      - mwext-php70-phan-seccheck-docker-non-voting
 
+  # Same as quibble-vendor, but with experimental jobs
+  # that are for extensions.
+  - name: extension-quibble
+    check:
+      - mwgate-php55lint
+      - mwgate-php70lint
+      - mwgate-composer-validate
+    php5:
+      - quibble-vendor-mysql-php55-docker
+      - quibble-vendor-mysql-php70-docker
+    test:
+      - quibble-vendor-mysql-hhvm-docker
+    gate-and-submit: &extension-quibble-gate-and-submit
+      - quibble-vendor-mysql-hhvm-docker
+      - quibble-vendor-mysql-php55-docker
+      - quibble-vendor-mysql-php70-docker
+    gate-and-submit-swat: *extension-quibble-gate-and-submit
+    experimental:
+      - quibble-vendor-sqlite-php70-docker
+      - mwext-php70-phan-docker
+      - mwext-php70-phan-seccheck-docker
+
+  # Deprecated, extension-quibble should be used instead.
   - name: extension-unittests-generic
     check:
      - mwgate-php55lint
@@ -1253,6 +1276,29 @@ project-templates:
     coverage:
       - mwext-phpunit-coverage-patch
 
+  # Same as quibble-vendor, but with experimental jobs
+  # that are for skins.
+  - name: skin-quibble
+    check:
+      - mwgate-php55lint
+      - mwgate-php70lint
+      - mwgate-composer-validate
+    php5:
+      - quibble-vendor-mysql-php55-docker
+      - quibble-vendor-mysql-php70-docker
+    test:
+      - quibble-vendor-mysql-hhvm-docker
+    gate-and-submit: &skin-quibble-gate-and-submit
+      - quibble-vendor-mysql-hhvm-docker
+      - quibble-vendor-mysql-php55-docker
+      - quibble-vendor-mysql-php70-docker
+    gate-and-submit-swat: *skin-quibble-gate-and-submit
+    experimental:
+      - quibble-vendor-sqlite-php70-docker
+      - mwskin-php70-phan-docker
+      # TODO: seccheck for skins
+
+  # Deprecated, use skin-quibble instead
   - name: skin-tests
     test:
       - mwskin-testskin-hhvm-jessie
@@ -1268,6 +1314,7 @@ project-templates:
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
+      - mwskin-php70-phan-docker
 
   - name: skin-tests-non-voting
     test:
@@ -1278,6 +1325,7 @@ project-templates:
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
+      - mwskin-php70-phan-docker
 
   - name: quibble-vendor
     check:
@@ -1986,19 +2034,19 @@ projects:
 
   - name: mediawiki/skins/Amethyst
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Athena
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/apex
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/BlueSky
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/BlueSpiceSkin
     template:
@@ -2008,11 +2056,11 @@ projects:
 
   - name: mediawiki/skins/Bouquet
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/CologneBlue
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/CustomPage
     template:
@@ -2033,19 +2081,19 @@ projects:
 
   - name: mediawiki/skins/DeskMessMirrored
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Dusk
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/DuskToDawn
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/erudite
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Empty
     template:
@@ -2055,35 +2103,35 @@ projects:
   - name: mediawiki/skins/Example
     template:
      - name: skin-phan
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Gamepress
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/GreyStuff
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/HasSomeColours
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Mask
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Material
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/mediawiki-strapping
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Metrolook
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/MinervaNeue
     template:
@@ -2099,28 +2147,28 @@ projects:
   - name: mediawiki/skins/Modern
     template:
      - name: skin-phan
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/MonoBook
     template:
      - name: skin-phan
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Nimbus
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Nostalgia
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/p2wiki
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Poncho
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   # Non-voting due to T115436
   - name: mediawiki/skins/Refreshed
@@ -2132,7 +2180,7 @@ projects:
 
   - name: mediawiki/skins/Schulenburg
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Splash
     template:
@@ -2153,11 +2201,11 @@ projects:
   - name: mediawiki/skins/Timeless
     template:
      - name: skin-phan
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Tomas
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/Truglass
     template:
@@ -2167,7 +2215,7 @@ projects:
 
   - name: mediawiki/skins/Vector
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
      - name: skin-phan
     experimental:
      - quibble-composer-mysql-php70-docker
@@ -2181,15 +2229,15 @@ projects:
 
   - name: mediawiki/skins/webplatform
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/WoOgLeShades
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/skins/WPtouch
     template:
-     - name: quibble-vendor
+     - name: skin-quibble
 
   - name: mediawiki/tools/code-utils
     template:

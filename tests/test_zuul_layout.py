@@ -32,6 +32,7 @@ class TestZuulLayout(unittest.TestCase):
             'archived',
             'extension-unittests',
             'skin-tests',
+            'skin-quibble',
             'extension-gate',
             'quibble-vendor',
             )

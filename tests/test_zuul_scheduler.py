@@ -136,16 +136,19 @@ class TestZuulScheduler(unittest.TestCase):
         # composer-validate-package
         # composer-test-(zend|hhvm)
         # mwgate-composer-validate
+        if pipeline == 'experimental':
+            return
         self.assertTrue(
             any([job for job in definition
                  if (
                      job.startswith(('composer', 'mwgate-composer'))
+                     or job.startswith('quibble-')
                      or job.startswith('mediawiki-extensions-')
                      or (job.startswith('mwext-testextension-')
                          and 'non-voting' not in job)
                  )]),
             'Project %s pipeline %s must have either '
-            'composer-validate or a composer-* job'
+            'composer-validate or a composer-* job, '
             'has: %s'
             % (name, pipeline, definition))
 
@@ -171,10 +174,13 @@ class TestZuulScheduler(unittest.TestCase):
             % (name, pipeline, definition))
 
     def assertProjectHasPhplint(self, name, definition, pipeline):
+        if pipeline == 'experimental':
+            return
         self.assertTrue(
             any([job for job in definition
                  if job.endswith(('php55lint')) or
                  job.endswith(('php56lint')) or
+                 job.startswith('quibble-') or
                  job.startswith('mediawiki-extensions-') or
                  job.startswith(('composer-', 'mwgate-composer'))]),
             'Project %s pipeline %s must have either '
@@ -196,9 +202,21 @@ class TestZuulScheduler(unittest.TestCase):
             return
         self.assertTrue(
             any([job for job in definition
-                 if job.startswith('mwskin-testskin')]),
+                 if job.startswith('mwskin-testskin') or
+                 job.startswith('quibble-')]),
             'Project %s pipeline %s must have job '
-            'starting with mwskin-testskin'
+            'starting with mwskin-testskin or quibble-'
+            % (name, pipeline)
+            )
+
+    def assertProjectHasExperimentalPhan(self, name, definition, pipeline):
+        if pipeline != 'experimental':
+            return
+        self.assertTrue(
+            any([job for job in definition
+                 if job.endswith('phan-docker')]),
+            'Project %s pipeline %s must have job '
+            'ending with phan-docker'
             % (name, pipeline)
             )
 
@@ -227,7 +245,8 @@ class TestZuulScheduler(unittest.TestCase):
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasSkinTests,
-                self.assertProjectHasNoExtensionTests
+                self.assertProjectHasNoExtensionTests,
+                self.assertProjectHasExperimentalPhan
             ],
             'mediawiki/vendor$': [
                 self.assertProjectHasComposerValidate,
@@ -264,12 +283,9 @@ class TestZuulScheduler(unittest.TestCase):
                 gate_jobs = project_def['gate-and-submit']
                 if 'fail-archived-repositories' in gate_jobs:
                     continue
-                if 'quibble-vendor-mysql-php70-docker' in gate_jobs:
-                    continue
 
             # Pipelines that must be set
-            requirements = set()
-            requirements.add('gate-and-submit')
+            requirements = {'gate-and-submit', 'experimental'}
             for default_requirement in ['check', 'test']:
                 requirements.add(default_requirement)
                 self.assertIn(default_requirement, project_def.keys(),
@@ -280,7 +296,7 @@ class TestZuulScheduler(unittest.TestCase):
             for req_pipeline in requirements:
                 for func in assertions:
                     func(project_name,
-                         project_def[req_pipeline], req_pipeline)
+                         project_def.get(req_pipeline, []), req_pipeline)
 
         return
 
