@@ -300,6 +300,7 @@ dependencies = {
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
+    'TorBlock': ['AbuseFilter'],
     'TwnMainPage': ['Translate'],
     'TwoColConflict': ['BetaFeatures', 'EventLogging', 'WikiEditor'],
     'UniversalLanguageSelector': ['EventLogging'],
