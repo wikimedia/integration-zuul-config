@@ -60,6 +60,7 @@
     name: 'mobileapps'
     jobs:
      - '{name}-deploy-npm-node-6-docker'
+     - 'mobileapps-periodic-test'
 
 - project:
     name: 'tilerator'
@@ -82,13 +83,12 @@
     node: DebianJessieDocker
     concurrent: true
     triggers:
-     - pollscm:
-        cron: '@hourly'
+     - timed: '@hourly'
     scm:
      - git:
         url: https://phabricator.wikimedia.org/diffusion/GMOA
         branches:
-          - master # Hardcode to branch so pollscm works properly.
+          - master
     builders:
      - shell: npm run -s periodic
     publishers:
