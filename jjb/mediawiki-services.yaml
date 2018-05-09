@@ -82,13 +82,12 @@
     node: DebianJessieDocker
     concurrent: true
     triggers:
-     - pollscm:
-        cron: '@hourly'
+     - timed: '@hourly'
     scm:
      - git:
         url: https://phabricator.wikimedia.org/diffusion/GMOA
         branches:
-          - master # Hardcode to branch so pollscm works properly.
+          - master
     builders:
      - shell: npm run -s periodic
     publishers:
