@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euxo pipefail
+set -exo pipefail
 
 cd /src
 # Grab the latest code
