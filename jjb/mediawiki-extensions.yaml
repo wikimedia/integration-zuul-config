@@ -535,6 +535,66 @@
         failure: true
         unstable: true
 
+# Run Selenium tests daily targeting test wikidata
+# instance.
+# Dumb copy selenium-{name}-jessie, with target changed
+# TODO: This is very short-sighted as:
+# 1. Should rather pass a wiki url to selenium-{name}-jessie
+# 2. We are also going to run a daily job targeting test wikidata,
+# and adding a third job-template seems not very smart.
+- job-template:
+    name: 'selenium-{name}-jessie-wikidata'
+    node: ci-jessie-wikimedia
+    concurrent: true
+    triggers:
+     - timed: '@daily'
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    parameters:
+     - string:
+         name: ZUUL_PROJECT
+         default: mediawiki/extensions/{name}
+     - string:
+         name: ZUUL_BRANCH
+         default: master
+    wrappers:
+      - ansicolor
+      - timeout:
+          timeout: 180
+      - timestamps
+      # Wiki usernames and passwords are hold in Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credentials/store/system/domain/selenium/
+      - credentials-binding:
+          - text:
+              credential-id: selenium-user-beta
+              variable: selenium_user_beta
+    builders:
+     - castor-load
+     - prepare-mediawiki-zuul-project
+     - npm-install-selenium
+     - shell: |
+         . /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
+         chromedriver --url-base=/wd/hub --port=4444 &
+         cd $MW_INSTALL_PATH
+         set +x
+         export MEDIAWIKI_PASSWORD="$selenium_user_beta"
+         set -x
+         MEDIAWIKI_USER='Selenium user' MW_SERVER=https://wikidata.beta.wmflabs.org MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.conf.js --spec extensions/{name}/tests/selenium/specs/*.js
+     - assert-no-mediawiki-errors
+    publishers:
+     - castor-save
+     - archive-log-dir
+     - junit:
+        results: 'log/junit*.xml,log/WDIO.xunit*.xml'
+        # Qunit does not generate Junit file and we might skip selenium
+        allow-empty-results: true
+     - email-ext:
+        recipients: '{recipients}'
+        body: '${{SCRIPT, template="wikimedia.template"}}'
+        failure: true
+        unstable: true
+
 - project:
     name: CirrusSearch
     recipients: dcausse@wikimedia.org ebernhardson@wikimedia.org qa-alerts@lists.wikimedia.org # @dcausse @EBernhardson
