@@ -470,3 +470,26 @@
     name: wmf-utils
     jobs:
         - '{name}-tox-docker'
+
+
+- job:
+    name: 'audit-resources'
+    node: DebianJessieDocker
+    concurrent: false
+    wrappers:
+      - timeout:
+          timeout: 180 # 3 hours
+          fail: true
+      - timestamps
+      - ansicolor
+    builders:
+     - docker-log-dir
+     - docker-run-with-log:
+         image: docker-registry.wikimedia.org/releng/wikimedia-audit-resources:0.1.2
+         logdir: '/log'
+    publishers:
+     - archive:
+         artifacts: 'log/*.log'
+         allow-empty: true
+    triggers:
+        - timed: "H 21 * * *"
