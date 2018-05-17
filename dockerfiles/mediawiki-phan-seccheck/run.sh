@@ -5,6 +5,14 @@ set -euxo pipefail
 umask 002
 
 cd /mediawiki/extensions/$EXT_NAME
+
+# Allow overriding version if explicitly specified
+SECCHECK_VERSION=${SECCHECK_VERSION:-""}
+if [ ! -z "$SECCHECK_VERSION" ]; then
+    cat composer.json | jq --tab --arg version $SECCHECK_VERSION '. + {extra: {"phan-taint-check-plugin": $version}}' > tmpjsonfile.json
+    mv tmpjsonfile.json composer.json
+fi
+
 if ! jq -e '.extra."phan-taint-check-plugin"' composer.json; then
     echo "phan-taint-check-plugin not configured"
     exit 0
