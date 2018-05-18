@@ -291,6 +291,7 @@ dependencies = {
     'SpamDiffTool': ['SpamBlacklist'],
     'SpellingDictionary': ['UniversalLanguageSelector'],
     'SportsTeams': ['SocialProfile', 'UserStatus'],
+    'StopForumSpam': ['AbuseFilter'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'TemplateWizard': ['TemplateData', 'WikiEditor'],
     'TimedMediaHandler': ['MwEmbedSupport'],
