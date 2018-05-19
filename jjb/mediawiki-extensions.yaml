@@ -504,7 +504,7 @@
          default: php7.0
      - string:
          name: ZUUL_PROJECT
-         default: mediawiki/extensions/{name}
+         default: {repository}
      - string:
          name: ZUUL_BRANCH
          default: master
@@ -577,6 +577,15 @@
     recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
     repository: mediawiki/extensions/Popups
     site: en.wikipedia
+
+    jobs:
+     - 'selenium-{name}-jessie'
+
+- project:
+    name: WikibaseLexeme-node
+    recipients: qa-alerts@lists.wikimedia.org wikidata-ci-status@wikimedia.de # wikidata
+    repository: mediawiki/extensions/WikibaseLexeme
+    site: wikidata
 
     jobs:
      - 'selenium-{name}-jessie'
