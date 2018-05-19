@@ -22,6 +22,9 @@ class DockerBuilder(object):
     def __init__(self, base_dir=BASE_DIR):
         self.base_dir = base_dir
         self.pushes = []
+        self.log = None
+        self.config = None
+        self.args = None
 
     def run(self):
         self.parse_args()
@@ -56,7 +59,7 @@ class DockerBuilder(object):
                 images.extend([x.split('/')[1]
                                for x in self.gen_staged_deps(tree)])
 
-        self.log.info('Will build: %s' % ', '.join(images))
+        self.log.info('Will build: %s', ', '.join(images))
         dockerfiles = [
             os.path.join(self.base_dir, f, 'Dockerfile')
             for f in images
@@ -65,9 +68,9 @@ class DockerBuilder(object):
         if not all(map(self.build, dockerfiles)):
             return False
 
-        self.log.info('You can push the following images when ready: %s'
-                      % ' && '.join('docker push %s'
-                                    % name for name in self.pushes))
+        self.log.info(
+            'You can push the following images when ready: %s',
+            ' && '.join('docker push %s' % name for name in self.pushes))
 
     def load_config(self):
         config = configparser.ConfigParser()
@@ -108,7 +111,7 @@ class DockerBuilder(object):
         return sorted(glob(os.path.join(self.base_dir, '*/Dockerfile')))
 
     def update_jjb(self, img, tagged_img):
-        regex = re.compile('%s:v[0-9\.]+' % img)
+        regex = re.compile(r'%s:v[0-9\.]+' % img)
         for fname in os.listdir(JJB_DIR):
             full_fname = os.path.join(JJB_DIR, fname)
             with open(full_fname, 'r') as f:
@@ -117,7 +120,7 @@ class DockerBuilder(object):
                 new_text = regex.sub(tagged_img, text)
                 with open(full_fname, 'w') as f:
                     f.write(new_text)
-                self.log.info('Updated %s' % full_fname)
+                self.log.info('Updated %s', full_fname)
 
     def gen_deps_tree(self):
         return DockerBuilder.build_tree(
@@ -139,11 +142,7 @@ class DockerBuilder(object):
                             froms[m['image']] = [None]
 
             deps = set(froms[image_name])
-            self.log.debug('%s dependenc%s: %s' % (
-                image_name,
-                'y' if (len(deps) == 1) else 'ies',
-                ', '.join(deps)
-            ))
+            self.log.debug('%s dependencies: %s', image_name, ', '.join(deps))
         return froms
 
     @staticmethod
@@ -188,17 +187,18 @@ class DockerBuilder(object):
         flatten(stages, 0, tree)
 
         for (num, images) in stages.items():
-            self.log.debug('Stage %s: %s' % (num, ', '.join(images)))
+            self.log.debug('Stage %s: %s', num, ', '.join(images))
 
         flat = []
         for stage in sorted(stages):
             flat.extend(stages[stage])
         return flat
 
-    def _parse_FROM(self, line):
+    @staticmethod
+    def _parse_FROM(line):
         # https://docs.docker.com/engine/reference/builder/#from
         m = re.match(
-            '''FROM\s+
+            r'''FROM\s+
                 (?P<image>\S+?)
                 (
                     :(?P<tag>\S+)
@@ -211,13 +211,15 @@ class DockerBuilder(object):
             line, re.X + re.I)
         if m:
             return m.groupdict()
+        else:
+            return {}
 
     def build(self, dockerfile):
-        self.log.debug('Building %s' % dockerfile)
+        self.log.debug('Building %s', dockerfile)
         image_dir = os.path.dirname(dockerfile)
 
         image_name = os.path.relpath(image_dir, self.base_dir)
-        self.log.info('Image name: %s' % image_name)
+        self.log.info('Image name: %s', image_name)
 
         img = '/'.join([DOCKER_HUB_ACCOUNT, image_name])
         tagged_img = ':'.join([img, DOCKER_TAG_DATE])
@@ -258,7 +260,7 @@ class DockerBuilder(object):
         return True
 
     def run_cmd(self, args, **kwargs):
-        self.log.info('%s' % (' '.join(args)))
+        self.log.info('%s', ' '.join(args))
         if not self.args.dry_run:
             subprocess.check_call(args, **kwargs)
 
