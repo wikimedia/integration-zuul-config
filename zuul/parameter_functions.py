@@ -69,6 +69,7 @@ def set_parameters(item, job, params):
         'mwext-phpunit-coverage',
         'mediawiki-quibble',
         'quibble',
+        'selenium-WikibaseLexeme-node-jessie',
         )
     if job.name.startswith(mw_deps_jobs_starting_with):
         set_mw_dependencies(item, job, params)
