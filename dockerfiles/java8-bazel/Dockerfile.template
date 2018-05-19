@@ -1,0 +1,17 @@
+FROM {{ "ci-stretch" | image_tag }}
+
+RUN {{ "openjdk-8-jdk-headless" | apt_install }}
+
+# Add upstream PPA repo for easy install
+RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+RUN curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
+RUN apt-get update && sudo apt-get install bazel
+
+RUN /usr/bin/bazel version
+
+COPY run.sh /run.sh
+
+USER nobody
+WORKDIR /src
+CMD ["build release"]
+ENTRYPOINT ["/run.sh"]
