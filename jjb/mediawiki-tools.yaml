@@ -62,24 +62,10 @@
     triggers:
      - zuul
     builders:
-     - docker-castor-load
      - docker-log-dir
-     - docker-src-dir
-     # Get mediawiki/core
-     - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/zuul-cloner:0.1.1
-         logdir: '/log'
-         run_args: '--color --verbose --workspace /src --cache-dir /srv/git https://gerrit.wikimedia.org/r/p mediawiki/core mediawiki/tools/codesniffer'
-     - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.0
-         logdir: '/log'
-         run_args: 'update --working-dir /src/mediawiki/tools/codesniffer --ansi --no-progress --prefer-dist --profile -v'
-     - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.0
-         logdir: '/log'
-         run_args: 'exec --working-dir /src/mediawiki/tools/codesniffer --ansi -- phpcs --standard=./MediaWiki --extensions=php,php5,inc -p -s /src/mediawiki/core/includes'
-    publishers:
-     - castor-save-workspace-cache
+     - docker-run-with-log:
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phpcs-dryrun:0.1.0'
+        logdir: '/log'
 
 - project:
     name: mwdumper
