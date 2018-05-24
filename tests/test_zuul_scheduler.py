@@ -180,6 +180,7 @@ class TestZuulScheduler(unittest.TestCase):
             any([job for job in definition
                  if job.endswith(('php55lint')) or
                  job.endswith(('php56lint')) or
+                 job.endswith(('php70lint')) or
                  job.startswith('quibble-') or
                  job.startswith('mediawiki-extensions-') or
                  job.startswith(('composer-', 'mwgate-composer'))]),
@@ -932,7 +933,8 @@ class TestZuulScheduler(unittest.TestCase):
         expected_test = {
             'composer-package-validate': True,
             'mediawiki-core-jsduck-docker': True,
-            'mediawiki-core-php55lint': True,
+            'mediawiki-core-php55lint': False,
+            'mediawiki-core-php70lint': True,
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-extensions-hhvm-jessie': True,
             'mediawiki-extensions-qunit-jessie': True,
@@ -945,12 +947,10 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-extensions-hhvm-jessie': True,
-            'mediawiki-extensions-php55-jessie': True,
             'mediawiki-extensions-php70-jessie': True,
             'mediawiki-extensions-qunit-jessie': True,
             'quibble-composer-mysql-php70-docker': True,
             'quibble-vendor-mysql-php70-docker': True,
-            'quibble-vendor-mysql-php55-docker': True,
             'quibble-vendor-mysql-hhvm-docker': True,
         }
 
