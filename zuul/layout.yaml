@@ -943,6 +943,12 @@ jobs:
   - name: mediawiki-phpunit-coverage-patch
     mutex: mediawiki-phpunit-coverage-patch
 
+  # Quibble jobs should not be run on fundraising/REL1_27.
+  - name: ^quibble-.*-docker$
+    skip-if:
+      - project: '^mediawiki/core$'
+        branch: (?fundraising/REL1_27)
+
     # Only generate coverage information for master
   - name: ^.*-coverage-publish$
     branch: master
