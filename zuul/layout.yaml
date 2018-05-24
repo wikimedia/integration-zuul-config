@@ -821,6 +821,10 @@ jobs:
 
   - name: ^quibble-.*-docker$
     queue-name: mediawiki
+    # Quibble jobs should not be run on fundraising/REL1_27.
+    skip-if:
+      - project: '^mediawiki/core$'
+        branch: ^(fundraising/REL1_27)$
 
   - name: lintr-docker
     files:
