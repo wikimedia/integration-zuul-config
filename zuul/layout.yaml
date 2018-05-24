@@ -1372,6 +1372,7 @@ project-templates:
   - name: composer-test
     check:
       - php55lint
+      - php70lint
       - composer-validate
     test:
       - composer-php55-docker
@@ -1406,10 +1407,21 @@ project-templates:
       - php55lint
     gate-and-submit-swat: *php55lint-gate-and-submit
 
+  - name: php70lint
+    check:
+      - php70lint
+    test:
+      - php70lint
+    gate-and-submit: &php70lint-gate-and-submit
+      - php55lint
+    gate-and-submit-swat: *php70lint-gate-and-submit
+
+
   - name: composer-test-php55-package
     check:
       - composer-package-validate
       - php55lint
+      - php70lint
     test:
       - composer-package-hhvm-docker
       - composer-package-php55-docker
@@ -1683,6 +1695,7 @@ projects:
       - name: extension-gate
     check:
       - mwgate-php55lint
+      - mwgate-php70lint
       - mwgate-composer-validate
     test:
       - mwgate-composer-hhvm-docker
@@ -1735,6 +1748,7 @@ projects:
   - name: analytics/limn-wikidata-data
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: analytics/mediawiki-storage
     test:
@@ -1777,6 +1791,7 @@ projects:
   - name: analytics/wmde/scripts
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: analytics/wmde/toolkit-analyzer
     gate-and-submit:
@@ -1852,6 +1867,7 @@ projects:
   - name: labs/incubator
     template:
       - name: php55lint
+      - name: php70lint
 
 
   - name: labs/libraryupgrader
@@ -1894,6 +1910,7 @@ projects:
     template:
       - name: tox-docker
       - name: php55lint
+      - name: php70lint
     test:
      - debian-glue
     gate-and-submit:
@@ -1960,6 +1977,7 @@ projects:
   - name: labs/tools/Luke081515IRCBot
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: labs/tools/ptable
     template:
@@ -2259,6 +2277,7 @@ projects:
   - name: mediawiki/tools/code-utils
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: mediawiki/tools/codesniffer
     template:
@@ -2275,6 +2294,7 @@ projects:
   - name: mediawiki/tools/dippybird
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: mediawiki/tools/minus-x
     template:
@@ -2297,6 +2317,7 @@ projects:
       - name: composer-test
       - name: tox-docker
       - name: php55lint
+      - name: php70lint
 
   - name: mediawiki/tools/releng
     template:
@@ -2503,6 +2524,7 @@ projects:
   - name: operations/debs/wikistats
     template:
       - name: php55lint
+      - name: php70lint
     test:
      - debian-glue-non-voting
 
@@ -7455,38 +7477,47 @@ projects:
   - name: phabricator/arcanist
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: phabricator/extensions
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: phabricator/extensions/BurnDownCharts
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: phabricator/extensions/Sprint
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: phabricator/extensions/security
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: phabricator/libphutil
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: phabricator/phabricator
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: phabricator/test
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: phabricator/tools
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: pywikibot/compat
     template:
@@ -7541,6 +7572,7 @@ projects:
   - name: qrpedia
     template:
       - name: php55lint
+      - name: php70lint
 
   - name: cdb
     template:
