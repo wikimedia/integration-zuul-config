@@ -311,6 +311,7 @@ dependencies = {
     'UploadWizard': ['WikimediaMessages', 'EventLogging', 'AbuseFilter',
                      'SpamBlacklist'],
     'UserStatus': ['SocialProfile', 'SportsTeams'],
+    'VEForAll': ['VisualEditor'],
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite'],
