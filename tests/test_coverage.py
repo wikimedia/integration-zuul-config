@@ -2,6 +2,9 @@
 """
 Checks repository coverage, specifically that we cover
 all MediaWiki extensions and repositories
+
+Runs daily on Wikimedia Jenkins:
+    https://integration.wikimedia.org/ci/job/integration-config-qa/
 """
 
 import json
