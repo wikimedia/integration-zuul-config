@@ -397,6 +397,8 @@
 
         if [ -s "log/clover.xml" ]; then
             /srv/deployment/integration/slave-scripts/bin/clover-edit.py log/clover.xml --name "MediaWiki core" --remove-full-info --save "$WORKSPACE/cover/clover.xml"
+            bzip2 --verbose --best --keep log/clover.xml
+            mv log/clover.xml.bz2 "$WORKSPACE/cover/clover.xml.bz2"
         fi
 
      - cover-publish:
