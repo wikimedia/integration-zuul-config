@@ -165,6 +165,7 @@ dependencies = {
     'BlueSpiceContextMenu': ['BlueSpiceFoundation'],
     'BlueSpiceCountThings': ['BlueSpiceFoundation'],
     'BlueSpiceDashboards': ['BlueSpiceFoundation'],
+    'BlueSpiceEchoConnector': ['BlueSpiceFoundation'],
     'BlueSpiceEditNotifyConnector': ['BlueSpiceFoundation'],
     'BlueSpiceEmoticons': ['BlueSpiceFoundation'],
     'BlueSpiceExtendedFilelist': ['BlueSpiceFoundation'],
