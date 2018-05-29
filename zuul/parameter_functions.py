@@ -48,6 +48,10 @@ def set_parameters(item, job, params):
     elif job.name in php7_jobs:
         params['PHP_BIN'] = 'php7.0'
 
+    if job.name.startswith('selenium-'):
+        # T195830: selenium-*-jessie Jenkins jobs failing
+        params['PHP_BIN'] = 'php7.0'
+
     if job.name.endswith('node-6-jessie'):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
         params['PHP_BIN'] = 'hhvm'
