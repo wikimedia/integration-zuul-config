@@ -24,6 +24,7 @@ def set_parameters(item, job, params):
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
         'mediawiki-core-qunit-selenium-jessie',
         'mwext-mw-selenium-jessie',
+        'mwskin-mw-selenium-jessie',
         'mwext-mw-selenium-composer-jessie',
         'mwext-mw-selenium-node-composer-jessie',
         'mwext-qunit-jessie',
