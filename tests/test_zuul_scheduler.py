@@ -814,7 +814,10 @@ class TestZuulScheduler(unittest.TestCase):
             os.path.dirname(os.path.abspath(__file__)),
             '../zuul/parameter_functions.py'),
             global_env)
+        tarballextensions = set(global_env['tarballextensions'])
         gatedextensions = set(global_env['gatedextensions'])
+
+        allextensions = tarballextensions.union(gatedextensions)
 
         # Grab projects having the gate job 'mediawiki-extensions-hhvm'
         gated_in_zuul = set([
@@ -825,7 +828,7 @@ class TestZuulScheduler(unittest.TestCase):
         ])
 
         self.assertSetEqual(
-            gated_in_zuul, gatedextensions,
+            gated_in_zuul, allextensions,
             msg='Zuul projects triggering gate jobs (first set) and '
             'dependencies list in zuul/parameter_functions.py (second set) '
             'must be equals.\n'
