@@ -34,6 +34,12 @@ def set_parameters(item, job, params):
         'mediawiki-phpunit-coverage-patch',
         'mwext-phpunit-coverage-patch',
         'mwext-phpunit-coverage-publish',
+        # selenium-*-jessie jobs
+        'selenium-CirrusSearch-jessie',
+        'selenium-Math-jessie',
+        'selenium-Popups-jessie',
+        'selenium-RelatedArticles-jessie',
+        'selenium-WikibaseLexeme-jessie',
         )
 
     # Sets a $PHP_BIN variable based on the job name
