@@ -48,8 +48,12 @@ def set_parameters(item, job, params):
     elif job.name in php7_jobs:
         params['PHP_BIN'] = 'php7.0'
 
-    if job.name.endswith('node-6-jessie'):
+    if job.name.startswith('selenium-'):
         # T128091: oojs/ui npm job runs on Jessie which only has HHVM
+        params['PHP_BIN'] = 'php7.0'
+
+    if job.name.endswith('node-6-jessie'):
+        # T195830: selenium-*-jessie Jenkins jobs failing with `Error: You might be using an older PHP version`
         params['PHP_BIN'] = 'hhvm'
 
     mw_deps_jobs_starting_with = (
