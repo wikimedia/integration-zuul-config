@@ -29,6 +29,7 @@ def set_parameters(item, job, params):
         'mwext-mw-selenium-node-composer-jessie',
         'mwext-qunit-jessie',
         'mwext-qunit-composer-jessie',
+        'mwext-ruby-jessie',
         'mediawiki-extensions-qunit-jessie',
         # PHPUnit coverage should use PHP 7:
         'mediawiki-phpunit-coverage-patch',
