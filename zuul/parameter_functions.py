@@ -219,6 +219,7 @@ dependencies = {
     'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
                            'UniversalLanguageSelector', 'Wikibase',
                            'VisualEditor'],
+    'ContributorsAddon': ['Contributors'],
     'CookieWarning': ['MobileFrontend'],
     'CustomPage': ['skins/CustomPage'],
     'Dashiki': ['JsonConfig'],
