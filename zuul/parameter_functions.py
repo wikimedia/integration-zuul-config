@@ -219,6 +219,7 @@ dependencies = {
                            'VisualEditor'],
     'CookieWarning': ['MobileFrontend'],
     'CustomPage': ['skins/CustomPage'],
+    'Dashiki': ['JsonConfig'],
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
     'EducationProgram': ['cldr', 'WikiEditor'],
