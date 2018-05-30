@@ -357,7 +357,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         # List of jobs allowed in check* pipelines
         safe_jobs = [
-            '(php(55|56|70)|yaml)lint',
+            '(hhvm|php(55|56|70)|yaml)lint',
             '.*-(js|shell|php(55|56|70)|)lint',
             '.*-(tabs|typos)',
             '.*-whitespaces',
@@ -945,6 +945,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
+            'mediawiki-core-hhvmlint': True,
         }
         expected_gate = {
             'composer-package-validate': True,
@@ -959,6 +960,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-php55-docker': False,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
+            'mediawiki-core-hhvmlint': True,
         }
 
         change = zuul.model.Change('mediawiki/core')
