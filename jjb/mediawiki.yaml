@@ -511,44 +511,6 @@
         - archive-log-allow-empty
         - castor-save-workspace-cache
 
-- job-template:
-    name: mediawiki-quibble-{packages-source}-{database}-{php}-docker
-    node: DebianJessieDocker && m4executor
-    concurrent: true
-    triggers:
-        - zuul
-    builders:
-        - docker-castor-load
-        - docker-log-dir
-        - docker-run-with-log-and-workspace-cache:
-            image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "{packages-source}" --db "{database}" --skip composer-test'
-            logdir: '/log'
-    publishers:
-        - archive-log-allow-empty
-        - castor-save-workspace-cache
-
-- job-template:
-    name: mediawiki-quibble-composertest-{php}-docker
-    node: DebianJessieDocker && m4executor
-    concurrent: true
-    triggers:
-        - zuul
-    builders:
-        - docker-castor-load
-        - docker-log-dir
-        - docker-run-with-log-and-workspace-cache:
-            image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "vendor" --db "mysql" --run composer-test'
-            logdir: '/log'
-    publishers:
-        - archive-log-allow-empty
-        - castor-save-workspace-cache
-
-
-
 - job:
     name: 'quibble-integration'
     project-type: matrix
@@ -621,5 +583,3 @@
             docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.15
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
-        - mediawiki-quibble-{packages-source}-{database}-{php}-docker
-        - mediawiki-quibble-composertest-{php}-docker
