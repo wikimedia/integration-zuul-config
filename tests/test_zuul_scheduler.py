@@ -941,9 +941,10 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-extensions-hhvm-jessie': True,
             'mediawiki-extensions-qunit-jessie': True,
-            'quibble-composer-mysql-php70-docker': True,
-            'quibble-vendor-mysql-php70-docker': True,
-            'quibble-vendor-mysql-hhvm-docker': True,
+            'mediawiki-quibble-composer-mysql-php70-docker': True,
+            'mediawiki-quibble-vendor-mysql-php70-docker': True,
+            'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
+            'mediawiki-quibble-composertest-php70-docker': True,
         }
         expected_gate = {
             'composer-package-validate': True,
@@ -953,10 +954,11 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-extensions-php55-jessie': False,
             'mediawiki-extensions-php70-jessie': True,
             'mediawiki-extensions-qunit-jessie': True,
-            'quibble-composer-mysql-php70-docker': True,
-            'quibble-vendor-mysql-php70-docker': True,
-            'quibble-vendor-mysql-php55-docker': False,
-            'quibble-vendor-mysql-hhvm-docker': True,
+            'mediawiki-quibble-composer-mysql-php70-docker': True,
+            'mediawiki-quibble-vendor-mysql-php70-docker': True,
+            'mediawiki-quibble-vendor-mysql-php55-docker': False,
+            'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
+            'mediawiki-quibble-composertest-php70-docker': True,
         }
 
         change = zuul.model.Change('mediawiki/core')
