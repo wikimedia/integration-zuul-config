@@ -210,3 +210,12 @@ class TestMwDependencies(unittest.TestCase):
                     'mediawiki/extensions/ExtJSBase')
             },
             deps)
+
+    def test_inject_dependencies_on_quibble_jobs(self):
+        self.maxDiff = None
+        deps = self.fetch_dependencies(
+            job_name='quibble-composer-mysql-php70-docker',
+            project='mediawiki/extensions/PropertySuggester')
+        self.assertIn('EXT_DEPENDENCIES', deps)
+        self.assertIn('\\nmediawiki/extensions/Wikibase\\n',
+                      deps['EXT_DEPENDENCIES'])
