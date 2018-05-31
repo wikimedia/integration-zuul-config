@@ -16,7 +16,7 @@ def set_parameters(item, job, params):
 
     # Xvfb display provided via puppet
     params['DISPLAY'] = ':94'
-    if job.name.startswith('quibble-'):
+    if 'quibble' in job.name:
         # Quibble takes care of it
         del(params['DISPLAY'])
 
@@ -63,6 +63,7 @@ def set_parameters(item, job, params):
         'mwext-php70-phan',
         'mwskin-php70-phan',
         'mwext-phpunit-coverage',
+        'mediawiki-quibble'
         'quibble',
         )
     if job.name.startswith(mw_deps_jobs_starting_with):
