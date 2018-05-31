@@ -1659,22 +1659,23 @@ projects:
       - mediawiki-core-php70lint
       - composer-package-validate
     test:
-      - quibble-composer-mysql-php70-docker
-      - quibble-vendor-mysql-hhvm-docker
-      - quibble-vendor-mysql-php70-docker
-
+      - mediawiki-quibble-composer-mysql-php70-docker
+      - mediawiki-quibble-vendor-mysql-hhvm-docker
+      - mediawiki-quibble-vendor-mysql-php70-docker
+      - mediawiki-quibble-composertest-php70-docker
       - composer-package-validate
       - mediawiki-core-jsduck-docker
       - mediawiki-core-php55lint
       - mediawiki-core-php70-phan-docker
     php5:
       # Comment "check php5" to manually run this
-      - quibble-vendor-mysql-php55-docker
+      - mediawiki-quibble-vendor-mysql-php55-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
-      - quibble-composer-mysql-php70-docker
-      - quibble-vendor-mysql-hhvm-docker
-      - quibble-vendor-mysql-php55-docker
-      - quibble-vendor-mysql-php70-docker
+      - mediawiki-quibble-composer-mysql-php70-docker
+      - mediawiki-quibble-vendor-mysql-hhvm-docker
+      - mediawiki-quibble-vendor-mysql-php55-docker
+      - mediawiki-quibble-vendor-mysql-php70-docker
+      - mediawiki-quibble-composertest-php70-docker
 
       - mediawiki-core-jsduck-docker
       - composer-package-validate
@@ -1687,9 +1688,9 @@ projects:
     experimental:
       # Experimental php version
       - mwgate-composer-php70-docker
-      - quibble-composer-mysql-php55-docker
-      - quibble-vendor-sqlite-php70-docker
-      - quibble-vendor-postgres-php70-docker
+      - mediawiki-quibble-composer-mysql-php55-docker
+      - mediawiki-quibble-vendor-sqlite-php70-docker
+      - mediawiki-quibble-vendor-postgres-php70-docker
 
   - name: mediawiki/debian
     test:
@@ -1709,17 +1710,17 @@ projects:
     test:
       - mwgate-composer-hhvm-docker
       - mwgate-composer-php55-docker
-      - quibble-vendor-mysql-hhvm-docker
-      - quibble-vendor-mysql-php70-docker
+      - mediawiki-quibble-vendor-mysql-hhvm-docker
+      - mediawiki-quibble-vendor-mysql-php70-docker
     php5:
-      - quibble-vendor-mysql-php55-docker
+      - mediawiki-quibble-vendor-mysql-php55-docker
     gate-and-submit: &mediawiki-vendor-gate-and-submit
       - mwgate-composer-hhvm-docker
       - mwgate-composer-php55-docker
 
-      - quibble-vendor-mysql-hhvm-docker
-      - quibble-vendor-mysql-php55-docker
-      - quibble-vendor-mysql-php70-docker
+      - mediawiki-quibble-vendor-mysql-hhvm-docker
+      - mediawiki-quibble-vendor-mysql-php55-docker
+      - mediawiki-quibble-vendor-mysql-php70-docker
     gate-and-submit-swat: *mediawiki-vendor-gate-and-submit
     experimental:
       - mwgate-composer-php70-docker
