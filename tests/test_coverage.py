@@ -86,7 +86,7 @@ def getZuulLayoutProjects():
         os.path.dirname(os.path.abspath(__file__)),
         '../zuul/layout.yaml')
     with open(layout) as f:
-        projects = [p['name'] for p in yaml.safe_load(f)['projects']]
+        projects = yaml.safe_load(f)['projects']
     return projects
 
 
@@ -95,7 +95,8 @@ def setup():
     global ZUUL_PROJECTS
     # Make them custom dict and list that hide __repr__(). See note above
     GERRIT_REPOS = GerritRepos(getGerritRepos())
-    ZUUL_PROJECTS = ZuulProjects(getZuulLayoutProjects())
+    project_names = [p['name'] for p in getZuulLayoutProjects()]
+    ZUUL_PROJECTS = ZuulProjects(project_names)
 
 
 test = unittest.TestCase('__init__')
@@ -138,3 +139,22 @@ def test_gerrit_active_projects_are_in_zuul():
             "Gerrit project is in Zuul: %s" % gerrit_project)
         yield test.assertIn, gerrit_project, ZUUL_PROJECTS
     del(test.assertIn.__func__.description)
+
+
+@attr('qa')
+def test_mediawiki_repos_use_quibble():
+    for project in getZuulLayoutProjects():
+        name = project['name']
+        if (
+            not name.startswith('mediawiki/extensions')
+            or len(name.split('/')) != 3
+        ):
+            continue
+        template = [t['name'] for t in project['template']]
+
+        has_quibble = (
+            'extension-quibble' in template
+            or 'extension-quibble-composer' in template)
+        test.assertIn.__func__.description = (
+            'MediaWiki extension uses Quibble: %s' % name)
+        yield test.assertTrue, has_quibble, 'Quibble template not found for %s' % name
