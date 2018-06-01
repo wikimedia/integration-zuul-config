@@ -25,6 +25,6 @@ options=(${@})
 set -x
 
 (cd "$basedir"
- jq -r '.["require-dev"]|to_entries|map([.key,.value])[]|join("=")' composer.json \
+ jq -r '.["require-dev"]|to_entries|map([.key,"\"" + .value + "\""])[]|join("=")' composer.json \
      | xargs --verbose composer require --dev --ansi --no-progress --prefer-dist -v "${options[@]}"
 )
