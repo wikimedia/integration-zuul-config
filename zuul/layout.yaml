@@ -1167,6 +1167,26 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
+  - name: extension-quibble-composer
+    check:
+      - mwgate-php55lint
+      - mwgate-php70lint
+      - mwgate-composer-validate
+    php5:
+      - quibble-composer-mysql-php55-docker
+      - quibble-composer-mysql-php70-docker
+    test:
+      - quibble-composer-mysql-hhvm-docker
+    gate-and-submit: &extension-quibble-gate-and-submit
+      - quibble-composer-mysql-hhvm-docker
+      - quibble-composer-mysql-php55-docker
+      - quibble-composer-mysql-php70-docker
+    gate-and-submit-swat: *extension-quibble-gate-and-submit
+    experimental:
+      - quibble-composer-sqlite-php70-docker
+      - mwext-php70-phan-docker
+      - mwext-php70-phan-seccheck-docker
+
   # Deprecated, extension-quibble should be used instead.
   - name: extension-unittests-generic
     check:
@@ -1319,6 +1339,26 @@ project-templates:
     gate-and-submit-swat: *skin-quibble-gate-and-submit
     experimental:
       - quibble-vendor-sqlite-php70-docker
+      - mwskin-php70-phan-docker
+      # TODO: seccheck for skins
+
+  - name: skin-quibble-composer
+    check:
+      - mwgate-php55lint
+      - mwgate-php70lint
+      - mwgate-composer-validate
+    php5:
+      - quibble-composer-mysql-php55-docker
+      - quibble-composer-mysql-php70-docker
+    test:
+      - quibble-composer-mysql-hhvm-docker
+    gate-and-submit: &skin-quibble-gate-and-submit
+      - quibble-composer-mysql-hhvm-docker
+      - quibble-composer-mysql-php55-docker
+      - quibble-composer-mysql-php70-docker
+    gate-and-submit-swat: *skin-quibble-gate-and-submit
+    experimental:
+      - quibble-composer-sqlite-php70-docker
       - mwskin-php70-phan-docker
       # TODO: seccheck for skins
 
