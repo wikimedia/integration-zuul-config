@@ -150,11 +150,14 @@ def test_mediawiki_repos_use_quibble():
             or len(name.split('/')) != 3
         ):
             continue
-        template = [t['name'] for t in project['template']]
+        templates = [t['name'] for t in project['template']]
+
+        if templates == ['archived']:
+            continue
 
         has_quibble = (
-            'extension-quibble' in template
-            or 'extension-quibble-composer' in template)
+            'extension-quibble' in templates
+            or 'extension-quibble-composer' in templates)
         test.assertIn.__func__.description = (
             'MediaWiki extension uses Quibble: %s' % name)
         yield test.assertTrue, has_quibble, \
