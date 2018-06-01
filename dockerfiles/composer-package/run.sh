@@ -4,6 +4,8 @@ umask 002
 
 set -euxo pipefail
 
+PATH="/src/vendor/bin:$PATH"
+
 cd /src
 
 composer --ansi validate
