@@ -7,6 +7,19 @@
     properties:
      - build-discarder:
          days-to-keep: 31  # ~ 2 * 2 weeks sprints
+    # The parent job must clone the repo which is then used to process
+    # screenshots.yml to trigger child jobs.
+    scm:
+      - git:
+          url: https://gerrit.wikimedia.org/r/mediawiki/extensions/VisualEditor
+          branches:
+            - "$ZUUL_REF"
+          wipe-workspace: false  # keep the workspace...
+          clean:
+              after: true        # ... and use git clean instead
+          prune: true            # prune remote obsoletes branches
+          submodule:
+              recursive: true
     parameters:
         - string:
             name: 'ZUUL_URL'
