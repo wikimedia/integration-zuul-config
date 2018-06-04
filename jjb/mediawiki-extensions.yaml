@@ -97,7 +97,7 @@
 
 
 # Generic qunit job for extensions.
-- job:
+- job: &job_mwext-qunit-jessie
     name: 'mwext-qunit-jessie'
     node: ci-jessie-wikimedia
     concurrent: true
@@ -110,6 +110,13 @@
     publishers:
      - castor-save
      - archive-log-dir
+
+- job:
+    name: 'mext-qunit-non-voting-jessie'
+    !!merge : *job_mwext-qunit-jessie
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
 
 # Generic qunit job for extensions with composer update.
 - job:
