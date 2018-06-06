@@ -31,11 +31,13 @@ class TestMwDependencies(unittest.TestCase):
         self.assertNotIn('EXT_DEPENDENCIES', params)
         self.assertNotIn('SKIN_DEPENDENCIES', params)
 
-    def fetch_dependencies(self, job_name=None, project=None):
+    def fetch_dependencies(self, job_name=None, project=None, branch='master'):
         if project:
             params = {'ZUUL_PROJECT': project}
         else:
             params = {'ZUUL_PROJECT': 'mediawiki/extensions/Example'}
+        params['ZUUL_BRANCH'] = branch
+
         job = FakeJob(job_name if job_name
                       else 'mwext-testextension-hhvm-jessie')
         set_parameters(None, job, params)
@@ -219,3 +221,21 @@ class TestMwDependencies(unittest.TestCase):
         self.assertIn('EXT_DEPENDENCIES', deps)
         self.assertIn('\\nmediawiki/extensions/Wikibase\\n',
                       deps['EXT_DEPENDENCIES'])
+
+    def test_bluespice_branch_exception(self):
+        deps = self.fetch_dependencies(
+            job_name='quibble-composer-mysql-php70-docker',
+            project='mediawiki/extensions/BlueSpiceFoundation')
+        self.assertIn('EXT_DEPENDENCIES', deps)
+        self.assertEqual('mediawiki/extensions/ExtJSBase',
+                         deps['EXT_DEPENDENCIES'])
+
+        # Ditto but with REL1_27
+        deps = self.fetch_dependencies(
+            job_name='quibble-composer-mysql-php70-docker',
+            project='mediawiki/extensions/BlueSpiceFoundation',
+            branch='REL1_27')
+        self.assertIn('EXT_DEPENDENCIES', deps)
+        self.assertNotIn(
+            'mediawiki/extensions/ExtJSBase', deps['EXT_DEPENDENCIES'],
+            'BlueSpice@REL1_27 must not depend on ExtJSBase T196454')
