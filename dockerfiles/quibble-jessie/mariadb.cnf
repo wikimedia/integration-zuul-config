@@ -3,18 +3,16 @@
 #
 
 [client]
-
-# Jessie defaults to Latin1 but we never know. T193222
-default-character-set = Latin1
+# Jessie defaults to Latin1. T193222
+default-character-set = binary
 
 
 [mysqld]
 
-# Jessie defaults to Latin1 but we never know. T193222
-character-set-server = latin1
-character_set_server = latin1
-collation-server = latin1_swedish_ci
-collation_server = latin1_swedish_ci
+# Jessie defaults to Latin1. T193222
+character_set_server     = binary
+character_set_filesystem = binary
+collation_server         = binary
 
 # Stricter mode T119371
 # Note: should also be set in MediaWiki via $wgSQLMode
