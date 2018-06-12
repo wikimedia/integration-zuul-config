@@ -36,6 +36,8 @@ def set_parameters(item, job, params):
         'mediawiki-phpunit-coverage-patch',
         'mwext-phpunit-coverage-patch',
         'mwext-phpunit-coverage-publish',
+        # Shells out to PHP (T196956)
+        'mwext-MobileFrontend-npm-run-lint-modules-docker',
         )
 
     # Sets a $PHP_BIN variable based on the job name
