@@ -136,6 +136,12 @@
                 - php56:
                     image: docker-registry.wikimedia.org/releng/composer-test-php56:0.1.3
 
+- project:
+    name: analytics-wmde-toolkit-analyzer
+    jobs:
+        - '{name}-maven-java8-docker':
+            maven_args: --file analyzer/pom.xml test
+
 - job:
     name: 'wikidata-query-gui-build'
     node: contintLabsSlave && DebianJessie
