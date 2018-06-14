@@ -32,6 +32,7 @@ def set_parameters(item, job, params):
         'mwext-qunit-jessie-non-voting',
         'mwext-ruby-jessie',
         'mediawiki-extensions-qunit-jessie',
+        'mediawiki-selenium-integration-jessie',
         # PHPUnit coverage should use PHP 7:
         'mediawiki-phpunit-coverage-patch',
         'mwext-phpunit-coverage-patch',
