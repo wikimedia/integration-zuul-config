@@ -632,5 +632,6 @@
         - mediawiki-quibble-composertest-{php}-docker
         - wmf-quibble-vendor-mysql-{php}-docker:
             # We never use composer on wmf cluster
-            packages-source:
-                - vendor
+            packages-source: vendor
+            # WMF cluster uses MariaDB/MySQL
+            database: mysql
