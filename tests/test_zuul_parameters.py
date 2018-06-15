@@ -36,3 +36,16 @@ class TestZuulSetParameters(unittest.TestCase):
             set_parameters(None, job, params)
             self.assertIn('BACKPORTS', params)
             self.assertEquals('yes', params['BACKPORTS'])
+
+    def test_wmf_quibble_jobs_are_gates(self):
+        job = FakeJob('wmf-quibble-anything')
+        params = {
+            'ZUUL_PROJECT': 'mediawiki/core',
+            'ZUUL_PIPELINE': 'test',
+            'ZUUL_BRANCH': 'master',
+            }
+        set_parameters(None, job, params)
+
+        self.assertIn('EXT_DEPENDENCIES', params)
+        self.assertIn('mediawiki/extensions/AbuseFilter\\n',
+                      params['EXT_DEPENDENCIES'])
