@@ -101,6 +101,9 @@ def set_parameters(item, job, params):
     if job.name.startswith('mediawiki-extensions-'):
         set_gated_extensions(item, job, params)
 
+    if job.name.startswith('wmf-quibble-'):
+        set_gated_extensions(item, job, params)
+
     if job.name.endswith('-jessie'):
         nodepool_params(item, job, params)
     elif job.name.endswith('node-6-jessie'):

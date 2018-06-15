@@ -494,7 +494,7 @@
           failed:
             total-all: 1
 
-- job-template:
+- job-template: &job_quibble
     name: quibble-{packages-source}-{database}-{php}-docker
     node: DebianJessieDocker && m4executor
     concurrent: true
@@ -511,6 +511,12 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+
+- job-template:
+    !!merge : *job_quibble
+    name: wmf-quibble-vendor-mysql-{php}-docker
+    triggers:
+        - zuul
 
 - job-template:
     name: mediawiki-quibble-{packages-source}-{database}-{php}-docker
@@ -624,3 +630,7 @@
         - quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
+        - wmf-quibble-vendor-mysql-{php}-docker:
+            # We never use composer on wmf cluster
+            packages-source:
+                - vendor

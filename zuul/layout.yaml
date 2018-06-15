@@ -940,6 +940,13 @@ jobs:
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
 
+  # Replacements for mediawiki-extensions jobs
+
+  # Gated extensions are only for master and Wikimedia deployment. We do not
+  # run them on REL (or others) branches.
+  - name: ^wmf-quibble-
+    branch: ^(master|wmf/)
+
     # Only run patch coverage if a PHP file was
     # changed on master.
   - name: ^.*-phpunit-coverage-patch$
@@ -1288,6 +1295,11 @@ project-templates:
     experimental:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
+      # Quibble replacements for mediawiki-extensions
+      # Only triggered on master and wmf/ branches
+      #- wmf-quibble-vendor-mysql-hhvm-docker
+      - wmf-quibble-vendor-mysql-php70-docker
+      #- wmf-quibble-vendor-mysql-php55-docker
 
   - name: extension-phan-generic
     test:
