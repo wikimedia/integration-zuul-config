@@ -1,6 +1,7 @@
 # Generate Jenkins jobs
 
 import argparse
+from glob import glob
 import os
 import shutil
 import tempfile
@@ -39,6 +40,19 @@ class IntegrationTests(unittest.TestCase):
         self.assertNotEqual(
             [], os.listdir(self.jjb_out_dir),
             'jjb must have generated jobs')
+
+    def test_jenkins_jobs_have_a_timeout(self):
+        lack_timeout = []
+        for job_file in glob(self.jjb_out_dir + '/*'):
+            with open(job_file) as f:
+                if 'BuildTimeoutWrapper' not in f.read():
+                    lack_timeout.append(os.path.basename(f.name))
+
+        self.maxDiff = None
+        self.longMessage = True
+        self.assertEquals(
+            [], lack_timeout,
+            'All Jenkins jobs must have a timeout')
 
     def test_jjb_zuul_jobs(self):
         'Zuul jobs are defined by JJB'

@@ -31,6 +31,9 @@
           git-config-email: '{git-user-email}'
 
     wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
       - maven-release:
           release-goals:
             -Dresume=false -Duser.name='{git-user}' release:prepare release:perform
@@ -85,6 +88,9 @@
           git-config-email: '{git-user-email}'
 
     wrappers:
+      - timeout:
+          timeout: 3
+          fail: true
       - ssh-agent-credentials:
           users:
             - '{git-user-id}'
