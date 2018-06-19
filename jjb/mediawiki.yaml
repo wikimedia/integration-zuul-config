@@ -414,6 +414,9 @@
     triggers:
      - timed: '0 3,15 * * *'
     wrappers:
+     - timeout:
+         timeout: 120
+         fail: true
      - ansicolor
      - timestamps
 
@@ -447,6 +450,9 @@
     triggers:
      - zuul
     wrappers:
+     - timeout:
+         timeout: 60
+         fail: true
      - ansicolor
      - timestamps
 
