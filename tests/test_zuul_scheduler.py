@@ -105,6 +105,22 @@ class TestZuulScheduler(unittest.TestCase):
                     [job.name for job in tree.getJobs()]
         return ret
 
+    def getJob(self, project, pipeline, job):
+        """
+        project: Gerrit project name
+        pipeline: Zuul pipeline
+        job: Job name to fetch for that project/pipeline
+        """
+        job_tree = [
+            t for (p, t) in
+            self.getPipeline(pipeline).job_trees.iteritems()
+            if p.name == project][0]
+
+        job = [
+            j for j in job_tree.getJobs()
+            if j.name == job][0]
+        return job
+
     def test_only_voting_jobs_in_gate(self):
         gate = self.getPipeline('gate-and-submit')
         non_voting = {}
@@ -994,3 +1010,40 @@ class TestZuulScheduler(unittest.TestCase):
                     job.name, expected_gate[job.name],
                     job.changeMatches(change))
                 )
+
+    def test_wmf_quibble_is_for_master_and_wmf_branches(self):
+        wmf_quibble_job = self.getJob(
+            'mediawiki/extensions/AbuseFilter',
+            'experimental',
+            'wmf-quibble-vendor-mysql-php70-docker')
+
+        change = zuul.model.Change('mediawiki/extensions/AbuseFilter')
+
+        change.branch = 'wmf/1.99.9-wmf.999'
+        self.assertTrue(
+            wmf_quibble_job.changeMatches(change),
+            'wmf-quibble jobs run on wmf branches')
+
+        change.branch = 'master'
+        self.assertTrue(
+            wmf_quibble_job.changeMatches(change),
+            'wmf-quibble jobs run on master branch')
+
+        change.branch = 'REL1_42'
+        self.assertFalse(
+            wmf_quibble_job.changeMatches(change),
+            'wmf-quibble jobs are not for REL branches')
+
+    def test_wmf_quibble_is_not_ready_for_core_or_vendor(self):
+        for repo in ['mediawiki/core', 'mediawiki/vendor']:
+
+            wmf_quibble_job = self.getJob(
+                repo, 'experimental',
+                'wmf-quibble-vendor-mysql-php70-docker')
+
+            change = zuul.model.Change(repo)
+            for branch in ['wmf/1.99.9-wmf.999', 'master', 'REL1_42']:
+                change.branch = branch
+                self.assertFalse(
+                    wmf_quibble_job.changeMatches(change),
+                    'wmf-quibble jobs are not ready for core/vendor yet')

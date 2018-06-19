@@ -941,6 +941,9 @@ jobs:
   - name: ^mediawiki-extensions-(qunit|hhvm)(-jessie)?$
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
+    skip-if:
+      # Only kept for core/vendor until it is ready  T197469
+      - project: ^mediawiki/(extensions|skins)/
 
   # Replacements for mediawiki-extensions jobs
 
@@ -948,6 +951,9 @@ jobs:
   # run them on REL (or others) branches.
   - name: ^wmf-quibble-
     branch: ^(master|wmf/)
+    skip-if:
+      # Not ready for core/vendor yet T197469
+      - project: ^mediawiki/(core|vendor)
 
     # Only run patch coverage if a PHP file was
     # changed on master.
