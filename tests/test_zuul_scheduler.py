@@ -105,6 +105,22 @@ class TestZuulScheduler(unittest.TestCase):
                     [job.name for job in tree.getJobs()]
         return ret
 
+    def getJob(self, project, pipeline, job):
+        """
+        project: Gerrit project name
+        pipeline: Zuul pipeline
+        job: Job name to fetch for that project/pipeline
+        """
+        job_tree = [
+            t for (p, t) in
+            self.getPipeline(pipeline).job_trees.iteritems()
+            if p.name == project][0]
+
+        job = [
+            j for j in job_tree.getJobs()
+            if j.name == job][0]
+        return job
+
     def test_only_voting_jobs_in_gate(self):
         gate = self.getPipeline('gate-and-submit')
         non_voting = {}
@@ -946,6 +962,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
+            'wmf-quibble-vendor-mysql-hhvm-docker': False,
         }
         expected_gate = {
             'composer-package-validate': True,
@@ -961,6 +978,9 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
+            'wmf-quibble-vendor-mysql-hhvm-docker': False,
+            'wmf-quibble-vendor-mysql-php55-docker': False,
+            'wmf-quibble-vendor-mysql-php70-docker': False,
         }
 
         change = zuul.model.Change('mediawiki/core')
@@ -994,3 +1014,61 @@ class TestZuulScheduler(unittest.TestCase):
                     job.name, expected_gate[job.name],
                     job.changeMatches(change))
                 )
+
+    def test_wmf_quibble_for_extensions(self):
+        wmf_quibble_job = self.getJob(
+            'mediawiki/extensions/AbuseFilter',
+            'gate-and-submit',
+            'wmf-quibble-vendor-mysql-php70-docker')
+        gate_job = self.getJob(
+            'mediawiki/extensions/AbuseFilter',
+            'gate-and-submit',
+            'mediawiki-extensions-hhvm-jessie')
+
+        change = zuul.model.Change('mediawiki/extensions/AbuseFilter')
+
+        # wmf-quibble jobs target master and wmf branches
+        change.branch = 'wmf/1.99.9-wmf.999'
+        self.assertTrue(
+            wmf_quibble_job.changeMatches(change),
+            'wmf-quibble jobs run on wmf branches')
+        self.assertFalse(
+            gate_job.changeMatches(change),
+            'gate job is no more used on wmf branches')
+
+        change.branch = 'master'
+        self.assertTrue(
+            wmf_quibble_job.changeMatches(change),
+            'wmf-quibble jobs run on master branch')
+        self.assertFalse(
+            gate_job.changeMatches(change),
+            'gate job is no more used on master branch')
+
+        # But not the release branches
+        change.branch = 'REL1_42'
+        self.assertFalse(
+            wmf_quibble_job.changeMatches(change),
+            'wmf-quibble jobs are not for REL branches')
+        self.assertTrue(
+            gate_job.changeMatches(change),
+            'gate job is still used on REL branches')
+
+    def test_wmf_quibble_is_not_ready_for_core_or_vendor(self):
+        # On core/vendor Quibble runs all tests which fails
+        for repo in ['mediawiki/core', 'mediawiki/vendor']:
+            wmf_quibble_job = self.getJob(
+                repo, 'gate-and-submit',
+                'wmf-quibble-vendor-mysql-php70-docker')
+            gate_job = self.getJob(
+                repo, 'gate-and-submit',
+                'mediawiki-extensions-hhvm-jessie')
+
+            change = zuul.model.Change(repo)
+            for branch in ['wmf/1.99.9-wmf.999', 'master', 'REL1_42']:
+                change.branch = branch
+                self.assertFalse(
+                    wmf_quibble_job.changeMatches(change),
+                    'wmf-quibble jobs are not ready for core/vendor yet')
+                self.assertTrue(
+                    gate_job.changeMatches(change),
+                    'gate job is still used on core/vendor')

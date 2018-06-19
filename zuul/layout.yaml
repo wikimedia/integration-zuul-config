@@ -941,13 +941,21 @@ jobs:
   - name: ^mediawiki-extensions-(qunit|hhvm)(-jessie)?$
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
+    skip-if:
+      # We use Quibble for extensions and skins but not on release branches
+      # T197469
+      - project: ^mediawiki/(extensions|skins)/
+        branch: ^(?!REL)
 
   # Replacements for mediawiki-extensions jobs
 
-  # Gated extensions are only for master and Wikimedia deployment. We do not
-  # run them on REL (or others) branches.
   - name: ^wmf-quibble-
+    # Gated extensions are only for master and Wikimedia deployment. We do not
+    # run them on REL (or others) branches.
     branch: ^(master|wmf/)
+    skip-if:
+      # Not ready for core/vendor yet T197469
+      - project: ^mediawiki/(core|vendor)
 
     # Only run patch coverage if a PHP file was
     # changed on master.
@@ -1285,23 +1293,26 @@ project-templates:
     test:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
+      - wmf-quibble-vendor-mysql-hhvm-docker
     php5:
       - mediawiki-extensions-php55-jessie
       - mediawiki-extensions-php70-jessie
+      - wmf-quibble-vendor-mysql-php55-docker
+      - wmf-quibble-vendor-mysql-php70-docker
     gate-and-submit: &extension-gate-gate-and-submit
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-php55-jessie
       - mediawiki-extensions-qunit-jessie
       - mediawiki-extensions-php70-jessie
+      # Quibble replacements for mediawiki-extensions
+      # Only triggered on master and wmf/ branches
+      - wmf-quibble-vendor-mysql-hhvm-docker
+      - wmf-quibble-vendor-mysql-php55-docker
+      - wmf-quibble-vendor-mysql-php70-docker
     gate-and-submit-swat: *extension-gate-gate-and-submit
     experimental:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
-      # Quibble replacements for mediawiki-extensions
-      # Only triggered on master and wmf/ branches
-      #- wmf-quibble-vendor-mysql-hhvm-docker
-      - wmf-quibble-vendor-mysql-php70-docker
-      #- wmf-quibble-vendor-mysql-php55-docker
 
   - name: extension-phan-generic
     test:
