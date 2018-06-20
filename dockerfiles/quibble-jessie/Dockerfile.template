@@ -18,6 +18,16 @@ COPY --from=npm-jessie /usr/local/lib/node_modules/npm/ /usr/local/lib/node_modu
 # Manually link since COPY copies symlink destination instead of the actual symlink
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 
+##########################
+# JSDuck is still needed #
+##########################
+RUN {{ "ruby ruby-dev build-essential" | apt_install }} \
+    && gem install --no-rdoc --no-ri --clear-sources jsduck \
+    && rm -fR /var/lib/gems/*/cache/*.gem \
+    && apt -y purge build-essential ruby-dev \
+    && apt-get -y autoremove --purge
+
+
 #############################
 #  Debian packages we need  #
 #############################
