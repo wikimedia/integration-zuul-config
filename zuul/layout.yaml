@@ -808,9 +808,6 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
-  - name: ^mwext-mw-selenium-node-composer-jessie$
-    voting: false
-
   - name: ^mediawiki-core-php70-phan-docker$
     skip-if:
       - project: '^mediawiki/core$'
@@ -1282,8 +1279,8 @@ project-templates:
   - name: extension-node-selenium-composer
     test:
       - mwext-mw-selenium-node-composer-jessie
-    #gate-and-submit:
-    #  - mwext-mw-selenium-node-composer-jessie
+    gate-and-submit:
+      - mwext-mw-selenium-node-composer-jessie
 
   - name: extension-gate
     check:
@@ -6315,11 +6312,12 @@ projects:
       - name: extension-qunit-composer
       - name: extension-node-selenium-composer
       - name: extension-coverage
-      - name: mediawiki-core-qunit-selenium-jessie
     test:
       - mwext-mw-selenium-composer-jessie
     gate-and-submit:
       - mwext-mw-selenium-composer-jessie
+    experimental:
+      - mediawiki-core-qunit-selenium-jessie
 
   - name: mediawiki/extensions/WikibaseQuality
     template:
