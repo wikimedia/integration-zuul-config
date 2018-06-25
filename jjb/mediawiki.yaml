@@ -554,7 +554,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "vendor" --db "mysql" --run composer-test'
+            run_args: '--packages-source "vendor" --db "mysql" --run composer-test${{QUIBBLE_ARGS:+ $QUIBBLE_ARGS}}'
             logdir: '/log'
     publishers:
         - archive-log-allow-empty

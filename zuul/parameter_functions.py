@@ -83,6 +83,21 @@ def set_parameters(item, job, params):
         else:
             params['SKIN_DEPENDENCIES'] = 'mediawiki/skins/Vector'
 
+    quibble_skip_selenium = [
+        'mediawiki/extensions/AddThis',
+        'mediawiki/extensions/AccessControl',
+        'mediawiki/extensions/Blackout',
+        'mediawiki/extensions/CommentBox',
+        'mediawiki/extensions/ConfirmAccount',
+        'mediawiki/extensions/EditSubpages',
+        'mediawiki/extensions/Premoderation',
+        'mediawiki/extensions/UnCaptcha',
+        'mediawiki/extensions/Wikispeech',
+    ]
+    if ('quibble' in job.name
+            and params['ZUUL_PROJECT'] in quibble_skip_selenium):
+        params['QUIBBLE_ARGS'] = '--skip selenium'
+
     # Enable composer merge plugin in vendor and point it to mediawiki
     # composer.json. That let us easily merge autoload-dev section and thus
     # complete the autoloader in mw-fetch-composer-dev.js
