@@ -43,6 +43,7 @@
             # record the versions of parsertests we're running, for debugging
             # if something goes wrong
             find -name parserTests.txt -print0 | xargs -0 md5sum -b
+            find -name langParserTests.txt -print0 | xargs -0 md5sum -b
             find -name citeParserTests.txt -print0 | xargs -0 md5sum -b
             find -name timedMediaHandlerParserTests.txt -print0 | xargs -0 md5sum -b
             # Now run parserTests
@@ -51,6 +52,8 @@
             export MW_INSTALL_PATH="$WORKSPACE/src/mediawiki/core"
             php tests/parser/parserTests.php --color=no --quiet \
                 --file="$WORKSPACE/parsoidsvc/tests/parserTests.txt"
+            php tests/parser/parserTests.php --color=no --quiet \
+                --file="$WORKSPACE/parsoidsvc/tests/langParserTests.txt"
             php tests/parser/parserTests.php --color=no --quiet \
                 --file="$WORKSPACE/parsoidsvc/tests/citeParserTests.txt"
             php tests/parser/parserTests.php --color=no --quiet \
