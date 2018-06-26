@@ -82,15 +82,26 @@
     name: 'mobileapps-periodic-test'
     node: DebianJessieDocker
     concurrent: true
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+    docker_run_options_var: 'periodic'
     triggers:
      - timed: '@hourly'
-    scm:
-     - git:
-        url: https://phabricator.wikimedia.org/diffusion/GMOA
-        branches:
-          - master
+    parameters:
+     - string: 'ZUUL_URL'
+       default: 'https://phabricator.wikimedia.org/diffusion/'
+     - string: 'ZUUL_PROJECT'
+       default: 'GMOA'
+     - string: 'ZUUL_REF'
+       default: 'master'
     builders:
-     - shell: npm run -s periodic
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        docker_run_options: '{obj:docker_run_options_var}'
+        image: '{obj:docker_image_var}'
+        logdir: '/log'
     publishers:
      - irc-wikimedia-ri-ci
 
