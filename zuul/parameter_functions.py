@@ -510,9 +510,7 @@ def set_gated_extensions(item, job, params):
 
     deps.extend(tarballextensions)
 
-    # Only run gate extensions on non REL1_XX branches
-    if not params['ZUUL_BRANCH'].startswith('REL1_'):
-        deps.extend(gatedextensions)
+    deps.extend(gatedextensions)
 
     deps = sorted(list(set(deps)))
 
