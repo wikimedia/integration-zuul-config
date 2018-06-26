@@ -510,9 +510,12 @@ def set_gated_extensions(item, job, params):
 
     deps.extend(tarballextensions)
 
-    # Only run gate extensions on non REL1_XX branches
-    if not params['ZUUL_BRANCH'].startswith('REL1_'):
-        deps.extend(gatedextensions)
+    deps.extend(gatedextensions)
+
+    use_wikidata = ('REL1_27', 'REL1_29', 'REL1_30')
+    if params['ZUUL_BRANCH'] in use_wikidata:
+        deps.remove('Wikibase')
+        deps.append('Wikidata')
 
     deps = sorted(list(set(deps)))
 
