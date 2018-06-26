@@ -82,6 +82,8 @@
     name: 'mobileapps-periodic-test'
     node: DebianJessieDocker
     concurrent: true
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+    docker_run_options_var: ''
     triggers:
      - timed: '@hourly'
     scm:
@@ -90,6 +92,14 @@
         branches:
           - master
     builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        docker_run_options: '{obj:docker_run_options_var}'
+        image: '{obj:docker_image_var}'
+        logdir: '/log'
      - shell: npm run -s periodic
     publishers:
      - irc-wikimedia-ri-ci
