@@ -56,5 +56,7 @@ class TestSetGatedExtensions(unittest.TestCase):
         }
         gate_job = FakeJob('mediawiki-extensions-foo')
         set_gated_extensions(None, gate_job, params)
+        self.assertIn('\\nmediawiki/extensions/Wikibase',
+                      params['EXT_DEPENDENCIES'])
         self.assertNotIn('\\nmediawiki/extensions/Wikibase',
                          params['EXT_DEPENDENCIES'])
