@@ -316,7 +316,6 @@ dependencies = {
     'StopForumSpam': ['AbuseFilter'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
     'TemplateWizard': ['TemplateData', 'WikiEditor'],
-    'TimedMediaHandler': ['MwEmbedSupport'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TheWikipediaLibrary': ['Echo'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
