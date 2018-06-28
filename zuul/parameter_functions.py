@@ -24,7 +24,7 @@ def set_parameters(item, job, params):
     #    npm ERR! registry error parsing json
     # https://phabricator.wikimedia.org/T198348
     if (
-        job.name == 'wmf-quibble-vendor-mysql-hhvm-docker'
+        job.name == 'mediawiki-quibble-composer-mysql-php70-docker'
         and params['ZUUL_PROJECT'] == 'mediawiki/core'
     ):
         params['npm_config_loglevel'] = 'verbose'
