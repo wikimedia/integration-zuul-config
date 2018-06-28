@@ -517,6 +517,12 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+    wrappers:
+        - timeout:
+            timeout: 45  # npm is broken T198348
+            fail: true
+        - timestamps
+        - ansicolor
 
 - job-template:
     !!merge : *job_quibble
@@ -541,6 +547,12 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+    wrappers:
+        - timeout:
+            timeout: 45  # npm is broken T198348
+            fail: true
+        - timestamps
+        - ansicolor
 
 - job-template:
     name: mediawiki-quibble-composertest-{php}-docker
@@ -559,8 +571,12 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
-
-
+    wrappers:
+        - timeout:
+            timeout: 45  # npm is broken T198348
+            fail: true
+        - timestamps
+        - ansicolor
 
 - job:
     name: 'quibble-integration'
