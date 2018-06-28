@@ -486,7 +486,6 @@ gatedextensions = [
     'JsonConfig',
     'MobileApp',
     'MobileFrontend',
-    'MwEmbedSupport',
     'NavigationTiming',
     'SandboxLink',
     'SiteMatrix',
