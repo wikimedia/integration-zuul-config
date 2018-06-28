@@ -20,6 +20,15 @@ def set_parameters(item, job, params):
         # Quibble takes care of it
         del(params['DISPLAY'])
 
+    # npm install is somehow slow with a:
+    #    npm ERR! registry error parsing json
+    # https://phabricator.wikimedia.org/T198348
+    if (
+        job.name == 'wmf-quibble-vendor-mysql-hhvm-docker'
+        and params['ZUUL_PROJECT'] == 'mediawiki/core'
+    ):
+        params['npm_config_loglevel'] = 'verbose'
+
     php7_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
         'mediawiki-core-qunit-selenium-jessie',
