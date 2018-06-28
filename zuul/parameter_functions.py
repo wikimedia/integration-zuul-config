@@ -216,6 +216,7 @@ dependencies = {
     'BlueSpiceUserPreferences': ['BlueSpiceFoundation'],
     'BlueSpiceWatchList': ['BlueSpiceFoundation'],
     'BlueSpiceWhoIsOnline': ['BlueSpiceFoundation'],
+    'Campaigns': ['EventLogging'],
     'Capiunto': ['Scribunto'],
     'Challenge': ['SocialProfile'],
     'Cite': ['VisualEditor'],
