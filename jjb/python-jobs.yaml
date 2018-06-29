@@ -15,7 +15,7 @@
     name: 'tox-docker'
     node: DebianJessieDocker
     concurrent: true
-    docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.1.1'
     triggers:
         - zuul
     builders:
@@ -42,7 +42,7 @@
 - job-template:
     !!merge : *job_tox-docker
     name: '{name}-tox-{toxenv}-docker'
-    docker_image_varimage: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+    docker_image_varimage: 'docker-registry.wikimedia.org/releng/tox:0.1.1'
     triggers:
         - zuul
     builders:
@@ -66,7 +66,7 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+         image: 'docker-registry.wikimedia.org/releng/tox:0.1.1'
          logdir: '/log'
          run_args: '-e "{obj:docenv|doc}"'
      - doc-publish:
@@ -87,7 +87,7 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+         image: 'docker-registry.wikimedia.org/releng/tox:0.1.1'
          logdir: '/log'
          run_args: '-e "{obj:docenv|doc}"'
      - doc-publish:
@@ -114,7 +114,7 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/tox:0.1.0
+         image: docker-registry.wikimedia.org/releng/tox:0.1.1
          logdir: '/log'
          run_args: '-e py27 -- --cover-html --cover-html-dir=coverage/ --cover-xml --cover-xml-file=/log/coverage.xml'
      # FIXME: we would probably want a Docker container for slave scripts
