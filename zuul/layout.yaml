@@ -957,6 +957,9 @@ jobs:
       # Not ready for core/vendor yet T197469
       - project: ^mediawiki/(core|vendor)
 
+  - name: ^tarball-quibble-
+    branch: ^(REL)
+
     # Only run patch coverage if a PHP file was
     # changed on master.
   - name: ^.*-phpunit-coverage-patch$
@@ -1311,6 +1314,13 @@ project-templates:
     experimental:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
+
+  # For REL branches
+  - name: mediawiki-tarball
+    test:
+      - tarball-quibble-composer-mysql-php70-docker
+    gate-and-submit:
+      - tarball-quibble-composer-mysql-php70-docker
 
   - name: extension-phan-generic
     test:
@@ -1723,6 +1733,7 @@ projects:
   - name: mediawiki/core
     template:
       - name: extension-gate
+      - name: mediawiki-tarball
     check:
       - mediawiki-core-php55lint
       - mediawiki-core-hhvmlint
@@ -1775,6 +1786,7 @@ projects:
   - name: mediawiki/vendor
     template:
       - name: extension-gate
+      - name: mediawiki-tarball
     check:
       - mwgate-php55lint
       - mwgate-php70lint
@@ -2267,6 +2279,7 @@ projects:
     template:
      - name: skin-phan
      - name: skin-quibble
+     - name: mediawiki-tarball
 
   - name: mediawiki/skins/Nimbus
     template:
@@ -2316,6 +2329,7 @@ projects:
     template:
      - name: skin-phan
      - name: skin-quibble
+     - name: mediawiki-tarball
 
   - name: mediawiki/skins/Tomas
     template:
@@ -2331,6 +2345,7 @@ projects:
     template:
      - name: skin-quibble
      - name: skin-phan
+     - name: mediawiki-tarball
     experimental:
      - quibble-composer-mysql-php70-docker
      - quibble-composer-mysql-php55-docker
@@ -3236,6 +3251,7 @@ projects:
       - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck-non-voting
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/CategoryWatch
     template:
@@ -3262,12 +3278,14 @@ projects:
       - name: mwgate-npm
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/CiteThisPage
     template:
       - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/Citoid
     template:
@@ -3337,6 +3355,7 @@ projects:
       - name: extension-unittests-generic
       - name: mwgate-npm
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/CodeMirror
     template:
@@ -3413,6 +3432,7 @@ projects:
       - name: mwgate-npm
       - name: extension-coverage
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/ContentTranslation
     template:
@@ -3748,6 +3768,7 @@ projects:
       - name: extension-coverage
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/Gather
     template:
@@ -3938,6 +3959,7 @@ projects:
       - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/ImapAuthorization
     template:
@@ -3960,6 +3982,7 @@ projects:
       - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/Insider
     template:
@@ -3970,6 +3993,7 @@ projects:
       - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/InterwikiSorting
     template:
@@ -4058,6 +4082,7 @@ projects:
       - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/LoginNotify
     template:
@@ -4195,6 +4220,7 @@ projects:
       - name: extension-jsduck
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mediawiki-tarball
     postmerge:
       - mwext-jsduck-publish
 
@@ -4264,6 +4290,7 @@ projects:
       - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/NumberOfComments
     template:
@@ -4274,6 +4301,7 @@ projects:
       - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/OAI
     template:
@@ -4369,6 +4397,7 @@ projects:
       - name: mwgate-npm
       - name: extension-seccheck
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/ParserMigration
     template:
@@ -6844,6 +6873,7 @@ projects:
       - name: mwgate-npm
       - name: extension-seccheck
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/PerformanceInspector
     template:
@@ -6883,6 +6913,7 @@ projects:
       - name: extension-quibble
       - name: extension-seccheck
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   # need to run mwext-PoolCounter-rake-docker on gate-and-submit when T178517 is fixed
   - name: mediawiki/extensions/PoolCounter
@@ -6932,6 +6963,7 @@ projects:
       - name: extension-quibble
       - name: extension-seccheck-non-voting
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/ReplaceSet
     template:
@@ -6941,6 +6973,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/RSS
     template:
@@ -7072,6 +7105,7 @@ projects:
       - name: mwgate-npm
       - name: extension-seccheck
       - name: extension-phan-generic
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/SpamDiffTool
     template:
@@ -7138,6 +7172,7 @@ projects:
       - name: extension-quibble
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/TemplateData
     template:
@@ -7173,6 +7208,7 @@ projects:
       - name: extension-phan-generic
       - name: extension-seccheck
       - name: extension-coverage
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/TitleKey
     template:
@@ -7308,6 +7344,7 @@ projects:
       - name: mwgate-npm
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mediawiki-tarball
 
   - name: mediawiki/extensions/Wikibase
     template:

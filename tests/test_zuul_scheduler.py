@@ -830,10 +830,7 @@ class TestZuulScheduler(unittest.TestCase):
             os.path.dirname(os.path.abspath(__file__)),
             '../zuul/parameter_functions.py'),
             global_env)
-        tarballextensions = set(global_env['tarballextensions'])
         gatedextensions = set(global_env['gatedextensions'])
-
-        allextensions = tarballextensions.union(gatedextensions)
 
         # Grab projects having the gate job 'mediawiki-extensions-hhvm'
         gated_in_zuul = set([
@@ -844,12 +841,39 @@ class TestZuulScheduler(unittest.TestCase):
         ])
 
         self.assertSetEqual(
-            gated_in_zuul, allextensions,
+            gated_in_zuul, gatedextensions,
             msg='Zuul projects triggering gate jobs (first set) and '
             'dependencies list in zuul/parameter_functions.py (second set) '
             'must be equals.\n'
             'In Zuul: apply the template extension-gate\n'
             'In JJB: add extension to "gatedextensions"')
+
+    def test_mediawiki_tarball_repos_are_in_sync(self):
+        self.longMessage = True
+        self.maxDiff = None
+
+        global_env = {}
+        execfile(os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '../zuul/parameter_functions.py'),
+            global_env)
+        mw_tarball_repos = sorted(global_env['mw_tarball_repos'])
+
+        # Get projects having a 'tarball-quibble-*' job
+        release_in_zuul = sorted([
+            repo_name
+            for (repo_name, pipelines) in self.getProjectsDefs().iteritems()
+            if repo_name.startswith(('mediawiki/extensions',
+                                     'mediawiki/skins'))
+            and 'tarball-quibble-composer-mysql-php70-docker'
+                in pipelines.get('test', {})
+            ])
+        self.assertListEqual(
+            release_in_zuul, mw_tarball_repos,
+            msg='Zuul projects triggering release jobs (1st list) and '
+            'listof released repos in zuul/parameter_functions.py (2nd list) '
+            'must be equals.\n'
+            'In Zuul: apply the template mediawiki-tarball\n')
 
     def test_pipelines_have_report_action_to_gerrit(self):
         not_reporting = ['post', 'publish']
@@ -962,6 +986,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
+            'tarball-quibble-composer-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
         }
         expected_gate = {
@@ -978,6 +1003,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
+            'tarball-quibble-composer-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-vendor-mysql-php70-docker': False,
         }
@@ -1071,3 +1097,64 @@ class TestZuulScheduler(unittest.TestCase):
                 self.assertTrue(
                     gate_job.changeMatches(change),
                     'gate job is still used on core/vendor')
+
+    def test_standalone_repo_in_release(self):
+        repo = 'mediawiki/extensions/CategoryTree'
+
+        release_job = self.getJob(
+            repo, 'gate-and-submit',
+            'tarball-quibble-composer-mysql-php70-docker')
+
+        change = zuul.model.Change(repo)
+
+        change.branch = 'master'
+        self.assertFalse(release_job.changeMatches(change))
+
+        change.branch = 'wmf/1.99.9-wmf.999'
+        self.assertFalse(release_job.changeMatches(change))
+
+        change.branch = 'REL1_42'
+        self.assertTrue(release_job.changeMatches(change))
+
+    def test_gated_repo_in_release(self):
+        repo = 'mediawiki/extensions/Cite'
+
+        release_job = self.getJob(
+            repo, 'gate-and-submit',
+            'tarball-quibble-composer-mysql-php70-docker')
+
+        gate_job = self.getJob(
+            repo, 'gate-and-submit',
+            'wmf-quibble-vendor-mysql-php70-docker')
+
+        change = zuul.model.Change(repo)
+
+        change.branch = 'master'
+        self.assertFalse(release_job.changeMatches(change))
+        self.assertTrue(gate_job.changeMatches(change))
+
+        change.branch = 'wmf/1.99.9-wmf.999'
+        self.assertFalse(release_job.changeMatches(change))
+        self.assertTrue(gate_job.changeMatches(change))
+
+        change.branch = 'REL1_42'
+        self.assertTrue(release_job.changeMatches(change))
+        self.assertFalse(gate_job.changeMatches(change))
+
+    def test_mediawiki_core_in_release(self):
+        repo = 'mediawiki/core'
+
+        release_job = self.getJob(
+            repo, 'gate-and-submit',
+            'tarball-quibble-composer-mysql-php70-docker')
+
+        change = zuul.model.Change(repo)
+
+        change.branch = 'master'
+        self.assertFalse(release_job.changeMatches(change))
+
+        change.branch = 'wmf/1.99.9-wmf.999'
+        self.assertFalse(release_job.changeMatches(change))
+
+        change.branch = 'REL1_42'
+        self.assertTrue(release_job.changeMatches(change))

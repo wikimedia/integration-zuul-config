@@ -104,6 +104,9 @@ def set_parameters(item, job, params):
     if job.name.startswith('wmf-quibble-'):
         set_gated_extensions(item, job, params)
 
+    if job.name.startswith('tarball-quibble-'):
+        set_mw_tarball_repos(item, job, params)
+
     if job.name.endswith('-jessie'):
         nodepool_params(item, job, params)
     elif job.name.endswith('node-6-jessie'):
@@ -456,22 +459,15 @@ def get_dependencies(key, mapping):
     return resolve_deps(key)
 
 
-tarballextensions = [
-    'Cite',
-    'CodeEditor',
-    'ConfirmEdit',
-    'ParserFunctions',
-    'PdfHandler',
-    'SpamBlacklist',
-    'WikiEditor',
-]
-
 gatedextensions = [
     'AbuseFilter',
     'Babel',
     'CheckUser',
     'CirrusSearch',
+    'Cite',
     'cldr',
+    'CodeEditor',
+    'ConfirmEdit',
     'Echo',
     'Elastica',
     'EventLogging',
@@ -484,17 +480,50 @@ gatedextensions = [
     'MobileFrontend',
     'MwEmbedSupport',
     'NavigationTiming',
+    'ParserFunctions',
+    'PdfHandler',
     'SandboxLink',
     'SiteMatrix',
+    'SpamBlacklist',
     'Thanks',
     'TimedMediaHandler',
     'Translate',
     'UniversalLanguageSelector',
     'VisualEditor',
+    'WikiEditor',
     # Note: pre-1.31 this is switched out for Wikidata build extension
     'Wikibase',
     'ZeroBanner',
     'ZeroPortal',
+]
+
+
+mw_tarball_repos = [
+    'mediawiki/extensions/CategoryTree',
+    'mediawiki/extensions/Cite',
+    'mediawiki/extensions/CiteThisPage',
+    'mediawiki/extensions/CodeEditor',
+    'mediawiki/extensions/ConfirmEdit',
+    'mediawiki/extensions/Gadgets',
+    'mediawiki/extensions/ImageMap',
+    'mediawiki/extensions/InputBox',
+    'mediawiki/extensions/Interwiki',
+    'mediawiki/extensions/LocalisationUpdate',
+    'mediawiki/extensions/MultimediaViewer',
+    'mediawiki/extensions/Nuke',
+    'mediawiki/extensions/OATHAuth',
+    'mediawiki/extensions/ParserFunctions',
+    'mediawiki/extensions/PdfHandler',
+    'mediawiki/extensions/Poem',
+    'mediawiki/extensions/Renameuser',
+    'mediawiki/extensions/ReplaceText',
+    'mediawiki/extensions/SpamBlacklist',
+    'mediawiki/extensions/SyntaxHighlight_GeSHi',
+    'mediawiki/extensions/TitleBlacklist',
+    'mediawiki/extensions/WikiEditor',
+    'mediawiki/skins/MonoBook',
+    'mediawiki/skins/Timeless',
+    'mediawiki/skins/Vector',
 ]
 
 
@@ -508,8 +537,6 @@ def set_gated_extensions(item, job, params):
         params['ZUUL_PROJECT'].startswith('mediawiki/extensions/')
     ):
         deps.append(params['ZUUL_PROJECT'].split('/')[-1])
-
-    deps.extend(tarballextensions)
 
     # Only run gate extensions on non REL1_XX branches
     if not params['ZUUL_BRANCH'].startswith('REL1_'):
@@ -525,6 +552,18 @@ def set_gated_extensions(item, job, params):
     split = params['ZUUL_PROJECT'].split('/')
     if len(split) == 3 and split[1] == 'extensions':
         params['EXT_NAME'] = split[-1]
+
+
+def set_mw_tarball_repos(item, job, params):
+    exts = [e for e in mw_tarball_repos
+            if e.startswith('mediawiki/extensions/')]
+    exts = sorted(list(set(exts)))
+    params['EXT_DEPENDENCIES'] = '\\n'.join(exts)
+
+    skins = [e for e in tarball_repos
+             if e.startswith('mediawiki/skins/')]
+    skins = sorted(list(set(skins)))
+    params['SKIN_DEPENDENCIES'] = '\\n'.join(skins)
 
 
 def nodepool_params(item, job, params):
