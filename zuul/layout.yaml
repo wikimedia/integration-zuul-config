@@ -1296,8 +1296,12 @@ project-templates:
       - mwgate-php70lint
       - mwgate-composer-validate
     test:
+      # Legacy, only for core/vendor:
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-qunit-jessie
+      # For REL branches:
+      - release-quibble-vendor-mysql-hhvm-docker
+      # For master and wmf branches
       - wmf-quibble-vendor-mysql-hhvm-docker
     php5:
       - mediawiki-extensions-php55-jessie

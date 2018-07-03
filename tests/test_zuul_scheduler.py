@@ -1091,6 +1091,17 @@ class TestZuulScheduler(unittest.TestCase):
                     gate_job.changeMatches(change),
                     'gate job is still used on core/vendor')
 
+    def test_gated_extension_run_tests_on_rel_branch(self):
+        repo = 'mediawiki/extensions/Translate'
+        release_job = self.getJob(
+            repo, 'test',
+            'release-quibble-vendor-mysql-hhvm-docker')
+
+        change = zuul.model.Change(repo)
+
+        change.branch = 'REL1_42'
+        self.assertTrue(release_job.changeMatches(change))
+
     def test_gated_extension_behavior(self):
         repo = 'mediawiki/extensions/Translate'
 
