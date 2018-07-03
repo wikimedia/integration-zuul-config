@@ -531,6 +531,12 @@
         - zuul
 
 - job-template:
+    !!merge : *job_quibble
+    name: tarball-quibble-{packages-source}-{database}-{php}-docker
+    triggers:
+        - zuul
+
+- job-template:
     name: mediawiki-quibble-{packages-source}-{database}-{php}-docker
     node: DebianJessieDocker && m4executor
     concurrent: true
@@ -652,6 +658,8 @@
         - quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
+        # For MediaWiki releases / tarballs
+        - tarball-quibble-{packages-source}-{database}-{php}-docker
         - wmf-quibble-vendor-mysql-{php}-docker:
             # We never use composer on wmf cluster
             packages-source: vendor
