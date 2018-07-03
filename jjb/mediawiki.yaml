@@ -524,6 +524,14 @@
         - timestamps
         - ansicolor
 
+# For the REL branches
+- job-template:
+    !!merge : *job_quibble
+    name: release-quibble-{packages-source}-{database}-{php}-docker
+    triggers:
+        - zuul
+
+# For the master and wmf/* branches
 - job-template:
     !!merge : *job_quibble
     name: wmf-quibble-vendor-mysql-{php}-docker
@@ -652,6 +660,7 @@
         - quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
+        - release-quibble-{packages-source}-{database}-{php}-docker
         - wmf-quibble-vendor-mysql-{php}-docker:
             # We never use composer on wmf cluster
             packages-source: vendor
