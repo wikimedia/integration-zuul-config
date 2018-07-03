@@ -832,7 +832,7 @@ jobs:
       - branch: (?:^(REL1_(2[789]|30))$)
 
   # Run MediaWiki PHP 5.5 tests on MW < 1.31
-  - name: ^(quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
+  - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
     branch: ^(REL1_(2[789]|30))$
 
   - name: ^quibble-.*-docker$
@@ -942,12 +942,14 @@ jobs:
     branch: (?!fundraising/REL.*)
     queue-name: mediawiki
     skip-if:
-      # We use Quibble for extensions and skins but not on release branches
+      # We use Quibble for extensions and skins
       # T197469
       - project: ^mediawiki/(extensions|skins)/
-        branch: ^(?!REL)
 
   # Replacements for mediawiki-extensions jobs
+
+  - name: ^release-quibble-
+    branch: ^REL
 
   - name: ^wmf-quibble-
     # Gated extensions are only for master and Wikimedia deployment. We do not
@@ -1298,15 +1300,19 @@ project-templates:
       - mediawiki-extensions-php55-jessie
       - mediawiki-extensions-php70-jessie
       - wmf-quibble-vendor-mysql-php70-docker
+      - release-quibble-vendor-mysql-php55-docker
     gate-and-submit: &extension-gate-gate-and-submit
       - mediawiki-extensions-hhvm-jessie
       - mediawiki-extensions-php55-jessie
       - mediawiki-extensions-qunit-jessie
       - mediawiki-extensions-php70-jessie
       # Quibble replacements for mediawiki-extensions
-      # Only triggered on master and wmf/ branches
+      # Only triggered on master and wmf/ branches:
       - wmf-quibble-vendor-mysql-hhvm-docker
       - wmf-quibble-vendor-mysql-php70-docker
+      # Only triggered on REL branches:
+      - release-quibble-vendor-mysql-hhvm-docker
+      - release-quibble-vendor-mysql-php70-docker
     gate-and-submit-swat: *extension-gate-gate-and-submit
     experimental:
       - mwext-php70-phan-docker

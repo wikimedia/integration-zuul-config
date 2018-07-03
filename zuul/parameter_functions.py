@@ -68,6 +68,7 @@ def set_parameters(item, job, params):
         'mwskin-php70-phan',
         'mwext-phpunit-coverage',
         'mediawiki-quibble',
+        'release-quibble',
         'quibble',
         )
     if job.name.startswith(mw_deps_jobs_starting_with):
