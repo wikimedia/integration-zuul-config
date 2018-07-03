@@ -2,7 +2,7 @@
 declare -i err=0
 
 install --mode 2777 --directory log
-for project in analytics/quarry/web labs/tools/crosswatch labs/striker; do
+for project in analytics/quarry/web labs/tools/crosswatch; do
     docker run \
         --rm --tty \
         --env JENKINS_URL=1 \
