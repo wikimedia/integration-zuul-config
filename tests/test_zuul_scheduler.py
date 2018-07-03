@@ -962,6 +962,8 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
+            'release-quibble-vendor-mysql-hhvm-docker': False,
+            'release-quibble-vendor-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
         }
         expected_gate = {
@@ -978,6 +980,8 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
+            'release-quibble-vendor-mysql-hhvm-docker': False,
+            'release-quibble-vendor-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-vendor-mysql-php70-docker': False,
         }
@@ -1023,6 +1027,10 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki/extensions/AbuseFilter',
             'gate-and-submit',
             'mediawiki-extensions-hhvm-jessie')
+        release_job = self.getJob(
+            'mediawiki/extensions/AbuseFilter',
+            'gate-and-submit',
+            'release-quibble-vendor-mysql-php70-docker')
 
         change = zuul.model.Change('mediawiki/extensions/AbuseFilter')
 
@@ -1034,6 +1042,9 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertFalse(
             gate_job.changeMatches(change),
             'gate job is no more used on wmf branches')
+        self.assertFalse(
+            release_job.changeMatches(change),
+            'release job is not for wmf branches')
 
         change.branch = 'master'
         self.assertTrue(
@@ -1042,15 +1053,21 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertFalse(
             gate_job.changeMatches(change),
             'gate job is no more used on master branch')
+        self.assertFalse(
+            release_job.changeMatches(change),
+            'release job is not for master branch')
 
         # But not the release branches
         change.branch = 'REL1_42'
         self.assertFalse(
             wmf_quibble_job.changeMatches(change),
             'wmf-quibble jobs are not for REL branches')
-        self.assertTrue(
+        self.assertFalse(
             gate_job.changeMatches(change),
-            'gate job is still used on REL branches')
+            'gate job is no more used on REL branches')
+        self.assertTrue(
+            release_job.changeMatches(change),
+            'release jobs run on REL branches')
 
     def test_wmf_quibble_is_not_ready_for_core_or_vendor(self):
         # On core/vendor Quibble runs all tests which fails
@@ -1071,3 +1088,33 @@ class TestZuulScheduler(unittest.TestCase):
                 self.assertTrue(
                     gate_job.changeMatches(change),
                     'gate job is still used on core/vendor')
+
+    def test_gated_extension_behavior(self):
+        repo = 'mediawiki/extensions/Translate'
+
+        wmf_quibble_job = self.getJob(
+            repo, 'gate-and-submit',
+            'wmf-quibble-vendor-mysql-php70-docker')
+        gate_job = self.getJob(
+            repo, 'gate-and-submit',
+            'mediawiki-extensions-hhvm-jessie')
+        release_job = self.getJob(
+            repo, 'gate-and-submit',
+            'release-quibble-vendor-mysql-php70-docker')
+
+        change = zuul.model.Change(repo)
+
+        change.branch = 'master'
+        self.assertTrue(wmf_quibble_job.changeMatches(change))
+        self.assertFalse(gate_job.changeMatches(change))
+        self.assertFalse(release_job.changeMatches(change))
+
+        change.branch = 'wmf/1.99.9-wmf.999'
+        self.assertTrue(wmf_quibble_job.changeMatches(change))
+        self.assertFalse(gate_job.changeMatches(change))
+        self.assertFalse(release_job.changeMatches(change))
+
+        change.branch = 'REL1_42'
+        self.assertFalse(wmf_quibble_job.changeMatches(change))
+        self.assertFalse(gate_job.changeMatches(change))
+        self.assertTrue(release_job.changeMatches(change))
