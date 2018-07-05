@@ -1215,6 +1215,27 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
+  # Runs quibble but skip selenium tests - T196960
+  - name: extension-quibble-noselenium
+    check:
+      - mwgate-php55lint
+      - mwgate-php70lint
+      - mwgate-composer-validate
+    php5:
+      - quibble-vendor-mysql-php55-noselenium-docker
+      - quibble-vendor-mysql-php70-noselenium-docker
+    test:
+      - quibble-vendor-mysql-hhvm-noselenium-docker
+    gate-and-submit: &extension-quibble-noselenium-gate-and-submit
+      - quibble-vendor-mysql-hhvm-noselenium-docker
+      - quibble-vendor-mysql-php55-noselenium-docker
+      - quibble-vendor-mysql-php70-noselenium-docker
+    gate-and-submit-swat: *extension-quibble-noselenium-gate-and-submit
+    experimental:
+      - quibble-vendor-sqlite-php70-noselenium-docker
+      - mwext-php70-phan-docker
+      - mwext-php70-phan-seccheck-docker
+
   # Deprecated, extension-quibble should be used instead.
   - name: extension-unittests-generic
     check:
@@ -3406,6 +3427,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/ConfirmEdit
     template:
@@ -4291,6 +4314,8 @@ projects:
     template:
      - name: extension-unittests-generic
      - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/ORES
     template:
@@ -4390,6 +4415,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/AccessibilitySimulation
     template:
@@ -4407,6 +4434,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/AdManager
     template:
@@ -4528,6 +4557,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/BlockAndNuke
     template:
@@ -4855,6 +4886,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/CommentPages
     template:
@@ -4985,6 +5018,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/EnhanceContactForm
     template:
@@ -5046,6 +5081,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/FormatDates
     template:
@@ -5399,6 +5436,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/Newsletter
     template:
@@ -5597,11 +5636,15 @@ projects:
     template:
       - name: extension-unittests-non-voting
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/PrivateDomains
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/PronunciationRecording
     template:
@@ -6131,6 +6174,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/UnitTest
     template:
@@ -7342,6 +7387,8 @@ projects:
     template:
       - name: extension-unittests-generic
       - name: mwgate-npm
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/WikimediaMaintenance
     template:
@@ -7369,6 +7416,8 @@ projects:
       - name: extension-qunit-generic
       - name: mwgate-npm
       - name: extension-coverage
+    experimental:
+      - quibble-vendor-mysql-php70-noselenium-docker  # T196960
 
   - name: mediawiki/extensions/Workflow
     template:

@@ -525,6 +525,14 @@
         - timestamps
         - ansicolor
 
+# Skipping selenium tests - T196960
+- job-template:
+    !!merge : *job_quibble
+    name: quibble-{packages-source}-{database}-{php}-noselenium-docker
+    quibble_args: '--skip selenium'
+    triggers:
+        - zuul
+
 # For the REL branches
 - job-template:
     !!merge : *job_quibble
@@ -659,6 +667,7 @@
             docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.19
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
+        - quibble-{packages-source}-{database}-{php}-noselenium-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
         - release-quibble-{packages-source}-{database}-{php}-docker
