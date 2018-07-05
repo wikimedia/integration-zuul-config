@@ -165,6 +165,13 @@
     triggers:
      - zuul
 
+- job-template:
+    !!merge : *job_npm-run-script-node-6-docker
+    name: '{name}-npm-browser-run-{script}-node-6-docker'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.1.2'
+    triggers:
+     - zuul
+
 # A very specific job for MobileFrontend which uses a JavaScript test suite
 # which requires mediawiki/core.
 - job-template:
