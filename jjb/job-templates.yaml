@@ -165,6 +165,47 @@
     triggers:
      - zuul
 
+- job-template:
+    !!merge : *job_npm-run-script-node-6-docker
+    name: '{name}-npm-browser-run-{script}-node-6-docker'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.1.2'
+    triggers:
+     - timed: '@daily'
+    parameters:
+        - string:
+            name: 'ZUUL_BRANCH'
+            default: 'master'
+        - string:
+            name: 'ZUUL_PROJECT'
+            default: 'mediawiki/extensions/{name}'
+        - string:
+            name: 'ZUUL_REF'
+            default: 'master'
+        - string:
+            name: 'ZUUL_URL'
+            default: 'https://gerrit.wikimedia.org/r/p/'
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        docker_run_options: '{obj:docker_run_options_var}'
+        image: '{obj:docker_image_var}'
+        logdir: '/src/tests/selenium/log'
+        run_args: '{script}'
+    wrappers:
+      - timeout:
+          timeout: 30
+      - timestamps
+      - ansicolor
+      # Wiki usernames and passwords are hold in Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credential-store/domain/selenium/
+      - credentials-binding:
+          - text:
+              credential-id: selenium-user-beta
+              variable: MEDIAWIKI_PASSWORD
+
 # A very specific job for MobileFrontend which uses a JavaScript test suite
 # which requires mediawiki/core.
 - job-template:
