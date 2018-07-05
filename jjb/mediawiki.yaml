@@ -676,3 +676,13 @@
             packages-source: vendor
             # WMF cluster uses MariaDB/MySQL
             database: mysql
+
+- project:
+    name: MediaWiki
+    recipients: zfilipin@wikimedia.org qa-alerts@lists.wikimedia.org # @zeljkofilipin
+    repository: mediawiki/core
+
+    jobs:
+     - '{name}-npm-browser-run-{script}-node-6-docker':
+         script: selenium-daily
+
