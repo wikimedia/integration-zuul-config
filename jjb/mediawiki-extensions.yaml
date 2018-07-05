@@ -519,37 +519,37 @@
     name: CirrusSearch
     recipients: dcausse@wikimedia.org ebernhardson@wikimedia.org qa-alerts@lists.wikimedia.org # @dcausse @EBernhardson
     repository: mediawiki/extensions/CirrusSearch
-    site: en.wikipedia
 
     jobs:
-     - 'selenium-{name}-jessie'
+     - '{name}-npm-browser-run-{script}-node-6-docker':
+         script: selenium-daily
 
 - project:
     name: Echo
     recipients: etonkovidova@wikimedia.org qa-alerts@lists.wikimedia.org # @Etonkovidova
     repository: mediawiki/extensions/Echo
-    site: en.wikipedia
 
     jobs:
-     - 'selenium-{name}-jessie'
+     - '{name}-npm-browser-run-{script}-node-6-docker':
+         script: selenium-daily
 
 - project:
     name: Math
     recipients: qa-alerts@lists.wikimedia.org wiki@physikerwelt.de # @Physikerwelt
     repository: mediawiki/extensions/Math
-    site: en.wikipedia
 
     jobs:
-     - 'selenium-{name}-jessie'
+     - '{name}-npm-browser-run-{script}-node-6-docker':
+         script: selenium-daily
 
 - project:
     name: RelatedArticles
     recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
     repository: mediawiki/extensions/RelatedArticles
-    site: en.wikipedia
 
     jobs:
-     - 'selenium-{name}-jessie'
+     - '{name}-npm-browser-run-{script}-node-6-docker':
+         script: selenium-daily
 
 - project:
     name: Popups
@@ -558,4 +558,90 @@
     site: en.wikipedia
 
     jobs:
-     - 'selenium-{name}-jessie'
+     - '{name}-npm-browser-run-{script}-node-6-docker':
+         script: selenium-daily
+
+- job:
+    name: 'mwext-phpunit-coverage-patch'
+    node: ci-jessie-wikimedia
+    builders:
+     - prepare-mwext-coverage
+     - shell: |
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
+        cd $WORKSPACE/src/extensions/$EXT_NAME
+        composer require mediawiki/phpunit-patch-coverage 0.0.9 --no-progress
+        # FIXME This is terrible, but composer require creates a dirty diff.
+        git checkout composer.json
+        ./vendor/bin/phpunit-patch-coverage check --command \
+            "php7.0 -d zend_extension=xdebug.so $MW_INSTALL_PATH/tests/phpunit/phpunit.php" \
+            --html $WORKSPACE/src/coverage.html
+    publishers:
+     - archive:
+         artifacts: 'src/coverage.html'
+         allow-empty: true
+    triggers:
+     - zuul
+    wrappers:
+     - timeout:
+         timeout: 20
+         fail: true
+     - ansicolor
+     - timestamps
+
+
+- job:
+    name: 'mwext-phpunit-coverage-publish'
+    node: ci-jessie-wikimedia
+    builders:
+     - prepare-mwext-coverage
+     - shell: |
+        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
+
+        mkdir -p log
+        rm -f log/clover.xml log/clover.bz2
+
+        rm -fR "$WORKSPACE/cover"
+        mkdir -p "$WORKSPACE/cover"
+
+        nice -n 19 \
+            php7.0 -d zend_extension=xdebug.so \
+                $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
+                    --testsuite extensions \
+                    --coverage-clover log/clover.xml \
+                    --coverage-html "$WORKSPACE/cover" \
+                    "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" \
+            || :
+        # Above: Use "|| :" to ignore any non-zero exist status
+        # We want to publish code coverage even in case one of there
+        # being PHPUnit test failures. Normal test failures are not
+        # fatal and PHPUnit will stil generate console output, clover
+        # reports and and html reports. However don't blindly
+        # make the job pass either because if we do, then cover-publish
+        # will end up syncing an empty directory, which deletes the
+        # coverage report from doc.wikimedia.org. In case of "real" failure,
+        # let the job fail and don't publish a new report. "real" failures
+        # can be a PHP Fatal error, of a segfault, for example.
+        test -f cover/index.html
+
+        if [ -s "log/clover.xml" ]; then
+            cp log/clover.xml "$WORKSPACE/cover/clover.xml"
+        fi
+
+     - cover-extensions-publish:
+         src: 'cover'
+         # Should be equivalent to $EXT_NAME
+         dest: '$DOC_BASENAME'
+    publishers:
+     - archive:
+         artifacts: 'log/*'
+     - mw-teardown
+     - beta-irc  # Spam #wikimedia-releng on failure
+    triggers:
+     - zuul
+    wrappers:
+     - timeout:
+         timeout: 20
+         fail: true
+     - ansicolor
+     - timestamps

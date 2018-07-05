@@ -615,3 +615,12 @@
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-5
             packages-source: vendor
             database: sqlite
+
+- project:
+    name: MediaWiki
+    recipients: qa-alerts@lists.wikimedia.org zfilipin@wikimedia.org # @zeljkofilipin
+    repository: mediawiki/core
+
+    jobs:
+     - '{name}-npm-browser-run-{script}-node-6-docker':
+         script: selenium-test
