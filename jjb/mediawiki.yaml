@@ -503,6 +503,7 @@
 - job-template: &job_quibble
     name: quibble-{packages-source}-{database}-{php}-docker
     node: DebianJessieDocker && m4executor
+    quibble_args: ''
     concurrent: true
     triggers:
         - zuul
@@ -512,7 +513,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "{packages-source}" --db "{database}"'
+            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
             logdir: '/log'
     publishers:
         - archive-log-allow-empty
