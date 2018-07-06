@@ -158,7 +158,8 @@ def test_mediawiki_repos_use_quibble():
         has_quibble = (
             'extension-gate' in templates
             or 'extension-quibble' in templates
-            or 'extension-quibble-composer' in templates)
+            or 'extension-quibble-composer' in templates
+            or 'extension-quibble-noselenium' in templates)
         test.assertIn.__func__.description = (
             'MediaWiki extension uses Quibble: %s' % name)
         yield test.assertTrue, has_quibble, \
