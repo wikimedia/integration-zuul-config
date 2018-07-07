@@ -1236,6 +1236,26 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
+  - name: extension-quibble-composer-noselenium
+    check:
+      - mwgate-php55lint
+      - mwgate-php70lint
+      - mwgate-composer-validate
+    php5:
+      - quibble-composer-mysql-php55-noselenium-docker
+      - quibble-composer-mysql-php70-noselenium-docker
+    test:
+      - quibble-composer-mysql-hhvm-noselenium-docker
+    gate-and-submit: &extension-quibble-composer-noselenium-gate-and-submit
+      - quibble-composer-mysql-hhvm-noselenium-docker
+      - quibble-composer-mysql-php55-noselenium-docker
+      - quibble-composer-mysql-php70-noselenium-docker
+    gate-and-submit-swat: *extension-quibble-composer-noselenium-gate-and-submit
+    experimental:
+      - quibble-composer-sqlite-php70-noselenium-docker
+      - mwext-php70-phan-docker
+      - mwext-php70-phan-seccheck-docker
+
   # Deprecated, extension-quibble should be used instead.
   - name: extension-unittests-generic
     check:
@@ -3857,7 +3877,7 @@ projects:
 
   - name: mediawiki/extensions/GoogleAppEngine
     template:
-      - name: extension-quibble-noselenium
+      - name: extension-quibble-composer-noselenium
 
   - name: mediawiki/extensions/GoogleCustomWikiSearch
     template:
