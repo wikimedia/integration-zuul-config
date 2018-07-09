@@ -30,7 +30,6 @@ def set_parameters(item, job, params):
         'mwext-qunit-jessie',
         'mwext-qunit-composer-jessie',
         'mwext-qunit-jessie-non-voting',
-        'mwext-ruby-jessie',
         'mediawiki-extensions-qunit-jessie',
         'mediawiki-selenium-integration-jessie',
         # PHPUnit coverage should use PHP 7:
@@ -60,7 +59,6 @@ def set_parameters(item, job, params):
     mw_deps_jobs_starting_with = (
         'mwext-testextension',
         'mwext-qunit',
-        'mwext-ruby-jessie',
         'mwext-mw-selenium',
         'mwskin-mw-selenium',
         'mwskin-testskin',
@@ -76,7 +74,6 @@ def set_parameters(item, job, params):
 
     # FIXME rather hacky for selenium jobs (T139740, T137112)
     if job.name.startswith(('mediawiki-core-qunit-selenium',
-                            'mwext-ruby-jessie',
                             'mwext-mw-selenium')):
         set_mw_dependencies(item, job, params)
         if 'SKIN_DEPENDENCIES' in params and params['SKIN_DEPENDENCIES']:
