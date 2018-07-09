@@ -133,34 +133,6 @@
      - castor-save
      - archive-log-dir
 
-# Same as mwext-mw-selenium-jessie but runs `bundle exec rake spec` instead of `bundle exec cucumber` T146916
-- job:
-    name: 'mwext-ruby-jessie'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - prepare-mediawiki-zuul-project
-     - prepare-localhost
-     - shell: |
-         # Fail whenever $EXT_NAME is not set
-         set -u
-         # Change to the working directory. EXT_NAME is set by Zuul parameters
-         # functions
-         cd "src/extensions/$EXT_NAME"
-         . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
-         bundle install --verbose
-         bundle exec rake test
-    publishers:
-     - castor-save
-     - archive-log-dir
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-         artifact-days-to-keep: 3
-
 # Generic mw-selenium job for extensions.
 - job:
     name: 'mwext-mw-selenium-jessie'
