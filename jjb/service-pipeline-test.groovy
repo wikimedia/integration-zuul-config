@@ -1,3 +1,4 @@
 def pushProductionImage = false
-def testProductionImage = true
+def testProductionImage = false
+def nodeLabel = 'blubber'
 def dockerRegistry = 'docker-registry.wikimedia.org'
