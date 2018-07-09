@@ -7,8 +7,15 @@ node('ServicePipelineK8s') {
   def dockerRepository = 'wikimedia'
 
   def name = params.ZUUL_PROJECT.replaceAll(/\//, '-')
-  def tag = "build-${env.BUILD_ID}"
-  def fullName = "$dockerRegistry/$dockerRepository/$name:$tag"
+
+  def tag = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("UTC"))
+
+  def tagTest = "${tag}-test"
+  def tagFinal = "${tag}-production"
+
+  def testImage = "$dockerRegistry/$dockerRepository/$name:$tagTest"
+  def productionImage = "$dockerRegistry/$dockerRepository/$name:$tag"
+  def finalImage = "$dockerRegistry/$dockerRepository/$name:$tagFinal"
 
   def imageLabels = [
     "zuul.commit=${params.ZUUL_COMMIT}",
@@ -37,19 +44,31 @@ node('ServicePipelineK8s') {
   //
   def arg = { s -> "'" + s.replace("'", "'\\''") + "'" }
 
-  def buildImage = { variant ->
+  def buildImage = { variant, imageName ->
     def labels = imageLabels.collect { "--label ${arg(it)}" }.join(' ')
-    sh "blubber $blubberConfig $variant | docker build --pull --tag ${arg(fullName)} $labels --file - ."
+    sh "blubber $blubberConfig $variant | docker build --pull --tag ${arg(imageName)} $labels --file - ."
   }
 
-  def runImage = {
+  def runImage = { imageName ->
     timeout(time: 20, unit: 'MINUTES') {
-      sh "exec docker run ${arg(fullName)}"
+      sh "exec docker run ${arg(imageName)}"
     }
   }
 
-  def publishImage = {
-    sh "sudo /usr/local/bin/docker-pusher ${arg(fullName)}"
+  def publishImage = { imageName ->
+    sh "sudo /usr/local/bin/docker-pusher ${arg(imageName)}"
+  }
+
+  def tagImage = { sourceImage, targetImage ->
+    sh "docker tag ${sourceImage} ${targetImage}"
+  }
+
+  def cleanImage = { imageName ->
+    sh "docker rmi ${arg(imageName)}"
+  }
+
+  def cleanImages = { imageNames ->
+    imageNames.each { cleanImage(it) }
   }
 
   def testDeployment = {
@@ -58,24 +77,20 @@ node('ServicePipelineK8s') {
     assert config.chart : "you must define 'chart: <helm chart url>' in ${helmConfig}"
 
     def release = "${name}-${tag}"
-    def namespace = "${env.JOB_NAME}-${env.BUILD_ID}"
     def timeout = 120
     def overrides = [
-      "namespace=${namespace}",
+      "namespace=CI",
       "docker.registry=${dockerRegistry}",
-      "docker.pull_policy=IfNotPresent",
       "main_app.image=${dockerRepository}/${name}",
       "main_app.version=${tag}",
       "service.port=${servicePort}",
     ].collect { "--set ${arg(it)}" }.join(' ')
 
     try {
-      sh "kubectl create namespace ${arg(namespace)}"
       sh "helm install ${overrides} -n ${arg(release)} --debug --wait --timeout ${timeout} ${arg(config.chart)}"
       sh "helm test --cleanup ${arg(release)}"
     } finally {
       sh "helm delete --purge ${arg(release)}"
-      sh "kubectl delete namespaces ${arg(namespace)}"
     }
   }
 
@@ -84,26 +99,31 @@ node('ServicePipelineK8s') {
   }
 
   stage('Build test image') {
-    buildImage('test')
+    buildImage('test', testImage)
   }
 
   stage('Run test image') {
-    runImage()
+    runImage(testImage)
   }
 
   stage('Build production image') {
-    buildImage('production')
+    buildImage('production', productionImage)
   }
 
   if (testProductionImage) {
+    publishImage(productionImage)
     stage('Test deployment') {
       testDeployment()
     }
   }
 
   if (pushProductionImage) {
+    tagImage(productionImage, finalImage)
     stage('Register production image') {
-      publish()
+      publishImage(finalImage)
     }
+
+    // Don't keep images on production machine
+    cleanImages([testImage, productionImage, finalImage])
   }
 }
