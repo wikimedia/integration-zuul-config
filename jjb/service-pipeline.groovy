@@ -1,4 +1,4 @@
-node('ServicePipelineK8s') {
+node(nodeName) {
   def blubberConfig = 'dist/pipeline/blubber.yaml'
   def helmConfig = 'dist/pipeline/helm.yaml'
   def servicePort = 31000 + env.EXECUTOR_NUMBER.toInteger()
@@ -7,8 +7,17 @@ node('ServicePipelineK8s') {
   def dockerRepository = 'wikimedia'
 
   def name = params.ZUUL_PROJECT.replaceAll(/\//, '-')
-  def tag = "build-${env.BUILD_ID}"
-  def fullName = "$dockerRegistry/$dockerRepository/$name:$tag"
+  def shortName = name.split('-').last()
+
+  def tag = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("UTC"))
+
+  def tagTest = "${tag}-test"
+  def tagCandidate = "${tag}-candidate"
+  def tagProduction = "${tag}-production"
+
+  def testImage = "$dockerRegistry/$dockerRepository/$name:$tagTest"
+  def candidateImage = "$dockerRegistry/$dockerRepository/$name:$tagCandidate"
+  def productionImage = "$dockerRegistry/$dockerRepository/$name:$tagProduction"
 
   def imageLabels = [
     "zuul.commit=${params.ZUUL_COMMIT}",
@@ -37,19 +46,31 @@ node('ServicePipelineK8s') {
   //
   def arg = { s -> "'" + s.replace("'", "'\\''") + "'" }
 
-  def buildImage = { variant ->
+  def buildImage = { variant, imageName ->
     def labels = imageLabels.collect { "--label ${arg(it)}" }.join(' ')
-    sh "blubber $blubberConfig $variant | docker build --pull --tag ${arg(fullName)} $labels --file - ."
+    sh "set -o pipefail; blubber $blubberConfig $variant | docker build --pull --tag ${arg(imageName)} $labels --file - ."
   }
 
-  def runImage = {
+  def runImage = { imageName ->
     timeout(time: 20, unit: 'MINUTES') {
-      sh "exec docker run ${arg(fullName)}"
+      sh "exec docker run ${arg(imageName)}"
     }
   }
 
-  def publishImage = {
-    sh "sudo /usr/local/bin/docker-pusher ${arg(fullName)}"
+  def publishImage = { imageName ->
+    sh "sudo /usr/local/bin/docker-pusher ${arg(imageName)}"
+  }
+
+  def tagImage = { sourceImage, targetImage ->
+    sh "docker tag ${sourceImage} ${targetImage}"
+  }
+
+  def cleanImage = { imageName ->
+    sh "docker rmi ${arg(imageName)}"
+  }
+
+  def cleanImages = { imageNames ->
+    imageNames.each { cleanImage(it) }
   }
 
   def testDeployment = {
@@ -57,25 +78,20 @@ node('ServicePipelineK8s') {
 
     assert config.chart : "you must define 'chart: <helm chart url>' in ${helmConfig}"
 
-    def release = "${name}-${tag}"
-    def namespace = "${env.JOB_NAME}-${env.BUILD_ID}"
+    def release = "${shortName}-${tagCandidate}"
     def timeout = 120
     def overrides = [
-      "namespace=${namespace}",
       "docker.registry=${dockerRegistry}",
-      "docker.pull_policy=IfNotPresent",
       "main_app.image=${dockerRepository}/${name}",
-      "main_app.version=${tag}",
+      "main_app.version=${tagCandidate}",
       "service.port=${servicePort}",
     ].collect { "--set ${arg(it)}" }.join(' ')
 
     try {
-      sh "kubectl create namespace ${arg(namespace)}"
-      sh "helm install ${overrides} -n ${arg(release)} --debug --wait --timeout ${timeout} ${arg(config.chart)}"
-      sh "helm test --cleanup ${arg(release)}"
+      sh "KUBECONFIG=/etc/kubernetes/ci-staging.config helm --tiller-namespace=ci install --namespace=ci ${overrides} -n ${arg(release)} --debug --wait --timeout ${timeout} ${arg(config.chart)}"
+      sh "KUBECONFIG=/etc/kubernetes/ci-staging.config helm --tiller-namespace=ci test --cleanup ${arg(release)}"
     } finally {
-      sh "helm delete --purge ${arg(release)}"
-      sh "kubectl delete namespaces ${arg(namespace)}"
+      sh "KUBECONFIG=/etc/kubernetes/ci-staging.config helm --tiller-namespace=ci delete --purge ${arg(release)}"
     }
   }
 
@@ -84,26 +100,35 @@ node('ServicePipelineK8s') {
   }
 
   stage('Build test image') {
-    buildImage('test')
+    buildImage('test', testImage)
   }
 
   stage('Run test image') {
-    runImage()
+    runImage(testImage)
   }
 
-  stage('Build production image') {
-    buildImage('production')
+  // Build a candidate production image to be tested in the CI namespace
+  if (testProductionImage || pushProductionImage) {
+    stage('Build production image') {
+      buildImage('production', candidateImage)
+    }
   }
 
   if (testProductionImage) {
+    publishImage(candidateImage)
     stage('Test deployment') {
       testDeployment()
     }
   }
 
   if (pushProductionImage) {
+    // Retag the candidate image as the final production image
+    tagImage(candidateImage, productionImage)
     stage('Register production image') {
-      publish()
+      publishImage(productionImage)
     }
+
+    // Don't keep images on production machine
+    cleanImages([testImage, canidateImage, productionImage])
   }
 }

@@ -1,3 +1,4 @@
 def pushProductionImage = true
-def testProductionImage = false
+def testProductionImage = true
+def nodeName = 'ServicePipelineProduction'
 def dockerRegistry = 'docker-registry.discovery.wmnet'
