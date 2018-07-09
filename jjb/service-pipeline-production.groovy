@@ -1,3 +1,3 @@
 def pushProductionImage = true
-def testProductionImage = false
+def testProductionImage = true
 def dockerRegistry = 'docker-registry.discovery.wmnet'
