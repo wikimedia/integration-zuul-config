@@ -842,6 +842,14 @@ jobs:
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_27)$
 
+  - name: ^.*quibble.*php70.*$
+    skip-if:
+      - project: '^mediawiki/core$'
+        branch: ^(fundraising/REL1_27)$
+      # PhpTags is broken on php7.0 - T188585
+      - project: '^mediawiki/extensions/PhpTags'
+      - project: '^mediawiki/skins/Empty'
+
   - name: lintr-docker
     files:
      - '^.*\.R$'
@@ -2267,8 +2275,7 @@ projects:
 
   - name: mediawiki/skins/Empty
     template:
-     - name: mw-checks-test
-     - name: skin-tests
+     - name: skin-quibble
 
   - name: mediawiki/skins/Example
     template:
@@ -5559,18 +5566,15 @@ projects:
 
   - name: mediawiki/extensions/PhpTagsMaps
     template:
-      - name: extension-unittests-non-voting
-      - name: mwgate-npm
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PhpTagsSMW
     template:
-      - name: extension-unittests-composer
-      - name: mwgate-npm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/PhpTagsSPARQL
     template:
-      - name: mwgate-npm
-      - name: extension-unittests-generic
+      - name: extension-quibble
 
   - name: mediawiki/extensions/Pickle
     template:
@@ -6834,28 +6838,23 @@ projects:
 
   - name: mediawiki/extensions/PhpTags
     template:
-      - name: extension-unittests-generic
-      - name: mwgate-npm
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PhpTagsFunctions
     template:
-      - name: extension-unittests-generic
-      - name: mwgate-npm
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PhpTagsStorage
     template:
-      - name: extension-unittests-generic
-      - name: mwgate-npm
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PhpTagsWidgets
     template:
-      - name: extension-unittests-generic
-      - name: mwgate-npm
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PhpTagsWiki
     template:
-      - name: extension-unittests-generic
-      - name: mwgate-npm
+      - name: extension-quibble
 
   - name: mediawiki/extensions/PHPExcel
     template:
