@@ -842,6 +842,13 @@ jobs:
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_27)$
 
+  - name: ^.*quibble.*php70.*$
+    skip-if:
+      - project: '^mediawiki/core$'
+        branch: ^(fundraising/REL1_27)$
+      - project: '^mediawiki/extensions/PhpTags'
+      - project: '^mediawiki/skins/Empty'
+
   - name: lintr-docker
     files:
      - '^.*\.R$'
