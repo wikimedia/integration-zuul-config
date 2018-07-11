@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "0cca0995_c582d186",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2018-07-11T18:52:17Z",
+      "side": 1,
+      "message": "I think I might ditch scm entirely, and try to use:\n\nparameters:\n  - string: \u0027ZUUL_URL\u0027\n    default: \u0027https://phabricator.wikimedia.org/diffusion/\u0027\n  - string: \u0027ZUUL_PROJECT\u0027\n    default: \u0027GMOA\u0027\n  - string: \u0027ZUUL_REF\u0027\n    default: \u0027master\u0027\n\nAnd then let docker-ci-src-setup-simple clone for you",
+      "revId": "512cbe07c492a363a0e1ea77db1b91c3f433f9ea",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "90fde43d_0716572e",
         "filename": "jjb/mediawiki-services.yaml",
         "patchSetId": 1
@@ -36,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "eeced793_114689c7",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2018-07-11T18:52:17Z",
+      "side": 1,
+      "message": "so this will mount the local ./src dir where the code has been cloned and run: https://gerrit.wikimedia.org/r/plugins/gitiles/integration/config/+/master/dockerfiles/npm-test/run.sh\n\nbasically, npm run-script test (or whatever it\u0027s passed as an arugment).\n\nIt seems like this might work for you passing the argument \"periodic\"? I don\u0027t know for sure.",
+      "revId": "512cbe07c492a363a0e1ea77db1b91c3f433f9ea",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c8e8af35_65872de6",
         "filename": "jjb/mediawiki-services.yaml",
         "patchSetId": 1
@@ -47,6 +81,23 @@
       "writtenOn": "2018-07-11T18:40:56Z",
       "side": 1,
       "message": "This shell: will be run directly on the Jenkins slave, not in the container.\n\nBut we should be able to pass it as a parameter. I think we have a runscript docker container already.",
+      "revId": "512cbe07c492a363a0e1ea77db1b91c3f433f9ea",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0fa20e85_c2437075",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2018-07-11T18:52:17Z",
+      "side": 1,
+      "message": "This is now superfluous",
       "revId": "512cbe07c492a363a0e1ea77db1b91c3f433f9ea",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
