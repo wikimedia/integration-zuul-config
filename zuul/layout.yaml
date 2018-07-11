@@ -835,7 +835,7 @@ jobs:
   - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
     branch: ^(REL1_(2[789]|30))$
 
-  - name: ^quibble-.*-docker$
+  - name: ^.*quibble-.*-docker$
     queue-name: mediawiki
     # Quibble jobs should not be run on fundraising/REL1_27.
     skip-if:
@@ -934,10 +934,14 @@ jobs:
   - name: ^mwext-testextension-(hhvm|php70)
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
+
   - name: ^mwext-donationinterfacecore-REL1_(27|28)-zend56-jessie$
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
+      - project: ^mediawiki/core$
+        branch: (?!fundraising/REL.*)
+
   # FIXME when made voting, add it to gate-and-submit
   # also FIXME: do we actually want to keep testing on 1.28?
   - name: ^mwext-donationinterfacecore-REL1_28-zend56-jessie$
@@ -1792,6 +1796,7 @@ projects:
       - mediawiki-core-php70lint
       - composer-package-validate
     test:
+      - mwext-donationinterfacecore-REL1_27-zend56-jessie
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
@@ -1805,6 +1810,7 @@ projects:
       # Comment "check php5" to manually run this
       - mediawiki-quibble-vendor-mysql-php55-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
+      - mwext-donationinterfacecore-REL1_27-zend56-jessie
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php55-docker
@@ -1826,6 +1832,7 @@ projects:
       - mediawiki-quibble-composer-mysql-php55-docker
       - mediawiki-quibble-vendor-sqlite-php70-docker
       - mediawiki-quibble-vendor-postgres-php70-docker
+      - mwext-donationinterfacecore-REL1_28-zend56-jessie
 
   - name: mediawiki/debian
     test:
