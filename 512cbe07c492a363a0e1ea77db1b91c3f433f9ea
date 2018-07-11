@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df9d3ab3_fc4f751e",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-07-11T18:40:56Z",
+      "side": 1,
+      "message": "The shell macro docker-ci-src-setup-simple would volume mount \"src\" to \"/src\".  That git scm should thus clone the code under ./src  (basedir: src  iirc).\n\nThen the files will be owned by the jenkins user, but the container runs as nobody. It will leave files owned by nobody which on next build cause the git plugin to get some permission denied when cleaning up the workspace.",
+      "revId": "512cbe07c492a363a0e1ea77db1b91c3f433f9ea",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "90fde43d_0716572e",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-07-11T18:40:56Z",
+      "side": 1,
+      "message": "That macro expects zuul parameters to be set which only happens when being triggered from Zuul.  The timer: \u0027@hourly\u0027 would mean the job is scheduled by Jenkins.",
+      "revId": "512cbe07c492a363a0e1ea77db1b91c3f433f9ea",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8e8af35_65872de6",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-07-11T18:40:56Z",
+      "side": 1,
+      "message": "This shell: will be run directly on the Jenkins slave, not in the container.\n\nBut we should be able to pass it as a parameter. I think we have a runscript docker container already.",
+      "revId": "512cbe07c492a363a0e1ea77db1b91c3f433f9ea",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
