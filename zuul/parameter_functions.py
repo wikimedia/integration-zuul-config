@@ -270,7 +270,7 @@ dependencies = {
     'NumberOfComments': ['Comments'],
     'OpenIDConnect': ['PluggableAuth'],
     'OpenStackManager': ['LdapAuthentication'],
-    'PageTriage': ['WikiLove'],
+    'PageTriage': ['WikiLove', 'ORES'],
     'PageViewInfo': ['Graph'],
     'ParserFunctions': ['Scribunto'],
     'PhpTagsFunctions': ['PhpTags'],
