@@ -185,7 +185,7 @@ dependencies = {
     'BlueSpiceInsertCategory': ['BlueSpiceFoundation'],
     'BlueSpiceInsertFile': ['BlueSpiceFoundation'],
     'BlueSpiceInsertLink': ['BlueSpiceFoundation'],
-    'BlueSpiceInsertMagic': ['BlueSpiceFoundation'],
+    'BlueSpiceInsertMagic': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceFoundation': ['ExtJSBase'],
     'BlueSpiceInsertTemplate': ['BlueSpiceFoundation'],
     'BlueSpiceInterWikiLinks': ['BlueSpiceFoundation'],
