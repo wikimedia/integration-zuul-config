@@ -155,6 +155,10 @@ def test_mediawiki_repos_use_quibble():
         if templates == ['archived']:
             continue
 
+        if ['extension-broken'] in templates:
+            # They do not run Quibble jobs at all on purpose.
+            continue
+
         has_quibble = (
             'extension-gate' in templates
             or 'extension-quibble' in templates
