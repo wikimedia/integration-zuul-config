@@ -235,6 +235,7 @@ dependencies = {
     'EducationProgram': ['cldr', 'WikiEditor'],
     'Echo': ['CentralAuth', 'EducationProgram', 'EventLogging'],
     'ElectronPdfService': ['Collection'],
+    'EmailAuthorization': ['PluggableAuth'],
     'FanBoxes': ['SocialProfile'],
     'FileAnnotations': ['EventLogging'],
     'FlaggedRevs': ['Scribunto'],
