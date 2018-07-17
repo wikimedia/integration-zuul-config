@@ -29,7 +29,6 @@ def set_parameters(item, job, params):
         'mwext-mw-selenium-node-composer-jessie',
         'mwext-qunit-jessie',
         'mwext-qunit-composer-jessie',
-        'mwext-qunit-jessie-non-voting',
         'mediawiki-extensions-qunit-jessie',
         'mediawiki-selenium-integration-jessie',
         # PHPUnit coverage should use PHP 7:

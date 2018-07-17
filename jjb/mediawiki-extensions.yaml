@@ -111,13 +111,6 @@
      - castor-save
      - archive-log-dir
 
-- job:
-    name: 'mwext-qunit-jessie-non-voting'
-    !!merge : *job_mwext-qunit-jessie
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 # Generic qunit job for extensions with composer update.
 - job:
     name: 'mwext-qunit-composer-jessie'
@@ -589,6 +582,11 @@
          fail: true
      - ansicolor
      - timestamps
+
+- job:
+    name: 'mwext-phpunit-coverage-patch-docker'
+    node: DebianJessieDocker
+
 
 
 - job:
