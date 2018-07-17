@@ -405,15 +405,6 @@
         composer install --ansi --no-progress --prefer-dist --profile -v
 
 - builder:
-    name: composer-update-no-dev
-    builders:
-     - shell: |
-        set -x
-        export HTTP_PROXY_REQUEST_FULLURI=false
-        export HTTPS_PROXY_REQUEST_FULLURI=false
-        composer update --ansi --no-progress --prefer-dist --profile --no-dev
-
-- builder:
     name: composer-local-create
     builders:
      - shell: |
