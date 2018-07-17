@@ -1122,6 +1122,32 @@ jobs:
 
 project-templates:
 
+  # For extensions that have broken tests or magic behaviors that CI does not support.
+  # See also https://phabricator.wikimedia.org/T183512
+  #
+  # Only php7 is added, HHVM is ignored.
+  #
+  - name: extension-broken
+    check:
+     - mwgate-php55lint
+     - mwgate-php70lint
+     - mwgate-composer-validate
+    test:
+     - mwgate-composer-php70-docker
+     - mwgate-npm-node-6-docker
+     - mwgate-php70lint
+    php5:
+     - mwgate-php55lint
+    gate-and-submit:
+     - mwgate-composer-php70-docker
+     - mwgate-npm-node-6-docker
+     - mwgate-php55lint
+     - mwgate-php70lint
+    experimental:
+     - mwext-php70-phan-docker
+     - quibble-composer-mysql-php70-docker
+    # Surely they are never going to be elected for wmf/ branching or SWAT
+
   - name: extension-unittests-composer
     check:
      - mwgate-php55lint
@@ -4103,12 +4129,10 @@ projects:
     gate-and-submit:
       - mediawiki-core-qunit-selenium-jessie
 
-  # Non-voting due to T87390
+  # Broken due to T87390 / T117659
   - name: mediawiki/extensions/MathSearch
     template:
-      - name: mwgate-composer
-      - name: extension-unittests-non-voting
-      - name: mwgate-npm
+      - name: extension-broken
 
   - name: mediawiki/extensions/MapSources
     template:
@@ -6419,11 +6443,10 @@ projects:
     template:
      - name: extension-quibble
 
-  # Depends on SemanticForms which is on GitHub
+  # Depends on SemanticForms and Semantic MediaWiki which are on GitHub
   - name: mediawiki/extensions/HierarchyBuilder
     template:
-     - name: extension-unittests-composer-non-voting
-     - name: mwgate-npm
+     - name: extension-broken
 
   - name: mediawiki/extensions/HitCounters
     template:
@@ -6432,8 +6455,7 @@ projects:
   # Require $wgNamespacesWithSubpages set to TRUE in the MAIN namespace.
   - name: mediawiki/extensions/Html2Wiki
     template:
-     - name: extension-unittests-composer-non-voting
-     - name: mwgate-npm
+     - name: extension-broken
 
   - name: mediawiki/extensions/ImageTagging
     template:
@@ -6562,8 +6584,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticDependency
     template:
-     - name: extension-unittests-generic
-     - name: mwgate-npm
+     - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/SendGrid
     template:
@@ -6906,8 +6927,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticACL
     template:
-      - name: extension-unittests-composer
-      - name: mwgate-npm
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/SemanticBundle
     template:
@@ -6927,18 +6947,15 @@ projects:
 
   - name: mediawiki/extensions/SemanticImageAnnotator
     template:
-      - name: extension-unittests-composer-non-voting
-      - name: mwgate-npm
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/SemanticImageInput
     template:
-      - name: extension-unittests-composer-non-voting
-      - name: mwgate-npm
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/SemanticInternalObjects
     template:
-      - name: extension-unittests-composer-non-voting
-      - name: mwgate-npm
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/SemanticLinks
     template:
@@ -6954,13 +6971,11 @@ projects:
 
   - name: mediawiki/extensions/SemanticPageSeries
     template:
-      - name: extension-unittests-composer-non-voting
-      - name: mwgate-npm
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/SemanticTasks
     template:
-      - name: extension-unittests-composer-non-voting
-      - name: mwgate-npm
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/SemanticTitle
     template:

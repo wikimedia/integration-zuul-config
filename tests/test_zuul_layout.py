@@ -30,6 +30,7 @@ class TestZuulLayout(unittest.TestCase):
     def test_mediawiki_ext_skins_have_test_templates(self):
         one_of_templates = (
             'archived',
+            'extension-broken',
             'extension-unittests',
             'extension-quibble',
             'skin-tests',
