@@ -88,6 +88,16 @@ RUN {{ alldeps | apt_install }} \
     && apt-get purge -y python3-pip python3-wheel \
     && apt-get autoremove -y --purge
 
+#
+# CI utility to generate per patches coverage
+#
+RUN mkdir -p /opt/composer && chown nobody:nogroup /opt/composer
+USER nobody
+RUN COMPOSER_HOME=/opt/composer composer global require mediawiki/phpunit-patch-coverage 0.0.9 --no-progress \
+    && ln -s /opt/composer/vendor/bin/phpunit-patch-coverage /usr/local/bin/phpunit-patch-coverage
+    && rm -fR /opt/composer/cache
+USER root
+
 # tidy from Jessie
 # Provided on https://integration.wikimedia.org/oldtidy/ until a Debian package
 # is made available:
