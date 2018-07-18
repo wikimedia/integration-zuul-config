@@ -115,7 +115,14 @@
     name: irc-wikimedia-ri-ci
     publishers:
      - ircbot:
-         message-type: summary-scm-fail
-         channels:
-             - name: '#wikimedia-ri-ci'
-               notify-only: true
+        strategy: failure-and-fixed
+        notify-start: false
+        notify-committers: false
+        notify-culprits: false
+        notify-upstream: false
+        notify-fixers: false
+        message-type: summary
+        matrix-notifier: only-parent
+        channels:
+         - name: '#wikimedia-ri-ci'
+           notify-only: true
