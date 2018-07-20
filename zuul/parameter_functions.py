@@ -139,6 +139,12 @@ def set_parameters(item, job, params):
             # VTC tests take forever
             params['BUILD_TIMEOUT'] = 60  # minutes
             params['DEB_BUILD_OPTIONS'] = 'parallel=12'
+        elif (params['ZUUL_PROJECT'] == 'operations/debs/trafficserver'):
+            # Building ATS takes a while
+            params['BUILD_TIMEOUT'] = 60  # minutes
+            # Backports needed on stretch for libbrotli-dev and a recent
+            # debhelper version (>= 11)
+            params['BACKPORTS'] = 'yes'
         elif (params['ZUUL_PROJECT'] ==
                 'operations/debs/contenttranslation/giella-sme'):
             # Heavy build T143546
