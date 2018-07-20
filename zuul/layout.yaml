@@ -1515,26 +1515,6 @@ project-templates:
     gate-and-submit:
      - mwgate-jsduck-docker
 
-  - name: mw-checks-test
-    check:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    test:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    gate-and-submit: &mw-checks-test-gate-and-submit
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    gate-and-submit-swat: *mw-checks-test-gate-and-submit
-    experimental:
-     - mwgate-npm-node-6-docker
-     - mwgate-composer-hhvm-docker
-     - mwgate-composer-php55-docker
-     - mwgate-composer-php70-docker
-
   - name: composer-test
     check:
       - php55lint
@@ -7292,7 +7272,6 @@ projects:
       - name: mwgate-composer
       - name: extension-unittests-non-voting
       - name: mwgate-npm
-      - name: mw-checks-test
 
   - name: mediawiki/extensions/WikiLove
     template:
