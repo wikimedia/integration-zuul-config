@@ -145,7 +145,7 @@ def set_parameters(item, job, params):
             params['BUILD_TIMEOUT'] = 180  # minutes
 
 
-# This has is used to inject dependencies for MediaWiki jobs.
+# This hash is used to inject dependencies for MediaWiki jobs.
 #
 # Values are assumed to be MediaWiki extensions. Skins have to be prefixed with
 # 'skins/'.  The has is used by the set_mw_dependencies() parameter function
@@ -328,6 +328,7 @@ dependencies = {
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite'],
+    'WhoIsWatching': ['Echo'],
     'Wikibase': [
         'CirrusSearch',
         'cldr',
