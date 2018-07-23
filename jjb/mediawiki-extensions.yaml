@@ -267,6 +267,28 @@
     archive:
      - archive-log-allow-empty
 
+- job: # Identical to mwext-VisualEditor-docker-publish except docsrc and docdest.
+    name: 'mwext-npm-doc-publish'
+    node: DebianJessieDocker
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/npm-test:0.3.0
+         run_args: 'doc'
+         logdir: '/log'
+     - doc-publish:
+        docsrc: 'src/docs/js'
+        docdest: '$DOC_BASENAME/$ZUUL_BRANCH'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+
 - job:
     name: 'mwext-VisualEditor-docker-publish'
     node: DebianJessieDocker

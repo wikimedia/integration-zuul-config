@@ -1057,6 +1057,9 @@ jobs:
   - name: 'mwext-MobileFrontend-npm-run-lint-modules-docker'
     branch: ^(?!REL1_28]|wmf/)
 
+  - name: 'mwext-npm-doc-publish'
+    branch: ^master$
+
   - name: 'mwext-VisualEditor-docker-publish'
     branch: ^master$
 
@@ -2272,6 +2275,8 @@ projects:
      - name: mwgate-rake
      - name: skin-quibble
      - name: skin-selenium
+    experimental:
+     - mwext-npm-doc-publish
     postmerge:
      - mwext-doxygen-publish
 
@@ -4112,8 +4117,9 @@ projects:
       - mwext-MobileFrontend-npm-run-lint-modules-docker
     gate-and-submit:
       - mwext-MobileFrontend-npm-run-lint-modules-docker
+    experimental:
+      - mwext-npm-doc-publish
     postmerge:
-      - mwext-jsduck-publish
       - mwext-doxygen-publish
 
   - name: mediawiki/extensions/MobileApp
@@ -6789,6 +6795,8 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-coverage
+    experimental:
+     - mwext-npm-doc-publish
 
   - name: mediawiki/extensions/PostEdit
     template:
