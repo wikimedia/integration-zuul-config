@@ -180,7 +180,7 @@ dependencies = {
     'BlueSpiceChecklist': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceConfigManager': ['BlueSpiceFoundation'],
     'BlueSpiceContextMenu': ['BlueSpiceFoundation'],
-    'BlueSpiceCountThings': ['BlueSpiceFoundation'],
+    'BlueSpiceCountThings': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceDashboards': ['BlueSpiceFoundation'],
     'BlueSpiceEchoConnector': ['BlueSpiceFoundation', 'Echo'],
     'BlueSpiceEditNotifyConnector': ['BlueSpiceFoundation'],
