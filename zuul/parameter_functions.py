@@ -20,10 +20,6 @@ def set_parameters(item, job, params):
         # Quibble takes care of it
         del(params['DISPLAY'])
 
-    # To help with 'registry error parsing json'
-    # https://phabricator.wikimedia.org/T198348
-    params['npm_config_loglevel'] = 'info'
-
     php7_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
         'mediawiki-core-qunit-selenium-jessie',
