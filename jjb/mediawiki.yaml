@@ -595,6 +595,43 @@
         - timestamps
         - ansicolor
 
+
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwext-phpunit-coverage-patch-docker'
+    quibble_args: '--commands=mwext-phpunit-coverage-patch'
+    triggers:
+        - zuul
+
+# XXX copy pasted to pass --volume cover:/workspace/cover
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwext-phpunit-coverage-docker-publish'
+    quibble_args: '--commands=mwext-phpunit-coverage'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-wipe-dir:
+            dir: 'cover'
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: '{docker_image}'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover'
+            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            logdir: '/log'
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+        - postbuildscript:
+            builders:
+                - cover-extensions-publish:
+                    src: 'cover'
+                    # Should be equivalent to $EXT_NAME
+                    dest: '$DOC_BASENAME'
+                - docker-wipe-dir:
+                    dir: 'cover'
+
 - job:
     name: 'quibble-integration'
     project-type: matrix
@@ -675,4 +712,12 @@
             # We never use composer on wmf cluster
             packages-source: vendor
             # WMF cluster uses MariaDB/MySQL
+            database: mysql
+        - mwext-phpunit-coverage-patch-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-2
+            packages-source:  composer
+            database: mysql
+        - mwext-phpunit-coverage-docker-publish:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-2
+            packages-source:  composer
             database: mysql
