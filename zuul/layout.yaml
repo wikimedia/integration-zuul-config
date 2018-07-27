@@ -1442,6 +1442,10 @@ project-templates:
     coverage:
       - mwext-phpunit-coverage-patch
 
+  - name: extension-coverage-Wikibase
+    postmerge:
+      - mwext-phpunit-coverage-publish-Wikibase
+
   # Runs quibble, and includes experimental jobs
   # that are for skins.
   - name: skin-quibble
@@ -7233,6 +7237,7 @@ projects:
       - name: mwgate-npm
       - name: extension-gate
       - name: extension-phan-generic
+      - name: extension-coverage-Wikibase
       - name: mwgate-rake
       - name: mediawiki-core-qunit-selenium-jessie
     php5:  # 'check php5'

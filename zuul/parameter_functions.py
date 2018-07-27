@@ -35,6 +35,7 @@ def set_parameters(item, job, params):
         'mediawiki-phpunit-coverage-patch',
         'mwext-phpunit-coverage-patch',
         'mwext-phpunit-coverage-publish',
+        'mwext-phpunit-coverage-publish-Wikibase',
         # Shells out to PHP (T196956)
         'mwext-MobileFrontend-npm-run-lint-modules-docker',
         )
