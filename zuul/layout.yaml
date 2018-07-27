@@ -840,12 +840,12 @@ jobs:
     # Quibble jobs should not be run on fundraising/REL1_27.
     skip-if:
       - project: '^mediawiki/core$'
-        branch: ^(fundraising/REL1_27)$
+        branch: ^(fundraising/REL1_(27|31))$
 
   - name: ^.*quibble.*php70.*$
     skip-if:
       - project: '^mediawiki/core$'
-        branch: ^(fundraising/REL1_27)$
+        branch: ^(fundraising/REL1_(27|31))$
       # PhpTags is broken on php7.0 - T188585
       - project: '^mediawiki/extensions/PhpTags'
       - project: '^mediawiki/skins/Empty'
