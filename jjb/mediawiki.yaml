@@ -595,6 +595,29 @@
         - timestamps
         - ansicolor
 
+
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwext-phpunit-coverage-patch-docker'
+    quibble_args: '--commands=mwext-phpunit-coverage-patch'
+    triggers:
+        - zuul
+
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwext-phpunit-coverage-docker-publish'
+    quibble_args: '--commands=mwext-phpunit-coverage'
+    docker_run_options: '--volume "$(pwd)"/cover:/workspace/cover"'
+    triggers:
+        - zuul
+    publishers:
+        - postbuildscript:
+            builders:
+                - cover-extensions-publish:
+                    src: 'cover'
+                    # Should be equivalent to $EXT_NAME
+                    dest: '$DOC_BASENAME'
+
 - job:
     name: 'quibble-integration'
     project-type: matrix
@@ -675,4 +698,12 @@
             # We never use composer on wmf cluster
             packages-source: vendor
             # WMF cluster uses MariaDB/MySQL
+            database: mysql
+        - mwext-phpunit-coverage-patch-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-1
+            packages-source:  composer
+            database: mysql
+        - mwext-phpunit-coverage-docker-publish:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-1
+            packages-source:  composer
             database: mysql
