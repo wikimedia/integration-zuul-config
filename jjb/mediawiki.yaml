@@ -314,112 +314,6 @@
         - '{name}-npm-node-6-docker'
         - '{name}-npm-browser-node-6-docker'
 
-- job:
-    name: 'mediawiki-core-code-coverage'
-    node: contintLabsSlave && DebianJessie
-    # Set env variables needed by zuul-cloner since job is not triggered by
-    # Zuul but is timed using Jenkins own scheduler.
-    parameters:
-     - string:
-         name: 'ZUUL_UUID'
-         default: 'mwcore-cover_not-very-random'
-     - string:
-         name: 'ZUUL_BRANCH'
-         default: 'master'
-     - string:
-         name: 'ZUUL_REF'
-         default: 'master'
-     - string:
-         name: 'ZUUL_CHANGE'
-         default: 'timed_build'
-     - string:
-         name: 'ZUUL_PATCHSET'
-         default: 'timed_build'
-     - string:
-         name: 'ZUUL_PIPELINE'
-         default: 'timed_build'
-     - string:
-         name: 'ZUUL_PROJECT'
-         default: 'mediawiki/core'
-     - string:
-         name: 'ZUUL_URL'
-         default: 'https://gerrit.wikimedia.org/r/p'
-     - string:
-         name: 'PHP_BIN'
-         default: 'php7.0'
-    builders:
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-sqlite
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     # FIXME should use the mw-phpunit.sh wrapper
-     - shell: |
-        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
-
-        mkdir -p log
-        rm -f log/clover.xml log/clover.bz2
-
-        # Since clover file are huge, compress them before archiving
-        # We need to keep the original though for the cloverphp plugin
-        function compress_clover_log() {
-            if [ -s "log/clover.xml" ]; then
-                echo "Compressing log/clover.xml with bz2..."
-                bzip2 --verbose --best --keep log/clover.xml
-                echo "Compression completed."
-            fi
-        }
-        trap compress_clover_log EXIT
-
-        rm -fR "$WORKSPACE/cover"
-        mkdir -p "$WORKSPACE/cover"
-
-        nice -n 19 \
-            php -d zend_extension=xdebug.so \
-                $MW_INSTALL_PATH/tests/phpunit/phpunit.php \
-                    --exclude-group Dump,Broken,ParserFuzz,Stub \
-                    --coverage-clover log/clover.xml \
-                    --coverage-html "$WORKSPACE/cover" \
-            || :
-        # Above: Use "|| :" to ignore any non-zero exist status
-        # We want to publish code coverage even in case one of there
-        # being PHPUnit test failures. Normal test failures are not
-        # fatal and PHPUnit will stil generate console output, clover
-        # reports and and html reports. However don't blindly
-        # make the job pass either because if we do, then cover-publish
-        # will end up syncing an empty directory, which deletes the
-        # coverage report from doc.wikimedia.org. In case of "real" failure,
-        # let the job fail and don't publish a new report. "real" failures
-        # can be a PHP Fatal error, of a segfault, for example.
-        test -f cover/index.html
-
-        if [ -s "log/clover.xml" ]; then
-            /srv/deployment/integration/slave-scripts/bin/clover-edit.py log/clover.xml --name "MediaWiki core" --remove-full-info --save "$WORKSPACE/cover/clover.xml"
-            bzip2 --verbose --best --keep log/clover.xml
-            mv log/clover.xml.bz2 "$WORKSPACE/cover/clover.xml.bz2"
-        fi
-
-     - cover-publish:
-         src: 'cover'
-         dest: 'mediawiki-core'
-    publishers:
-     - archive:
-         artifacts: 'log/*'
-     - cloverphp:
-         xml-location: 'log/clover.xml'
-     - mw-teardown
-     - beta-irc  # Spam #wikimedia-releng on failure
-    triggers:
-     - timed: '0 3,15 * * *'
-    wrappers:
-     - timeout:
-         timeout: 120
-         fail: true
-     - ansicolor
-     - timestamps
-
 # Phan! (T132636)
 - job:
     name: 'mediawiki-core-php70-phan-docker'
@@ -625,6 +519,7 @@
 - job-template:
     !!merge : *job_quibble
     name: 'mediawiki-core-code-coverage-docker'
+    concurrent: false
     quibble_args: '--commands=mediawiki-coverage'
     triggers:
      - timed: '0 3,15 * * *'
@@ -647,7 +542,7 @@
             logdir: '/log'
         - cover-publish:
             src: 'cover'
-            dest: 'mediawiki-core-docker'
+            dest: 'mediawiki-core'
     publishers:
         - archive-log-allow-empty
         - cloverphp:
@@ -748,6 +643,6 @@
             packages-source:  composer
             database: mysql
         - mediawiki-core-code-coverage-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-4
-            packages-source:  composer
-            database: mysql
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-5
+            packages-source: vendor
+            database: sqlite
