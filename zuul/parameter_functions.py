@@ -31,8 +31,6 @@ def set_parameters(item, job, params):
         'mwext-qunit-composer-jessie',
         'mediawiki-extensions-qunit-jessie',
         'mediawiki-selenium-integration-jessie',
-        # PHPUnit coverage should use PHP 7:
-        'mediawiki-phpunit-coverage-patch',
         # Shells out to PHP (T196956)
         'mwext-MobileFrontend-npm-run-lint-modules-docker',
         )
