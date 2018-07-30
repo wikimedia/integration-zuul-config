@@ -16,8 +16,7 @@ php -d zend_extension=xdebug.so \
     tests/phpunit/phpunit.php \
         --exclude-group Dump,Broken,ParserFuzz,Stub \
         --coverage-clover "$LOG_DIR"/clover.xml \
-        --coverage-html "$WORKSPACE/cover" \
-        tests/phpunit/includes/api/ApiMoveTest.php &
+        --coverage-html "$WORKSPACE/cover" &
 cover_pid=$!
 relay_signals SIGINT SIGTERM
 wait "$cover_pid"
