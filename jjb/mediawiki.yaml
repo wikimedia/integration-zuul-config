@@ -621,6 +621,31 @@
                 - docker-wipe-dir:
                     dir: 'cover'
 
+# XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
+- job-template:
+    !!merge : *job_quibble
+    name: 'mediawiki-core-code-coverage-docker'
+    quibble_args: '--commands=mediawiki-coverage'
+    triggers:
+        - zuul
+    builders:
+        - docker-wipe-dir:
+            dir: 'cover'
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: '{docker_image}'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover'
+            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            logdir: '/log'
+        - cover-publish:
+            src: 'cover'
+            dest: 'mediawiki-core-docker'
+    publishers:
+        - archive-log-allow-empty
+        - cloverphp:
+            xml-location: 'log/clover.xml'
+        - beta-irc  # Spam #wikimedia-releng on failure
+
 - job:
     name: 'quibble-integration'
     project-type: matrix
@@ -712,5 +737,9 @@
             database: mysql
         - mwext-phpunit-coverage-docker-publish:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-3
+            packages-source:  composer
+            database: mysql
+        - mediawiki-core-code-coverage-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-4
             packages-source:  composer
             database: mysql
