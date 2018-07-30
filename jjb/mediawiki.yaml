@@ -420,42 +420,6 @@
      - ansicolor
      - timestamps
 
-# Per-patch coverage for MediaWiki core.
-- job:
-    name: 'mediawiki-phpunit-coverage-patch'
-    node: ci-jessie-wikimedia
-    builders:
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-sqlite
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     - shell: |
-        . "/srv/deployment/integration/slave-scripts/bin/mw-set-env.sh"
-
-        cd $MW_INSTALL_PATH
-        composer require mediawiki/phpunit-patch-coverage 0.0.9 --no-progress
-        # FIXME This is terrible, but composer require creates a dirty diff.
-        git checkout composer.json
-        ./vendor/bin/phpunit-patch-coverage check --command \
-            "php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php" \
-            --html coverage.html
-
-    publishers:
-     - archive:
-         artifacts: 'src/coverage.html'
-         allow-empty: true
-    triggers:
-     - zuul
-    wrappers:
-     - timeout:
-         timeout: 60
-         fail: true
-     - ansicolor
-     - timestamps
-
 # Phan! (T132636)
 - job:
     name: 'mediawiki-core-php70-phan-docker'
@@ -595,6 +559,31 @@
         - timestamps
         - ansicolor
 
+# Per-patch coverage for MediaWiki core.
+- job-template:
+    !!merge : *job_quibble
+    name: 'mediawiki-phpunit-coverage-patch-docker'
+    quibble_args: '--run=phpunit'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: '{docker_image}'
+            docker_run_options: '--volume /srv/git:/srv/git:ro'
+            run_args: '--packages-source {packages-source} --db {database} --run "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
+            logdir: '/log'
+    publishers:
+     - archive:
+         artifacts: 'log/coverage.html'
+         allow-empty: true
+    wrappers:
+     - timeout:
+         timeout: 60
+         fail: true
+     - ansicolor
+     - timestamps
 
 - job-template:
     !!merge : *job_quibble
@@ -713,6 +702,10 @@
             packages-source: vendor
             # WMF cluster uses MariaDB/MySQL
             database: mysql
+        - mediawiki-phpunit-coverage-patch-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-3
+            packages-source: vendor
+            database: sqlite
         - mwext-phpunit-coverage-patch-docker:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-3
             packages-source:  composer
