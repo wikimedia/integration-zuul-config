@@ -994,8 +994,8 @@ jobs:
     mutex: mwext-phpunit-coverage-patch-docker
   - name: mwext-phpunit-coverage-docker-publish
     mutex: mwext-phpunit-coverage-docker-publish
-  - name: mediawiki-phpunit-coverage-patch
-    mutex: mediawiki-phpunit-coverage-patch
+  - name: mediawiki-phpunit-coverage-patch-docker
+    mutex: mediawiki-phpunit-coverage-patch-docker
 
     # Only generate coverage information for master
   - name: ^.*-coverage-publish$
@@ -1831,7 +1831,7 @@ projects:
       - mediawiki-core-php70-phan-docker
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
     coverage:
-      - mediawiki-phpunit-coverage-patch
+      - mediawiki-phpunit-coverage-patch-docker
     postmerge:
       - mediawiki-core-jsduck-docker-publish
     experimental:
