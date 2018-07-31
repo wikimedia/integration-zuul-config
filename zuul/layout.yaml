@@ -828,11 +828,6 @@ jobs:
     skip-if:
       - branch: (?:^(REL1_(2[789]|30))$)
 
-  # Run PHP 7.0 MediaWiki PHPUnit on 1.31+
-  - name: ^mwskin-testskin-php70.*$
-    skip-if:
-      - branch: (?:^(REL1_(2[789]|30))$)
-
   # Run MediaWiki PHP 5.5 tests on MW < 1.31
   - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
     branch: ^(REL1_(2[789]|30))$
@@ -1485,35 +1480,6 @@ project-templates:
       - quibble-composer-sqlite-php70-docker
       - mwskin-php70-phan-docker
       # TODO: seccheck for skins
-
-  # Deprecated, use skin-quibble instead
-  - name: skin-tests
-    test:
-      - mwskin-testskin-hhvm-jessie
-    php5:
-      - mwskin-testskin-php70-jessie
-      - mwskin-testskin-php55-jessie
-    gate-and-submit: &skin-tests-gate-and-submit
-      - mwskin-testskin-php55-jessie
-      - mwskin-testskin-php70-jessie
-      - mwskin-testskin-hhvm-jessie
-    gate-and-submit-swat: *skin-tests-gate-and-submit
-    experimental:
-      - quibble-vendor-mysql-hhvm-docker
-      - quibble-vendor-mysql-php55-docker
-      - quibble-vendor-mysql-php70-docker
-      - mwskin-php70-phan-docker
-
-  - name: skin-tests-non-voting
-    test:
-      - mwskin-testskin-hhvm-jessie-non-voting
-      - mwskin-testskin-php55-jessie-non-voting
-      - mwskin-testskin-php70-jessie-non-voting
-    experimental:
-      - quibble-vendor-mysql-hhvm-docker
-      - quibble-vendor-mysql-php55-docker
-      - quibble-vendor-mysql-php70-docker
-      - mwskin-php70-phan-docker
 
   - name: extension-jsduck
     test:

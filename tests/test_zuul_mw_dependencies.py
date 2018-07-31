@@ -95,9 +95,7 @@ class TestMwDependencies(unittest.TestCase):
             job_name='mwext-mw-selenium-jessie'))
 
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwskin-testskin-hhvm-jessie'))
-        self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwskin-testskin-hhvm-jessie-non-voting'))
+            job_name='quibble-composer-mysql-php70-docker'))
 
         self.assertMissingDependencies(self.fetch_dependencies(
             job_name='mediawiki-core-phplint'))
@@ -202,7 +200,7 @@ class TestMwDependencies(unittest.TestCase):
 
     def test_inject_extension_on_a_skin(self):
         deps = self.fetch_dependencies(
-            job_name='mwskin-testskin-php70-jessie',
+            job_name='quibble-composer-mysql-php70-docker',
             project='mediawiki/skins/BlueSpiceSkin')
         self.assertDictContainsSubset(
             {
