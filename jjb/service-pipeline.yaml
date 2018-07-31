@@ -31,6 +31,18 @@
           same-node: true
 
 - job:
+    name: 'trigger-blubber-test'
+    defaults: global
+    node: ServicePipelineProduction
+    parameters: *service-pipeline-parameters
+    builders:
+      - trigger-builds:
+        - project: blubber-test
+          current-parameters: true
+          block: true
+          same-node: true
+
+- job:
     name: 'service-pipeline'
     defaults: global
     project-type: pipeline
@@ -47,3 +59,11 @@
     dsl: !include-raw:
       - service-pipeline-test.groovy
       - service-pipeline.groovy
+
+- job:
+    name: 'blubber-test'
+    defaults: global
+    project-type: pipeline
+    parameters: *service-pipeline-parameters
+    dsl: !include-raw:
+      - blubber-test.groovy
