@@ -1,0 +1,12 @@
+FROM {{ "npm" | image_tag }}
+
+USER root
+
+# Use older npm to bootstrap npm6
+RUN npm install npm@6 -g
+
+USER nobody
+
+ENTRYPOINT ["/usr/bin/npm"]
+WORKDIR /src
+CMD ["--help"]
