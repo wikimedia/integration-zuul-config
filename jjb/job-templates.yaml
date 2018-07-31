@@ -245,3 +245,18 @@
          set -x
          (grep --recursive -P '^\t' --exclude-dir='.git' --include='{fileselector}' .) && HAS_TAB=1 || HAS_TAB=0
          exit $HAS_TAB
+
+- job-template:
+    name: 'npm6-audit-docker'
+    node: DebianJessieDocker
+    docker_image_var: docker-registry.wikimedia.org/releng/npm6:0.1.0
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-src-dir
+        - docker-run-with-log-cache-src:
+            image: '{obj:docker_image_var}'
+            logdir: '/log'
+            run_args: 'audit'
