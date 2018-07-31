@@ -249,14 +249,15 @@
 - job:
     name: 'npm6-audit-docker'
     node: DebianJessieDocker
-    docker_image_var: docker-registry.wikimedia.org/releng/npm6:0.1.0
     triggers:
         - zuul
     builders:
         - docker-castor-load
         - docker-log-dir
         - docker-src-dir
+        - docker-ci-src-setup-simple
         - docker-run-with-log-cache-src:
-            image: '{obj:docker_image_var}'
+            image: 'docker-registry.wikimedia.org/releng/npm6:0.1.0'
+            docker_run_options: '-w="/src"'
             logdir: '/log'
             run_args: 'audit'
