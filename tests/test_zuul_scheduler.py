@@ -1082,6 +1082,18 @@ class TestZuulScheduler(unittest.TestCase):
             release_job.changeMatches(change),
             'release job is not for master branch')
 
+        # We run it on feature branches as well:
+        change.branch = 'feature'
+        self.assertTrue(
+            wmf_quibble_job.changeMatches(change),
+            'wmf-quibble jobs run on feature branch')
+        self.assertFalse(
+            gate_job.changeMatches(change),
+            'gate job is no more used on feature branch')
+        self.assertFalse(
+            release_job.changeMatches(change),
+            'release job is not for feature branch')
+
         # But not the release branches
         change.branch = 'REL1_42'
         self.assertFalse(
@@ -1105,7 +1117,8 @@ class TestZuulScheduler(unittest.TestCase):
                 'mediawiki-extensions-hhvm-jessie')
 
             change = zuul.model.Change(repo)
-            for branch in ['wmf/1.99.9-wmf.999', 'master', 'REL1_42']:
+            for branch in ['wmf/1.99.9-wmf.999', 'master',
+                           'REL1_42', 'feature']:
                 change.branch = branch
                 self.assertFalse(
                     wmf_quibble_job.changeMatches(change),
@@ -1123,6 +1136,17 @@ class TestZuulScheduler(unittest.TestCase):
         change = zuul.model.Change(repo)
 
         change.branch = 'REL1_42'
+        self.assertTrue(release_job.changeMatches(change))
+
+    def test_gated_extension_run_tests_on_feature_branch(self):
+        repo = 'mediawiki/extensions/CirrusSearch'
+        release_job = self.getJob(
+            repo, 'test',
+            'wmf-quibble-vendor-mysql-hhvm-docker')
+
+        change = zuul.model.Change(repo)
+
+        change.branch = 'es6'
         self.assertTrue(release_job.changeMatches(change))
 
     def test_gated_extension_behavior(self):
@@ -1146,6 +1170,11 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertFalse(release_job.changeMatches(change))
 
         change.branch = 'wmf/1.99.9-wmf.999'
+        self.assertTrue(wmf_quibble_job.changeMatches(change))
+        self.assertFalse(gate_job.changeMatches(change))
+        self.assertFalse(release_job.changeMatches(change))
+
+        change.branch = 'feature'
         self.assertTrue(wmf_quibble_job.changeMatches(change))
         self.assertFalse(gate_job.changeMatches(change))
         self.assertFalse(release_job.changeMatches(change))
