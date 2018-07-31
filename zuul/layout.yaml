@@ -965,8 +965,8 @@ jobs:
 
   - name: ^wmf-quibble-
     # Gated extensions are only for master and Wikimedia deployment. We do not
-    # run them on REL (or others) branches.
-    branch: ^(master|wmf/)
+    # run them on REL branches.
+    branch: (?!^REL)
     skip-if:
       # Not ready for core/vendor yet T197469
       - project: ^mediawiki/(core|vendor)
