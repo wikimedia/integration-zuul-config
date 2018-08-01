@@ -116,9 +116,14 @@ class TestZuulScheduler(unittest.TestCase):
             self.getPipeline(pipeline).job_trees.iteritems()
             if p.name == project][0]
 
-        job = [
-            j for j in job_tree.getJobs()
-            if j.name == job][0]
+        try:
+            job = [
+                j for j in job_tree.getJobs()
+                if j.name == job][0]
+        except IndexError as e:
+            raise Exception('No such job %s for %s in pipeline %s' % (
+                job, project, pipeline))
+
         return job
 
     def test_only_voting_jobs_in_gate(self):
