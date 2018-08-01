@@ -696,7 +696,7 @@ pipelines:
     trigger:
       gerrit:
         - event: comment-added
-          comment: (?im)^Patch Set \d+:\n\n\s*check (php5?|zend)\.?\s*$
+          comment: (?im)^Patch Set \d+:\n\n\s*check (php5?|zend|sqlite|postgres)\.?\s*$
           email: *email_whitelist
     success-message: 'PHP build succeeded.'
     success:
@@ -846,6 +846,12 @@ jobs:
       # PhpTags is broken on php7.0 - T188585
       - project: '^mediawiki/extensions/PhpTags'
       - project: '^mediawiki/skins/Empty'
+
+    # Skip postgres/sqlite on wmf/, fundraising/ (not used)
+    # and on MW < 1.32
+  - name: ^.*quibble.*(postgres|sqlite).*$
+    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+
 
   - name: lintr-docker
     files:
@@ -1762,6 +1768,8 @@ projects:
     php5:
       # Comment "check php5" to manually run this
       - mediawiki-quibble-vendor-mysql-php55-docker
+      - mediawiki-quibble-vendor-sqlite-php70-docker
+      - mediawiki-quibble-vendor-postgres-php70-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
       - mwext-donationinterfacecore-REL1_27-zend56-jessie
       - mediawiki-quibble-composer-mysql-php70-docker
@@ -1769,6 +1777,8 @@ projects:
       - mediawiki-quibble-vendor-mysql-php55-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
       - mediawiki-quibble-composertest-php70-docker
+      - mediawiki-quibble-vendor-sqlite-php70-docker
+      - mediawiki-quibble-vendor-postgres-php70-docker
       - mediawiki-core-hhvmlint
 
       - mediawiki-core-jsduck-docker
@@ -1783,8 +1793,6 @@ projects:
       # Experimental php version
       - mwgate-composer-php70-docker
       - mediawiki-quibble-composer-mysql-php55-docker
-      - mediawiki-quibble-vendor-sqlite-php70-docker
-      - mediawiki-quibble-vendor-postgres-php70-docker
       - mwext-donationinterfacecore-REL1_28-zend56-jessie
 
   - name: mediawiki/debian

@@ -1001,6 +1001,8 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-php55-docker': False,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
+            'mediawiki-quibble-vendor-sqlite-php70-docker': True,
+            'mediawiki-quibble-vendor-postgres-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
             'mwext-donationinterfacecore-REL1_27-zend56-jessie': False,
             'release-quibble-vendor-mysql-hhvm-docker': False,
@@ -1099,6 +1101,35 @@ class TestZuulScheduler(unittest.TestCase):
 
         change.branch = 'REL1_42'
         self.assertTrue(release_job.changeMatches(change))
+
+    def test_postgres_sqlite_job(self):
+        repo = 'mediawiki/core'
+        job = self.getJob(
+            repo, 'gate-and-submit',
+            'mediawiki-quibble-vendor-postgres-php70-docker')
+
+        change = zuul.model.Change(repo)
+
+        # Doesn't run on wmf/
+        change.branch = 'wmf/1.31.0-wmf.28'
+        self.assertFalse(job.changeMatches(change))
+
+        # Doesn't run on fundraising/
+        change.branch = 'fundraising/REL1_31'
+        self.assertFalse(job.changeMatches(change))
+
+        # Doesn't run on REL1_31
+        change.branch = 'REL1_31'
+        self.assertFalse(job.changeMatches(change))
+
+        # Runs on master
+        change.branch = 'master'
+        self.assertTrue(job.changeMatches(change))
+
+        # Runs on REL1_32
+        change.branch = 'REL1_32'
+        self.assertTrue(job.changeMatches(change))
+
 
     def test_gated_extension_run_tests_on_feature_branch(self):
         repo = 'mediawiki/extensions/CirrusSearch'
