@@ -29,7 +29,6 @@ def set_parameters(item, job, params):
         'mwext-mw-selenium-node-composer-jessie',
         'mwext-qunit-jessie',
         'mwext-qunit-composer-jessie',
-        'mediawiki-extensions-qunit-jessie',
         'mediawiki-selenium-integration-jessie',
         # Shells out to PHP (T196956)
         'mwext-MobileFrontend-npm-run-lint-modules-docker',
@@ -89,9 +88,6 @@ def set_parameters(item, job, params):
     # At least parallel-lint is slow under HHVM
     if params['ZUUL_PROJECT'].startswith('mediawiki/vendor'):
         params['COMPOSER_PROCESS_TIMEOUT'] = 600
-
-    if job.name.startswith('mediawiki-extensions-'):
-        set_gated_extensions(item, job, params)
 
     if job.name.startswith('wmf-quibble-'):
         set_gated_extensions(item, job, params)

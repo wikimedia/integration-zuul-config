@@ -946,17 +946,6 @@ jobs:
 
   # Jobs testing multiple extensions together
 
-  # Extensions tested together, since 1.25alpha ...
-  - name: ^mediawiki-extensions-(qunit|hhvm|php70)(-jessie)?$
-    branch: (?!fundraising/REL.*)
-    queue-name: mediawiki
-    skip-if:
-      # We use Quibble for extensions and skins
-      # T197469
-      - project: ^mediawiki/(extensions|skins)/
-
-  # Replacements for mediawiki-extensions jobs
-
   - name: ^release-quibble-
     branch: ^REL
   # Run MediaWiki PHP 5.5 tests on MW < 1.31
@@ -967,9 +956,6 @@ jobs:
     # Gated extensions are only for master and Wikimedia deployment. We do not
     # run them on REL branches.
     branch: (?!^REL)
-    skip-if:
-      # Not ready for core/vendor yet T197469
-      - project: ^mediawiki/(core|vendor)
 
     # Only run patch coverage if a PHP file was
     # changed on master.
@@ -1372,24 +1358,14 @@ project-templates:
       - mwgate-php70lint
       - mwgate-composer-validate
     test:
-      # Legacy, only for core/vendor:
-      - mediawiki-extensions-hhvm-jessie
-      - mediawiki-extensions-qunit-jessie
       # For REL branches:
       - release-quibble-vendor-mysql-hhvm-docker
       # For master and wmf branches
       - wmf-quibble-vendor-mysql-hhvm-docker
     php5:
-      - mediawiki-extensions-php55-jessie
-      - mediawiki-extensions-php70-jessie
       - wmf-quibble-vendor-mysql-php70-docker
       - release-quibble-vendor-mysql-php55-docker
     gate-and-submit: &extension-gate-gate-and-submit
-      - mediawiki-extensions-hhvm-jessie
-      - mediawiki-extensions-php55-jessie
-      - mediawiki-extensions-qunit-jessie
-      - mediawiki-extensions-php70-jessie
-      # Quibble replacements for mediawiki-extensions
       # Only triggered on master and wmf/ branches:
       - wmf-quibble-vendor-mysql-hhvm-docker
       - wmf-quibble-vendor-mysql-php70-docker

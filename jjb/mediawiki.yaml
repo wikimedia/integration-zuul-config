@@ -203,55 +203,6 @@
             !include-raw:
                 - assert-no-mediawiki-errors.bash
 
-- job-template:
-    name: 'mediawiki-extensions-{phpflavor}-{image}'
-    node: ci-{image}-wikimedia
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - prepare-mediawiki-zuul-project
-     # When triggered by an extension/skin, run its 'composer test'
-     - conditional-step:
-         condition-kind: regex-match
-         label: '${{ENV,var="ZUUL_PROJECT"}}'
-         regex: '^mediawiki/extensions/.+'
-         steps:
-             - composer-test-mwextension
-     - mw-fetch-composer-dev
-     - mw-run-phpunit-allexts
-    publishers:
-     - junit:
-        results: 'log/junit*.xml'
-     - archive-log-dir
-     - castor-save
-
-# See 'mediawiki-phpunit-{phpflavor}'
-- job-template:
-    name: 'mediawiki-extensions-qunit-jessie'
-    node: 'ci-jessie-wikimedia'
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - prepare-mediawiki-zuul-project
-     - qunit-karma
-     - assert-no-mediawiki-errors
-    publishers:
-     - castor-save
-     - archive-log-dir
-
 - project:
     name: mediawiki-core
     phpflavor:
@@ -278,8 +229,6 @@
           phpflavor:
               - php70:
                   image: jessie
-      - 'mediawiki-extensions-{phpflavor}-{image}': *phpflavor_images
-      - 'mediawiki-extensions-qunit-jessie'
 
 # Used to decouple MediaWiki related projects from the rest of the projects in
 # gate-and-submit. See T107529.
@@ -402,6 +351,9 @@
 - job-template:
     !!merge : *job_quibble
     name: wmf-quibble-vendor-mysql-{php}-docker
+    # We do not run mediawiki/core tests with extensions installed
+    # https://phabricator.wikimedia.org/T197469#4293142
+    quibble_args: '--phpunit-testsuite=extensions'
     triggers:
         - zuul
 
