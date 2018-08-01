@@ -20,7 +20,7 @@ class TestSetGatedExtensions(unittest.TestCase):
             'ZUUL_PROJECT': 'mediawiki/core',
             'ZUUL_BRANCH': 'master',
         }
-        gate_job = FakeJob('mediawiki-extensions-foo')
+        gate_job = FakeJob('wmf-quibble-foo')
         set_gated_extensions(None, gate_job, params)
         self.assertIn('EXT_DEPENDENCIES', params)
 
@@ -30,7 +30,7 @@ class TestSetGatedExtensions(unittest.TestCase):
             'ZUUL_PROJECT': 'mediawiki/extensions/SomeExt',
             'ZUUL_BRANCH': 'master',
         }
-        gate_job = FakeJob('mediawiki-extensions-foo')
+        gate_job = FakeJob('wmf-quibble-foo')
         set_gated_extensions(None, gate_job, params)
         self.assertIn('\\nmediawiki/extensions/SomeExt',
                       params['EXT_DEPENDENCIES'])
@@ -41,7 +41,7 @@ class TestSetGatedExtensions(unittest.TestCase):
             'ZUUL_PROJECT': 'mediawiki/core',
             'ZUUL_BRANCH': 'master',
         }
-        gate_job = FakeJob('mediawiki-extensions-foo')
+        gate_job = FakeJob('wmf-quibble-foo')
         set_gated_extensions(None, gate_job, params)
         self.assertIn('\\nmediawiki/extensions/Wikibase',
                       params['EXT_DEPENDENCIES'])
@@ -54,7 +54,7 @@ class TestSetGatedExtensions(unittest.TestCase):
             'ZUUL_PROJECT': 'mediawiki/core',
             'ZUUL_BRANCH': 'REL1_30',
         }
-        gate_job = FakeJob('mediawiki-extensions-foo')
+        gate_job = FakeJob('wmf-quibble-foo')
         set_gated_extensions(None, gate_job, params)
         self.assertNotIn('\\nmediawiki/extensions/Wikibase',
                          params['EXT_DEPENDENCIES'])

@@ -120,7 +120,7 @@ class TestZuulScheduler(unittest.TestCase):
             job = [
                 j for j in job_tree.getJobs()
                 if j.name == job][0]
-        except IndexError as e:
+        except IndexError:
             raise Exception('No such job %s for %s in pipeline %s' % (
                 job, project, pipeline))
 
@@ -164,7 +164,7 @@ class TestZuulScheduler(unittest.TestCase):
                  if (
                      job.startswith(('composer', 'mwgate-composer'))
                      or job.startswith('quibble-')
-                     or job.startswith('mediawiki-extensions-')
+                     or job.startswith('wmf-quibble-')
                      or (job.startswith('mwext-testextension-')
                          and 'non-voting' not in job)
                  )]),
@@ -180,8 +180,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         hasVotingTests = any([
             job for job in definition
-            if job.startswith(
-                ('mwext-testextension-', 'mediawiki-extensions-'))
+            if job.startswith('mwext-testextension-')
             and 'non-voting' not in job
             ])
         hasComposerTest = any([
@@ -203,7 +202,7 @@ class TestZuulScheduler(unittest.TestCase):
                  job.endswith(('php56lint')) or
                  job.endswith(('php70lint')) or
                  job.startswith('quibble-') or
-                 job.startswith('mediawiki-extensions-') or
+                 job.startswith('wmf-quibble') or
                  job.startswith(('composer-', 'mwgate-composer'))]),
             'Project %s pipeline %s must have either '
             'phplint or a composer-* job'
@@ -861,12 +860,13 @@ class TestZuulScheduler(unittest.TestCase):
 
         allextensions = tarballextensions.union(gatedextensions)
 
-        # Grab projects having the gate job 'mediawiki-extensions-hhvm'
+        # Grab projects having the gate job 'wmf-quibble-*'
         gated_in_zuul = set([
             ext_name[len('mediawiki/extensions/'):]  # extension basename
             for (ext_name, pipelines) in self.getProjectsDefs().iteritems()
             if ext_name.startswith('mediawiki/extensions/')
-            and 'mediawiki-extensions-hhvm-jessie' in pipelines.get('test', {})
+            and 'wmf-quibble-vendor-mysql-hhvm-docker'
+                in pipelines.get('test', {})
         ])
 
         self.assertSetEqual(
@@ -981,8 +981,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-core-php55lint': False,
             'mediawiki-core-php70lint': True,
             'mediawiki-core-php70-phan-docker': True,
-            'mediawiki-extensions-hhvm-jessie': True,
-            'mediawiki-extensions-qunit-jessie': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
@@ -992,16 +990,12 @@ class TestZuulScheduler(unittest.TestCase):
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
-            'wmf-quibble-vendor-mysql-hhvm-docker': False,
+            'wmf-quibble-vendor-mysql-hhvm-docker': True,
         }
         expected_gate = {
             'composer-package-validate': True,
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php70-phan-docker': True,
-            'mediawiki-extensions-hhvm-jessie': True,
-            'mediawiki-extensions-php55-jessie': False,
-            'mediawiki-extensions-php70-jessie': True,
-            'mediawiki-extensions-qunit-jessie': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php55-docker': False,
@@ -1012,8 +1006,8 @@ class TestZuulScheduler(unittest.TestCase):
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
-            'wmf-quibble-vendor-mysql-hhvm-docker': False,
-            'wmf-quibble-vendor-mysql-php70-docker': False,
+            'wmf-quibble-vendor-mysql-hhvm-docker': True,
+            'wmf-quibble-vendor-mysql-php70-docker': True,
         }
 
         change = zuul.model.Change('mediawiki/core')
@@ -1053,10 +1047,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki/extensions/AbuseFilter',
             'gate-and-submit',
             'wmf-quibble-vendor-mysql-php70-docker')
-        gate_job = self.getJob(
-            'mediawiki/extensions/AbuseFilter',
-            'gate-and-submit',
-            'mediawiki-extensions-hhvm-jessie')
         release_job = self.getJob(
             'mediawiki/extensions/AbuseFilter',
             'gate-and-submit',
@@ -1070,9 +1060,6 @@ class TestZuulScheduler(unittest.TestCase):
             wmf_quibble_job.changeMatches(change),
             'wmf-quibble jobs run on wmf branches')
         self.assertFalse(
-            gate_job.changeMatches(change),
-            'gate job is no more used on wmf branches')
-        self.assertFalse(
             release_job.changeMatches(change),
             'release job is not for wmf branches')
 
@@ -1080,9 +1067,6 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(
             wmf_quibble_job.changeMatches(change),
             'wmf-quibble jobs run on master branch')
-        self.assertFalse(
-            gate_job.changeMatches(change),
-            'gate job is no more used on master branch')
         self.assertFalse(
             release_job.changeMatches(change),
             'release job is not for master branch')
@@ -1093,9 +1077,6 @@ class TestZuulScheduler(unittest.TestCase):
             wmf_quibble_job.changeMatches(change),
             'wmf-quibble jobs run on feature branch')
         self.assertFalse(
-            gate_job.changeMatches(change),
-            'gate job is no more used on feature branch')
-        self.assertFalse(
             release_job.changeMatches(change),
             'release job is not for feature branch')
 
@@ -1104,33 +1085,9 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertFalse(
             wmf_quibble_job.changeMatches(change),
             'wmf-quibble jobs are not for REL branches')
-        self.assertFalse(
-            gate_job.changeMatches(change),
-            'gate job is no more used on REL branches')
         self.assertTrue(
             release_job.changeMatches(change),
             'release jobs run on REL branches')
-
-    def test_wmf_quibble_is_not_ready_for_core_or_vendor(self):
-        # On core/vendor Quibble runs all tests which fails
-        for repo in ['mediawiki/core', 'mediawiki/vendor']:
-            wmf_quibble_job = self.getJob(
-                repo, 'gate-and-submit',
-                'wmf-quibble-vendor-mysql-php70-docker')
-            gate_job = self.getJob(
-                repo, 'gate-and-submit',
-                'mediawiki-extensions-hhvm-jessie')
-
-            change = zuul.model.Change(repo)
-            for branch in ['wmf/1.99.9-wmf.999', 'master',
-                           'REL1_42', 'feature']:
-                change.branch = branch
-                self.assertFalse(
-                    wmf_quibble_job.changeMatches(change),
-                    'wmf-quibble jobs are not ready for core/vendor yet')
-                self.assertTrue(
-                    gate_job.changeMatches(change),
-                    'gate job is still used on core/vendor')
 
     def test_gated_extension_run_tests_on_rel_branch(self):
         repo = 'mediawiki/extensions/Translate'
@@ -1160,9 +1117,6 @@ class TestZuulScheduler(unittest.TestCase):
         wmf_quibble_job = self.getJob(
             repo, 'gate-and-submit',
             'wmf-quibble-vendor-mysql-php70-docker')
-        gate_job = self.getJob(
-            repo, 'gate-and-submit',
-            'mediawiki-extensions-hhvm-jessie')
         release_job = self.getJob(
             repo, 'gate-and-submit',
             'release-quibble-vendor-mysql-php70-docker')
@@ -1171,22 +1125,18 @@ class TestZuulScheduler(unittest.TestCase):
 
         change.branch = 'master'
         self.assertTrue(wmf_quibble_job.changeMatches(change))
-        self.assertFalse(gate_job.changeMatches(change))
         self.assertFalse(release_job.changeMatches(change))
 
         change.branch = 'wmf/1.99.9-wmf.999'
         self.assertTrue(wmf_quibble_job.changeMatches(change))
-        self.assertFalse(gate_job.changeMatches(change))
         self.assertFalse(release_job.changeMatches(change))
 
         change.branch = 'feature'
         self.assertTrue(wmf_quibble_job.changeMatches(change))
-        self.assertFalse(gate_job.changeMatches(change))
         self.assertFalse(release_job.changeMatches(change))
 
         change.branch = 'REL1_42'
         self.assertFalse(wmf_quibble_job.changeMatches(change))
-        self.assertFalse(gate_job.changeMatches(change))
         self.assertTrue(release_job.changeMatches(change))
 
     def test_php70_test_jobs_are_skipped_for_phptags_extension(self):
