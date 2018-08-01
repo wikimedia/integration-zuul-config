@@ -350,7 +350,12 @@
 # For the master and wmf/* branches
 - job-template:
     !!merge : *job_quibble
-    name: wmf-quibble-vendor-mysql-{php}-docker
+    name: wmf-quibble-vendor-mysql-{php}-docker-2
+    parameters:
+        - string:
+            name: 'EXT_DEPENDENCIES'
+            default: 'mediawiki/extensions/AbuseFilter\nmediawiki/extensions/Babel\nmediawiki/extensions/CheckUser\nmediawiki/extensions/CirrusSearch\nmediawiki/extensions/Cite\nmediawiki/extensions/CodeEditor\nmediawiki/extensions/ConfirmEdit\nmediawiki/extensions/Echo\nmediawiki/extensions/Elastica\nmediawiki/extensions/EventLogging\nmediawiki/extensions/Flow\nmediawiki/extensions/GeoData\nmediawiki/extensions/GlobalCssJs\nmediawiki/extensions/GuidedTour\nmediawiki/extensions/JsonConfig\nmediawiki/extensions/MobileApp\nmediawiki/extensions/MobileFrontend\nmediawiki/extensions/NavigationTiming\nmediawiki/extensions/ParserFunctions\nmediawiki/extensions/PdfHandler\nmediawiki/extensions/SandboxLink\nmediawiki/extensions/SiteMatrix\nmediawiki/extensions/SpamBlacklist\nmediawiki/extensions/Thanks\nmediawiki/extensions/TimedMediaHandler\nmediawiki/extensions/Translate\nmediawiki/extensions/UniversalLanguageSelector\nmediawiki/extensions/VisualEditor\nmediawiki/extensions/WikiEditor\nmediawiki/extensions/Wikibase\nmediawiki/extensions/ZeroBanner\nmediawiki/extensions/ZeroPortal\nmediawiki/extensions/cldr'
+
     # We do not run mediawiki/core tests with extensions installed
     # https://phabricator.wikimedia.org/T197469#4293142
     quibble_args: '--phpunit-testsuite=extensions'
@@ -577,7 +582,7 @@
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
         - release-quibble-{packages-source}-{database}-{php}-docker
-        - wmf-quibble-vendor-mysql-{php}-docker:
+        - wmf-quibble-vendor-mysql-{php}-docker-2:
             # We never use composer on wmf cluster
             packages-source: vendor
             # WMF cluster uses MariaDB/MySQL
