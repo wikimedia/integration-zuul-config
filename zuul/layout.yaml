@@ -958,10 +958,20 @@ jobs:
   - name: ^release-quibble-.*php55
     branch: ^(REL1_(2[789]|30))$
 
-  - name: ^wmf-quibble-
+  - name: ^wmf-quibble-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
     # run them on REL branches.
     branch: (?!^REL)
+    skip-if:
+      - project: ^mediawiki/core$
+      - project: ^mediawiki/vendor$
+
+  - name: ^wmf-quibble-core-vendor
+    # Gated extensions are only for master and Wikimedia deployment. We do not
+    # run them on REL branches.
+    branch: (?!^REL)
+    skip-if:
+      - project: ^mediawiki/extensions/.*$
 
     # Only run patch coverage if a PHP file was
     # changed on master.
@@ -1371,13 +1381,17 @@ project-templates:
       - release-quibble-vendor-mysql-hhvm-docker
       # For master and wmf branches
       - wmf-quibble-vendor-mysql-hhvm-docker
+      - wmf-quibble-core-vendor-mysql-hhvm-docker
     php5:
       - wmf-quibble-vendor-mysql-php70-docker
+      - wmf-quibble-core-vendor-mysql-php70-docker
       - release-quibble-vendor-mysql-php55-docker
     gate-and-submit: &extension-gate-gate-and-submit
       # Only triggered on master and wmf/ branches:
       - wmf-quibble-vendor-mysql-hhvm-docker
       - wmf-quibble-vendor-mysql-php70-docker
+      - wmf-quibble-core-vendor-mysql-hhvm-docker
+      - wmf-quibble-core-vendor-mysql-php70-docker
       # Only triggered on REL branches:
       - release-quibble-vendor-mysql-hhvm-docker
       - release-quibble-vendor-mysql-php70-docker
