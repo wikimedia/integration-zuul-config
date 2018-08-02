@@ -357,6 +357,18 @@
     triggers:
         - zuul
 
+# HACK: Don't run composer test for mediawiki/core, it's
+# already run in a separate job
+- job-template:
+    !!merge : *job_quibble
+    name: wmf-quibble-core-vendor-mysql-{php}-docker
+    # We do not run mediawiki/core tests with extensions installed
+    # https://phabricator.wikimedia.org/T197469#4293142
+    quibble_args: '--phpunit-testsuite=extensions --skip composer-test'
+    triggers:
+        - zuul
+
+
 - job-template:
     name: mediawiki-quibble-{packages-source}-{database}-{php}-docker
     node: DebianJessieDocker && m4executor
@@ -578,6 +590,11 @@
         - mediawiki-quibble-composertest-{php}-docker
         - release-quibble-{packages-source}-{database}-{php}-docker
         - wmf-quibble-vendor-mysql-{php}-docker:
+            # We never use composer on wmf cluster
+            packages-source: vendor
+            # WMF cluster uses MariaDB/MySQL
+            database: mysql
+        - wmf-quibble-core-vendor-mysql-{php}-docker:
             # We never use composer on wmf cluster
             packages-source: vendor
             # WMF cluster uses MariaDB/MySQL
