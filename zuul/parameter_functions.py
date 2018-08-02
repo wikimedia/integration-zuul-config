@@ -474,6 +474,7 @@ gatedextensions = [
     'Flow',
     'GeoData',
     'GlobalCssJs',
+    'GlobalPreferences',
     'GuidedTour',
     'JsonConfig',
     'MobileApp',
