@@ -480,6 +480,7 @@ gatedextensions = [
     'MobileFrontend',
     'NavigationTiming',
     'SandboxLink',
+    'Scribunto',
     'SiteMatrix',
     'Thanks',
     'TimedMediaHandler',
