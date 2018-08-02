@@ -990,7 +990,8 @@ class TestZuulScheduler(unittest.TestCase):
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
-            'wmf-quibble-vendor-mysql-hhvm-docker': True,
+            'wmf-quibble-vendor-mysql-hhvm-docker': False,
+            'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
         }
         expected_gate = {
             'composer-package-validate': True,
@@ -1008,8 +1009,10 @@ class TestZuulScheduler(unittest.TestCase):
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
-            'wmf-quibble-vendor-mysql-hhvm-docker': True,
-            'wmf-quibble-vendor-mysql-php70-docker': True,
+            'wmf-quibble-vendor-mysql-hhvm-docker': False,
+            'wmf-quibble-vendor-mysql-php70-docker': False,
+            'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
+            'wmf-quibble-core-vendor-mysql-php70-docker': True,
         }
 
         change = zuul.model.Change('mediawiki/core')
