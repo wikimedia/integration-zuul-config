@@ -289,7 +289,6 @@ dependencies = {
     'QuickSurveys': ['EventLogging'],
     'QuizGame': ['SocialProfile'],
     'RandomGameUnit': ['SocialProfile', 'PictureGame', 'PollNY', 'QuizGame'],
-    'Reflect': ['LiquidThreads'],
     'RegexFun': ['ParserFunctions', 'Arrays'],
     'RelatedArticles': ['BetaFeatures', 'MobileFrontend'],
     'ReplaceText': ['AdminLinks'],
