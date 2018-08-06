@@ -337,8 +337,7 @@ dependencies = {
         'PropertySuggester',
         'WikibaseQuality',
         'WikibaseQualityConstraints',
-        'WikimediaBadges',
-        'WikibaseLexeme'
+        'WikimediaBadges'
     ],
     'WikibaseJavaScriptApi': ['Wikibase'],
     'WikibaseLexeme': ['Wikibase'],
