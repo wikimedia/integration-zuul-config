@@ -1,0 +1,14 @@
+# Jobs related to maintenance of the ci cluster
+- job:
+    name: maintenance-disconnect-full-disks
+    triggers:
+      - timed: '@hourly'
+    defaults: global
+    node: master
+    project-type: pipeline
+    parameters:
+        - string:
+            name: 'OFFLINE_PERCENTAGE'
+            default: '95'
+    dsl: !include-raw:
+      - maintenance-disconnect-full-disks.groovy
