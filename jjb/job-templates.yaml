@@ -107,6 +107,27 @@
      - archive-log-allow-empty
      - castor-save-workspace-cache
 
+- job-template: &job_npm-6-node-6-docker
+    name: 'npm-6-node-6-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-6-test:0.3.0'
+    docker_run_options_var: ''
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        docker_run_options: '{obj:docker_run_options_var}'
+        image: '{obj:docker_image_var}'
+        logdir: '/log'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+
 - project:
     name: 'generic-npm-job'
     jobs:
