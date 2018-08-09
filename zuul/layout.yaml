@@ -1128,6 +1128,13 @@ jobs:
 
 project-templates:
 
+  # Runs the generic blubber-test pipeline job
+  - name: blubber-test
+    test: &blubber-test
+      - trigger-blubber-test
+    gate-and-submit: *blubber-test
+    gate-and-submit-swat: *blubber-test
+
   # For extensions that have broken tests or magic behaviors that CI does not support.
   # See also https://phabricator.wikimedia.org/T183512
   #
@@ -1641,6 +1648,10 @@ project-templates:
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
+  - name: blubber
+    template:
+      - name: blubber-test
+
   - name: integration/config
     check:
       - noop
@@ -1693,6 +1704,10 @@ projects:
   - name: integration/phpunit
     template:
       - name: archived
+
+  - name: integration/pipelinelib
+    template:
+      - name: blubber-test
 
   - name: integration/quibble
     template:
