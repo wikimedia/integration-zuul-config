@@ -14,7 +14,8 @@
 - job-template: &job_tox-docker
     name: 'tox-docker'
     node: DebianJessieDocker
-    concurrent: true
+    concurrent_var: true
+    concurrent: '{obj:concurrent_var}'
     docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.1.1'
     triggers:
         - zuul
