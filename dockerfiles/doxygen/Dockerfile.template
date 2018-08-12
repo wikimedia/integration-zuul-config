@@ -1,7 +1,7 @@
-FROM {{ "ci-jessie" | image_tag }}
+FROM {{ "ci-stretch" | image_tag }}
 
 # php is for filters
-RUN {{ "doxygen graphviz php5-cli" | apt_install }}
+RUN {{ "doxygen graphviz php-cli" | apt_install }}
 
 COPY run.sh /run.sh
 
