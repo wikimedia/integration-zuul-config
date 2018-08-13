@@ -1,7 +1,7 @@
 - job:
     name: 'trigger-service-pipeline'
     defaults: global
-    node: ServicePipelineProduction
+    node: blubber
     parameters: &service-pipeline-parameters
       - string:
           name: ZUUL_URL
@@ -16,19 +16,19 @@
         - project: service-pipeline
           current-parameters: true
           block: true
-          same-node: true
+          same-node: false
 
 - job:
     name: 'trigger-service-pipeline-test-only'
     defaults: global
-    node: ServicePipelineProduction
+    node: blubber
     parameters: *service-pipeline-parameters
     builders:
       - trigger-builds:
         - project: service-pipeline-test-only
           current-parameters: true
           block: true
-          same-node: true
+          same-node: false
 
 - job:
     name: 'trigger-blubber-test'
