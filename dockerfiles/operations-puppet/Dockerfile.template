@@ -6,7 +6,7 @@ ENV PUPPET_DIR='/srv/workspace/puppet'
 
 {% set pkgs_to_install = """build-essential bundler python-dev \
     python-pip rubygems-integration rake ruby ruby-dev ca-certificates libmysqlclient-dev \
-    mtail isc-dhcp-server luarocks""" %}
+    mtail isc-dhcp-server unzip luarocks""" %}
 
 RUN {{ pkgs_to_install | apt_install }} \
     && pip install pip==8.1.2 \
