@@ -271,7 +271,7 @@ dependencies = {
     'OAuth': ['Echo'],
     'OpenIDConnect': ['PluggableAuth'],
     'OpenStackManager': ['LdapAuthentication', 'Echo', 'TitleBlacklist'],
-    'PageTriage': ['WikiLove', 'ORES'],
+    'PageTriage': ['WikiLove', 'ORES', 'Echo'],
     'PageViewInfo': ['Graph'],
     'ParserFunctions': ['Scribunto'],
     'PhpTagsFunctions': ['PhpTags'],
