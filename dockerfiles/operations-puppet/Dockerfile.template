@@ -6,11 +6,12 @@ ENV PUPPET_DIR='/srv/workspace/puppet'
 
 {% set pkgs_to_install = """build-essential bundler python-dev \
     python-pip rubygems-integration rake ruby ruby-dev ca-certificates libmysqlclient-dev \
-    mtail isc-dhcp-server""" %}
+    mtail isc-dhcp-server luarocks""" %}
 
 RUN {{ pkgs_to_install | apt_install }} \
     && pip install pip==8.1.2 \
     && pip install tox==1.9.2 setuptools \
+    && luarocks install busted \
     && install --owner=nobody --group=nogroup --directory /srv/workspace
 
 USER nobody
