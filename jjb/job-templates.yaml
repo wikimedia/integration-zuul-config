@@ -186,6 +186,14 @@
     triggers:
      - zuul
 
+- job-template:
+    !!merge : *job_npm-6-node-6-docker
+    name: '{name}-npm-6-browser-node-6-docker'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm6-browser-test:0.1.2'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 # A very specific job for MobileFrontend which uses a JavaScript test suite
 # which requires mediawiki/core.
 - job-template:
