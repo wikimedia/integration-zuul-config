@@ -339,6 +339,7 @@ dependencies = {
         'WikibaseQuality',
         'WikibaseQualityConstraints',
         'WikimediaBadges',
+        'WikibaseMediaInfo',
         'WikibaseLexeme'
     ],
     'WikibaseJavaScriptApi': ['Wikibase'],
