@@ -1,6 +1,6 @@
 node(nodeLabel) {
-  def blubberConfig = 'dist/pipeline/blubber.yaml'
-  def helmConfig = 'dist/pipeline/helm.yaml'
+  def blubberConfig = '.pipeline/blubber.yaml'
+  def helmConfig = '.pipeline/helm.yaml'
   def servicePort = 31000 + env.EXECUTOR_NUMBER.toInteger()
 
   def dockerCredential = 'docker-registry-uploader'
