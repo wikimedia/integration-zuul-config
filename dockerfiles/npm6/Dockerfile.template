@@ -1,11 +1,23 @@
-FROM {{ "npm" | image_tag }}
+FROM {{ "ci-stretch" | image_tag }}
 
 USER root
 
-# Use older npm to bootstrap npm6
-RUN npm install npm@6 -g
-
+# build-essential for compilation
+# python-minimal for node-gyp
+# ruby/etc for jsduck
+RUN {{ "nodejs ruby ruby2.1 ruby2.1-dev rubygems-integration python-minimal build-essential" | apt_install }} \
+    && git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/npm.git /srv/npm \
+    && rm -rf /srv/npm/.git \
+    && ln -s /srv/npm/bin/npm-cli.js /usr/bin/npm
+    && gem install --no-rdoc --no-ri jsduck \
+    # if no volume is mounted, make sure /cache exists
+    && install --directory /cache --owner nobody
 USER nobody
+
+# See <https://docs.npmjs.com/misc/config#environment-variables>
+# and <https://docs.npmjs.com/cli/cache>
+ENV NPM_CONFIG_CACHE=/cache
+ENV BABEL_CACHE_PATH=$XDG_CACHE_HOME/babel-cache.json
 
 ENTRYPOINT ["/usr/bin/npm"]
 WORKDIR /src
