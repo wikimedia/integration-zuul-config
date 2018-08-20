@@ -833,7 +833,8 @@ jobs:
     branch: ^(REL1_(2[789]|30))$
 
   - name: ^.*quibble-.*-docker$
-    # Quibble jobs should not be run on fundraising/REL*
+    queue-name: mediawiki
+    # Quibble jobs should not be run on fundraising/REL1_27.
     skip-if:
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
