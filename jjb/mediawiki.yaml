@@ -97,65 +97,6 @@
             allow-empty: true
         - beta-irc  # Spam #wikimedia-releng on failure
 
-# Runs all MediaWiki PHPUnit tests on Nodepool
-- job-template:
-    name: 'mediawiki-phpunit-{phpflavor}-{image}'
-    node: ci-{image}-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-             mediawiki/vendor
-     - mw-install-mysql
-     - mw-apply-settings
-     - mw-fetch-composer-dev
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
-     - assert-no-mediawiki-errors
-    publishers:
-     - phpunit-junit-2
-     - archive-log-dir
-     - castor-save
-
-# Same as mediawiki-phpunit-{phpflavor}, except uses composer instead of mediawiki/vendor.
-# Currently experimental, will eventually be used for `master`, and
-# wmf/ branches will use mediawiki/vendor. See T90303.
-- job-template:
-    name: 'mediawiki-phpunit-{phpflavor}-composer-{image}'
-    node: ci-{image}-wikimedia
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - assert-phpflavor:
-         phpflavor: '{phpflavor}'
-     - hhvm-clear-hhbc
-     - zuul-cloner:
-         projects: >
-             mediawiki/core
-     - composer-validate:
-         dir: 'src'
-     - composer-update:
-         dir: 'src'
-     - mw-install-mysql
-     - mw-apply-settings
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-phpunit.sh"
-     - assert-no-mediawiki-errors
-    publishers:
-     - phpunit-junit-2
-     - archive-log-dir
-     - castor-save
-
 - builder:
     name: inject-experimental-extension
     builders:
@@ -193,19 +134,6 @@
               - php55
               - php70
               - hhvm
-      - 'mediawiki-phpunit-{phpflavor}-{image}': &phpflavor_images
-          phpflavor:
-              - php55:
-                  image: jessie
-              - php70:
-                  image: jessie
-              # Wikimedia runs HHVM on Jessie
-              - hhvm:
-                  image: jessie
-      - 'mediawiki-phpunit-{phpflavor}-composer-{image}':
-          phpflavor:
-              - php70:
-                  image: jessie
 
 # Used to decouple MediaWiki related projects from the rest of the projects in
 # gate-and-submit. See T107529.
