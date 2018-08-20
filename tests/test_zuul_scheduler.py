@@ -1047,6 +1047,26 @@ class TestZuulScheduler(unittest.TestCase):
                     job.changeMatches(change))
                 )
 
+    def test_quibble_jobs_are_skipped_on_fundraising_branches(self):
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'fundraising/REL1_27'
+
+        job = self.getJob(
+            'mediawiki/core',
+            'gate-and-submit',
+            'mediawiki-quibble-vendor-mysql-php70-docker')
+        self.assertFalse(
+            job.changeMatches(change),
+            'Quibble must be skip on fundraising branches')
+
+        wmf_job = self.getJob(
+            'mediawiki/core',
+            'gate-and-submit',
+            'wmf-quibble-vendor-mysql-php70-docker')
+        self.assertFalse(
+            wmf_job.changeMatches(change),
+            'WMF Quibble job must be skip on fundraising branches')
+
     def test_wmf_quibble_for_extensions(self):
         wmf_quibble_job = self.getJob(
             'mediawiki/extensions/AbuseFilter',
