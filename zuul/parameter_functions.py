@@ -22,7 +22,6 @@ def set_parameters(item, job, params):
 
     php7_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
-        'mediawiki-core-qunit-selenium-jessie',
         'mwext-mw-selenium-jessie',
         'mwskin-mw-selenium-jessie',
         'mwext-mw-selenium-composer-jessie',
@@ -65,8 +64,7 @@ def set_parameters(item, job, params):
         set_mw_dependencies(item, job, params)
 
     # FIXME rather hacky for selenium jobs (T139740, T137112)
-    if job.name.startswith(('mediawiki-core-qunit-selenium',
-                            'mwext-mw-selenium')):
+    if job.name.startswith('mwext-mw-selenium'):
         set_mw_dependencies(item, job, params)
         if 'SKIN_DEPENDENCIES' in params and params['SKIN_DEPENDENCIES']:
             params['SKIN_DEPENDENCIES'] += '\\nmediawiki/skins/Vector'
