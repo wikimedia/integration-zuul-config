@@ -247,27 +247,6 @@
             --format pretty \
             --format junit --out $WORKSPACE/log/junit
 
-# T164721 Run WebdriverIO tests in CI for extensions
-- builder:
-    name: mw-wdio-nodepool
-    builders:
-     - shell: |
-         # Change to the working directory. EXT_NAME is set by Zuul parameters
-         # functions
-         if [ -f ./src/extensions/$EXT_NAME/tests/selenium/LocalSettings.php ]; then
-           cd ./src/extensions/$EXT_NAME/tests/selenium
-           . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
-         fi
-     # Run selenium script if it exists. The localhost vhost is setup by
-     # qunit-karma already
-     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
-
-        cd $MW_INSTALL_PATH
-        if [ -f ./tests/selenium/wdio.conf.js ]; then
-          npm run selenium
-        fi
-
 - builder:
     name: mw-apply-settings
     builders:
