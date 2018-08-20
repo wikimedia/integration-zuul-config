@@ -4,29 +4,6 @@
 # usually need to NOT process submodules (eg: zuul-cloner).
 # See https://phabricator.wikimedia.org/T44455
 
-- job-template:
-    name: 'mediawiki-core-qunit-selenium-jessie'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    builders:
-     - castor-load
-     - prepare-mediawiki-zuul-project
-     - qunit-karma
-     - mw-wdio-nodepool
-     - assert-no-mediawiki-errors
-    publishers:
-     - castor-save
-     - archive-log-dir
-     - junit:
-        results: 'log/junit*.xml,log/WDIO.xunit*.xml'
-        # Qunit does not generate Junit file and we might skip selenium
-        allow-empty-results: true
-
 - job:
     name: 'mediawiki-core-jsduck-docker-publish'
     node: DebianJessieDocker
@@ -210,7 +187,6 @@
         - hhvm
         - php55
     jobs:
-      - 'mediawiki-core-qunit-selenium-jessie'
       - '{name}-jsduck-docker'
       - '{name}-{phpflavor}lint':
           phpflavor:
