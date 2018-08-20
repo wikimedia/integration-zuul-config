@@ -831,11 +831,15 @@ jobs:
     branch: ^(REL1_(2[789]|30))$
 
   - name: ^.*quibble-.*-docker$
-    queue-name: mediawiki
     # Quibble jobs should not be run on fundraising/REL1_27.
     skip-if:
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
+
+  # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
+  # queue-name can not be applied based on a regex, apply the name on one job.
+  - name: mediawiki-quibble-vendor-mysql-hhvm-docker
+    queue-name: mediawiki
 
   - name: ^.*quibble.*php70.*$
     skip-if:
@@ -1081,12 +1085,6 @@ jobs:
     branch: ^master$
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
     branch: ^master$
-
-  - name: mediawiki-phpunit-hhvm-jessie
-    queue-name: mediawiki
-
-  - name: mediawiki-core-qunit-selenium-jessie
-    queue-name: mediawiki
 
   - name: mediawiki-core-jsduck-docker
     branch: ^(REL.*|master)$

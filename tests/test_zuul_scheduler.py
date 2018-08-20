@@ -920,6 +920,13 @@ class TestZuulScheduler(unittest.TestCase):
             cmd,
             'gerrit review command does not match Gerrit 2.13 expectation')
 
+    def test_gate_has_a_mediawiki_queue(self):
+        gate = self.getPipeline('gate-and-submit')
+        queue_names = [q.name for q in gate.queues]
+        self.assertIn(
+            'mediawiki', queue_names,
+            'gate-and-submit must have a queue named "mediawiki"')
+
     def test_only_mediawiki_projects_in_mediawiki_gate(self):
 
         def _mw_filter(zuul_project, is_mw):
