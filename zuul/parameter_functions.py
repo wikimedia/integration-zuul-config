@@ -26,7 +26,6 @@ def set_parameters(item, job, params):
         'mwext-mw-selenium-jessie',
         'mwskin-mw-selenium-jessie',
         'mwext-mw-selenium-composer-jessie',
-        'mwext-mw-selenium-node-composer-jessie',
         'mwext-qunit-jessie',
         'mwext-qunit-composer-jessie',
         'mediawiki-selenium-integration-jessie',
