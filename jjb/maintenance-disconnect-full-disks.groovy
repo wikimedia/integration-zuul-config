@@ -2,10 +2,10 @@ import hudson.slaves.OfflineCause
 import hudson.util.RemotingDiagnostics
 
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
-def groovyScript = 'println "df --output=pcent /srv".execute().text'
+def groovyScript = 'println "df --output=pcent / /srv".execute().text'
 
 def computerNamePrefix = 'integration-slave-'
-def offlineMessage = 'Offline due to /srv/ being filled'
+def offlineMessage = 'Offline due to full partition'
 
 def failed = false
 
@@ -14,7 +14,9 @@ def diskFull = { diskSize ->
         if (line.startsWith('Use')) {
             continue
         }
-        return line.replaceAll('%', '').toInteger() > offlinePercentage
+        if (line.replaceAll('%', '').toInteger() > offlinePercentage) {
+            return true
+        }
     }
 
     return false
@@ -35,7 +37,7 @@ node('contint1001') {
 
             if (computer.isOffline()) {
                 if (computer.getOfflineCauseReason() == offlineMessage) {
-                    println "${computerName} /srv FULL! Already offline."
+                    println "${computerName} /srv or / FULL! Already offline."
                     failed = true
                 }
                 continue
@@ -45,7 +47,7 @@ node('contint1001') {
             def diskSize = RemotingDiagnostics.executeGroovy(groovyScript, channel)
 
             if (diskFull(diskSize)) {
-                println "${computerName} /srv FULL! Taking offline..."
+                println "${computerName} /srv or / FULL! Taking offline..."
                 computer.setTemporarilyOffline(true,
                     new OfflineCause.ByCLI(offlineMessage))
                 failed = true
