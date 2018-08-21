@@ -79,21 +79,6 @@
      - mw-apply-settings
      - mw-run-update-script
 
-# Generic qunit job for extensions.
-- job: &job_mwext-qunit-jessie
-    name: 'mwext-qunit-jessie'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - castor-load
-     - prepare-mediawiki-zuul-project
-     - qunit-karma
-    publishers:
-     - castor-save
-     - archive-log-dir
-
 # Generic qunit job for extensions with composer update.
 - job:
     name: 'mwext-qunit-composer-jessie'

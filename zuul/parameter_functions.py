@@ -25,7 +25,6 @@ def set_parameters(item, job, params):
         'mwext-mw-selenium-jessie',
         'mwskin-mw-selenium-jessie',
         'mwext-mw-selenium-composer-jessie',
-        'mwext-qunit-jessie',
         'mwext-qunit-composer-jessie',
         'mediawiki-selenium-integration-jessie',
         # Shells out to PHP (T196956)
