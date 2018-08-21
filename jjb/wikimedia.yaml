@@ -1,6 +1,6 @@
 - job:
     name: 'wikimedia-portals-build'
-    node: ci-jessie-wikimedia
+    node: contintLabsSlave && DebianJessie
     concurrent: false
     triggers:
      # Run every monday at 7am.
@@ -22,7 +22,7 @@
             branches:
                 - master
             refspec: master
-            wipe-workspace: false  # Not needed on Nodepool instances
+            wipe-workspace: true
             clean:
                 after: true
             submodule:
