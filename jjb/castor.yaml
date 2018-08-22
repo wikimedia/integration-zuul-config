@@ -88,10 +88,12 @@
     name: docker-castor-load
     builders:
         - docker-cache-dir
+        - docker-tmp-dir
         - shell: |
             exec docker run --rm \
                 --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
                 --volume "${WORKSPACE}/cache":/cache \
+                --volume "${WORKSPACE}/tmp":/tmp \
                 docker-registry.wikimedia.org/releng/castor:0.1.3 \
                 load
                 # nothing else can be executed due to exec
