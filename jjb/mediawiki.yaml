@@ -520,3 +520,26 @@
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-5
             packages-source: vendor
             database: sqlite
+
+- job-template:
+    !!merge : *job_quibble
+    name: parsoidsvc-parsertests-docker
+    node: DebianJessieDocker
+    concurrent: true
+    wrappers:
+        - timeout:
+            timeout: 10  # minutes
+            fail: true
+        - timestamps
+        - ansicolor
+    triggers:
+        - zuul
+
+- project:
+    name: parsoidsvc-parsertests
+    jobs:
+        - parsoidsvc-parsertests-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.21
+            packages-source: composer
+            database: sqlite
+            quibble_args: '--commands=/src/mediawiki/services/parsoid/tools/ci-mw-parsertests.sh'
