@@ -208,6 +208,7 @@ dependencies = {
     'BlueSpiceUsageTracker': ['BlueSpiceFoundation'],
     'BlueSpiceUserManager': ['BlueSpiceFoundation'],
     'BlueSpiceUserPreferences': ['BlueSpiceFoundation'],
+    'BlueSpiceUserSidebar': ['BlueSpiceFoundation'],
     'BlueSpiceWatchList': ['BlueSpiceFoundation'],
     'BlueSpiceWhoIsOnline': ['BlueSpiceFoundation'],
     'BounceHandler': ['Echo', 'CentralAuth'],
