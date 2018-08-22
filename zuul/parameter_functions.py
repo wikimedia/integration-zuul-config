@@ -70,6 +70,13 @@ def set_parameters(item, job, params):
         else:
             params['SKIN_DEPENDENCIES'] = 'mediawiki/skins/Vector'
 
+    if job.name == 'parsoidsvc-parsertests-docker':
+        params['EXT_DEPENDENCIES'] = '\\n'.join([
+            'mediawiki/extensions/Cite',
+            'mediawiki/extensions/Poem',
+            'mediawiki/extensions/TimedMediaHandler',
+        ])
+
     # Enable composer merge plugin in vendor and point it to mediawiki
     # composer.json. That let us easily merge autoload-dev section and thus
     # complete the autoloader in mw-fetch-composer-dev.js
