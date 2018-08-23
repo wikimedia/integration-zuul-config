@@ -66,22 +66,6 @@
       - phpunit-junit
       - archive-log-dir
 
-# Same but on Nodepool
-- job:
-    name: wikimedia-fundraising-civicrm-jessie
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-      - zuul
-    builders:
-      - castor-load
-      - fundraising-crm-install
-      - fundraising-crm-phpunit
-    publishers:
-      - phpunit-junit
-      - archive-log-dir
-      - castor-save
-
 - project:
     name: donationinterface-fundraising-branches-php56
     branch:
