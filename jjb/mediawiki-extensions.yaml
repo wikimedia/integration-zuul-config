@@ -410,7 +410,7 @@
 
 # Run Selenium tests daily targeting beta cluster
 - job-template:
-    name: 'selenium-{name}-jessie'
+    name: 'selenium-{project}-jessie'
     node: ci-jessie-wikimedia
     concurrent: true
     triggers:
@@ -424,7 +424,7 @@
          default: php7.0
      - string:
          name: ZUUL_PROJECT
-         default: mediawiki/extensions/{name}
+         default: mediawiki/extensions/{project}
      - string:
          name: ZUUL_BRANCH
          default: master
@@ -450,7 +450,7 @@
          set +x
          export MEDIAWIKI_PASSWORD="$selenium_user_beta"
          set -x
-         MEDIAWIKI_USER='Selenium user' MW_SERVER=https://{site}.beta.wmflabs.org:443 MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.conf.js --spec extensions/{name}/tests/selenium/specs/*.js
+         MEDIAWIKI_USER='Selenium user' MW_SERVER=https://{site}.beta.wmflabs.org:443 MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.conf.js --spec extensions/{project}/tests/selenium/specs/*.js
      - assert-no-mediawiki-errors
     publishers:
      - castor-save
@@ -466,46 +466,27 @@
         unstable: true
 
 - project:
-    name: CirrusSearch
-    recipients: dcausse@wikimedia.org ebernhardson@wikimedia.org qa-alerts@lists.wikimedia.org # @dcausse @EBernhardson
-    repository: mediawiki/extensions/CirrusSearch
-    site: en.wikipedia
-
+    name: wdio-selenium-daily
+    project:
+        - CirrusSearch:
+            recipients: dcausse@wikimedia.org ebernhardson@wikimedia.org qa-alerts@lists.wikimedia.org # @dcausse @EBernhardson
+            repository: mediawiki/extensions/CirrusSearch
+            site: en.wikipedia
+        - Echo:
+            recipients: etonkovidova@wikimedia.org qa-alerts@lists.wikimedia.org # @Etonkovidova
+            repository: mediawiki/extensions/Echo
+            site: en.wikipedia
+        - Math:
+            recipients: qa-alerts@lists.wikimedia.org wiki@physikerwelt.de # @Physikerwelt
+            repository: mediawiki/extensions/Math
+            site: en.wikipedia
+        - RelatedArticles:
+            recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
+            repository: mediawiki/extensions/RelatedArticles
+            site: en.wikipedia
+        - Popups:
+            recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
+            repository: mediawiki/extensions/Popups
+            site: en.wikipedia
     jobs:
-     - 'selenium-{name}-jessie'
-
-- project:
-    name: Echo
-    recipients: etonkovidova@wikimedia.org qa-alerts@lists.wikimedia.org # @Etonkovidova
-    repository: mediawiki/extensions/Echo
-    site: en.wikipedia
-
-    jobs:
-     - 'selenium-{name}-jessie'
-
-- project:
-    name: Math
-    recipients: qa-alerts@lists.wikimedia.org wiki@physikerwelt.de # @Physikerwelt
-    repository: mediawiki/extensions/Math
-    site: en.wikipedia
-
-    jobs:
-     - 'selenium-{name}-jessie'
-
-- project:
-    name: RelatedArticles
-    recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
-    repository: mediawiki/extensions/RelatedArticles
-    site: en.wikipedia
-
-    jobs:
-     - 'selenium-{name}-jessie'
-
-- project:
-    name: Popups
-    recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
-    repository: mediawiki/extensions/Popups
-    site: en.wikipedia
-
-    jobs:
-     - 'selenium-{name}-jessie'
+     - 'selenium-{project}-jessie'
