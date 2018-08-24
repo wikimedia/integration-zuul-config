@@ -405,3 +405,11 @@
         cd "{dir}"
         [[ -f "composer.json" ]] || exit 0
         COMPOSER_PROCESS_TIMEOUT=600 composer --ansi test
+
+# Sends job result and timing to statsd
+#
+- publisher:
+    name: statsd
+    publishers:
+     - groovy-postbuild:
+        script: !include-raw: statsd-publisher.groovy
