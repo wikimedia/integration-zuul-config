@@ -293,6 +293,14 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - conditional-publisher:
+            condition-kind: shell
+            condition-command: '
+              [ $JOB_NAME = "mediawiki-quibble-vendor-mysql-hhvm-docker ] &&
+              [ $ZUUL_PROJECT = "mediawiki/core" ] &&
+              [ $ZUUL_BRANCH = "master" ]'
+            action:
+              - record-node-stats
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
