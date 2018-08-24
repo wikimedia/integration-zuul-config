@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "84788338_0578be58",
+        "filename": "jjb/statsd-publisher.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2018-08-24T23:33:30Z",
+      "side": 1,
+      "message": "Two issues:\n\n* The same metric file cannot both be a counter and a timer.\n* But, timers already have counting logic built-in, so we don\u0027t need to worry about that.",
+      "range": {
+        "startLine": 35,
+        "startChar": 3,
+        "endLine": 35,
+        "endChar": 46
+      },
+      "revId": "737f07dc49a7f79c9f4fb8a67168c135e3ce5286",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "394e1a77_d41fd9bc",
+        "filename": "jjb/statsd-publisher.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2018-08-24T23:33:30Z",
+      "side": 1,
+      "message": "Fragmenting by node and job will create a lot of databases in Graphite, which is generally discouraged for text that is variable/ephemeral.\n\nIn addition, fragmenting by project as well, I think should definitely not be done. Is there a precedent for the same type of non-trivial job executing wildly differently based on the project? As far as I know jobs are either trivial (such as \"phplint\"), or are pretty consistent regardless of the trigger. In any event, I don\u0027t think we can scale it currently even if we do want it.\n\nI haven\u0027t looked into the specific needs yet, but I would assume that the same job does not execute on multiple types of executors. The label is tied in the job configuration. After that, I can think of maybe a concern where there is an issue with a specific node or group of nodes, but for that an overall timer aggregated by nodegroup would suffice, without needing nodename+jobname+project.\n\nThen, if a specific job has lots of outliers in Graphite, you can look at the job\u0027s history in Jenkins and find whether those have a commonality (e..g all on a particular node).\n\nRemember that with Statsd, we have lots of extra properties such as max/upper, sum and rate.\n\nSee also https://wikitech.wikimedia.org/wiki/Graphite#Extended_properties",
+      "range": {
+        "startLine": 37,
+        "startChar": 3,
+        "endLine": 37,
+        "endChar": 59
+      },
+      "revId": "737f07dc49a7f79c9f4fb8a67168c135e3ce5286",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
