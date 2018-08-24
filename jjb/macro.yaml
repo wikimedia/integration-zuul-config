@@ -405,3 +405,18 @@
         cd "{dir}"
         [[ -f "composer.json" ]] || exit 0
         COMPOSER_PROCESS_TIMEOUT=600 composer --ansi test
+
+# Sends job duration (ms) to a statsd timer if node is labeled "stats-*",
+# allowing for the collection and analysis of job performance on different
+# groups of nodes.
+#
+# The stat keys created are "jenkins.{label}" where {label} is the "stats-*"
+# node label. Note that job name is not included in the key, so only schedule
+# this publisher for one job at a time to collect stats from builds of a
+# consistent set of conditions (job, project, branch, etc.).
+#
+- publisher:
+    name: record-node-stats
+    publishers:
+     - groovy-postbuild:
+        script: !include-raw: record-node-stats.groovy

@@ -277,7 +277,7 @@
 
 
 - job-template:
-    name: mediawiki-quibble-{packages-source}-{database}-{php}-docker
+    name: mediawiki-quibble-{packages-source}-{database}-{php}-docker-debug
     node: DebianJessieDocker && m4executor
     concurrent: true
     triggers:
@@ -293,6 +293,14 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - conditional-publisher:
+            - condition-kind: shell
+              condition-command: '
+                [ $JOB_NAME = "mediawiki-quibble-vendor-mysql-hhvm-docker" ] &&
+                [ $ZUUL_PROJECT = "mediawiki/core" ] &&
+                [ $ZUUL_BRANCH = "master" ]'
+              action:
+                - record-node-stats
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
@@ -493,7 +501,7 @@
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
-        - mediawiki-quibble-{packages-source}-{database}-{php}-docker
+        - mediawiki-quibble-{packages-source}-{database}-{php}-docker-debug
         - mediawiki-quibble-composertest-{php}-docker
         - release-quibble-{packages-source}-{database}-{php}-docker
         - wmf-quibble-vendor-mysql-{php}-docker:
