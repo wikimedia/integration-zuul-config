@@ -936,10 +936,6 @@ jobs:
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^mwext-testextension-(hhvm|php70)
-    skip-if:
-      - project: ^mediawiki/extensions/DonationInterface$
-
   - name: ^mwext-donationinterfacecore-REL1_(27|28)-zend56-jessie$
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
@@ -3603,8 +3599,7 @@ projects:
 
   - name: mediawiki/extensions/DonationInterface
     template:
-      - name: extension-unittests-non-voting
-      - name: mwgate-npm
+      - name: extension-broken  # It is not really broken but use different jobs
     test:
       - mwext-donationinterfacecore-REL1_27-zend56-jessie
       - mwgate-php56lint
