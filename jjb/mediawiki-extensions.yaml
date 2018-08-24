@@ -183,13 +183,6 @@
      - castor-save
      - archive-log-dir
 
-- job-template:
-    name: 'mwext-testextension-{phpflavor}-{image}-non-voting'
-    !!merge : *job_mwext-testextension-image
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job-template: &job_mwext-testextension-composer-image
     name: 'mwext-testextension-{phpflavor}-composer-{image}'
     node: ci-{image}-wikimedia
@@ -210,13 +203,6 @@
      - archive-log-dir
      - castor-save
 
-- job-template:
-    name: 'mwext-testextension-{phpflavor}-composer-{image}-non-voting'
-    !!merge : *job_mwext-testextension-composer-image
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - project:
     name: 'mwext-testextension-generic'
     jobs:
@@ -229,9 +215,7 @@
                  image: jessie
              - hhvm:
                  image: jessie
-     - 'mwext-testextension-{phpflavor}-{image}-non-voting': *phpflavor_images
      - 'mwext-testextension-{phpflavor}-composer-{image}': *phpflavor_images
-     - 'mwext-testextension-{phpflavor}-composer-{image}-non-voting': *phpflavor_images
 
 - job:
     name: 'mwext-jsduck-publish'

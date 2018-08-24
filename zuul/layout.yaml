@@ -1180,31 +1180,6 @@ project-templates:
      - mwext-php70-phan-docker
      - mwext-php70-phan-seccheck-docker
 
-  - name: extension-unittests-composer-non-voting
-    check:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    test:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwext-testextension-hhvm-composer-jessie-non-voting
-     - mwgate-composer-validate
-    php5:
-     - mwext-testextension-php55-composer-jessie-non-voting
-     - mwext-testextension-php70-composer-jessie-non-voting
-    gate-and-submit:
-     &extension-unittests-composer-non-voting-gate-and-submit
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    gate-and-submit-swat:
-     *extension-unittests-composer-non-voting-gate-and-submit
-    experimental:
-     - mwext-php70-phan-docker
-     - mwext-php70-phan-seccheck-docker
-     - quibble-composer-mysql-php70-docker
-
   - name: extension-seccheck
     test:
      - mwext-php70-phan-seccheck-docker
@@ -1326,31 +1301,6 @@ project-templates:
       - quibble-vendor-mysql-php70-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
-
-  - name: extension-unittests-non-voting
-    check:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    test:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     # Extensions tests with core+vendor
-     - mwext-testextension-hhvm-jessie-non-voting
-     - mwext-testextension-php70-jessie-non-voting
-     - mwgate-composer-validate
-    php5:
-     - mwext-testextension-php55-jessie-non-voting
-    gate-and-submit: &extension-unittests-non-voting-gate-and-submit
-     - noop
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    gate-and-submit-swat: *extension-unittests-non-voting-gate-and-submit
-    experimental:
-      - mwext-php70-phan-docker
-      - mwext-php70-phan-seccheck-docker
-      - quibble-vendor-mysql-php70-docker
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
