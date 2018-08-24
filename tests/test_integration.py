@@ -30,9 +30,13 @@ class IntegrationTests(unittest.TestCase):
         jjb_dir = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             '../jjb')
-        jjb_test = JenkinsJobs(args=['test', jjb_dir, '-o', out_dir])
-        # Fake the list of plugins to skip retrieval
-        jjb_test.jjb_config.builder['plugins_info'] = []
+
+        config_file = os.path.join(
+            os.path.dirname(__file__),
+            'fixtures/jjb-disable-query-plugins.conf')
+        jjb_test = JenkinsJobs(args=[
+            '--conf', config_file,
+            'test', jjb_dir, '-o', out_dir])
         jjb_test.execute()
 
     # Merely to show that the config has been generated in setUpClass
