@@ -2,78 +2,45 @@
 # https://www.mediawiki.org/wiki/Continuous_integration/Ownership_of_Selenium_Jenkins_job
 
 - project:
-    name: CentralAuth
-    recipients: gtisza@wikimedia.org qa-alerts@lists.wikimedia.org # @Tgr
-    repository: mediawiki/extensions/CentralAuth
-
+    name: ruby-selenium
+    project:
+     - CentralAuth:
+         recipients: gtisza@wikimedia.org qa-alerts@lists.wikimedia.org # @Tgr
+         repository: mediawiki/extensions/CentralAuth
+     - CentralNotice:
+         recipients: agreen@wikimedia.org qa-alerts@lists.wikimedia.org # @AndyRussG
+         repository: mediawiki/extensions/CentralNotice
+     - GettingStarted:
+         recipients: mflaschen@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Mattflaschen-WMF @phuedx
+         repository: mediawiki/extensions/GettingStarted
+     - MinervaNeue:
+         recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @Jdlrobson
+         repository: mediawiki/skins/MinervaNeue
+     - MobileFrontend:
+         # do not sent e-mail messages to Jon until jobs are more stable
+         # recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @jdlrobson
+         recipients: qa-alerts@lists.wikimedia.org
+         repository: mediawiki/extensions/MobileFrontend
+     - MultimediaViewer:
+         # do not sent e-mail messages to Jon until jobs are more stable
+         # recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @jdlrobson
+         recipients: qa-alerts@lists.wikimedia.org
+         repository: mediawiki/extensions/MultimediaViewer
+     - QuickSurveys:
+         recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @jdlrobson
+         repository: mediawiki/extensions/QuickSurveys
     jobs:
-     - 'selenium-{name}'
+     - 'selenium-{project}'
 
 - project:
-    name: CentralNotice
-    recipients: agreen@wikimedia.org qa-alerts@lists.wikimedia.org # @AndyRussG
-    repository: mediawiki/extensions/CentralNotice
-
+    name: ruby-selenium-chrome
+    project:
+     - Wikibase:
+         # recipients: @Tobi_WMDE_SW, @hoo, @aude, @Lydia_Pintscher, @Addshore, @daniel, @thiemowmde, @jonas
+         recipients: qa-alerts@lists.wikimedia.org wikidata-ci-status@wikimedia.de # wikidata
+         repository: mediawiki/extensions/Wikibase
+     - WikibaseLexeme:
+         recipients: qa-alerts@lists.wikimedia.org wikidata-ci-status@wikimedia.de # wikidata
+         repository: mediawiki/extensions/WikibaseLexeme
     jobs:
-     - 'selenium-{name}'
-
-- project:
-    name: GettingStarted
-    recipients: mflaschen@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Mattflaschen-WMF @phuedx
-    repository: mediawiki/extensions/GettingStarted
-
-    jobs:
-     - 'selenium-{name}'
-
-- project:
-    name: MinervaNeue
-    recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @Jdlrobson
-    repository: mediawiki/skins/MinervaNeue
-
-    jobs:
-     - 'selenium-{name}'
-
-- project:
-    name: MobileFrontend
-    # do not sent e-mail messages to Jon until jobs are more stable
-    # recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @jdlrobson
-    recipients: qa-alerts@lists.wikimedia.org
-    repository: mediawiki/extensions/MobileFrontend
-
-    jobs:
-     - 'selenium-{name}'
-
-- project:
-    name: MultimediaViewer
-    # do not sent e-mail messages to Jon until jobs are more stable
-    # recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @jdlrobson
-    recipients: qa-alerts@lists.wikimedia.org
-    repository: mediawiki/extensions/MultimediaViewer
-
-    jobs:
-     - 'selenium-{name}'
-
-- project:
-    name: QuickSurveys
-    recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @jdlrobson
-    repository: mediawiki/extensions/QuickSurveys
-
-    jobs:
-     - 'selenium-{name}'
-
-- project:
-    name: Wikibase
-    # recipients: @Tobi_WMDE_SW, @hoo, @aude, @Lydia_Pintscher, @Addshore, @daniel, @thiemowmde, @jonas
-    recipients: qa-alerts@lists.wikimedia.org wikidata-ci-status@wikimedia.de # wikidata
-    repository: mediawiki/extensions/Wikibase
-
-    jobs:
-     - 'selenium-{name}-chrome'
-
-- project:
-    name: WikibaseLexeme
-    recipients: qa-alerts@lists.wikimedia.org wikidata-ci-status@wikimedia.de # wikidata
-    repository: mediawiki/extensions/WikibaseLexeme
-
-    jobs:
-     - 'selenium-{name}-chrome'
+     - 'selenium-{project}-chrome'
