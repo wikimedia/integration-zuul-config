@@ -16,6 +16,7 @@ import yaml
 from nose.plugins.attrib import attr
 
 GERRIT_IGNORE = (
+    'All-Avatars',
     'All-Users',
     'analytics/aggregator/data',
     'analytics/aggregator/projectview/data',
