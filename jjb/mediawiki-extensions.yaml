@@ -374,63 +374,6 @@
     jobs:
      - '{name}-jsduck-docker'
 
-# Run Selenium tests daily targeting beta cluster
-- job-template:
-    name: 'selenium-{project}-jessie'
-    node: ci-jessie-wikimedia
-    concurrent: true
-    triggers:
-     - timed: '@daily'
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    parameters:
-     - string:
-         name: PHP_BIN
-         default: php7.0
-     - string:
-         name: ZUUL_PROJECT
-         default: mediawiki/extensions/{project}
-     - string:
-         name: ZUUL_BRANCH
-         default: master
-    wrappers:
-      - ansicolor
-      - timeout:
-          timeout: 180
-      - timestamps
-      # Wiki usernames and passwords are hold in Jenkins credentials store
-      # https://integration.wikimedia.org/ci/credentials/store/system/domain/selenium/
-      - credentials-binding:
-          - text:
-              credential-id: selenium-user-beta
-              variable: selenium_user_beta
-    builders:
-     - castor-load
-     - prepare-mediawiki-zuul-project
-     - npm-install-selenium
-     - shell: |
-         . /srv/deployment/integration/slave-scripts/bin/mw-set-env.sh
-         chromedriver --url-base=/wd/hub --port=4444 &
-         cd $MW_INSTALL_PATH
-         set +x
-         export MEDIAWIKI_PASSWORD="$selenium_user_beta"
-         set -x
-         MEDIAWIKI_USER='Selenium user' MW_SERVER=https://{site}.beta.wmflabs.org:443 MW_SCRIPT_PATH=/w ./node_modules/.bin/wdio tests/selenium/wdio.conf.js --spec extensions/{project}/tests/selenium/specs/*.js
-     - assert-no-mediawiki-errors
-    publishers:
-     - castor-save
-     - archive-log-dir
-     - junit:
-        results: 'log/junit*.xml,log/WDIO.xunit*.xml'
-        # Qunit does not generate Junit file and we might skip selenium
-        allow-empty-results: true
-     - email-ext:
-        recipients: '{recipients}'
-        body: '${{SCRIPT, template="wikimedia.template"}}'
-        failure: true
-        unstable: true
-
 - project:
     name: wdio-selenium-daily
     project:
@@ -446,13 +389,11 @@
             recipients: qa-alerts@lists.wikimedia.org wiki@physikerwelt.de # @Physikerwelt
             repository: mediawiki/extensions/Math
             site: en.wikipedia
-        - RelatedArticles:
-            recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
-            repository: mediawiki/extensions/RelatedArticles
-            site: en.wikipedia
         - Popups:
             recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
             repository: mediawiki/extensions/Popups
             site: en.wikipedia
-    jobs:
-     - 'selenium-{project}-jessie'
+        - RelatedArticles:
+            recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org samsmith@wikimedia.org # @Jdlrobson @phuedx
+            repository: mediawiki/extensions/RelatedArticles
+            site: en.wikipedia
