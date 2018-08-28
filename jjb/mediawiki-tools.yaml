@@ -57,15 +57,32 @@
 # testing against a large sample of code.
 - job:
     name: 'mw-tools-codesniffer-mwcore-testrun'
-    node: DebianJessieDocker
+    node: DebianJessieDocker && m4executor
     concurrent: true
     triggers:
      - zuul
     builders:
+     - docker-castor-load
      - docker-log-dir
-     - docker-run-with-log:
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phpcs-dryrun:0.1.3'
+     - docker-src-dir
+     - docker-tmp-dir
+     - docker-zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/tools/codesniffer
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/composer:0.1.4'
+        docker_run_options: '--workdir /src/mediawiki/tools/codesniffer'
+        run_args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
         logdir: '/log'
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/composer:0.1.4'
+        docker_run_options: '--entrypoint=/src/mediawiki/tools/codesniffer/vendor/bin/phpcs'
+        run_args: '-s -p /src'
+        logdir: '/log'
+    publishers:
+     - castor-save-workspace-cache
+     - archive-log-dir
 
 - project:
     name: mwdumper
