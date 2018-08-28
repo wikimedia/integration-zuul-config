@@ -2,7 +2,7 @@
 # https://www.mediawiki.org/wiki/Continuous_integration/Ownership_of_Selenium_Jenkins_job
 
 - project:
-    name: ruby-selenium
+    name: extension-daily-selenium
     project:
      - CentralAuth:
          recipients: gtisza@wikimedia.org qa-alerts@lists.wikimedia.org # @Tgr
@@ -29,8 +29,17 @@
      - QuickSurveys:
          recipients: jrobson@wikimedia.org qa-alerts@lists.wikimedia.org # @jdlrobson
          repository: mediawiki/extensions/QuickSurveys
+     - Wikibase:
+         # recipients: @Tobi_WMDE_SW, @hoo, @aude, @Lydia_Pintscher, @Addshore, @daniel, @thiemowmde, @jonas
+         recipients: qa-alerts@lists.wikimedia.org wikidata-ci-status@wikimedia.de # wikidata
+         repository: mediawiki/extensions/Wikibase
+     - WikibaseLexeme:
+         recipients: qa-alerts@lists.wikimedia.org wikidata-ci-status@wikimedia.de # wikidata
+         repository: mediawiki/extensions/WikibaseLexeme
     jobs:
      - 'selenium-{project}'
+     - 'selenium-daily-beta-{project}':
+         recipients: hashar@free.fr zfilipin@wikimedia.org
 
 - project:
     name: ruby-selenium-chrome
