@@ -148,6 +148,11 @@
     publishers:
      - archive-log-dir
      - xunit:
+         thresholdsmode: 'number'
+         thresholds:
+             - failed:
+                 unstable: 0
+                 failurenew: 0
          types:
              - junit:
                  pattern: 'log/junit*.xml'
