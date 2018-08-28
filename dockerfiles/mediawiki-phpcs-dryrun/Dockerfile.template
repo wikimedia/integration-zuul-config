@@ -1,9 +1,0 @@
-FROM {{ "composer" | image_tag }}
-
-USER nobody
-RUN git clone https://gerrit.wikimedia.org/r/mediawiki/core /src \
-    && cd src/ && composer install --prefer-source
-
-ENTRYPOINT /bin/bash /run.sh
-
-COPY run.sh /run.sh
