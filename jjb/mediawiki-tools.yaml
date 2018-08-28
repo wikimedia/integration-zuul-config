@@ -62,10 +62,37 @@
     triggers:
      - zuul
     builders:
+     - docker-castor-load
      - docker-log-dir
-     - docker-run-with-log:
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phpcs-dryrun:0.1.3'
-        logdir: '/log'
+     - docker-src-dir
+     - docker-tmp-dir
+     - docker-zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/tools/codesniffer
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/composer:0.1.4'
+         docker_run_options: '--workdir /src/mediawiki/tools/codesniffer'
+         run_args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
+         logdir: '/log'
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+         docker_run_options: '--user=nobody --entrypoint=/bin/bash'
+         run_args: '-c "mkdir -p /src/vendor/mediawiki"'
+         logdir: '/log'
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+         docker_run_options: '--user=nobody --entrypoint=/bin/mv'
+         run_args: '/src/mediawiki/tools/codesniffer /src/vendor/mediawiki/mediawiki-codesniffer'
+         logdir: '/log'
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/composer:0.1.4'
+         docker_run_options: '--workdir /src --entrypoint=/src/vendor/mediawiki/mediawiki-codesniffer/vendor/bin/phpcs'
+         run_args: '-s -p'
+         logdir: '/log'
+    publishers:
+     - castor-save-workspace-cache
+     - archive-log-dir
 
 - project:
     name: mwdumper
