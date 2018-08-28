@@ -485,11 +485,11 @@
         - sqlite
     php:
         - php55:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.21-1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.23
         - php70:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-7
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.23
         - hhvm:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.21-1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.23
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
@@ -507,19 +507,19 @@
             # WMF cluster uses MariaDB/MySQL
             database: mysql
         - mediawiki-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-7
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.23
             packages-source: vendor
             database: sqlite
         - mwext-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-7
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.23
             packages-source:  composer
             database: mysql
         - mwext-phpunit-coverage-docker-publish:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-7
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.23
             packages-source:  composer
             database: mysql
         - mediawiki-core-code-coverage-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.21-7
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.23
             packages-source: vendor
             database: sqlite
 
@@ -541,7 +541,7 @@
     name: parsoidsvc-parsertests
     jobs:
         - parsoidsvc-parsertests-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.21-1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.23
             packages-source: composer
             database: sqlite
             quibble_args: '--commands=mediawiki/services/parsoid/tools/ci-mw-parsertests.sh'
