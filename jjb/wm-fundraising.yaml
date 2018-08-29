@@ -72,7 +72,8 @@
      - REL1_27
      - REL1_28
     jobs:
-     - mwext-donationinterfacecore-{branch}-zend56-jessie:
+     - mwext-donationinterfacecore-{branch}-zend56-jessie
+     - quibble-donationinterface-{branch}-zend56-docker
 
 - job-template:
     name: 'mwext-donationinterfacecore-{branch}-zend56-jessie'
@@ -129,6 +130,41 @@
         - mw-apply-settings
         - mw-run-update-script
         - mw-fetch-composer-dev
+
+- job-template:
+    name: quibble-donationinterface-{branch}-zend56-docker
+    node: DebianJessieDocker && m4executor
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: docker-registry.wikimedia.org/releng/quibble-jessie-php56:0.0.23-1
+            docker_run_options: '--volume /srv/git:/srv/git:ro'
+            # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
+            run_args: >
+                --packages-source composer --db mysql --run=phpunit
+                --branch "{branch}"
+                --project-branch mediawiki/extensions/DonationInterface=master
+                --project-branch "mediawiki/vendor=fundraising/{branch}"
+                mediawiki/vendor
+                mediawiki/extensions/DonationInterface
+                mediawiki/extensions/FundraisingEmailUnsubscribe
+                mediawiki/extensions/ContributionTracking
+                mediawiki/extensions/ParserFunctions
+                mediawiki/extensions/cldr
+            logdir: '/log'
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+    wrappers:
+        - timeout:
+            timeout: 30
+            fail: true
+        - timestamps
+        - ansicolor
 
 - project:
     name: fundraising-dash

@@ -946,6 +946,13 @@ jobs:
         branch: ^deployment$
       - project: ^mediawiki/core$
         branch: (?!fundraising/REL.*)
+  - name: ^quibble-donationinterface-REL1_(27_28)-zend56-docker$
+    skip-if:
+      - project: ^mediawiki/extensions/DonationInterface$
+        branch: ^deployment$
+      - project: ^mediawiki/core$
+        branch: (?!fundraising/REL.*)
+
 
   # FIXME when made voting, add it to gate-and-submit
   # also FIXME: do we actually want to keep testing on 1.28?
@@ -1748,7 +1755,6 @@ projects:
       # Experimental php version
       - mwgate-composer-php70-docker
       - mediawiki-quibble-composer-mysql-php55-docker
-      - mwext-donationinterfacecore-REL1_28-zend56-jessie
 
   - name: mediawiki/debian
     test:
@@ -3577,7 +3583,7 @@ projects:
       - mwext-donationinterfacecore-REL1_27-zend56-jessie
       - mwgate-php56lint
     experimental:
-      - mwext-donationinterfacecore-REL1_28-zend56-jessie
+      - quibble-donationinterface-REL1_27-zend56-docker
 
   - name: mediawiki/extensions/DoubleWiki
     template:
