@@ -1,0 +1,28 @@
+FROM {{ "quibble-jessie" | image_tag }}
+
+USER root
+
+# Missing apcu
+{% set php_packages|replace('\n', ' ') -%}
+php5-cli
+php5-common
+php5-curl
+php5-gd
+php5-gmp
+php5-intl
+php5-ldap
+php-luasandbox
+php5-mcrypt
+php5-mysql
+php5-pgsql
+php5-redis
+php5-sqlite3
+php5-tidy
+php5-xsl
+{% endset %}
+
+RUN {{ php_packages | apt_install }}
+
+COPY 99-enable_gc-off.ini /etc/php5/cli/conf.d/99-enable_gc-off.ini
+
+USER nobody
