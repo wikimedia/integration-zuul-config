@@ -1,0 +1,10 @@
+FROM {{ "tox" | image_tag }}
+
+RUN {{ "build-essential libevent-dev" | apt_install }}
+
+USER nobody
+
+COPY run.sh /run.sh
+
+WORKDIR /src
+ENTRYPOINT ["/run.sh"]
