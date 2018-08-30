@@ -906,6 +906,8 @@ jobs:
     # FIXME maybe restrict just to debian/ changes:
     #files: 'debian/.*'
     skip-if:
+      - project: '^blubber$'
+        branch: (?!^debian)
       - project: '^operations/debs/jenkins-debian-glue$'
         branch: (?!^debian/)
       - project: '^integration/uprightdiff$'
@@ -1134,6 +1136,7 @@ project-templates:
   # Runs the generic blubber-test pipeline job
   - name: blubber-test
     test:
+      - debian-glue-non-voting
       - trigger-blubber-test
     gate-and-submit:
       - trigger-blubber-test
