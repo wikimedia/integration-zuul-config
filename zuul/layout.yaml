@@ -1136,7 +1136,6 @@ project-templates:
   # Runs the generic blubber-test pipeline job
   - name: blubber-test
     test:
-      - debian-glue-non-voting
       - trigger-blubber-test
     gate-and-submit:
       - trigger-blubber-test
@@ -1587,6 +1586,8 @@ projects:
   - name: blubber
     template:
       - name: blubber-test
+    test:
+      - debian-glue-non-voting
 
   - name: integration/config
     check:
