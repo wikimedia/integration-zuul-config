@@ -1,0 +1,12 @@
+FROM {{ "quibble-stretch" | image_tag }}
+
+USER root
+
+RUN {{ "bundler" | apt_install }}
+
+COPY mwselenium.sh /usr/local/bin/mwselenium
+
+# Unprivileged
+USER nobody
+WORKDIR /workspace
+ENTRYPOINT ["/usr/local/bin/quibble", "--commands", "mwselenium.sh"]
