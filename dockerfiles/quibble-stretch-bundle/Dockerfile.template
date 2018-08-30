@@ -1,0 +1,18 @@
+FROM {{ "quibble-stretch" | image_tag }}
+
+USER root
+
+RUN {{ "bundler" | apt_install }}
+
+#RUN {{ "ruby ruby-dev build-essential" | apt_install }} \
+#    && gem install --no-rdoc --no-ri --clear-sources jsduck \
+#    && rm -fR /var/lib/gems/*/cache/*.gem \
+#    && apt -y purge build-essential ruby-dev \
+#    && apt-get -y autoremove --purge
+
+COPY mwselenium.sh /usr/local/bin/mwselenium
+
+# Unprivileged
+USER nobody
+WORKDIR /workspace
+ENTRYPOINT ["/usr/local/bin/quibble", "--commands", "mwselenium.sh"]
