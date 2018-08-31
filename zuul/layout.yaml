@@ -1322,6 +1322,8 @@ project-templates:
       - mwskin-mw-selenium-jessie
     postmerge:
       - mwskin-mw-selenium-jessie
+    experimental:
+      - mw-selenium-quibble-docker
 
   # Template to run per-patch selenium browser test
   # Intentionally not in gate because it's super slow
@@ -1330,6 +1332,8 @@ project-templates:
       - mwext-mw-selenium-jessie
     postmerge:
       - mwext-mw-selenium-jessie
+    experimental:
+      - mw-selenium-quibble-docker
 
   - name: extension-gate
     check:
@@ -6314,6 +6318,8 @@ projects:
       - mwext-mw-selenium-composer-jessie
     gate-and-submit:
       - mwext-mw-selenium-composer-jessie
+    experimental:
+      - mw-selenium-quibble-docker
 
   - name: mediawiki/extensions/WikibaseQuality
     template:
@@ -7323,6 +7329,7 @@ projects:
       - mwext-Wikibase-client-tests-mysql-hhvm-jessie
     gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
     experimental:
+      - mw-selenium-quibble-docker
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
