@@ -91,6 +91,8 @@ class TestMwDependencies(unittest.TestCase):
             job_name='mwext-mw-selenium-composer-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-mw-selenium-jessie'))
+        self.assertHasDependencies(self.fetch_dependencies(
+            job_name='mwselenium-quibble-docker'))
 
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='quibble-composer-mysql-php70-docker'))
