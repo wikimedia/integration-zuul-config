@@ -51,7 +51,10 @@ export SCREENSHOT_FAILURES=true
 export SCREENSHOT_FAILURES_PATH="$LOG_DIR"
 
 cd "$base_dir/tests/browser"
-bundle install --verbose
+
+export BUNDLE_DISABLE_SHARED_GEMS=1
+
+bundle install --clean --path "$base_dir"
 exec bundle exec cucumber \
     --color \
     --tags @integration \
