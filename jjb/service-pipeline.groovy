@@ -129,6 +129,6 @@ node(nodeLabel) {
     }
 
     // Don't keep images on production machine
-    cleanImages([testImage, canidateImage, productionImage])
+    cleanImages([testImage, candidateImage, productionImage])
   }
 }
