@@ -428,6 +428,11 @@
             xml-location: 'log/clover.xml'
         - beta-irc  # Spam #wikimedia-releng on failure
 
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwselenium-quibble-docker'
+    quibble_args: '--commands=mwselenium'
+
 - job:
     name: 'quibble-integration'
     project-type: matrix
@@ -530,6 +535,11 @@
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.23
             packages-source: vendor
             database: sqlite
+        - mwselenium-quibble-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.24
+            packages-source: vendor
+            database: mysql
+
 
 - job-template:
     !!merge : *job_quibble
