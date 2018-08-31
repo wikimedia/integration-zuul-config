@@ -2,7 +2,7 @@ FROM {{ "quibble-stretch" | image_tag }}
 
 USER root
 
-RUN {{ "bundler" | apt_install }}
+RUN {{ "build-essential rubygems-integration ruby ruby-dev bundler" | apt_install }}
 
 COPY mwselenium.sh /usr/local/bin/mwselenium
 
