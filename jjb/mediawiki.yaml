@@ -181,7 +181,6 @@
     builders:
      - docker-log-dir
      - docker-src-dir
-     - docker-tmp-dir
      - docker-cache-dir
      - shell: |
         #!/bin/bash -eu
@@ -191,7 +190,7 @@
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
-            --volume "$(pwd)"/tmp:/tmp \
+            --tmpfs /tmp \
             --volume /srv/git:/srv/git \
             --entrypoint "bash" \
             docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8 \
