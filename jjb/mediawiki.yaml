@@ -226,7 +226,7 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /tmp'
             run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
             logdir: '/log'
     publishers:
