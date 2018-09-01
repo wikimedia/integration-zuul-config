@@ -5,7 +5,6 @@
      - zuul
     builders:
      - docker-src-dir
-     - docker-tmp-dir
      - docker-ci-src-setup-simple
      - shell: |
         #!/bin/bash -eu
@@ -13,7 +12,7 @@
         exec docker run \
             --rm \
             --volume "$(pwd)"/src:/src \
-            --volume "$(pwd)"/tmp:/tmp \
+            --tmpfs /tmp \
             docker-registry.wikimedia.org/releng/{image} \
         # nothing else can be executed due to exec
 
