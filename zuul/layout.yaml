@@ -1315,14 +1315,17 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
-  # Template to run per-patch selenium browser test
+  # Template to run per-patch selenium browser test using mediawiki_selenium ruby gems.
+  #
   # Intentionally not in gate because it's super slow
-  - name: skin-selenium
+  #
+  # XXX This job is legacy, repositories must be migrated to the wdio runner
+  # which is triggered by the Quibble jobs.
+  #
+  - name: mwselenium-legacy
     test:
-      - mwskin-mw-selenium-jessie
+      - mwselenium-quibble-docker
     postmerge:
-      - mwskin-mw-selenium-jessie
-    experimental:
       - mwselenium-quibble-docker
 
   # Template to run per-patch selenium browser test
@@ -2268,7 +2271,7 @@ projects:
     template:
      - name: mwgate-rake
      - name: skin-quibble
-     - name: skin-selenium
+     - name: mwselenium-legacy
     postmerge:
      - mwext-doxygen-publish
      - mwext-npm-doc-publish
