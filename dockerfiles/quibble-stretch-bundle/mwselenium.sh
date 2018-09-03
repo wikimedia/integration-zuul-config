@@ -35,6 +35,12 @@ fi
 
 set -x
 
+# Disable Chromium sandboxing while in Docker
+if [ -f '/.dockerenv' ] && [[ ${CHROMIUM_FLAGS:-} != *--no-sandbox* ]]; then
+    CHROMIUM_FLAGS="${CHROMIUM_FLAGS:-} --no-sandbox"
+    export CHROMIUM_FLAGS
+fi
+
 # From mw-set-env-mw-selenium.sh
 export HEADLESS=${HEADLESS:-true}
 export HEADLESS=true
