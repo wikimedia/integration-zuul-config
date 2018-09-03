@@ -1379,6 +1379,13 @@ project-templates:
      - mwskin-php70-phan-docker
     gate-and-submit-swat: *skin-phan-generic
 
+  - name: skin-seccheck
+    test:
+     - mwskin-php70-phan-seccheck-docker
+    gate-and-submit: &skin-phan-seccheck-generic
+     - mwskin-php70-phan-seccheck-docker
+    gate-and-submit-swat: *skin-phan-seccheck-generic
+
   - name: extension-qunit-composer
     test:
       - mwext-qunit-composer-jessie
@@ -1412,7 +1419,7 @@ project-templates:
     experimental:
       - quibble-vendor-sqlite-php70-docker
       - mwskin-php70-phan-docker
-      # TODO: seccheck for skins
+      - mwskin-php70-phan-seccheck-docker
 
   - name: skin-quibble-composer
     check:
@@ -1432,7 +1439,7 @@ project-templates:
     experimental:
       - quibble-composer-sqlite-php70-docker
       - mwskin-php70-phan-docker
-      # TODO: seccheck for skins
+      - mwskin-php70-phan-seccheck-docker
 
   - name: extension-jsduck
     test:

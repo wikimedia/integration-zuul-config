@@ -361,7 +361,7 @@
      - docker-cache-dir
      - docker-ci-src-setup-mwext
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.2.4
+         image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.2.5
          docker_run_options: '--volume "$(pwd)"/src:/mediawiki' # FIXME container should use /src
          run_args: '-m checkstyle'
          logdir: '/log'
@@ -375,6 +375,20 @@
 
 - job:
     name: 'mwext-php70-phan-seccheck-docker-non-voting'
+    !!merge : *job_mwext-php70-phan-seccheck-docker
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+- job:
+    name: 'mwskin-php70-phan-seccheck-docker'
+    !!merge : *job_mwext-php70-phan-seccheck-docker
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+- job:
+    name: 'mwskin-php70-phan-seccheck-docker-non-voting'
     !!merge : *job_mwext-php70-phan-seccheck-docker
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
