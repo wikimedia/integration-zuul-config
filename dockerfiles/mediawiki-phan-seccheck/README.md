@@ -1,8 +1,8 @@
-##Volumes
+## Volumes
 
 **/mediawiki**
 
-This should be a copy of mediawiki.
+This should be a copy of mediawiki including the skin or extension you want to test.
 
 
 ## Example
