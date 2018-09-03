@@ -11,7 +11,7 @@ To run seccheck for the AbuseFilter extension:
 
 ```
 docker run --rm \
-    --env THING_SUBNAME=extensions/AbuseFilter
+    --env THING_SUBNAME=extensions/AbuseFilter \
     -v /dev/git/gerrit/mediawiki:/mediawiki \
     docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:latest \
     -m checkstyle
