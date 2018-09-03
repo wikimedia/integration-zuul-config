@@ -1328,16 +1328,6 @@ project-templates:
     postmerge:
       - mwselenium-quibble-docker
 
-  # Template to run per-patch selenium browser test
-  # Intentionally not in gate because it's super slow
-  - name: extension-selenium
-    test:
-      - mwext-mw-selenium-jessie
-    postmerge:
-      - mwext-mw-selenium-jessie
-    experimental:
-      - mwselenium-quibble-docker
-
   - name: extension-gate
     check:
       - mwgate-php55lint
@@ -4183,9 +4173,9 @@ projects:
     template:
       - name: extension-gate
       - name: mwgate-rake
-      - name: extension-selenium
       - name: extension-coverage
       - name: extension-seccheck
+      - name: mwselenium-legacy
     test:
       - mwext-MobileFrontend-npm-run-lint-modules-docker
     gate-and-submit:
@@ -4244,10 +4234,10 @@ projects:
     template:
       - name: extension-quibble
       - name: mwgate-rake
-      - name: extension-selenium
       - name: extension-jsduck
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mwselenium-legacy
     postmerge:
       - mwext-jsduck-publish
 
@@ -5672,9 +5662,9 @@ projects:
     template:
       - name: extension-quibble
       - name: mwgate-rake
-      - name: extension-selenium
       - name: extension-coverage
       - name: extension-seccheck
+      - name: mwselenium-legacy
 
   - name: mediawiki/extensions/QuickSearchLookup
     template:
@@ -5783,9 +5773,9 @@ projects:
   - name: mediawiki/extensions/RevisionSlider
     template:
       - name: extension-quibble
-      - name: extension-selenium
       - name: extension-phan-generic
       - name: extension-seccheck
+      - name: mwselenium-legacy
 
   - name: mediawiki/extensions/RightFunctions
     template:
@@ -6143,10 +6133,10 @@ projects:
   - name: mediawiki/extensions/TwoColConflict
     template:
       - name: extension-quibble
-      - name: extension-selenium
       - name: extension-phan-generic
       - name: extension-coverage
       - name: extension-seccheck
+      - name: mwselenium-legacy
 
   - name: mediawiki/extensions/TwoFactorAuthentication
     template:

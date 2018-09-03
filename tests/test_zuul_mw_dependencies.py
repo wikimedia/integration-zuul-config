@@ -90,8 +90,6 @@ class TestMwDependencies(unittest.TestCase):
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-mw-selenium-composer-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwext-mw-selenium-jessie'))
-        self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwselenium-quibble-docker'))
 
         self.assertHasDependencies(self.fetch_dependencies(
@@ -115,7 +113,7 @@ class TestMwDependencies(unittest.TestCase):
 
     def test_vector_skin_added_to_selenium_job(self):
         deps = self.fetch_dependencies(
-            job_name='mwext-mw-selenium-jessie')
+            job_name='mwext-mw-selenium-composer-jessie')
         self.assertDictContainsSubset(
             {'SKIN_DEPENDENCIES': 'mediawiki/skins/Vector'},
             deps
@@ -125,7 +123,7 @@ class TestMwDependencies(unittest.TestCase):
         # mediawiki/core does not have dependencies, make sure we can append
         # the skin even when SKIN_DEPENDENCIES has not been set previously.
         deps = self.fetch_dependencies(
-            job_name='mwext-mw-selenium-jessie',
+            job_name='mwext-mw-selenium-composer-jessie',
             project='mediawiki/core')
         self.assertDictContainsSubset(
             {'SKIN_DEPENDENCIES': 'mediawiki/skins/Vector'},
@@ -142,7 +140,7 @@ class TestMwDependencies(unittest.TestCase):
         }
         deps = self.fetch_dependencies(
             project='mediawiki/extensions/FoobarExt',
-            job_name='mwext-mw-selenium-jessie')
+            job_name='mwext-mw-selenium-composer-jessie')
         self.assertIn('SKIN_DEPENDENCIES', deps)
         self.assertEqual(
             deps['SKIN_DEPENDENCIES'],
