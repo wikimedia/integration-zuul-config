@@ -88,8 +88,6 @@ class TestMwDependencies(unittest.TestCase):
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-qunit-composer-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwext-mw-selenium-composer-jessie'))
-        self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwselenium-quibble-docker'))
 
         self.assertHasDependencies(self.fetch_dependencies(
@@ -110,52 +108,6 @@ class TestMwDependencies(unittest.TestCase):
             project='mediawiki/extensions/Example/vendor'))
         self.assertMissingDependencies(self.fetch_dependencies(
             project='foo/bar/baz'))
-
-    def test_vector_skin_added_to_selenium_job(self):
-        deps = self.fetch_dependencies(
-            job_name='mwext-mw-selenium-composer-jessie')
-        self.assertDictContainsSubset(
-            {'SKIN_DEPENDENCIES': 'mediawiki/skins/Vector'},
-            deps
-            )
-
-    def test_vector_skin_added_to_mediawiki_core(self):
-        # mediawiki/core does not have dependencies, make sure we can append
-        # the skin even when SKIN_DEPENDENCIES has not been set previously.
-        deps = self.fetch_dependencies(
-            job_name='mwext-mw-selenium-composer-jessie',
-            project='mediawiki/core')
-        self.assertDictContainsSubset(
-            {'SKIN_DEPENDENCIES': 'mediawiki/skins/Vector'},
-            deps
-            )
-
-    def test_vector_skin_added_to_selenium_job_on_top_of_other_deps(self):
-
-        # FoobarExt already depends on the monobook skin, we want to make sure
-        # we also inject Vector. Global is restored via setUp/tearDown
-        global dependencies
-        dependencies = {
-            'FoobarExt': ['skins/monobook'],
-        }
-        deps = self.fetch_dependencies(
-            project='mediawiki/extensions/FoobarExt',
-            job_name='mwext-mw-selenium-composer-jessie')
-        self.assertIn('SKIN_DEPENDENCIES', deps)
-        self.assertEqual(
-            deps['SKIN_DEPENDENCIES'],
-            'mediawiki/skins/monobook\\nmediawiki/skins/Vector',
-        )
-
-    def test_vector_skin_added_to_mwext_mw_selenium(self):
-        deps = self.fetch_dependencies(
-            project='mediawiki/extensions/Flow',
-            job_name='mwext-mw-selenium')
-        self.assertIn('SKIN_DEPENDENCIES', deps)
-        self.assertIn(
-            'mediawiki/skins/Vector',
-            deps['SKIN_DEPENDENCIES'].split('\\n')
-            )
 
     def test_resolve_skin_on_extension(self):
         mapping = {'Foo': ['skins/Vector']}

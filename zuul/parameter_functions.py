@@ -22,7 +22,6 @@ def set_parameters(item, job, params):
 
     php7_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
-        'mwext-mw-selenium-composer-jessie',
         'mwext-qunit-composer-jessie',
         'mediawiki-selenium-integration-jessie',
         # Shells out to PHP (T196956)
@@ -48,8 +47,6 @@ def set_parameters(item, job, params):
     mw_deps_jobs_starting_with = (
         'mwext-testextension',
         'mwext-qunit',
-        'mwext-mw-selenium',
-        'mwskin-mw-selenium',
         'mwselenium-quibble',
         'mwext-php70-phan',
         'mwskin-php70-phan',
@@ -60,14 +57,6 @@ def set_parameters(item, job, params):
         )
     if job.name.startswith(mw_deps_jobs_starting_with):
         set_mw_dependencies(item, job, params)
-
-    # FIXME rather hacky for selenium jobs (T139740, T137112)
-    if job.name.startswith('mwext-mw-selenium'):
-        set_mw_dependencies(item, job, params)
-        if 'SKIN_DEPENDENCIES' in params and params['SKIN_DEPENDENCIES']:
-            params['SKIN_DEPENDENCIES'] += '\\nmediawiki/skins/Vector'
-        else:
-            params['SKIN_DEPENDENCIES'] = 'mediawiki/skins/Vector'
 
     if job.name == 'parsoidsvc-parsertests-docker':
         params['EXT_DEPENDENCIES'] = '\\n'.join([
