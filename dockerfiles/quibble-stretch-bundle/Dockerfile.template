@@ -4,6 +4,7 @@ USER root
 
 # Wikibase and WikibaseLexeme use Firefox
 RUN {{ "firefox-esr" | apt_install }}
+COPY firefox /usr/local/bin/firefox
 
 RUN {{ "libav-tools build-essential rubygems-integration ruby ruby-dev bundler" | apt_install }}
 
