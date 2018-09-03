@@ -4,7 +4,7 @@ set -euxo pipefail
 
 umask 002
 
-cd /mediawiki/extensions/$EXT_NAME
+cd /mediawiki/$THING_SUBNAME
 
 # Allow overriding version if explicitly specified
 SECCHECK_VERSION=${SECCHECK_VERSION:-""}
