@@ -6,6 +6,16 @@
      - docker-wipe-dir:
          dir: log
 
+- publisher:
+    name: postbuild-wipe-src
+    publishers:
+     - postbuildscript:
+         script-only-if-succeeded: true
+         script-only-if-failed: true
+         builders:
+          - docker-wipe-dir:
+              dir: 'src'
+
 # Create a src directory that will be
 # mounted into a container with --volume
 - builder:
