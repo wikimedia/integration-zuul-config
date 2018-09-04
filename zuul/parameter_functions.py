@@ -142,6 +142,7 @@ dependencies = {
     'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
     'skins/MinervaNeue': ['MobileFrontend'],
     'skins/Empty': ['PhpTags'],
+    'skins/EUCopyrightCampaignSkin': ['EUCopyrightCampaign'],
 
     # Extensions
     # One can add a skin by using: 'skin/XXXXX'
