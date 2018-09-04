@@ -5,7 +5,10 @@ set -eu -o pipefail
 EXT_NAME=${EXT_NAME:-}
 SKIN_NAME=${SKIN_NAME:-}
 
-if [ -z "$EXT_NAME" ] && [ -z "$SKIN_NAME" ]; then
+if [ "${ZUUL_PROJECT:-}" == 'mediawiki/selenium' ]; then
+    # Used for mediawiki/selenium integration job
+    tests_dir=mediawiki/selenium
+elif [ -z "$EXT_NAME" ] && [ -z "$SKIN_NAME" ]; then
     echo "Neither \$EXT_NAME or \$SKIN_NAME is set"
     if [ -z "${ZUUL_PROJECT:-}" ]; then
         echo "Please set EXT_NAME, SKIN_NAME or ZUUL_PROJECT env variable"
@@ -24,14 +27,19 @@ elif [ -n "$SKIN_NAME" ]; then
     kind=skins
 fi
 
-base_dir="${kind}/${name}"
-printf "Base directory: %s\n" "$base_dir"
+if [ -z "${tests_dir:-}" ]; then
+    base_dir="${kind}/${name}"
+    printf "Base directory: %s\n" "$base_dir"
+    tests_dir="$base_dir/tests/browser"
 
-if [ -f "$base_dir/tests/browser/LocalSettings.php" ]; then
-    echo "Injecting tests/browser/LocalSettings.php"
-    echo '?>' >> LocalSettings.php
-    cat "$base_dir/tests/browser/LocalSettings.php" >> LocalSettings.php
+    if [ -f "$base_dir/tests/browser/LocalSettings.php" ]; then
+        echo "Injecting tests/browser/LocalSettings.php"
+        echo '?>' >> LocalSettings.php
+        cat "$base_dir/tests/browser/LocalSettings.php" >> LocalSettings.php
+    fi
 fi
+
+printf "Tests directory: %s\n" "$tests_dir"
 
 set -x
 
@@ -43,7 +51,6 @@ fi
 
 # From mw-set-env-mw-selenium.sh
 export HEADLESS=${HEADLESS:-true}
-export HEADLESS=true
 # Should get it from DISPLAY=:94
 export HEADLESS_DISPLAY=94
 export HEADLESS_CAPTURE_PATH="$LOG_DIR"
@@ -56,11 +63,11 @@ export MEDIAWIKI_API_URL=http://127.0.0.1:9412/api.php
 export SCREENSHOT_FAILURES=true
 export SCREENSHOT_FAILURES_PATH="$LOG_DIR"
 
-cd "$base_dir/tests/browser"
+cd "$tests_dir"
 
 export BUNDLE_DISABLE_SHARED_GEMS=1
 
-bundle install --clean --path "$base_dir"
+bundle install --clean --path "${base_dir:-bundle}"
 exec bundle exec cucumber \
     --color \
     --tags @integration \
