@@ -29,6 +29,7 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - postbuild-wipe-src
 
 - job:
     name: 'mediawiki-core-doxygen-docker'
@@ -96,6 +97,7 @@
             artifacts: 'console.txt,errors.txt'
             allow-empty: true
         - beta-irc  # Spam #wikimedia-releng on failure
+        - postbuild-wipe-src
 
 - builder:
     name: inject-experimental-extension
@@ -213,6 +215,7 @@
         thresholds:
           failed:
             total-all: 1
+     - postbuild-wipe-src
 
 - job-template: &job_quibble
     name: quibble-{packages-source}-{database}-{php}-docker
@@ -232,6 +235,7 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - postbuild-wipe-src
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
@@ -301,6 +305,7 @@
                 [ $ZUUL_BRANCH = "master" ]'
               action:
                 - record-node-stats
+        - postbuild-wipe-src
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
@@ -325,6 +330,7 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - postbuild-wipe-src
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
@@ -351,6 +357,7 @@
      - archive:
          artifacts: 'log/coverage.html'
          allow-empty: true
+     - postbuild-wipe-src
     wrappers:
      - timeout:
          timeout: 60
@@ -393,6 +400,7 @@
                     dest: '$DOC_BASENAME'
                 - docker-wipe-dir:
                     dir: 'cover'
+        - postbuild-wipe-src
 
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:
@@ -427,6 +435,7 @@
         - cloverphp:
             xml-location: 'log/clover.xml'
         - beta-irc  # Spam #wikimedia-releng on failure
+        - postbuild-wipe-src
 
 - job-template:
     !!merge : *job_quibble
