@@ -232,6 +232,12 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - postbuildscript:
+            script-only-if-succeeded: true
+            script-only-if-failed: true
+            builder:
+                - docker-wipe-dir:
+                    dir: src
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
