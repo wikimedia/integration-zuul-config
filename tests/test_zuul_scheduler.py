@@ -753,6 +753,22 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertListEqual([], errors)
 
+    def test_debian_glue_triggers_for_debian_directory_changes(self):
+        job = self.getJob('blubber', 'test', 'debian-glue')
+
+        change = zuul.model.Change('blubber')
+        change.files.extend(['debian/changelog'])
+
+        self.assertTrue(job.changeMatches(change))
+
+    def test_debian_glue_filtered_for_non_debian_changes(self):
+        job = self.getJob('blubber', 'test', 'debian-glue')
+
+        change = zuul.model.Change('blubber')
+        change.files.extend(['README'])
+
+        self.assertFalse(job.changeMatches(change))
+
     def test_l10nbot_patchets_are_ignored(self):
         managers = [self.getPipeline(p).manager
                     for p in ['check', 'test']]

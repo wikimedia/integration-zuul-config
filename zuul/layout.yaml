@@ -903,19 +903,7 @@ jobs:
   - name: ^debian-glue.*
     # Point directly to artifacts
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
-    # FIXME maybe restrict just to debian/ changes:
-    #files: 'debian/.*'
-    skip-if:
-      - project: '^blubber$'
-        branch: (?!^debian)
-      - project: '^operations/debs/jenkins-debian-glue$'
-        branch: (?!^debian/)
-      - project: '^integration/uprightdiff$'
-        branch: ^master$
-      - project: '^integration/zuul$'
-        branch: (?!^debian/)
-      - project: '^operations/software/cumin$'
-        branch: ^master$
+    files: 'debian/.*'
 
   - name: cumin-tox-publish
     branch: ^master$
