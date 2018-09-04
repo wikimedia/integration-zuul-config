@@ -307,6 +307,7 @@ dependencies = {
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
     'TranslationNotifications': ['Translate'],
+    'TopTenPages': ['HitCounters'],
     'TorBlock': ['AbuseFilter'],
     'TwnMainPage': ['Translate'],
     'TwoColConflict': ['BetaFeatures', 'EventLogging', 'WikiEditor'],
