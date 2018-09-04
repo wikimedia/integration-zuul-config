@@ -221,32 +221,6 @@
         rm -rf node_modules
         npm install
 
-# mw-selenium
-#
-# Run MW-Selenium tests that are marked with the @integration tag against a
-# local instance of MediaWiki. All setup of intial state for these kinds of
-# tests should be done by the test suite via the API, including creation of
-# the test user.
-
-- builder:
-    name: mw-selenium-nodepool
-    builders:
-     - prepare-localhost
-     - shell: |
-         # Fail whenever $EXT_NAME is not set
-         set -u
-         # Change to the working directory. EXT_NAME is set by Zuul parameters
-         # functions
-         cd "{tests-dir}"
-         . '/srv/deployment/integration/slave-scripts/bin/mw-selenium-setup.sh'
-         bundle install --verbose
-         bundle exec cucumber \
-            --color \
-            --tags @integration \
-            --tags ~@skip \
-            --format pretty \
-            --format junit --out $WORKSPACE/log/junit
-
 - builder:
     name: mw-apply-settings
     builders:
