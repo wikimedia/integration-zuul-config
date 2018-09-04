@@ -3,7 +3,7 @@ import hudson.slaves.OfflineCause
 import hudson.util.RemotingDiagnostics
 
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
-def groovyScript = 'println "df --output=pcent / /srv".execute().text'
+def groovyScript = 'println "df --output=avail / /srv".execute().text'
 
 def computerNamePrefix = 'integration-slave-'
 def offlineMessage = 'Offline due to full partition'
@@ -11,13 +11,26 @@ def offlineMessage = 'Offline due to full partition'
 def failedComputers = []
 def failedMessage = "${env.JOB_NAME} build ${env.BUILD_NUMBER}"
 
-def diskFull = { diskSize ->
+/**
+ * Space needed for a large job in kilobytes + a bit of wiggle room:
+ *
+ *    sudo du -ks /srv/jenkins-workspace/workspace/* | \
+ *      awk 'BEGIN{max=0}{if($1>max)max=$1}END{print max}'
+ */
+def spacePerJob = 910000
+
+def diskFull = { diskSize, executors ->
+    def spaceNeeded = (executors * spacePerJob)
+
     for (line in diskSize.split('\n')) {
-        if (line.startsWith('Use')) {
+        if (! line || ! line.isInteger()) {
             continue
         }
-        if (line.replaceAll('%', '').toInteger() > offlinePercentage) {
-            return true
+
+        def availableSpace = line.toInteger()
+        def hasEnoughSpaceForJobs = (availableSpace - spaceNeeded) > 0
+        if (! hasEnoughSpaceForJobs) {
+          return true
         }
     }
 
@@ -73,10 +86,11 @@ node('contint1001') {
                     continue
                 }
 
+                def executors = computer.countExecutors()
                 def channel = computer.getChannel()
                 def diskSize = RemotingDiagnostics.executeGroovy(groovyScript, channel)
 
-                if (diskFull(diskSize)) {
+                if (diskFull(diskSize, executors)) {
                     println "${computerName} /srv or / FULL! Taking offline..."
                     computer.setTemporarilyOffline(true,
                         new OfflineCause.ByCLI(offlineMessage))
