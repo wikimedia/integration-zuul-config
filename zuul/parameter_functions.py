@@ -23,7 +23,6 @@ def set_parameters(item, job, params):
     php7_jobs = (
         # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
         'mwext-qunit-composer-jessie',
-        'mediawiki-selenium-integration-jessie',
         # Shells out to PHP (T196956)
         'mwext-MobileFrontend-npm-run-lint-modules-docker',
         )
