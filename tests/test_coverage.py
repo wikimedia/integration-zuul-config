@@ -92,6 +92,7 @@ def getZuulLayoutProjects():
 
 
 def setup():
+    return
     global GERRIT_REPOS
     global ZUUL_PROJECTS
     # Make them custom dict and list that hide __repr__(). See note above
@@ -170,3 +171,38 @@ def test_mediawiki_repos_use_quibble():
             'MediaWiki extension uses Quibble: %s' % name)
         yield test.assertTrue, has_quibble, \
             'Quibble template not found for %s' % name
+
+
+@attr('qa')
+def test_repos_with_debian_files_have_debian_glue_job():
+
+    def has_debian_glue(zuul_project_def):
+        for template in zuul_project_def.get('template', []):
+            if template['name'].startswith('debian-glue'):
+                return True
+
+        for (k, v) in zuul_project_def.iteritems():
+            if k == 'name' or k == 'template':
+                continue
+            has_job = any([job for job in v if job.startswith('debian-glue')])
+            if has_job:
+                return True
+
+    debian_glued = sorted([
+        project['name']
+        for project in getZuulLayoutProjects()
+        if has_debian_glue(project)])
+
+    req = urllib.urlopen('https://gerrit.wikimedia.org/r/changes/?'
+                         'q=file:^debian/.*+-age:6months')
+    # Strip gerrit json harness
+    req.readline()
+
+    debian_projects = sorted(list(set(
+        [change['project'] for change in json.load(req)]
+    )))
+    for d in debian_projects:
+        test.assertTrue.__func__.description = (
+            'Debian glue jobs for: %s' % d)
+        yield test.assertTrue, (d in debian_glued), \
+            'Repository with debian changes but no debian glue job: %s' % d
