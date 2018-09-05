@@ -18,7 +18,7 @@ class Disk {
     int avail
     int percent
     public String toString() {
-        String.format('%s: %d%%', mount, percent)
+        return String.format('%s: %d%%', mount, percent)
     }
 }
 
@@ -111,13 +111,13 @@ node('contint1001') {
                         '%s %s (%s)',
                         jobInfo,
                         computerName,
-                        diskObject
+                        diskObject.toString()
                     )
 
                     def jenkinsMessage = String.format(
                         '%s (%s)',
                         jobInfo,
-                        diskObject
+                        diskObject.toString()
                     )
 
                     println "${jenkinsMessage}"
