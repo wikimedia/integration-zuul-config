@@ -140,6 +140,7 @@ def set_parameters(item, job, params):
 dependencies = {
     # Skins are listed first to highlight the skin dependencies
     'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
+    'skins/BlueSpiceCalumma': ['BlueSpiceFoundation'],
     'skins/MinervaNeue': ['MobileFrontend'],
     'skins/Empty': ['PhpTags'],
 
