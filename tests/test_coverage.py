@@ -92,7 +92,6 @@ def getZuulLayoutProjects():
 
 
 def setup():
-    return
     global GERRIT_REPOS
     global ZUUL_PROJECTS
     # Make them custom dict and list that hide __repr__(). See note above
