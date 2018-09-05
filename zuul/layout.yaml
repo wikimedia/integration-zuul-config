@@ -2420,6 +2420,7 @@ projects:
 
   - name: cergen
     test:
+      - debian-glue-non-voting
       - cergen-tox-docker
     gate-and-submit:
       - cergen-tox-docker
@@ -2521,6 +2522,7 @@ projects:
   - { name: operations/debs/pkg-php/php-defaults,             test: ['debian-glue-non-voting'] }
   - { name: operations/debs/pkg-php/php-redis,                test: ['debian-glue-non-voting'] }
 
+  - { name: operations/debs/presto,                            test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus,                        test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-apache-exporter,        test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-blazegraph-exporter,    test: ['debian-glue-non-voting'] }
@@ -2819,6 +2821,7 @@ projects:
 
   - name: operations/software/conftool
     test:
+      - debian-glue-non-voting
       - conftool-tox-docker
     gate-and-submit:
       # requires etcd to be installed for integration tests
@@ -2837,6 +2840,7 @@ projects:
 
   - name: operations/software/certcentral
     test:
+      - debian-glue-non-voting
       - certcentral-tox-docker
     gate-and-submit:
       - certcentral-tox-docker
@@ -2846,6 +2850,8 @@ projects:
   - name: operations/software/debmonitor
     template:
       - name: tox-docker
+    test:
+      - debian-glue-non-voting
 
   - name: operations/docker-images/docker-pkg
     template:
@@ -2854,6 +2860,10 @@ projects:
   - name: operations/software/elasticsearch-tool
     template:
       - name: tox-docker
+
+  - name: operations/software/elasticsearch/plugins
+    test:
+      - debian-glue-non-voting
 
   - name: operations/software/etcd-mirror
     template:
@@ -2884,6 +2894,8 @@ projects:
   - name: operations/software/spicerack
     template:
       - name: tox-docker
+    test:
+      - debian-glue-non-voting
 
   - name: operations/software/tools-manifest
     template:
@@ -6797,6 +6809,7 @@ projects:
 
   - name: mediawiki/services/poolcounter
     test:
+      - debian-glue-non-voting
       - poolcounter-tox-docker
     gate-and-submit:
       - poolcounter-tox-docker
