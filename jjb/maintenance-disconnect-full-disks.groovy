@@ -3,25 +3,51 @@ import hudson.slaves.OfflineCause
 import hudson.util.RemotingDiagnostics
 
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
-def groovyScript = 'println "df --output=pcent / /srv".execute().text'
+def disks = ['/', '/srv']
+def groovyScript = String.format('println "df %s".execute().text', disks.join(' '))
 
 def computerNamePrefix = 'integration-slave-'
-def offlineMessage = 'Offline due to full partition'
 
-def failedComputers = []
-def failedMessage = "${env.JOB_NAME} build ${env.BUILD_NUMBER}"
+def ircAlerts = []
+def jobInfo = "${env.JOB_NAME} build ${env.BUILD_NUMBER}"
 
-def diskFull = { diskSize ->
-    for (line in diskSize.split('\n')) {
-        if (line.startsWith('Use')) {
+class Disk {
+    String mount
+    int blocks
+    int use
+    int avail
+    int percent
+    public String toString() {
+        String.format('%s: %d%%', mount, percent)
+    }
+}
+
+// Create list disk objects from output of `df`
+def newDisksFromDf = { dfOutput ->
+    diskObjects = []
+
+    for (line in dfOutput.split('\n')) {
+        if (! line) {
             continue
         }
-        if (line.replaceAll('%', '').toInteger() > offlinePercentage) {
-            return true
+
+        def parts = line.split()
+
+        if (! parts[1].isInteger()) {
+            continue
         }
+
+        def newDisk = new Disk()
+        newDisk.mount = parts[5]
+        newDisk.blocks = parts[1].toInteger()
+        newDisk.use = parts[2].toInteger()
+        newDisk.avail = parts[3].toInteger()
+        newDisk.percent = parts[4].replace('%', '').toInteger()
+
+        diskObjects.add(newDisk)
     }
 
-    return false
+    return diskObjects
 }
 
 def sendIRCAlert = { message ->
@@ -66,41 +92,67 @@ node('contint1001') {
                 println "Checking ${computerName}..."
 
                 if (computer.isOffline()) {
-                    if (computer.getOfflineCauseReason() == offlineMessage) {
+                    if (computer.getOfflineCauseReason().startsWith(env.JOB_NAME)) {
                         println "${computerName} /srv or / FULL! Already offline."
-                        failedComputers.add(computerName)
+                        ircAlerts.add("${jobInfo} ${computerName}")
                     }
                     continue
                 }
 
-                def channel = computer.getChannel()
-                def diskSize = RemotingDiagnostics.executeGroovy(groovyScript, channel)
+                def diskObjects = newDisksFromDf(
+                    RemotingDiagnostics.executeGroovy(
+                        groovyScript,
+                        computer.getChannel()
+                    )
+                )
 
-                if (diskFull(diskSize)) {
-                    println "${computerName} /srv or / FULL! Taking offline..."
-                    computer.setTemporarilyOffline(true,
-                        new OfflineCause.ByCLI(offlineMessage))
-                    failedComputers.add(computerName)
+                diskObjects.each{ diskObject ->
+                    def ircMessage = String.format(
+                        '%s %s (%s)',
+                        jobInfo,
+                        computerName,
+                        diskObject
+                    )
+
+                    def jenkinsMessage = String.format(
+                        '%s (%s)',
+                        jobInfo,
+                        diskObject
+                    )
+
+                    println "${jenkinsMessage}"
+
+                    if (diskObject.percent < offlinePercentage) {
+                        return
+                    }
+
+                    computer.setTemporarilyOffline(
+                        true,
+                        new OfflineCause.ByCLI(jenkinsMessage)
+                    )
+
+                    ircAlerts.add(ircMessage)
                 }
             }
         }
     } finally {  // We want notifications regardless of groovy exceptions
         stage('Send notifications') {
             // Alert for computers offline in IRC
-            failedComputers.each {
-                sendIRCAlert("${failedMessage} - ${it}: OFFLINE due to disk space")
+            ircAlerts.each { computer ->
+                println "${computer}: OFFLINE due to disk space"
+                sendIRCAlert("${computer}: OFFLINE due to disk space")
             }
 
             // Job failed, but no computer is offline *necessarily*
             if (isFailure(currentBuild)) {
-                println "Notifying in IRC"
-                alertInIRC("${failedMessage}: ${currentResult}")
+                println "Notifying of failure in IRC"
+                alertInIRC("${jobInfo}: ${currentBuild.result}")
 
                 // First failure
                 if (isFirstFailure(currentBuild)) {
                     println "Sending first failure email..."
                     sendEmailAlert(
-                        "${failedMessage}: ${currentResult}",
+                        "${jobInfo}: ${currentBuild.result}",
                         "${env.BUILD_URL}"
                     )
                 }
