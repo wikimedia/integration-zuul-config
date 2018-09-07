@@ -908,6 +908,9 @@ jobs:
   - name: cumin-tox-publish
     branch: ^master$
 
+  - name: docker-pkg-tox-publish
+    branch: ^master$
+
   - name: ^(mwgate-|)composer-validate$
     files:
      - '^composer.json$'
@@ -2860,6 +2863,8 @@ projects:
   - name: operations/docker-images/docker-pkg
     template:
       - name: tox-docker
+    postmerge:
+      - docker-pkg-tox-publish
 
   - name: operations/software/elasticsearch-tool
     template:
