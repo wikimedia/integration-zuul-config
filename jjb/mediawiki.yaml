@@ -226,7 +226,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            run_args: '--log-dir /log --packages-source "{packages-source}" --db "{database}" {quibble_args}'
             logdir: '/log'
     publishers:
         - archive-log-allow-empty
@@ -287,7 +287,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "{packages-source}" --db "{database}" --skip composer-test'
+            run_args: '--log-dir /log --packages-source "{packages-source}" --db "{database}" --skip composer-test'
             logdir: '/log'
     publishers:
         - archive-log-allow-empty
@@ -319,7 +319,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "vendor" --db "mysql" --run composer-test'
+            run_args: '--log-dir /log --packages-source "vendor" --db "mysql" --run composer-test'
             logdir: '/log'
     publishers:
         - archive-log-allow-empty
@@ -344,7 +344,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source {packages-source} --db {database} --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
+            run_args: '--log-dir /log --packages-source {packages-source} --db {database} --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
             logdir: '/log'
     publishers:
      - archive:
@@ -379,7 +379,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover'
-            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            run_args: '--log-dir /log --packages-source "{packages-source}" --db "{database}" {quibble_args}'
             logdir: '/log'
     publishers:
         - archive-log-allow-empty
@@ -416,7 +416,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover'
-            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            run_args: '--log-dir /log --packages-source "{packages-source}" --db "{database}" {quibble_args}'
             logdir: '/log'
         - cover-publish:
             src: 'cover'
