@@ -18,9 +18,15 @@ if ! jq -e '.extra."phan-taint-check-plugin"' composer.json; then
     exit 0
 fi
 
-composer require --dev mediawiki/phan-taint-check-plugin $(jq -r '.extra."phan-taint-check-plugin"' composer.json)
+SECCHECK_VERSION=$(jq -r '.extra."phan-taint-check-plugin"' composer.json)
+
+# Install into /opt/phan so we don't conflict with any extension dependencies
+cd /opt/phan/
+composer require mediawiki/phan-taint-check-plugin $SECCHECK_VERSION
 
 SECCHECK_MODE=${SECCHECK_MODE:-seccheck-fast-mwext}
+export SECURITY_CHECK_EXT_PATH=/mediawiki/$THING_SUBNAME
+export MW_INSTALL_PATH=/mediawiki/
 
 # Save the output as `seccheck-issues`
 ./vendor/bin/$SECCHECK_MODE $@ | tee /mediawiki/seccheck-issues
