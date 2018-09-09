@@ -1,0 +1,56 @@
+FROM {{ "node10" | image_tag }} as node10
+
+FROM {{ "quibble-stretch" | image_tag }}
+
+USER root
+
+#############################
+#  Inject Node.js and npm  #
+#############################
+
+COPY --from=node10 /srv/npm /srv/npm
+RUN ln -s /srv/npm/bin/npm-cli.js /usr/local/bin/npm
+
+#############################
+#  Debian packages we need  #
+#############################
+{% set mediawiki_deps|replace('\n', ' ') -%}
+php-apcu
+php-bcmath
+php-cli
+php-curl
+php-gd
+php-gmp
+php-intl
+php-ldap
+php-mbstring
+php-mysql
+php-pgsql
+php-sqlite3
+php-tidy
+php-xml
+php-zip
+{%- endset -%}
+
+RUN {{ mediawiki_deps | apt_install }}
+
+#
+# Install Fresnel for the per-patch performance report.
+* (Jenkins job "mediawiki-fresnel-patch").
+#
+RUN mkdir -p /opt/npm-tmp /opt/fresnel \
+    && chown nobody:nogroup /opt/npm-tmp /opt/fresnel
+USER nobody
+RUN cd /opt/fresnel \
+    && NPM_CONFIG_cache=/opt/npm-tmp NPM_CONFIG_update_notifier=false NPM_CONFIG_prefix= npm install fresnel@0.1.1 \
+    && find /opt/npm-tmp -mindepth 1 -delete
+USER root
+RUN rm -rf /opt/npm-tmp \
+    && ln -s /opt/fresnel/node_modules/.bin/fresnel /usr/local/bin/fresnel
+COPY mediawiki-fresnel-patch.sh /usr/local/bin/mediawiki-fresnel-patch
+
+# Unprivileged
+RUN install --directory /workspace --owner=nobody --group=nogroup
+USER nobody
+WORKDIR /workspace
+ENTRYPOINT ["/usr/local/bin/quibble"]
