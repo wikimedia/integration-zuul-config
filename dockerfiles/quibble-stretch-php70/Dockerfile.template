@@ -47,6 +47,20 @@ COPY mediawiki-coverage.sh /usr/local/bin/mediawiki-coverage
 COPY mwext-phpunit-coverage.sh /usr/local/bin/mwext-phpunit-coverage
 COPY mwext-phpunit-coverage-patch.sh /usr/local/bin/mwext-phpunit-coverage-patch
 
+
+#
+# CI utilities to generate per-patch performance report
+#
+RUN mkdir -p /opt/npm-tmp /opt/fresnel \
+    && chown nobody:nogroup /opt/npm-tmp /opt/fresnel
+USER nobody
+RUN cd /opt/fresnel \
+    && NPM_CONFIG_CACHE=/opt/npm-tmp npm install -g fresnel@0.0.0
+    && find /opt/npm-tmp -mindepth 1 -delete
+USER root
+RUN rm -rf /opt/npm-tmp
+COPY mediawiki-fresnel-patch.sh /usr/local/bin/mediawiki-fresnel-patch
+
 # tidy from Jessie
 # Provided on https://integration.wikimedia.org/oldtidy/ until a Debian package
 # is made available:
