@@ -394,6 +394,32 @@
                 - docker-wipe-dir:
                     dir: 'cover'
 
+# Per-patch performance analysis for MediaWiki
+- job-template:
+    !!merge : *job_quibble
+    name: 'mediawiki-performance-patch-docker'
+    quibble_args: '--run=phpunit'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: '{docker_image}'
+            docker_run_options: '--volume /srv/git:/srv/git:ro'
+            run_args: '--packages-source {packages-source} --db {database} --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
+            logdir: '/log'
+    publishers:
+     - archive:
+         artifacts: 'log/coverage.html'
+         allow-empty: true
+    wrappers:
+     - timeout:
+         timeout: 60
+         fail: true
+     - ansicolor
+     - timestamps
+
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:
     !!merge : *job_quibble
@@ -520,6 +546,10 @@
             # WMF cluster uses MariaDB/MySQL
             database: mysql
         - mediawiki-phpunit-coverage-patch-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.23
+            packages-source: vendor
+            database: sqlite
+        - mediawiki-performance-patch-docker:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.23
             packages-source: vendor
             database: sqlite

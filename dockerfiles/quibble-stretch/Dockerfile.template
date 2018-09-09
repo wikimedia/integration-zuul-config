@@ -112,6 +112,20 @@ COPY mediawiki-coverage.sh /usr/local/bin/mediawiki-coverage
 COPY mwext-phpunit-coverage.sh /usr/local/bin/mwext-phpunit-coverage
 COPY mwext-phpunit-coverage-patch.sh /usr/local/bin/mwext-phpunit-coverage-patch
 
+#
+# CI utilities to generate per-patch performance analysis
+#
+RUN mkdir -p /opt/nametbd-tmp \
+    && chown nobody:nogroup /opt/nametbd-tmp
+USER nobody
+RUN cd /opt/nametbd-tmp\
+    # TODO: Set params to make npm use /opt/nametbd-tmp for any temporary stuff
+    && npm install -g mediawiki-nametbd@0.0.0
+    && find /opt/nametbd-tmp -mindepth 1 -delete
+USER root
+RUN rm -rf /opt/nametbd-tmp
+COPY mediawiki-performance-patch.sh /usr/local/bin/mediawiki-performance-patch
+
 # tidy from Jessie
 # Provided on https://integration.wikimedia.org/oldtidy/ until a Debian package
 # is made available:
