@@ -100,24 +100,6 @@
         - postbuild-wipe-src
 
 - builder:
-    name: inject-experimental-extension
-    builders:
-     - shell: |
-         # When triggered from the experimental pipeline, add the project to
-         # the list of dependencies. Used to inject an extension which is not
-         # yet part of the list above.
-         if [ "$ZUUL_PIPELINE" == 'experimental' ] && ! grep -q "$ZUUL_PROJECT" deps.txt; then
-            echo "$ZUUL_PROJECT" >> deps.txt
-            # Evil copy paste of `zuul-cloner` macro
-            # FIXME maybe we should always pass $ZUUL_PROJECT in the macro
-            zuul-cloner --color --verbose \
-                --map /srv/deployment/integration/slave-scripts/etc/zuul-clonemap.yaml \
-                --workspace src \
-                https://gerrit.wikimedia.org/r/p \
-                "$ZUUL_PROJECT"
-         fi
-
-- builder:
     name: assert-no-mediawiki-errors
     builders:
         - shell:
