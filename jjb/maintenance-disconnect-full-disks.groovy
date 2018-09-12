@@ -1,6 +1,7 @@
 import hudson.plugins.ircbot.v2.IRCConnectionProvider;
 import hudson.slaves.OfflineCause
 import hudson.util.RemotingDiagnostics
+import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
 def disks = ['/', '/srv']
@@ -57,106 +58,93 @@ def sendIRCAlert = { message ->
     )
 }
 
-def sendEmailAlert = { subject, body ->
-    mail to: 'qa-alerts@lists.wikimedia.org',
-        subject: subject,
-        body: body,
-        attachLog: false
-}
-
 def isFailure = { build ->
     return build.resultIsWorseOrEqualTo('FAILURE')
 }
 
-def isFirstFailure = { build ->
-    if (! isFailure(build)) {
-        return false
+@NonCPS
+def checkAgents = {
+    alerts = []
+    for (slave in hudson.model.Hudson.instance.slaves) {
+        def computer = slave.computer
+        def computerName = computer.getName()
+
+        // Only check nodes that are named like integration-agents
+        if (!computerName.startsWith(computerNamePrefix)) {
+            continue
+        }
+
+        println "Checking ${computerName}..."
+
+        if (computer.isOffline()) {
+            if (computer.getOfflineCauseReason().startsWith(env.JOB_NAME)) {
+                println "${computerName} /srv or / FULL! Already offline."
+                alerts.add("${jobInfo} ${computerName}")
+            }
+            println "${computerName} Offline..."
+            continue
+        }
+
+        def diskObjects = newDisksFromDf(
+            RemotingDiagnostics.executeGroovy(
+                groovyScript,
+                computer.getChannel()
+            )
+        )
+
+        diskObjects.each{ diskObject ->
+            def ircMessage = String.format(
+                '%s %s (%s)',
+                jobInfo,
+                computerName,
+                diskObject.toString()
+            )
+
+            def jenkinsMessage = String.format(
+                '%s (%s)',
+                jobInfo,
+                diskObject.toString()
+            )
+
+            println "${jenkinsMessage}"
+
+            if (diskObject.percent < offlinePercentage) {
+                return
+            }
+
+            computer.setTemporarilyOffline(
+                true,
+                new OfflineCause.ByCLI(jenkinsMessage)
+            )
+
+            alerts.add(ircMessage)
+        }
     }
-    def currentResult = currentBuild.result ?: 'SUCCESS'
-    def previousResult = currentBuild.previousBuild?.result
-    return previousResult != null && previousResult != currentResult
+
+    return alerts
 }
 
 node('contint1001') {
-    try {
-        stage('Check agents') {
-            for (slave in hudson.model.Hudson.instance.slaves) {
-                def computer = slave.computer
-                def computerName = computer.getName()
-
-                // Only check nodes that are named like integration-agents
-                if (!computerName.startsWith(computerNamePrefix)) {
-                    continue
-                }
-
-                println "Checking ${computerName}..."
-
-                if (computer.isOffline()) {
-                    if (computer.getOfflineCauseReason().startsWith(env.JOB_NAME)) {
-                        println "${computerName} /srv or / FULL! Already offline."
-                        ircAlerts.add("${jobInfo} ${computerName}")
-                    }
-                    continue
-                }
-
-                def diskObjects = newDisksFromDf(
-                    RemotingDiagnostics.executeGroovy(
-                        groovyScript,
-                        computer.getChannel()
-                    )
-                )
-
-                diskObjects.each{ diskObject ->
-                    def ircMessage = String.format(
-                        '%s %s (%s)',
-                        jobInfo,
-                        computerName,
-                        diskObject.toString()
-                    )
-
-                    def jenkinsMessage = String.format(
-                        '%s (%s)',
-                        jobInfo,
-                        diskObject.toString()
-                    )
-
-                    println "${jenkinsMessage}"
-
-                    if (diskObject.percent < offlinePercentage) {
-                        return
-                    }
-
-                    computer.setTemporarilyOffline(
-                        true,
-                        new OfflineCause.ByCLI(jenkinsMessage)
-                    )
-
-                    ircAlerts.add(ircMessage)
-                }
+    stage('Check agents') {
+        try {
+            timeout(5) {
+                ircAlerts = checkAgents()
             }
+        } catch (FlowInterruptedException e) {
+            currentBuild.result = 'FAILURE'
         }
-    } finally {  // We want notifications regardless of groovy exceptions
-        stage('Send notifications') {
-            // Alert for computers offline in IRC
-            ircAlerts.each { computer ->
-                println "${computer}: OFFLINE due to disk space"
-                sendIRCAlert("${computer}: OFFLINE due to disk space")
-            }
+    }
+    stage('Send notifications') {
+        // Alert for computers offline in IRC
+        ircAlerts.each { computer ->
+            println "${computer}: OFFLINE due to disk space"
+            sendIRCAlert("${computer}: OFFLINE due to disk space")
+        }
 
-            // Job failed, but no computer is offline *necessarily*
-            if (isFailure(currentBuild)) {
-                println "Notifying of failure in IRC"
-                alertInIRC("${jobInfo}: ${currentBuild.result}")
-
-                // First failure
-                if (isFirstFailure(currentBuild)) {
-                    println "Sending first failure email..."
-                    sendEmailAlert(
-                        "${jobInfo}: ${currentBuild.result}",
-                        "${env.BUILD_URL}"
-                    )
-                }
-            }
+        // Job failed, but no computer is offline *necessarily*
+        if (isFailure(currentBuild)) {
+            println "Notifying of failure in IRC"
+            alertInIRC("${jobInfo}: ${currentBuild.result}")
         }
     }
 }
