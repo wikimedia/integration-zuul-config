@@ -45,7 +45,7 @@ class TestSetGatedExtensions(unittest.TestCase):
         set_gated_extensions(None, gate_job, params)
         self.assertIn('\\nmediawiki/extensions/Wikibase',
                       params['EXT_DEPENDENCIES'])
-        self.assertNotIn('\\nmediawiki/extensions/Wikidata',
+        self.assertNotIn('\\nmediawiki/extensions/Wikidata\\n',
                          params['EXT_DEPENDENCIES'])
 
     def test_wikibase_notonethirty(self):
