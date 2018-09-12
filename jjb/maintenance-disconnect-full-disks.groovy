@@ -4,7 +4,7 @@ import hudson.util.RemotingDiagnostics
 import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
-def disks = ['/', '/srv']
+def disks = ['/', '/srv', '/var/lib/docker']
 def groovyScript = String.format('println "df %s".execute().text', disks.join(' '))
 
 def computerNamePrefix = 'integration-slave-'
