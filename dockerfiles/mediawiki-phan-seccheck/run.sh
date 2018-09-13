@@ -30,6 +30,11 @@ cd /mediawiki/$THING_SUBNAME
 
 # Inline the scripts/seccheck-* bash wrapper
 PHAN="/opt/phan/vendor/phan/phan/phan"
+if [ ! -f $PHAN ]; then
+    # Look for etsy/phan in older versions of the plugin
+    PHAN="/opt/phan/vendor/etsy/phan/phan"
+fi
+
 CONFIG="/opt/phan/vendor/mediawiki/phan-taint-check-plugin/scripts/$SECCHECK_MODE"
 
 # Save the output as `seccheck-issues`
