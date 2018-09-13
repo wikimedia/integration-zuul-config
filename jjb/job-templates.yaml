@@ -160,7 +160,7 @@
 - job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-browser-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.1.2'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.2.0'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
@@ -168,7 +168,7 @@
 - job-template:
     !!merge : *job_npm-run-script-node-6-docker
     name: 'selenium-daily-beta-{project}'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.1.2'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.2.0'
     triggers:
      - timed: '@daily'
     parameters:
