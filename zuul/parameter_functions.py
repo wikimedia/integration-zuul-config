@@ -337,7 +337,7 @@ dependencies = {
     ],
     'WikibaseJavaScriptApi': ['Wikibase'],
     'WikibaseLexeme': ['Wikibase'],
-    'WikibaseMediaInfo': ['Wikibase'],
+    'WikibaseMediaInfo': ['Wikibase', 'UniversalLanguageSelector'],
     'WikibaseQuality': ['Wikibase'],
     'WikibaseQualityConstraints': ['Wikibase', 'WikibaseQuality'],
     'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
