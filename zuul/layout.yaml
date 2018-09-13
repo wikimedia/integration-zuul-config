@@ -1351,12 +1351,12 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
-  - name: extension-phan-generic
+  - name: extension-phan
     test:
      - mwext-php70-phan-docker
-    gate-and-submit: &extension-phan-generic
+    gate-and-submit: &extension-phan
      - mwext-php70-phan-docker
-    gate-and-submit-swat: *extension-phan-generic
+    gate-and-submit-swat: *extension-phan
 
   - name: skin-phan
     test:
@@ -3109,13 +3109,13 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/AbuseFilter
     template:
       - name: extension-gate
       - name: extension-coverage
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/AccountInfo
@@ -3160,7 +3160,7 @@ projects:
   - name: mediawiki/extensions/AntiSpoof
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
       - name: extension-seccheck
 
@@ -3223,7 +3223,7 @@ projects:
   - name: mediawiki/extensions/Babel
     template:
       - name: extension-gate
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
       - name: extension-seccheck
 
@@ -3290,7 +3290,7 @@ projects:
   - name: mediawiki/extensions/CategoryTree
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/CategoryWatch
@@ -3319,13 +3319,13 @@ projects:
   - name: mediawiki/extensions/Cite
     template:
       - name: extension-gate
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/CiteThisPage
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Citoid
@@ -3358,7 +3358,7 @@ projects:
   - name: mediawiki/extensions/CirrusSearch
     template:
       - name: extension-gate
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
     test:
@@ -3388,7 +3388,7 @@ projects:
   - name: mediawiki/extensions/CodeEditor
     template:
       - name: extension-gate
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/CodeMirror
@@ -3406,7 +3406,7 @@ projects:
   - name: mediawiki/extensions/Cognate
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
       - name: extension-seccheck
 
@@ -3656,7 +3656,7 @@ projects:
   - name: mediawiki/extensions/Echo
     template:
       - name: extension-gate
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
 
   - name: mediawiki/extensions/EditAccount
@@ -3701,7 +3701,7 @@ projects:
   - name: mediawiki/extensions/ElectronPdfService
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/EmailAuth
@@ -3814,7 +3814,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-coverage
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Gather
@@ -3840,7 +3840,7 @@ projects:
   - name: mediawiki/extensions/GeoData
     template:
       - name: extension-gate
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
       - name: extension-seccheck
 
@@ -4003,7 +4003,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/ImapAuthorization
     template:
@@ -4025,7 +4025,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/Insider
     template:
@@ -4036,12 +4036,12 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/InterwikiSorting
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/intersection
@@ -4129,12 +4129,12 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/LoginNotify
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
       - name: extension-seccheck
 
@@ -4170,7 +4170,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-coverage
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/MassMessageEmail
@@ -4228,7 +4228,7 @@ projects:
   - name: mediawiki/extensions/FileImporter
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
       - name: extension-seccheck
 
@@ -4267,7 +4267,7 @@ projects:
       - name: extension-quibble
       - name: mwgate-rake
       - name: extension-jsduck
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
       - name: mwselenium-legacy
     postmerge:
@@ -4338,7 +4338,7 @@ projects:
   - name: mediawiki/extensions/Nuke
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/NumberOfComments
@@ -4348,7 +4348,7 @@ projects:
   - name: mediawiki/extensions/OATHAuth
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/OAI
@@ -4432,7 +4432,7 @@ projects:
       - name: mwgate-rake
       - name: extension-coverage
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/ParentPage
     template:
@@ -4442,13 +4442,13 @@ projects:
     template:
       - name: extension-gate
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
 
   - name: mediawiki/extensions/ParserMigration
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Patroller
@@ -4554,7 +4554,7 @@ projects:
   - name: mediawiki/extensions/ArticleCreationWorkflow
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
       - name: extension-seccheck
 
@@ -4888,7 +4888,7 @@ projects:
   - name: mediawiki/extensions/CentralLogging
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/CharRangeSpan
     template:
@@ -5480,7 +5480,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/NumberFormat
     template:
@@ -5805,7 +5805,7 @@ projects:
   - name: mediawiki/extensions/RevisionSlider
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
       - name: mwselenium-legacy
 
@@ -6165,7 +6165,7 @@ projects:
   - name: mediawiki/extensions/TwoColConflict
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
       - name: extension-seccheck
       - name: mwselenium-legacy
@@ -6872,7 +6872,7 @@ projects:
     template:
       - name: extension-gate
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/PerformanceInspector
     template:
@@ -6907,7 +6907,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/PoolCounter
     template:
@@ -6960,7 +6960,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
 
   - name: mediawiki/extensions/ReplaceSet
     template:
@@ -6969,7 +6969,7 @@ projects:
   - name: mediawiki/extensions/ReplaceText
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/RSS
@@ -7060,7 +7060,7 @@ projects:
   - name: mediawiki/extensions/Scribunto
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
 
@@ -7095,7 +7095,7 @@ projects:
     template:
       - name: extension-gate
       - name: extension-seccheck
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-coverage
 
   - name: mediawiki/extensions/SpamDiffTool
@@ -7114,7 +7114,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-coverage
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/StrategyWiki
@@ -7165,7 +7165,7 @@ projects:
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TemplateData
@@ -7185,7 +7185,7 @@ projects:
   - name: mediawiki/extensions/Thanks
     template:
       - name: extension-gate  # T86687
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TimedMediaHandler
@@ -7202,7 +7202,7 @@ projects:
   - name: mediawiki/extensions/TitleBlacklist
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
 
@@ -7218,7 +7218,7 @@ projects:
   - name: mediawiki/extensions/TorBlock
     template:
       - name: extension-quibble
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Translate
@@ -7337,7 +7337,7 @@ projects:
   - name: mediawiki/extensions/WikiEditor
     template:
       - name: extension-gate
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Wikibase
@@ -7345,7 +7345,7 @@ projects:
       - name: mwgate-npm
       - name: extension-quibble
       - name: extension-gate
-      - name: extension-phan-generic
+      - name: extension-phan
       - name: mwgate-rake
       - name: extension-seccheck
     php5:  # 'check php5'
