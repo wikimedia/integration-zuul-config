@@ -294,7 +294,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.2.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0'
          logdir: '/log'
      - cover-publish:
         src: 'src/coverage'
@@ -305,7 +305,8 @@
 - project:
     name: visualeditor
     jobs:
-        - '{name}-npm-browser-node-6-docker'
+        - '{name}-npm-browser-node-6-docker':
+            docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0
         - '{name}-npm-run-{script}-node-6-docker':
            script: 'doc'
         - '{name}-rake-docker'
