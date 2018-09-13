@@ -11,7 +11,16 @@ execfile(os.path.join(
     '../zuul/parameter_functions.py'),
     param_func_env)
 
-gatedextensions = param_func_env['gatedextensions']
+
+class GatedExtensions(set):
+    def __repr__(self):
+        return "<gated extensions>"
+
+    def __str__(self):
+        return "<gated extensions>"
+
+
+gatedextensions = GatedExtensions(param_func_env['gatedextensions'])
 get_dependencies = param_func_env['get_dependencies']
 all_dependencies = param_func_env['dependencies']
 
@@ -36,7 +45,7 @@ def test_deps_of_gated_are_in_gate():
             'Dependency of gated project is in gate: %s' % (gated_dep))
         yield (
             test.assertIn,
-            gated_dep, set(gatedextensions),
+            gated_dep, gatedextensions,
             '%s is not in gate but is a dependency of: %s' % (
                 gated_dep, ', '.join(origin)))
     del(test.assertIn.__func__.description)
