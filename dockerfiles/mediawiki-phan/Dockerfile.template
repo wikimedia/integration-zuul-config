@@ -1,8 +1,20 @@
+FROM {{ "sury-php" | image_tag }} AS sury-php
+
 FROM {{ "composer" | image_tag }}
 
 USER root
 
 RUN install -d /srv/phan -o nobody
+
+# We need to get a newer version of php-ast from sury.org (T174338)
+COPY --from=sury-php /etc/apt/trusted.gpg.d/php.gpg /etc/apt/trusted.gpg.d/php.gpg
+
+RUN {{ "apt-transport-https" | apt_install }} && \
+ echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/php.list
+
+COPY php-ast.pin /etc/apt/preferences.d/php-ast
+RUN {{ "php-ast" | apt_install }}
+
 
 ENV PHAN /srv/phan/vendor/bin/phan
 
