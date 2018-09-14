@@ -53,7 +53,7 @@ node(nodeLabel) {
 
   def runImage = { imageName ->
     timeout(time: 20, unit: 'MINUTES') {
-      sh "exec docker run ${arg(imageName)}"
+      sh "exec docker run --rm ${arg(imageName)}"
     }
   }
 
