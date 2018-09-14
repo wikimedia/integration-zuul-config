@@ -73,6 +73,10 @@ node(nodeLabel) {
     imageNames.each { cleanImage(it) }
   }
 
+  def cleanStoppedContainers =  {
+    sh "docker container prune --force"
+  }
+
   def testDeployment = {
     def config = readYaml(file: helmConfig)
 
@@ -120,6 +124,9 @@ node(nodeLabel) {
       testDeployment()
     }
   }
+
+  // No reason to keep stopped containers
+  cleanStoppedContainers()
 
   if (pushProductionImage) {
     // Retag the candidate image as the final production image
