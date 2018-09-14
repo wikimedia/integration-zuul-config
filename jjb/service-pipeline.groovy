@@ -73,6 +73,10 @@ node(nodeLabel) {
     imageNames.each { cleanImage(it) }
   }
 
+  def cleanStoppedContainers =  {
+    sh "docker container prune --force"
+  }
+
   def testDeployment = {
     def config = readYaml(file: helmConfig)
 
@@ -106,6 +110,9 @@ node(nodeLabel) {
   stage('Run test image') {
     runImage(testImage)
   }
+
+  // No reason to keep stopped containers
+  cleanStoppedContainers()
 
   // Build a candidate production image to be tested in the CI namespace
   if (testProductionImage || pushProductionImage) {
