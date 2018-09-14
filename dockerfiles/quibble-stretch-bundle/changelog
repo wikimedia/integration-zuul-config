@@ -1,3 +1,20 @@
+quibble-stretch-bundle (0.0.25) wikimedia; urgency=medium
+
+  * Drop /var/lib/mysql, not used.
+  * Remove Firefox 60. It no more supports the Selenium IDE since version 55.
+    Wikibase and WikibaseLexeme have been switched to use Chromium instead.
+    T204214
+  * Upgrade to Quibble 0.0.25
+    Antoine Musso (6):
+      SQLite backend did not call parent __init__
+      Postgres datadir is automatically cleaned up
+      Stop hardcoding TMPDIR=/tmp
+      In Docker default log dir to be under workspace
+      Allow specifying database data directory
+      Ignore ./quibble/test.py when generating coverage
+
+ -- Antoine Musso <hashar@free.fr>  Mon, 17 Sep 2018 15:15:21 +0200
+
 quibble-stretch-bundle (0.0.24-8) wikimedia; urgency=medium
 
   * Rebuild for Chromium 69 and Firefox 60
