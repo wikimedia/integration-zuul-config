@@ -1,4 +1,4 @@
-# Same as the generic job, but kept separate so that gate-and-submit jobs
+z Same as the generic job, but kept separate so that gate-and-submit jobs
 # don't cross-block between mediawiki/* and non-mediawiki changes.
 #
 # Deprecated: Use 'mwext-node10-rundoc-docker' instead.
@@ -303,6 +303,11 @@
         - Newsletter:
             recipients: qa-alerts@lists.wikimedia.org 01tonythomas@gmail.com # @01tonythomas
             repository: mediawiki/extensions/Newsletter
+            site: en.wikipedia
+            docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.4.1'
+        - ORES:
+            recipients: qa-alerts@lists.wikimedia.org amir.sarabadani@wikimedia.de # @Ladsgroup
+            repository: mediawiki/extensions/ORES
             site: en.wikipedia
             docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.4.1'
         - Popups:
