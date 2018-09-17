@@ -545,7 +545,13 @@
             docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.1.0
 
 - project:
+    name: 'wikimedia-cz-tools'
+    jobs:
+        - '{name}-tox-docker':
+           docker_image_var: docker-registry.wikimedia.org/releng/tox:0.1.0
+
+- project:
     name: 'labs-tools-map-of-monuments'
     jobs:
        - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox:0.1.0
+           docker_image_var: docker-registry.wikimedia.org/releng/tox:0.1.0
