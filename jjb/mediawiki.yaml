@@ -212,8 +212,8 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--log-dir /log --packages-source "{packages-source}" --db "{database}" {quibble_args}'
-            logdir: '/log'
+            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -274,8 +274,8 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--log-dir /log --packages-source "{packages-source}" --db "{database}" --skip composer-test'
-            logdir: '/log'
+            run_args: '--packages-source "{packages-source}" --db "{database}" --skip composer-test'
+            logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -307,8 +307,8 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--log-dir /log --packages-source "vendor" --db "mysql" --run composer-test'
-            logdir: '/log'
+            run_args: '--packages-source "vendor" --db "mysql" --run composer-test'
+            logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -333,8 +333,8 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--log-dir /log --packages-source {packages-source} --db {database} --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
-            logdir: '/log'
+            run_args: '--packages-source {packages-source} --db {database} --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
+            logdir: '/workspace/log'
     publishers:
      - archive:
          artifacts: 'log/coverage.html'
@@ -369,8 +369,8 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover'
-            run_args: '--log-dir /log --packages-source "{packages-source}" --db "{database}" {quibble_args}'
-            logdir: '/log'
+            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -407,8 +407,8 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover'
-            run_args: '--log-dir /log --packages-source "{packages-source}" --db "{database}" {quibble_args}'
-            logdir: '/log'
+            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            logdir: '/workspace/log'
         - cover-publish:
             src: 'cover'
             dest: 'mediawiki-core'

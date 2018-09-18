@@ -145,7 +145,6 @@
             docker_run_options: '--volume /srv/git:/srv/git:ro'
             # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
             run_args: >
-                --log-dir /log
                 --packages-source composer --db mysql --run=phpunit
                 --branch "{branch}"
                 --project-branch mediawiki/extensions/DonationInterface=master
@@ -156,7 +155,7 @@
                 mediawiki/extensions/ContributionTracking
                 mediawiki/extensions/ParserFunctions
                 mediawiki/extensions/cldr
-            logdir: '/log'
+            logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
