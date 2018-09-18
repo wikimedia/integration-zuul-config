@@ -1,5 +1,7 @@
 import os
 
+from debian.changelog import Changelog
+
 DOCKERFILES_DIR = os.path.relpath(os.path.join(
     os.path.dirname(__file__),
     '../dockerfiles/'))
@@ -18,21 +20,22 @@ def assertImageHasFile(image_dir, filename):
             os.path.join(image_dir), filename)
 
 
-def test_has_changelog():
-    for image_dir in IMAGES_DIR:
-        yield assertImageHasFile, image_dir, 'changelog'
-
-
 def test_has_template():
     for image_dir in IMAGES_DIR:
         yield assertImageHasFile, image_dir, 'Dockerfile.template'
 
 
 def assertChangelogPackage(image_dir):
-    with open(os.path.join(image_dir, 'changelog')) as f:
-        package = f.readline().split()[0]
+    try:
+        with open(os.path.join(image_dir, 'changelog')) as f:
+            package = Changelog(f).get_package()
+    except IOError as io_e:
+        if io_e.errno == 2:
+            raise AssertionError('%s must have a changelog file' % image_dir)
+        raise
+
     assert package == os.path.basename(image_dir), \
-        'Package name %s matches directory name %s' % (
+        'Changelog package name %s matches directory name %s' % (
             package, os.path.basename(image_dir))
 
 
