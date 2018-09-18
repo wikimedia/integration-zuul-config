@@ -1,5 +1,7 @@
 import os
 
+from debian.changelog import Changelog
+
 DOCKERFILES_DIR = os.path.relpath(os.path.join(
     os.path.dirname(__file__),
     '../dockerfiles/'))
@@ -30,9 +32,9 @@ def test_has_template():
 
 def assertChangelogPackage(image_dir):
     with open(os.path.join(image_dir, 'changelog')) as f:
-        package = f.readline().split()[0]
+        package = Changelog(f).get_package()
     assert package == os.path.basename(image_dir), \
-        'Package name %s matches directory name %s' % (
+        'Changelog package name %s matches directory name %s' % (
             package, os.path.basename(image_dir))
 
 
