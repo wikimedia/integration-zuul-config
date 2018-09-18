@@ -211,8 +211,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            run_args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
@@ -273,8 +273,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "{packages-source}" --db "{database}" --skip composer-test'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            run_args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --skip composer-test'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
@@ -306,8 +306,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source "vendor" --db "mysql" --run composer-test'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            run_args: '--packages-source "vendor" --db "mysql" --db-dir /workspace/db --run composer-test'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
@@ -332,8 +332,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro'
-            run_args: '--packages-source {packages-source} --db {database} --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            run_args: '--packages-source {packages-source} --db {database} --db-dir /workspace/db --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
             logdir: '/workspace/log'
     publishers:
      - archive:
@@ -368,8 +368,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover'
-            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=256M'
+            run_args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
@@ -406,8 +406,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover'
-            run_args: '--packages-source "{packages-source}" --db "{database}" {quibble_args}'
+            docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=256M'
+            run_args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
         - cover-publish:
             src: 'cover'
