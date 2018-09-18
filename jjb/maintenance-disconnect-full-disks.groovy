@@ -1,7 +1,6 @@
 import hudson.plugins.ircbot.v2.IRCConnectionProvider;
 import hudson.slaves.OfflineCause
 import hudson.util.RemotingDiagnostics
-import org.jenkinsci.plugins.workflow.steps.FlowInterruptedException
 
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
 def disks = ['/', '/srv', '/var/lib/docker']
@@ -124,27 +123,23 @@ def checkAgents = {
     return alerts
 }
 
-node('contint1001') {
-    stage('Check agents') {
-        try {
-            timeout(5) {
-                ircAlerts = checkAgents()
+timeout(5) {
+    node('contint1001') {
+        stage('Check agents') {
+            ircAlerts = checkAgents()
+        }
+        stage('Send notifications') {
+            // Alert for computers offline in IRC
+            ircAlerts.each { computer ->
+                println "${computer}: OFFLINE due to disk space"
+                sendIRCAlert("${computer}: OFFLINE due to disk space")
             }
-        } catch (FlowInterruptedException e) {
-            currentBuild.result = 'FAILURE'
-        }
-    }
-    stage('Send notifications') {
-        // Alert for computers offline in IRC
-        ircAlerts.each { computer ->
-            println "${computer}: OFFLINE due to disk space"
-            sendIRCAlert("${computer}: OFFLINE due to disk space")
-        }
 
-        // Job failed, but no computer is offline *necessarily*
-        if (isFailure(currentBuild)) {
-            println "Notifying of failure in IRC"
-            alertInIRC("${jobInfo}: ${currentBuild.result}")
+            // Job failed, but no computer is offline *necessarily*
+            if (isFailure(currentBuild)) {
+                println "Notifying of failure in IRC"
+                alertInIRC("${jobInfo}: ${currentBuild.result}")
+            }
         }
     }
 }
