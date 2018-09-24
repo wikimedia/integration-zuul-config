@@ -167,20 +167,7 @@
      - docker-src-dir
      - docker-tmp-dir
      - docker-cache-dir
-     - shell: |
-        #!/bin/bash -eu
-        set -x
-        exec docker run \
-            --rm \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
-            --volume "$(pwd)"/src:/src \
-            --volume "$(pwd)"/cache:/cache \
-            --volume "$(pwd)"/tmp:/tmp \
-            --volume /srv/git:/srv/git \
-            --entrypoint "bash" \
-            docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8 \
-            /srv/setup-mw.sh
-        # nothing else can be executed due to exec
+     - docker-ci-src-setup-mw
      - shell: |
         exec docker run \
             --rm \

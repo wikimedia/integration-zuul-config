@@ -141,6 +141,27 @@
             /srv/setup-mwext.sh
         # nothing else can be executed due to exec
 
+# Use a docker image to clone for MediaWiki core
+- builder:
+    name: docker-ci-src-setup-mw
+    builders:
+     - docker-tmp-dir
+     - shell: |
+        #!/bin/bash -eu
+        set -x
+        exec docker run \
+            --rm \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            --volume "$(pwd)"/src:/src \
+            --volume "$(pwd)"/cache:/cache \
+            --volume "$(pwd)"/tmp:/tmp \
+            --volume /srv/git:/srv/git \
+            --entrypoint "bash" \
+            docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8 \
+            /srv/setup-mw.sh
+        # nothing else can be executed due to exec
+
+
 # Use a docker image to clone the repository into /src
 - builder:
     name: docker-ci-src-setup-simple
