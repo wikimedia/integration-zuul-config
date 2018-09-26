@@ -86,8 +86,6 @@ class TestMwDependencies(unittest.TestCase):
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwext-testextension-hhvm-jessie'))
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwext-qunit-composer-jessie'))
-        self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwselenium-quibble-docker'))
 
         self.assertHasDependencies(self.fetch_dependencies(

@@ -21,8 +21,6 @@ def set_parameters(item, job, params):
         del(params['DISPLAY'])
 
     php7_jobs = (
-        # Qunit localhost uses apache mod_php which is Zend. Lets be consistent
-        'mwext-qunit-composer-jessie',
         # Shells out to PHP (T196956)
         'mwext-MobileFrontend-npm-run-lint-modules-docker',
         )
@@ -45,7 +43,6 @@ def set_parameters(item, job, params):
 
     mw_deps_jobs_starting_with = (
         'mwext-testextension',
-        'mwext-qunit',
         'mwselenium-quibble',
         'mwext-php70-phan',
         'mwskin-php70-phan',
