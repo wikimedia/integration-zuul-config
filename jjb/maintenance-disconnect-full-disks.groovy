@@ -78,7 +78,11 @@ def checkAgents = {
         if (computer.isOffline()) {
             if (computer.getOfflineCauseReason().startsWith(env.JOB_NAME)) {
                 println "${computerName} /srv or / FULL! Already offline."
-                alerts.add("${jobInfo} ${computerName}")
+
+                // Don't alert every 5 minutes, it's spammy, try every 25 minutes
+                if (env.BUILD_NUMBER.toInteger % 5 == 0) {
+                    alerts.add("${jobInfo} ${computerName}")
+                }
             }
             println "${computerName} Offline..."
             continue
