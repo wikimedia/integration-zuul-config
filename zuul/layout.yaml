@@ -3238,15 +3238,8 @@ projects:
       - name: extension-quibble
 
   - name: mediawiki/extensions/ArticlePlaceholder
-    # FIXME: ArticlePlaceholder runs qunit in "npm test" (T180171), so it
-    # can't the generic mwgate-npm-docker
-    test:
-      - mwgate-npm-browser-node-6-docker
-    gate-and-submit:
-      - mwgate-npm-browser-node-6-docker
     template:
-      - name: extension-unittests-composer
-      - name: extension-qunit-composer
+      - name: extension-quibble
       - name: extension-coverage
       - name: extension-seccheck
     experimental:
