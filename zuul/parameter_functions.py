@@ -42,7 +42,6 @@ def set_parameters(item, job, params):
         params['PHP_BIN'] = 'hhvm'
 
     mw_deps_jobs_starting_with = (
-        'mwext-testextension',
         'mwselenium-quibble',
         'mwext-php70-phan',
         'mwskin-php70-phan',
