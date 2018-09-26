@@ -39,7 +39,7 @@ class TestMwDependencies(unittest.TestCase):
         params['ZUUL_BRANCH'] = branch
 
         job = FakeJob(job_name if job_name
-                      else 'mwext-testextension-hhvm-jessie')
+                      else 'mediawiki-quibble-composer-mysql-php70-docker')
         set_parameters(None, job, params)
         return params
 
@@ -84,7 +84,7 @@ class TestMwDependencies(unittest.TestCase):
 
     def test_job_name(self):
         self.assertHasDependencies(self.fetch_dependencies(
-            job_name='mwext-testextension-hhvm-jessie'))
+            job_name='mediawiki-quibble-composer-mysql-php70-docker'))
         self.assertHasDependencies(self.fetch_dependencies(
             job_name='mwselenium-quibble-docker'))
 
@@ -137,7 +137,7 @@ class TestMwDependencies(unittest.TestCase):
 
     def test_inject_skin_on_an_extension(self):
         deps = self.fetch_dependencies(
-            job_name='mwext-testextension-hhvm-jessie',
+            job_name='mediawiki-quibble-composer-mysql-php70-docker',
             project='mediawiki/extensions/CustomPage')
         self.assertDictContainsSubset(
             {

@@ -827,11 +827,6 @@ jobs:
     skip-if:
       - branch: (?:^((fundraising/)?REL1_(2[789]|30))$)
 
-  # Run PHP 7.0 MediaWiki PHPUnit on 1.31+
-  - name: ^mwext-testextension-php70.*$
-    skip-if:
-      - branch: (?:^(REL1_(2[789]|30))$)
-
   # Run MediaWiki PHP 5.5 tests on MW < 1.31
   - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
     branch: ^(REL1_(2[789]|30))$
@@ -1162,30 +1157,6 @@ project-templates:
      - quibble-composer-mysql-php70-docker
     # Surely they are never going to be elected for wmf/ branching or SWAT
 
-  - name: extension-unittests-composer
-    check:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    test:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwext-testextension-hhvm-composer-jessie
-    php5:
-     - mwext-testextension-php70-composer-jessie
-     - mwext-testextension-php55-composer-jessie
-    gate-and-submit: &extension-unittests-composer-gate-and-submit
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwext-testextension-php55-composer-jessie
-     - mwext-testextension-php70-composer-jessie
-     - mwext-testextension-hhvm-composer-jessie
-    gate-and-submit-swat: *extension-unittests-composer-gate-and-submit
-    experimental:
-     - quibble-composer-mysql-php70-docker
-     - mwext-php70-phan-docker
-     - mwext-php70-phan-seccheck-docker
-
   - name: extension-seccheck
     test:
      - mwext-php70-phan-seccheck-docker
@@ -1278,33 +1249,6 @@ project-templates:
     gate-and-submit-swat: *extension-quibble-composer-noselenium-gate-and-submit
     experimental:
       - quibble-composer-sqlite-php70-noselenium-docker
-      - mwext-php70-phan-docker
-      - mwext-php70-phan-seccheck-docker
-
-  # Deprecated, extension-quibble should be used instead.
-  - name: extension-unittests-generic
-    check:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
-    test:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     # Extensions tests with core+vendor
-     - mwext-testextension-hhvm-jessie
-    php5:
-     - mwext-testextension-php55-jessie
-     - mwext-testextension-php70-jessie
-    gate-and-submit: &extension-unittests-generic-gate-and-submit
-     - mwgate-php55lint
-     - mwgate-php70lint
-     # Extensions tests with core+vendor
-     - mwext-testextension-php55-jessie
-     - mwext-testextension-php70-jessie
-     - mwext-testextension-hhvm-jessie
-    gate-and-submit-swat: *extension-unittests-generic-gate-and-submit
-    experimental:
-      - quibble-vendor-mysql-php70-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
