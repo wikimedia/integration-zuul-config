@@ -139,10 +139,29 @@
      # "simple" bash script
      - shell: |
         #!/bin/bash
-        set -euxo pipefail
+        set -uxo pipefail
         cd src
 
-        echo noop
+        # Assumption: Any messages containing literal js will end in .js. Any other
+        # raw html message is in normal html context (not attribute)
+
+        git show FETCH_HEAD -U0 | grep '^+' | sed -E -e 's/<\/? ?(abbr|span|br|strong|em|pre|nowiki|charinsert|b|del|code|kbd|p|tt|div|i|big|sup|sub|samp|var|small|h1|h2|h3|h4|u)( ((class|title|lang|xml:lang|dir)=\\?["'\''][^=<>"'\'']*\\?["'\'']))* ?\/?>//g' -e 's/<!--//g' -e 's/<https?:\/\/[a-zA-Z0-9./-]*>//g' | grep '<'
+        if [[ $? == 0 ]]; then
+          echo "HTML detected. Manual review required"
+          exit 1
+        else
+          echo 'ok'
+        fi
+
+        git show FETCH_HEAD -U0 | grep '^+' | sed -E -e 's/\\\\//g' -e 's/\\[nt"]//g' | grep '\\'
+        if [[ $? == 0 ]]; then
+          echo "JSON escape sequence detected. Manual review required"
+          exit 1
+        else
+          echo 'ok'
+        fi
+
+        exit 0
 
 - job: &job_mwext-php70-phan-seccheck-docker
     name: 'mwext-php70-phan-seccheck-docker'
