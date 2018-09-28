@@ -157,7 +157,7 @@ class TestZuulScheduler(unittest.TestCase):
         # composer-validate-package
         # composer-test-(zend|hhvm)
         # mwgate-composer-validate
-        if pipeline == 'experimental':
+        if pipeline in ['experimental', 'gate-and-submit-l10n']:
             return
         self.assertTrue(
             any([job for job in definition
@@ -172,7 +172,7 @@ class TestZuulScheduler(unittest.TestCase):
             % (name, pipeline, definition))
 
     def assertProjectHasPhplint(self, name, definition, pipeline):
-        if pipeline == 'experimental':
+        if pipeline in ['experimental', 'gate-and-submit-l10n']:
             return
         self.assertTrue(
             any([job for job in definition
@@ -247,18 +247,30 @@ class TestZuulScheduler(unittest.TestCase):
                          'Project %s pipeline %s must have both quibble and '
                          'npm job' % (name, pipeline))
 
+    def assertProjectHasI18nChecker(self, name, definition, pipeline):
+        if pipeline != 'gate-and-submit-l10n':
+            return
+        self.assertTrue(
+            any([job for job in definition
+                 if 'mediawiki-i18n-check-docker' == job]),
+            'Project %s pipeline %s must have job mediawiki-i18n-check-docker'
+            % (name, pipeline)
+            )
+
     def test_repos_have_required_jobs(self):
         repos = {
             'mediawiki/core$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
-                self.assertProjectHasVotingPHP71
+                self.assertProjectHasVotingPHP71,
+                self.assertProjectHasI18nChecker,
             ],
             'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasPhp55Test,
                 self.assertProjectHasExperimentalPhan,
+                self.assertProjectHasI18nChecker,
             ],
             'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,
@@ -266,10 +278,12 @@ class TestZuulScheduler(unittest.TestCase):
                 self.assertProjectHasSkinTests,
                 self.assertProjectHasNoExtensionTests,
                 self.assertProjectHasExperimentalPhan,
+                self.assertProjectHasI18nChecker,
             ],
             'mediawiki/vendor$': [
                 self.assertProjectHasComposerValidate,
-                self.assertProjectHasPhplint
+                self.assertProjectHasPhplint,
+                self.assertProjectHasI18nChecker,
             ],
         }
 
@@ -305,7 +319,8 @@ class TestZuulScheduler(unittest.TestCase):
 
             # Pipelines that must be set
             requirements = {'gate-and-submit', 'experimental'}
-            for default_requirement in ['check', 'test']:
+            for default_requirement in [
+                    'check', 'test', 'gate-and-submit-l10n']:
                 requirements.add(default_requirement)
                 self.assertIn(default_requirement, project_def.keys(),
                               'Project %s must have a %s pipeline'
