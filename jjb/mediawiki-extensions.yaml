@@ -145,7 +145,6 @@
     builders:
      - docker-log-dir
      - docker-src-dir
-     - docker-tmp-dir
      - docker-cache-dir
      - docker-ci-src-setup-mwext
      - shell: |
@@ -158,7 +157,6 @@
         exec docker run \
             --rm \
             --volume "$(pwd)"/src:/mediawiki \
-            --volume "$(pwd)"/tmp:/tmp \
             docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.4 \
             /$ZUUL_PROJECT -m checkstyle
         # nothing else can be executed due to exec
@@ -187,7 +185,6 @@
      - zuul
     builders:
      - docker-src-dir
-     - docker-tmp-dir
      - docker-ci-src-setup-simple
      # It's not really worth creating a docker image for this pretty
      # "simple" bash script
@@ -210,7 +207,6 @@
     builders:
      - docker-log-dir
      - docker-src-dir
-     - docker-tmp-dir
      - docker-cache-dir
      - docker-ci-src-setup-mwext
      - docker-run-with-log-cache-src:
