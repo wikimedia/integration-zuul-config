@@ -6,15 +6,28 @@
      - docker-wipe-dir:
          dir: log
 
+# Delete everything in $WORKSPACE. This should generally be used as the final
+# publisher for all Docker based jobs.
 - publisher:
-    name: postbuild-wipe-src
+    name: docker-wipe-workspace
     publishers:
+     # Run via Docker as root to have sufficient permission to delete files of
+     # any owner within the workspace directory and use `find` which more
+     # handily processes dotfiles. Then delete the workspace directory itself.
      - postbuildscript:
          script-only-if-succeeded: false
          script-only-if-failed: false
          builders:
-          - docker-wipe-dir:
-              dir: 'src'
+          - shell: |
+              set -eux
+              docker run \
+                  --rm \
+                  --user=root \
+                  -v "$WORKSPACE":/workspace \
+                  --entrypoint=/usr/bin/find \
+                  docker-registry.wikimedia.org/wikimedia-stretch:latest \
+                  "/workspace" -mindepth 1 -delete
+              rmdir "$WORKSPACE"
 
 # Create a src directory that will be
 # mounted into a container with --volume

@@ -32,6 +32,7 @@
     publishers:
         - archive-log-dir
         - castor-save-workspace-cache
+        - docker-wipe-workspace
 
 - job-template:
     !!merge : *job_tox-docker
@@ -75,6 +76,7 @@
     publishers:
      - castor-save-workspace-cache
      - archive-log-dir
+     - docker-wipe-workspace
 
 # Same but for ref-update, eg in 'publish'
 - job-template:
@@ -95,6 +97,7 @@
         docdest: '{docdest}'
     publishers:
      - archive-log-dir
+     - docker-wipe-workspace
 
 # Publish jobs for merged changes and tags
 - job-group:
@@ -134,6 +137,7 @@
     publishers:
         - castor-save-workspace-cache
         - archive-log-dir
+        - docker-wipe-workspace
 
 - project:
     name: common-tox-jobs
