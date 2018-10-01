@@ -13,6 +13,7 @@
          logdir: '/log'
     archive:
      - archive-log-allow-empty
+     - docker-wipe-workspace
 
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
@@ -34,6 +35,7 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - docker-wipe-workspace
 
 # Convenience alias with name/project variables
 - job-template:
@@ -70,6 +72,7 @@
                       docdest: '{name}'
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - docker-wipe-workspace
 
 - job-template:
     name: '{name}-{project}-maven-java8-docker-site-publish'
@@ -85,6 +88,7 @@
                       docdest: '{name}-{project}'
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        - docker-wipe-workspace
 
 - job-template: &job_npm-node-6-docker
     name: 'npm-node-6-docker'
@@ -106,6 +110,7 @@
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job-template: &job_npm6-node-6-docker
     name: '{name}-npm6-node-6-docker'
@@ -127,6 +132,7 @@
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job-template:
     !!merge : *job_npm6-node-6-docker
@@ -255,7 +261,7 @@
         body: '${{SCRIPT, template="wikimedia.template"}}'
         failure: true
         unstable: true
-     - postbuild-wipe-src
+     - docker-wipe-workspace
 
 # A very specific job for MobileFrontend which uses a JavaScript test suite
 # which requires mediawiki/core.
@@ -285,6 +291,7 @@
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job-template:
     name: '{phpflavor}lint'

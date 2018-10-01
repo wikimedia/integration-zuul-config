@@ -6,15 +6,21 @@
      - docker-wipe-dir:
          dir: log
 
+# Delete everything in $WORKSPACE. This should generally be used as the final
+# publisher for all Docker based jobs.
 - publisher:
-    name: postbuild-wipe-src
+    name: docker-wipe-workspace
     publishers:
      - postbuildscript:
          script-only-if-succeeded: false
          script-only-if-failed: false
          builders:
-          - docker-wipe-dir:
-              dir: 'src'
+          - shell: |
+              set -eux
+              docker run \
+                  --rm \
+                  -v "$WORKSPACE":/workspace \
+                  --entrypoint=/bin/sh -c "/bin/rm -rf /workspace/*"
 
 # Create a src directory that will be
 # mounted into a container with --volume

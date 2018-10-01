@@ -90,8 +90,4 @@
           body: '${SCRIPT, template="wikimedia.template"}'
       - archive:
           artifacts: 'src/screenshots/*.png'
-      # Clean out source / screenshots
-      - postbuildscript:
-          builders:
-              - docker-wipe-dir:
-                  dir: src
+      - docker-wipe-workspace
