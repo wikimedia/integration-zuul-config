@@ -37,15 +37,6 @@
      - docker-wipe-dir:
          dir: src
 
-# Create a tmp directory that will be
-# mounted into a container with --volume
-- builder:
-    name: docker-tmp-dir
-    builders:
-     - shell: mkdir -m 1777 -p tmp
-     - docker-wipe-dir:
-         dir: tmp
-
 # Delete content of a directory under $WORKSPACE as 'nobody'
 - builder:
     name: docker-wipe-dir
@@ -73,7 +64,6 @@
 - builder:
     name: docker-run-with-log
     builders:
-     - docker-tmp-dir
      - shell: |
         #!/bin/bash -eu
         set -x
@@ -82,7 +72,6 @@
             --rm \
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/log:{logdir} \
-            --volume "$(pwd)"/tmp:/tmp \
             {image}
         # nothing else can be executed due to exec
 
@@ -95,7 +84,6 @@
 - builder:
     name: docker-run-with-log-and-workspace-cache
     builders:
-     - docker-tmp-dir
      - shell: |
         #!/bin/bash -eu
         set -x
@@ -105,7 +93,6 @@
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
-            --volume "$(pwd)"/tmp:/tmp \
             {image} {obj:run_args|}
         # nothing else can be executed due to exec
 
@@ -118,7 +105,6 @@
 - builder:
     name: docker-run-with-log-cache-src
     builders:
-     - docker-tmp-dir
      - shell: |
         #!/bin/bash -eu
         set -x
@@ -130,7 +116,6 @@
             --volume "$(pwd)"/log:{logdir} \
             --volume "$(pwd)"/cache:/cache \
             --volume "$(pwd)"/src:/src \
-            --volume "$(pwd)"/tmp:/tmp \
             {image} {obj:run_args|}
         # nothing else can be executed due to exec
 
@@ -138,7 +123,6 @@
 - builder:
     name: docker-ci-src-setup-mwext
     builders:
-     - docker-tmp-dir
      - shell: |
         #!/bin/bash -eu
         set -x
@@ -147,7 +131,6 @@
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
-            --volume "$(pwd)"/tmp:/tmp \
             --volume /srv/git:/srv/git \
             --entrypoint "bash" \
             docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8 \
@@ -158,7 +141,6 @@
 - builder:
     name: docker-ci-src-setup-mw
     builders:
-     - docker-tmp-dir
      - shell: |
         #!/bin/bash -eu
         set -x
@@ -167,7 +149,6 @@
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
-            --volume "$(pwd)"/tmp:/tmp \
             --volume /srv/git:/srv/git \
             --entrypoint "bash" \
             docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8 \
@@ -179,7 +160,6 @@
 - builder:
     name: docker-ci-src-setup-simple
     builders:
-     - docker-tmp-dir
      - shell: |
         #!/bin/bash -eu
         set -x
@@ -188,7 +168,6 @@
             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
             --volume "$(pwd)"/src:/src \
             --volume "$(pwd)"/cache:/cache \
-            --volume "$(pwd)"/tmp:/tmp \
             --volume /srv/git:/srv/git \
             docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.0
         # nothing else can be executed due to exec
@@ -197,14 +176,12 @@
     name: docker-zuul-cloner
     builders:
      - docker-src-dir
-     - docker-tmp-dir
      - shell: |
          #!/bin/bash -eux
          exec docker run \
              --rm \
              --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
              --volume "$(pwd)"/src:/src \
-             --volume "$(pwd)"/tmp:/tmp \
              --volume /srv/git:/srv/git:ro \
              docker-registry.wikimedia.org/releng/zuul-cloner:0.1.1 \
                  --color --verbose \
