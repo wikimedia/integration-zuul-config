@@ -16,6 +16,8 @@
             --volume "$(pwd)"/tmp:/tmp \
             docker-registry.wikimedia.org/releng/{image} \
         # nothing else can be executed due to exec
+    publishers:
+      - docker-wipe-workspace
 
 - project:
    name: hhvm-stretch

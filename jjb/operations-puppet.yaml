@@ -51,6 +51,7 @@
             docdest: 'puppet'
     publishers:
      - email-qa-alerts
+     - docker-wipe-workspace
 
 - job:
     name: 'operations-puppet-tests-docker'
@@ -78,6 +79,7 @@
              skip-if-no-test-files: true
              stoponerror: false
      - archive-log-dir
+     - docker-wipe-workspace
      # No castor-save. Done postmerge by operations-puppet-cache-update-jessie
 
 - job:

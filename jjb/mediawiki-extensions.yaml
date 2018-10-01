@@ -63,8 +63,9 @@
      - doc-publish:
         docsrc: 'src/docs'
         docdest: '$DOC_BASENAME/$ZUUL_BRANCH/js'
-    archive:
+    publishers:
      - archive-log-allow-empty
+     - docker-wipe-workspace
 
 - job: # Identical to mwext-VisualEditor-docker-publish except docsrc and docdest.
     name: 'mwext-npm-doc-publish'
@@ -87,6 +88,7 @@
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job:
     name: 'mwext-VisualEditor-docker-publish'
@@ -109,6 +111,7 @@
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job:
     name: 'mwext-doxygen-publish'
@@ -127,6 +130,7 @@
         docdest: '$DOC_BASENAME/$DOC_SUBPATH/php'
     archive:
      - archive-log-allow-empty
+     - docker-wipe-workspace
 
 # Phan! (T153039)
 - job: &job_mwext-php70-phan-docker
@@ -166,6 +170,7 @@
         thresholds:
           failed:
             total-all: 1
+     - docker-wipe-workspace
 
 - job:
     name: 'mwskin-php70-phan-docker'
@@ -220,6 +225,7 @@
         thresholds:
           failed:
             total-all: 1
+     - docker-wipe-workspace
 
 - job:
     name: 'mwext-php70-phan-seccheck-docker-non-voting'

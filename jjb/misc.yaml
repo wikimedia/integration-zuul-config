@@ -16,8 +16,9 @@
      - doc-publish:
         docsrc: 'src/doc/html'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
-    archive:
+    publishers:
      - archive-log-allow-empty
+     - docker-wipe-workspace
 
 - job: &phpunit-coverage-docker-publish
     name: 'phpunit-coverage-docker-publish'
@@ -58,6 +59,7 @@
         dest: '$DOC_PROJECT'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job:
     name: 'remexhtml-phpunit-coverage-docker-publish'
@@ -89,6 +91,7 @@
         docdest: 'unicodejs/$DOC_SUBPATH'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job:
     name: 'unicodejs-tag-publish'
@@ -109,6 +112,8 @@
      - doc-publish:
         docsrc: 'src/docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
+    publishers:
+     - docker-wipe-workspace
 
 - job:
     name: 'unicodejs-coverage'
@@ -129,6 +134,7 @@
         dest: 'unicodejs'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - project:
     name: eventlogging
@@ -173,6 +179,7 @@
         docdest: 'oojs/$DOC_SUBPATH'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job:
     name: 'oojs-core-coverage'
@@ -193,6 +200,7 @@
         dest: 'oojs'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job:
     name: 'oojs-router-publish'
@@ -214,6 +222,7 @@
         docdest: 'oojs-router/$DOC_SUBPATH'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job:
     name: 'oojs-router-coverage'
@@ -234,6 +243,7 @@
         dest: 'oojs-router'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 
 - job:
@@ -264,6 +274,7 @@
         docdest: 'oojs-ui/$DOC_SUBPATH/js'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - job:
     name: 'oojs-ui-doxygen-publish'
@@ -280,8 +291,9 @@
      - doc-publish:
         docsrc: 'src/doc/html'
         docdest: 'oojs-ui/$DOC_SUBPATH/php'
-    archive:
+    publishers:
      - archive-log-allow-empty
+     - docker-wipe-workspace
 
 - job:
     name: 'visualeditor-coverage'
@@ -302,6 +314,7 @@
         dest: 'visualeditor'
     publishers:
      - castor-save-workspace-cache
+     - docker-wipe-workspace
 
 - project:
     name: visualeditor
@@ -536,6 +549,7 @@
      - archive:
          artifacts: 'log/*.log'
          allow-empty: true
+     - docker-wipe-workspace
     triggers:
         - timed: "H 21 * * *"
 
