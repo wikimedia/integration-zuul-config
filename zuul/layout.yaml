@@ -957,6 +957,11 @@ jobs:
   - name: ^release-quibble-.*php55
     branch: ^(REL1_(2[789]|30))$
 
+  # Run MediaWiki PHP 7.1 tests on MW 1.32+,
+  # but skip on wmf/ and fundraising/ since it's not used.
+  - name: ^.*quibble.*
+    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+
   - name: ^wmf-quibble-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
     # run them on REL branches.
@@ -1699,6 +1704,7 @@ projects:
       - mediawiki-quibble-composer-mysql-php55-docker
       - quibble-donationinterface-REL1_27-zend56-docker
       - mediawiki-core-php70-phan-seccheck-docker
+      - mediawiki-quibble-vendor-mysql-php71-docker
 
   - name: mediawiki/debian
     test:
