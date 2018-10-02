@@ -227,6 +227,17 @@ class TestZuulScheduler(unittest.TestCase):
             % (name, pipeline)
         )
 
+    def assertProjectHasExperimentalPHP71(self, name, definition, pipeline):
+        if pipeline != 'experimental':
+            return
+        self.assertTrue(
+            any([job for job in definition
+                 if 'quibble' in job and 'php71' in job]),
+            'Project %s pipeline %s must have job '
+            'for PHP 7.1 quibble'
+            % (name, pipeline)
+            )
+
     def test_repos_have_required_jobs(self):
         repos = {
             'mediawiki/core$': [
@@ -237,14 +248,16 @@ class TestZuulScheduler(unittest.TestCase):
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasPhp55Test,
-                self.assertProjectHasExperimentalPhan
+                self.assertProjectHasExperimentalPhan,
+                self.assertProjectHasExperimentalPHP71
             ],
             'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasSkinTests,
                 self.assertProjectHasNoExtensionTests,
-                self.assertProjectHasExperimentalPhan
+                self.assertProjectHasExperimentalPhan,
+                self.assertProjectHasExperimentalPHP71
             ],
             'mediawiki/vendor$': [
                 self.assertProjectHasComposerValidate,
