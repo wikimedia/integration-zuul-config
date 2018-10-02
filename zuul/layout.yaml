@@ -841,11 +841,6 @@ jobs:
       - project: '^mediawiki/core$'
         branch: (?:^(fundraising/)?REL1_2[78]$)
 
-  # Run PHP 7.0 MediaWiki PHPUnit on 1.31+
-  - name: ^mediawiki-(extensions|phpunit)-(composer-)?php70-jessie$
-    skip-if:
-      - branch: (?:^((fundraising/)?REL1_(2[789]|30))$)
-
   # Run MediaWiki PHP 5.5 tests on MW < 1.31
   - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
     branch: ^(REL1_(2[789]|30))$
@@ -938,14 +933,6 @@ jobs:
   - name: ^(mwgate-|mediawiki-core-|)(hhvm|php(5[56]|70))lint$
     files:
      - '^.*\.(php|php5|phtml|inc)$'
-
-  - name: ^mediawiki.*-hhvm(-composer)?(-jessie)?$
-    # FIXME does fundraising active branches support HHVM?
-    branch: (?!fundraising/REL.*)
-
-  - name: ^mwext.*-hhvm.*$
-    # FIXME does fundraising active branches support HHVM?
-    branch: (?!fundraising/REL.*)
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
