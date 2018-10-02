@@ -175,6 +175,24 @@
      - zuul
 
 
+- job:
+    name: 'mediawiki-i18n-check-docker'
+    node: DebianJessieDocker
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-tmp-dir
+     - docker-ci-src-setup-simple
+     # It's not really worth creating a docker image for this pretty
+     # "simple" bash script
+     - shell: |
+        #!/bin/bash
+        set -euxo pipefail
+        cd src
+
+        echo noop
+
 - job: &job_mwext-php70-phan-seccheck-docker
     name: 'mwext-php70-phan-seccheck-docker'
     node: DebianJessieDocker && m4executor
