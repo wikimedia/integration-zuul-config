@@ -507,7 +507,7 @@
         - php55:
             docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.26
         - php70:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.26
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.26-1
         - hhvm:
             docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.26
     jobs:
@@ -527,23 +527,23 @@
             # WMF cluster uses MariaDB/MySQL
             database: mysql
         - mediawiki-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.26
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.26-1
             packages-source: vendor
             database: sqlite
         - mwext-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.26
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.26-1
             packages-source:  composer
             database: mysql
         - mwext-phpunit-coverage-docker-publish:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.26
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.26-1
             packages-source:  composer
             database: mysql
         - mediawiki-core-code-coverage-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.26
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.26-1
             packages-source: vendor
             database: sqlite
         - mwselenium-quibble-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.26
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.26-1
             packages-source: vendor
             database: mysql
 
@@ -556,7 +556,7 @@
     name: mediawiki-selenium-integration
     jobs:
         - mediawiki-selenium-integration-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.26
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.26-1
             packages-source: vendor
             database: mysql
             quibble_args: '--skip-deps --commands=mwselenium -- mediawiki/selenium'
