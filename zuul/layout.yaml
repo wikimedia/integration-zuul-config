@@ -762,6 +762,25 @@ pipelines:
           approval:
             - code-review: 2
 
+  # Specialized gate for l10n-bot to ensure that l10n checks run upon its +2
+  # vote
+  - !!merge : *gate_and_submit_pipeline
+    name: gate-and-submit-l10n
+    description: >
+      Patchsets that have been voted +2 by l10n-bot. Will be merged by Jenkins
+      if tests pass.
+    precedence: normal
+    manager: IndependentPipelineManager
+    trigger:
+      gerrit:
+        - event: comment-added
+          branch:
+           - (?!^refs/meta/config)
+          email:
+           - ^l10n-bot@translatewiki\.net$
+          approval:
+            - code-review: 2
+
   - name: postmerge
     description: Jobs triggered after a change has been merged.
     manager: IndependentPipelineManager
@@ -1156,6 +1175,8 @@ project-templates:
      - mwgate-npm-node-6-docker
      - mwgate-php55lint
      - mwgate-php70lint
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     experimental:
      - mwext-php70-phan-docker
      - mwext-php70-phan-seccheck-docker
@@ -1192,6 +1213,8 @@ project-templates:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
     gate-and-submit-swat: *extension-quibble-gate-and-submit
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     experimental:
       - quibble-vendor-sqlite-php70-docker
       - quibble-vendor-mysql-php71-docker
@@ -1213,6 +1236,8 @@ project-templates:
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
     gate-and-submit-swat: *extension-quibble-composer-gate-and-submit
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     experimental:
       - quibble-composer-sqlite-php70-docker
       - quibble-composer-mysql-php71-docker
@@ -1235,6 +1260,8 @@ project-templates:
       - quibble-vendor-mysql-php55-noselenium-docker
       - quibble-vendor-mysql-php70-noselenium-docker
     gate-and-submit-swat: *extension-quibble-noselenium-gate-and-submit
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     experimental:
       - quibble-vendor-sqlite-php70-noselenium-docker
       - quibble-vendor-mysql-php71-noselenium-docker
@@ -1256,6 +1283,8 @@ project-templates:
       - quibble-composer-mysql-php55-noselenium-docker
       - quibble-composer-mysql-php70-noselenium-docker
     gate-and-submit-swat: *extension-quibble-composer-noselenium-gate-and-submit
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     experimental:
       - quibble-composer-sqlite-php70-noselenium-docker
       - quibble-composer-mysql-php71-noselenium-docker
@@ -1301,6 +1330,8 @@ project-templates:
       - release-quibble-vendor-mysql-php70-docker
       - release-quibble-vendor-mysql-php55-docker
     gate-and-submit-swat: *extension-gate-gate-and-submit
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     experimental:
       - wmf-quibble-vendor-mysql-php71-docker
       - wmf-quibble-core-vendor-mysql-php71-docker
@@ -1355,6 +1386,8 @@ project-templates:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
     gate-and-submit-swat: *skin-quibble-gate-and-submit
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     experimental:
       - quibble-vendor-sqlite-php70-docker
       - quibble-vendor-mysql-php71-docker
@@ -1376,6 +1409,8 @@ project-templates:
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
     gate-and-submit-swat: *skin-quibble-composer-gate-and-submit
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     experimental:
       - quibble-composer-sqlite-php70-docker
       - quibble-composer-mysql-php71-docker
@@ -1883,6 +1918,8 @@ projects:
       - apps-android-wikipedia-npm-node-6-docker
       - apps-android-wikipedia-tox-docker
       - apps-android-wikipedia-test
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     gate-and-submit:
       - apps-android-wikipedia-npm-node-6-docker
       - apps-android-wikipedia-tox-docker
@@ -1969,6 +2006,8 @@ projects:
   - name: labs/tools/crosswatch
     template:
       - name: tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
 
   - name: labs/tools/extdist
     template:
@@ -2009,12 +2048,16 @@ projects:
     gate-and-submit:
       - composer-php55-docker
       - labs-tools-heritage-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     postmerge:
      - tox-py27-coverage-publish
 
   - name: labs/tools/guc
     test:
       - composer-php56-docker
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
     gate-and-submit:
       - composer-php56-docker
 
@@ -2070,6 +2113,8 @@ projects:
   - name: labs/tools/wikinity
     test:
       - labs-tools-wikinity-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     gate-and-submit:
       - labs-tools-wikinity-tox-docker
 
@@ -2735,6 +2780,8 @@ projects:
     template:
       - name: composer-test
       - name: npm-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
 
   - name: operations/dumps/import-tools
     template:
@@ -2963,6 +3010,8 @@ projects:
   - name: research/recommendation-api
     template:
       - name: tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
 
   - name: translatewiki
     test:
@@ -3097,6 +3146,8 @@ projects:
     test: &wikimania-scholarships-test
       - npm-node-6-docker
       - composer-php56-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     gate-and-submit: *wikimania-scholarships-test
 
   - name: wikimedia/textcat
@@ -7599,6 +7650,8 @@ projects:
   - name: pywikibot/i18n
     test:
       - pywikibot-i18n-npm-node-6-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     gate-and-submit:
       - pywikibot-i18n-npm-node-6-docker
 
@@ -7807,6 +7860,8 @@ projects:
   - name: wikimedia/portals
     test:
       - wikimedia-portals-npm-browser-node-6-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     gate-and-submit:
       - wikimedia-portals-npm-browser-node-6-docker
 
@@ -7891,6 +7946,8 @@ projects:
     test:
       - oojs-ui-npm-run-jenkins-node-6-docker
       - oojs-ui-rake-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     gate-and-submit:
       - oojs-ui-npm-run-jenkins-node-6-docker
       - oojs-ui-rake-docker
@@ -7930,6 +7987,8 @@ projects:
       - visualeditor-npm-browser-node-6-docker
       - visualeditor-npm-run-doc-node-6-docker
       - visualeditor-rake-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     postmerge:
       - visualeditor-coverage
 
@@ -7944,6 +8003,8 @@ projects:
   - name: wikidata/query/gui
     test:
       - wikidata-query-gui-npm-browser-node-6-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     gate-and-submit:
       - wikidata-query-gui-npm-browser-node-6-docker
     postmerge:
@@ -7980,6 +8041,8 @@ projects:
   - name: data-values/value-view
     test:
       - wikibase-data-values-value-view-npm-browser-node-6-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
     gate-and-submit:
       - wikibase-data-values-value-view-npm-browser-node-6-docker
 
@@ -8019,3 +8082,7 @@ projects:
       - wmf-utils-tox-docker
     gate-and-submit:
       - wmf-utils-tox-docker
+
+  - name: wikipedia/gadgets/ProveIt
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
