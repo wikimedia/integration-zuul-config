@@ -304,13 +304,13 @@ pipelines:
                 | lacrymarum\.valle@gmail\.com
               )).*$
 
-    success-message: 'Basic test build succeeded.'
+    success-message: "✅ Basic test build succeeded."
     success:
       # Only V+1 as these are not elaborate tests. This prevents a change from
       # being merged (requires V+2) before elaborate tests, which vote V+2, have run.
       gerrit:
         verified: 1
-    failure-message: 'Basic test build failed.'
+    failure-message: "❌ Basic test build failed."
     failure:
       gerrit:
         verified: -1
@@ -637,11 +637,11 @@ pipelines:
           approval:
             - code-review: +1
 
-    success-message: 'Main test build succeeded.'
+    success-message: "✅ Main test build succeeded."
     success:
       gerrit:
         verified: 2
-    failure-message: 'Main test build failed.'
+    failure-message: "❌ Main test build failed."
     failure:
       gerrit:
         verified: -1
@@ -668,10 +668,10 @@ pipelines:
           comment: (?im)^Patch Set \d+:\n\n\s*check coverage\.?\s*$
           email: *email_whitelist
 
-    success-message: 'PHP test coverage increased (or stayed the same) :-)'
+    success-message: "✅ PHP test coverage increased (or stayed the same) :-)"
     success:
       gerrit: {}
-    failure-message: 'PHP test coverage decreased'
+    failure-message: "❌ PHP test coverage decreased"
     failure:
       gerrit: {}
 
@@ -687,10 +687,10 @@ pipelines:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check experimental\.?\s*$
           email: *email_whitelist
-    success-message: 'Experimental build succeeded.'
+    success-message: "✅ Experimental build succeeded."
     success:
       gerrit: {}
-    failure-message: 'Experimental build failed.'
+    failure-message: "❌ Experimental build failed."
     failure:
       gerrit: {}
 
@@ -705,10 +705,10 @@ pipelines:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check (php5?|zend|sqlite|postgres)\.?\s*$
           email: *email_whitelist
-    success-message: 'PHP build succeeded.'
+    success-message: "✅ PHP build succeeded."
     success:
       gerrit: {}
-    failure-message: 'PHP build failed.'
+    failure-message: "❌ PHP build failed."
     failure:
       gerrit: {}
 
@@ -740,13 +740,13 @@ pipelines:
     start:
       gerrit:
         verified: 0
-    success-message: 'Gate pipeline build succeeded.'
+    success-message: "✅ Gate pipeline build succeeded."
     success:
       gerrit:
         verified: 2
         # Let Zuul merge the change \O/
         submit: true
-    failure-message: 'Gate pipeline build failed.'
+    failure-message: "❌ Gate pipeline build failed."
     failure:
       gerrit:
         verified: -1
@@ -789,12 +789,12 @@ pipelines:
       gerrit:
         - event: change-merged
           branch: (?!^refs/meta/config)
-    success-message: 'Post-merge build succeeded.'
+    success-message: "✅ Post-merge build succeeded."
     # Zuul needs at least one option beside --message or it will not report
     # Since Gerrit 2.8, we can vote on closed changes.
     success:
       gerrit: {}
-    failure-message: 'Post-merge build failed.'
+    failure-message: "❌ Post-merge build failed."
     failure:
       gerrit: {}
 
