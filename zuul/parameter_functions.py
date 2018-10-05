@@ -232,6 +232,7 @@ dependencies = {
     'Flow': ['AbuseFilter', 'Echo', 'VisualEditor'],
     'GeoData': ['CirrusSearch'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
+    'GlobalContribs': ['Editcount'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GraphViz': ['ImageMap'],
     'GuidedTour': ['EventLogging'],
