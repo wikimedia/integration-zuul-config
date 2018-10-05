@@ -342,7 +342,7 @@ dependencies = {
     'ImageMetrics': ['EventLogging'],
     'ImageRating': ['VoteNY'],
     'Jade': ['AbuseFilter', 'SpamBlacklist'],
-    'JsonConfig': ['Scribunto'],
+    'JsonConfig': ['Scribunto', 'Kartographer'],
     'Kartographer': ['JsonConfig', 'ParserFunctions', 'VisualEditor',
                      'WikimediaMessages'],
     'LanguageTool': ['VisualEditor'],
