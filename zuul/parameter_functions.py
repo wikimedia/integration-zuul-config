@@ -240,7 +240,7 @@ dependencies = {
     'HierarchyBuilder': ['PageForms'],
     'ImageMetrics': ['EventLogging'],
     'ImageRating': ['VoteNY'],
-    'JsonConfig': ['Scribunto'],
+    'JsonConfig': ['Scribunto', 'Kartographer'],
     'Kartographer': ['ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
