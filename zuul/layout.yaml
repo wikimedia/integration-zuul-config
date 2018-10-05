@@ -7533,6 +7533,15 @@ projects:
     template:
       - name: archived
 
+  - name: mediawiki/php/excimer
+    # excimer is PHP 7.1+ only
+    test:
+      - php-compile-php71-docker
+      - php-compile-php72-docker
+    gate-and-submit:
+      - php-compile-php71-docker
+      - php-compile-php72-docker
+
   - name: mediawiki/php/luasandbox
     # no check pipeline since -build runs code :-)
     test:
