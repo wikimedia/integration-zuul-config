@@ -252,7 +252,7 @@ dependencies = {
     'ImageMetrics': ['EventLogging'],
     'ImageRating': ['VoteNY'],
     'JADE': ['AbuseFilter', 'SpamBlacklist'],
-    'JsonConfig': ['Scribunto'],
+    'JsonConfig': ['Scribunto', 'Kartographer'],
     'Kartographer': ['ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
     'LanguageTool': ['VisualEditor'],
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
