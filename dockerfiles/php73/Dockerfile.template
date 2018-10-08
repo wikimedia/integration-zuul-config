@@ -1,0 +1,26 @@
+FROM {{ "sury-php" | image_tag }}
+
+# zip is needed for composer to install things from dist
+# others are libraries/MediaWiki related
+{% set packages|replace('\n', ' ') -%}
+php7.3-cli
+php7.3-zip
+php-ast
+php7.3-curl
+php7.3-dba
+php7.3-mbstring
+php-redis
+php7.3-sqlite3
+php-xdebug
+php7.3-xml
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+# Disable xdebug by default due to its performance impact
+RUN phpdismod xdebug
+
+USER nobody
+
+ENTRYPOINT ["php"]
+CMD ["--help"]
