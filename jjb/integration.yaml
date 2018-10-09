@@ -95,7 +95,7 @@
             logdir: '/log'
     publishers:
         - castor-save-workspace-cache
-        - docker-wipe-workspace
+        - docker-cleanup
 
 # Super basic sanity check for integration/composer repo
 - job-template:
@@ -166,7 +166,7 @@
              <pre>
              ${BUILD_LOG}
              </pre>
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'integration-config-dib-jessie'

@@ -18,7 +18,7 @@
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
     publishers:
      - archive-log-allow-empty
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job: &phpunit-coverage-docker-publish
     name: 'phpunit-coverage-docker-publish'
@@ -59,7 +59,7 @@
         dest: '$DOC_PROJECT'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'remexhtml-phpunit-coverage-docker-publish'
@@ -91,7 +91,7 @@
         docdest: 'unicodejs/$DOC_SUBPATH'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'unicodejs-tag-publish'
@@ -113,7 +113,7 @@
         docsrc: 'src/docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
     publishers:
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'unicodejs-coverage'
@@ -134,7 +134,7 @@
         dest: 'unicodejs'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - project:
     name: eventlogging
@@ -179,7 +179,7 @@
         docdest: 'oojs/$DOC_SUBPATH'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'oojs-core-coverage'
@@ -200,7 +200,7 @@
         dest: 'oojs'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'oojs-router-publish'
@@ -222,7 +222,7 @@
         docdest: 'oojs-router/$DOC_SUBPATH'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'oojs-router-coverage'
@@ -243,7 +243,7 @@
         dest: 'oojs-router'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 
 - job:
@@ -274,7 +274,7 @@
         docdest: 'oojs-ui/$DOC_SUBPATH/js'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'oojs-ui-doxygen-publish'
@@ -293,7 +293,7 @@
         docdest: 'oojs-ui/$DOC_SUBPATH/php'
     publishers:
      - archive-log-allow-empty
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'visualeditor-coverage'
@@ -314,7 +314,7 @@
         dest: 'visualeditor'
     publishers:
      - castor-save-workspace-cache
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - project:
     name: visualeditor
@@ -549,7 +549,7 @@
      - archive:
          artifacts: 'log/*.log'
          allow-empty: true
-     - docker-wipe-workspace
+     - docker-cleanup
     triggers:
         - timed: "H 21 * * *"
 

@@ -29,7 +29,7 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
-        - docker-wipe-workspace
+        - docker-cleanup
 
 - job:
     name: 'mediawiki-core-doxygen-docker'
@@ -97,7 +97,7 @@
             artifacts: 'console.txt,errors.txt'
             allow-empty: true
         - beta-irc  # Spam #wikimedia-releng on failure
-        - docker-wipe-workspace
+        - docker-cleanup
 
 - builder:
     name: assert-no-mediawiki-errors
@@ -181,7 +181,7 @@
         thresholds:
           failed:
             total-all: 1
-     - docker-wipe-workspace
+     - docker-cleanup
 
 - job:
     name: 'mediawiki-core-php70-phan-seccheck-docker'
@@ -209,7 +209,7 @@
         thresholds:
           failed:
             total-all: 1
-     - docker-wipe-workspace
+     - docker-cleanup
 
 
 - job-template: &job_quibble
@@ -230,7 +230,7 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
-        - docker-wipe-workspace
+        - docker-cleanup
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
@@ -300,7 +300,7 @@
                 [ $ZUUL_BRANCH = "master" ]'
               action:
                 - record-node-stats
-        - docker-wipe-workspace
+        - docker-cleanup
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
@@ -325,7 +325,7 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
-        - docker-wipe-workspace
+        - docker-cleanup
     wrappers:
         - timeout:
             timeout: 45  # npm is broken T198348
@@ -352,7 +352,7 @@
      - archive:
          artifacts: 'log/coverage.html'
          allow-empty: true
-     - docker-wipe-workspace
+     - docker-cleanup
     wrappers:
      - timeout:
          timeout: 60
@@ -395,7 +395,7 @@
                     dest: '$DOC_BASENAME'
                 - docker-wipe-dir:
                     dir: 'cover'
-        - docker-wipe-workspace
+        - docker-cleanup
 
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:
@@ -430,7 +430,7 @@
         - cloverphp:
             xml-location: 'log/clover.xml'
         - beta-irc  # Spam #wikimedia-releng on failure
-        - docker-wipe-workspace
+        - docker-cleanup
 
 - job-template:
     !!merge : *job_quibble
