@@ -6,7 +6,22 @@
      - docker-wipe-dir:
          dir: log
 
-# Delete everything in $WORKSPACE. This should generally be used as the final
+# Stop and/or kill any containers still running for the build.
+- publisher:
+    name: docker-reap-containers
+    publishers:
+     - postbuildscript:
+         script-only-if-succeeded: false
+         script-only-if-failed: false
+         builders:
+          - shell: |
+              set -eux
+              docker ps -q \
+                --filter label=jenkins.job=$JOB_NAME \
+                --filter label=jenkins.build=$BUILD_NUMBER \
+                | xargs --no-run-if-empty docker stop
+
+# Delete everything in $WORKSPACE.
 # publisher for all Docker based jobs.
 - publisher:
     name: docker-wipe-workspace
@@ -28,6 +43,14 @@
            - shell: |
               set -u
               rmdir "$WORKSPACE"
+
+# Perform all cleanup operations for a Docker build. This should generally be
+# used as the final publisher for all Docker based jobs.
+- publisher:
+    name: docker-cleanup
+    publishers:
+      - docker-reap-containers
+      - docker-wipe-workspace
 
 # Create a src directory that will be
 # mounted into a container with --volume
@@ -71,7 +94,10 @@
         set -eux
         exec docker run \
           {obj:options|} \
+          --init \
           --rm \
+          --label "jenkins.job=$JOB_NAME" \
+          --label "jenkins.build=$BUILD_NUMBER" \
           --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
           '{image|docker-registry.wikimedia.org/wikimedia-stretch:latest}' {obj:args|}
         # nothing else can be executed due to exec
