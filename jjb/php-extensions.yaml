@@ -6,14 +6,9 @@
     builders:
      - docker-src-dir
      - docker-ci-src-setup-simple
-     - shell: |
-        #!/bin/bash -eu
-        set -x
-        exec docker run \
-            --rm \
-            --volume "$(pwd)"/src:/src \
-            docker-registry.wikimedia.org/releng/{image} \
-        # nothing else can be executed due to exec
+     - docker-run:
+        options: '--volume "$(pwd)"/src:/src'
+        image: 'docker-registry.wikimedia.org/releng/{image}'
     publishers:
       - docker-wipe-workspace
 

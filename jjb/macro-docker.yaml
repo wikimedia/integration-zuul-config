@@ -18,15 +18,16 @@
          script-only-if-succeeded: false
          script-only-if-failed: false
          builders:
-          - shell: |
-              set -eux
-              docker run \
-                  --rm \
-                  --user=root \
-                  -v "$WORKSPACE":/workspace \
-                  --entrypoint=/usr/bin/find \
-                  docker-registry.wikimedia.org/wikimedia-stretch:latest \
-                  "/workspace" -mindepth 1 -delete
+           - docker-run:
+              image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+              options: >
+                --user=root
+                --volume "$WORKSPACE":/workspace
+                --entrypoint=/usr/bin/find
+              args: >
+                "/workspace" -mindepth 1 -delete
+           - shell: |
+              set -u
               rmdir "$WORKSPACE"
 
 # Create a src directory that will be
@@ -44,13 +45,14 @@
      - shell: |
          set -eux
          mkdir -m 2777 -p "{dir}"
-         docker run \
-             --rm \
-             --user=nobody \
-             -v "$WORKSPACE":/workspace \
-             --entrypoint=/usr/bin/find \
-             docker-registry.wikimedia.org/wikimedia-stretch:latest \
-             "/workspace/{dir}" -mindepth 1 -delete
+     - docker-run:
+        image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+        options: >
+          --user=nobody
+          --volume "$WORKSPACE":/workspace
+          --entrypoint=/usr/bin/find
+        args: >
+          "/workspace/{dir}" -mindepth 1 -delete
 
 # Create a cache directory that will be
 # mounted into a container with --volume
@@ -60,48 +62,56 @@
      - shell: |
         mkdir -m 2777 -p "cache"
 
+# Run a Docker container using `docker run`. This builder should be used
+# wherever possible to ensure the proper common arguments that allow for
+# correct signal passing and cleanup are passed.
+- builder:
+    name: docker-run
+    builders:
+     - shell: |
+        #!/bin/bash
+        set -eux
+        exec docker run {obj:options|} \
+          --rm \
+          --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+          '{image}' {obj:args|}
+        # nothing else can be executed due to exec
+
+
 # Run a docker image with .env and a log
 - builder:
     name: docker-run-with-log
     builders:
-     - shell: |
-        #!/bin/bash -eu
-        set -x
-        exec docker run \
-            {obj:docker_run_options|} \
-            --rm \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
-            --volume "$(pwd)"/log:{logdir} \
-            {image}
-        # nothing else can be executed due to exec
+     - docker-run:
+        options: >
+          {obj:options|}
+          --volume "$(pwd)"/log:{logdir}
+        image: '{obj:image}'
+        args: '{obj:args|}'
 
 # Run a docker image with .env and a log and cache directory
 #
 # Parameters:
 #
 # image: the Docker image to run (eg: releng/php)
-# run_args (optional): arguments passed to `docker run`.
+# args (optional): arguments passed to `docker run`.
 - builder:
     name: docker-run-with-log-and-workspace-cache
     builders:
-     - shell: |
-        #!/bin/bash -eu
-        set -x
-        exec docker run \
-            {obj:docker_run_options|} \
-            --rm \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
-            --volume "$(pwd)"/log:{logdir} \
-            --volume "$(pwd)"/cache:/cache \
-            {image} {obj:run_args|}
-        # nothing else can be executed due to exec
+     - docker-run-with-log:
+        options: >
+          {obj:options|}
+          --volume "$(pwd)"/cache:/cache
+        image: '{obj:image}'
+        args: '{obj:args|}'
+        logdir: '{obj:logdir}'
 
 # Run a docker image with cache, log, and src directories
 #
 # Parameter:
 #
 # image: the Docker image to run (eg: releng/php)
-# run_args (optional): arguments passed to `docker run`.
+# args (optional): arguments passed to `docker run`.
 - builder:
     name: docker-run-with-log-cache-src
     builders:
@@ -109,85 +119,64 @@
         #!/bin/bash -eu
         set -x
         chmod 2777 src
-        exec docker run \
-            {obj:docker_run_options|} \
-            --rm \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
-            --volume "$(pwd)"/log:{logdir} \
-            --volume "$(pwd)"/cache:/cache \
-            --volume "$(pwd)"/src:/src \
-            {image} {obj:run_args|}
-        # nothing else can be executed due to exec
+     - docker-run-with-log-and-workspace-cache:
+        options: >
+          {obj:options|}
+          --volume "$(pwd)"/src:/src
+        image: '{obj:image}'
+        args: '{obj:args|}'
+        logdir: '{obj:logdir}'
 
 # Use a docker image to clone for a MediaWiki extension or skin
 - builder:
     name: docker-ci-src-setup-mwext
     builders:
-     - shell: |
-        #!/bin/bash -eu
-        set -x
-        exec docker run \
-            --rm \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
-            --volume "$(pwd)"/src:/src \
-            --volume "$(pwd)"/cache:/cache \
-            --volume /srv/git:/srv/git \
-            --entrypoint "bash" \
-            docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8 \
-            /srv/setup-mwext.sh
-        # nothing else can be executed due to exec
+     - docker-run:
+        options: >
+          --volume "$(pwd)"/src:/src
+          --volume "$(pwd)"/cache:/cache
+          --volume /srv/git:/srv/git
+          --entrypoint "bash"
+        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8'
+        args: '/srv/setup-mwext.sh'
 
 # Use a docker image to clone for MediaWiki core
 - builder:
     name: docker-ci-src-setup-mw
     builders:
-     - shell: |
-        #!/bin/bash -eu
-        set -x
-        exec docker run \
-            --rm \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
-            --volume "$(pwd)"/src:/src \
-            --volume "$(pwd)"/cache:/cache \
-            --volume /srv/git:/srv/git \
-            --entrypoint "bash" \
-            docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8 \
-            /srv/setup-mw.sh
-        # nothing else can be executed due to exec
-
+     - docker-run:
+        options: >
+          --volume "$(pwd)"/src:/src
+          --volume "$(pwd)"/cache:/cache
+          --volume /srv/git:/srv/git
+          --entrypoint "bash"
+        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8'
+        args: '/srv/setup-mw.sh'
 
 # Use a docker image to clone the repository into /src
 - builder:
     name: docker-ci-src-setup-simple
     builders:
-     - shell: |
-        #!/bin/bash -eu
-        set -x
-        exec docker run \
-            --rm \
-            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
-            --volume "$(pwd)"/src:/src \
-            --volume "$(pwd)"/cache:/cache \
-            --volume /srv/git:/srv/git \
-            docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.0
-        # nothing else can be executed due to exec
+     - docker-run:
+        options: >
+          --volume "$(pwd)"/src:/src
+          --volume "$(pwd)"/cache:/cache
+          --volume /srv/git:/srv/git
+        image: 'docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.0'
 
 - builder:
     name: docker-zuul-cloner
     builders:
      - docker-src-dir
-     - shell: |
-         #!/bin/bash -eux
-         exec docker run \
-             --rm \
-             --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
-             --volume "$(pwd)"/src:/src \
-             --volume /srv/git:/srv/git:ro \
-             docker-registry.wikimedia.org/releng/zuul-cloner:0.1.1 \
-                 --color --verbose \
-                 --map /zuul-clonemap.yaml \
-                 --workspace /src \
-                 --cache-dir /srv/git \
-                 https://gerrit.wikimedia.org/r/p \
-                 {projects}
-         # nothing else can be executed due to exec
+     - docker-run:
+        options: >
+          --volume "$(pwd)"/src:/src
+          --volume /srv/git:/srv/git:ro
+        image: 'docker-registry.wikimedia.org/releng/zuul-cloner:0.1.1'
+        args: >
+          --color --verbose
+          --map /zuul-clonemap.yaml
+          --workspace /src
+          --cache-dir /srv/git
+          https://gerrit.wikimedia.org/r/p
+          {projects}
