@@ -142,9 +142,9 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: docker-registry.wikimedia.org/releng/quibble-jessie-php56:0.0.26
-            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
             # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
-            run_args: >
+            args: >
                 --packages-source composer --db mysql --db-dir /workspace/db --run=phpunit
                 --branch "{branch}"
                 --project-branch mediawiki/extensions/DonationInterface=master

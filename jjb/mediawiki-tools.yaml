@@ -44,7 +44,7 @@
       - docker-run-with-log-cache-src:
           image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
           logdir: '/log'
-          run_args: '-e doc'
+          args: '-e doc'
       - doc-publish:
           docsrc: 'src/docs/_build/html'
           docdest: 'mw-tools-scap'
@@ -72,23 +72,23 @@
              mediawiki/tools/codesniffer
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/composer:0.1.4'
-         docker_run_options: '--workdir /src/mediawiki/tools/codesniffer'
-         run_args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
+         options: '--workdir /src/mediawiki/tools/codesniffer'
+         args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
          logdir: '/log'
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
-         docker_run_options: '--user=nobody --entrypoint=/bin/bash'
-         run_args: '-c "mkdir -p /src/vendor/mediawiki"'
+         options: '--user=nobody --entrypoint=/bin/bash'
+         args: '-c "mkdir -p /src/vendor/mediawiki"'
          logdir: '/log'
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
-         docker_run_options: '--user=nobody --entrypoint=/bin/mv'
-         run_args: '/src/mediawiki/tools/codesniffer /src/vendor/mediawiki/mediawiki-codesniffer'
+         options: '--user=nobody --entrypoint=/bin/mv'
+         args: '/src/mediawiki/tools/codesniffer /src/vendor/mediawiki/mediawiki-codesniffer'
          logdir: '/log'
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/composer:0.1.4'
-         docker_run_options: '--workdir /src --entrypoint=/src/vendor/mediawiki/mediawiki-codesniffer/vendor/bin/phpcs'
-         run_args: '-s -p'
+         options: '--workdir /src --entrypoint=/src/vendor/mediawiki/mediawiki-codesniffer/vendor/bin/phpcs'
+         args: '-s -p'
          logdir: '/log'
     publishers:
      - castor-save-workspace-cache
