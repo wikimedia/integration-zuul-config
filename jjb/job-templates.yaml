@@ -28,10 +28,10 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            docker_run_options: '{obj:docker_run_options|}'
+            options: '{obj:docker_run_options|}'
             image: '{obj:docker_image_var}'
             logdir: '/log'
-            run_args: '{obj:maven_args}'
+            args: '{obj:maven_args}'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -63,7 +63,7 @@
         - docker-run-with-log-cache-src:
             image: '{obj:docker_image_var}'
             logdir: '/log'
-            run_args: '{obj:maven_args}'
+            args: '{obj:maven_args}'
     publishers:
         - postbuildscript:
               builders:
@@ -104,7 +104,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        docker_run_options: '{obj:docker_run_options_var}'
+        options: '{obj:docker_run_options_var}'
         image: '{obj:docker_image_var}'
         logdir: '/log'
     publishers:
@@ -126,7 +126,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        docker_run_options: '{obj:docker_run_options_var}'
+        options: '{obj:docker_run_options_var}'
         image: '{obj:docker_image_var}'
         logdir: '/log'
     publishers:
@@ -177,10 +177,10 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        docker_run_options: '{obj:docker_run_options_var}'
+        options: '{obj:docker_run_options_var}'
         image: '{obj:docker_image_var}'
         logdir: '/log'
-        run_args: '{script}'
+        args: '{script}'
 
 - job-template:
     !!merge : *job_npm-run-script-node-6-docker
@@ -243,10 +243,10 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        docker_run_options: '--env LOG_DIR=/log'
+        options: '--env LOG_DIR=/log'
         image: '{obj:docker_image_var}'
         logdir: '/log'
-        run_args: 'selenium-daily'
+        args: 'selenium-daily'
     wrappers:
       - timeout:
           timeout: 30
@@ -289,13 +289,13 @@
              mediawiki/extensions/MobileFrontend
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/npm-php:0.2.0
-         docker_run_options: '--workdir /src/extensions/MobileFrontend'
-         run_args: 'install'
+         options: '--workdir /src/extensions/MobileFrontend'
+         args: 'install'
          logdir: '/log'
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/npm-php:0.2.0
-         docker_run_options: '--workdir /src/extensions/MobileFrontend'
-         run_args: 'run-script lint:modules'
+         options: '--workdir /src/extensions/MobileFrontend'
+         args: 'run-script lint:modules'
          logdir: '/log'
     publishers:
      - archive-log-allow-empty
@@ -366,6 +366,6 @@
         - docker-ci-src-setup-simple
         - docker-run-with-log-cache-src:
             image: 'docker-registry.wikimedia.org/releng/npm6:0.1.0'
-            docker_run_options: '-w="/src"'
+            options: '-w="/src"'
             logdir: '/log'
-            run_args: 'audit'
+            args: 'audit'
