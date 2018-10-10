@@ -89,8 +89,6 @@
     name: 'mobileapps-periodic-test'
     node: DebianJessieDocker
     concurrent: true
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
-    run_args: 'periodic'
     triggers:
      - timed: '@hourly'
     parameters:
@@ -112,8 +110,8 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        run_args: '{obj:run_args}'
-        image: '{obj:docker_image_var}'
+        image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+        args: 'periodic'
         logdir: '/log'
     publishers:
      - irc-wikimedia-ri-ci
