@@ -52,7 +52,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{obj:docker_image_var}'
             logdir: '/log'
-            run_args: '-e "{toxenv}"'
+            args: '-e "{toxenv}"'
 
 # Call tox env 'docvenv' (default: 'doc' to generate documentation in labs and
 # publish to doc.wikimedia.org using an intermediate rsync repository in labs.
@@ -69,7 +69,7 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/tox:0.1.1'
          logdir: '/log'
-         run_args: '-e "{obj:docenv|doc}"'
+         args: '-e "{obj:docenv|doc}"'
      - doc-publish:
         docsrc: 'src/{docsrc}'
         docdest: '{docdest}'
@@ -91,7 +91,7 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/tox:0.1.1'
          logdir: '/log'
-         run_args: '-e "{obj:docenv|doc}"'
+         args: '-e "{obj:docenv|doc}"'
      - doc-publish:
         docsrc: 'src/{docsrc}'
         docdest: '{docdest}'
@@ -119,7 +119,7 @@
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/tox:0.1.1
          logdir: '/log'
-         run_args: '-e py27 -- --cover-html --cover-html-dir=coverage/ --cover-xml --cover-xml-file=/log/coverage.xml'
+         args: '-e py27 -- --cover-html --cover-html-dir=coverage/ --cover-xml --cover-xml-file=/log/coverage.xml'
      # FIXME: we would probably want a Docker container for slave scripts
      - shell: |
          mkdir -p slave-scripts

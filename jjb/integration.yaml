@@ -91,7 +91,7 @@
                 integration/config
         - docker-run-with-log-cache-src:
             image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
-            docker_run_options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/jjb/diff.sh'
+            options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/jjb/diff.sh'
             logdir: '/log'
     publishers:
         - castor-save-workspace-cache
@@ -109,7 +109,7 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
          image: '{docker_image}'
-         run_args: '/src/vendor/bin/composer --version'
+         args: '/src/vendor/bin/composer --version'
          logdir: '/log'
 
 - project:
@@ -145,7 +145,7 @@
      - docker-run-with-log-and-workspace-cache:
          image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
          logdir: '/log'
-         run_args: '-e qa -- --xunit-file=/log/junit-qa.xml'
+         args: '-e qa -- --xunit-file=/log/junit-qa.xml'
     publishers:
      - archive-log-dir
      - xunit:
@@ -231,4 +231,4 @@
     jobs:
         - '{name}-{project}-maven-java8-docker':
             # XXX hack because of jenkins-test-harness
-            docker_run_options: -v "$(pwd)/cache/testm2:/nonexistent/.m2"
+            options: -v "$(pwd)/cache/testm2:/nonexistent/.m2"

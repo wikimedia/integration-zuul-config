@@ -21,7 +21,7 @@
         - docker-ci-src-setup-simple
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/npm-test:0.3.0
-            run_args: 'doc'
+            args: 'doc'
             logdir: '/log'
         - doc-publish:
            docsrc: 'src/docs/js'
@@ -70,9 +70,9 @@
             touch src/LocalSettings.php
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/doxygen:0.4.1
-            docker_run_options: '--workdir /src --entrypoint=/usr/bin/php'
+            options: '--workdir /src --entrypoint=/usr/bin/php'
             logdir: '/log'
-            run_args: |
+            args: |
                 maintenance/mwdocgen.php \
                     --no-extensions \
                     --output /log/build \
@@ -168,13 +168,10 @@
      - docker-src-dir
      - docker-cache-dir
      - docker-ci-src-setup-mw
-     - shell: |
-        exec docker run \
-            --rm \
-            --volume "$(pwd)"/src:/mediawiki \
-            docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.4 \
-            -m checkstyle
-        # nothing else can be executed due to exec
+     - docker-run:
+        options: '--volume "$(pwd)"/src:/mediawiki'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.4'
+        args: '-m checkstyle'
 
     publishers:
      - castor-save
@@ -202,8 +199,8 @@
      - docker-ci-src-setup-mw
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.3.1
-         docker_run_options: '--env THING_SUBNAME="" --volume "$(pwd)"/src:/mediawiki' # FIXME container should use /src
-         run_args: '-m checkstyle'
+         options: '--env THING_SUBNAME="" --volume "$(pwd)"/src:/mediawiki' # FIXME container should use /src
+         args: '-m checkstyle'
          logdir: '/log'
     publishers:
      - checkstyle:
@@ -227,8 +224,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
-            run_args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
@@ -289,8 +286,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
-            run_args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --skip composer-test'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --skip composer-test'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
@@ -322,8 +319,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
-            run_args: '--packages-source "vendor" --db "mysql" --db-dir /workspace/db --run composer-test'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            args: '--packages-source "vendor" --db "mysql" --db-dir /workspace/db --run composer-test'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
@@ -348,8 +345,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
-            run_args: '--packages-source {packages-source} --db {database} --db-dir /workspace/db --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            args: '--packages-source {packages-source} --db {database} --db-dir /workspace/db --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
             logdir: '/workspace/log'
     publishers:
      - archive:
@@ -384,8 +381,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=256M'
-            run_args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
+            options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=256M'
+            args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
@@ -422,8 +419,8 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            docker_run_options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=256M'
-            run_args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
+            options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=256M'
+            args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
         - cover-publish:
             src: 'cover'

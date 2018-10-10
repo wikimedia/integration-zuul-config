@@ -40,16 +40,16 @@
      # composer install
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/composer:0.1.4
-         docker_run_options: '--workdir /src'
+         options: '--workdir /src'
          # prefer-dist to get cacheable content
-         run_args: 'install --no-progress --prefer-dist'
+         args: 'install --no-progress --prefer-dist'
          logdir: /log
      # phpunit coverage
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/php:0.1.1
-         docker_run_options: '--workdir /src'
+         options: '--workdir /src'
          logdir: /log
-         run_args: |
+         args: |
              -d zend_extension=xdebug.so \
              ./vendor/bin/phpunit \
                  --coverage-clover /log/coverage/clover.xml \
@@ -85,7 +85,7 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
          logdir: '/log'
-         run_args: 'doc'
+         args: 'doc'
      - doc-publish:
         docsrc: 'src/docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
@@ -108,7 +108,7 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
          logdir: '/log'
-         run_args: 'doc'
+         args: 'doc'
      - doc-publish:
         docsrc: 'src/docs'
         docdest: 'unicodejs/$DOC_SUBPATH'
@@ -173,7 +173,7 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
          logdir: '/log'
-         run_args: 'doc'
+         args: 'doc'
      - doc-publish:
         docsrc: 'src/docs'
         docdest: 'oojs/$DOC_SUBPATH'
@@ -216,7 +216,7 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
          logdir: '/log'
-         run_args: 'doc'
+         args: 'doc'
      - doc-publish:
         docsrc: 'src/docs'
         docdest: 'oojs-router/$DOC_SUBPATH'
@@ -260,7 +260,7 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/npm-test-oojsui:0.2.0'
          # npm run-script jenkins runs 'npm test' and 'jsduck'
-         run_args: 'jenkins'
+         args: 'jenkins'
          logdir: '/log'
      # Publish everything in a single job!
      - cover-publish:
