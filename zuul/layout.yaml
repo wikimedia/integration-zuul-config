@@ -978,8 +978,10 @@ jobs:
 
   # Run MediaWiki PHP 7.1 tests on MW 1.32+,
   # but skip on wmf/ and fundraising/ since it's not used.
-  - name: ^.*quibble.*php71.*
+  - name: ^(wmf|mediawiki).*quibble.*php71.*
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+  - name: ^release-quibble-vendor-mysql-php71-docker$
+    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
 
   - name: ^wmf-quibble-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
@@ -1206,18 +1208,19 @@ project-templates:
     php5:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
+      - quibble-vendor-mysql-php71-docker
     test:
       - quibble-vendor-mysql-hhvm-docker
     gate-and-submit: &extension-quibble-gate-and-submit
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
+      - quibble-vendor-mysql-php71-docker
     gate-and-submit-swat: *extension-quibble-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
     experimental:
       - quibble-vendor-sqlite-php70-docker
-      - quibble-vendor-mysql-php71-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
@@ -1229,18 +1232,19 @@ project-templates:
     php5:
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
+      - quibble-composer-mysql-php71-docker
     test:
       - quibble-composer-mysql-hhvm-docker
     gate-and-submit: &extension-quibble-composer-gate-and-submit
       - quibble-composer-mysql-hhvm-docker
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
+      - quibble-composer-mysql-php71-docker
     gate-and-submit-swat: *extension-quibble-composer-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
     experimental:
       - quibble-composer-sqlite-php70-docker
-      - quibble-composer-mysql-php71-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
@@ -1253,18 +1257,19 @@ project-templates:
     php5:
       - quibble-vendor-mysql-php55-noselenium-docker
       - quibble-vendor-mysql-php70-noselenium-docker
+      - quibble-vendor-mysql-php71-noselenium-docker
     test:
       - quibble-vendor-mysql-hhvm-noselenium-docker
     gate-and-submit: &extension-quibble-noselenium-gate-and-submit
       - quibble-vendor-mysql-hhvm-noselenium-docker
       - quibble-vendor-mysql-php55-noselenium-docker
       - quibble-vendor-mysql-php70-noselenium-docker
+      - quibble-vendor-mysql-php71-noselenium-docker
     gate-and-submit-swat: *extension-quibble-noselenium-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
     experimental:
       - quibble-vendor-sqlite-php70-noselenium-docker
-      - quibble-vendor-mysql-php71-noselenium-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
@@ -1276,18 +1281,19 @@ project-templates:
     php5:
       - quibble-composer-mysql-php55-noselenium-docker
       - quibble-composer-mysql-php70-noselenium-docker
+      - quibble-composer-mysql-php71-noselenium-docker
     test:
       - quibble-composer-mysql-hhvm-noselenium-docker
     gate-and-submit: &extension-quibble-composer-noselenium-gate-and-submit
       - quibble-composer-mysql-hhvm-noselenium-docker
       - quibble-composer-mysql-php55-noselenium-docker
       - quibble-composer-mysql-php70-noselenium-docker
+      - quibble-composer-mysql-php71-noselenium-docker
     gate-and-submit-swat: *extension-quibble-composer-noselenium-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
     experimental:
       - quibble-composer-sqlite-php70-noselenium-docker
-      - quibble-composer-mysql-php71-noselenium-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
@@ -1318,6 +1324,8 @@ project-templates:
     php5:
       - wmf-quibble-vendor-mysql-php70-docker
       - wmf-quibble-core-vendor-mysql-php70-docker
+      - wmf-quibble-vendor-mysql-php71-docker
+      - wmf-quibble-core-vendor-mysql-php71-docker
       - release-quibble-vendor-mysql-php55-docker
     gate-and-submit: &extension-gate-gate-and-submit
       # Only triggered on master and wmf/ branches:
@@ -1325,16 +1333,17 @@ project-templates:
       - wmf-quibble-vendor-mysql-php70-docker
       - wmf-quibble-core-vendor-mysql-hhvm-docker
       - wmf-quibble-core-vendor-mysql-php70-docker
+      - wmf-quibble-vendor-mysql-php71-docker
+      - wmf-quibble-core-vendor-mysql-php71-docker
       # Only triggered on REL branches:
       - release-quibble-vendor-mysql-hhvm-docker
+      - release-quibble-vendor-mysql-php71-docker
       - release-quibble-vendor-mysql-php70-docker
       - release-quibble-vendor-mysql-php55-docker
     gate-and-submit-swat: *extension-gate-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
     experimental:
-      - wmf-quibble-vendor-mysql-php71-docker
-      - wmf-quibble-core-vendor-mysql-php71-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
 
@@ -1379,18 +1388,19 @@ project-templates:
     php5:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
+      - quibble-vendor-mysql-php71-docker
     test:
       - quibble-vendor-mysql-hhvm-docker
     gate-and-submit: &skin-quibble-gate-and-submit
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
+      - quibble-vendor-mysql-php71-docker
     gate-and-submit-swat: *skin-quibble-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
     experimental:
       - quibble-vendor-sqlite-php70-docker
-      - quibble-vendor-mysql-php71-docker
       - mwskin-php70-phan-docker
       - mwskin-php70-phan-seccheck-docker
 
@@ -1402,18 +1412,19 @@ project-templates:
     php5:
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
+      - quibble-composer-mysql-php71-docker
     test:
       - quibble-composer-mysql-hhvm-docker
     gate-and-submit: &skin-quibble-composer-gate-and-submit
       - quibble-composer-mysql-hhvm-docker
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
+      - quibble-composer-mysql-php71-docker
     gate-and-submit-swat: *skin-quibble-composer-gate-and-submit
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
     experimental:
       - quibble-composer-sqlite-php70-docker
-      - quibble-composer-mysql-php71-docker
       - mwskin-php70-phan-docker
       - mwskin-php70-phan-seccheck-docker
 
@@ -1723,12 +1734,14 @@ projects:
       - mediawiki-quibble-vendor-mysql-php55-docker
       - mediawiki-quibble-vendor-sqlite-php70-docker
       - mediawiki-quibble-vendor-postgres-php70-docker
+      - mediawiki-quibble-vendor-mysql-php71-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
       - mwext-donationinterfacecore-REL1_27-zend56-jessie
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php55-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
+      - mediawiki-quibble-vendor-mysql-php71-docker
       - mediawiki-quibble-composertest-php70-docker
       - mediawiki-quibble-vendor-sqlite-php70-docker
       - mediawiki-quibble-vendor-postgres-php70-docker
@@ -1748,7 +1761,6 @@ projects:
       - mediawiki-quibble-composer-mysql-php55-docker
       - quibble-donationinterface-REL1_27-zend56-docker
       - mediawiki-core-php70-phan-seccheck-docker
-      - mediawiki-quibble-vendor-mysql-php71-docker
 
   - name: mediawiki/debian
     test:

@@ -227,8 +227,8 @@ class TestZuulScheduler(unittest.TestCase):
             % (name, pipeline)
         )
 
-    def assertProjectHasExperimentalPHP71(self, name, definition, pipeline):
-        if pipeline != 'experimental':
+    def assertProjectHasVotingPHP71(self, name, definition, pipeline):
+        if pipeline != 'gate-and-submit':
             return
         self.assertTrue(
             any([job for job in definition
@@ -242,14 +242,14 @@ class TestZuulScheduler(unittest.TestCase):
         repos = {
             'mediawiki/core$': [
                 self.assertProjectHasComposerValidate,
-                self.assertProjectHasPhplint
+                self.assertProjectHasPhplint,
+                self.assertProjectHasVotingPHP71
             ],
             'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasPhp55Test,
                 self.assertProjectHasExperimentalPhan,
-                self.assertProjectHasExperimentalPHP71
             ],
             'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,
@@ -257,7 +257,6 @@ class TestZuulScheduler(unittest.TestCase):
                 self.assertProjectHasSkinTests,
                 self.assertProjectHasNoExtensionTests,
                 self.assertProjectHasExperimentalPhan,
-                self.assertProjectHasExperimentalPHP71
             ],
             'mediawiki/vendor$': [
                 self.assertProjectHasComposerValidate,
@@ -1011,6 +1010,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
+            'mediawiki-quibble-vendor-mysql-php71-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php55-docker': False,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
@@ -1022,10 +1022,13 @@ class TestZuulScheduler(unittest.TestCase):
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
+            'release-quibble-vendor-mysql-php71-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-vendor-mysql-php70-docker': False,
+            'wmf-quibble-vendor-mysql-php71-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
             'wmf-quibble-core-vendor-mysql-php70-docker': True,
+            'wmf-quibble-core-vendor-mysql-php71-docker': True,
         }
 
         change = zuul.model.Change('mediawiki/core')
