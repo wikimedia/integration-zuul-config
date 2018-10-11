@@ -17,6 +17,9 @@
             docker-registry.wikimedia.org/releng/{image} \
         # nothing else can be executed due to exec
     publishers:
+      - archive:
+          artifacts: 'src/tests/*.log'
+          allow-empty: true
       - docker-wipe-workspace
 
 - project:
