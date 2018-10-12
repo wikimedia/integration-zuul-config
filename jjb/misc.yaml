@@ -307,7 +307,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/npm6-browser-test:0.1.1'
          logdir: '/log'
      - cover-publish:
         src: 'src/coverage'
@@ -323,6 +323,8 @@
             docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0
         - '{name}-npm6-browser-node-6-docker'
         - '{name}-npm-run-{script}-node-6-docker':
+           script: 'doc'
+        - '{name}-npm6-run-{script}-node-6-docker':
            script: 'doc'
         - '{name}-rake-docker'
 
