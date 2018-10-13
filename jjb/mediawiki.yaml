@@ -215,7 +215,7 @@
 - job-template: &job_quibble
     name: quibble-{packages-source}-{database}-{php}-docker
     node: DebianJessieDocker && m4executor
-    quibble_args: ''
+    quibble_args: '--skip npm-test'
     concurrent: true
     triggers:
         - zuul
