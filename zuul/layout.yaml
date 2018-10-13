@@ -2081,10 +2081,12 @@ projects:
       - name: npm-docker
     test:
       - composer-php55-docker
-      - labs-tools-heritage-tox-docker
+      - labs-tools-heritage-tox-docker:
+          build_timeout: 6  # T206913
     gate-and-submit:
       - composer-php55-docker
-      - labs-tools-heritage-tox-docker
+      - labs-tools-heritage-tox-docker:
+          build_timeout: 6  # T206913
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
     postmerge:
