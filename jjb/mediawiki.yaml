@@ -242,7 +242,7 @@
 - job-template:
     !!merge : *job_quibble
     name: quibble-{packages-source}-{database}-{php}-noselenium-docker
-    quibble_args: '--skip selenium'
+    quibble_args: '--skip selenium npm-test'
     triggers:
         - zuul
 
@@ -250,6 +250,7 @@
 - job-template:
     !!merge : *job_quibble
     name: release-quibble-{packages-source}-{database}-{php}-docker
+    quibble_args: '--skip npm-test'
     triggers:
         - zuul
 
@@ -259,7 +260,7 @@
     name: wmf-quibble-vendor-mysql-{php}-docker
     # We do not run mediawiki/core tests with extensions installed
     # https://phabricator.wikimedia.org/T197469#4293142
-    quibble_args: '--phpunit-testsuite=extensions'
+    quibble_args: '--phpunit-testsuite=extensions --skip npm-test'
     triggers:
         - zuul
 
@@ -270,7 +271,7 @@
     name: wmf-quibble-core-vendor-mysql-{php}-docker
     # We do not run mediawiki/core tests with extensions installed
     # https://phabricator.wikimedia.org/T197469#4293142
-    quibble_args: '--phpunit-testsuite=extensions --skip composer-test'
+    quibble_args: '--phpunit-testsuite=extensions --skip composer-test npm-test'
     triggers:
         - zuul
 
@@ -287,7 +288,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
-            args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --skip composer-test'
+            args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --skip composer-test npm-test'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty

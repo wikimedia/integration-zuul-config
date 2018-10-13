@@ -238,6 +238,15 @@ class TestZuulScheduler(unittest.TestCase):
             % (name, pipeline)
             )
 
+    def assertQuibbleHasNpmTest(self, name, definition, pipeline):
+        if pipeline != 'experimental':
+            return
+        has_quibble = any([job for job in definition if 'quibble' in job])
+        has_npm_test = any([job for job in definition if 'npm-node-6' in job])
+        self.assertEqual(has_npm_test, has_quibble,
+                         'Project %s pipeline %s must have both quibble and '
+                         'npm job' % (name, pipeline))
+
     def test_repos_have_required_jobs(self):
         repos = {
             'mediawiki/core$': [
@@ -1004,6 +1013,7 @@ class TestZuulScheduler(unittest.TestCase):
             'release-quibble-vendor-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
+            'mwgate-npm-node-6-docker': True,
         }
         expected_gate = {
             'composer-package-validate': True,
@@ -1029,6 +1039,7 @@ class TestZuulScheduler(unittest.TestCase):
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
             'wmf-quibble-core-vendor-mysql-php70-docker': True,
             'wmf-quibble-core-vendor-mysql-php71-docker': True,
+            'mwgate-npm-node-6-docker': True,
         }
 
         change = zuul.model.Change('mediawiki/core')
