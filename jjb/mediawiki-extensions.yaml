@@ -147,16 +147,9 @@
      - docker-src-dir
      - docker-cache-dir
      - docker-ci-src-setup-mwext
-     - shell: |
-        #!/bin/bash -eu
-        set -x
-        if [ ! -f "src/$THING_SUBNAME/tests/phan/config.php" ]; then
-            echo "Phan config not found\n"
-            exit 0
-        fi
      - docker-run:
         options: '--volume "$(pwd)"/src:/mediawiki'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.4'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.7'
         args: '/$ZUUL_PROJECT -m checkstyle'
 
     publishers:
