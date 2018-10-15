@@ -2,25 +2,25 @@
     name: '3d2png'
     jobs:
      - '{name}-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-3d2png:0.1.2
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-3d2png:0.2.1
      - '{name}-deploy-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-3d2png:0.2.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-3d2png:0.2.1
 
 - project:
     name: 'change-propagation'
     jobs:
      - '{name}-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.1.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.1
      - '{name}-deploy-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.1
 
 - project:
     name: chromium-render
     jobs:
      - '{name}-npm-browser-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1
      - '{name}-deploy-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1
 
 - project:
     name: 'citoid'
@@ -37,25 +37,25 @@
     name: 'graphoid'
     jobs:
      - '{name}-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-graphoid:0.1.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-graphoid:0.2.1
      - '{name}-deploy-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-graphoid:0.2.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-graphoid:0.2.1
 
 - project:
     name: 'kartotherian'
     jobs:
      - '{name}-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.1.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.1
      - '{name}-deploy-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.1
 
 - project:
     name: 'mathoid'
     jobs:
      - '{name}-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-mathoid:0.1.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-mathoid:0.2.1
      - '{name}-deploy-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-mathoid:0.2.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-mathoid:0.2.1
 
 - project:
     name: 'mobileapps'
@@ -73,17 +73,17 @@
     name: 'tilerator'
     jobs:
      - '{name}-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.1.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.1
      - '{name}-deploy-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.1
 
 - project:
     name: 'trending-edits'
     jobs:
      - '{name}-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.1.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.1
      - '{name}-deploy-npm-node-6-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.0
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-librdkafka:0.2.1
 
 - job-template:
     name: 'mobileapps-periodic-test'
@@ -110,7 +110,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+        image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
         args: 'periodic'
         logdir: '/log'
     publishers:

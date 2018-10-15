@@ -10,7 +10,7 @@
         - docker-log-dir
         - docker-ci-src-setup-simple
         - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+            image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
             logdir: '/log'
             args: 'doc'
         - doc-publish:
@@ -26,9 +26,9 @@
         # For the deploy repo:
         # - Docker
         - '{name}-deploy-npm-node-6-docker':
-            docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.5.0'
+            docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
         - '{name}-deploy-npm-run-{script}-node-6-docker':
-            docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.5.0'
+            docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
             script:
                 - roundtrip
                 - toolcheck

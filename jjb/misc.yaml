@@ -83,7 +83,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
          logdir: '/log'
          args: 'doc'
      - doc-publish:
@@ -106,7 +106,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
          logdir: '/log'
          args: 'doc'
      - doc-publish:
@@ -127,7 +127,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1'
          logdir: '/log'
      - cover-publish:
         src: 'src/coverage'
@@ -157,7 +157,7 @@
     jobs:
         - '{name}-jsduck-docker'
         - '{name}-npm-browser-node-6-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0
+            docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1
 
 - job:
     name: 'oojs-core-publish'
@@ -171,7 +171,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
          logdir: '/log'
          args: 'doc'
      - doc-publish:
@@ -193,7 +193,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1'
          logdir: '/log'
      - cover-publish:
         src: 'src/coverage'
@@ -214,7 +214,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
          logdir: '/log'
          args: 'doc'
      - doc-publish:
@@ -236,7 +236,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1'
          logdir: '/log'
      - cover-publish:
         src: 'src/coverage'
@@ -258,7 +258,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-test-oojsui:0.2.0'
+         image: 'docker-registry.wikimedia.org/releng/npm-test-oojsui:0.2.1'
          # npm run-script jenkins runs 'npm test' and 'jsduck'
          args: 'jenkins'
          logdir: '/log'
@@ -320,7 +320,7 @@
     name: visualeditor
     jobs:
         - '{name}-npm-browser-node-6-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0
+            docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1
         - '{name}-npm6-browser-node-6-docker'
         - '{name}-npm-run-{script}-node-6-docker':
            script: 'doc'

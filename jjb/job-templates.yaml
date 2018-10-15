@@ -94,7 +94,7 @@
     name: 'npm-node-6-docker'
     node: DebianJessieDocker
     concurrent: true
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.3.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
     docker_run_options_var: ''
     triggers:
      - zuul
@@ -116,7 +116,7 @@
     name: '{name}-npm6-node-6-docker'
     node: DebianJessieDocker
     concurrent: true
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm6-test:0.1.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm6-test:0.2.0'
     docker_run_options_var: ''
     triggers:
      - zuul
@@ -137,7 +137,7 @@
 - job-template:
     !!merge : *job_npm6-node-6-docker
     name: '{name}-npm6-browser-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm6-browser-test:0.1.1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm6-browser-test:0.1.2'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
@@ -159,7 +159,7 @@
 - job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-deploy-npm-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.4.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
     docker_run_options_var: '--entrypoint=/run-oid.sh'
     triggers:
      - zuul
@@ -198,13 +198,13 @@
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.4.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
     docker_run_options_var: '--entrypoint=/run-oid.sh'
 
 - job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-browser-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
@@ -212,7 +212,7 @@
 - job-template:
     !!merge : *job_npm-run-script-node-6-docker
     name: 'selenium-daily-beta-{project}'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1'
     triggers:
      - timed: '@daily'
     parameters:
