@@ -460,7 +460,6 @@
                 - master
                 - REL1_31
                 - REL1_30
-                - REL1_29
                 - REL1_27
         - axis:
             name: packagessource
@@ -473,6 +472,7 @@
             type: user-defined
             values:
                 - mysql
+                - postgres
                 - sqlite
         - axis:
             name: php
@@ -486,10 +486,10 @@
                 - hhvm
     builders:
         - trigger-builds:
-            - project: 'quibble-${packagessource}-${database}-${php}-docker'
+            - project: 'mediawiki-quibble-${packagessource}-${database}-${php}-docker'
               block: true
               predefined-parameters: |
-                    projectName=quibble-${packagessource}-${database}-${php}-docker
+                    projectName=mediawiki-quibble-${packagessource}-${database}-${php}-docker
                     ZUUL_URL=https://gerrit.wikimedia.org/r/p
                     ZUUL_PROJECT=mediawiki/core
                     ZUUL_BRANCH=$ZUUL_BRANCH
