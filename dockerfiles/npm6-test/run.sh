@@ -6,6 +6,11 @@ set -euxo pipefail
 
 cd /src
 
+if [ ! -f "package.json" ]; then
+    echo "package.json not found, skipping\n"
+    exit 0
+fi
+
 node --version
 npm --version
 
