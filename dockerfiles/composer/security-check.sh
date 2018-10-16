@@ -12,4 +12,4 @@ if [ ! -f "composer.lock" ]; then
 fi
 
 curl -i -H "Accept: text/plain" https://security.sensiolabs.org/check_lock -F lock=@composer.lock -o sensiolabs.check
-cat sensiolabs.check && grep -F "X-Alerts: 0" sensiolabs.check
+cat sensiolabs.check && grep -iF "X-Alerts: 0" sensiolabs.check
