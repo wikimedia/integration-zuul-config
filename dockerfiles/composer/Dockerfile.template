@@ -11,7 +11,7 @@ RUN git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/composer.gi
 COPY composer-install-dev-only.bash /srv/composer/composer-install-dev-only
 COPY security-check.sh /srv/composer/security-check
 
-RUN {{ "jq" | apt_install }}
+RUN {{ "jq curl" | apt_install }}
 
 USER nobody
 
