@@ -599,40 +599,14 @@
     jobs:
         - 'selenium-daily-beta-{project}'
 
-- job:
-    name: 'mediawiki-vendor-security'
-    project-type: matrix
-    execution-strategy:
-        sequential: true
-    parameters:
-        - matrix-combinations:
-            name: combo
-            description: 'Select matrix combinations'
-    axes:
-        - axis:
-            type: label-expression
-            name: label
-            values:
-                - contint1001
-        - axis:
-            name: ZUUL_PROJECT
-            type: user-defined
-            values:
-                - mediawiki/core
-                - mediawiki/vendor
-        - axis:
-            name: ZUUL_BRANCH
-            type: user-defined
-            values: *mediawiki_supported_branches
-    builders:
-        - trigger-builds:
-            - project: 'mediawiki-vendor-composer-security-docker'
-              block: true
-              predefined-parameters: |
-                    projectName=mediawiki-vendor-composer-security-docker
-                    ZUUL_URL=https://gerrit.wikimedia.org/r/p
-                    ZUUL_PROJECT=$ZUUL_PROJECT
-                    ZUUL_BRANCH=$ZUUL_BRANCH
-                    ZUUL_REF=$ZUUL_BRANCH
-    triggers:
-        - timed: "H 20 * * *"
+
+- project:
+    name: 'mediawiki-php-security'
+    repogroup: 'mediawiki'
+    host: 'https://gerrit.wikimedia.org/r/p'
+    projects:
+      - mediawiki/core
+      - mediawiki/vendor
+    branches: *mediawiki_supported_branches
+    jobs:
+     - '{repogroup}-php-security'
