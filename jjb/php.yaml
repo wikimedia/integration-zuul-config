@@ -5,29 +5,18 @@
 # provided by https://security.sensiolabs.org to see if any of them
 # have reported security issues. See also T74193.
 - job-template:
-    name: '{name}-composer-security'
-    node: contintLabsSlave && DebianJessie
-    concurrent: true
-    scm:
-      - git:
-          url: 'https://gerrit.wikimedia.org/r/{repository}'
-          branches:
-            - master
-          wipe-workspace: false  # keep the workspace...
-          clean:
-              after: true        # ... and use git clean instead
-          prune: true            # prune remote obsoletes branches
-          submodule:
-              recursive: false
-    builders:
-     - shell: |
-         curl -i -H "Accept: text/plain" https://security.sensiolabs.org/check_lock -F lock=@composer.lock -o sensiolabs.check
-         cat sensiolabs.check && grep -F "X-Alerts: 0" sensiolabs.check
-    publishers:
-     - email:
-        recipients: '{notify}'
+    name: '{name}-composer-security-docker'
+    node: DebianJessieDocker
     triggers:
-        - timed: "H 20 * * *"
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run:
+        options: '--volume "$(pwd)"/src:/src --entrypoint=/srv/composer/security-check'
+        image: 'docker-registry.wikimedia.org/releng/composer:0.1.7'
+    publishers:
+      - docker-cleanup
 
 
 # Job for libraries that are published as composer packages.
