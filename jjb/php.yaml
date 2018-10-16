@@ -4,8 +4,8 @@
 # https://github.com/FriendsOfPHP/security-advisories and the API
 # provided by https://security.sensiolabs.org to see if any of them
 # have reported security issues. See also T74193.
-- job-template:
-    name: '{name}-composer-security-docker'
+- job:
+    name: 'php-composer-security-docker'
     node: DebianJessieDocker
     triggers:
      - zuul
@@ -17,7 +17,8 @@
         image: 'docker-registry.wikimedia.org/releng/composer:0.1.7'
     publishers:
       - email:
-         recipients: '{notify}'
+         recipients: security-team@wikimedia.org
+         notify-every-unstable-build: false
       - docker-cleanup
 
 
@@ -142,3 +143,28 @@
                     image: docker-registry.wikimedia.org/releng/composer-test-php56:0.1.3
                 - php70:
                     image: docker-registry.wikimedia.org/releng/composer-test:0.1.3
+
+- project:
+    name: 'wikimedia-apps-php-security'
+    repogroup: 'wikimedia-apps'
+    host: 'https://gerrit.wikimedia.org/r/p'
+    projects:
+     - wikimedia/wikimania-scholarships
+     - wikimedia/iegreview
+     - wikimedia/slimapp
+    branches:
+     - master
+    jobs:
+     - '{repogroup}-php-security'
+
+- project:
+    name: 'github-php-security'
+    repogroup: 'github'
+    host: 'https://github.com'
+    projects:
+     - wikimedia/grantmetrics
+     - wikimedia/svgtranslate
+    branches:
+     - master
+    jobs:
+     - '{repogroup}-php-security'
