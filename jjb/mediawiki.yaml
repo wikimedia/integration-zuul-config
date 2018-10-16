@@ -599,8 +599,8 @@
     jobs:
         - 'selenium-daily-beta-{project}'
 
-- job:
-    name: 'mediawiki-vendor-security'
+- job-template:
+    name: '{repogroup}-php-security'
     project-type: matrix
     execution-strategy:
         sequential: true
@@ -617,25 +617,33 @@
         - axis:
             name: ZUUL_PROJECT
             type: user-defined
-            values:
-                - mediawiki/core
-                - mediawiki/vendor
-                - wikimedia/wikimania-scholarships
-                - wikimedia/iegreview
-                - wikimedia/slimapp
+            values: '{obj:projects}'
         - axis:
             name: ZUUL_BRANCH
             type: user-defined
-            values: *mediawiki_supported_branches
+            values: '{obj:branches}'
     builders:
         - trigger-builds:
-            - project: 'mediawiki-vendor-composer-security-docker'
+            - project: 'php-composer-security-docker'
               block: true
               predefined-parameters: |
-                    projectName=mediawiki-vendor-composer-security-docker
-                    ZUUL_URL=https://gerrit.wikimedia.org/r/p
+                    projectName=php-composer-security-docker
+                    ZUUL_URL={host}
                     ZUUL_PROJECT=$ZUUL_PROJECT
                     ZUUL_BRANCH=$ZUUL_BRANCH
                     ZUUL_REF=$ZUUL_BRANCH
     triggers:
         - timed: "H 20 * * *"
+
+
+
+- project:
+    name: 'mediawiki-php-security'
+    repogroup: 'mediawiki'
+    host: 'https://gerrit.wikimedia.org/r/p'
+    projects:
+      - mediawiki/core
+      - mediawiki/vendor
+    branches: *mediawiki_supported_branches
+    jobs:
+     - '{repogroup}-php-security'

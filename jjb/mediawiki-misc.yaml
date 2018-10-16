@@ -41,10 +41,3 @@
          docker_image_var: docker-registry.wikimedia.org/releng/rake-vagrant:0.2.1
          build_timeout: 10  # minutes
      - 'mediawiki-vagrant-puppet-doc-publish'
-
-- project:
-    name: 'mediawiki-vendor'
-    jobs:
-     - '{name}-composer-security-docker':
-         notify: security-team@wikimedia.org
-         notify-every-unstable-build: false
