@@ -4,8 +4,8 @@
 # https://github.com/FriendsOfPHP/security-advisories and the API
 # provided by https://security.sensiolabs.org to see if any of them
 # have reported security issues. See also T74193.
-- job-template:
-    name: '{name}-composer-security-docker'
+- job:
+    name: 'php-composer-security-docker'
     node: DebianJessieDocker
     triggers:
      - zuul
@@ -17,7 +17,8 @@
         image: 'docker-registry.wikimedia.org/releng/composer:0.1.7'
     publishers:
       - email:
-         recipients: '{notify}'
+         recipients: security-team@wikimedia.org
+         notify-every-unstable-build: false
       - docker-cleanup
 
 
