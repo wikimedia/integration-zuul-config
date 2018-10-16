@@ -9,7 +9,7 @@
 - builder:
     name: wd-wikibase-apply-settings
     builders:
-     - shell: "$WORKSPACE/src/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient} -e {experimental} -b false"
+     - shell: "$WORKSPACE/src/extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {repoorclient}"
 
 - builder:
     name: wd-runtests
@@ -43,7 +43,6 @@
      - shell: "cp deps.txt src/extensions_load.txt"
      - wd-wikibase-apply-settings:
           repoorclient: '{repoorclient}'
-          experimental: 'true'
      - mw-apply-settings
      - mw-run-update-script
      - wd-runtests:
