@@ -240,6 +240,7 @@ dependencies = {
     'HierarchyBuilder': ['PageForms'],
     'ImageMetrics': ['EventLogging'],
     'ImageRating': ['VoteNY'],
+    'JADE': ['AbuseFilter', 'SpamBlacklist'],
     'JsonConfig': ['Scribunto'],
     'Kartographer': ['ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
     'LanguageTool': ['VisualEditor'],
