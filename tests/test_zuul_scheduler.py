@@ -725,6 +725,29 @@ class TestZuulScheduler(unittest.TestCase):
         change.branch = 'fundraising/REL1_99'
         self.assertTrue(job.changeMatches(change))
 
+    def test_donationinterface_docker_job_skips_on_mediawiki_core(self):
+        repo = 'mediawiki/core'
+
+        job = self.getJob(
+            repo, 'experimental',
+            'quibble-donationinterface-REL1_27-zend56-docker')
+
+        change = zuul.model.Change(repo)
+
+        change.branch = 'master'
+
+        self.assertFalse(job.changeMatches(change))
+
+        change.branch = 'wmf/1.99.9-wmf.999'
+        self.assertFalse(job.changeMatches(change))
+
+        change.branch = 'REL1_42'
+        self.assertFalse(job.changeMatches(change))
+
+        # Only runs on mediawiki/core fundraising branch
+        change.branch = 'fundraising/REL1_99'
+        self.assertTrue(job.changeMatches(change))
+
     def test_rake_docker_files_filters(self):
         # FIXME: should be more generic
         jobs_tree = [t for (p, t) in
