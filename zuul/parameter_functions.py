@@ -446,11 +446,25 @@ def get_dependencies(key, mapping):
 
 tarballextensions = [
     'Cite',
+    'CiteThisPage',
     'CodeEditor',
     'ConfirmEdit',
+    'Gadgets',
+    'ImageMap',
+    'InputBox',
+    'Interwiki',
+    'LocalisationUpdate',
+    # Skipped, incompatible with other extensions
+    # 'MultimediaViewer'
+    'Nuke',
+    'OATHAuth',
     'ParserFunctions',
     'PdfHandler',
+    'Poem',
+    'Renameuser',
+    'ReplaceText',
     'SpamBlacklist',
+    'TitleBlacklist',
     'WikiEditor',
 ]
 
