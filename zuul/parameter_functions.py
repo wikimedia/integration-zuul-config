@@ -341,7 +341,7 @@ dependencies = {
     'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
     'Wikidata.org': ['Wikibase'],
     'WikidataPageBanner': ['Wikibase'],
-    'WikiEditor': ['EventLogging'],
+    'WikiEditor': ['EventLogging', 'WikimediaEvents'],
     'WikimediaBadges': ['Wikibase'],
     'WikimediaEvents': ['EventLogging'],
     'Wikisource': ['Wikibase'],
