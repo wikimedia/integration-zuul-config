@@ -949,24 +949,19 @@ jobs:
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^mwext-donationinterfacecore-REL1_(27|28)-zend56-jessie$
+  - name: ^mwext-donationinterfacecore-REL1_27-zend56-jessie$
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
       - project: ^mediawiki/core$
         branch: (?!fundraising/REL.*)
-  - name: ^quibble-donationinterface-REL1_(27|28)-zend56-docker$
+  - name: ^quibble-donationinterface-REL1_27-zend56-docker$
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
       - project: ^mediawiki/core$
         branch: (?!fundraising/REL.*)
 
-
-  # FIXME when made voting, add it to gate-and-submit
-  # also FIXME: do we actually want to keep testing on 1.28?
-  - name: ^mwext-donationinterfacecore-REL1_28-zend56-jessie$
-    voting: false
 
   # Jobs testing multiple extensions together
 
