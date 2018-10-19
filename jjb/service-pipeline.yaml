@@ -31,6 +31,18 @@
           same-node: false
 
 - job:
+    name: 'trigger-service-pipeline-no-helm-test'
+    defaults: global
+    node: blubber
+    parameters: *service-pipeline-parameters
+    builders:
+      - trigger-builds:
+        - project: service-pipeline-no-helm-test
+          current-parameters: true
+          block: true
+          same-node: false
+
+- job:
     name: 'trigger-blubber-test'
     defaults: global
     node: blubber
@@ -49,6 +61,15 @@
     parameters: *service-pipeline-parameters
     dsl: !include-raw:
       - service-pipeline-production.groovy
+      - service-pipeline.groovy
+
+- job:
+    name: 'service-pipeline-no-helm-test'
+    defaults: global
+    project-type: pipeline
+    parameters: *service-pipeline-parameters
+    dsl: !include-raw:
+      - service-pipeline-production-no-helm-test.groovy
       - service-pipeline.groovy
 
 - job:
