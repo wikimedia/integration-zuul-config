@@ -114,11 +114,11 @@
         args: 'periodic'
         logdir: '/log'
     publishers:
-     - irc-wikimedia-ri-ci
+     - irc-wikimedia-infrastructure
      - docker-cleanup
 
 - publisher:
-    name: irc-wikimedia-ri-ci
+    name: irc-wikimedia-infrastructure
     publishers:
      - ircbot:
         strategy: failure-and-fixed
@@ -130,5 +130,5 @@
         message-type: summary
         matrix-notifier: only-parent
         channels:
-         - name: '#wikimedia-ri-ci'
+         - name: '#wikimedia-infrastructure'
            notify-only: true
