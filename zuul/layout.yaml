@@ -850,6 +850,10 @@ jobs:
   - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
     branch: ^(REL1_(2[789]|30))$
 
+  # TLS test for MediaWiki 1.31
+  - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*\<tls\>.*$
+    branch: ^(REL1_31)$
+
   - name: ^.*quibble-.*-docker$
     # Quibble jobs should not be run on fundraising/REL1_27.
     skip-if:
@@ -4159,6 +4163,8 @@ projects:
       - name: extension-quibble
       - name: extension-coverage
       - name: extension-seccheck
+    experimental:
+      - name: quibble-jade-tls
 
   - name: mediawiki/extensions/JsonConfig
     template:
