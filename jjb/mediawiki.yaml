@@ -509,17 +509,17 @@
         - sqlite
     php:
         - php55:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.28
         - php70:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.28
         - php71:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php71:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php71:0.0.28
         - php72:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.28
         - php73:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.28
         - hhvm:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.28
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
@@ -537,23 +537,23 @@
             # WMF cluster uses MariaDB/MySQL
             database: mysql
         - mediawiki-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.28
             packages-source: vendor
             database: sqlite
         - mwext-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.28
             packages-source:  composer
             database: mysql
         - mwext-phpunit-coverage-docker-publish:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.28
             packages-source:  composer
             database: mysql
         - mediawiki-core-code-coverage-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.28
             packages-source: vendor
             database: sqlite
         - mwselenium-quibble-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.28
             packages-source: vendor
             database: mysql
 
@@ -568,7 +568,7 @@
     name: mediawiki-selenium-integration
     jobs:
         - mediawiki-selenium-integration-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.28
             packages-source: vendor
             database: mysql
             quibble_args: '--skip-deps --commands=mwselenium -- mediawiki/selenium'
@@ -591,7 +591,7 @@
     name: parsoidsvc-parsertests
     jobs:
         - parsoidsvc-parsertests-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.27
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-hhvm:0.0.28
             packages-source: composer
             database: sqlite
             quibble_args: '--commands=mediawiki/services/parsoid/tools/ci-mw-parsertests.sh'
