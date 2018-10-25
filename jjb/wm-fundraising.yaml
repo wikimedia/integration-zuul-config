@@ -158,6 +158,8 @@
                 mediawiki/extensions/cldr
             logdir: '/workspace/log'
     publishers:
+        - junit:
+            results: 'log/junit*.xml'
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - docker-cleanup

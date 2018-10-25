@@ -228,6 +228,8 @@
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
     publishers:
+        - junit:
+            results: 'log/junit*.xml'
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - docker-cleanup
@@ -291,6 +293,8 @@
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --skip composer-test npm-test'
             logdir: '/workspace/log'
     publishers:
+        - junit:
+            results: 'log/junit*.xml'
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - conditional-publisher:
