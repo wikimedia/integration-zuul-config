@@ -439,6 +439,53 @@
         - beta-irc  # Spam #wikimedia-releng on failure
         - docker-cleanup
 
+- job:
+    name: 'mediawiki-core-phpmetrics-docker'
+    node: DebianJessieDocker
+    concurrent: false
+    triggers:
+        - pollscm:
+            cron: '@daily'
+    scm:
+        - git:
+            url: 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git'
+            do-no-fetch-tags: true
+            branches:
+                - master
+            clean:
+                before: true
+                after: true
+            basedir: src
+            # Checkout to a local branch with 'origin/' stripped. That also set
+            # GIT_LOCAL_BRANCH which we use later to publish the documentation.
+            local-branch: '**'
+    wrappers:
+        - timeout:
+            timeout: 30
+            fail: true
+        - ansicolor
+        - timestamps
+    builders:
+        - docker-log-dir
+        - docker-wipe-dir:
+            dir: 'phpmetrics-report'
+        - docker-run:
+            options: '-v "$(pwd)"/phpmetrics-report:/phpmetrics-report -v "$(pwd)"/log:/log'
+            image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.1
+            args: '--report-html /phpmetrics-report --report-violations=/log/violations-phpmetrics.xml .'
+        - doc-publish:
+            docsrc: phpmetrics-report
+            docdest: mediawiki-core/master/phpmetrics
+    publishers:
+        - archive-log-allow-empty
+        - beta-irc # Spam #wikimedia-releng on failure
+        - email-ext:
+            recipients: hashar@free.fr qa-alerts@lists.wikimedia.org
+            content-type: html
+            failure: true
+            unstable: true
+        - docker-cleanup
+
 - job-template:
     !!merge : *job_quibble
     name: 'mwselenium-quibble-docker'
