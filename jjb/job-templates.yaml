@@ -55,7 +55,7 @@
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
     triggers:
         - zuul
-    maven_args: '-DskipTests -Dmaven.test.skip=true clean install site site:stage'
+    maven_args: 'clean install site site:stage'
     builders:
         - docker-castor-load
         - docker-log-dir
@@ -76,7 +76,6 @@
 
 - job-template:
     name: '{name}-{project}-maven-java8-docker-site-publish'
-    maven_args: 'clean install site site:stage'
     !!merge : *job_template_maven-java8-docker-site-publish
     triggers:
         - zuul
