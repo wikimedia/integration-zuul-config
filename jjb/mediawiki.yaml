@@ -649,6 +649,35 @@
             database: sqlite
             quibble_args: '--commands=mediawiki/services/parsoid/tools/ci-mw-parsertests.sh'
 
+- job-template:
+    !!merge : *job_quibble
+    parameters:
+        # Hint about the job requiring dependencies. They MUST be set by Zuul.
+        - string:
+            name: 'EXT_DEPENDENCIES'
+            description: 'Extensions to add, separated by "\n". Set by Zuul.'
+    name: wikibase-{kind}-docker
+    triggers:
+        - zuul
+
+- project:
+    name: wikibase
+    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.28
+    packages-source: composer
+    kind:
+        - client:
+            database: mysql
+            phpunit-params: '--group Wikibase,WikibaseClient'
+        - repo:
+            database: sqlite
+            phpunit-params: '--group Wikibase,WikibaseAPI,Purtle'
+    jobs:
+        - wikibase-{kind}-docker:
+            quibble_args: >
+                --commands 'extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {kind}'
+                'php maintenance/update.php --quick'
+                'php tests/phpunit/phpunit.php --verbose --log-junit "$LOG_DIR/junit-wikibase-{kind}.xml" {phpunit-params}'
+
 - project:
     name: mediawiki-wdio-selenium
     project: MediaWiki

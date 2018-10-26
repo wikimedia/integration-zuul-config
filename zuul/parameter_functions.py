@@ -53,6 +53,23 @@ def set_parameters(item, job, params):
     if job.name.startswith(mw_deps_jobs_starting_with):
         set_mw_dependencies(item, job, params)
 
+    # Special jobs for Wikibase - T188717
+    if job.name == 'wikibase-client-docker':
+        params['EXT_DEPENDENCIES'] = '\\n'.join([
+            'mediawiki/extensions/Scribunto',
+            'mediawiki/extensions/Capiunto',
+            'mediawiki/extensions/cldr',
+            'mediawiki/extensions/Echo',
+        ])
+
+    if job.name == 'wikibase-repo-docker':
+        params['EXT_DEPENDENCIES'] = '\\n'.join([
+            'mediawiki/extensions/CirrusSearch',
+            'mediawiki/extensions/Elastica',
+            'mediawiki/extensions/GeoData',
+            'mediawiki/extensions/cldr',
+        ])
+
     if job.name == 'parsoidsvc-parsertests-docker':
         params['EXT_DEPENDENCIES'] = '\\n'.join([
             'mediawiki/extensions/Cite',
