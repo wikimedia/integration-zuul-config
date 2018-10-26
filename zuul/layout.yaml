@@ -1142,15 +1142,6 @@ jobs:
 
 project-templates:
 
-  # Runs the generic blubber-test pipeline job
-  - name: blubber-test
-    test:
-      - trigger-blubber-test
-    gate-and-submit:
-      - trigger-blubber-test
-    gate-and-submit-swat:
-      - trigger-blubber-test
-
   # For extensions that have broken tests or magic behaviors that CI does not support.
   # See also https://phabricator.wikimedia.org/T183512
   #
@@ -1551,14 +1542,17 @@ project-templates:
       - npm-node-6-docker
     gate-and-submit-swat: *npm-docker-gate-and-submit
 
-  - name: npm-service-pipeline
+  - name: service-pipeline-test
     test:
-      - trigger-service-pipeline-test-only
-    gate-and-submit: &npm-service-pipeline-gate-and-submit
-      - trigger-service-pipeline-test-only
-    gate-and-submit-swat: *npm-service-pipeline-gate-and-submit
+      - trigger-service-pipeline-test
+    gate-and-submit:
+      - trigger-service-pipeline-test
+    gate-and-submit-swat:
+      - trigger-service-pipeline-test
+
+  - name: service-pipeline-test-and-publish
     postmerge:
-      - trigger-service-pipeline
+      - trigger-service-pipeline-test-and-publish
 
   - name: mwgate-npm
     test:
@@ -1612,7 +1606,7 @@ project-templates:
 projects:
   - name: blubber
     template:
-      - name: blubber-test
+      - name: service-pipeline-test
     test:
       - debian-glue
     gate-and-submit:
@@ -1673,7 +1667,7 @@ projects:
 
   - name: integration/pipelinelib
     template:
-      - name: blubber-test
+      - name: service-pipeline-test
 
   - name: integration/quibble
     template:
@@ -6894,7 +6888,8 @@ projects:
 
   - name: mediawiki/services/graphoid
     template:
-      - name: npm-service-pipeline
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
 
   - name: mediawiki/services/graphoid/deploy
     test:
@@ -6908,7 +6903,8 @@ projects:
 
   - name: mediawiki/services/mathoid
     template:
-      - name: npm-service-pipeline
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
 
   - name: mediawiki/services/mathoid/deploy
     test:
@@ -6982,7 +6978,8 @@ projects:
 
   - name: mediawiki/services/zotero
     template:
-      - name: npm-service-pipeline
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
 
   - name: mediawiki/extensions/Parsoid
     template:
