@@ -698,7 +698,7 @@ pipelines:
     failure:
       gerrit: {}
 
-  - name: php5
+  - name: php
     description: >
       Jobs manually triggered by whitelisted users commenting 'check php'.
       Useful for running PHP tests that are only part of gate-and-submit.
@@ -1169,7 +1169,7 @@ project-templates:
      - mwgate-composer-php70-docker
      - mwgate-npm-node-6-docker
      - mwgate-php70lint
-    php5:
+    php:
      - mwgate-php55lint
     gate-and-submit:
      - mwgate-composer-php70-docker
@@ -1206,7 +1206,7 @@ project-templates:
       - mwgate-php55lint
       - mwgate-php70lint
       - mwgate-composer-validate
-    php5:
+    php:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
       - quibble-vendor-mysql-php71-docker
@@ -1234,7 +1234,7 @@ project-templates:
       - mwgate-php55lint
       - mwgate-php70lint
       - mwgate-composer-validate
-    php5:
+    php:
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
       - quibble-composer-mysql-php71-docker
@@ -1263,7 +1263,7 @@ project-templates:
       - mwgate-php55lint
       - mwgate-php70lint
       - mwgate-composer-validate
-    php5:
+    php:
       - quibble-vendor-mysql-php55-noselenium-docker
       - quibble-vendor-mysql-php70-noselenium-docker
       - quibble-vendor-mysql-php71-noselenium-docker
@@ -1291,7 +1291,7 @@ project-templates:
       - mwgate-php55lint
       - mwgate-php70lint
       - mwgate-composer-validate
-    php5:
+    php:
       - quibble-composer-mysql-php55-noselenium-docker
       - quibble-composer-mysql-php70-noselenium-docker
       - quibble-composer-mysql-php71-noselenium-docker
@@ -1339,7 +1339,7 @@ project-templates:
       - wmf-quibble-vendor-mysql-hhvm-docker
       - wmf-quibble-core-vendor-mysql-hhvm-docker
       - mwgate-npm-node-6-docker
-    php5:
+    php:
       - wmf-quibble-vendor-mysql-php70-docker
       - wmf-quibble-core-vendor-mysql-php70-docker
       - wmf-quibble-vendor-mysql-php71-docker
@@ -1410,7 +1410,7 @@ project-templates:
       - mwgate-php55lint
       - mwgate-php70lint
       - mwgate-composer-validate
-    php5:
+    php:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
       - quibble-vendor-mysql-php71-docker
@@ -1438,7 +1438,7 @@ project-templates:
       - mwgate-php55lint
       - mwgate-php70lint
       - mwgate-composer-validate
-    php5:
+    php:
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
       - quibble-composer-mysql-php71-docker
@@ -1762,8 +1762,7 @@ projects:
       - mediawiki-core-php55lint
       - mediawiki-core-hhvmlint
       - mediawiki-core-php70-phan-docker
-    php5:
-      # Comment "check php5" to manually run this
+    php:
       - mediawiki-quibble-vendor-mysql-php55-docker
       - mediawiki-quibble-vendor-sqlite-php70-docker
       - mediawiki-quibble-vendor-postgres-php70-docker
@@ -1817,7 +1816,7 @@ projects:
       - mwgate-composer-php55-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
-    php5:
+    php:
       - mediawiki-quibble-vendor-mysql-php55-docker
     gate-and-submit: &mediawiki-vendor-gate-and-submit
       - mwgate-composer-hhvm-docker
@@ -7496,7 +7495,7 @@ projects:
       - name: extension-phan
       - name: mwgate-rake
       - name: extension-seccheck
-    php5:  # 'check php5'
+    php:
       - mwext-Wikibase-repo-tests-sqlite-php55-jessie
       - mwext-Wikibase-client-tests-mysql-php55-jessie
     test:
