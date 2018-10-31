@@ -675,6 +675,7 @@
         - wikibase-{kind}-docker:
             quibble_args: >
                 --commands 'extensions/Wikibase/build/jenkins/mw-apply-wb-settings.sh -r {kind}'
+                'cp --verbose $WORKSPACE/src/LocalSettings.php $LOG_DIR'
                 'php maintenance/update.php --quick'
                 'php tests/phpunit/phpunit.php --verbose --log-junit "$LOG_DIR/junit-wikibase-{kind}.xml" {phpunit-params}'
 
