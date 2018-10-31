@@ -36,9 +36,9 @@
           fail: true
       - maven-release:
           release-goals:
-            -Dresume=false -Duser.name='{git-user}' release:prepare release:perform
+            -Dresume=false -Duser.name='{git-user}' -Djdk.net.URLClassPath.disableClassPathURLCheck=true release:prepare release:perform
           dry-run-goals:
-            -Dresume=false -Duser.name='{git-user}' -DdryRun=true release:prepare
+            -Dresume=false -Duser.name='{git-user}' -Djdk.net.URLClassPath.disableClassPathURLCheck=true -DdryRun=true release:prepare
           num-successful-builds: 1
       - ssh-agent-credentials:
           users:
