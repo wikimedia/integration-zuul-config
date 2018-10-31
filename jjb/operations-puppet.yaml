@@ -53,8 +53,8 @@
      - email-qa-alerts
      - docker-cleanup
 
-- job:
-    name: 'operations-puppet-tests-docker'
+- job-template: &job_operations_puppet_tests
+    name: 'operations-puppet-tests-{os}-docker'
     node: DebianJessieDocker
     concurrent: true
     # Reinject Zuul parameters since JJB strip for some reason
@@ -63,8 +63,8 @@
     builders:
      - docker-log-dir
      - docker-run-with-log:
-        image: 'docker-registry.wikimedia.org/releng/operations-puppet:0.3.4'
         logdir: '/srv/workspace/log'
+        image: '{image}'
     wrappers:
      - timeout:
          timeout: 1 # minute
@@ -81,6 +81,13 @@
      - archive-log-dir
      - docker-cleanup
      # No castor-save. Done postmerge by operations-puppet-cache-update-jessie
+
+- job-template:
+    !!merge : *job_operations_puppet_tests
+    name: 'operations-puppet-tests-{os}-docker-non-voting'
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+        - zuul
 
 - job:
     name: 'operations-puppet-wmf-style-guide'
@@ -130,6 +137,14 @@
     name: 'operations-puppet'
     jobs:
      - operations-puppet-doc
+     - operations-puppet-tests-{os}-docker:
+         os:
+           - jessie:
+               image: 'docker-registry.wikimedia.org/releng/operations-puppet:0.3.4'
+     - operations-puppet-tests-{os}-docker-non-voting:
+         os:
+           - stretch:
+               image: 'docker-registry.wikimedia.org/releng/operations-puppet:0.4.2'
 
 - project:
     name: 'puppet-modules'
