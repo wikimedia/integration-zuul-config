@@ -698,3 +698,52 @@
     branches: *mediawiki_supported_branches
     jobs:
      - '{repogroup}-php-security'
+
+- job:
+    name: 'mediawiki-tarball-builder'
+    node: DebianJessieDocker
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-cache-dir
+     - docker-ci-src-setup-mw
+     - docker-run:
+        options: '--volume "$(pwd)"/src:/src --volume "$(pwd)"/dist:/dist'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-tarball:0.2.3'
+    publishers:
+      - archive:
+          artifacts: 'dist/*'
+      - docker-cleanup
+
+
+- job:
+    name: 'mediawiki-tarball'
+    project-type: matrix
+    execution-strategy:
+        sequential: true
+    parameters:
+        - matrix-combinations:
+            name: combo
+            description: 'Select matrix combinations'
+    axes:
+        - axis:
+            type: label-expression
+            name: label
+            values:
+                - contint1001
+        - axis:
+            name: ZUUL_BRANCH
+            type: user-defined
+            values: *mediawiki_supported_branches
+    builders:
+        - trigger-builds:
+            - project: 'mediawiki-tarball-builder'
+              block: true
+              predefined-parameters: |
+                    projectName=mediawiki-tarball-builder
+                    ZUUL_URL=https://gerrit.wikimedia.org/r/p
+                    ZUUL_BRANCH=$ZUUL_BRANCH
+                    ZUUL_REF=$ZUUL_BRANCH
+    triggers:
+        - timed: "H 20 * * *"
