@@ -12,8 +12,8 @@ cd /src
 git clean -ffdx
 git submodule update --init
 
-python3 -m virtualenv -p python3 venv
-source venv/bin/activate
+python3 -m virtualenv -p python3 /opt/release/venv
+source /opt/release/venv/bin/activate
 # TODO: Debianize so we're not trusting pypi
 pip install git-archive-all==1.18.2 requests
 
