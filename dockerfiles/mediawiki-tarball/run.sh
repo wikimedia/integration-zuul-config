@@ -15,7 +15,7 @@ git submodule update --init
 python3 -m virtualenv -p python3 venv
 source venv/bin/activate
 # TODO: Debianize so we're not trusting pypi
-pip install git-archive-all==1.18.2
+pip install git-archive-all==1.18.2 requests
 
 # Default to master if no branch set
 ZUUL_BRANCH=${ZUUL_BRANCH:-"master"}
