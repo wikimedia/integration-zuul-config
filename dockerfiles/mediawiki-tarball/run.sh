@@ -20,4 +20,4 @@ pip install git-archive-all==1.18.2 requests
 # Default to master if no branch set
 ZUUL_BRANCH=${ZUUL_BRANCH:-"master"}
 
-/opt/release/make-release/makerelease2.py --output-dir /dist /src $ZUUL_BRANCH
+/opt/release/make-release/makerelease2.py --output_dir /dist /src $ZUUL_BRANCH
