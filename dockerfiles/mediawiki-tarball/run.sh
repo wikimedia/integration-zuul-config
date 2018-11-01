@@ -4,8 +4,13 @@ umask 002
 
 set -exo pipefail
 
-cd /src
+cd /opt/release
+# Pull in any new changes since image rebuild
 git pull
+cd /src
+# Clean up any composer stuffs
+git clean -ffdx
+git submodule update --init
 
 python3 -m virtualenv -p python3 venv
 source venv/bin/activate
