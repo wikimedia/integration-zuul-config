@@ -4,12 +4,13 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 ENV PUPPET_DIR='/srv/workspace/puppet'
 
-{% set pkgs_to_install = """build-essential bundler python-dev \
-python-pip rubygems-integration rake ruby ruby-dev ca-certificates \
+{% set pkgs_to_install = """build-essential bundler python-dev python3-dev \
+python-pip python3-pip rubygems-integration rake ruby ruby-dev ca-certificates \
 default-libmysqlclient-dev mtail isc-dhcp-server unzip lua-busted""" %}
 
 RUN {{ pkgs_to_install | apt_install }} \
     && pip install --no-cache-dir setuptools \
+    && pip3 install --no-cache-dir setuptools \
     && pip install --no-cache-dir tox==1.9.2 \
     && install --owner=nobody --group=nogroup --directory /srv/workspace
 
