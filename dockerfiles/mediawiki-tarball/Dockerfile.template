@@ -1,0 +1,11 @@
+FROM {{ 'ci-stretch' | image_tag }}
+
+USER root
+RUN {{ "python3 python3-virtualenv" | apt_install }}
+
+USER nobody
+# Initial clone, we'll do a pull when running so we're not
+# constantly rebuilding this image just for every commit.
+RUN git clone https://gerrit.wikimedia.org/r/mediawiki/tools/release src
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]
