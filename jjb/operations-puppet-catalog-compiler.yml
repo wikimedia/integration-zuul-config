@@ -4,8 +4,11 @@
     block-downstream: false
     block-upstream: false
     builders:
-    - shell: NUM_THREADS="${NUM_THREADS}" MODE="${COMPILER_MODE}" CHANGE="${GERRIT_CHANGE_NUMBER}"
-        NODES="${LIST_OF_NODES}" puppet-compiler
+    - shell: |
+        PATCH=$(curl "https://gerrit.wikimedia.org/r/changes/${GERRIT_CHANGE_NUMBER}/revisions/current/patch");
+        NODES=$(echo $PATCH | base64 -d | grep 'Hosts: ' | sed 's/Hosts: //g' | tr '\n' ', ');
+        echo $NODES;
+        NUM_THREADS="${NUM_THREADS}" MODE="${COMPILER_MODE}" CHANGE="${GERRIT_CHANGE_NUMBER}" NODES="${NODES}" puppet-compiler
     concurrent: true
     description: The Puppet compiler. Use it to check your changes :)
     disabled: false
@@ -22,12 +25,6 @@
           be fetched from Gerrit to compile the catalogs against Puppet version 2
           and 3.
         name: GERRIT_CHANGE_NUMBER
-    - string:
-        default: ''
-        description: |-
-          List of nodes (comma separated) to compile catalogs against.<br/>
-          Leave blank to have the software select nodes for you (by parsing site.pp and matches that with the node list it had).
-        name: LIST_OF_NODES
     - string:
         default: change
         description: |-
