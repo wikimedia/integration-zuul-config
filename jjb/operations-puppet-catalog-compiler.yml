@@ -1,0 +1,52 @@
+- job:
+    name: operations-puppet-catalog-compiler-test
+    node: puppet-compiler-node
+    block-downstream: false
+    block-upstream: false
+    builders:
+    - shell: NUM_THREADS="${NUM_THREADS}" MODE="${COMPILER_MODE}" CHANGE="${GERRIT_CHANGE_NUMBER}"
+        NODES="${LIST_OF_NODES}" puppet-compiler
+    concurrent: true
+    description: The Puppet compiler. Use it to check your changes :)
+    disabled: false
+    jdk: (System)
+    parameters:
+    - string:
+        default: '2'
+        description: Number of threads used on the labs instance to compile catalog.
+          Don't use more than four!
+        name: NUM_THREADS
+    - string:
+        default: ''
+        description: The Gerrit change number (without patchset number) that will
+          be fetched from Gerrit to compile the catalogs against Puppet version 2
+          and 3.
+        name: GERRIT_CHANGE_NUMBER
+    - string:
+        default: ''
+        description: |-
+          List of nodes (comma separated) to compile catalogs against.<br/>
+          Leave blank to have the software select nodes for you (by parsing site.pp and matches that with the node list it had).
+        name: LIST_OF_NODES
+    - string:
+        default: change
+        description: |-
+          Sets the way the compiler will run:
+
+          - "change" is the standard way the compiler works
+          - "future" checks if the change compiles with the two parsers, and if there are differences
+          - "change,future" runs both modes.
+        name: COMPILER_MODE
+    project-type: freestyle
+    properties:
+    - build-discarder:
+        artifact-days-to-keep: -1
+        artifact-num-to-keep: -1
+        days-to-keep: 60
+        num-to-keep: -1
+    publishers: []
+    triggers: []
+    wrappers:
+    - timeout:
+        timeout: 180
+        type: absolute
