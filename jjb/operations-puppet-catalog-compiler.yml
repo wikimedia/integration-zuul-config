@@ -1,34 +1,14 @@
 - job:
     name: operations-puppet-catalog-compiler-test
     node: puppet-compiler-node
+    triggers:
+        - zuul
     builders:
     - shell: |
-        PATCH=$(curl "https://gerrit.wikimedia.org/r/changes/${GERRIT_CHANGE_NUMBER}/revisions/current/patch");
+        PATCH=$(curl "https://gerrit.wikimedia.org/r/changes/${ZUUL_CHANGE}/revisions/current/patch");
         NODES=$(echo $PATCH | base64 -d | grep 'Hosts: ' | sed 's/Hosts: //g' | tr '\n' ', ');
         echo $NODES;
-        NUM_THREADS="${NUM_THREADS}" MODE="${COMPILER_MODE}" CHANGE="${GERRIT_CHANGE_NUMBER}" NODES="${NODES}" puppet-compiler
-    description: The Puppet compiler. Use it to check your changes :)
-    parameters:
-    - string:
-        default: '2'
-        description: Number of threads used on the labs instance to compile catalog.
-          Don't use more than four!
-        name: NUM_THREADS
-    - string:
-        default: ''
-        description: The Gerrit change number (without patchset number) that will
-          be fetched from Gerrit to compile the catalogs against Puppet version 2
-          and 3.
-        name: GERRIT_CHANGE_NUMBER
-    - string:
-        default: change
-        description: |-
-          Sets the way the compiler will run:
-
-          - "change" is the standard way the compiler works
-          - "future" checks if the change compiles with the two parsers, and if there are differences
-          - "change,future" runs both modes.
-        name: COMPILER_MODE
+        NUM_THREADS=2 MODE="change" CHANGE="${ZUUL_CHANGE}" NODES="${NODES}" puppet-compiler
     properties:
     - build-discarder:
         artifact-days-to-keep: -1
