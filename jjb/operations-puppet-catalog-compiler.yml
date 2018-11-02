@@ -1,18 +1,13 @@
 - job:
     name: operations-puppet-catalog-compiler-test
     node: puppet-compiler-node
-    block-downstream: false
-    block-upstream: false
     builders:
     - shell: |
         PATCH=$(curl "https://gerrit.wikimedia.org/r/changes/${GERRIT_CHANGE_NUMBER}/revisions/current/patch");
         NODES=$(echo $PATCH | base64 -d | grep 'Hosts: ' | sed 's/Hosts: //g' | tr '\n' ', ');
         echo $NODES;
         NUM_THREADS="${NUM_THREADS}" MODE="${COMPILER_MODE}" CHANGE="${GERRIT_CHANGE_NUMBER}" NODES="${NODES}" puppet-compiler
-    concurrent: true
     description: The Puppet compiler. Use it to check your changes :)
-    disabled: false
-    jdk: (System)
     parameters:
     - string:
         default: '2'
@@ -34,15 +29,12 @@
           - "future" checks if the change compiles with the two parsers, and if there are differences
           - "change,future" runs both modes.
         name: COMPILER_MODE
-    project-type: freestyle
     properties:
     - build-discarder:
         artifact-days-to-keep: -1
         artifact-num-to-keep: -1
         days-to-keep: 60
         num-to-keep: -1
-    publishers: []
-    triggers: []
     wrappers:
     - timeout:
         timeout: 180
