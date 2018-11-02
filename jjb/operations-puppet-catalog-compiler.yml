@@ -1,6 +1,8 @@
 - job:
     name: operations-puppet-catalog-compiler-test
     node: puppet-compiler-node
+    triggers:
+        - zuul
     builders:
     - shell: |
         PATCH=$(curl "https://gerrit.wikimedia.org/r/changes/${GERRIT_CHANGE_NUMBER}/revisions/current/patch");
