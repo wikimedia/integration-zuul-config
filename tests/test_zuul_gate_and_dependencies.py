@@ -47,5 +47,5 @@ def test_deps_of_gated_are_in_gate():
             test.assertIn,
             gated_dep, gatedextensions,
             '%s must be in gate since it is a dependency of: %s' % (
-                gated_dep, ', '.join(origin)))
+                gated_dep, ', '.join(sorted(origin))))
     del(test.assertIn.__func__.description)
