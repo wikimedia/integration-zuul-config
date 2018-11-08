@@ -55,15 +55,21 @@
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
     triggers:
         - zuul
-    maven_args: 'clean install site site:stage'
     builders:
         - docker-castor-load
         - docker-log-dir
         - docker-src-dir
+        # It is a two steps process. clean install then site site:stage - T208496
         - docker-run-with-log-cache-src:
             image: '{obj:docker_image_var}'
             logdir: '/log'
-            args: '{obj:maven_args}'
+            args: 'clean install'
+        - docker-run-with-log-cache-src:
+            image: '{obj:docker_image_var}'
+            # Bypass CI fetch/checkout which would discard material from the install stage
+            options: '--entrypoint=/usr/local/bin/mvn'
+            logdir: '/log'
+            args: 'site site:stage'
     publishers:
         - postbuildscript:
               builders:
