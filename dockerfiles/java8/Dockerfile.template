@@ -15,6 +15,8 @@ RUN {{ "gpg wget" | apt_install }} \
     && rm -rf ~/.gnupg
 
 COPY mvn /usr/local/bin/mvn
+ENV XDG_CACHE_HOME=/cache
+ENV SONAR_USER_HOME=$XDG_CACHE_HOME/.sonar
 ENV MAVEN_BIN=/opt/apache-maven-3.5.2/bin/mvn
 RUN /usr/local/bin/mvn --version
 
