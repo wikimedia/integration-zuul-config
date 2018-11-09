@@ -219,6 +219,9 @@
     concurrent: true
     triggers:
         - zuul
+    properties:
+        - build-discarder:
+            days-to-keep: 7
     builders:
         - docker-castor-load
         - docker-log-dir
@@ -409,6 +412,9 @@
     !!merge : *job_quibble
     name: 'mediawiki-core-code-coverage-docker'
     concurrent: false
+    properties:
+        - build-discarder:
+            days-to-keep: 30
     quibble_args: '--commands=mediawiki-coverage'
     triggers:
      - timed: '0 3,15 * * *'
