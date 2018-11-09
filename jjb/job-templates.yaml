@@ -70,6 +70,13 @@
             options: '--entrypoint=/usr/local/bin/mvn'
             logdir: '/log'
             args: 'site site:stage'
+        - docker-run-with-log-cache-src:
+            image: '{obj:docker_image_var}'
+            # Bypass CI fetch/checkout which would discard material from the install stage
+            options: '--entrypoint=/usr/local/bin/mvn'
+            logdir: '/log'
+            # Sonar analysis requires the sonarcloud API key to be present in the SONAR_API_KEY environment variable
+            args: 'sonar:sonar'
     publishers:
         - postbuildscript:
               builders:
