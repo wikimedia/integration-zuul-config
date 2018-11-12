@@ -288,6 +288,9 @@
     concurrent: true
     triggers:
         - zuul
+    properties:
+        - build-discarder:
+            days-to-keep: 15
     builders:
         - docker-castor-load
         - docker-log-dir
