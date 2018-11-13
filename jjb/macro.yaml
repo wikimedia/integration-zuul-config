@@ -216,11 +216,6 @@
      - shell: "/srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh"
 
 - builder:
-    name: mw-fetch-composer-dev
-    builders:
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-fetch-composer-dev.sh"
-
-- builder:
     name: mw-run-update-script
     builders:
         - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
@@ -244,11 +239,6 @@
          # Postbuild options are confusing, setting both to false ensures the script always runs.
          onsuccess: False
          onfailure: False
-
-- builder:
-    name: mw-run-phpunit-allexts
-    builders:
-      - shell: '/srv/deployment/integration/slave-scripts/bin/mw-run-phpunit-allexts.sh'
 
 # Generic phpunit builder, output junit log
 # Should be used with publisher 'phpunit-junit'

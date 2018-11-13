@@ -969,13 +969,11 @@ jobs:
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^mwext-donationinterfacecore-REL1_27-zend56-jessie$
-    skip-if:
-      - project: ^mediawiki/extensions/DonationInterface$
-        branch: ^deployment$
-      - project: ^mediawiki/core$
-        branch: (?!fundraising/REL.*)
   - name: ^quibble-donationinterface-REL1_27-zend56-docker$
+
+    # Pending bump of composer-merge-plugin in fundraising/REL1_27 branch - T203084
+    voting: false
+
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
@@ -1762,7 +1760,7 @@ projects:
       - mediawiki-core-php70lint
       - composer-package-validate
     test:
-      - mwext-donationinterfacecore-REL1_27-zend56-jessie
+      - quibble-donationinterface-REL1_27-zend56-docker
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
@@ -1778,7 +1776,8 @@ projects:
       - mediawiki-quibble-vendor-postgres-php70-docker
       - mediawiki-quibble-vendor-mysql-php71-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
-      - mwext-donationinterfacecore-REL1_27-zend56-jessie
+      # non-voting - T203084
+      #- quibble-donationinterface-REL1_27-zend56-docker
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php55-docker
@@ -1803,7 +1802,6 @@ projects:
       - mediawiki-quibble-vendor-mysql-php73-docker
       - mwgate-composer-php70-docker
       - mediawiki-quibble-composer-mysql-php55-docker
-      - quibble-donationinterface-REL1_27-zend56-docker
       - mediawiki-core-php70-phan-seccheck-docker
 
   - name: mediawiki/debian
@@ -3767,13 +3765,12 @@ projects:
     template:
       - name: extension-broken  # It is not really broken but use different jobs
     test:
-      - mwext-donationinterfacecore-REL1_27-zend56-jessie
+      - quibble-donationinterface-REL1_27-zend56-docker
       - mwgate-php56lint
     gate-and-submit:
-      - mwext-donationinterfacecore-REL1_27-zend56-jessie
+      # non-voting - T203084
+      #- quibble-donationinterface-REL1_27-zend56-docker
       - mwgate-php56lint
-    experimental:
-      - quibble-donationinterface-REL1_27-zend56-docker
 
   - name: mediawiki/extensions/DoubleWiki
     template:
