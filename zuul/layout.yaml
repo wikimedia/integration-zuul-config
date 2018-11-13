@@ -2624,7 +2624,9 @@ projects:
     gate-and-submit:
       - debian-glue
   - { name: operations/debs/nodejs,                           test: ['debian-glue-non-voting'] }
-  - { name: operations/debs/nodepool,                         test: ['debian-glue-non-voting'] }
+  - name: operations/debs/nodepool
+    template:
+      - name: archived
   - { name: operations/debs/nutcracker,                       test: ['debian-glue-non-voting'] }
   - { name: operations/debs/openssl,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/openssl11,                        test: ['debian-glue-non-voting'] }
