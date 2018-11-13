@@ -95,11 +95,6 @@ def set_parameters(item, job, params):
     if job.name.startswith('wmf-quibble-'):
         set_gated_extensions(item, job, params)
 
-    if job.name.endswith('-jessie'):
-        nodepool_params(item, job, params)
-    elif job.name.endswith('node-6-jessie'):
-        nodepool_params(item, job, params)
-
     if job.name.endswith('-publish'):
         set_doc_variables(item, job, params)
 
@@ -531,21 +526,6 @@ def set_gated_extensions(item, job, params):
     split = params['ZUUL_PROJECT'].split('/')
     if len(split) == 3 and split[1] == 'extensions':
         params['EXT_NAME'] = split[-1]
-
-
-def nodepool_params(item, job, params):
-    # Instruct Jenkins Gearman plugin to put a node offline on job completion.
-    params['OFFLINE_NODE_WHEN_COMPLETE'] = '1'
-
-    # Bundle defaults to install to GEM_HOME which on Debian is the system
-    # directory. It thus attempt to sudo which is not available to the
-    # 'jenkins' user on Nodepool instances.
-    #
-    # To avoid injecting material in the source workspace, install material
-    # in the parent directory.
-    #
-    # If changing this: DO UPDATE castor-save as well!!!
-    params['BUNDLE_PATH'] = '/home/jenkins/workspace/vendor/bundle'
 
 
 def set_doc_variables(item, job, params):
