@@ -168,40 +168,6 @@
              </pre>
      - docker-cleanup
 
-- job:
-    name: 'integration-config-dib-jessie'
-    node: ci-jessie-wikimedia
-    defaults: use-remote-zuul-shallow-clone
-    triggers:
-        - zuul
-    builders:
-        - castor-load
-        - shell: |
-            zuul-cloner --color \
-                --cache-dir /srv/git \
-                https://gerrit.wikimedia.org/r/p \
-                integration/config
-        - shell: |
-            mkdir -p log
-            set -o pipefail
-            cd integration/config
-            TOX_TESTENV_PASSENV=PY_COLORS PY_COLORS=1 tox -v -e dib | tee "$WORKSPACE/log/tox-dib.log"
-        # rspec tests require operations/puppet.git
-        - shell: |
-            zuul-cloner --color \
-                --cache-dir /srv/git \
-                --branch production \
-                https://gerrit.wikimedia.org/r/p \
-                operations/puppet
-        - shell: |
-            cd integration/config
-            bundle install --clean
-            PUPPET_DIR="$WORKSPACE"/operations/puppet SPEC_OPTS="--tty" bundle exec rake test
-    publishers:
-     - archive-log-dir
-     - archive-tox-logs
-     - castor-save
-
 - project:
     name: 'integration-config'
     jobs:
@@ -209,7 +175,6 @@
      - 'integration-zuul-layoutdiff'
      - 'integration-zuul-layoutvalidation-gate'
      - '{name}-tox-docker'
-     - 'integration-config-dib-jessie'
 
 - project:
     name: 'integration-docroot'
