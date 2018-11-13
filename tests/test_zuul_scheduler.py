@@ -703,33 +703,11 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
-    def test_donationinterface_skips_on_mediawiki_core(self):
-        repo = 'mediawiki/core'
-
-        job = self.getJob(
-            repo, 'test',
-            'mwext-donationinterfacecore-REL1_27-zend56-jessie')
-
-        change = zuul.model.Change(repo)
-
-        change.branch = 'master'
-        self.assertFalse(job.changeMatches(change))
-
-        change.branch = 'wmf/1.99.9-wmf.999'
-        self.assertFalse(job.changeMatches(change))
-
-        change.branch = 'REL1_42'
-        self.assertFalse(job.changeMatches(change))
-
-        # Only runs on mediawiki/core fundraising branch
-        change.branch = 'fundraising/REL1_99'
-        self.assertTrue(job.changeMatches(change))
-
     def test_donationinterface_docker_job_skips_on_mediawiki_core(self):
         repo = 'mediawiki/core'
 
         job = self.getJob(
-            repo, 'experimental',
+            repo, 'test',
             'quibble-donationinterface-REL1_27-zend56-docker')
 
         change = zuul.model.Change(repo)
@@ -1036,6 +1014,10 @@ class TestZuulScheduler(unittest.TestCase):
     def test_mwcore_switch_to_quibble(self):
         expected_test = {
             'composer-package-validate': True,
+
+            # It is not triggered for the master branch:
+            'quibble-donationinterface-REL1_27-zend56-docker': False,
+
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php55lint': False,
             'mediawiki-core-php70lint': True,
@@ -1045,7 +1027,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
-            'mwext-donationinterfacecore-REL1_27-zend56-jessie': False,
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
@@ -1066,7 +1047,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-sqlite-php70-docker': True,
             'mediawiki-quibble-vendor-postgres-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
-            'mwext-donationinterfacecore-REL1_27-zend56-jessie': False,
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
