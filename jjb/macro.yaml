@@ -70,57 +70,6 @@
              exit 1
          fi
 
-# Assert 'php' is phpflavor
-#
-# Parameter:
-# * phpflavor: 'hhvm' or 'zend' or 'php55'
-#
-- builder:
-    name: assert-phpflavor
-    builders:
-        - shell: |
-            #!/bin/bash -eu
-            PHP_VERSION=`php --version`
-
-            case "{phpflavor}" in
-                ( 'hhvm' )
-                    MATCHER='^HipHop'
-                ;;
-                ( 'zend' )
-                    MATCHER='^Zend Engine'
-                ;;
-                ( 'php53' )
-                    MATCHER='^PHP 5\.3'
-                ;;
-                ( 'php55' )
-                    MATCHER='^PHP 5\.5'
-                ;;
-                ( 'php56' )
-                    MATCHER='^PHP 5\.6'
-                ;;
-                ( 'php70' )
-                    MATCHER='^PHP 7\.0'
-                ;;
-                ( * )
-                    echo "Invalid phpflavor '{phpflavor}' for JJB macro 'assert-phpflavor'"
-                    echo "Must be either 'hhvm' or 'zend'"
-                    exit 1
-                ;;
-            esac
-
-            if ( echo "$PHP_VERSION" | egrep "$MATCHER" > /dev/null ); then
-                echo -e "php is {phpflavor}:\n\n$PHP_VERSION\n"
-            else
-                echo -e "Assertion error: php is not {phpflavor}:\n\n$PHP_VERSION\n"
-                exit 1
-            fi
-
-- builder:
-    name: 'hhvm-clear-hhbc'
-    builders:
-        - shell: |
-            rm -f *.hhbc
-
 # Assert node version matches a basic regular expressions
 #
 # Parameter:
@@ -210,36 +159,6 @@
         npm install
         ./node_modules/.bin/grunt karma:main
 
-- builder:
-    name: mw-apply-settings
-    builders:
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-apply-settings.sh"
-
-- builder:
-    name: mw-run-update-script
-    builders:
-        - shell: "/srv/deployment/integration/slave-scripts/bin/mw-run-update-script.sh"
-
-- builder:
-    name: mw-install-sqlite
-    builders:
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-sqlite.sh"
-
-- builder:
-    name: mw-install-mysql
-    builders:
-     - shell: "/srv/deployment/integration/slave-scripts/bin/mw-install-mysql.sh"
-
-- publisher:
-    name: mw-teardown
-    publishers:
-     - postbuildscript:
-         builders:
-          - shell: "/srv/deployment/integration/slave-scripts/bin/mw-teardown.sh"
-         # Postbuild options are confusing, setting both to false ensures the script always runs.
-         onsuccess: False
-         onfailure: False
-
 # Generic phpunit builder, output junit log
 # Should be used with publisher 'phpunit-junit'
 - builder:
@@ -255,15 +174,6 @@
         types:
          - phpunit:
             pattern: 'log/junit-phpunit.xml'
-
-# Used
-- publisher:
-    name: phpunit-junit-2
-    publishers:
-     - xunit:
-        types:
-         - phpunit:
-            pattern: 'log/junit-mw-phpunit.xml'
 
 - builder:
     name: phplint
