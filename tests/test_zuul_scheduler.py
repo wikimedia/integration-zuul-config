@@ -1257,18 +1257,21 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertFalse(wmf_quibble_job.changeMatches(change))
         self.assertTrue(release_job.changeMatches(change))
 
-    def test_php70_test_jobs_are_skipped_for_phptags_extension(self):
+    def test_php71_test_jobs_are_skipped_for_phptags_extension(self):
         repo = 'mediawiki/extensions/PhpTags'
 
         change = zuul.model.Change(repo)
         change.branch = 'master'
 
-        php7_job = self.getJob(repo, 'gate-and-submit',
-                               'quibble-vendor-mysql-php70-docker')
+        php71_job = self.getJob(repo, 'gate-and-submit',
+                                'quibble-vendor-mysql-php71-docker')
         self.assertFalse(
-            php7_job.changeMatches(change),
-            'php7.0 test job must not run for PhpTags - T188585')
+            php71_job.changeMatches(change),
+            'php7.1 test job must not run for PhpTags - T188585')
 
         hhvm_job = self.getJob(repo, 'gate-and-submit',
                                'quibble-vendor-mysql-hhvm-docker')
+        self.assertTrue(hhvm_job.changeMatches(change))
+        hhvm_job = self.getJob(repo, 'gate-and-submit',
+                               'quibble-vendor-mysql-php70-docker')
         self.assertTrue(hhvm_job.changeMatches(change))
