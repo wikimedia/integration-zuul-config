@@ -882,9 +882,11 @@ jobs:
     skip-if:
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
-      # PhpTags is broken on php7.0 - T188585
-      - project: '^mediawiki/extensions/PhpTags'
       - project: '^mediawiki/skins/Empty'
+
+   - name: ^.*quibble.*php71.*$
+      # PhpTags was broken on php7.0 and is still broken on php7.1 - T188585
+      - project: '^mediawiki/extensions/PhpTags'
 
     # Skip postgres/sqlite on wmf/, fundraising/ (not used)
     # and on MW < 1.32
