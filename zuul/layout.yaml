@@ -892,6 +892,12 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^wmf/
 
+  # Wikimedia does not use composer but mediawiki/vendor.git
+  - name: ^.*quibble-composer-.*$
+    skip-if:
+      - project: '^mediawiki/.*'
+        branch: ^wmf/
+
     # Skip postgres/sqlite on wmf/, fundraising/ (not used)
     # and on MW < 1.32
   - name: ^.*quibble.*(postgres|sqlite).*$
