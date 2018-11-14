@@ -888,12 +888,20 @@ jobs:
     skip-if:
       # PhpTags was broken on php7.0 and is still broken on php7.1 - T188585
       - project: '^mediawiki/extensions/PhpTags'
+      # No need for php71 testing on wmf branches
+      - project: '^mediawiki/.*'
+        branch: ^wmf/
+
+  - name: ^.*quibble.*php72.*$
+    skip-if:
+      # No need for php72 testing on wmf branches
+      - project: '^mediawiki/.*'
+        branch: ^wmf/
 
     # Skip postgres/sqlite on wmf/, fundraising/ (not used)
     # and on MW < 1.32
   - name: ^.*quibble.*(postgres|sqlite).*$
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
-
 
   - name: lintr-docker
     files:
