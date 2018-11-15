@@ -32,17 +32,6 @@
         rm -rf node_modules
         npm install
 
-- builder:
-    name: npm
-    builders:
-    - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
-        node --version
-        npm --version
-        rm -rf node_modules
-        npm install
-        npm test
-
 # The npm-run macro is intended to be used when multiple scripts are used
 # together (e.g. 'doc' and later 'test'). If you simply need to run
 # npm-install and npm-run-test, use the plain 'npm' macro instead.
@@ -103,61 +92,10 @@
          version: ^v0[.]10[.]
 
 - builder:
-    name: assert-node-version-4
-    builders:
-     - assert-node-version:
-         version: ^v4[.]
-
-- builder:
     name: assert-node-version-6
     builders:
      - assert-node-version:
          version: ^v6[.]
-
-# Expose the current MediaWiki install path in http://localhost:9412
-#
-- builder:
-    name: prepare-localhost
-    builders:
-     - shell: |
-        # Load context (e.g. MW_INSTALL_PATH, MW_SERVER, MW_SCRIPT_PATH)
-        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
-
-        # Configure MediaWiki
-        echo -e \
-         "<?php\n\$wgServer = '${MW_SERVER}';\n"\
-         "\$wgScriptPath = '${MW_SCRIPT_PATH}';\n"\
-         "\$wgScript = \$wgStylePath = \$wgLogo = false;\n"\
-         "\$wgResourceBasePath = null;\n"\
-         "\$wgEnableJavaScriptTest = true;\n?>\n" >> "$MW_INSTALL_PATH/LocalSettings.php"
-
-        # The location is free or we make it free
-        PUBLIC_DIR="/srv/localhost-worker/$BUILD_TAG"
-        test ! -e "$PUBLIC_DIR" || rm "$PUBLIC_DIR";
-
-        # Publish our install in the QUnit server document root
-        ln -s "$MW_INSTALL_PATH" "$PUBLIC_DIR"
-
-        # Fetch headers and content preview for debugging (HTTP 500 Error, Database error, ResourceLoader etc.)
-        # NB: Avoid "curl: Failed writing body" error when using 'head'. Either by using 'tac|tac', or by ignoring stderr,
-        # or by writing to a file first and running 'head' on that.
-        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php/Special:BlankPage" > log/curl-SpecialBlankPage.log; head -n42 log/curl-SpecialBlankPage.log
-        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/load.php?debug=true&modules=startup&only=scripts" > log/curl-load-startup.log; head -n42 log/curl-load-startup.log
-        curl --include "${MW_SERVER}${MW_SCRIPT_PATH}/index.php?title=Special:JavaScriptTest/qunit/export" > log/curl-SpecialJavaScriptTest.log; head -n11 log/curl-SpecialJavaScriptTest.log
-
-# qunit
-#
-- builder:
-    name: qunit-karma
-    builders:
-     - prepare-localhost
-     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/mw-set-env-localhost.sh
-        cd $MW_INSTALL_PATH
-        . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
-        rm -rf node_modules
-        npm install
-        ./node_modules/.bin/grunt karma:main
 
 # Generic phpunit builder, output junit log
 # Should be used with publisher 'phpunit-junit'
@@ -214,27 +152,6 @@
      - shell: |
         composer --ansi validate
 
-# Example:
-#
-# builder:
-#  - composer-update:
-#     dir: 'src'
-#
-# Notes:
-# `composer update` is being passed `--prefer-dist` to download cacheable
-# tarballs when possible.
-#
-- builder:
-    name: composer-update
-    builders:
-     - shell: |
-        set -ux
-        cd "{dir}"
-        [[ -f "composer.json" ]] || exit 0
-        export HTTP_PROXY_REQUEST_FULLURI=false
-        export HTTPS_PROXY_REQUEST_FULLURI=false
-        composer update --ansi --no-progress --prefer-dist --profile -v
-
 - builder:
     name: composer-install
     builders:
@@ -245,29 +162,6 @@
         export HTTP_PROXY_REQUEST_FULLURI=false
         export HTTPS_PROXY_REQUEST_FULLURI=false
         composer install --ansi --no-progress --prefer-dist --profile -v
-
-- builder:
-    name: composer-local-create
-    builders:
-     - shell: |
-        set -u
-        cd src
-        /srv/deployment/integration/slave-scripts/bin/mw-create-composer-local.py "{deps}" composer.local.json
-
-# Runs "composer test"
-#
-# Example:
-#
-# builder:
-#  - composer-test:
-#      dir: 'src/extensions/$EXTNAME'
-- builder:
-    name: composer-test
-    builders:
-     - shell: |
-        cd "{dir}"
-        [[ -f "composer.json" ]] || exit 0
-        COMPOSER_PROCESS_TIMEOUT=600 composer --ansi test
 
 # Sends job duration (ms) to a statsd timer if node is labeled "stats-*",
 # allowing for the collection and analysis of job performance on different
