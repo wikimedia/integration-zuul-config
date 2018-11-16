@@ -14,6 +14,7 @@
      - shell: |
          set -u
          echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {docdest}"
+         # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
          rsync --recursive "{docsrc}/" "rsync://10.68.23.254/doc/$JOB_NAME-$BUILD_NUMBER"
          echo
          echo "Publishing to https://doc.wikimedia.org/{docdest}/"
@@ -42,6 +43,7 @@
      - shell: |
          set -u
          echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {dest}"
+         # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
          rsync --recursive "{src}/" "rsync://10.68.23.254/doc/$JOB_NAME-$BUILD_NUMBER"
          echo
          echo "Publishing to https://doc.wikimedia.org/cover/{dest}/"
@@ -62,6 +64,7 @@
      - shell: |
          set -u
          echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {dest}"
+         # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
          rsync --recursive "{src}/" "rsync://10.68.23.254/doc/$JOB_NAME-$BUILD_NUMBER"
          echo
          echo "Publishing to https://doc.wikimedia.org/cover-extensions/{dest}/"
@@ -127,6 +130,7 @@
          LOCAL_DEST="$LOCAL_DOCROOT/$WMF_CI_PUB_DEST"
          mkdir -p "$LOCAL_DEST"
          # Paths are normalized via the trailing slash dot
+         # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
          rsync --recursive --delete-after "rsync://10.68.23.254/doc/$PUBLISHER_PATH/." "$LOCAL_DEST/."
 
          LOCAL_VHOST=$(echo $WMF_CI_PUB_DOCROOT | awk -F'/' '{ print $3"."$2"."$1 }')
@@ -147,6 +151,7 @@
               # touch the named directory itself.
               #
               # -- Bryan "bd808" Davis
+              # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
               rsync --delete --recursive --include="$PUBLISHER_PATH/***" --exclude="*" . rsync://10.68.23.254/doc
 
          # Options are confusing, setting them both to false ensures the
