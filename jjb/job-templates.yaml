@@ -52,7 +52,7 @@
     # m4executor label are slaves with 4GBytes memory. Lot of our Java
     # repositories require extra memory such as mjolnir or refinery.
     node: DebianJessieDocker && m4executor
-    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.3.2
+    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.4.3
     triggers:
         - zuul
     builders:
@@ -70,6 +70,25 @@
             options: '--entrypoint=/usr/local/bin/mvn'
             logdir: '/log'
             args: 'site site:stage'
+        - docker-run-with-log-cache-src:
+            image: '{obj:docker_image_var}'
+            # Bypass CI fetch/checkout which would discard material from the install stage
+            options: '--entrypoint=/usr/local/bin/mvn'
+            logdir: '/log'
+            # Sonar analysis requires the sonarcloud API key to be present in the SONAR_API_KEY environment variable
+            args: 'sonar:sonar'
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+      # SONAR_API_KEY is in Jenkins credentials store
+      # https://integration.wikimedia.org/ci/credentials/
+      - credentials-binding:
+          - text:
+              credential-id: SONAR_API_KEY
+              variable: SONAR_API_KEY
     publishers:
         - postbuildscript:
               builders:
