@@ -7,7 +7,7 @@ COPY KEYS /tmp/KEYS
 COPY apache-maven-3.5.2-bin.tar.gz.asc /tmp/apache-maven-3.5.2-bin.tar.gz.asc
 RUN {{ "gpg wget" | apt_install }} \
     && cd /tmp \
-    && wget http://www.apache.org/dist/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz \
+    && wget http://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.5.2/apache-maven-3.5.2-bin.tar.gz \
     && gpg --import /tmp/KEYS \
     && gpg --verify apache-maven-3.5.2-bin.tar.gz.asc \
     && tar -C /opt -zxf apache-maven-3.5.2-bin.tar.gz \
