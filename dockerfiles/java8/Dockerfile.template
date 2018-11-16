@@ -5,13 +5,13 @@ RUN {{ "openjdk-8-jdk-headless" | apt_install }}
 # Install a more recent Maven version
 COPY KEYS /tmp/KEYS
 COPY apache-maven-3.5.2-bin.tar.gz.asc /tmp/apache-maven-3.5.2-bin.tar.gz.asc
-RUN {{ "gpg wget" | apt_install }} \
+RUN {{ "gnupg wget" | apt_install }} \
     && cd /tmp \
     && wget http://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.5.2/apache-maven-3.5.2-bin.tar.gz \
-    && gpg --import /tmp/KEYS \
+    && gpg --batch --import /tmp/KEYS \
     && gpg --verify apache-maven-3.5.2-bin.tar.gz.asc \
     && tar -C /opt -zxf apache-maven-3.5.2-bin.tar.gz \
-    && apt purge --yes gpg wget \
+    && apt purge --yes gnupg wget \
     && rm -rf ~/.gnupg
 
 # sonar:sonar does not support XDG_CACHE_HOME - T207046
