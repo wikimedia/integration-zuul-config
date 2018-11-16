@@ -260,7 +260,7 @@ dependencies = {
     'MathSearch': ['Math'],
     'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
     'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp',
-                       'skins/MinervaNeue'],
+                       'skins/MinervaNeue', 'PageImages'],
     'MultimediaViewer': ['BetaFeatures'],
     'NamespacePopups': ['PagePopups'],
     'NavigationTiming': ['EventLogging'],
