@@ -6,10 +6,21 @@ import os
 import shutil
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 
 from jenkins_jobs.cli.entry import JenkinsJobs
+from nose.plugins.attrib import attr
 import zuul.cmd.server
 
+JENKINS_ACCEPTABLE_LABELS=[
+    'BetaClusterBastion', # deployment-prep
+    'blubber', # dummy job for Zuul/Gearman which trigger a pipeline job
+    'castor02', # Central cache
+    'contint1001', # Publishing
+    # The Docker slaves:
+    'DebianJessieDocker',
+    'DebianJessieDocker && m4executor',
+]
 
 class IntegrationTests(unittest.TestCase):
 
@@ -53,6 +64,31 @@ class IntegrationTests(unittest.TestCase):
         self.assertEquals(
             [], lack_timeout,
             'All Jenkins jobs must have a timeout')
+
+    @attr('qa')
+    def test_jenkins_jobs_assigned_nodes(self):
+        legacy_node = {}
+        for job_file in sorted(glob(self.jjb_out_dir + '/*')):
+            root = ET.parse(job_file).getroot()
+
+            # Can not handle pipeline jobs
+            if root.tag == 'flow-definition':
+                continue
+
+            # FIXME handle matrix-project
+            if root.tag == 'matrix-project':
+                continue
+
+            assignedNode = root.find('./assignedNode').text
+            if assignedNode not in JENKINS_ACCEPTABLE_LABELS:
+                legacy_node[os.path.basename(job_file)] = assignedNode
+
+        self.maxDiff = None
+        self.longMessage = True
+        self.assertEquals(
+            {}, legacy_node,
+            'All Jenkins jobs use DebianJessie label')
+
 
     def test_jjb_zuul_jobs(self):
         'Zuul jobs are defined by JJB'
