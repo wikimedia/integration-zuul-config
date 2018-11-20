@@ -44,10 +44,10 @@ GERRIT_IGNORE = (
 # Dummy classes to hide dict/list representation.
 #
 # nose.plugins.xunit describes the tests and expands its arguments, the Gerrit
-# and Zuul projects ends up being happened to each testcase which causes a huge
+# and Zuul projects ends up being appended to each testcase which causes a huge
 # xml file.
-# Hidding the actual content by overriding __repr__ ensure we have a manageable
-# file size.
+# Hidding the actual content by overriding __repr__ and __str__ ensure we have
+# a manageable file size.
 
 
 class GerritRepos(dict):
