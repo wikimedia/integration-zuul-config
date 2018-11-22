@@ -1,3 +1,14 @@
+java8-wikidata-query-rdf (0.2.0) wikimedia; urgency=medium
+
+  * Add chromium package for gui tests T209776:
+    * fulfill system dependencies for Chrome used by:
+      gui -> grunt-control-qunit 3.0 > puppeteer > Chrome
+    * Set CHROMIUM_FLAGS="--no-sandbox" like we did for
+      releng/npm-browser-test, the environment variable is recognized by
+      the Chromium package though Puppeteer uses a downloaded Chrome.
+
+ -- Antoine Musso <hashar@free.fr>  Thu, 22 Nov 2018 11:18:51 +0100
+
 java8-wikidata-query-rdf (0.1.3) wikimedia; urgency=medium
 
   * rebuild to catchup with parent container changes (configuration for sonar build)

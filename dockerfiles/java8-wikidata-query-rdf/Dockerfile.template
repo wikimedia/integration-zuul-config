@@ -1,7 +1,25 @@
 FROM {{ "java8" | image_tag }}
 
 USER root
-RUN {{ "phantomjs" | apt_install }}
+# wikidata/query/rdf runs wikidata/query/gui tests. gui uses
+# releng/npm-browser-test which comes with Chromium, Firefox and PhantomJS all
+# properly configured.
+#
+# The rdf repo also run the gui tests, and thus require PhantomJs (for
+# grunt-contrib-qunit 2.0) and Chrome dependencies for grunt-contrib-qunit 3.0
+# which relies on Puppeteer.
+# See: gui build broken by grunt-contrib-qunit 3.0: T209776
+RUN {{ "chromium phantomjs" | apt_install }}
+
+# Can't change namespaces inside an unprivileged container, then we are already
+# in a namespace so just disable Chromium sandboxing.
+# See: a732ac637dfe8f82902b2762aeab11f0e612c832
+#
+# Note: Puppeteer downloads its own Chrome, but the flag would be useful if we
+# later find a way to use the Chromium Debian Package (via
+# PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true)
+ENV CHROMIUM_FLAGS="--no-sandbox"
+
 USER nobody
 
 # wikidata/query/rdf relies on npm
