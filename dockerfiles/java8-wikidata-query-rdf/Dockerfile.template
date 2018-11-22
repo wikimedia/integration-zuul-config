@@ -11,6 +11,13 @@ USER root
 # See: gui build broken by grunt-contrib-qunit 3.0: T209776
 RUN {{ "chromium phantomjs" | apt_install }}
 
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1,
+# When set, used by "gui" qunit tests to configure Puppeteer. Should be removed
+# once gui updates to Puppeteer 1.8.0+
+ENV CHROME_BIN=/usr/bin/chromium
+# For Puppeteer 1.8.0+:
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
 # Can't change namespaces inside an unprivileged container, then we are already
 # in a namespace so just disable Chromium sandboxing.
 # See: a732ac637dfe8f82902b2762aeab11f0e612c832
