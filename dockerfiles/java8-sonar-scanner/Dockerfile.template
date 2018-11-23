@@ -1,18 +1,22 @@
 FROM {{ "java8" | image_tag }}
 
+USER root
 COPY KEYS /tmp/KEYS
-RUN {{ "gnupg wget" | apt_install }} \
-    && cd /tmp \
-    && wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227.zip \
-    && wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227.zip.asc \
-    && gpg --batch --import /tmp/KEYS \
-    && gpg --verify sonar-scanner-cli-3.2.0.1227.zip.asc \
-    && unzip -d sonar-scanner-cli-3.2.0.1227.zip \
-    && apt purge --yes gnupg wget \
-    && rm -rf ~/.gnupg
 
-RUN /opt/sonar-scanner-3.2.0.1227/bin/sonar-scanner --version
+ENV SONAR_SCANNER_VERSION=3.2.0.1227
+
+RUN {{ "gnupg wget unzip" | apt_install }} \
+    && cd /tmp \
+    && wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip \
+    && wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip.asc \
+    && gpg --batch --import /tmp/KEYS \
+    && gpg --verify sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip.asc \
+    && unzip sonar-scanner-cli-$SONAR_SCANNER_VERSION.zip \
+    && mv sonar-scanner-$SONAR_SCANNER_VERSION /opt/sonar-scanner \
+    && apt purge --yes gnupg wget unzip \
+    && rm -rf ~/.gnupg
 
 USER nobody
 WORKDIR /src
-ENTRYPOINT ["/opt/sonar-scanner-3.2.0.1227/bin/sonar-scanner"]
+ENTRYPOINT ["/opt/sonar-scanner/bin/sonar-scanner"]
+CMD ["--version"]
