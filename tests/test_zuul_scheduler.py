@@ -391,7 +391,7 @@ class TestZuulScheduler(unittest.TestCase):
         safe_jobs = [
             '(hhvm|php(55|56|70)|yaml)lint',
             '.*-(js|shell|hhvm|php(55|56|70)|)lint',
-            '.*-(tabs|typos)',
+            '.*-tabs',
             '.*-whitespaces',
             'noop',
             '(?:mwgate-)?composer-validate',
