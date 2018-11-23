@@ -500,6 +500,16 @@
                 ;;
         esac
 
+- job-template:
+    name: '{name}-typos-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-run:
+            image: docker-registry.wikimedia.org/releng/typos:0.0.1
+
 - publisher:
     name: webpagetest-irc
     publishers:
