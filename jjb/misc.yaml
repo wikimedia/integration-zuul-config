@@ -57,9 +57,25 @@
      - cover-publish:
         src: 'log/coverage'
         dest: '$DOC_PROJECT'
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.1
+         options: '--workdir /src'
+         logdir: '/log'
     publishers:
      - castor-save-workspace-cache
      - docker-cleanup
+    wrappers:
+     - timeout:
+         timeout: 30
+         fail: true
+     - timestamps
+     - ansicolor
+       # SONAR_API_KEY is in Jenkins credentials store
+       # https://integration.wikimedia.org/ci/credentials/
+     - credentials-binding:
+       - text:
+         credential-id: SONAR_API_KEY
+         variable: SONAR_API_KEY
 
 - job:
     name: 'remexhtml-phpunit-coverage-docker-publish'
