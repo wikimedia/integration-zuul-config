@@ -1,0 +1,8 @@
+FROM {{ "ci-src-setup-simple" | image_tag }} AS ci-src-setup
+
+FROM {{ "ci-stretch" | image_tag }}
+COPY --from=ci-src-setup /run.sh /ci-src-setup.sh
+
+USER nobody
+WORKDIR /src
+ENTRYPOINT /ci-src-setup.sh && /usr/bin/git grep -E -I -f typos -- . ':(exclude)typos'
