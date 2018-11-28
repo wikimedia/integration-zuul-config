@@ -22,6 +22,6 @@ rsync \
   ${rsync_delete:-} \
   --compress \
   --contimeout 3 \
-  rsync://castor02.integration.eqiad.wmflabs:/caches/"$CASTOR_NAMESPACE"/ "$DEST" \
+  rsync://integration-castor03.integration.eqiad.wmflabs:/caches/"$CASTOR_NAMESPACE"/ "$DEST" \
   || :
 echo -e "\nDone"
