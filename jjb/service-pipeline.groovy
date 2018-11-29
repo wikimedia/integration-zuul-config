@@ -59,7 +59,14 @@ node(nodeLabel) {
     if (pushProductionImage) {
       stage('Register production image') {
         runner.registerAs(productionImageID, imageName, productionTag)
-        runner.registerAs(productionImageID, imageName, commitSHA)
+
+        // Triggered via the publish pipeline when a new tag is pushed
+        if (params.ZUUL_REF.startsWith("refs/tags/")) {
+            def tagRef = params.ZUUL_REF.substring("refs/tags/".length())
+            runner.registerAs(productionImageID, imageName, tagRef)
+        } else {
+            runner.registerAs(productionImageID, imageName, commitSHA)
+        }
       }
     }
   } finally {
