@@ -13,7 +13,7 @@
           name: ZUUL_REF
     builders:
       - trigger-builds:
-        - project: service-pipeline
+        - project: service-pipeline-test-and-publish
           current-parameters: true
           block: true
           same-node: false
@@ -25,7 +25,7 @@
     parameters: *service-pipeline-parameters
     builders:
       - trigger-builds:
-        - project: service-pipeline-test-only
+        - project: service-pipeline-test
           current-parameters: true
           block: true
           same-node: false
