@@ -13,9 +13,10 @@ node(nodeLabel) {
 
   def candidateTag = "${timestamp}-candidate"
   def productionTag = "${timestamp}-production"
+  def commitSHA = params.ZUUL_COMMIT
 
   def imageLabels = [
-    "zuul.commit": params.ZUUL_COMMIT,
+    "zuul.commit": commitSHA,
     "jenkins.job": env.JOB_NAME,
     "jenkins.build": env.BUILD_ID,
   ]
@@ -58,6 +59,7 @@ node(nodeLabel) {
     if (pushProductionImage) {
       stage('Register production image') {
         runner.registerAs(productionImageID, imageName, productionTag)
+        runner.registerAs(productionImageID, imageName, commitSHA)
       }
     }
   } finally {
