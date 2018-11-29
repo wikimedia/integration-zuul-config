@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc1e7cad_4328237c",
+        "filename": "jjb/service-pipeline.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-11-29T22:58:11Z",
+      "side": 1,
+      "message": "I am not sure what happens with annotated/signed tags, the ZUUL_COMMIT might be the one from the tag itself and not the commit the points to. But ZUUL_NEWREV should have the commit being pointed to.\n\nGiven we are handling a tag, we can probably skip tagging the SHA1.",
+      "revId": "3ae6d343539500ce93b62b7e4c40ac115e884957",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "212da9c9_b7145695",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 1581,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-11-29T22:58:11Z",
+      "side": 1,
+      "message": "A good example is cumin which has a slightly different job for publish\n\nhttps://integration.wikimedia.org/ci/job/cumin-tox-tag-publish/\n\nThe publish / tag job is being passed \tZUUL_OLDREV and ZUUL_NEWREV (as well as ZUUL_COMMIT). The Jenkins job has:\n\n    triggers:\n     - zuul-post\n\nWhich makes it fancier. But it is probably not important. I think it will be fine like that.",
+      "revId": "3ae6d343539500ce93b62b7e4c40ac115e884957",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
