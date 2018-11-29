@@ -9,7 +9,7 @@ node(nodeLabel) {
   def productionImageID
 
   def imageName = params.ZUUL_PROJECT.replaceAll(/\//, '-')
-  def timestamp = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("UTC"))
+  def timestamp = new Date().format("yyyy-MM-dd-HHmmss", TimeZone.getTimeZone("UTC"))
 
   def candidateTag = "${timestamp}-candidate"
   def productionTag = "${timestamp}-production"
