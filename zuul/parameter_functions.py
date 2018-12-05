@@ -211,7 +211,7 @@ dependencies = {
     'BlueSpiceUserManager': ['BlueSpiceFoundation'],
     'BlueSpiceUserPreferences': ['BlueSpiceFoundation'],
     'BlueSpiceUserSidebar': ['BlueSpiceFoundation'],
-    'BlueSpiceVisualEditorConnector': ['BlueSpiceFoundation'],
+    'BlueSpiceVisualEditorConnector': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceWatchList': ['BlueSpiceFoundation'],
     'BlueSpiceWhoIsOnline': ['BlueSpiceFoundation'],
     'BounceHandler': ['Echo', 'CentralAuth'],
