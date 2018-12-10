@@ -188,6 +188,14 @@
     triggers:
      - zuul
 
+- job-template:
+    !!merge : *job_npm6-node-6-docker
+    name: '{name}-deploy-npm6-node-6-docker'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm6-test:0.2.0'
+    docker_run_options_var: '--entrypoint=/run-devOnly.sh'
+    triggers:
+     - zuul
+
 - job-template: &job_npm-run-script-node-6-docker
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-run-{script}-node-6-docker'
