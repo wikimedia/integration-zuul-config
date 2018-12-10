@@ -136,6 +136,14 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+- job-template:
+    !!merge : *job_npm6-node-6-docker
+    name: 'npm6-node-6-docker'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm6-test:0.2.0'
+    docker_run_options_var: ''
+    triggers:
+        - zuul
+
 - job-template: &job_npm6-node-6-docker
     name: '{name}-npm6-node-6-docker'
     node: DebianJessieDocker
