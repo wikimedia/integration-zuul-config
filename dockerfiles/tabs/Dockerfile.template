@@ -5,4 +5,4 @@ COPY --from=ci-src-setup /run.sh /ci-src-setup.sh
 
 USER nobody
 WORKDIR /src
-ENTRYPOINT /ci-src-setup.sh && ! /usr/bin/git grep -I $'^\t'
+ENTRYPOINT /ci-src-setup.sh && set -x && ! /usr/bin/git grep -I -P '^\t'
