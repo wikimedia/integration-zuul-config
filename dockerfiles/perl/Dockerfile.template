@@ -1,0 +1,6 @@
+FROM {{ "ci-stretch" | image_tag }}
+
+RUN {{ "perl" | apt_install }}
+
+USER nobody
+ENTRYPOINT ["/usr/bin/perl"]
