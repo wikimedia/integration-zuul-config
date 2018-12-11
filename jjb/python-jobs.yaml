@@ -146,11 +146,15 @@
 
 - job:
     name: 'commit-message-validator'
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remoteonly-zuul
+    node: DebianJessieDocker
     concurrent: true
     triggers:
      - zuul
     builders:
-     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/run-commit-message-validator
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run:
+        options: '--volume "$(pwd)"/src:/src'
+        image: 'docker-registry.wikimedia.org/releng/commit-message-validator:0.6.0'
+    publishers:
+     - docker-cleanup
