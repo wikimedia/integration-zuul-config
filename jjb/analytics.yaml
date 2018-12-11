@@ -130,19 +130,28 @@
 
 - job:
     name: 'analytics-wikistats'
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remote-zuul-shallow-clone
+    node: DebianJessieDocker
+    concurrent: true
     triggers:
         - zuul
     builders:
-        - shell: |
-            #--- squids directory has been replaced with an older version that
-            # does not come with tests. So we cannot run tests it the squids
-            # folder for now.
-            #                                    (qchris@2014-04-16)
-            #
-            #(cd squids && prove -v -Iperl/ t/)
-            (cd pageviews_reports && prove -v -Ilib/ t/)
+        - docker-src-dir
+        - docker-ci-src-setup-simple
+        #--- squids directory has been replaced with an older version that
+        # does not come with tests. So we cannot run tests it the squids
+        # folder for now.
+        #                                    (qchris@2014-04-16)
+        #
+        #(cd squids && prove -v -Iperl/ t/)
+        - docker-run:
+            options:
+                --volume "$(pwd)"/src:/src
+                --workdir /src/pageviews_reports
+                --entrypoint=/usr/bin/prove
+            image: 'docker-registry.wikimedia.org/releng/perl:5.24.1'
+            args: '-v -Ilib/ t/'
+    publishers:
+        - docker-cleanup
 
 - project:
     name: 'analytics-wikistats2'
