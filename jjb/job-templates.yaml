@@ -358,25 +358,15 @@
     builders:
      - phplint
 
-# Verify whether there is any leading tabs in files matching 'fileselector'.
-#
-# 'fileselector': the parameter is passed to grep --include= option and is
-# comma separated.
-#
 - job-template:
-    name: '{name}-tabs'
-    defaults: use-remote-zuul-shallow-clone
+    name: '{name}-tabs-docker'
+    node: DebianJessieDocker
     concurrent: true
-    node: contintLabsSlave && DebianJessie
     triggers:
-     - zuul
+        - zuul
     builders:
-     - shell: |
-         #!/bin/bash -e
-         echo "Looking for tabulations in files matching: {fileselector}"
-         set -x
-         (grep --recursive -P '^\t' --exclude-dir='.git' --include='{fileselector}' .) && HAS_TAB=1 || HAS_TAB=0
-         exit $HAS_TAB
+        - docker-run:
+            image: docker-registry.wikimedia.org/releng/tabs:0.0.1
 
 - job:
     name: 'npm6-audit-docker'
