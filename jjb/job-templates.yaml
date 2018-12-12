@@ -358,16 +358,6 @@
     builders:
      - phplint
 
-- job-template:
-    name: '{name}-tabs-docker'
-    node: DebianJessieDocker
-    concurrent: true
-    triggers:
-        - zuul
-    builders:
-        - docker-run:
-            image: docker-registry.wikimedia.org/releng/tabs:0.0.2
-
 - job:
     name: 'npm6-audit-docker'
     node: DebianJessieDocker
