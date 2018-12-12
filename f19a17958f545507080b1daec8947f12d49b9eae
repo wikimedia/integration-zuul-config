@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "5253e028_8df4e329",
+        "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "The locale environnent variables are already set by the ci-stretch container.",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "399b3e01_a4ab495c",
+        "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "Most CI containers use /src though and I would rather try to keep that consistent.  That lets us reuse jjb macros which fetch code on the host to ./src and then volume mount ./src:/src",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "40ed3eb8_06aacb40",
+        "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "Newish docker-pkg supports newlines to be feed to apt_install.  docker-pkg deployment would have to be updated to bring in 8dae177aa8b494e775e3b257ea4e94d445e71f32\n\n\nThe jinja variable can then be dropped and the line replaced by:\n\n RUN {{ \"\"\"\n  gdnsd\n  python3\n  python\n  python-jinja2\n  \"\"\"\n  | apt_install }} \\\n  \u0026\u0026 install --owner\u003dnobody --group\u003dnogroup --directory /srv/workspace\n\nWhich is expanded to:\n\n RUN apt-get update  \\\n     \u0026\u0026 DEBIAN_FRONTEND\u003dnoninteractive \\\n     apt-get install  --yes    gdnsd   python3   python   python-jinja2    --no-install-recommends \\\n     \u0026\u0026 apt-get clean \u0026\u0026 rm -rf /var/lib/apt/lists/*  \\\n   \u0026\u0026 install --owner\u003dnobody --group\u003dnogroup --directory /srv/workspace",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "991362a8_bf9ea8a8",
         "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
         "patchSetId": 1
@@ -49,6 +100,47 @@
     },
     {
       "key": {
+        "uuid": "6ed2dfc4_dd9618fb",
+        "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "We do not need to ship the git repository in the container. On a CI host it takes less than 2 seconds to fully clone it.\n\nIf it happens to be a speed concern, we have logic to setup a git mirror of the repository on each of the Docker slave then volume mount the mirrored repositories into the container and then use that as a reference. Something like:\n\n docker run --volume /srv/git:/srv/git:ro\n\n git clone --reference /srv/git/operations/dns.git\n\nBut I don\u0027t think it is worth it :)",
+      "parentUuid": "991362a8_bf9ea8a8",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 71
+      },
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0cdc76d5_100efd5b",
+        "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "That is going to be run as:\n\n sh -c \u0027/bin/bash /run.sh\u0027\n\nMight as well just make run.sh executable and then:\n\n ENTRYPOINT [\"/run.sh\"]",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dcdbdd33_a9d25e35",
         "filename": "dockerfiles/operations-dnslint/example-run.sh",
         "patchSetId": 1
@@ -69,6 +161,81 @@
       "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "deaf0207_bb20fd0a",
+        "filename": "dockerfiles/operations-dnslint/example-run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "Sure! Note the example-run.sh scripts are not run on CI, though they could be the basis for some kind of integration tests of the dockerfiles.",
+      "parentUuid": "dcdbdd33_a9d25e35",
+      "range": {
+        "startLine": 3,
+        "startChar": 7,
+        "endLine": 3,
+        "endChar": 10
+      },
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a83339f_b8ac555a",
+        "filename": "dockerfiles/operations-dnslint/example-run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "One might want to use \"latest\" tag, since we would probably forget to update the tag later on.",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa7f939a_7305e81e",
+        "filename": "dockerfiles/operations-dnslint/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "the repository not being needed in the container, this can change to:\n\n git init\n git fetch --depth 2 --quiet \"${ZUUL_URL}/${ZUUL_PROJECT}\" \"${ZUUL_REF}\"\n git checkout --quiet FETCH_HEAD\n\n\n--depth 2 will speed it up, but the test suite might require the full repository (eg for tags)",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d846f4ab_ff1df293",
+        "filename": "dockerfiles/operations-dnslint/run.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T12:56:05Z",
+      "side": 1,
+      "message": "Might want to add an exec statement here:\n\n exec ./utils/run-tests.sh\n\nNitpick: might want to handle the case when that file is missing or not executable.",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
