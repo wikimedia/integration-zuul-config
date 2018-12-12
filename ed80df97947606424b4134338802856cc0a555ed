@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "112aabba_97ab7d01",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2910,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-12T08:01:24Z",
+      "side": 1,
+      "message": "operations-mw-config-composer-test-docker is based on HHVM and  runs jakub-onderka/php-parallel-lint  . The hhvmlint job is thus redundant.\n\nI would like to get rid of the php lint jobs, they are an artifact that pre date our adoption of php-parallel-lint and run on permanent slaves which I would like to phase out.\n\nThe repository already has a \"lint\" script which runs parallel-lint. I propose:\n\n* we switch composer test to be run under php7.0\n* we add a job that runs \u0027composer run lint\u0027 using hhvm.\n\n\nSide note: are we sure we no more use php5.5?",
+      "revId": "ed80df97947606424b4134338802856cc0a555ed",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
