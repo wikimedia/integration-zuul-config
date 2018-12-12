@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "de54037e_642b0594",
+        "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1616
+      },
+      "writtenOn": "2018-12-12T13:14:08Z",
+      "side": 1,
+      "message": "I\u0027m not sure why we would want to use those macros. I definitely don\u0027t want any kind of volume mount, given we\u0027re going to mess with the repository in run.sh\n\nThat said, I can use /src if you want.",
+      "parentUuid": "399b3e01_a4ab495c",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "40ed3eb8_06aacb40",
         "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
         "patchSetId": 1
@@ -47,6 +65,24 @@
       "writtenOn": "2018-12-12T12:56:05Z",
       "side": 1,
       "message": "Newish docker-pkg supports newlines to be feed to apt_install.  docker-pkg deployment would have to be updated to bring in 8dae177aa8b494e775e3b257ea4e94d445e71f32\n\n\nThe jinja variable can then be dropped and the line replaced by:\n\n RUN {{ \"\"\"\n  gdnsd\n  python3\n  python\n  python-jinja2\n  \"\"\"\n  | apt_install }} \\\n  \u0026\u0026 install --owner\u003dnobody --group\u003dnogroup --directory /srv/workspace\n\nWhich is expanded to:\n\n RUN apt-get update  \\\n     \u0026\u0026 DEBIAN_FRONTEND\u003dnoninteractive \\\n     apt-get install  --yes    gdnsd   python3   python   python-jinja2    --no-install-recommends \\\n     \u0026\u0026 apt-get clean \u0026\u0026 rm -rf /var/lib/apt/lists/*  \\\n   \u0026\u0026 install --owner\u003dnobody --group\u003dnogroup --directory /srv/workspace",
+      "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7df1db6c_18937050",
+        "filename": "dockerfiles/operations-dnslint/Dockerfile.template",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1616
+      },
+      "writtenOn": "2018-12-12T13:14:08Z",
+      "side": 1,
+      "message": "We can fix this later I think.",
+      "parentUuid": "40ed3eb8_06aacb40",
       "revId": "f19a17958f545507080b1daec8947f12d49b9eae",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
