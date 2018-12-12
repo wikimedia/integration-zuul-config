@@ -31,10 +31,23 @@
          # Lint script provided via puppet authdns::lint class
          /usr/local/bin/authdns-lint "$WORKSPACE" "$WORKSPACE"/build
 
+- job-template:
+    name: 'operations-dns-lint-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-run:
+            image: docker-registry.wikimedia.org/releng/operations-dnslint:0.0.1
+    publishers:
+        - docker-cleanup
+
 - project:
     name: 'operations-dns'
     jobs:
      - 'operations-dns-lint'
+     - 'operations-dns-lint-docker'
      - '{name}-tabs-docker'
 
 - job:
