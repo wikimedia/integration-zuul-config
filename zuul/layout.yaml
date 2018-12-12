@@ -2896,14 +2896,17 @@ projects:
 
   - name: operations/mediawiki-config
     check:
-      - operations-mw-config-php55lint
+      - operations-mw-config-php70lint
+      - operations-mw-config-hhvmlint
       - composer-validate
     test-prio:
-      - operations-mw-config-php55lint
+      - operations-mw-config-php70lint
+      - operations-mw-config-hhvmlint
       - operations-mw-config-composer-test-docker
       - operations-mw-config-typos-docker
     gate-and-submit:
-      - operations-mw-config-php55lint
+      - operations-mw-config-php70lint
+      - operations-mw-config-hhvmlint
       - operations-mw-config-composer-test-docker
       - operations-mw-config-typos-docker
     postmerge:
