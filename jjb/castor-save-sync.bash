@@ -21,6 +21,7 @@ rsync \
   --compress \
   --rsh="ssh -a -T  -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
   --delete-delay \
+  --delay-updates \
   --relative \
   jenkins@"${REMOTE_INSTANCE}":.cache/composer :.composer/cache :.m2/repository :.cache/pip :.npm :workspace/vendor/bundle "${DEST}/"
 

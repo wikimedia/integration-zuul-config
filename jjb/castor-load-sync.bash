@@ -20,6 +20,7 @@ echo "Syncing..."
 rsync \
   --archive \
   ${rsync_delete:-} \
+  --delay-updates \
   --compress \
   --contimeout 3 \
   rsync://integration-castor03.integration.eqiad.wmflabs:/caches/"$CASTOR_NAMESPACE"/ "$DEST" \
