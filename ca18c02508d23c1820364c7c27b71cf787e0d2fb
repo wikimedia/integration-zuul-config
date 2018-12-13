@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8931f83e_47c14acd",
+        "filename": "jjb/job-templates.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2018-12-13T16:43:03Z",
+      "side": 1,
+      "message": "The YAML anchor \"job_npm6-node-6-docker is used for the template \u0027{name}-npm6-browser-node-6-docker\u0027 below.\n\nIt is a way to reuse the same values but only overrides one. In this case line 185 the Docker image to use is changed to npm6-browser-test:0.1.2.\n\nSo you could do the same thing for \u0027npm6-node-6-docker\u0027:\n\n - job-template:\n    !!merge : *job_npm6-node-6-docker\n    name: \u0027npm6-node-6-docker\u0027\n    docker_image_var: \u0027docker-registry.wikimedia.org/releng/npm6-test:0.2.0\u0027\n    docker_run_options_var: \u0027\u0027\n    triggers:\n        - zuul\n\nAnd that should work :)",
+      "revId": "ca18c02508d23c1820364c7c27b71cf787e0d2fb",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
