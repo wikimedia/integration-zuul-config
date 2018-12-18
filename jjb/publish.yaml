@@ -26,6 +26,17 @@
            WMF_CI_PUB_DOCROOT=org/wikimedia/doc
            WMF_CI_PUB_DEST={docdest}
            PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
+     - trigger-builds:
+       - project: publish-to-doc1001
+         block: true
+         current-parameters: true  # Pass Zuul parameters
+         predefined-parameters: |
+           WMF_CI_SRC={docsrc}
+           WMF_CI_PUB_DOCROOT=org/wikimedia/doc
+           WMF_CI_PUB_DEST={docdest}
+           PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
+           TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
+           TRIGGERED_WORKSPACE=$WORKSPACE
 
 # Sync files from a Jenkins slave in labs to a central rsync server from which
 # another job (executing on contint1001) can pull in the files and publish them
@@ -134,3 +145,59 @@
     properties:
      - build-discarder:
          days-to-keep: 15
+
+- job:
+    name: publish-to-doc1001
+    node: contint1001
+    parameters:
+      - string:
+         # MUST NOT have leading slash.
+         # MUST NOT have trailing slash.
+         # WILL be auto-created if non-existent.
+         name: 'WMF_CI_PUB_DEST'
+         description: 'Sub directory path under the chosen document root, such as "mediawiki-core/DOC_SUBPATH/js"'
+    triggers:
+     - zuul
+    wrappers:
+     - ansicolor
+     - timeout:
+         timeout: 3  # minutes
+         fail: true
+     - timestamps
+     - ssh-agent-credentials:
+         users:
+          - 'ae711ff4-813e-4462-9a27-21bdbd4fdcb9'  # jenkins-deploy
+     - workspace-cleanup
+    publishers:
+     - workspace-cleanup
+    builders:
+     - shell: |
+         set -u
+         set +x
+         ssh_config=($TRIGGERED_SSH_CONNECTION)
+         REMOTE_INSTANCE=${ssh_config[2]}
+
+         DOC_URL="https://doc.wikimedia.org/${WMF_CI_PUB_DEST}"
+
+         echo "Fetching from:"
+         echo "- Instance...: ${REMOTE_INSTANCE}"
+         echo "- Workspace..: ${TRIGGERED_WORKSPACE}"
+         echo "- Subdir.....: ${WMF_CI_SRC}"
+
+         # Paths are normalized via the trailing slash dot
+         (set -x; rsync \
+            --archive \
+            --compress \
+            --rsh="/usr/bin/ssh -a -T -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
+            jenkins-deploy@"${REMOTE_INSTANCE}:${TRIGGERED_WORKSPACE}/${WMF_CI_SRC}" .
+         )
+
+         echo "Publishing ..."
+         (set -x; rsync \
+            --archive \
+            --compress \
+            --delete-after \
+            . \
+            "rsync://doc1001.eqiad.wmnet/doc/${WMF_CI_PUB_DEST}"
+         )
+         echo -e "\nPublished at ${DOC_URL}\nDone."
