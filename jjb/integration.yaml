@@ -90,7 +90,7 @@
             projects: >
                 integration/config
         - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+            image: 'docker-registry.wikimedia.org/releng/tox:0.2.0'
             options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/jjb/diff.sh'
             logdir: '/log'
     publishers:
@@ -144,7 +144,7 @@
      - docker-cache-dir
      - docker-log-dir
      - docker-run-with-log-and-workspace-cache:
-         image: 'docker-registry.wikimedia.org/releng/tox:0.1.0'
+         image: 'docker-registry.wikimedia.org/releng/tox:0.2.0'
          logdir: '/log'
          args: '-e qa -- --xunit-file=/log/junit-qa.xml'
     publishers:
