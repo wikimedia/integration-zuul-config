@@ -1,21 +1,26 @@
-FROM {{ "ci-jessie" | image_tag }}
+FROM {{ "ci-stretch" | image_tag }}
 {% set packages|replace('\n', ' ') -%}
 python-pip
 python-dev
 python-wheel
 python3-pip
 python3-dev
+python3.4-dev
+python3.6-dev
+python3.7-dev
 python3-wheel
 pypy
 gcc
 g++
 libc-dev
 make
-libmysqlclient-dev
+default-libmysqlclient-dev
 libssl-dev
 {%- endset -%}
 
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1
+
+ADD pyall.list /etc/apt/sources.list.d/pyall.list
 
 RUN {{ packages | apt_install }} \
     && pip install pip==8.1.2 && pip3 install pip==8.1.2 \
