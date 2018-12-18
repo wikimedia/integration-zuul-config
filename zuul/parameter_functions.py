@@ -255,7 +255,7 @@ dependencies = {
     'HierarchyBuilder': ['PageForms'],
     'ImageMetrics': ['EventLogging'],
     'ImageRating': ['VoteNY'],
-    'JADE': ['AbuseFilter', 'SpamBlacklist'],
+    'Jade': ['AbuseFilter', 'SpamBlacklist'],
     'JsonConfig': ['Scribunto'],
     'Kartographer': ['ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
     'LanguageTool': ['VisualEditor'],
