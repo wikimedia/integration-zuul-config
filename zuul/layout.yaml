@@ -957,6 +957,9 @@ jobs:
   - name: docker-pkg-tox-publish
     branch: ^master$
 
+  - name: spicerack-tox-publish
+    branch: ^master$
+
   - name: ^(mwgate-|)composer-validate$
     files:
      - '^composer.json$'
@@ -3069,6 +3072,10 @@ projects:
       - name: tox-docker
     test:
       - debian-glue-backports-non-voting
+    postmerge:
+      - spicerack-tox-publish
+    publish:
+      - spicerack-tox-tag-publish
 
   - name: operations/software/tools-manifest
     template:
