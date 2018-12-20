@@ -2,6 +2,7 @@
     name: cergen
     jobs:
         - '{name}-tox-docker':
+            # FIXME: Can't use 0.2.0 due to T212395
             docker_image_var: docker-registry.wikimedia.org/releng/tox-cergen:0.1.0
 
 - project:
@@ -14,7 +15,7 @@
     name: conftool
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-conftool:0.1.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-conftool:0.2.0
 
 - job-template:
     name: 'operations-dns-lint-docker'
