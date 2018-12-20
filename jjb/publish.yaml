@@ -56,28 +56,6 @@
            WMF_CI_PUB_DEST=cover/{dest}
            PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
 
-# Variant of cover-publish that publishes to cover-extensions/
-- builder:
-    name: cover-extensions-publish
-    builders:
-     # rsync folder to integration-publishing02.eqiad.wmflabs
-     - shell: |
-         set -u
-         echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {dest}"
-         # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
-         rsync --recursive "{src}/" "rsync://172.16.4.5/doc/$JOB_NAME-$BUILD_NUMBER"
-         echo
-         echo "Publishing to https://doc.wikimedia.org/cover-extensions/{dest}/"
-     - trigger-builds:
-       - project: publish-on-contint1001
-         block: true
-         current-parameters: true  # Pass Zuul parameters
-         predefined-parameters: |
-           WMF_CI_PUB_DOCROOT=org/wikimedia/doc
-           WMF_CI_PUB_DEST=cover-extensions/{dest}
-           PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
-
-
 # rsync a directory from integration-publishing02.eqiad.wmflabs to a website on
 # contint1001.wikimedia.org.
 #

@@ -402,10 +402,10 @@
         - castor-save-workspace-cache
         - postbuildscript:
             builders:
-                - cover-extensions-publish:
-                    src: 'cover'
+                - doc-publish:
+                    docsrc: 'cover'
                     # Should be equivalent to $EXT_NAME
-                    dest: '$DOC_BASENAME'
+                    docdest: 'cover-extensions/$DOC_BASENAME'
                 - docker-wipe-dir:
                     dir: 'cover'
         - docker-cleanup
