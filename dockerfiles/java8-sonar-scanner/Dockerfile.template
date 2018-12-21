@@ -18,5 +18,6 @@ RUN {{ "gnupg wget unzip" | apt_install }} \
 
 USER nobody
 WORKDIR /src
-ENTRYPOINT ["/opt/sonar-scanner/bin/sonar-scanner"]
-CMD ["--version"]
+COPY run.sh /run.sh
+CMD [ "--version" ]
+ENTRYPOINT [ "/run.sh" ]
