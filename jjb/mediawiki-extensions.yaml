@@ -31,6 +31,43 @@
      - archive-log-allow-empty
      - docker-cleanup
 
+- job:
+    name: 'wmf-sonar-scanner'
+    node: DebianJessieDocker
+    concurrent: false
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+    - docker-log-dir
+    - docker-src-dir
+    - docker-cache-dir
+    - docker-ci-src-setup-simple
+    - docker-run-with-log-cache-src:
+       image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.1.0'
+       logdir: '/log'
+       args: |
+         # SonarQube needs dashes in the project key/name instead of slashes.
+         -Dsonar.projectKey=${ZUUL_PROJECT//\//-} \
+         -Dsonar.projectName=${ZUUL_PROJECT//\//-} \
+         -Dsonar.organization=wmftest
+         -Dsonar.host.url=https://sonarcloud.io \
+         -Dsonar.login=$SONAR_API_KEY
+    wrappers:
+     - ansicolor
+     - timeout:
+         timeout: 30
+         fail: true
+     - timestamps
+     # SONAR_API_KEY is in Jenkins credentials store
+     # https://integration.wikimedia.org/ci/credentials/
+     - credentials-binding:
+           - text:
+               credential-id: SONAR_API_KEY
+               variable: SONAR_API_KEY
+
 - job: # Identical to mwext-VisualEditor-docker-publish except docsrc and docdest.
     name: 'mwext-npm-doc-publish'
     node: DebianJessieDocker
