@@ -4,8 +4,7 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 ENV DNSDIR='/srv/workspace/dnslint'
 
-# Final two packages python and python-jinja2 to be removed after transition off of authdns-gen-zones.py is complete
-{% set pkgs_to_install = """gdnsd=2.99.9944-beta-1+wmf1 python3 python3-git python3-jinja2 python python-jinja2""" %}
+{% set pkgs_to_install = """gdnsd=2.99.9949-beta-1+wmf1 python3 python3-git python3-jinja2""" %}
 # Install packages
 RUN {{ pkgs_to_install | apt_install }} \
     && install --owner=nobody --group=nogroup --directory /srv/workspace
