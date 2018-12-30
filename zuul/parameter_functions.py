@@ -311,7 +311,7 @@ dependencies = {
     'SiteScout': ['Comments', 'SocialProfile', 'VoteNY'],
     'SimpleSAMLphp': ['PluggableAuth'],
     'SimpleSurvey': ['PrefSwitch'],
-    'SpamBlacklist': ['CheckUser', 'EventLogging'],
+    'SpamBlacklist': ['AbuseFilter', 'CheckUser', 'EventLogging'],
     'SpamDiffTool': ['SpamBlacklist'],
     'SpellingDictionary': ['UniversalLanguageSelector'],
     'SportsTeams': ['SocialProfile', 'UserStatus'],
