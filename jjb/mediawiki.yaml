@@ -359,7 +359,7 @@
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
-            args: '--packages-source {packages-source} --db {database} --db-dir /workspace/db --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /log/coverage.html"'
+            args: '--packages-source {packages-source} --db {database} --db-dir /workspace/db --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /workspace/log/coverage.html"'
             logdir: '/workspace/log'
     publishers:
      - archive:
