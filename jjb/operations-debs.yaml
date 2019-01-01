@@ -125,10 +125,17 @@
                 export SKIP_DCH=true
             fi
 
+            # Double curly braces are for JJB escaping.
+            #
             # $distribution can not contain dashes since it is injected in
             # debian/changelog.
-            # Double curly braces are for JJB escaping.
-            distribution=${{distribution//-/+}} /usr/bin/generate-git-snapshot
+            #
+            # DIST is set to have the .changes Distribution field updated.
+            # dpkg-genchanges always set it to the entry in debian/changelog
+            # but we might have overriden it above. That requires
+            # KEEP_SOURCE_CHANGES to be set which leaves behind a
+            # _source.changes file.
+            distribution=${{distribution//-/+}} DIST="$distribution" KEEP_SOURCE_CHANGES=1 /usr/bin/generate-git-snapshot
 
             # Skip repository setup
             # FIXME: later on we could have postmerge to publish the resulting
