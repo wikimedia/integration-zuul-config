@@ -2055,9 +2055,13 @@ projects:
       - name: php55lint
       - name: php70lint
     test:
-     - debian-glue
+     # Single branch supporting multiple distributions T210780
+     - debian-glue-unstable
+     - debian-glue-trusty-non-voting
+     - debian-glue-jessie-non-voting
+     - debian-glue-stretch-non-voting
     gate-and-submit:
-     - debian-glue
+     - debian-glue-unstable
 
   - name: labs/tools/bub
     template:
