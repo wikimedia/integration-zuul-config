@@ -1,0 +1,44 @@
+# MediaWiki Train automation
+#
+# Meant to automate all the steps of the weekly train as outlined on:
+# <https://wikitech.wikimedia.org/wiki/Heterogeneous_deployment/Train_deploys>
+
+# Update Deploy Notes
+# <https://wikitech.wikimedia.org/wiki/Heterogeneous_deployment/Train_deploys#Update_deploy_notes>
+- job:
+    name: 'update-deploy-notes'
+    node: DebianJessieDocker
+    parameters:
+     - string:
+         name: 'ZUUL_URL'
+         default: 'https://gerrit.wikimedia.org/r'
+     - string:
+         name: 'ZUUL_PROJECT'
+         default: 'mediawiki/tools/release'
+     - string:
+         name: 'ZUUL_REF'
+         default: 'master'
+     - string:
+         name: 'OLD_REVISION'
+         default: ''
+     - string:
+         name: 'NEW_REVISION'
+         default: ''
+    builders:
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.1'
+        logdir: '/log'
+    wrappers:
+      - timeout:
+          timeout: 30
+     - timestamps
+     - ansicolor
+     - credentials-binding:
+          - text:
+              credential-id: ReleaseNotesBot
+              variable: MEDIAWIKI
+    publishers:
+     - archive-log-dir
+     - docker-cleanup
