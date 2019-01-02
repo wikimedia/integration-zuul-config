@@ -1,0 +1,13 @@
+FROM {{ "ci-stretch" | image_tag }}
+{% set packages|replace('\n', ' ') -%}
+python3-requests
+php-cli
+php-curl
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+USER nobody
+WORKDIR /src
+ENTRYPOINT ["/run.sh"]
+COPY run.sh /run.sh
