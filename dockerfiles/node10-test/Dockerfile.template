@@ -1,0 +1,32 @@
+# Docker image with nodejs and jsduck installed.
+# Executes 'npm run {cmd:test}' in /src.
+
+FROM {{ "node10" | image_tag }}
+
+USER root
+
+# build-essential for compilation
+# python-minimal for node-gyp
+# ruby for jsduck
+RUN {{ "ruby ruby2.3 ruby2.3-dev rubygems-integration python-minimal build-essential" | apt_install }} \
+    && gem install --no-rdoc --no-ri jsduck \
+    # if no volume is mounted, make sure /cache exists
+    && install --directory /cache --owner nobody
+
+USER nobody
+
+# See <https://docs.npmjs.com/misc/config#environment-variables>
+# and <https://docs.npmjs.com/cli/cache>
+ENV NPM_CONFIG_CACHE=/cache
+ENV BABEL_CACHE_PATH=$XDG_CACHE_HOME/babel-cache.json
+
+# Headless Chrome requires --no-sandbox in order to work in a Docker environment.
+# This is here rather than node10-test-browser, because this should also apply
+# to tools that have an embedded Chromium build.
+# https://docs.travis-ci.com/user/chrome#sandboxing
+# https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/troubleshooting.md
+ENV CHROMIUM_FLAGS="--no-sandbox"
+
+WORKDIR /src
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]
