@@ -1,0 +1,38 @@
+# Docker image with npm, jsduck, and browsers installed.
+
+FROM {{ "node10" | image_tag }}
+
+USER root
+
+# build-essential for compilation
+# python-minimal for node-gyp
+# ruby for jsduck
+# browsers for tools that use headless chrome, and for selenium tests
+RUN {{ "ruby ruby2.3 ruby2.3-dev rubygems-integration python-minimal build-essential chromium chromium-driver firefox-esr xvfb" | apt_install }} \
+    && gem install --no-rdoc --no-ri jsduck \
+    # if no volume is mounted, make sure /cache exists
+    && install --directory /cache --owner nobody
+
+COPY firefox /usr/local/bin/firefox
+
+USER nobody
+
+# See <https://docs.npmjs.com/misc/config#environment-variables>
+# and <https://docs.npmjs.com/cli/cache>
+ENV NPM_CONFIG_CACHE=/cache
+ENV BABEL_CACHE_PATH=$XDG_CACHE_HOME/babel-cache.json
+
+# For karma-chrome-launcher
+ENV CHROME_BIN=/usr/bin/chromium
+
+# For karma-firefox-launcher
+ENV FIREFOX_BIN=/usr/local/bin/firefox
+
+# Headless Chrome requires --no-sandbox in order to work in Docker.
+# https://docs.travis-ci.com/user/chrome#sandboxing
+# https://github.com/GoogleChrome/puppeteer/blob/v1.11.0/docs/troubleshooting.md
+ENV CHROMIUM_FLAGS="--no-sandbox"
+
+WORKDIR /src
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]
