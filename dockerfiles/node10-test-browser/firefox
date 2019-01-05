@@ -1,0 +1,8 @@
+#!/bin/sh
+# Firefox always write to $HOME/.mozilla which is not available to the nobody
+# user. Provide a basic wrapper that points HOME to a temp directory.
+# See https://github.com/karma-runner/karma-firefox-launcher/issues/28
+HOME=/tmp/firefox
+export HOME
+exec /usr/bin/firefox "$@"
+
