@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cc54b47d_ef1ec527",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 458
+      },
+      "writtenOn": "2019-01-05T04:03:30Z",
+      "side": 1,
+      "message": "Makes sense. The reason we have npm6 and normal npm is mostly because it\u0027s a transition that I didn\u0027t finish.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 1
+      },
+      "revId": "560edc5fbbdfd678a39d627f62d7c8a655bd04f6",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ffedeb2_041fed06",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 458
+      },
+      "writtenOn": "2019-01-05T04:03:30Z",
+      "side": 1,
+      "message": "Most of the overhead actually comes from the chromium and firefox packages themselves (and their dependencies), xvfb is pretty lightweight.\n\ndocker-registry.discovery.wmnet/releng/npm6-browser-test               0.1.2                       ddbefe593e31        2 months ago        1.01GB\ndocker-registry.discovery.wmnet/releng/npm6-test                       0.2.0                       d995bf860ee8        2 months ago        449MB\n\n\nThat\u0027s 500MB+ for the browsers. Given that the majority of tests run don\u0027t need the browsers, I think we should continue shipping them in a separate package.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 1
+      },
+      "revId": "560edc5fbbdfd678a39d627f62d7c8a655bd04f6",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6d27079_1e3012f5",
+        "filename": "dockerfiles/node10-test/Dockerfile.template",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 458
+      },
+      "writtenOn": "2019-01-05T04:03:30Z",
+      "side": 1,
+      "message": "This is in the node10 images so why are you repeating it?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 1
+      },
+      "revId": "560edc5fbbdfd678a39d627f62d7c8a655bd04f6",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd00539a_eaad8f98",
+        "filename": "dockerfiles/node10-test/changelog",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 458
+      },
+      "writtenOn": "2019-01-05T04:03:30Z",
+      "side": 1,
+      "message": "Given that this is mostly a copy-paste of a diferent image, it\u0027s easier if you keep the version in sync with the previous one since likely changes need to be made across both, and then the versioning is easy to follow.",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 1,
+        "endChar": 18
+      },
+      "revId": "560edc5fbbdfd678a39d627f62d7c8a655bd04f6",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d05bb15b_927045c7",
+        "filename": "dockerfiles/node10/Dockerfile.template",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 458
+      },
+      "writtenOn": "2019-01-05T04:03:30Z",
+      "side": 1,
+      "message": "nodejs-legacy is not in node10 (https://tools.wmflabs.org/apt-browser/stretch-wikimedia/component/node10/) so this is from node6. I don\u0027t know what it does, but we probably don\u0027t want it.",
+      "range": {
+        "startLine": 9,
+        "startChar": 17,
+        "endLine": 9,
+        "endChar": 30
+      },
+      "revId": "560edc5fbbdfd678a39d627f62d7c8a655bd04f6",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "211461f3_bf93fcf8",
+        "filename": "dockerfiles/node10/changelog",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 458
+      },
+      "writtenOn": "2019-01-05T04:03:30Z",
+      "side": 1,
+      "message": "Same as the other one.",
+      "range": {
+        "startLine": 1,
+        "startChar": 8,
+        "endLine": 1,
+        "endChar": 13
+      },
+      "revId": "560edc5fbbdfd678a39d627f62d7c8a655bd04f6",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    }
+  ]
+}
