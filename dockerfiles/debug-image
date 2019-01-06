@@ -1,0 +1,14 @@
+#!/bin/bash -eu
+#
+# Usage: ./debug-image node10-test
+#
+# Trailing slash is optional, such as when autocompleting names
+# in your shell from within the dockerfiles/ directory.
+
+image=$(basename "$1")
+
+exec docker run \
+    --rm --tty \
+	--interactive --tty --entrypoint /bin/sh \
+    docker-registry.wikimedia.org/releng/"$image":latest \
+	-c "cd /src/;bash"
