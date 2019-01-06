@@ -15,10 +15,16 @@ RUN {{ "ruby ruby2.3 ruby2.3-dev rubygems-integration python-minimal build-essen
 
 USER nobody
 
-# See <https://docs.npmjs.com/misc/config#environment-variables>
-# and <https://docs.npmjs.com/cli/cache>
-ENV NPM_CONFIG_CACHE=/cache
+# Configure various known softwares that don't honor XDG
+# so that they don't break when using the default of HOME:/nonexistent
+# - <https://docs.npmjs.com/cli/cache>
+ENV NPM_CONFIG_cache=$XDG_CACHE_HOME
+# - Never check for npm self-update, https://phabricator.wikimedia.org/T213014
+ENV NPM_CONFIG_update_notifier=false
+# - https://babeljs.io/docs/en/babel-register/#babel-cache-path
 ENV BABEL_CACHE_PATH=$XDG_CACHE_HOME/babel-cache.json
+# - For instanbuljs/nyc, https://phabricator.wikimedia.org/T212602
+ENV SPAWN_WRAP_SHIM_ROOT=$XDG_CACHE_HOME
 
 # Headless Chrome requires --no-sandbox in order to work in a Docker environment.
 # This is here rather than node10-test-browser, because this should also apply
