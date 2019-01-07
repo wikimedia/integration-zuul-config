@@ -184,12 +184,12 @@
          echo "- Workspace..: ${TRIGGERED_WORKSPACE}"
          echo "- Subdir.....: ${WMF_CI_SRC}"
 
-         # Paths are normalized via the trailing slash dot
+         # Paths are normalized via the trailing slash dot in source path
          (set -x; rsync \
             --archive \
             --compress \
             --rsh="/usr/bin/ssh -a -T -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
-            jenkins-deploy@"${REMOTE_INSTANCE}:${TRIGGERED_WORKSPACE}/${WMF_CI_SRC}" .
+            jenkins-deploy@"${REMOTE_INSTANCE}:${TRIGGERED_WORKSPACE}/${WMF_CI_SRC}"/. .
          )
 
          echo "Creating remote directory ${WMF_CI_PUB_DEST}"
