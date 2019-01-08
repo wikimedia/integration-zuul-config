@@ -1043,7 +1043,7 @@ jobs:
   - name: mediawiki-phpunit-coverage-patch-docker
     mutex: mediawiki-phpunit-coverage-patch-docker
 
-    # Only generate coverage information for master
+  # Only generate coverage information for master
   - name: ^.*-coverage-(docker-)?publish$
     branch: master
 
@@ -2259,6 +2259,8 @@ projects:
       - fresnel-node10-browser-docker
     gate-and-submit:
       - fresnel-node10-browser-docker
+    postmerge:
+      - generic-node10-browser-coverage-docker-publish
 
   - name: performance/navtiming
     template:
