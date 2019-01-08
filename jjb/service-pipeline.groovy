@@ -40,7 +40,7 @@ node(nodeLabel) {
       }
     }
 
-    if (testProductionImage) {
+    if (testProductionImage && fileExists('.pipeline/helm.yaml'))) {
       stage('Test deployment') {
         runner.registerAs(productionImageID, imageName, candidateTag)
         def release = runner.deploy(imageName, candidateTag)
