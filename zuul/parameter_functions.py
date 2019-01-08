@@ -534,6 +534,11 @@ def set_gated_extensions(item, job, params):
     if len(split) == 3 and split[1] == 'extensions':
         params['EXT_NAME'] = split[-1]
 
+# Map from ZUUL_PROJECT to DOC_PROJECT
+# The default is determined in set_doc_variables
+doc_destination = {
+    'performance/fresnel': 'fresnel',
+}
 
 def set_doc_variables(item, job, params):
     change = item.change
@@ -557,5 +562,15 @@ def set_doc_variables(item, job, params):
 
     # Normalize the project name by removing /'s
     if 'ZUUL_PROJECT' in params:
-        params['DOC_PROJECT'] = params['ZUUL_PROJECT'].replace('/', '-')
+        raw_project = params['ZUUL_PROJECT']
+        if raw_project in doc_destination:
+            raw_project = doc_destination[raw_project]
+
+        params['DOC_PROJECT'] = raw_project.replace('/', '-')
+
+        # DOC_BASENAME is for generic MediaWiki extension jobs that publish
+        # dynamically to a doc.wikimedia.org destination based on the last
+        # part of the repo name.
+        # TODO: Migrate those to DOC_PROJECT and perform the logic here
+        # instead (e.g. strip "mediawiki/extensions/")
         params['DOC_BASENAME'] = params['ZUUL_PROJECT'].split('/')[-1]
