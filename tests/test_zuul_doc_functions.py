@@ -49,6 +49,7 @@ class TestDocFunctions(unittest.TestCase):
         projects = {
             'oojs/ui': 'oojs-ui',
             'wikimedia/slimapp': 'wikimedia-slimapp',
+            'performance/fresnel': 'fresnel',
             'cdb': 'cdb'
         }
         for project, expected in projects.items():
