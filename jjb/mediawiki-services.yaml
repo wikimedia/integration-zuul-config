@@ -70,6 +70,14 @@
             docker_image_var: docker-registry.wikimedia.org/releng/tox-poolcounter:0.3.0
 
 - project:
+    name: recommendation-api
+    jobs:
+     - 'npm-test-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test:latest
+     - 'npm-test-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test:latest
+
+- project:
     name: 'tilerator'
     jobs:
      - '{name}-npm-node-6-docker':
