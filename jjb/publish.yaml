@@ -1,6 +1,6 @@
-# Sync files from a Jenkins slave in labs to a central rsync server from which
-# another job (executing on contint1001.wikimedia.org) can pull in the files
-# and publish them on https://doc.wikimedia.org/.
+# Sync files from a Jenkins slave in labs on the contint1001 slave which is
+# also the CI master. Then rsync to doc1001.eqiad.wmnet which hosts
+# https://doc.wikimedia.org/ .
 #
 # Parameters:
 #
@@ -10,22 +10,6 @@
 - builder:
     name: doc-publish
     builders:
-     # rsync folder to integration-publishing02.eqiad.wmflabs
-     - shell: |
-         set -u
-         echo "Making sure that destination does not contain unset variables (like DOC_SUBPATH, see zuul/doc_functions.py): {docdest}"
-         # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
-         rsync --recursive "{docsrc}/" "rsync://172.16.4.5/doc/$JOB_NAME-$BUILD_NUMBER"
-         echo
-         echo "Publishing to https://doc.wikimedia.org/{docdest}/"
-     - trigger-builds:
-       - project: publish-on-contint1001
-         block: true
-         current-parameters: true  # Pass Zuul parameters
-         predefined-parameters: |
-           WMF_CI_PUB_DOCROOT=org/wikimedia/doc
-           WMF_CI_PUB_DEST={docdest}
-           PUBLISHER_PATH=$JOB_NAME-$BUILD_NUMBER
      - trigger-builds:
        - project: publish-to-doc1001
          block: true
@@ -38,9 +22,9 @@
            TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
            TRIGGERED_WORKSPACE=$WORKSPACE
 
-# Sync files from a Jenkins slave in labs to a central rsync server from which
-# another job (executing on contint1001) can pull in the files and publish them
-# on https://doc.wikimedia.org/cover/.
+# Sync files to https://doc.wikimedia.org/cover/
+#
+# Same as doc-publish, but docdest is always prefixed with 'cover/'
 #
 # Parameters:
 #
@@ -61,90 +45,6 @@
      - doc-publish:
          docsrc: '{src}'
          docdest: 'cover-extensions/{dest}'
-
-# rsync a directory from integration-publishing02.eqiad.wmflabs to a website on
-# contint1001.wikimedia.org.
-#
-# Serves:
-#
-# - doc.wikimedia.org/:project/:version
-#   * docroot: org/wikimedia/doc
-#   * dest: PROJECT/$DOC_SUBPATH[/subdir]
-#
-# - doc.wikimedia.org/cover/:project
-#   * docroot: org/wikimedia/doc
-#   * dest: cover/PROJECT
-#
-# Uses $PUBLISHER_PATH as a unique identifier.
-- job:
-    name: publish-on-contint1001
-    node: contint1001
-    parameters:
-      - string:
-         # MUST exist on integration-publishing02
-         # Should have been created/passed by upstream job
-         name: 'PUBLISHER_PATH'
-         description: 'Unique path on integration-publishing02 to fetch from'
-      - string:
-         # MUST NOT have leading slash.
-         # MUST NOT have trailing slash.
-         # MUST exist on contint1001.wikimedia.org
-         name: 'WMF_CI_PUB_DOCROOT'
-         description: 'A document root under /srv, such as "org/wikimedia/doc"'
-      - string:
-         # MUST NOT have leading slash.
-         # MUST NOT have trailing slash.
-         # WILL be auto-created if non-existent.
-         name: 'WMF_CI_PUB_DEST'
-         description: 'Sub directory path under the chosen document root, such as "mediawiki-core/DOC_SUBPATH/js"'
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-         set -u
-         echo "Publishing $WMF_CI_PUB_DEST from labs to prod"
-         echo "Publisher Path: $PUBLISHER_PATH"
-         echo "..."
-
-         LOCAL_DOCROOT="/srv/$WMF_CI_PUB_DOCROOT"
-         if [ ! -d $LOCAL_DOCROOT ]; then
-            echo "Error: Invalid docroot. Directory $LOCAL_DOCROOT must exist, aborting."
-            exit 1
-         fi
-         LOCAL_DEST="$LOCAL_DOCROOT/$WMF_CI_PUB_DEST"
-         mkdir -p "$LOCAL_DEST"
-         # Paths are normalized via the trailing slash dot
-         # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
-         rsync --recursive --delete-after "rsync://172.16.4.5/doc/$PUBLISHER_PATH/." "$LOCAL_DEST/."
-
-         LOCAL_VHOST=$(echo $WMF_CI_PUB_DOCROOT | awk -F'/' '{ print $3"."$2"."$1 }')
-         echo
-         echo "Published to https://$LOCAL_VHOST/$WMF_CI_PUB_DEST/"
-    publishers:
-     - postbuildscript:
-         builders:
-          - shell: |
-              set -u
-              echo "Removing directory from publishing instance..."
-              rm -rf "$PUBLISHER_PATH"
-              # The trick here is that the local side of the rsync does not
-              # have the content at all at the time of sync. Rsync expands
-              # `--include="$PUBLISHER_PATH/***"` to mean the directory and all of
-              # it's contents followed by the exclusion of all files not
-              # explicitly included. Without the three wildcards rsync will not
-              # touch the named directory itself.
-              #
-              # -- Bryan "bd808" Davis
-              # IP hardcoded since the CI master on production can not resolve DNS entries under wmflabs.
-              rsync --delete --recursive --include="$PUBLISHER_PATH/***" --exclude="*" . rsync://172.16.4.5/doc
-
-         # Options are confusing, setting them both to false ensures the
-         # postbuildscript is ALWAYS run.
-         onsuccess: False
-         onfailure: False
-    properties:
-     - build-discarder:
-         days-to-keep: 15
 
 - job:
     name: publish-to-doc1001
