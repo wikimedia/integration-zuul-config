@@ -97,6 +97,29 @@
         - castor-save-workspace-cache
         - docker-cleanup
 
+# Parameter:
+# entrypoint: script to run. Relative to integration/config root dir
+- job-template:
+    name: 'integration-config-{command}-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        # we need a full clone
+        - docker-zuul-cloner:
+            projects: >
+                integration/config
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/tox:0.2.0'
+            options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/{entrypoint}'
+            logdir: '/log'
+    publishers:
+        - castor-save-workspace-cache
+        - docker-cleanup
+
 # Super basic sanity check for integration/composer repo
 - job-template:
     name: 'integration-composer-check-{phpflavor}-docker'
@@ -177,6 +200,14 @@
      - 'integration-zuul-layoutvalidation-gate'
      - '{name}-tox-docker':
          build_timeout: 5
+     - 'integration-config-{command}-docker':
+         command:
+             - jjb-diff:
+                 entrypoint: jjb/diff.sh
+             - zuul-layout-diff:
+                 entrypoint: utils/zuul-layout-diff.sh
+             - zuul-layout-validate:
+                 entrypoint: utils/zuul-layout-validate.sh
 
 - project:
     name: 'integration-docroot'
