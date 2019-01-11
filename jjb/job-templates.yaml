@@ -166,11 +166,11 @@
     triggers:
      - zuul
 
+# Node.js 10 job for 'npm install-test'
 - job-template:
     name: '{name}-node10-docker'
     node: DebianJessieDocker
     concurrent: true
-    docker_run_options_var: ''
     triggers:
      - zuul
     builders:
@@ -179,7 +179,6 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        options: '{obj:docker_run_options_var}'
         image: 'docker-registry.wikimedia.org/releng/node10-test:0.3.0'
         logdir: '/log'
     publishers:
@@ -187,11 +186,11 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+# Node.js 10 job for 'npm install & npm run {script}'
 - job-template:
-    name: '{name}-node10-browser-docker'
+    name: '{name}-node10-run{script}-docker'
     node: DebianJessieDocker
     concurrent: true
-    docker_run_options_var: ''
     triggers:
      - zuul
     builders:
@@ -200,7 +199,28 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        options: '{obj:docker_run_options_var}'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.3.0'
+        logdir: '/log'
+        args: '{script}'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
+
+
+# Node.js 10 job for 'npm install-test' (with browsers installed)
+- job-template:
+    name: '{name}-node10-browser-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.2.0'
         logdir: '/log'
     publishers:
@@ -248,14 +268,6 @@
         image: '{obj:docker_image_var}'
         logdir: '/log'
         args: '{script}'
-
-- job-template:
-    !!merge : *job_npm-run-script-node-6-docker
-    name: '{name}-npm6-run-{script}-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm6-test:0.1.0'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
 
 
 # Variant for MediaWiki services /deploy repos
