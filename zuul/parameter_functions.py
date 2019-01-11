@@ -541,6 +541,7 @@ def set_gated_extensions(item, job, params):
 doc_destination = {
     'performance/fresnel': 'fresnel',
     'VisualEditor/VisualEditor': 'visualeditor',
+    'oojs/core': 'oojs',
 }
 
 

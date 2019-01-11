@@ -160,49 +160,6 @@
             docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1
 
 - job:
-    name: 'oojs-core-publish'
-    node: DebianJessieDocker
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-src-dir
-     - docker-log-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
-         logdir: '/log'
-         args: 'doc'
-     - doc-publish:
-        docsrc: 'src/docs'
-        docdest: 'oojs/$DOC_SUBPATH'
-    publishers:
-     - castor-save-workspace-cache
-     - docker-cleanup
-
-- job:
-    name: 'oojs-core-coverage'
-    node: DebianJessieDocker
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-src-dir
-     - docker-log-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1'
-         logdir: '/log'
-     - cover-publish:
-        src: 'src/coverage'
-        dest: 'oojs'
-    publishers:
-     - castor-save-workspace-cache
-     - docker-cleanup
-
-- job:
     name: 'oojs-router-publish'
     node: DebianJessieDocker
     concurrent: false

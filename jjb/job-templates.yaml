@@ -198,6 +198,9 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+# Node.js 10 job for 'npm install-test' (with browser installed)
+# and publishing /coverage from workspace
+# to doc.wikimedia.org/cover/:DOC_PROJECT
 - job:
     name: 'generic-node10-browser-coverage-docker-publish'
     node: DebianJessieDocker
@@ -216,6 +219,31 @@
         src: 'src/coverage'
         dest: '$DOC_PROJECT'
     publishers:
+     - docker-cleanup
+
+# Node.js 10 job for 'npm install & npm run doc'
+# and publishing /docs from workspace
+# to doc.wikimedia.org/:DOC_PROJECT/:DOC_SUBPATH (typically by branch or tag)
+- job:
+    name: generic-node10-docs-docker-publish
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.3.0'
+        logdir: '/log'
+        args: 'doc'
+     - doc-publish:
+        docsrc: 'src/docs'
+        docdest: '$DOC_PROJECT/$DOC_SUBPATH'
+    publishers:
+     - castor-save-workspace-cache
      - docker-cleanup
 
 - project:
