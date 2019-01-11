@@ -336,12 +336,33 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+- job-template:
+    name: 'visualeditor-npm6-browser-node-6-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    docker_run_options_var: ''
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        options: '{obj:docker_run_options_var}'
+        image: 'docker-registry.wikimedia.org/releng/npm6-browser-test:0.1.2'
+        logdir: '/log'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
+
 - project:
     name: visualeditor
     jobs:
         - '{name}-npm-browser-node-6-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1
-        - '{name}-npm6-browser-node-6-docker'
+        - 'visualeditor-npm6-browser-node-6-docker'
         - '{name}-npm-run-{script}-node-6-docker':
            script: 'doc'
         - '{name}-npm6-run-{script}-node-6-docker':
