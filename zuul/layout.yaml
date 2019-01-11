@@ -7114,6 +7114,8 @@ projects:
       - mobileapps-deploy-npm-node-6-docker
 
   - name: mediawiki/services/parsoid
+    template:
+      - name: composer-test-package
     test:
       - parsoidsvc-parsertests-docker
       - parsoidsvc-npm-run-toolcheck-node-6-docker
@@ -7126,6 +7128,8 @@ projects:
       - parsoidsvc-npm-node-6-docker
     postmerge:
       - parsoidsvc-doc-docker-publish
+      - parsoidsvc-doxygen-publish
+      - phpunit-coverage-docker-publish
     experimental:
       - npm6-audit-docker
 
