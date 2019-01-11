@@ -198,6 +198,26 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+- job:
+    name: 'generic-node10-browser-coverage-docker-publish'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.2.0'
+        logdir: '/log'
+     - cover-publish:
+        src: 'src/coverage'
+        dest: '$DOC_PROJECT'
+    publishers:
+     - docker-cleanup
+
 - project:
     name: 'generic'
     jobs:
