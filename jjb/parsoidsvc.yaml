@@ -20,6 +20,26 @@
         - castor-save-workspace-cache
         - docker-cleanup
 
+- job:
+    name: 'parsoidsvc-doxygen-publish'
+    node: DebianJessieDocker
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/doxygen:0.4.1
+         logdir: '/log'
+     - doc-publish:
+        docsrc: 'src/doc/html'
+        docdest: 'Parsoid-PHP/$DOC_SUBPATH'
+    publishers:
+     - archive-log-allow-empty
+     - docker-cleanup
+
+
 - project:
     name: parsoidsvc
     jobs:
