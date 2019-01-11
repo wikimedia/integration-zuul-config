@@ -71,71 +71,6 @@
           timeout: 90 # mins. Increased due to lots of tests
           fail: true
 
-- job:
-    name: 'unicodejs-publish'
-    node: DebianJessieDocker
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-src-dir
-     - docker-log-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
-         logdir: '/log'
-         args: 'doc'
-     - doc-publish:
-        docsrc: 'src/docs'
-        docdest: 'unicodejs/$DOC_SUBPATH'
-    publishers:
-     - castor-save-workspace-cache
-     - docker-cleanup
-
-- job:
-    name: 'unicodejs-tag-publish'
-    node: DebianJessieDocker
-    concurrent: false
-    triggers:
-     - zuul-post
-    builders:
-     # No cache restore/save (castor) for tags
-     - docker-castor-load
-     - docker-src-dir
-     - docker-log-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-test:0.6.0'
-         logdir: '/log'
-         args: 'doc'
-     - doc-publish:
-        docsrc: 'src/docs'
-        docdest: 'unicodejs/$DOC_SUBPATH'
-    publishers:
-     - docker-cleanup
-
-- job:
-    name: 'unicodejs-coverage'
-    node: DebianJessieDocker
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-src-dir
-     - docker-log-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1'
-         logdir: '/log'
-     - cover-publish:
-        src: 'src/coverage'
-        dest: 'unicodejs'
-    publishers:
-     - castor-save-workspace-cache
-     - docker-cleanup
-
 - project:
     name: eventlogging
     jobs:
@@ -155,9 +90,8 @@
 - project:
     name: unicodejs
     jobs:
-        - '{name}-jsduck-docker'
-        - '{name}-npm-browser-node-6-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1
+        - '{name}-node10-browser-docker'
+        - '{name}-node10-run{script}-docker'
 
 - job:
     name: 'oojs-router-publish'
