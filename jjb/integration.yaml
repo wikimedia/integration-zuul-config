@@ -20,83 +20,6 @@
         git checkout $ZUUL_COMMIT
         echo "`date -R`> $ZUUL_COMMIT" >> /srv/jenkins-autodeploy
 
-- job-template:
-    name: 'integration-zuul-layoutvalidation-gate'
-    # Same distro as the prod machine hosting Zuul server
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        rm -f jenkins_jobs.txt
-        python /srv/deployment/integration/slave-scripts/bin/jenkins-jobs-list.py > jenkins_jobs.txt
-        /usr/bin/zuul-server -c tests/fixtures/zuul-dummy.conf -t jenkins_jobs.txt -l "$WORKSPACE"/zuul/layout.yaml
-
-# Job for Zuul configuration validation
-# Make sure the Zuul config is passed and show a different with the previous
-# config.
-- job-template:
-    name: 'integration-zuul-layoutdiff'
-    # Same distro as the prod machine hosting Zuul server
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        set +e
-        rm -fR log
-        mkdir -p log
-
-        # Install zuul based on /test-requirements.txt and activate venv
-        #
-        export TOX_TESTENV_PASSENV=PY_COLORS
-        export PY_COLORS=1
-
-        tox -e zuul_tests -v -v --notest
-        . .tox/zuul_tests/bin/activate
-        zuul-server --version
-
-        zuul-server -c tests/fixtures/zuul-dummy.conf -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/current.txt
-        git checkout HEAD^
-        zuul-server -c tests/fixtures/zuul-dummy.conf -t -l "$WORKSPACE"/zuul/layout.yaml 2>log/before.txt
-
-        sed -i -e 's/^INFO:zuul\..*:Configured Pipeline Manager /Pipeline: /' log/current.txt log/before.txt
-
-        function compress_logs() {{
-            gzip --best log/before.txt log/current.txt
-        }}
-        trap compress_logs EXIT
-
-        colordiff --show-function-line='^Pipeline: ' -u log/before.txt log/current.txt
-    publishers:
-     - archive-tox-logs
-     - archive-log-dir
-
-- job-template:
-    name: 'integration-jjb-config-diff-docker'
-    node: DebianJessieDocker
-    concurrent: true
-    triggers:
-        - zuul
-    builders:
-        - docker-castor-load
-        - docker-log-dir
-        # we need a full clone
-        - docker-zuul-cloner:
-            projects: >
-                integration/config
-        - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/tox:0.3.0'
-            options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/jjb/diff.sh'
-            logdir: '/log'
-    publishers:
-        - castor-save-workspace-cache
-        - docker-cleanup
-
 # Parameter:
 # entrypoint: script to run. Relative to integration/config root dir
 - job-template:
@@ -195,9 +118,6 @@
 - project:
     name: 'integration-config'
     jobs:
-     - 'integration-jjb-config-diff-docker'
-     - 'integration-zuul-layoutdiff'
-     - 'integration-zuul-layoutvalidation-gate'
      - '{name}-tox-docker':
          build_timeout: 5
      - 'integration-config-{command}-docker':
