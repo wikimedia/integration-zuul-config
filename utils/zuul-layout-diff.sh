@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -eu
+set -o pipefail
 
 # CI would set the log directories, else just create a ./log one
 LOG_DIR=${LOG_DIR:-log}
@@ -78,6 +79,5 @@ sed -i -e 's/^INFO:zuul\..*:Configured Pipeline Manager /Pipeline: /' \
 
 echo "Looking for differences..."
 (diff --show-function-line='^Pipeline: ' -u \
-    "$LOG_DIR"/before.txt "$LOG_DIR"/current.txt || :
+    "$LOG_DIR"/before.txt "$LOG_DIR"/current.txt
 ) | "$repodir"/.tox/zuul_tests/bin/diff-highlight
-echo "Done"
