@@ -336,7 +336,7 @@ dependencies = {
     'VEForAll': ['VisualEditor'],
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
-    'VisualEditor': ['Cite'],
+    'VisualEditor': ['Cite', 'TemplateData'],
     'WhoIsWatching': ['Echo'],
     'Wikibase': [
         'CirrusSearch',
