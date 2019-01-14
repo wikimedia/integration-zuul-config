@@ -19,10 +19,10 @@
           name: 'ZUUL_REF'
           default: 'master'
       - string:
-          name: 'OLD_REVISION'
+          name: 'OLD_VERSION'
           default: ''
       - string:
-          name: 'NEW_REVISION'
+          name: 'NEW_VERSION'
           default: ''
     builders:
       - docker-log-dir
@@ -37,9 +37,10 @@
       - timestamps
       - ansicolor
       - credentials-binding:
-        - text:
+        - username-password-separated:
             credential-id: ReleaseNotesBot
-            variable: MEDIAWIKI
+            username: MEDIAWIKI_USR
+            password: MEDIAWIKI_PSW
     publishers:
       - archive-log-dir
       - docker-cleanup
