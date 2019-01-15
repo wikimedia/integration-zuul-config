@@ -1,0 +1,12 @@
+FROM {{ "rake" | image_tag }}
+
+USER root
+RUN {{ "chromium chromium-driver xvfb libav-tools" | apt_install }}
+
+ENV CHROMIUM_FLAGS="--no-sandbox"
+
+USER nobody
+WORKDIR /src
+
+COPY run-selenium.sh /run-selenium.sh
+ENTRYPOINT ["/run-selenium.sh"]
