@@ -1054,11 +1054,6 @@ jobs:
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
 
-  # Rejecting changes having trailing whitespaces cause too many false
-  # positives. So only report the whitespace issues, but don't let it vote.
-  - name: ^.*-whitespaces$
-    voting: false
-
   # Still being tested
   #
   # XXX when making it voting, make sure to uncomment the job from definition
@@ -1107,9 +1102,6 @@ jobs:
 
   - name: 'integration-config-zuul-layout-validate-docker'
     branch: (?!labs)
-
-  - name: 'mwext-CirrusSearch-whitespaces'
-    branch: ^master$
 
   - name: 'mwext-jsduck-publish'
     branch: ^master$
@@ -3579,8 +3571,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
-    test:
-      - mwext-CirrusSearch-whitespaces
 
   - name: mediawiki/extensions/CleanChanges
     template:
