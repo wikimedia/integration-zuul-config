@@ -392,7 +392,6 @@ class TestZuulScheduler(unittest.TestCase):
             '(hhvm|php(55|56|70)|yaml)lint',
             '.*-(js|shell|hhvm|php(55|56|70)|)lint',
             '.*-tabs',
-            '.*-whitespaces',
             'noop',
             '(?:mwgate-)?composer-validate',
             'composer-package-validate',

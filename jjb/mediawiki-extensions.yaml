@@ -1,16 +1,3 @@
-- job-template:
-    name: 'mwext-{name}-whitespaces'
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remoteonly-zuul
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - lint-whitespaces
-
 - job:
     name: 'mwext-jsduck-publish'
     node: DebianJessieDocker
@@ -199,11 +186,6 @@
     triggers:
      - zuul
 
-- project:
-    name: 'mwext-CirrusSearch'
-    jobs:
-     - 'mwext-{name}-whitespaces':
-        name: CirrusSearch
 - project:
     name: 'mwext-MobileFrontend'
     jobs:
