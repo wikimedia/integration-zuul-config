@@ -293,7 +293,7 @@ dependencies = {
     'PhpTagsWiki': ['PhpTags', 'PhpTagsFunctions'],
     'PictureGame': ['SocialProfile'],
     'PollNY': ['SocialProfile'],
-    'Popups': ['BetaFeatures', 'TextExtracts', 'PageImages', 'EventLogging'],
+    'Popups': ['BetaFeatures', 'TextExtracts', 'PageImages', 'EventLogging', 'Cite'],
     'Premoderation': ['skins/Vector'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
