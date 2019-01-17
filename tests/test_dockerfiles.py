@@ -47,6 +47,17 @@ def test_changelog_has_proper_package():
         yield assertChangelogPackage, image_dir
 
 
+def assertChangelogHasNoWarning(image_dir):
+        with open(os.path.join(image_dir, 'changelog')) as f:
+            # strict to raise an exception
+            Changelog(f, strict=True)
+
+
+def test_changelog_has_no_warning():
+    for image_dir in IMAGES_DIR:
+        yield assertChangelogHasNoWarning, image_dir
+
+
 def assertControlFile(control_filename):
     control = None
     with open(control_filename) as f:
