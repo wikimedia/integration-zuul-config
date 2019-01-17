@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f3ce58d6_9ae38fd2",
+        "filename": "dockerfiles/java8-sonar-scanner/run.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-17T10:51:53Z",
+      "side": 1,
+      "message": "Should be /bin/bash or you never know what kind of bash you might end up running :)\n\nAlso always make bash stricter by setting the options:\n\n      -e  Exit immediately if a command exits with a non-zero status.\n      -u  Treat unset variables as an error when substituting.\n              pipefail     the return value of a pipeline is the status of\n                           the last command to exit with a non-zero status,\n                           or zero if no command exited with a non-zero status\n\nWhich can be done with:\n\n set -eu\n set -o pipefail",
+      "revId": "2d3aef403f5b070567d8070b233129f9eb713588",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6bdc6b55_0e1b6085",
+        "filename": "dockerfiles/java8-sonar-scanner/run.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-17T10:51:53Z",
+      "side": 1,
+      "message": "Prefix with \"exec\" which replaces the bash process with the actual command.\n\nThe environment variable must be double quoted to prevent globbing (if it has a * for example) or word splitting (if has spaces).",
+      "revId": "2d3aef403f5b070567d8070b233129f9eb713588",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
