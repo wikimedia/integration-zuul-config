@@ -19,7 +19,7 @@ IMAGES_NAME = set([os.path.basename(d) for d in IMAGES_DIR])
 
 def assertImageHasFile(image_dir, filename):
     assert os.path.isfile(os.path.join(image_dir, filename)), \
-        "Image directory %s has file %s" % (
+        "Image directory %s must have a '%s' file" % (
             os.path.join(image_dir), filename)
 
 
@@ -28,14 +28,19 @@ def test_has_template():
         yield assertImageHasFile, image_dir, 'Dockerfile.template'
 
 
-def assertChangelogPackage(image_dir):
-    try:
-        with open(os.path.join(image_dir, 'changelog')) as f:
-            package = Changelog(f).get_package()
-    except IOError as io_e:
-        if io_e.errno == 2:
-            raise AssertionError('%s must have a changelog file' % image_dir)
-        raise
+def test_has_changelog():
+    for image_dir in IMAGES_DIR:
+        yield assertImageHasFile, image_dir, 'changelog'
+
+
+def test_has_control():
+    for image_dir in IMAGES_DIR:
+        yield assertImageHasFile, image_dir, 'control'
+
+
+def assertChangelogPackage(changelog_filename):
+    with open(changelog_filename) as f:
+        package = Changelog(f).get_package()
 
     assert package == os.path.basename(image_dir), \
         'Changelog package name %s matches directory name %s' % (
@@ -44,7 +49,8 @@ def assertChangelogPackage(image_dir):
 
 def test_changelog_has_proper_package():
     for image_dir in IMAGES_DIR:
-        yield assertChangelogPackage, image_dir
+        changelog_filename = os.path.join(image_dir, 'changelog')
+        yield assertChangelogPackage, changelog_filename
 
 
 def assertControlFile(control_filename):
