@@ -19,13 +19,23 @@ IMAGES_NAME = set([os.path.basename(d) for d in IMAGES_DIR])
 
 def assertImageHasFile(image_dir, filename):
     assert os.path.isfile(os.path.join(image_dir, filename)), \
-        "Image directory %s has file %s" % (
+        "Image directory %s must have a '%s' file" % (
             os.path.join(image_dir), filename)
 
 
 def test_has_template():
     for image_dir in IMAGES_DIR:
         yield assertImageHasFile, image_dir, 'Dockerfile.template'
+
+
+def test_has_changelog():
+    for image_dir in IMAGES_DIR:
+        yield assertImageHasFile, image_dir, 'changelog'
+
+
+def test_has_control():
+    for image_dir in IMAGES_DIR:
+        yield assertImageHasFile, image_dir, 'control'
 
 
 def assertChangelogPackage(image_dir):
