@@ -1,17 +1,39 @@
+FROM {{ "php-compile" | image_tag }} as build
+
+USER root
+
+RUN git clone https://github.com/nikic/php-ast /srv/php-ast && \
+    mkdir /srv/modules/ && \
+    cd /srv/php-ast && \
+    # v0.1.7, use sha1 for immutability
+    git checkout 34c324d4f45354a06b2be568605f04ea50cb09b3 && \
+    phpize && ./configure && make && \
+    cp modules/ast.so /srv/modules/ast_017.so && \
+    # v0.1.2, use sha1 for immutability
+    git clean -fdx && git checkout abfef40846cb5454dafa1808769fde851ba8dd70 && \
+    phpize && ./configure && make && \
+    cp modules/ast.so /srv/modules/ast_012.so
+
 FROM {{ "composer" | image_tag }}
 
 USER root
 
-RUN install -d /srv/phan -o nobody
+# FIXME: Don't hardcode the phpapi version (but php-config is in php-dev pkg)
+COPY --from=build /srv/modules/*.so /usr/lib/php/20151012/
+
+# Disable php-ast since we built our own versions
+RUN phpdismod ast && \
+    # Create directory where we're going to install to
+    install --directory --mode 777 /srv/phan
 
 ENV PHAN /srv/phan/vendor/bin/phan
 
 USER nobody
 
-RUN  cd /srv/phan && \
-     composer require phan/phan:0.8 && \
-     rm -rf /cache/*
-
+COPY php /usr/local/bin/php
+# Need to override php7.0 for MediaWiki core's
+# phan wrapper
+COPY php /usr/local/bin/php7.0
 COPY run.sh /run.sh
 COPY run-core.sh /run-core.sh
 ENTRYPOINT ["/run.sh"]
