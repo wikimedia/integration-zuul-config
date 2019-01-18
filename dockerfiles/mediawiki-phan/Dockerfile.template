@@ -1,17 +1,40 @@
+FROM {{ "php-compile" | image_tag }} as build
+
+USER root
+RUN install --owner=nobody --group=nogroup --directory /srv/php-ast
+RUN install --owner=nobody --group=nogroup --directory /srv/modules
+
+USER nobody
+RUN git clone https://github.com/nikic/php-ast /srv/php-ast && \
+    cd /srv/php-ast && \
+    # v1.0.1, use sha1 for immutability
+    git checkout e2953889168c7724e7a3dd385d279b77780967d9 && \
+    phpize && ./configure && make && \
+    cp modules/ast.so /srv/modules/ast_101.so && \
+    # v0.1.2, use sha1 for immutability
+    git clean -fdx && git checkout abfef40846cb5454dafa1808769fde851ba8dd70 && \
+    phpize && ./configure && make && \
+    cp modules/ast.so /srv/modules/ast_012.so
+
 FROM {{ "composer" | image_tag }}
 
 USER root
 
-RUN install -d /srv/phan -o nobody
+# FIXME: Don't hardcode the phpapi version (but php-config is in php-dev pkg)
+COPY --from=build /srv/modules/*.so /usr/lib/php/20151012/
+
+# Disable php-ast since we built our own versions
+RUN phpdismod ast && \
+    # Create directory where we're going to install to
+    install --directory --mode 777 /srv/phan
 
 ENV PHAN /srv/phan/vendor/bin/phan
 
 USER nobody
 
-RUN  cd /srv/phan && \
-     composer require phan/phan:0.8 && \
-     rm -rf /cache/*
-
+COPY php /usr/local/bin/php
+# Need to override php7.0 for MediaWiki core's phan wrapper
+COPY php /usr/local/bin/php7.0
 COPY run.sh /run.sh
 COPY run-core.sh /run-core.sh
 ENTRYPOINT ["/run.sh"]
