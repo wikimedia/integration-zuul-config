@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2822a332_3152b43a",
+        "filename": "jjb/mediawiki-services.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-18T16:49:06Z",
+      "side": 1,
+      "message": "The job templates \u0027{name}-npm-test-docker\u0027 and \u0027{name}-deploy-npm-test-docker\u0027 do not exist, the proper one are respectively:\n\n \u0027{name}-npm-node-6-docker\u0027\n \u0027{name}-deploy-npm-node-6-docker\u0027\n\nYou can see those templates being used in the \"tilerator\" project just below.\n\nThe templates themsleves are defined in jjb/job-templates.yaml.  They default to use docker-registry.wikimedia.org/releng/npm-test:0.6.0 , it does not hurt to pass the container explicitly for the project as you did. That makes it easier to upgrade the container one project after each other.\n\n:)",
+      "revId": "157bd3b5599f999dfb78a167e4747d0d5696e62c",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da5a7bd2_9b5650ba",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 7159,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-18T16:49:06Z",
+      "side": 1,
+      "message": "Once the JJB config is changed to use existing job templates, the generated jobs will be:\n\n* recommendation-api-npm-node-6-docker  \n* recommendation-api-deploy-npm-node-6-docker\n\n\nSo you want to adjust the jobs triggered for each repository.\n\n\nThen there are two options for deployment:\n\nA) before merging this change, we deploy the job and then manually trigger them against the supported branch (eg: master).  Then craft patches as needed until the job pass.  When the jobs are known to pass the job in zuul/layout.yaml get added to the test pipeline (for new patch) and to the gate-and-submit pipeline (for code-review +2 and ultimately submitting the change which get it merged).\n\nWith this option the layout would look like:\n\n - name : mediawiki/services/recommendation-api\n   test:\n     - recommendation-api-npm-node-6-docker\n   gate-and-submit:\n     - recommendation-api-npm-node-6-docker\n\n\nB) We deploy the job and merge this change. Not knowing whether the job pass.  If the build fails, that means that every new patches will get a failure.  Most of the time it is easy to fix, but sometime it requires several commits.  Thus we can deploy it without triggering for new patches. The job has to be registered with the experimental pipeline:\n\n - name: mediawiki/services/recommendation-api\n   experimental:\n     - recommendation-api-npm-node-6-docker\n\nOnce deployed, the job would only trigger by commenting in Gerrit \u0027check experimental\u0027.  Later on, once the job is properly working, another change to zuul/layout.yaml would need to be made to switch to test and gate-and-submit pipelines.\n\nHope that clarifies.",
+      "revId": "157bd3b5599f999dfb78a167e4747d0d5696e62c",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
