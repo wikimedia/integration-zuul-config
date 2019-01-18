@@ -30,6 +30,105 @@
       - timestamps
       - ansicolor
 
+# FIXME: unify with debian-glue
+# this job is designed to handle our special little scap corner-cases
+# that have accumulated after a few years of development on
+# differential. Ideally could combine this job with the
+# debian-glue job and somehow manage to trigger the beta publish job.
+- job:
+    name: scap-beta-deb
+    defaults: beta
+    properties:
+      - copyartifact:
+          projects: beta-publish-deb
+    node: DebianGlue && DebianJessie
+    triggers:
+        - zuul
+    builders:
+      - shell: |
+          set -x
+          env
+          rm -rf src source
+          zuul-cloner \
+            --color \
+            --verbose \
+            --workspace source \
+            --map <(echo "clonemap: [{name: (.*), dest: .}]") \
+            --cache-dir /srv/git \
+            https://phabricator.wikimedia.org \
+            "$ZUUL_PROJECT"
+
+          cd source
+          NAME="$(dpkg-parsechangelog --show-field source)"
+          VERSION="$(dpkg-parsechangelog --show-field version)"
+          SHA=$(git rev-parse --short HEAD)
+
+          echo 'auto-commit' >> debian/source/options
+          echo "${NAME} source: format-3.0-but-debian-changes-patch" >> debian/source.lintian-overrides
+
+          git add .
+          git commit --amend --no-edit
+
+          export GIT_COMMIT=$(git rev-parse HEAD)
+          export GIT_BRANCH=$GIT_COMMIT
+          export SKIP_QUILT_CLEANUP=true
+          export DBP_EXTRA_OPTS=--source-option=--auto-commit
+          cd "$WORKSPACE"
+          /usr/bin/generate-git-snapshot
+
+          export distribution=jessie
+          export REPOSITORY=/srv/packages
+          export REPOS=jenkins-debian-glue
+          export SKIP_REMOVE=true
+          export BUILD_ONLY=yes
+
+          /usr/bin/build-and-provide-package
+
+          # We might consider adding --warnings
+          set -o pipefail
+          # Source package:
+          /usr/bin/lintian-junit-report --filename lintian-binary.txt *.dsc | tee lintian-binary.xml
+
+          # Binary package:
+          /usr/bin/lintian-junit-report --filename lintian-source.txt *.changes | tee lintian-source.xml
+
+          set +o pipefail
+          exit 0
+      - trigger-builds:
+        - project: beta-publish-deb
+          predefined-parameters: 'COPY_FROM=${JOB_NAME}'
+          block: false
+          same-node: false
+    publishers:
+      - xunit:
+          thresholdsmode: 'number'
+          thresholds:
+              - failed:
+                  failure: 0
+          types:
+              - junit:
+                  pattern: 'lintian-*.xml'
+      - archive:
+          artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.buildinfo,*.changes,debc.txt,*lintian.txt,*lintian.xml'
+
+- job:
+    name: beta-publish-deb
+    defaults: beta
+    node: BetaClusterBastion
+    builders:
+      - copyartifact:
+          project: '$COPY_FROM'
+          which-build: upstream-build
+          filter: '*.deb'
+          target: /srv/deployment/debs
+      - shell: |
+          aptly repo -remove-files=false -force-replace=true add jessie-deployment-prep /srv/deployment/debs/
+          aptly repo -remove-files=false -force-replace=true add trusty-deployment-prep /srv/deployment/debs/
+          aptly repo -remove-files=true -force-replace=true add stretch-deployment-prep /srv/deployment/debs/
+          aptly publish --skip-signing update jessie-deployment-prep
+          aptly publish --skip-signing update trusty-deployment-prep
+          aptly publish --skip-signing update stretch-deployment-prep
+
 # Job to run MediaWiki update.php script on all the beta wikis.
 #
 # Set TMPDIR to point to the tmpfs if it exists.
