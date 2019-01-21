@@ -244,6 +244,7 @@ dependencies = {
     'ExternalGuidance': ['MobileFrontend'],
     'FanBoxes': ['SocialProfile'],
     'FileAnnotations': ['EventLogging'],
+    'FileExporter': ['BetaFeatures'],
     'FlaggedRevs': ['Scribunto'],
     'Flow': ['AbuseFilter', 'Echo', 'VisualEditor'],
     'GeoData': ['CirrusSearch'],
