@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "422bd77c_991883eb",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 6699,
+      "author": {
+        "id": 1620
+      },
+      "writtenOn": "2019-01-21T15:17:17Z",
+      "side": 1,
+      "message": "as far as I can see to make it \"work\" some configuration is needed. But the configuration missing doesn\u0027t cause a failure just does nothing but exit 0.\n\nTested locally with:\n```\ndocker run --rm \\\n    -v $(pwd):/mediawiki --env THING_SUBNAME\u003dextensions/WikibaseSchema \\\n    docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:latest \\\n    -m checkstyle\n```",
+      "parentUuid": "84528d6d_a2cacd3a",
+      "revId": "7d81057b4eaed2ad4bd6d5ae51eeb46cd321da09",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e1ce3992_78bd9168",
         "filename": "zuul/layout.yaml",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2019-01-21T14:13:54Z",
       "side": 1,
       "message": "That runs \u0027composer validate\u0027 and ensure the material can be published on packagist.org. Notably that the composer.json file has a name among other things.\n\nHowever, the MediaWiki extensions are not published to packagist and the quibble jobs run:  composer validate --no-check-publish\n\nSo I would rather drop that validation.  If there is an intent to build a standalone library (ie: code which is not a MediaWiki extension), I would rather have a standalone library under eg mediawiki/libs/",
+      "revId": "7d81057b4eaed2ad4bd6d5ae51eeb46cd321da09",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2bc44c66_7dc6981f",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 6701,
+      "author": {
+        "id": 1620
+      },
+      "writtenOn": "2019-01-21T15:17:17Z",
+      "side": 1,
+      "message": "Understood. If we have any common libs we want on packagist we\u0027ll factor them out into another repo.",
+      "parentUuid": "e1ce3992_78bd9168",
       "revId": "7d81057b4eaed2ad4bd6d5ae51eeb46cd321da09",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
