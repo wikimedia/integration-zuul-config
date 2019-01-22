@@ -163,7 +163,7 @@
           --volume "$(pwd)"/cache:/cache
           --volume /srv/git:/srv/git
           --entrypoint "bash"
-        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8'
+        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.9'
         args: '/srv/setup-mwext.sh'
 
 # Use a docker image to clone for MediaWiki core
@@ -176,7 +176,7 @@
           --volume "$(pwd)"/cache:/cache
           --volume /srv/git:/srv/git
           --entrypoint "bash"
-        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.8'
+        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.9'
         args: '/srv/setup-mw.sh'
 
 # Use a docker image to clone the repository into /src
@@ -188,7 +188,7 @@
           --volume "$(pwd)"/src:/src
           --volume "$(pwd)"/cache:/cache
           --volume /srv/git:/srv/git
-        image: 'docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.0'
+        image: 'docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.1'
 
 - builder:
     name: docker-zuul-cloner
@@ -198,7 +198,7 @@
         options: >-
           --volume "$(pwd)"/src:/src
           --volume /srv/git:/srv/git:ro
-        image: 'docker-registry.wikimedia.org/releng/zuul-cloner:0.1.1'
+        image: 'docker-registry.wikimedia.org/releng/zuul-cloner:0.1.2'
         args: >-
           --color --verbose
           --map /zuul-clonemap.yaml
