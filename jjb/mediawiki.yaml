@@ -127,19 +127,19 @@
         - '{name}-composer-package-{phpflavor}-docker': &phpflavor_docker
             phpflavor:
                 - hhvm:
-                    image: docker-registry.wikimedia.org/releng/composer-package-hhvm:0.2.4
+                    image: docker-registry.wikimedia.org/releng/composer-package-hhvm:0.2.5
                 - php55:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php55:0.2.4
+                    image: docker-registry.wikimedia.org/releng/composer-package-php55:0.2.6
                 - php70:
-                    image: docker-registry.wikimedia.org/releng/composer-package:0.1.3
+                    image: docker-registry.wikimedia.org/releng/composer-package:0.1.4
         - '{name}-composer-{phpflavor}-docker':
             phpflavor:
                 - hhvm:
-                    image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.2.5
+                    image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.2.6
                 - php55:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php55:0.2.5
+                    image: docker-registry.wikimedia.org/releng/composer-test-php55:0.2.6
                 - php70:
-                    image: docker-registry.wikimedia.org/releng/composer-test:0.1.5
+                    image: docker-registry.wikimedia.org/releng/composer-test:0.1.6
         - '{name}-composer-validate'
         - '{name}-jsduck-docker'
         - '{name}-{phpflavor}lint':
@@ -170,7 +170,7 @@
      - docker-ci-src-setup-mw
      - docker-run:
         options: '--volume "$(pwd)"/src:/mediawiki --entrypoint=/run-core.sh'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.7'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.8'
         args: '-m checkstyle'
 
     publishers:
@@ -198,7 +198,7 @@
      - docker-cache-dir
      - docker-ci-src-setup-mw
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.3.1
+         image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.3.2
          options: '--env THING_SUBNAME="" --volume "$(pwd)"/src:/mediawiki' # FIXME container should use /src
          args: '-m checkstyle'
          logdir: '/log'
@@ -484,7 +484,7 @@
             dir: 'phpmetrics-report'
         - docker-run:
             options: '-v "$(pwd)"/phpmetrics-report:/phpmetrics-report -v "$(pwd)"/log:/log -v "$(pwd)"/src:/src'
-            image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.1
+            image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.2
             args: '--report-html=/phpmetrics-report --report-violations=/log/violations-phpmetrics.xml .'
         - doc-publish:
             docsrc: phpmetrics-report
