@@ -14,7 +14,7 @@
      - docker-ci-src-setup-simple
      - docker-run:
         options: '--volume "$(pwd)"/src:/src --entrypoint=/srv/composer/security-check'
-        image: 'docker-registry.wikimedia.org/releng/composer:0.1.8'
+        image: 'docker-registry.wikimedia.org/releng/composer:0.1.9'
     publishers:
       - email:
          recipients: security-team@wikimedia.org
@@ -159,27 +159,27 @@
         - 'composer-package-{phpflavor}-docker':
             phpflavor:
                 - hhvm:
-                    image: docker-registry.wikimedia.org/releng/composer-package-hhvm:0.2.4
+                    image: docker-registry.wikimedia.org/releng/composer-package-hhvm:0.2.5
                 - php55:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php55:0.2.5
+                    image: docker-registry.wikimedia.org/releng/composer-package-php55:0.2.6
                 - php70:
-                    image: docker-registry.wikimedia.org/releng/composer-package:0.1.3
+                    image: docker-registry.wikimedia.org/releng/composer-package:0.1.4
                 - php71:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php71:0.1.3
+                    image: docker-registry.wikimedia.org/releng/composer-package-php71:0.1.4
                 - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.1.3
+                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.1.4
                 - php73:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php73:0.1.3
+                    image: docker-registry.wikimedia.org/releng/composer-package-php73:0.1.4
         - 'composer-{phpflavor}-docker':
             phpflavor:
                 - hhvm:
-                    image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.2.5
+                    image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.2.6
                 - php55:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php55:0.2.4
+                    image: docker-registry.wikimedia.org/releng/composer-test-php55:0.2.6
                 - php56:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php56:0.1.3
+                    image: docker-registry.wikimedia.org/releng/composer-test-php56:0.1.4
                 - php70:
-                    image: docker-registry.wikimedia.org/releng/composer-test:0.1.3
+                    image: docker-registry.wikimedia.org/releng/composer-test:0.1.6
 
 - project:
     name: 'wikimedia-apps-php-security'
