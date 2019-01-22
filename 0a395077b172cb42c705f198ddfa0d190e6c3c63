@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26f49e34_22afaff0",
+        "filename": "dockerfiles/mediawiki-phan/Dockerfile.template",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "That most probably can be compiled as user nobody:\n\n USER root\n RUN install --owner\u003dnobody --group\u003dnogroup --directory /srv/modules\n\n USER nobody\n RUN gitclone \u0026\u0026 phpize etc\n\n\nIf I felt adventurous I could probably get co installable packages build out of it and get them added to apt.wikimedia.org under component/ci. But that is a sin and this phpize \u0026\u0026 make is good to me.",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dd5a9271_5dc1e8f0",
+        "filename": "dockerfiles/mediawiki-phan/Dockerfile.template",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "You can get the extension directory by using:\n\n $ php -r \u0027echo ini_get(\"extension_dir\");\u0027\n /usr/lib/php/20151012\n\nNote, the string does not have a trailing new line.",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "114deff6_382775df",
+        "filename": "dockerfiles/mediawiki-phan/Dockerfile.template",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "Might as well just entirely remove the php-ast package?\n\n RUN apt-get remove --purge php-ast",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9c3a02f6_427c13cc",
+        "filename": "dockerfiles/mediawiki-phan/Dockerfile.template",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "nit: The comment should be on a single line :]",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c832aace_6b2a3de9",
+        "filename": "dockerfiles/mediawiki-phan/php",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "Should prefix it with \u0027exec\u0027 in order to replace the shell with the command.\n\nThe arguments should be double quoted to avoid word splitting.\n\n\nExample:\n\n $ cat argdump.sh \n php -r \u0027var_dump($argv);\u0027 $PHP_ARGS $@\n\n $ bash argdump.sh first \"second argument\"\n array(4) {\n   [0]\u003d\u003e\n   string(1) \"-\"\n   [1]\u003d\u003e\n   string(5) \"first\"\n   [2]\u003d\u003e\n   string(6) \"second\"\n   [3]\u003d\u003e\n   string(8) \"argument\"\n }\n\nThe second argument \"second argument\" is split :/  Correct:\n\n exec /usr/bin/php \"$PHP_ARGS\" \"$@\"",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a162b86d_2b7a53ed",
+        "filename": "dockerfiles/mediawiki-phan/run.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "As a good practice, it should be double quoted.",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "906affae_2e4f6a43",
+        "filename": "dockerfiles/mediawiki-phan/run.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "echo built-in defaults to outputting a newline unless invoked as \u0027echo -n\u0027.\n\nTo have \\n recognized, one would need to pass -e to interpret the backslash escapes (and you would get two newlines).\n\nSo just need to:\n\n echo \"Phan config not found\"",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "91e99cc3_81fd1c03",
+        "filename": "dockerfiles/mediawiki-phan/run.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "phan/phan:$PHAN_VERSION  should be double quoted.",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "692f50c3_8b7774df",
+        "filename": "dockerfiles/mediawiki-phan/run.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "prefix with \u0027exec\u0027 to replace the shell command with phan",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4838d174_d79ee46a",
+        "filename": "dockerfiles/mediawiki-phan/run.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-01-22T10:38:50Z",
+      "side": 1,
+      "message": "prefix with \u0027exec\u0027 to replace the shell command with phan.\n\n$@ should be double quoted to avoid word splitting :)",
+      "revId": "0a395077b172cb42c705f198ddfa0d190e6c3c63",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
