@@ -340,6 +340,7 @@ dependencies = {
     'VisualEditor': ['Cite', 'TemplateData'],
     'WhoIsWatching': ['Echo'],
     'Wikibase': [
+        'ArticlePlaceholder',
         'CirrusSearch',
         'cldr',
         'Elastica',
