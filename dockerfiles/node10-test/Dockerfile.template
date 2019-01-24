@@ -5,10 +5,10 @@ FROM {{ "node10" | image_tag }}
 
 USER root
 
-# build-essential for compilation
-# python-minimal for node-gyp
-# ruby for jsduck
-RUN {{ "ruby ruby2.3 ruby2.3-dev rubygems-integration python-minimal build-essential" | apt_install }} \
+# build-essential: for compilation.
+# python: for node-gyp.
+# ruby: for jsduck.
+RUN {{ "ruby ruby2.3 ruby2.3-dev rubygems-integration python build-essential" | apt_install }} \
     && gem install --no-rdoc --no-ri jsduck \
     # if no volume is mounted, make sure /cache exists
     && install --directory /cache --owner nobody
