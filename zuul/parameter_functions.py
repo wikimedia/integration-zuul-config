@@ -228,7 +228,7 @@ dependencies = {
     'CodeEditor': ['WikiEditor'],
     'CodeMirror': ['WikiEditor', 'VisualEditor'],
     'CollaborationKit': ['EventLogging', 'VisualEditor'],
-    'ContentTranslation': ['Echo', 'EventLogging', 'GuidedTour',
+    'ContentTranslation': ['AbuseFilter', 'Echo', 'EventLogging', 'GuidedTour',
                            'UniversalLanguageSelector', 'Wikibase',
                            'VisualEditor'],
     'ContributorsAddon': ['Contributors'],
