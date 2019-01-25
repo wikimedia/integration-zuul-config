@@ -247,6 +247,7 @@ dependencies = {
     'FileExporter': ['BetaFeatures'],
     'FlaggedRevs': ['Scribunto'],
     'Flow': ['AbuseFilter', 'Echo', 'VisualEditor'],
+    'FundraisingTranslateWorkflow': ['Translate'],
     'GeoData': ['CirrusSearch'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
     'GlobalContribs': ['Editcount'],
