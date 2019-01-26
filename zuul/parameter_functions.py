@@ -500,6 +500,7 @@ gatedextensions = [
     'NavigationTiming',
     'SandboxLink',
     'SiteMatrix',
+    'TemplateData',
     'Thanks',
     'TimedMediaHandler',
     'Translate',
