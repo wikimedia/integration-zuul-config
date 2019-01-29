@@ -655,7 +655,7 @@ pipelines:
         # pipeline by simply commenting 'recheck' on a change.
         - event: comment-added
           branch: (?!^refs/meta/config)
-          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?(\n\n\(\d+ comment(s)?\))?\n\n\s*recheck\.?\s*$
+          comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?(\n\n\(\d+ comment(s)?\))?\n\n\s*recheck\b
           email: *email_whitelist
 
         # Let whitelisted users CR+1 to trigger tests for an untested patch
