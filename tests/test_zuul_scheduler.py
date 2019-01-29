@@ -657,6 +657,81 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
+    def test_recheck_comment_trusted_user_extra_comment_1(self):
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        extra_comment = 'recheck because CI failed due to Txxxxxx'
+        event.comment = 'Patch Set 1:\n\n' + extra_comment
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_comment_trusted_user_extra_comment_2(self):
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        extra_comment = 'recheck \u2013 Jenkins failure looks unrelated'
+        event.comment = 'Patch Set 1:\n\n' + extra_comment
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_comment_trusted_user_extra_comment_3(self):
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        extra_comment = 'recheck, is it still failing?'
+        event.comment = 'Patch Set 1:\n\n' + extra_comment
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_comment_trusted_user_recheck_buried_in_comment_1(self):
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        extra_comment = "let's wait a bit before recheck, Zuul looks busy"
+        event.comment = 'Patch Set 1:\n\n' + extra_comment
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertFalse(test_manager.eventMatches(event, change))
+
+    def test_recheck_comment_trusted_user_recheck_buried_in_comment_2(self):
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        extra_comment = 'a recheck will not help here, you need to fix this'
+        event.comment = 'Patch Set 1:\n\n' + extra_comment
+        event.account = {'email': 'jdoe@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertFalse(test_manager.eventMatches(event, change))
+
     def test_pipelines_trustiness(self):
         check_manager = self.getPipeline('check').manager
         test_manager = self.getPipeline('test').manager
