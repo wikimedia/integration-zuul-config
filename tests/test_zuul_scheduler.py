@@ -657,6 +657,49 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
+    def test_recheck_comment_trusted_user_extra_comment(self):
+        comments = [
+            'recheck because CI failed due to Txxxxxx, which should be fixed now',
+            'recheck \u2013 Jenkins failure looks spurious and unrelated',
+            'recheck, is it still failing?',
+        ]
+
+        for comment in comments:
+            with unittest.subTest(comment):
+                test_manager = self.getPipeline('test').manager
+
+                change = zuul.model.Change('mediawiki/core')
+                change.branch = 'master'
+
+                event = zuul.model.TriggerEvent()
+                event.type = 'comment-added'
+                event.comment = 'Patch Set 1:\n\n' + comment
+                event.account = {'email': 'jdoe@wikimedia.org'}
+                event.branch = change.branch
+
+                self.assertTrue(test_manager.eventMatches(event, change))
+
+    def test_recheck_comment_trusted_user_recheck_buried_in_comment(self):
+        comments = [
+            'I think we should wait a bit before recheck, Zuul looks busy right now',
+            'a recheck will not help here, you need to fix this',
+        ]
+
+        for comment in comments:
+            with unittest.subTest(comment):
+                test_manager = self.getPipeline('test').manager
+
+                change = zuul.model.Change('mediawiki/core')
+                change.branch = 'master'
+
+                event = zuul.model.TriggerEvent()
+                event.type = 'comment-added'
+                event.comment = 'Patch Set 1:\n\n' + comment
+                event.account = {'email': 'jdoe@wikimedia.org'}
+                event.branch = change.branch
+
+                self.assertFalse(test_manager.eventMatches(event, change))
+
     def test_pipelines_trustiness(self):
         check_manager = self.getPipeline('check').manager
         test_manager = self.getPipeline('test').manager
