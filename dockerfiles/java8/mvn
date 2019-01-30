@@ -30,5 +30,10 @@ if [[ $- != *i* ]]; then
     mvn_opts+=('--batch-mode')
 fi
 
+if [[ -x ./mvnw ]] ; then
+    MAVEN_BIN=./mvnw
+    printf "mvn wrapper: mvnw detected in this project, using it instead of local Maven install."
+fi
+
 set -x
 "$MAVEN_BIN" "${mvn_opts[@]}" -gs /settings.xml "${args[@]}"
