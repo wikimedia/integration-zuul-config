@@ -36,11 +36,11 @@
        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.2.0'
        logdir: '/log'
        args: |
-         # SonarQube needs dashes in the project key/name instead of slashes.
          -Dsonar.projectKey=${ZUUL_PROJECT//\//-} \
          -Dsonar.projectName=${ZUUL_PROJECT//\//-} \
-         -Dsonar.organization=wmftest
-         -Dsonar.host.url=https://sonarcloud.io
+         -Dsonar.organization=wmftest \
+         -Dsonar.host.url=https://sonarcloud.io \
+         -X
     wrappers:
      - ansicolor
      - timeout:
