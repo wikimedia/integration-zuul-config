@@ -32,6 +32,20 @@
             image: '{obj:docker_image_var}'
             logdir: '/log'
             args: '{obj:maven_args}'
+        - docker-run-with-log-cache-src:
+              image: '{obj:docker_image_var}'
+              # Bypass CI fetch/checkout which would discard material from the install stage
+              options: '--entrypoint=/usr/local/bin/mvn'
+              logdir: '/log'
+              # Sonar analysis requires the sonarcloud API key to be present in the SONAR_API_KEY environment variable
+              args: 'sonar:sonar -Dsonar.branch.name=${ZUUL_CHANGE} -Dsonar.branch.target=${ZUUL_BRANCH}'
+    wrappers:
+        # SONAR_API_KEY is in Jenkins credentials store
+        # https://integration.wikimedia.org/ci/credentials/
+        - credentials-binding:
+              - text:
+                    credential-id: SONAR_API_KEY
+                    variable: SONAR_API_KEY
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -76,7 +90,7 @@
             options: '--entrypoint=/usr/local/bin/mvn'
             logdir: '/log'
             # Sonar analysis requires the sonarcloud API key to be present in the SONAR_API_KEY environment variable
-            args: 'sonar:sonar'
+            args: 'sonar:sonar -Dsonar.branch.name=${ZUUL_BRANCH}'
     wrappers:
       - timeout:
           timeout: 30
