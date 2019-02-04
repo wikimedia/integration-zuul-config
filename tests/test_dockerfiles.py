@@ -48,9 +48,9 @@ def test_changelog_has_proper_package():
 
 
 def assertChangelogHasNoWarning(image_dir):
-        with open(os.path.join(image_dir, 'changelog')) as f:
-            # strict to raise an exception
-            Changelog(f, strict=True)
+    with open(os.path.join(image_dir, 'changelog')) as f:
+        # strict to raise an exception
+        Changelog(f, strict=True)
 
 
 def test_changelog_has_no_warning():
