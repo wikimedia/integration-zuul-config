@@ -120,8 +120,8 @@ def set_parameters(item, job, params):
             # VTC tests take forever
             params['BUILD_TIMEOUT'] = 60  # minutes
             params['DEB_BUILD_OPTIONS'] = 'parallel=12'
-        elif (params['ZUUL_PROJECT'] ==
-                'operations/software/varnish/varnishkafka'):
+        elif (params['ZUUL_PROJECT']
+              == 'operations/software/varnish/varnishkafka'):
             # needed for librdkafka1 >= 0.11.5
             params['BACKPORTS'] = 'yes'
         elif (params['ZUUL_PROJECT'] == 'operations/debs/trafficserver'):
@@ -130,8 +130,8 @@ def set_parameters(item, job, params):
             # Backports needed on stretch for libbrotli-dev and a recent
             # debhelper version (>= 11)
             params['BACKPORTS'] = 'yes'
-        elif (params['ZUUL_PROJECT'] ==
-                'operations/debs/contenttranslation/giella-sme'):
+        elif (params['ZUUL_PROJECT']
+              == 'operations/debs/contenttranslation/giella-sme'):
             # Heavy build T143546
             params['BUILD_TIMEOUT'] = 180  # minutes
 
@@ -434,7 +434,7 @@ def set_mw_dependencies(item, job, params):
         and params['ZUUL_BRANCH'] == 'REL1_27'
         and 'ExtJSBase' in ext_deps
     ):
-            ext_deps.remove('ExtJSBase')
+        ext_deps.remove('ExtJSBase')
 
     # Export with a literal \n character and have bash expand it later via
     # 'echo -e $XXX_DEPENDENCIES'.
@@ -551,8 +551,8 @@ def set_gated_extensions(item, job, params):
     # list of dependencies. Used to inject an extension which is not yet
     # participating.
     if(
-        params['ZUUL_PIPELINE'] == 'experimental' and
-        params['ZUUL_PROJECT'].startswith('mediawiki/extensions/')
+        params['ZUUL_PIPELINE'] == 'experimental'
+        and params['ZUUL_PROJECT'].startswith('mediawiki/extensions/')
     ):
         deps.append(params['ZUUL_PROJECT'].split('/')[-1])
 
