@@ -176,12 +176,12 @@ class TestZuulScheduler(unittest.TestCase):
             return
         self.assertTrue(
             any([job for job in definition
-                 if job.endswith(('php55lint')) or
-                 job.endswith(('php56lint')) or
-                 job.endswith(('php70lint')) or
-                 job.startswith('quibble-') or
-                 job.startswith('wmf-quibble') or
-                 job.startswith(('composer-', 'mwgate-composer'))]),
+                 if job.endswith(('php55lint'))
+                 or job.endswith(('php56lint'))
+                 or job.endswith(('php70lint'))
+                 or job.startswith('quibble-')
+                 or job.startswith('wmf-quibble')
+                 or job.startswith(('composer-', 'mwgate-composer'))]),
             'Project %s pipeline %s must have either '
             'phplint or a composer-* job'
             % (name, pipeline))
@@ -259,20 +259,20 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_repos_have_required_jobs(self):
         repos = {
-            'mediawiki/core$': [
+            r'mediawiki/core$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasVotingPHP71,
                 self.assertProjectHasI18nChecker,
             ],
-            'mediawiki/extensions/\w+$': [
+            r'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasPhp55Test,
                 self.assertProjectHasExperimentalPhan,
                 self.assertProjectHasI18nChecker,
             ],
-            'mediawiki/skins/': [
+            r'mediawiki/skins/': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasSkinTests,
@@ -280,7 +280,7 @@ class TestZuulScheduler(unittest.TestCase):
                 self.assertProjectHasExperimentalPhan,
                 self.assertProjectHasI18nChecker,
             ],
-            'mediawiki/vendor$': [
+            r'mediawiki/vendor$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
                 self.assertProjectHasI18nChecker,
