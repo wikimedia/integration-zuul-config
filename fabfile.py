@@ -27,8 +27,8 @@ def _update_integration_config(
             sudo('git --no-pager log -p HEAD..origin/master {}'.format(
                 diff_dir))
             if confirm('Does the diff look good?') and confirm(
-                    'Did you log your reload in #wikimedia-releng (e.g. ' +
-                    '"!log {}")'.format(log_msg)):
+                    'Did you log your reload in #wikimedia-releng '
+                    '(e.g. "!log {}")'.format(log_msg)):
                 sudo('git rebase')
                 sudo('git -c gc.auto=128 gc --auto --quiet')
 
