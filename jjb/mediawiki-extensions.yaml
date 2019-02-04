@@ -40,6 +40,8 @@
          -Dsonar.projectName=${ZUUL_PROJECT//\//-} \
          -Dsonar.organization=wmftest \
          -Dsonar.host.url=https://sonarcloud.io \
+         -Dsonar.branch.target=${ZUUL_BRANCH} \
+         -Dsonar.branch.name=[ $ZUUL_PIPELINE == "test" ] && ${ZUUL_CHANGE} || ${ZUUL_BRANCH} \
          -X
     wrappers:
      - ansicolor
