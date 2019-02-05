@@ -6,7 +6,7 @@ FROM {{ "node10-test" | image_tag }}
 USER root
 
 # browsers for tools that use headless chrome, and for selenium tests
-RUN {{ "chromium chromium-driver firefox-esr" | apt_install }}
+RUN {{ "chromium chromium-driver firefox-esr ffmpeg" | apt_install }}
 COPY firefox /usr/local/bin/firefox
 
 USER nobody
