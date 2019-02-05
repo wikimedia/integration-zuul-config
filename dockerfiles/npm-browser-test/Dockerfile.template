@@ -1,7 +1,7 @@
 FROM {{ "npm-test-stretch" | image_tag }}
 
 USER root
-RUN {{ "chromium chromium-driver firefox-esr phantomjs xvfb" | apt_install }}
+RUN {{ "chromium chromium-driver firefox-esr phantomjs xvfb ffmpeg" | apt_install }}
 
 COPY firefox /usr/local/bin/firefox
 
