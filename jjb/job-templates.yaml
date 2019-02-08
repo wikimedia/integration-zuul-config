@@ -177,6 +177,21 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+- job:
+    name: '{name}-node10-npmaudit-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/node10:0.2.1'
+        logdir: '/log'
+        options: '--workdir="/src"'
+        args: 'audit'
 
 # Node.js 10 job for 'npm install-test' (with browsers installed)
 - job-template:
@@ -251,6 +266,7 @@
     jobs:
         - 'npm-node-6-docker'
         - '{name}-node10-docker'
+        - '{name}-node10-npmaudit-docker'
 
 - job-template:
     !!merge : *job_npm-node-6-docker
@@ -430,19 +446,3 @@
      - zuul
     builders:
      - phplint
-
-- job:
-    name: 'npm6-audit-docker'
-    node: DebianJessieDocker
-    triggers:
-        - zuul
-    builders:
-        - docker-castor-load
-        - docker-log-dir
-        - docker-src-dir
-        - docker-ci-src-setup-simple
-        - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/npm6:0.1.0'
-            options: '-w="/src"'
-            logdir: '/log'
-            args: 'audit'
