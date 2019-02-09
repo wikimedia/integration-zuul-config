@@ -15,10 +15,10 @@
           default: 'postmerge'
       - string:
           name: 'ZUUL_URL'
-          default: 'https://phabricator.wikimedia.org/diffusion'
+          default: 'https://gerrit.wikimedia.org/r'
       - string:
           name: 'ZUUL_PROJECT'
-          default: 'MSCA'
+          default: 'mediawiki/tools/scap'
       - string:
           name: 'ZUUL_BRANCH'
           default: 'master'
@@ -30,7 +30,7 @@
           cron: '@hourly'
     scm:
       - git:
-          url: 'https://phabricator.wikimedia.org/diffusion/MSCA/scap'
+          url: 'https://gerrit.wikimedia.org/r/mediawiki/tools/scap'
           branches:
             - 'origin/master'
           # A different directory, the Docker container fetch the repo by
