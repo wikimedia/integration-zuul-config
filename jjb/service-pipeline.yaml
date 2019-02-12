@@ -31,6 +31,17 @@
           same-node: false
 
 - job:
+    name: 'trigger-service-jenkinsfile'
+    defaults: global
+    parameters: *service-pipeline-parameters
+    builders:
+      - trigger-builds:
+        - project: service-jenkinsfile
+          current-parameters: true
+          block: true
+          same-node: false
+
+- job:
     name: 'service-pipeline-test-and-publish'
     defaults: global
     project-type: pipeline
@@ -47,3 +58,22 @@
     dsl: !include-raw:
       - service-pipeline-test.groovy
       - service-pipeline.groovy
+
+- job:
+    name: 'service-jenkinsfile'
+    project-type: pipeline
+    sandbox: true
+    parameters: *service-pipeline-parameters
+    pipeline-scm:
+      script-path: Jenkinsfile
+      scm:
+        - git:
+            url: '$ZUUL_URL/$ZUUL_PROJECT'
+            branches:
+              - '$ZUUL_COMMIT'
+            refspec: '$ZUUL_REF'
+            wipe-workspace: true
+            clean:
+              after: true
+            submodule:
+              recursive: true
