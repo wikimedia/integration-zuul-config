@@ -86,10 +86,12 @@
     name: docker-castor-load
     builders:
         - docker-cache-dir
-        - docker-run:
-            options: '--volume "$(pwd)"/cache:/cache'
-            image: 'docker-registry.wikimedia.org/releng/castor:0.2.0'
-            args: 'load'
+        # thcipriani: FIXME castor broken weirdly 2019-02-13
+-       # - docker-run:
+-       #     options: '--volume "$(pwd)"/cache:/cache'
+-       #     image: 'docker-registry.wikimedia.org/releng/castor:0.2.0'
+-       #     args: 'load'
+
 
 # Job triggered on the central repository instance
 #
@@ -129,10 +131,12 @@
         # from being triggered by the upstream job.
         - shell:
             !include-raw: castor-save-filter.bash
-        - shell:
-            !include-raw:
-                - castor-define-namespace.bash
-                - castor-save-sync.bash
+        # thcipriani: FIXME castor broken weirdly 2019-02-13
+        # - shell:
+        #     !include-raw:
+        #         - castor-define-namespace.bash
+        #         - castor-save-sync.bash
+        #
 
 - job:
     !!merge : *job_castor_save
@@ -152,7 +156,8 @@
         # from being triggered by the upstream job.
         - shell:
             !include-raw: castor-save-filter.bash
-        - shell:
-            !include-raw:
-                - castor-define-namespace.bash
-                - castor-save-workspacecache.bash
+        # thcipriani: FIXME castor broken weirdly 2019-02-13
+        # - shell:
+        #     !include-raw:
+        #         - castor-define-namespace.bash
+        #         - castor-save-workspacecache.bash
