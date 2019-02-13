@@ -2,9 +2,12 @@ import hudson.plugins.ircbot.v2.IRCConnectionProvider;
 import hudson.slaves.OfflineCause
 import hudson.util.RemotingDiagnostics
 
+def executionTimeout = params.EXECUTION_TIMEOUT_SECONDS.toInteger()
+def cleanupPercentage = params.CLEANUP_PERCENTAGE.toInteger()
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
-def disks = ['/', '/srv', '/var/lib/docker']
-def groovyScript = String.format('println "df %s".execute().text', disks.join(' '))
+
+def dockerMount = '/var/lib/docker'
+def disks = ['/', '/srv', dockerMount]
 
 def computerNamePrefix = 'integration-slave-'
 
@@ -19,6 +22,60 @@ class Disk {
     int percent
     public String toString() {
         return String.format('%s: %d%%', mount, percent)
+    }
+}
+
+String executeOn(computer, cmd) {
+    RemotingDiagnostics.executeGroovy(
+        'print($/' + cmd + '/$.execute().text)',
+        computer.getChannel()
+    )
+}
+
+Map dockerImagesAndTags(computer) {
+    def imagesAndTags = [:]
+
+    def output = executeOn(computer, /docker image ls --format {{.ID}}:{{.Tag}}/)
+    def lines = output.tokenize("\n")
+
+    for (int i = 0; i < lines.size; i++ ) {
+        def it = lines[i]
+        def (id, tag) = it.split(':')
+
+        if (id && tag) {
+            imagesAndTags[id] = imagesAndTags[id] ?: []
+            imagesAndTags[id] += tag
+        }
+    }
+
+    imagesAndTags
+}
+
+List dockerImagesToRemove(computer) {
+    def imageIDs = []
+
+    println "Scanning docker images on ${computer.getName()}"
+    dockerImagesAndTags(computer).each { id, tags ->
+        if (!tags.contains('latest')) {
+            imageIDs += id
+        }
+    }
+
+    imageIDs
+}
+
+def checkDiskSpace = { computer ->
+    executeOn(computer, "df ${disks.join(' ')}")
+}
+
+def removeDockerImages = { computer ->
+    // The 10000 limit on docker rmi arguments is very conservative
+    // considering the 2097152 ARG_MAX of our slave instances and the typical
+    // 12-character Docker image ID length
+    dockerImagesToRemove(computer).collate(10000).each { ids ->
+        def idsJoin = ids.join(' ')
+        println "Removing images: ${idsJoin}"
+        executeOn(computer, /docker rmi ${idsJoin}/)
     }
 }
 
@@ -88,12 +145,7 @@ def checkAgents = {
             continue
         }
 
-        def diskObjects = newDisksFromDf(
-            RemotingDiagnostics.executeGroovy(
-                groovyScript,
-                computer.getChannel()
-            )
-        )
+        def diskObjects = newDisksFromDf(checkDiskSpace(computer))
 
         diskObjects.each{ diskObject ->
             def ircMessage = String.format(
@@ -111,23 +163,25 @@ def checkAgents = {
 
             println "${jenkinsMessage}"
 
-            if (diskObject.percent < offlinePercentage) {
-                return
+            if (diskObject.percent >= offlinePercentage) {
+                // The offline threshold has been reached
+                computer.setTemporarilyOffline(
+                    true,
+                    new OfflineCause.ByCLI(jenkinsMessage)
+                )
+
+                alerts.add(ircMessage)
+            } else if (diskObject.percent >= cleanupPercentage && diskObject.mount == dockerMount) {
+                // The cleanup threshold for the docker mount has been reached
+                removeDockerImages(computer)
             }
-
-            computer.setTemporarilyOffline(
-                true,
-                new OfflineCause.ByCLI(jenkinsMessage)
-            )
-
-            alerts.add(ircMessage)
         }
     }
 
     return alerts
 }
 
-timeout(5) {
+timeout(time: executionTimeout, unit: 'SECONDS') {
     node('contint1001') {
         stage('Check agents') {
             ircAlerts = checkAgents()
