@@ -19,4 +19,4 @@ else
 fi;
 
 # Run tests
-./utils/run-tests.sh
+tox
