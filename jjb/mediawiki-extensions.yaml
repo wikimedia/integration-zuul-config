@@ -18,10 +18,22 @@
      - archive-log-allow-empty
      - docker-cleanup
 
-- job:
-    name: 'wmf-sonar-scanner'
+- project:
+    name: wmf-sonar-scanner
+    projectname: '${{ZUUL_PROJECT//\//-}}'
+    jobs:
+      - wmf-sonar-scanner-{name}:
+         name: 'change'
+         branch: '$ZUUL_CHANGE'
+      - wmf-sonar-scanner-{name}:
+         name: 'branch'
+         branch: '$ZUUL_BRANCH'
+
+- job-template:
+    name: 'wmf-sonar-scanner-{name}'
     node: DebianJessieDocker
     concurrent: false
+    branch: '$ZUUL_BRANCH'
     properties:
      - build-discarder:
          days-to-keep: 15
@@ -36,12 +48,12 @@
        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.2.0'
        logdir: '/log'
        args: |
-         -Dsonar.projectKey=${ZUUL_PROJECT//\//-} \
-         -Dsonar.projectName=${ZUUL_PROJECT//\//-} \
+         -Dsonar.projectKey={projectname}\
+         -Dsonar.projectName={projectname} \
          -Dsonar.organization=wmftest \
          -Dsonar.host.url=https://sonarcloud.io \
-         -Dsonar.branch.target=${ZUUL_BRANCH} \
-         -Dsonar.branch.name=$( [ $ZUUL_PIPELINE == "test" ] && ${ZUUL_CHANGE} || ${ZUUL_BRANCH} ) \
+         -Dsonar.branch.target="$ZUUL_BRANCH" \
+         -Dsonar.branch.name={branch}
          -X
     wrappers:
      - ansicolor
