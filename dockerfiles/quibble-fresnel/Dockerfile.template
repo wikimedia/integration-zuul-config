@@ -6,12 +6,13 @@ USER root
 #  Install Node.js and npm  #
 #############################
 
-# Based on 'node10'
-# Copying result of apt_install is hard.
-# This needs npm in /usr/local instead of /usr because
-# quibble-stretch already has an outdated npm at /usr/local
+# Based on 'node10' and 'node10-test'
+# * Copying result of apt_install (for nodejs) is hard.
+* * Add 'build-essential' and 'python' for node-gyp.
+# * Put npm in /usr/local instead of /usr because
+#   quibble-stretch already has an outdated npm at /usr/local.
 RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/node10" > /etc/apt/sources.list.d/stretch-node10.list \
-    && {{ "nodejs" | apt_install }} \
+    && {{ "nodejs python build-essential" | apt_install }} \
     && git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/npm.git /srv/npm \
     && rm -rf /srv/npm/.git \
     && ln -sf /srv/npm/bin/npm-cli.js /usr/local/bin/npm
