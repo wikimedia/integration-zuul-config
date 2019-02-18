@@ -1036,6 +1036,9 @@ jobs:
     files:
      - '^.*\.php$'
 
+  - name: mediawiki-fresnel-patch-docker
+    branch: master
+
   # For coverage report jobs, we only want one build at a time.
   #
   # That is the equivalent of concurrent: false in Jenkins but handled by Zuul
@@ -1835,6 +1838,7 @@ projects:
       - mediawiki-quibble-composer-mysql-php55-docker
       - mediawiki-core-php70-phan-seccheck-docker
       - wmf-sonar-scanner
+      - mediawiki-fresnel-patch-docker
 
   - name: mediawiki/debian
     test:
