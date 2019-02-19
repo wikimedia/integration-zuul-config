@@ -65,6 +65,10 @@ COPY mediawiki-fresnel-patch.sh /usr/local/bin/mediawiki-fresnel-patch
 #       and then remove from quibble-stretch-bundle/mwselenium.sh
 ENV CHROMIUM_FLAGS="--no-sandbox"
 
+# TODO: Fix Quibble to always export these, not just for qunit/wdio.
+ENV MW_SERVER="http://127.0.0.1:9412"
+ENV MW_SCRIPT_PATH="/"
+
 # Unprivileged
 RUN install --directory /workspace --owner=nobody --group=nogroup
 USER nobody
