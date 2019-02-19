@@ -709,6 +709,29 @@ pipelines:
     failure:
       gerrit: {}
 
+  # Separate pipeline for non-voting performance checks
+  - name: patch-performance
+    description: >
+      Jobs that checks performance per-patch.
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: low
+    trigger:
+      gerrit:
+        - event: patchset-created
+          branch: (?!^refs/meta/config)
+          email: *email_whitelist
+        - event: comment-added
+          comment: (?im)^Patch Set \d+:\n\n\s*check perf\.?\s*$
+          email: *email_whitelist
+
+    success-message: '✅ Performance checks OK! (same or better)'
+    success:
+      gerrit: {}
+    failure-message: '⚠️ This patch might be adding a page load cost.'
+    failure:
+      gerrit: {}
+
   - name: experimental
     description: >
       Jobs manually triggered by whitelisted users commenting 'check experimental'.
@@ -1038,6 +1061,8 @@ jobs:
 
   - name: mediawiki-fresnel-patch-docker
     branch: master
+    # Like concurrent:false in Jenkins, but handled by Zuul
+    mutex: mediawiki-fresnel-patch-docker
 
   # For coverage report jobs, we only want one build at a time.
   #
@@ -1822,6 +1847,8 @@ projects:
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
     coverage:
       - mediawiki-phpunit-coverage-patch-docker
+    patch-performance:
+      - mediawiki-fresnel-patch-docker
     postmerge:
       - mediawiki-core-jsduck-docker-publish
     experimental:
@@ -1832,7 +1859,6 @@ projects:
       - mediawiki-quibble-composer-mysql-php55-docker
       - mediawiki-core-php70-phan-seccheck-docker
       - wmf-sonar-scanner
-      - mediawiki-fresnel-patch-docker
 
   - name: mediawiki/debian
     test:
