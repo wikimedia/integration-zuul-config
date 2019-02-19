@@ -1038,6 +1038,8 @@ jobs:
 
   - name: mediawiki-fresnel-patch-docker
     branch: master
+    # Like concurrent:false in Jenkins, but handled by Zuul
+    mutex: mediawiki-fresnel-patch-docker
 
   # For coverage report jobs, we only want one build at a time.
   #
@@ -1822,6 +1824,7 @@ projects:
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
     coverage:
       - mediawiki-phpunit-coverage-patch-docker
+      - mediawiki-fresnel-patch-docker
     postmerge:
       - mediawiki-core-jsduck-docker-publish
     experimental:
@@ -1832,7 +1835,6 @@ projects:
       - mediawiki-quibble-composer-mysql-php55-docker
       - mediawiki-core-php70-phan-seccheck-docker
       - wmf-sonar-scanner
-      - mediawiki-fresnel-patch-docker
 
   - name: mediawiki/debian
     test:
