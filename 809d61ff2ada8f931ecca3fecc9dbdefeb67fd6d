@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef03917a_251d9759",
+        "filename": "dockerfiles/java8/run.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-02-20T09:17:22Z",
+      "side": 1,
+      "message": "/usr/local/bin/mvn is a wrapper around maven to:\n\n1) Point Maven at the XDG cache directory using mvn -gs settings.xml which has:\n\n \u003csettings\u003e\n     \u003clocalRepository\u003e${env.XDG_CACHE_HOME}/maven\u003c/localRepository\u003e\n \u003c/settings\u003e\n\n\n2) Disable the download progress when not being run interactively. That is done by passing --batch-mode when bash is not in interactive mode.\n\n3) some magic to recognize maven --file parameter and change directory when it is used. That comes from https://gerrit.wikimedia.org/r/#/c/integration/config/+/410348/\n\n\n\nOr in short, I think the logic to use use mvnw should instead in dockerfiles/java8/mvn. It invokes Maven based on a MAVEN_BIN environment variable:\n\n dockerfiles/java8/Dockerfile.template:ENV MAVEN_BIN\u003d/opt/apache-maven-3.5.2/bin/mvn\n dockerfiles/java8/mvn:\"$MAVEN_BIN\" \"${mvn_opts[@]}\" -gs /settings.xml \"${args[@]}\"\n\n\nSo I guess when mvnw exists, we can just override that MAVEN_BIN env variable and we will be fine ;)",
+      "revId": "809d61ff2ada8f931ecca3fecc9dbdefeb67fd6d",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
