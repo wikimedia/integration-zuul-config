@@ -380,7 +380,6 @@
     triggers:
         - zuul
     builders:
-        - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: 'docker-registry.wikimedia.org/releng/quibble-fresnel:0.0.28-6'
@@ -389,7 +388,6 @@
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
-        - castor-save-workspace-cache
         - docker-cleanup
     wrappers:
      - timeout:
