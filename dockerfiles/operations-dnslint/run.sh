@@ -19,4 +19,4 @@ else
 fi;
 
 # Run tests
-tox
+TOX_TESTENV_PASSENV="PY_COLORS" PY_COLORS=1 tox
