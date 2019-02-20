@@ -19,4 +19,4 @@ else
 fi;
 
 # Run tests
-tox
+PY_COLORS=1 tox
