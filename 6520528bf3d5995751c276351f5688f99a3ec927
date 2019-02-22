@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "902220b5_46b6f31d",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7872,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-02-22T20:00:59Z",
+      "side": 1,
+      "message": "extension-gate is somewhat too complicated, we barely add repositories to it anymore since it is a pain to setup right :(\n\nIn most cases you want to use:\n\n - name: extension-quibble\n\n\nIf your extension is not going to be deployed to the Wikimedia cluster AND it has some PHP dependencies in composer.json, you would need:\n\n - name: extension-quibble-composer\n\n\nQuibble is the name of the MediaWiki testrunner, there is some documentation at https://doc.wikimedia.org/quibble/ ;)",
+      "revId": "6520528bf3d5995751c276351f5688f99a3ec927",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a82163e_847d55ee",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7873,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-02-22T20:00:59Z",
+      "side": 1,
+      "message": "This run Phan security check, iirc it requires extra configuration to be added in your repository. You can find documentation at:\n\nhttps://www.mediawiki.org/wiki/Phan-taint-check-plugin\nhttps://www.mediawiki.org/wiki/Continuous_integration/Phan\n\n\nThat can be added in another change once your repository is read for it ;)",
+      "revId": "6520528bf3d5995751c276351f5688f99a3ec927",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
