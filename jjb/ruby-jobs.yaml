@@ -1,4 +1,4 @@
-- job-template: &job_rake-docker
+- job: &job_rake-docker
     name: 'rake-docker'
     node: DebianJessieDocker
     concurrent: true
@@ -26,11 +26,6 @@
     name: '{name}-rake-docker'
     triggers:
         - zuul
-
-- project:
-    name: common-rake-job
-    jobs:
-     - rake-docker
 
 # Call bundle 'yard' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
