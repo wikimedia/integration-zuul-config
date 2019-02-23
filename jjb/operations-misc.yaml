@@ -17,7 +17,7 @@
         - '{name}-tox-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/tox-conftool:0.3.2
 
-- job-template:
+- job:
     name: 'operations-dns-lint-docker'
     node: DebianJessieDocker
     concurrent: true
@@ -28,11 +28,6 @@
             image: docker-registry.wikimedia.org/releng/operations-dnslint:0.0.4
     publishers:
         - docker-cleanup
-
-- project:
-    name: 'operations-dns'
-    jobs:
-     - 'operations-dns-lint-docker'
 
 - job:
     name: 'operations-mw-config-composer-test-docker'
