@@ -4,7 +4,8 @@
      - archive:
          artifacts: '**/.tox/*/log/*.log,**/.tox/log/*'
 
-- job-template: &job_tox-docker
+# generic job
+- job: &job_tox-docker
     name: 'tox-docker'
     node: DebianJessieDocker
     concurrent: true
@@ -131,11 +132,6 @@
         - castor-save-workspace-cache
         - archive-log-dir
         - docker-cleanup
-
-- project:
-    name: common-tox-jobs
-    jobs:
-     - 'tox-docker'
 
 - job:
     name: 'commit-message-validator'
