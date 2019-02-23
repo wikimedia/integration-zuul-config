@@ -63,7 +63,11 @@
       - fundraising-crm-phpunit
     publishers:
       - fundraising-crm-clean
-      - phpunit-junit
+      # Publish PHPUnit junit results
+      - xunit:
+         types:
+          - phpunit:
+             pattern: 'log/junit-phpunit.xml'
       - archive-log-dir
 
 - project:
