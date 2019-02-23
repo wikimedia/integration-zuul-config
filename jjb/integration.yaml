@@ -1,11 +1,7 @@
 # Jobs for integration/*
 
-# Job that update the file hierarchy maintained by CI.
-#
-# As of July 2013 the two main entry points are:
-# - integration.wikimedia.org
-# - doc.wikimedia.org
-- job-template:
+# Job that update the file hierarchy for integration.wikimedia.org
+- job:
     name: 'integration-docroot-deploy'
     node: contint1001
     defaults: global
@@ -120,11 +116,6 @@
                  entrypoint: utils/zuul-layout-diff.sh
              - zuul-layout-validate:
                  entrypoint: utils/zuul-layout-validate.sh
-
-- project:
-    name: 'integration-docroot'
-    jobs:
-     - 'integration-docroot-deploy'
 
 - project:
     name: 'integration-quibble'
