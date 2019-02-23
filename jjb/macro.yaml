@@ -8,24 +8,6 @@
         rm -rf node_modules
         npm install
 
-# The npm-run macro is intended to be used when multiple scripts are used
-# together (e.g. 'doc' and later 'test'). If you simply need to run
-# npm-install and npm-run-test, use the plain 'npm' macro instead.
-#
-# MUST run npm-setup.sh before this (e.g. via npm-install macro)
-#
-# Example:
-# builders:
-#  - npm-run:
-#      script: doc
-#
-- builder:
-    name: npm-run
-    builders:
-     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/npm-set-env.sh
-        npm run-script {script}
-
 - builder:
     name: assert-env-doc_subpath
     builders:
