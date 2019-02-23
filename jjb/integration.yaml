@@ -44,8 +44,8 @@
         - docker-cleanup
 
 # Super basic sanity check for integration/composer repo
-- job-template:
-    name: 'integration-composer-check-{phpflavor}-docker'
+- job:
+    name: 'integration-composer-check-php55-docker'
     node: DebianJessieDocker
     concurrent: true
     triggers:
@@ -54,17 +54,9 @@
      - docker-src-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: '{docker_image}'
+         image: 'docker-registry.wikimedia.org/releng/php55:0.1.2'
          args: '/src/vendor/bin/composer --version'
          logdir: '/log'
-
-- project:
-    name: 'integration-composer'
-    jobs:
-     - 'integration-composer-check-{phpflavor}-docker':
-         phpflavor:
-             - php55:
-                 docker_image: docker-registry.wikimedia.org/releng/php55:0.1.2
 
 - job:
     name: integration-config-qa
