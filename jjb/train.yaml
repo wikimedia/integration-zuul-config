@@ -8,26 +8,23 @@
 - job:
     name: 'train-deploy-notes'
     node: train
-    parameters:
-      - string:
-          name: 'ZUUL_URL'
-          default: 'https://gerrit.wikimedia.org/r'
-      - string:
-          name: 'ZUUL_PROJECT'
-          default: 'mediawiki/tools/release'
-      - string:
-          name: 'ZUUL_REF'
-          default: 'master'
-      - string:
-          name: 'OLD_VERSION'
-          default: ''
-      - string:
-          name: 'NEW_VERSION'
-          default: ''
+    triggers:
+      - zuul
     builders:
+      - shell: |
+          #!/usr/bin/env bash
+          set -euxo pipefail
+
+          # Only new refs, not ref updates
+          if [[ "$ZUUL_OLDREV" != "00000000000000000000000000000000" ]]; then
+            exit 1
+          fi
+
+          # A branch, but not a REL branch
+          if [[ ! $ZUUL_REF =~ "refs/heads/wmf/1." ]]; then
+            exit 1
+          fi
       - docker-log-dir
-      - docker-src-dir
-      - docker-ci-src-setup-simple
       - docker-run-with-log-cache-src:
           image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.1'
           logdir: '/log'
