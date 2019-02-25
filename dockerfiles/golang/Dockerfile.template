@@ -1,0 +1,13 @@
+FROM {{ "ci-stretch" | image_tag }}
+
+USER root
+ENV GOLANG_VERSION 1.11
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:/usr/lib/go-$GOLANG_VERSION/bin:$PATH
+
+RUN {{ "golang-$GOLANG_VERSION" | apt_install }} \
+    && mkdir -p "$GOPATH/src" "$GOPATH/bin" \
+    && chmod -R 777 "$GOPATH"
+
+USER nobody
+WORKDIR $GOPATH
