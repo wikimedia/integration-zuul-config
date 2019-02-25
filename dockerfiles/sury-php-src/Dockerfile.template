@@ -1,0 +1,9 @@
+FROM {{ "sury-php" | image_tag }}
+
+ENV php_packages php7.2 php-defaults php-redis php-apcu
+
+RUN echo "deb-src https://packages.sury.org/php/ stretch main" >> /etc/apt/sources.list.d/php.list && \
+    {{ "dpkg-dev" | apt_install }}
+
+COPY run.sh /bin/run.sh
+ENTRYPOINT ["/bin/run.sh"]
