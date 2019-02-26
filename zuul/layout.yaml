@@ -3050,6 +3050,15 @@ projects:
     template:
       - name: tox-docker
 
+  - name: operations/software/acme-chief
+    test:
+      - debian-glue-non-voting
+      - acme-chief-tox-docker
+    gate-and-submit:
+      - acme-chief-tox-docker
+    postmerge:
+      - acme-chief-tox-docker
+
   - name: operations/software/analytics-eventlogging-maintenance
     template:
       - name: archived
