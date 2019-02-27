@@ -320,7 +320,7 @@ class TestZuulScheduler(unittest.TestCase):
             # Pipelines that must be set
             requirements = {'gate-and-submit', 'experimental'}
             for default_requirement in [
-                    'check', 'test', 'gate-and-submit-l10n']:
+                    'test', 'gate-and-submit-l10n']:
                 requirements.add(default_requirement)
                 self.assertIn(default_requirement, project_def.keys(),
                               'Project %s must have a %s pipeline'
@@ -355,20 +355,6 @@ class TestZuulScheduler(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual([], lacks_gate)
 
-    def test_projects_have_only_one_check_pipeline(self):
-        dupe_check = {}
-        for (project, pipelines) in self.getProjectsPipelines().iteritems():
-            check_pipelines = [p for p in pipelines if p.startswith('check')]
-            if len(check_pipelines) > 1:
-                dupe_check[project] = check_pipelines
-
-        self.longMessage = True
-        self.maxDiff = None
-
-        self.assertEquals(
-            {}, dupe_check,
-            msg="Projects can only be in a single check pipeline")
-
     def assertPipelinesDoNotOverlap(self, pipeline_name_1, pipeline_name_2,
                                     msg=None):
         first = set(self.getPipelineProjectsNames(pipeline_name_1))
@@ -377,45 +363,6 @@ class TestZuulScheduler(unittest.TestCase):
         self.longMessage = True
         self.maxDiff = None
         self.assertEqual(set(), first & second, msg)
-
-    def test_valid_jobs_in_check_pipelines(self):
-        check_pipelines = [p.name for p in self.getPipelines()
-                           if p.name.startswith('check')]
-
-        # We expect check pipelines to have no unsafe jobs
-        expected = {k: {} for k in check_pipelines}
-        # Map of pipelines -> projects -> unsafe jobs
-        actual = copy.deepcopy(expected)
-
-        # List of jobs allowed in check* pipelines
-        safe_jobs = [
-            '(hhvm|php(55|56|70)|yaml)lint',
-            '.*-(js|shell|hhvm|php(55|56|70)|)lint',
-            '.*-tabs',
-            'noop',
-            '(?:mwgate-)?composer-validate',
-            'composer-package-validate',
-            'fail-archived-repositories',
-            '.*tox-docker',
-            'commit-message-validator',
-        ]
-        safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
-
-        all_defs = self.getProjectsDefs()
-        for (project_name, defs) in all_defs.iteritems():
-            for (pipeline, jobs) in defs.iteritems():
-                if not pipeline.startswith('check'):
-                    continue
-                unsafe_jobs = [j for j in jobs
-                               if not re.match(safe_jobs_re, j)]
-                if unsafe_jobs:
-                    actual[pipeline].update({project_name: unsafe_jobs})
-
-        self.maxDiff = None
-        self.longMessage = True
-
-        self.assertEquals(expected, actual,
-                          "No project have unsafe jobs in check* pipelines")
 
     def test_gate_and_submit_swat(self):
         gs_swat_manager = self.getPipeline('gate-and-submit-swat').manager
@@ -658,7 +605,6 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(test_manager.eventMatches(event, change))
 
     def test_pipelines_trustiness(self):
-        check_manager = self.getPipeline('check').manager
         test_manager = self.getPipeline('test').manager
         change = zuul.model.Change('mediawiki/core')
         change.branch = 'master'
@@ -668,7 +614,6 @@ class TestZuulScheduler(unittest.TestCase):
         untrusted_event.type = 'patchset-created'
         untrusted_event.account = {'email': 'untrusted@example.org'}
         untrusted_event.branch = change.branch
-        self.assertTrue(check_manager.eventMatches(untrusted_event, change))
         self.assertFalse(test_manager.eventMatches(untrusted_event, change))
 
         # Trusted user
@@ -676,7 +621,6 @@ class TestZuulScheduler(unittest.TestCase):
         trusted_event.type = 'patchset-created'
         trusted_event.account = {'email': 'jdoe@wikimedia.org'}
         trusted_event.branch = change.branch
-        self.assertFalse(check_manager.eventMatches(trusted_event, change))
         self.assertTrue(test_manager.eventMatches(trusted_event, change))
 
     def test_donationinterface_deployment_branch_filters(self):
@@ -783,8 +727,7 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertFalse(job.changeMatches(change))
 
     def test_l10nbot_patchets_are_ignored(self):
-        managers = [self.getPipeline(p).manager
-                    for p in ['check', 'test']]
+        test_manager = self.getPipeline('test').manager
         change = zuul.model.Change('mediawiki/core')
         change.branch = 'master'
 
@@ -793,10 +736,9 @@ class TestZuulScheduler(unittest.TestCase):
         l10n_event.account = {'email': 'l10n-bot@translatewiki.net'}
         l10n_event.branch = change.branch
 
-        [self.assertFalse(manager.eventMatches(l10n_event, change),
-                          'l10-bot should not enter %s pipeline' %
-                          manager.pipeline.name)
-         for manager in managers]
+        self.assertFalse(test_manager.eventMatches(l10n_event, change),
+                         'l10-bot should not enter %s pipeline' %
+                         test_manager.pipeline.name)
 
     # Currently failing since we're ignoring l10n-bot until we can fix
     # issues with CI being overloaded (T91707)
