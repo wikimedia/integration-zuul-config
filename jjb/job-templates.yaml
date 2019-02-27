@@ -15,6 +15,37 @@
      - archive-log-allow-empty
      - docker-cleanup
 
+# CI for gerrit
+- job:
+    name: 'gerrit-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    wrappers:
+      # need's to be 1 hour and 30 mins to give gerrit enough time to build.
+      # It can sometimes take a while.
+      - timeout:
+          timeout: 90
+          fail: true
+      - timestamps
+      - ansicolor
+    triggers:
+     - zuul
+    builders:
+      - docker-castor-load
+      - docker-src-dir
+      - docker-log-dir
+      - docker-ci-src-setup-simple
+      - docker-run-with-log-and-workspace-cache:
+          image: 'docker-registry.wikimedia.org/releng/gerrit:0.1.0'
+          options: '--volume /srv/git:/srv/git:ro'
+          logdir: '/log'
+    publishers:
+      - archive:
+         artifacts: >
+           log/execroot/*/bazel-out/k8-fastbuild/bin/*.war,
+           log/execroot/*/bazel-out/k8-fastbuild/bin/plugins/core.zip,
+      - docker-cleanup
+
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
     # m4executor label are slaves with 4GBytes memory. Lot of our Java
