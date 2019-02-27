@@ -1,0 +1,14 @@
+# Docker image with bazel
+
+FROM {{ "ci-stretch" | image_tag }}
+
+USER root
+
+# Install Bazel
+RUN apt-get update && apt-get install wget && \
+    wget -O /tmp/bazel_0.22.0-linux-x86_64.deb https://github.com/bazelbuild/bazel/releases/download/0.22.0/bazel_0.22.0-linux-x86_64.deb && \
+    (dpkg -i /tmp/bazel_0.22.0-linux-x86_64.deb; apt-get install -f -y) && \
+    rm /tmp/bazel_0.22.0-linux-x86_64.deb && \
+    bash -c 'bazel version'
+
+USER nobody
