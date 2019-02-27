@@ -1,0 +1,31 @@
+# Docker image with gerrit
+
+FROM {{ "bazel" | image_tag }}
+
+FROM {{ "node10" | image_tag }}
+
+USER root
+
+RUN apt-get update && apt-get install -y -f curl \
+    default-jdk \
+    gnupg2 \
+    lib32stdc++6 \
+    lib32z1\
+    python \
+    python-dev \
+    python3 \
+    python3-dev \
+    wget \
+    vim \
+    zip
+
+# Install Bazel
+
+# bower does not like root users thus needs a user account
+RUN useradd gerrit -d /home/gerrit -m -s /bin/bash
+
+USER gerrit
+
+WORKDIR /src
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]

@@ -975,6 +975,11 @@ jobs:
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     files: 'debian/.*'
 
+  - name: ^operations/software/gerrit
+    # Point directly to artifacts
+    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
+    branch: ^wmf/.*$
+
   - name: cumin-tox-publish
     branch: ^master$
 
@@ -3123,6 +3128,12 @@ projects:
       - name: tox-docker
     test:
       - debian-glue-non-voting
+
+  - name: operations/software/gerrit
+    test:
+      - gerrit-docker
+    gate-and-submit:
+      - gerrit-docker
 
   - name: operations/software/keyholder
     template:
