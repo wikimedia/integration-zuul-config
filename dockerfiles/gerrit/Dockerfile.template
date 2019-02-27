@@ -1,0 +1,52 @@
+# Docker image with gerrit
+
+FROM {{ "ci-stretch" | image_tag }}
+
+USER root
+
+# Install Bazel
+RUN apt-get update && apt-get install -y curl \
+    default-jdk \
+    gnupg2 \
+    python \
+    python-dev \
+    python3 \
+    python3-dev \
+    wget \
+    zip
+
+# Install Bazel
+COPY bazel.gpg /etc/apt/trusted.gpg.d/bazel-release.asc
+
+RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
+
+RUN apt-get update && apt-get install -y bazel
+
+# Use Node 10 instead of Node 6
+RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/node10" > /etc/apt/sources.list.d/stretch-node10.list \
+    && {{ "nodejs" | apt_install }} \
+    && git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/npm.git /srv/npm \
+    && rm -rf /srv/npm/.git \
+    && ln -s /srv/npm/bin/npm-cli.js /usr/bin/npm
+
+USER root
+
+RUN apt-get update && apt-get install -y -f curl \
+    default-jdk \
+    gnupg2 \
+    lib32stdc++6 \
+    lib32z1\
+    python \
+    python-dev \
+    python3 \
+    python3-dev \
+    wget \
+    vim \
+    zip
+
+# bower does not like root users thus needs a user account
+RUN useradd gerrit -d /home/gerrit -m -s /bin/bash
+
+USER gerrit
+
+WORKDIR /src
