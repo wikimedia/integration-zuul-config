@@ -21,320 +21,9 @@ includes:
 
 
 pipelines:
-  # Terminology:
-  # - check: Basic jobs run for all users. Votes V+1
-  # - test: More elaborate execution run only after CR+2 or when submitted
-  #    by a whitelisted user. Votes V+2.
 
-
-  # Use this in combination with a 'test' pipeline.
-  - name: check
-    description: >
-      Basic jobs being run for all users which are not whitelisted. Will vote Verified +1/-1.
-    manager: IndependentPipelineManager
-    source: gerrit
-    trigger:
-      gerrit:
-        - event: patchset-created
-          branch: (?!^refs/meta/config)
-          # Don't run the check pipeline if the user is allowed to run the test pipeline (T45391).
-          # TODO: Figure out a way to turn this into a list instead of a single regex.
-          # TODO: Figure out a way to not have to repeat this from pipeline 'test'.
-          # This email filter and the one for 'test' can be removed once we have fixed T47499.
-          email:
-            - |
-              (?x) ^(?!(
-                .*?@wikimedia\.(org|de)
-                | .*?@hallowelt\.(biz|com)
-                | .*?@shoutwiki\.com
-                | .*?@uncyclomedia\.co
-                | 0freerunning@gmail\.com
-                | 01tonythomas@gmail\.com
-                | 6020peaks@gmail\.com
-                | aarcos\.wiki@gmail\.com
-                | abijeetpatro@gmail\.com
-                | adamr_carter@btinternet\.com
-                | addshorewiki@gmail\.com
-                | alangiderick@gmail\.com
-                | andre\.costa@wikimedia\.se
-                | cblair91@gmail\.com
-                | admin@glados\.cc
-                | agboreugene@gmail\.com
-                | alexsh@mail2000\.com\.tw
-                | amir\.aharoni@mail\.huji\.ac\.il
-                | amrit\.sreekumar@gmail\.com
-                | andreas\.burmeister@student\.hpi\.de
-                | andre\.greiner-petter@t-online\.de
-                | andrew\.green\.df@gmail\.com
-                | anirudh24seven@gmail\.com
-                | anomie\.wikipedia@gmail\.com
-                | arcaynnnnnn@gmail\.com
-                | asthana\.sumit23@gmail\.com
-                | at\.light@live\.com\.au
-                | aude\.wiki@gmail\.com
-                | ayg@aryeh\.name
-                | bawolff\+wn@gmail\.com
-                | beauleetienne0@gmail\.com
-                | bebirchall@gmail\.com
-                | benapetr@gmail\.com
-                | benestar\.wikimedia@gmail\.com
-                | bmp2558@gmail\.com
-                | bryan\.tongminh@gmail\.com
-                | cenarium\.sysop@gmail\.com
-                | CharmindYT@gmail\.com
-                | chicocvenancio@gmail\.com
-                | christian@quelltextlich\.at
-                | christoph\.neuroth@gmail\.com
-                | cindom@gmail\.com
-                | codereview@emsenhuber\.ch
-                | CommodoreFabianus@gmx\.de
-                | crazy4sb@gmail\.com
-                | daimona\.wiki@gmail\.com
-                | dalba\.wiki@gmail\.com
-                | loic@dachary\.org
-                | daniel@nadir-seen-fire\.com
-                | daniel\.rey\.lopez@gmail\.com
-                | datguysteam@gmail\.com
-                | david@troi\.org
-                | davidabian@wikimedia\.es
-                | d_entous@yahoo\.com
-                | dereckson@espace-win\.org
-                | devunt@gmail\.com
-                | divad\.nnamtdeis@gmail\.com
-                | dominic\.sauer@yahoo\.de
-                | drenfro@vistaprint\.com
-                | dr\.trigon@surfeu\.ch
-                | dvorapa@seznam\.cz
-                | ebrahim@gnu\.org
-                | ecokpo@gmail\.com
-                | edlira\.dushku@gmail\.com
-                | edwardspec@gmail\.com
-                | eflyjason@gmail\.com
-                | ejegg@ejegg\.com
-                | elaarad@gmail.com
-                | eloquence@gmail\.com
-                | eranroz89@gmail\.com
-                | evad37@gmail\.com
-                | federicoleva@tiscali\.it
-                | rj23@protonmail\.com
-                | florian\.schmidt\.stargatewissen@gmail\.com
-                | fomafix@googlemail\.com
-                | framawiki@tools\.wmflabs\.org
-                | gianiskido@gmail\.com
-                | gifti@tools\.wmflabs\.org
-                | git@samsmith\.io
-                | geofbot@gmail\.com
-                | geoffreytrang@gmail\.com
-                | glaisher\.wiki@gmail\.com
-                | gneha21@yahoo\.in
-                | god\.vedmaka@gmail\.com
-                | gopavasanth1999@gmail\.com
-                | happy5214@gmail\.com
-                | hardikjuneja\.hj@gmail\.com
-                | hartman\.wiki@gmail\.com
-                | hashar@free\.fr
-                | hbhyrava@gmail\.com
-                | hgasuser@gmail\.com
-                | hoo@online\.de
-                | huji\.huji@gmail\.com
-                | hydriz@jorked\.com
-                | i@ananayarora\.com
-                | inez@wikia-inc\.com
-                | info@gno\.de
-                | i\.leturia@elhuyar\.eus
-                | jack@countervandalism\.net
-                | jackmcbarn@gmail\.com
-                | jamesmhare@gmail\.com
-                | jamesmontalvo3@gmail\.com
-                | jamesin\.hongkong\.1@gmail\.com
-                | jan@berkel\.fr
-                | jan\.wikimedia@zerebecki\.de
-                | jarry1250@gmail\.com
-                | jayvdb@gmail\.com
-                | jeanfrederic\.wiki@gmail\.com
-                | jeff\.janes@gmail\.com
-                | jeroendedauw@gmail\.com
-                | jhobbs14@msudenver\.edu
-                | jhsoby@gmail\.com
-                | johanna\.m\.mayr@gmail\.com
-                | jonas@keutel\.de
-                | jorgekasa@gmail\.com
-                | julien\.inbox\.wiki@gmail\.com
-                | juliusalphonso\.09@gmail\.com
-                | juniorsys_wikimedia@outlook\.com
-                | justin\.d128@gmail\.com
-                | kaarticsivaraam91196@gmail\.com
-                | kartik\.mistry@gmail\.com
-                | karsten@hoffmeyer\.info
-                | kohpirong@gmail\.com
-                | krenair@gmail\.com
-                | krinklemail@gmail\.com
-                | k\.s\.werf@hotmail\.com
-                | kumariankita002@gmail\.com
-                | l10n-bot@translatewiki\.net
-                | [Ll]adsgroup@gmail\.com
-                | legoktm@member\.fsf\.org
-                | lewis@lewiscawte\.me
-                | liangent@gmail\.com
-                | tools\.libraryupgrader@tools\.wmflabs\.org
-                | lokal\.profil@gmail\.com
-                | lucie\.kaffee@gmail\.com
-                | luk\.bukkit@gmail\.com
-                | luke@faraone\.cc
-                | luke081515@web\.de
-                | l\.verhovskij@gmail\.com
-                | maarten@mdammers\.nl
-                | mah@nichework\.com
-                | mail@wikinaut\.de
-                | malafaya@clix\.pt
-                | marc@uberbox\.org
-                | maria\.pacana@gmail\.com
-                | marielle\.volz@gmail\.com
-                | markus@semantic-mediawiki\.org
-                | maroloccio@gmail\.com
-                | martin@urbanec\.cz
-                | martin\.urbanec@wikimedia\.cz
-                | martineznovo@gmail\.com
-                | matanya@foss\.co\.il
-                | matanya\.moses@gmail\.com
-                | matejsuchanek97@gmail\.com
-                | matma\.rex@gmail\.com
-                | maurelio@tools\.wmflabs\.org
-                | maxsem\.wiki@gmail\.com
-                | mbch331\.wikipedia@gmail\.com
-                | mediawiki@kghoffmeyer\.de
-                | Megadev44s\.mail@gmail\.com
-                | misterstrad@gmail\.com
-                | mjbmri@gmail\.com
-                | mlazowik@gmail\.com
-                | moriel@gmail\.com
-                | mpaa\.wiki@gmail\.com
-                | mhutti1@gmail\.com
-                | mr7060@mail\.com
-                | musikanimal@gmail\.com
-                | mtraceur@member\.fsf\.org
-                | mwalker@khaosdev\.com
-                | mxn@1ec5\.org
-                | nathanklumpenaar10@outlook\.com
-                | niharikakohli29@gmail\.com
-                | nikitav30@gmail\.com
-                | niklas\.laxstrom@gmail\.com
-                | nilesh@nileshc\.com
-                | nils\.andre\.chang@gmail\.com
-                | nullzero\.free@gmail\.com
-                | ole\.yves@gmail\.com
-                | oliver\.buchtala@gmail\.com
-                | orbit@framezero\.com
-                | pastakhov@yandex\.ru
-                | paulfkeffer@gmail\.com
-                | platonides@gmail\.com
-                | pleasestand@live\.com
-                | pragun06@gmail\.com
-                | pranavmk98@gmail\.com
-                | prssud@gmail\.com
-                | purodha@blissenbach\.org
-                | pyfisch@gmail\.com
-                | rafidteam@gmail\.com
-                | raimond\.spekking@gmail\.com
-                | razesoldier@outlook\.com
-                | ricordisamoa@openmailbox\.org
-                | rillke@wikipedia\.de
-                | rj23@protonmail\.com
-                | roan\.kattouw@gmail\.com
-                | robinp\.1273@gmail\.com
-                | russblau@imapmail\.org
-                | s7eph4n@protonmail\.com
-                | sam@samwilson\.id\.au
-                | sam@tntnet\.uk
-                | samanthanguyen1116@gmail\.com
-                | samikshya\.chand\.ece15@iitbhu\.ac\.in
-                | samohasmoha07@gmail\.com
-                | samrhilson@gmail\.com
-                | samuelguebo@gmail\.com
-                | santhosh\.thottingal@gmail\.com
-                | saper@saper\.info
-                | schenonef@gmail\.com
-                | se4598@gmx\.de
-                | seb35@seb35\.fr
-                | sebastian\.berlin@wikimedia\.se
-                | shahyar@gmail\.com
-                | shreyasminocha@protonmail\.com
-                | siebrand@kitano\.nl
-                | sjoerddebruin@me\.com
-                | skizzerz@skizzerz\.net
-                | smarita\.sharma2015@vit\.ac\.in
-                | soeren_oldag@freenet\.de
-                | srishakatux@gmail\.com
-                | stefan@garage-coding\.com
-                | stefan\.petrea@gmail\.com
-                | stevenvandenwildenberg@gmail\.com
-                | strayblues@gmail\.com
-                | strigiwm@gmail\.com
-                | sucheta\.ghoshal@gmail\.com
-                | tacsipacsi@jnet\.hu
-                | takidelfin@gmail\.com
-                | tamaraslosarek@gmail\.com
-                | tekenoella94@gmail\.com
-                | terppa05@gmail\.com
-                | terracodes@outlook\.com
-                | terracodes@tools\.wmflabs\.org
-                | tasneem\.lo\.31@gmail\.com
-                | thalia\.e\.chan@googlemail\.com
-                | thinkcolorful@thinkcolorful\.org
-                | thomasmulhall410@yahoo\.com
-                | thomaspt@hotmail\.fr
-                | tk\.999\.wikia@gmail\.com
-                | tim@tim-landscheidt\.de
-                | tinajohnson\.1234@gmail\.com
-                | trevorparscal@gmail\.com
-                | tomasz@twkozlowski\.com
-                | tosfos@yahoo\.com
-                | [Tt]ulsibhagat50@gmail\.com
-                | tur\.neslihan@gmail\.com
-                | tylerromeo@gmail\.com
-                | umherirrender_de\.wp@web\.de
-                | utilizator\.receptie123@gmail\.com
-                | v\.a\.ghaisas@gmail\.com
-                | valhallasw@arctus\.nl
-                | vikasyaligar\.it@gmail\.com
-                | vinithacse@gmail\.com
-                | victorbarbu08@gmail\.com
-                | w@mzmcbride\.com
-                | w\.albert221@gmail\.com
-                | washuu@gmail\.com
-                | wctaiwan@gmail\.com
-                | webmelos@gmail\.com
-                | whym@whym\.org
-                | wiki@physikerwelt\.de
-                | wikimedia@bjorn\.ml
-                | wikimedia\.org@eddie-sh\.de
-                | wikiposta@gmail\.com
-                | wiki@strainu\.ro
-                | wiki@ymhong\.com
-                | wikitech\.rxy@rxy\.jp
-                | xietaoecho@gmail\.com
-                | yaron57@gmail\.com
-                | yash\.girdhar@gmail\.com
-                | yuriastrakhan@gmail\.com
-                | yuvipanda@gmail\.com
-                | zhorishna@gmail\.com
-                | zhuyifei1999@gmail\.com
-                | zorandori4444@gmail\.com
-                | lacrymarum\.valle@gmail\.com
-              )).*$
-
-    success-message: 'Basic test build succeeded.'
-    success:
-      # Only V+1 as these are not elaborate tests. This prevents a change from
-      # being merged (requires V+2) before elaborate tests, which vote V+2, have run.
-      gerrit:
-        verified: 1
-    failure-message: 'Basic test build failed.'
-    failure:
-      gerrit:
-        verified: -1
-
-  # Use this in combination with a check pipeline.
+  # Elaborate execution run only after CR+2 or when submitted by a whitelisted
+  # user. Votes V+2.
   - &test_pipeline
     name: test
     description: >
@@ -348,7 +37,6 @@ pipelines:
 
           # BEWARE:
           # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
-          # - Also update the email filter of the 'check' pipeline.
 
           email: &email_whitelist
            - .*?@wikimedia\.(org|de)$
@@ -1184,10 +872,6 @@ project-templates:
   # Only php7 is added, HHVM is ignored.
   #
   - name: extension-broken
-    check:
-     - mwgate-php55lint
-     - mwgate-php70lint
-     - mwgate-composer-validate
     test:
      - mwgate-composer-php70-docker
      - mwgate-npm-node-6-docker
@@ -1225,10 +909,6 @@ project-templates:
   # Runs quibble, and includes experimental jobs
   # that are for extensions.
   - name: extension-quibble
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     php:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
@@ -1255,10 +935,6 @@ project-templates:
       - wmf-sonar-scanner-change
 
   - name: extension-quibble-composer
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     php:
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
@@ -1286,10 +962,6 @@ project-templates:
 
   # Runs quibble but skip selenium tests - T196960
   - name: extension-quibble-noselenium
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     php:
       - quibble-vendor-mysql-php55-noselenium-docker
       - quibble-vendor-mysql-php70-noselenium-docker
@@ -1316,10 +988,6 @@ project-templates:
       - wmf-sonar-scanner-change
 
   - name: extension-quibble-composer-noselenium
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     php:
       - quibble-composer-mysql-php55-noselenium-docker
       - quibble-composer-mysql-php70-noselenium-docker
@@ -1360,10 +1028,6 @@ project-templates:
       - mwselenium-quibble-docker
 
   - name: extension-gate
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     test:
       # For REL branches:
       - release-quibble-vendor-mysql-hhvm-docker
@@ -1436,10 +1100,6 @@ project-templates:
   # Runs quibble, and includes experimental jobs
   # that are for skins.
   - name: skin-quibble
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     php:
       - quibble-vendor-mysql-php55-docker
       - quibble-vendor-mysql-php70-docker
@@ -1466,10 +1126,6 @@ project-templates:
       - wmf-sonar-scanner-change
 
   - name: skin-quibble-composer
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     php:
       - quibble-composer-mysql-php55-docker
       - quibble-composer-mysql-php70-docker
@@ -1511,10 +1167,6 @@ project-templates:
       - mwext-node10-docs-docker-publish
 
   - name: composer-test
-    check:
-      - php55lint
-      - php70lint
-      - composer-validate
     test:
       - composer-php55-docker
       - composer-hhvm-docker
@@ -1525,10 +1177,6 @@ project-templates:
     gate-and-submit-swat: *composer-test-gate-and-submit
 
   - name: mwgate-composer
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     test:
       - mwgate-composer-php55-docker
       - mwgate-composer-hhvm-docker
@@ -1540,8 +1188,6 @@ project-templates:
     gate-and-submit-swat: *mwgate-composer-gate-and-submit
 
   - name: php55lint
-    check:
-      - php55lint
     test:
       - php55lint
     gate-and-submit: &php55lint-gate-and-submit
@@ -1549,8 +1195,6 @@ project-templates:
     gate-and-submit-swat: *php55lint-gate-and-submit
 
   - name: php70lint
-    check:
-      - php70lint
     test:
       - php70lint
     gate-and-submit: &php70lint-gate-and-submit
@@ -1559,10 +1203,6 @@ project-templates:
 
 
   - name: composer-test-php55-package
-    check:
-      - composer-package-validate
-      - php55lint
-      - php70lint
     test:
       - composer-package-hhvm-docker
       - composer-package-php55-docker
@@ -1579,9 +1219,6 @@ project-templates:
       - composer-package-php73-docker
 
   - name: composer-test-package
-    check:
-      - composer-package-validate
-      - php70lint
     test:
       - composer-package-hhvm-docker
       - composer-package-php70-docker
@@ -1596,8 +1233,6 @@ project-templates:
       - composer-package-php73-docker
 
   - name: composer-test-package-php72-or-later
-    check:
-      - composer-package-validate
     test:
       - composer-package-php72-docker
       - composer-package-php73-docker
@@ -1668,8 +1303,6 @@ project-templates:
      - mwgate-tox-docker
 
   - name: commit-message-validator
-    check:
-     - commit-message-validator
     test:
      - commit-message-validator
     # non-voting / under test
@@ -1677,8 +1310,6 @@ project-templates:
     # - commit-message-validator
 
   - name: archived
-    check:
-     - fail-archived-repositories
     test:
      - fail-archived-repositories
     gate-and-submit:
@@ -1697,8 +1328,6 @@ projects:
       - debian-glue
 
   - name: integration/config
-    check:
-      - noop
     test:
       - integration-config-tox-docker
       - integration-config-jjb-diff-docker
@@ -1814,11 +1443,6 @@ projects:
   - name: mediawiki/core
     template:
       - name: extension-gate
-    check:
-      - mediawiki-core-php55lint
-      - mediawiki-core-hhvmlint
-      - mediawiki-core-php70lint
-      - composer-package-validate
     test:
       - quibble-donationinterface-REL1_27-zend56-docker
       - mediawiki-quibble-composer-mysql-php70-docker
@@ -1881,10 +1505,6 @@ projects:
   - name: mediawiki/vendor
     template:
       - name: extension-gate
-    check:
-      - mwgate-php55lint
-      - mwgate-php70lint
-      - mwgate-composer-validate
     test:
       - mwgate-composer-hhvm-docker
       - mwgate-composer-php55-docker
@@ -2979,10 +2599,6 @@ projects:
       - name: tox-docker
 
   - name: operations/mediawiki-config
-    check:
-      - operations-mw-config-php70lint
-      - operations-mw-config-hhvmlint
-      - composer-validate
     test-prio:
       - operations-mw-config-php70lint
       - operations-mw-config-hhvmlint
@@ -3378,9 +2994,6 @@ projects:
      - name: composer-test
 
   - name: wikimedia/wikimania-scholarships
-    check:
-      - php56lint
-      - composer-validate
     test: &wikimania-scholarships-test
       - npm-node-6-docker
       - composer-php56-docker
@@ -6799,8 +6412,6 @@ projects:
       - name: extension-quibble-composer
       - name: extension-coverage
       - name: extension-seccheck
-    check:
-      - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
@@ -6811,8 +6422,6 @@ projects:
       - name: extension-quibble-composer
       - name: extension-coverage
       - name: extension-seccheck
-    check:
-      - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
@@ -6826,8 +6435,6 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-seccheck
-    check:
-      - composer-package-validate
     test:
       - composer-package-validate
     gate-and-submit:
@@ -8058,8 +7665,6 @@ projects:
       - name: archived
 
   - name: pywikibot/core
-    check:
-      - pywikibot-core-tox-docker
     test:
       - pywikibot-core-tox-docker
       - pywikibot-core-tox-fasttest-py27-docker
@@ -8537,8 +8142,6 @@ projects:
       - noop
 
   - name: test/gerrit-ping
-    check:
-      - noop
     test:
       - noop
     gate-and-submit:
