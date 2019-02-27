@@ -1,0 +1,21 @@
+FROM {{ "bazel" | image_tag }} as bazel
+
+FROM {{ "gerrit" | image_tag }}
+
+# Use Node 10 instead of Node 6
+RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/node10" > /etc/apt/sources.list.d/stretch-node10.list \
+    && {{ "nodejs" | apt_install }} \
+    && git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/npm.git /srv/npm \
+    && rm -rf /srv/npm/.git \
+    && ln -s /srv/npm/bin/npm-cli.js /usr/bin/npm
+
+RUN bash -c '. /usr/bin/set-java.sh 8 && \
+    cd /tmp &&  git clone -b wmf/stable-2.15 --recursive https://gerrit.wikimedia.org/r/operations/software/gerrit && \
+    cd /tmp/gerrit && \
+    ./tools/setup_gjf.sh 1.6 && \
+    ( bazel build //... || true ) && \
+    git checkout -f wmf/stable-2.16 && git submodule update --init && ( bazel build //... || true ) && \
+    cd /tmp/gerrit && mv tools/format ~ && \
+    rm -Rf /tmp/gerrit'
+
+USER nobody
