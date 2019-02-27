@@ -1,0 +1,24 @@
+# Docker image with bazel
+
+FROM {{ "ci-stretch" | image_tag }}
+
+USER root
+
+# Install Bazel
+RUN apt-get update && apt-get install -y curl \
+    default-jdk \
+    gnupg2 \
+    python \
+    python-dev \
+    python3 \
+    python3-dev \
+    software-properties-common \
+    wget \
+    zip
+
+# Install Bazel
+COPY bazel.gpg /etc/apt/trusted.gpg.d/bazel-release.asc
+
+RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
+
+RUN apt-get update && apt-get install -y bazel
