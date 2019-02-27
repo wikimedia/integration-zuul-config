@@ -15,6 +15,69 @@
      - archive-log-allow-empty
      - docker-cleanup
 
+# CI for gerrit
+- job-template:
+    name: '{name}-gerrit-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    parameters:
+      # Set a default in case someone trigger the job manually
+      #
+      # Value is passed by Zuul, and if missed fallback to the Jenkins globally
+      # set value.
+      - string:
+          name: BUILD_TIMEOUT
+          default: '30'
+          description: 'Timeout in minutes.'
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/gerrit:0.1.0'
+        logdir: '/log'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
+
+- job:
+    name: 'gerrit-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    parameters:
+      # need's to be 1 hour and 30 mins to give gerrit enough time to build.
+      # It can sometimes take a while.
+      - string:
+          name: BUILD_TIMEOUT
+          default: '130'
+          description: 'Timeout in minutes.'
+    wrappers:
+      - timeout:
+          timeout: '${{BUILD_TIMEOUT}}'
+          fail: true
+      - timestamps
+      - ansicolor
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/gerrit:0.1.0'
+        logdir: '/log'
+    publishers:
+     - docker-cleanup
+    archive:
+     - artifacts: >
+       gerrit/bazel-bin/*.war,gerrit/bazel-genfiles/plugins/*/*.jar,
+       gerrit/bazel-genfiles/*api/*api.jar
+
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
     # m4executor label are slaves with 4GBytes memory. Lot of our Java
