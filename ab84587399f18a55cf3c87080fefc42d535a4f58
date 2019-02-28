@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f6b5807_15e9d9a0",
+        "filename": "dockerfiles/bazel/Dockerfile.template",
+        "patchSetId": 11
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-02-28T15:21:27Z",
+      "side": 1,
+      "message": "I went with some apt configuration instead of wget and blindly installing the package :)\n\ndpkg ; apt-get install -f -y  is a bit of a hack :/\n\n\nInspired by https://docs.bazel.build/versions/master/install-ubuntu.html I went with:\n\nA) list the apt repo configuration. That could be shipped in dockerfiles/bazel/ and use COPY to put it under /etc/apt/sources.list.d\n\n $ cat /etc/apt/sources.list.d/bazel.list \n deb [arch\u003damd64] http://storage.googleapis.com/bazel-apt  stable jdk1.8\n\nB) the gpg key which should be committed in dockerfiles/bazel and we can COPY it as  /etc/apt/trusted.gpg.d/bazel-release.asc\n\nThe key is at https://bazel.build/bazel-release.pub.gpg\n\n\nThat gives us Bazel 0.23.0 :)",
+      "revId": "ab84587399f18a55cf3c87080fefc42d535a4f58",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "27078a28_0f620844",
+        "filename": "dockerfiles/bazel/changelog",
+        "patchSetId": 11
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-02-28T15:21:27Z",
+      "side": 1,
+      "message": "Instead of 0.1.3 (what is that?) maybe use the Bazel version being shipped (0.23.0).",
+      "revId": "ab84587399f18a55cf3c87080fefc42d535a4f58",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e46c6743_1ca022e2",
+        "filename": "dockerfiles/gerrit/Dockerfile.template",
+        "patchSetId": 11
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-02-28T15:21:27Z",
+      "side": 1,
+      "message": "Is that to validate the image is able to compile our gerrit 2.15 and 2.16? Seems like a good integration tests that happens on build :)",
+      "revId": "ab84587399f18a55cf3c87080fefc42d535a4f58",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
