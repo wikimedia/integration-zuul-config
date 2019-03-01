@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b9009a3_3961c067",
+        "filename": "jjb/wikidata.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-03-01T15:57:58Z",
+      "side": 1,
+      "message": "Usually we also use the \"clean\" target. Though given CI starts from scratch \"clean\" might not be needed but I would rather have it for sake of consistency with other repositories.",
+      "revId": "1e14b97eacb4a339606feedff3c5bced3bde2103",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "08343932_dde53cbb",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8422,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-03-01T15:57:58Z",
+      "side": 1,
+      "message": "blazegraph uses surefire 2.x which is broken due to some java security update. We need to modify some pom.xml files https://gerrit.wikimedia.org/r/#/c/wikidata/query/blazegraph/+/493712/\n\n\nEventually the DSI Utils module fails some test for me (also had to set LANG\u003dC).\n\nSo maybe the job should be in experimental pipeline (and you would trigger it by commenting \"check experimental\" in Gerrit. Or we can make it non voting.  In Zuul configuration:\n\n - jobs:\n      - name: wikidata-query-blazegraph-maven-java8-docker\n        voting: false\n\nWhich would prevent Zuul from voting Verified \u003d -1",
+      "revId": "1e14b97eacb4a339606feedff3c5bced3bde2103",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
