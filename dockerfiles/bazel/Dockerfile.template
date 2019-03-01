@@ -1,0 +1,23 @@
+# Docker image with bazel
+
+FROM {{ "ci-stretch" | image_tag }}
+
+USER root
+
+# We get bazel from upstream
+COPY bazel.gpg /etc/apt/trusted.gpg.d/bazel-release.asc
+RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" \
+    | tee /etc/apt/sources.list.d/bazel.list
+
+RUN {{ "bazel default-jdk" | apt_install }}
+
+# Bazel config/bootstrap
+ENV TEST_TMPDIR=/opt/bazel
+RUN install --directory --mode 777 "$TEST_TMPDIR"
+
+USER nobody
+# In addition to showing the actual Bazel version at build time, that also
+# triggers extraction of the Bazel installation under $TEST_TMPDIR. That saves
+# time on future invocations.
+RUN bazel version
+ENTRYPOINT ["/usr/bin/bazel"]
