@@ -7,6 +7,7 @@ node(nodeLabel) {
                                   registry: dockerRegistry)
   def testImageID
   def productionImageID
+  def gerritComment
 
   def imageName = params.ZUUL_PROJECT.replaceAll(/\//, '-')
   def timestamp = new Date().format("yyyy-MM-dd-HHmmss", TimeZone.getTimeZone("UTC"))
@@ -20,6 +21,8 @@ node(nodeLabel) {
     "jenkins.job": env.JOB_NAME,
     "jenkins.build": env.BUILD_ID,
   ]
+
+  def imageTags = []
 
   stage('Checkout patch') {
     checkout(patchset.getSCM())
@@ -43,6 +46,7 @@ node(nodeLabel) {
     if (testProductionImage && fileExists('.pipeline/helm.yaml')) {
       stage('Test deployment') {
         runner.registerAs(productionImageID, imageName, candidateTag)
+        imageTags.add(candidateTag)
         def release = runner.deploy(imageName, candidateTag)
 
         try {
@@ -59,16 +63,22 @@ node(nodeLabel) {
     if (pushProductionImage) {
       stage('Register production image') {
         runner.registerAs(productionImageID, imageName, productionTag)
+        imageTags.add(productionTag)
 
         // Triggered via the publish pipeline when a new tag is pushed
         if (params.ZUUL_REF.startsWith("refs/tags/")) {
-            def tagRef = params.ZUUL_REF.substring("refs/tags/".length())
-            runner.registerAs(productionImageID, imageName, tagRef)
+          def tagRef = params.ZUUL_REF.substring("refs/tags/".length())
+          runner.registerAs(productionImageID, imageName, tagRef)
+          imageTags.add(tagRef)
         } else {
-            runner.registerAs(productionImageID, imageName, commitSHA)
+          runner.registerAs(productionImageID, imageName, commitSHA)
+          imageTags.add(commitSHA)
         }
       }
     }
+    currentBuild.result = 'SUCCESS'
+  } catch (Exception err) {
+    currentBuild.result = 'FAILURE'
   } finally {
     // Clean up test images on production machines
     if (pushProductionImage) {
@@ -80,5 +90,28 @@ node(nodeLabel) {
         runner.removeImage(productionImageID)
       }
     }
+
+    if (productionImageID && currentBuild.result == 'SUCCESS') {
+      gerritComment = new GerritPipelineComment(
+        jobName: env.JOB_NAME,
+        buildNumber: env.BUILD_NUMBER,
+        jobStatus: currentBuild.result,
+        image: productionImageID,
+        tags: imageTags
+      )
+    } else {
+      /**
+       * If the job is a failure, or if the job was only a test instead of
+       * a push to production, then we won't have an image with tags from
+       * the registry.
+       */
+      gerritComment = new GerritPipelineComment(
+        jobName: env.JOB_NAME,
+        buildNumber: env.BUILD_NUMBER,
+        jobStatus: currentBuild.result,
+      )
+    }
+
+    GerritReview.post(this, gerritComment)
   }
 }
