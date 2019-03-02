@@ -168,11 +168,13 @@
      - docker-cache-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: docker-registry.wikimedia.org/releng/composer:0.2.5
+        image: docker-registry.wikimedia.org/releng/composer-php72:0.1.4-s1
         args: '--ansi --working-dir=/src update'
         logdir: '/log'
-     - docker-run:
+     - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.10'
+        options: '--entrypoint /run-libraries.sh'
+        logdir: '/log'
 
     publishers:
      - checkstyle:
