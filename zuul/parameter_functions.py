@@ -262,7 +262,7 @@ dependencies = {
     'ImageRating': ['VoteNY'],
     'JADE': ['AbuseFilter', 'SpamBlacklist'],
     'JsonConfig': ['Scribunto'],
-    'Kartographer': ['ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
+    'Kartographer': ['JsonConfig', 'ParserFunctions', 'VisualEditor', 'WikimediaMessages'],
     'LanguageTool': ['VisualEditor'],
     'LDAPAuthentication2': ['LDAPProvider', 'PluggableAuth'],
     'LDAPAuthorization': ['LDAPProvider', 'PluggableAuth'],
