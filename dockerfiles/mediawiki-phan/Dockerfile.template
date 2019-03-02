@@ -23,6 +23,27 @@ USER root
 # FIXME: Don't hardcode the phpapi version (but php-config is in php-dev pkg)
 COPY --from=build /srv/modules/*.so /usr/lib/php/20151012/
 
+# TODO: Should these be installed in a more base dockerfile?
+{% set mediawiki_deps|replace('\n', ' ') -%}
+php-apcu
+php-bcmath
+php-cli
+php-curl
+php-gd
+php-gmp
+php-intl
+php-ldap
+php-mbstring
+php-mysql
+php-pgsql
+php-sqlite3
+php-tidy
+php-xml
+php-zip
+{%- endset -%}
+
+RUN {{ mediawiki_deps | apt_install }}
+
 # Disable php-ast since we built our own versions
 RUN phpdismod ast && \
     # Create directory where we're going to install to
