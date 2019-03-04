@@ -10,6 +10,7 @@ node(nodeLabel) {
   def gerritComment
 
   def imageName = params.ZUUL_PROJECT.replaceAll(/\//, '-')
+  def imageFullName = runner.qualifyRegistryPath(imageName)
   def timestamp = new Date().format("yyyy-MM-dd-HHmmss", TimeZone.getTimeZone("UTC"))
 
   def candidateTag = "${timestamp}-candidate"
@@ -96,7 +97,7 @@ node(nodeLabel) {
         jobName: env.JOB_NAME,
         buildNumber: env.BUILD_NUMBER,
         jobStatus: currentBuild.result,
-        image: productionImageID,
+        image: imageFullName,
         tags: imageTags
       )
     } else {
