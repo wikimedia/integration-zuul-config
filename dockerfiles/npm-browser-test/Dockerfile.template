@@ -1,25 +1,2 @@
-FROM {{ "npm-test-stretch" | image_tag }}
 
-USER root
-RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20181208T014322Z/ stretch/updates main " \
-    > /etc/apt/sources.list.d/snapshot-chromium.list
-RUN {{ "chromium='71*' chromium-driver='71*' firefox-esr phantomjs xvfb ffmpeg" | apt_install }}
-
-COPY firefox /usr/local/bin/firefox
-
-USER nobody
-ENV DISPLAY=:94
-
-# For karma-chrome-launcher
-#
-# Developers usually configure Chrome, so point it to Chromium
-ENV CHROME_BIN=/usr/bin/chromium
-# Firefox wrapper introduced above to set HOME to a writable directory
-ENV FIREFOX_BIN=/usr/local/bin/firefox
-
-# Can't change namespaces inside an unprivileged container, then we are already
-# in a namespace so just disable Chromium sandboxing
-ENV CHROMIUM_FLAGS="--no-sandbox"
-
-COPY run-with-xvfb.sh /run-with-xvfb.sh
-ENTRYPOINT ["/run-with-xvfb.sh"]
+NDQKCgo4YWlsaW5nIGFnYWluLCB3aGF0IHNob3VsZCBJIGNoYW5eW91IHNldCB0aGUgdmFsdWUgcmVhbGx5IGhpZ2ggYW5kIGl0IHN0aWxsIHN0b3BwZWQuIE15IGd1ZXNzIGlzIHlvdSBtaWdodCBoYXZlbXByb3ZlIHRoaXMgcXVlc3Rpb24KYXNrZWQgQXByIDIgJzEzIGF0IDIzOjQwCgpUb29Db29MCjYsNzkwNjIyMzcKMQpjYWxsIGl0IGZyb20gdGhlIGNvbW1hbmQgbGluZSwgbm8gdGltZSBsaW1pdCB0aGF0IHdheSDigJMgdXNlcjU1Nzg0NiBBcHIgMiAnMTMgYXQgMjM6NDIKMgpzZXRfdGltZV9saW1pdCgwKSBhdCB0aGUgYmVnaW5pbmcgb2YgeW91ciBzY3JpcHQgd2lsbCBkaXNhYmxlIHRoZSB0aW1lIGxpbWl0LiBCdXQgeW91IGNhbiBoYXZlIG90aGVyIHJlYXNvbiBmb3IgYSBwcmVtYXR1cmUgc3RvcC4gSXQgY2FuIGJlIGEgcHJvYmxlbSB3aXRoIHlvdXIgREIgb3IgYSBwcm9ibGVtIHdpdGggdGhlIG1lbW9yeSAoaWYgeW91IGFyZSBjcmVhdGluZyBhIGxvdCBvIGEgbWVtb3J5IGlzc3VlLiDigJMgTWlrZSBCcmFudCBBcHIgMiAnMTMgYXQgMjM6NTEKc2hvdyAzIG1vcWYgWF4X2V4ZWN1dGlvbl90aW1lIHRvIDUwMDAwMDAwMDAwIGFuZCB5ZXQgaXQgc3RvcGVkIGF0IGNlcnRhaW4gcG9pbnQsIEkgZG9udCBrbm93IHdoYXQgZWxzZSBjb3VsZCBsaW1pdCB0aGUgZXhlY3V0aW9uIHRpbWUsIEkgaGF2ZSBiZWVuIHJ1bm5pbmcgdGhpcyBhIGxvdCBvZiB0aW1lcyBhbmQgSSBhbSB0aXJlZCBvZiB3YWl0aW5nIGFuZCBmY2hlY2tlZCB0aGUgZm9yIFBIUCBlcnJvcnMgaW4gdGhlIHBocCBmb2xkZXIgb2YgeGFtcHAgYnV0IGl0IGRpZG50IHNob3cgYW55dGhpbmcgYXQgdGhlIHRpbWUgdGhlIHNjcmlwdCBzdG9wcGVkLCBldmVyeXRpbWUgaXQggcmVjb3JkcyDigJMgVG9vQ29vTCBBcHIgMiAnMTMgYXQgMjM6NDUKMQpZb3Ugc2hvdWxkIHNob3cgeW91ciBjb2RlLiBNeSBndWVzcyBpcyB0aGF0IHF1ZXJ5IGV4ZWN1d
