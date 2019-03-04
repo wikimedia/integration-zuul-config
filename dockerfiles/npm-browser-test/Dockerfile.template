@@ -1,7 +1,9 @@
 FROM {{ "npm-test-stretch" | image_tag }}
 
 USER root
-RUN {{ "chromium chromium-driver firefox-esr phantomjs xvfb ffmpeg" | apt_install }}
+RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20181208T014322Z/ stretch/updates main " \
+    > /etc/apt/sources.list.d/snapshot-chromium.list
+RUN {{ "chromium='71*' chromium-driver='71*' firefox-esr phantomjs xvfb ffmpeg" | apt_install }}
 
 COPY firefox /usr/local/bin/firefox
 
