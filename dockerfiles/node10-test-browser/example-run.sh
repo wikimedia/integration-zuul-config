@@ -16,4 +16,4 @@ docker run \
     --volume /"$(pwd)"/cache://cache \
     --volume /"$(pwd)"/log://log \
     --volume /"$(pwd)"/src://src \
-    docker-registry.wikimedia.org/releng/npm-browser-test:latest
+    docker-registry.wikimedia.org/releng/node10-test-browser:latest
