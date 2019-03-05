@@ -32,6 +32,23 @@
     - docker-src-dir
     - docker-cache-dir
     - docker-ci-src-setup-simple
+    # composer install
+    - docker-run-with-log-cache-src:
+        image: docker-registry.wikimedia.org/releng/composer:0.1.9
+        options: '--workdir /src'
+        # prefer-dist to get cacheable content
+        args: 'install --no-progress --prefer-dist'
+        logdir: /log
+    # phpunit coverage
+    - docker-run-with-log-cache-src:
+        image: docker-registry.wikimedia.org/releng/php:0.1.2
+        options: '--workdir /src'
+        logdir: /log
+        args: |
+            -d zend_extension=xdebug.so \-
+            ./vendor/bin/phpunit \
+                --coverage-clover /log/coverage/clover.xml \
+                --coverage-junit /log/coverage/junit.xml
     - docker-run-with-log-cache-src:
        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.2.0'
        logdir: '/log'
