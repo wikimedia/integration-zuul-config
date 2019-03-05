@@ -276,7 +276,7 @@ dependencies = {
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
     'LightweightRDFa': ['WikiEditor'],
     'LoginNotify': ['CentralAuth', 'CheckUser', 'Echo'],
-    'MassMessage': ['LiquidThreads'],
+    'MassMessage': ['Flow', 'LiquidThreads'],
     'Math': ['VisualEditor', 'Wikibase'],
     'MathSearch': ['Math'],
     'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
