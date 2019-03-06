@@ -1597,6 +1597,16 @@ project-templates:
       - composer-package-php72-docker
       - composer-package-php73-docker
 
+  - name: composer-test-package-php72-or-later
+    check:
+      - composer-package-validate
+    test:
+      - composer-package-php72-docker
+      - composer-package-php73-docker
+    gate-and-submit:
+      - composer-package-php72-docker
+      - composer-package-php73-docker
+
   - name: npm-docker
     test:
       - npm-node-6-docker
@@ -8262,7 +8272,7 @@ projects:
 
   - name: mediawiki/libs/Zest
     template:
-     - name: composer-test-package
+     - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
