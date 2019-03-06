@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "21c4733c_2e58d391",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-03-06T19:24:33Z",
+      "side": 0,
+      "message": "TLDR: use:\n\n - event: ref-updated\n   ref: ^refs/heads/.*$\n   ignore-deletes: True\n\nBonus if we write a test :)\n\n------------- wall\u0027otxt ---\n\n\n\nThat is from 2013, and apparently we never used a post pipeline (based on: git log --follow -Gpost: zuul/layout.yaml ).\n\nI borrowed that either from Zuul documentation or from OpenStack config files. One sure thing, Zuul code as test layout that uses the inverted logic:\n\n  - name: post\n    manager: IndependentPipelineManager\n    trigger:\n      review_gerrit:\n        - event: ref-updated\n          ref: ^(?!refs/).*$\n          ignore-deletes: True\n\nThe logic is inverted explicitly to drop all events of the kind:\n* refs/changes/45/12345/meta\n* refs/changes/45/12345/1\n* refs/notes/review\n\nSee https://phabricator.wikimedia.org/P8167 for an example of events emitted when a change is pushed. The first one has:\n\n refName: refs/heads/master\n\n\nThe Zuul version we have -and its doc- use the negative regex because it matches the behavior of some old gerrit. For branches updates it used to report:\n\n refName: master\n\nAnd on deletion:\n\n refName: devnull\n\n\nThus that regex there dismiss patchsets / notes etc as well as skip references deletions.\n\nIn Zuul fixtures I even found the following text:\n\n\u003e Add option to ignore ref-updated events emitted by branch deletions\n\u003e \n\u003e https://review.openstack.org/178833\n\nWhich is I guess the implementation of \u0027ignore-deletes\u0027.",
+      "revId": "050a2c4beacbca0447a0de7ae3afa73dcc758bdc",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
