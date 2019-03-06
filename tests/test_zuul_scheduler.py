@@ -358,6 +358,67 @@ class TestZuulScheduler(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(set(), first & second, msg)
 
+    def test_valid_jobs_in_check_pipelines(self):
+        check_pipelines = [p.name for p in self.getPipelines()
+                           if p.name.startswith('check')]
+
+        # We expect check pipelines to have no unsafe jobs
+        expected = {k: {} for k in check_pipelines}
+        # Map of pipelines -> projects -> unsafe jobs
+        actual = copy.deepcopy(expected)
+
+        # List of jobs allowed in check* pipelines
+        safe_jobs = [
+            '(hhvm|php(55|56|70)|yaml)lint',
+            '.*-(js|shell|hhvm|php(55|56|70)|)lint',
+            '.*-tabs',
+            'noop',
+            '(?:mwgate-)?composer-validate',
+            'composer-package-validate',
+            'fail-archived-repositories',
+            '.*tox-docker',
+            'commit-message-validator',
+        ]
+        safe_jobs_re = re.compile('^(' + '|'.join(safe_jobs) + ')$')
+
+        all_defs = self.getProjectsDefs()
+        for (project_name, defs) in all_defs.iteritems():
+            for (pipeline, jobs) in defs.iteritems():
+                if not pipeline.startswith('check'):
+                    continue
+                unsafe_jobs = [j for j in jobs
+                               if not re.match(safe_jobs_re, j)]
+                if unsafe_jobs:
+                    actual[pipeline].update({project_name: unsafe_jobs})
+
+        self.maxDiff = None
+        self.longMessage = True
+
+        self.assertEquals(expected, actual,
+                          "No project have unsafe jobs in check* pipelines")
+
+    def test_post_on_ref_update(self):
+        manager = self.getPipeline('post').manager
+
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'ref-updated'
+        event.ref = 'refs/heads/wmf/1.29.0-wmf.20'
+
+        self.assertTrue(manager.eventMatches(event, change))
+
+    def test_no_post_on_ref_tag_update(self):
+        manager = self.getPipeline('post').manager
+
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'ref-updated'
+        event.ref = 'refs/tags/wmf/1.29.0-wmf.20'
+
+        self.assertFalse(manager.eventMatches(event, change))
+
     def test_gate_and_submit_swat(self):
         gs_swat_manager = self.getPipeline('gate-and-submit-swat').manager
         gs_manager = self.getPipeline('gate-and-submit').manager
