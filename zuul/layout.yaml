@@ -562,7 +562,6 @@ pipelines:
     failure:
       gerrit: {}
 
-  # Pipeline reacting whenever a reference is updated
   - name: post
     description: Jobs for when a branch is created or updated.
     manager: IndependentPipelineManager
@@ -570,10 +569,8 @@ pipelines:
     trigger:
       gerrit:
        - event: ref-updated
-         # If it starts with refs/, then it's a tag or a special branch.
-         # Without that prefix, it's a "normal" branch.
-         # https://zuul-ci.org/docs/zuul/admin/drivers/gerrit.html#trigger-configuration
-         ref: ^(?!(devnull|refs/.*)).*$
+         ref: ^refs/heads/.*$
+         ignore-deletes: True
 
   # Pipeline for tags (either a new one or a removal)
   - name: publish
