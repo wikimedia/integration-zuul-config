@@ -7253,12 +7253,13 @@ projects:
       - mobileapps-deploy-npm-node-6-docker
 
   - name: mediawiki/services/parsoid
+    check:
+      - composer-package-validate
     test:
       - parsoidsvc-parsertests-docker
       - parsoidsvc-npm-run-toolcheck-node-6-docker
       - parsoidsvc-npm-run-roundtrip-node-6-docker
       - parsoidsvc-npm-node-6-docker
-      - composer-package-php71-docker
       - composer-package-php72-docker
       - composer-package-php73-docker
     gate-and-submit:
@@ -7266,7 +7267,6 @@ projects:
       - parsoidsvc-npm-run-toolcheck-node-6-docker
       - parsoidsvc-npm-run-roundtrip-node-6-docker
       - parsoidsvc-npm-node-6-docker
-      - composer-package-php71-docker
       - composer-package-php72-docker
       - composer-package-php73-docker
     postmerge:
