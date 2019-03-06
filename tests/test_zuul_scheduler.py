@@ -417,6 +417,28 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertEquals(expected, actual,
                           "No project have unsafe jobs in check* pipelines")
 
+    def test_post_on_ref_update(self):
+        manager = self.getPipeline('post').manager
+
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'ref-updated'
+        event.ref = 'refs/heads/wmf/1.29.0-wmf.20'
+
+        self.assertTrue(manager.eventMatches(event, change))
+
+    def test_no_post_on_ref_tag_update(self):
+        manager = self.getPipeline('post').manager
+
+        change = zuul.model.Change('mediawiki/core')
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'ref-updated'
+        event.ref = 'refs/tags/wmf/1.29.0-wmf.20'
+
+        self.assertFalse(manager.eventMatches(event, change))
+
     def test_gate_and_submit_swat(self):
         gs_swat_manager = self.getPipeline('gate-and-submit-swat').manager
         gs_manager = self.getPipeline('gate-and-submit').manager
