@@ -858,15 +858,16 @@ pipelines:
     failure:
       gerrit: {}
 
-  # Pipeline reacting whenever a reference is updated
+  # Pipeline reacting whenever a branch is created or updated
   - name: post
-    description: Whenever a reference is updated.
+    description: Whenever a branch is updated.
     manager: IndependentPipelineManager
     source: gerrit
     trigger:
       gerrit:
        - event: ref-updated
-         ref: ^(?!(devnull|refs/.*)).*$
+         ref: ^refs/heads/.*$
+         ignore-deletes: True
 
   # Pipeline for tags (either a new one or a removal)
   - name: publish
