@@ -1,7 +1,7 @@
-FROM {{ 'ci-stretch' | image_tag }}
+FROM {{ registry }}/releng/ci-stretch:latest
 
 USER root
-RUN {{ "python3 python3-virtualenv python3-requests" | apt_install }} && \
+RUN {{ "python3 python3-virtualenv python3-requests make gpg bsdmainutils" | apt_install }} && \
     install --directory --mode 777 /opt/release
 
 USER nobody
@@ -9,4 +9,6 @@ USER nobody
 # constantly rebuilding this image just for every commit.
 RUN git clone https://gerrit.wikimedia.org/r/mediawiki/tools/release /opt/release
 COPY run.sh /run.sh
+COPY *.mk /
+COPY Makefile /
 ENTRYPOINT ["/run.sh"]
