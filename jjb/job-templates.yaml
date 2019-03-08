@@ -36,6 +36,12 @@
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - docker-cleanup
+    wrappers:
+      - timeout:
+          timeout: '{timeout|30}'
+          fail: true
+      - timestamps
+      - ansicolor
 
 # Convenience alias with name/project variables
 - job-template:
@@ -79,7 +85,7 @@
             args: 'sonar:sonar'
     wrappers:
       - timeout:
-          timeout: 30
+          timeout: '{timeout|30}'
           fail: true
       - timestamps
       - ansicolor
