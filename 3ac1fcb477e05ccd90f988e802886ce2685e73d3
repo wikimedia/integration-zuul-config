@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b90148a4_5248d178",
+        "filename": "jjb/wikidata.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-03-08T11:21:51Z",
+      "side": 1,
+      "message": "This is a parameter passed to the job template \u0027{name}-maven-java8-docker\u0027.  Turns out that the template does not even support expanding \"goals\" and it is thus ignored :/    I should have caught it earlier by reviewing the generated jenkins job.\n\nThe template instead has:\n\n maven_args: \u0027clean verify\u0027\n builders:\n   - docker-run-with-log-and-workspace-cache:\n       args: \u0027{obj:maven_args}\u0027\n\n\nSo all occurences of \"goals\" have to be replaced with \"maven_args\". I will craft a change for that.",
+      "range": {
+        "startLine": 33,
+        "startChar": 10,
+        "endLine": 33,
+        "endChar": 29
+      },
+      "revId": "3ac1fcb477e05ccd90f988e802886ce2685e73d3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d3da6312_9f2ac22e",
+        "filename": "jjb/wikidata.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-03-08T11:21:51Z",
+      "side": 1,
+      "message": "That is literally passed as:\n\n { \u0027concurrent\u0027: False }\n\nAnd to be used for variable expansion in the job template by using: \u0027{concurrent}\u0027.  But the job template does not do that.\n\n\nInstead we should edit the template and mention the parameter there:\n\n - job-template:\n    name: \u0027{name}-maven-java8-docker\u0027\n    concurrent: false\n\nTurns out that false is the default value. So all maven jobs do not run in parallel anyway - which is probably something that should be fixed -",
+      "range": {
+        "startLine": 34,
+        "startChar": 10,
+        "endLine": 34,
+        "endChar": 27
+      },
+      "revId": "3ac1fcb477e05ccd90f988e802886ce2685e73d3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e08873a_b6eb47a0",
+        "filename": "jjb/wikidata.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-03-08T11:21:51Z",
+      "side": 1,
+      "message": "Ditto this are meant to be inside the job template, not passed as parameters.\n\nI will repurpose this change to allow passing a timeout value to the job template.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 24
+      },
+      "revId": "3ac1fcb477e05ccd90f988e802886ce2685e73d3",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
