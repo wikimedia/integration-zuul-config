@@ -1,12 +1,17 @@
-FROM {{ 'ci-stretch' | image_tag }}
+FROM {{ registry }}/releng/ci-stretch:latest
 
 USER root
-RUN {{ "python3 python3-virtualenv python3-requests" | apt_install }} && \
-    install --directory --mode 777 /opt/release
+RUN {{ "python3 python3-virtualenv make gpg bsdmainutils" | apt_install }} && \
+	install --directory --mode 777 /opt/release && \
+	install --directory --mode 777 /opt/release-driver
 
 USER nobody
 # Initial clone, we'll do a pull when running so we're not
 # constantly rebuilding this image just for every commit.
 RUN git clone https://gerrit.wikimedia.org/r/mediawiki/tools/release /opt/release
+RUN git clone https://github.com/hexmode/mw-release /opt/release-driver
+RUN git clone https://gerrit.wikimedia.org/r/mediawiki/core /src/mediawiki
+RUN python3 -m virtualenv -p python3 /opt/release/venv
+RUN bash -c '. /opt/release/venv/bin/activate; pip3 install git-archive-all==1.18.2'
 COPY run.sh /run.sh
 ENTRYPOINT ["/run.sh"]
