@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "57d0c5ad_06d5641a",
+        "filename": "dockerfiles/mediawiki-tarball/Dockerfile.template",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2019-03-12T12:53:27Z",
+      "side": 1,
+      "message": "This creates the same output as:\n\n FROM {{ \u0027ci-stretch\u0027 | image_tag }}\n\nThe \"image_tag\" version has the added benefit of dynamically determining/changing the docker-pkg \"namespace\" (i.e., \"releng\") so should be preferred.",
+      "revId": "f905caff6de3af51bac6a2daa55cc24a9fcac803",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "140b8837_5cd84d6b",
+        "filename": "dockerfiles/mediawiki-tarball/Dockerfile.template",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2019-03-12T12:53:27Z",
+      "side": 1,
+      "message": "Could you put these all in one RUN line? https://www.mediawiki.org/wiki/Continuous_integration/Docker/Dockerfiles#Minimize_image_layers is a bit of explanation of why docker prefers the visually unpleasant use of one line with multiple \"\u0026\u0026\"s rather than multiple RUN lines.",
+      "revId": "f905caff6de3af51bac6a2daa55cc24a9fcac803",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c68fabe5_6dd33a28",
+        "filename": "dockerfiles/mediawiki-tarball/changelog",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2019-03-12T12:53:27Z",
+      "side": 1,
+      "message": "should set the release to \"wikimedia\"",
+      "revId": "f905caff6de3af51bac6a2daa55cc24a9fcac803",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dc29206e_c3604b02",
+        "filename": "dockerfiles/mediawiki-tarball/changelog",
+        "patchSetId": 4
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 2321
+      },
+      "writtenOn": "2019-03-12T12:53:27Z",
+      "side": 1,
+      "message": "Should only need one release per merge, unless the changelog is useful. To trick docker-pkg into rebuilding without a changelog bump you\u0027ll need to run:\n\n docker rmi docker-registry.wikimedia.org/releng/mediawiki-tarball\n\nto make docker-pkg think it needs to rebuild the image.",
+      "revId": "f905caff6de3af51bac6a2daa55cc24a9fcac803",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
