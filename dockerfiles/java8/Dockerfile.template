@@ -17,6 +17,9 @@ RUN {{ "gnupg wget" | apt_install }} \
 # sonar:sonar does not support XDG_CACHE_HOME - T207046
 ENV SONAR_USER_HOME=$XDG_CACHE_HOME/sonar
 
+# maven wrapper does not support XDG_CACHE_HOME - T218099
+ENV MAVEN_USER_HOME=$XDG_CACHE_HOME/maven
+
 COPY mvn /usr/local/bin/mvn
 ENV MAVEN_BIN=/opt/apache-maven-3.5.2/bin/mvn
 RUN /usr/local/bin/mvn --version
