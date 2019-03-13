@@ -1,13 +1,22 @@
-#!/bin/bash -eu
+#!/bin/bash -e
 #
 # Usage: ./debug-image node10-test
 #
-# Trailing slash is optional, such as when autocompleting names
-# in your shell from within the dockerfiles/ directory.
+# Trailing slash is optional, such as when autocompleting names in
+# your shell from within the dockerfiles/ directory.
 
-image=$(basename "$1")
+name=$1
+if [ -z "$name" ]; then
+	echo "Please provide an image name!"
+	exit 1
+fi
+name=$(basename $name)
 
-exec docker run \
-    --rm --tty \
-    --interactive --entrypoint /bin/bash \
-    docker-registry.wikimedia.org/releng/"$image":latest
+version=$2
+version=${version:-"latest"}
+
+prefix=docker-registry.wikimedia.org/releng
+image=$prefix/$name:$version
+
+exec docker run --rm --tty --interactive \
+	 --entrypoint /bin/bash $image
