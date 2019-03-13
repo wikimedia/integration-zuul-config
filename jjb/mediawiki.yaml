@@ -226,7 +226,7 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
     publishers:
@@ -295,7 +295,7 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --skip composer-test npm-test'
             logdir: '/workspace/log'
     publishers:
@@ -331,7 +331,7 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source "vendor" --db "mysql" --db-dir /workspace/db --run composer-test'
             logdir: '/workspace/log'
     publishers:
@@ -357,7 +357,7 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source {packages-source} --db {database} --db-dir /workspace/db --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /workspace/log/coverage.html"'
             logdir: '/workspace/log'
     publishers:
@@ -383,7 +383,7 @@
         - docker-log-dir
         - docker-run-with-log:
             image: 'docker-registry.wikimedia.org/releng/quibble-fresnel:0.0.28-7'
-            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=256M'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source vendor --db mysql --db-dir /workspace/db --commands "mediawiki-fresnel-patch"'
             logdir: '/workspace/log'
     publishers:
@@ -417,7 +417,7 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=256M'
+            options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=320M'
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
     publishers:
@@ -458,7 +458,7 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=256M'
+            options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=320M'
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
         - cover-publish:
