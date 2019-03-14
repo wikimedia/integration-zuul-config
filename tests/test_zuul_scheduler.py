@@ -1023,7 +1023,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
-            'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
+            'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-core-hhvmlint': True,
             'release-quibble-vendor-mysql-hhvm-docker': False,
@@ -1057,8 +1057,6 @@ class TestZuulScheduler(unittest.TestCase):
             'wmf-quibble-vendor-mysql-php71-docker': False,
             'wmf-quibble-vendor-mysql-php72-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
-            'wmf-quibble-core-vendor-mysql-php70-docker': True,
-            'wmf-quibble-core-vendor-mysql-php71-docker': True,
             'wmf-quibble-core-vendor-mysql-php72-docker': True,
             'mwgate-npm-node-6-docker': True,
         }
