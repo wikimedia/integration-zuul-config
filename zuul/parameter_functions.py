@@ -258,7 +258,7 @@ dependencies = {
     'GlobalContribs': ['Editcount'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GraphViz': ['ImageMap'],
-    'GrowthExperiments': ['skins/MinervaNeue', 'PageViewInfo', 'PageImages'],
+    'GrowthExperiments': ['skins/MinervaNeue', 'PageViewInfo', 'PageImages', 'MobileFrontend', 'VisualEditor'],
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'HierarchyBuilder': ['PageForms'],
