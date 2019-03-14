@@ -272,7 +272,7 @@ dependencies = {
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GraphViz': ['ImageMap'],
     'GrowthExperiments': ['skins/MinervaNeue', 'PageViewInfo', 'PageImages',
-                          'EventLogging'],
+                          'EventLogging',  'MobileFrontend', 'VisualEditor'],
     'GuidedTour': ['EventLogging'],
     'GWToolset': ['SyntaxHighlight_GeSHi', 'Scribunto', 'TemplateData'],
     'HierarchyBuilder': ['PageForms'],
