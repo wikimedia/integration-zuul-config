@@ -224,9 +224,10 @@
     builders:
         - docker-castor-load
         - docker-log-dir
+        - docker-src-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M --volume "$(pwd)"/src:/workspace/src'
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
     publishers:
@@ -235,6 +236,19 @@
             results: 'log/junit*.xml'
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        # HHVM randomly segfault (exit status -11). Attempt to find a 'core'
+        # file and archive it to /tmp.
+        # T216689
+        - postbuildscript:
+            script-only-if-succeeded: false
+            script-only-if-failed: false
+            builders:
+                - shell: |
+                    echo 'Looking for "core" file in ./src (T216689)'
+                    find "$(pwd)"/src -type f -name core \
+                        -printf 'Found core file: %p %s bytes. Copying to /tmp\n' \
+                        -exec cp -v "{{}}" "/tmp/core.$BUILD_TAG" \;
+                    echo 'Done'
         - docker-cleanup
     wrappers:
         - timeout:
