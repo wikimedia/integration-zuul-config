@@ -50,6 +50,10 @@ def deploy_docker():
     if not updated:
         return
 
+    # docker-pkg does not attempt to pull images
+    run('docker pull docker-registry.wikimedia.org/wikimedia-jessie')
+    run('docker pull docker-registry.wikimedia.org/wikimedia-stretch')
+
     with cd('/tmp'):
         docker_pkg = '/srv/deployment/docker-pkg/venv/bin/docker-pkg'
         docker_pkg_config = '/etc/docker-pkg/integration.yaml'
