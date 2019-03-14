@@ -235,6 +235,19 @@
             results: 'log/junit*.xml'
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        # HHVM randomly segfault (exit status -11). Attempt to find a 'core'
+        # file and archive it to /tmp.
+        # T216689
+        - postbuildscript:
+            script-only-if-succeeded: false
+            script-only-if-failed: false
+            builders:
+                - shell: |
+                    echo 'Looking for "core" files (T216689)'
+                    find "$(pwd)" -type f -name core \
+                        -printf 'Found core file: %p %s bytes. Copying to /tmp\n' \
+                        -exec cp -v "{{}}" "/tmp/core.$BUILD_TAG" \;
+                    echo 'Done'
         - docker-cleanup
     wrappers:
         - timeout:
