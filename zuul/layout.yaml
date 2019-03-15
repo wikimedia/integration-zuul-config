@@ -690,10 +690,10 @@ pipelines:
       High precedence tests. Will vote +2.
     precedence: high
 
-  # Separate pipeline for slower PHPUnit coverage jobs
+  # Dedicated pipeline for per-patch coverage report (non-voting)
   - name: coverage
     description: >
-      Jobs that check patch PHP test coverage.
+      Code coverage checks channel.
     manager: IndependentPipelineManager
     source: gerrit
     precedence: low
@@ -713,7 +713,7 @@ pipelines:
     failure:
       gerrit: {}
 
-  # Separate pipeline for non-voting performance checks
+  # Dedicated pipeline for per-patch performance report (non-voting)
   - name: patch-performance
     description: >
       Per-patch performance pipeline.
@@ -4023,11 +4023,10 @@ projects:
   - name: mediawiki/extensions/EventLogging
     template:
       - name: extension-gate
-      - name: extension-jsduck
       - name: extension-coverage
       - name: extension-seccheck
     postmerge:
-      - mwext-jsduck-publish
+      - generic-node10-docs-docker-publish
 
   - name: eventlogging
     test:
