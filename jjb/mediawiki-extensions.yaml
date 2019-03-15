@@ -1,30 +1,4 @@
-# Same as the generic job, but kept separate so that gate-and-submit jobs
-# don't cross-block between mediawiki/* and non-mediawiki changes.
-#
-# Deprecated: Use 'mwext-node10-rundoc-docker' instead.
-- job:
-    name: 'mwext-jsduck-publish'
-    node: DebianJessieDocker
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - docker-log-dir
-     - docker-src-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/jsduck:0.1.0
-         logdir: '/log'
-     - doc-publish:
-        docsrc: 'src/docs'
-        docdest: '$DOC_BASENAME/$ZUUL_BRANCH/js'
-    publishers:
-     - archive-log-allow-empty
-     - docker-cleanup
-
-
-
-- job: # Identical to mwext-VisualEditor-docker-publish except docsrc and docdest.
+- job: # TODO: Replace with extension-javascript-documentation (docsrc and docdest vary).
     name: 'mwext-npm-doc-publish'
     node: DebianJessieDocker
     concurrent: false
@@ -42,29 +16,6 @@
      - doc-publish:
         docsrc: 'src/docs/js'
         docdest: '$DOC_BASENAME/$ZUUL_BRANCH/js'
-    publishers:
-     - archive-log-allow-empty
-     - castor-save-workspace-cache
-     - docker-cleanup
-
-- job:
-    name: 'mwext-VisualEditor-docker-publish'
-    node: DebianJessieDocker
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-log-dir
-     - docker-src-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/npm-test:0.6.0
-         args: 'doc'
-         logdir: '/log'
-     - doc-publish:
-        docsrc: 'src/docs'
-        docdest: 'VisualEditor/$ZUUL_BRANCH'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -253,11 +204,6 @@
     name: 'mwext-MobileFrontend'
     jobs:
      - 'mwext-MobileFrontend-npm-run-lint-modules-docker'
-
-- project:
-    name: 'mwext-VisualEditor'
-    jobs:
-     - '{name}-jsduck-docker'
 
 - project:
     name: wdio-selenium-daily
