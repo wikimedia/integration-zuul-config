@@ -1,27 +1,3 @@
-# Same as the generic job, but kept separate so that gate-and-submit jobs
-# don't cross-block between mediawiki/* and non-mediawiki changes.
-#
-# Deprecated: Use 'mwext-node10-rundoc-docker' instead.
-- job:
-    name: 'mwext-jsduck-publish'
-    node: DebianJessieDocker
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - docker-log-dir
-     - docker-src-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/jsduck:0.1.0
-         logdir: '/log'
-     - doc-publish:
-        docsrc: 'src/docs'
-        docdest: '$DOC_BASENAME/$ZUUL_BRANCH/js'
-    publishers:
-     - archive-log-allow-empty
-     - docker-cleanup
-
 - project:
     name: wmf-sonar-scanner
     projectname: '${{ZUUL_PROJECT//\//-}}'
