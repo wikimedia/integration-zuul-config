@@ -1500,6 +1500,14 @@ project-templates:
     gate-and-submit:
      - mwgate-jsduck-docker
 
+  - name: extension-javascript-documentation
+    test:
+      - mwext-node10-rundoc-docker
+    gate-and-submit:
+      - mwext-node10-rundoc-docker
+    postmerge:
+      - mwext-node10-docs-docker-publish
+
   - name: composer-test
     check:
       - php55lint
