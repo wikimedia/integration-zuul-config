@@ -243,8 +243,9 @@
      - docker-cleanup
 
 # Node.js 10 job for 'npm install & npm run doc'
-# and publishing /docs from workspace
-# to doc.wikimedia.org/:DOC_PROJECT/:DOC_SUBPATH (typically by branch or tag)
+# Publishing workspace/docs to doc.wikimedia.org/:DOC_PROJECT/:DOC_SUBPATH/
+# - DOC_PROJECT: determined in parameter_functions.py (repo name)
+# - DOC_SUBPATH: determined in parameter_functions.py (branch or tag)
 - job:
     name: generic-node10-docs-docker-publish
     node: DebianJessieDocker
@@ -266,6 +267,30 @@
     publishers:
      - castor-save-workspace-cache
      - docker-cleanup
+# Publishing workspace/docs to doc.wikimedia.org/:DOC_PROJECT/:DOC_SUBPATH/js/
+# - DOC_PROJECT: determined in parameter_functions.py (mw extension name)
+# - DOC_SUBPATH: determined in parameter_functions.py (branch or tag)
+- job:
+    name: mwext-node10-docs-docker-publish
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.3.3'
+        logdir: '/log'
+        args: 'doc'
+     - doc-publish:
+        docsrc: 'src/docs'
+        docdest: '$DOC_PROJECT/$DOC_SUBPATH/js'
+    publishers:
+     - castor-save-workspace-cache
+     - docker-cleanup
 
 - project:
     name: 'generic'
@@ -274,6 +299,16 @@
         - '{name}-node10-docker'
         - '{name}-node10-browser-docker'
         - '{name}-node10-npmaudit-docker'
+        - '{name}-node10-run{script}-docker':
+           script: 'doc'
+
+# Same as 'generic', but kept separate so that gate-and-submit jobs
+# don't cross-block between mediawiki/* and non-mediawiki changes.
+- project:
+    name: 'mwext'
+    jobs:
+        - '{name}-node10-run{script}-docker':
+           script: 'doc'
 
 - job-template:
     !!merge : *job_npm-node-6-docker
