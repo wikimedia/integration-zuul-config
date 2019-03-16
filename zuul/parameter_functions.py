@@ -608,17 +608,17 @@ def set_doc_variables(item, job, params):
     if doc_subpath:
         params['DOC_SUBPATH'] = doc_subpath
 
-    # Normalize the project name by removing /'s
     if 'ZUUL_PROJECT' in params:
         raw_project = params['ZUUL_PROJECT']
         if raw_project in doc_destination:
+            # custom names
             raw_project = doc_destination[raw_project]
+        elif raw_project.startswith('mediawiki/extensions/'):
+            # For MediaWiki extension repos
+            raw_project = raw_project.split('/')[-1]
 
+        # Normalize the project name by removing /'s
         params['DOC_PROJECT'] = raw_project.replace('/', '-')
 
-        # DOC_BASENAME is for generic MediaWiki extension jobs that publish
-        # dynamically to a doc.wikimedia.org destination based on the last
-        # part of the repo name.
-        # TODO: Migrate those to DOC_PROJECT and perform the logic here
-        # instead (e.g. strip "mediawiki/extensions/")
+        # @todo Remove DOC_BASENAME once no older mwext- jobs use it.
         params['DOC_BASENAME'] = params['ZUUL_PROJECT'].split('/')[-1]
