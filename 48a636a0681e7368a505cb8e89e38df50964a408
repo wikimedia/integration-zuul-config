@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "f6796dd5_e9c72d80",
+        "filename": "jjb/mediawiki-extensions.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2019-03-17T00:01:28Z",
+      "side": 1,
+      "message": ".. and remove this one, is also no longer used as of I211c507f957675b:\n\n-INFO:zuul.IndependentPipelineManager:      \u003cJob mwext-VisualEditor-docker-publish\u003e ^master$ \n+INFO:zuul.IndependentPipelineManager:      \u003cJob mwext-node10-docs-docker-publish\u003e ^master$ \n INFO:zuul.IndependentPipelineManager:    blubber\n \n\nTook me a while to confirm whether this is actually the same. Looks like it won\u0027t be. The mwext-VisualEditor job, unlike the mwext jobs, publishes docs to /ZUUL_BRANCH instead of /ZUUL_BRANCH/js.\n\nThis means it will now get a sub directory going forward. That seems fine though, because I put an automatic redirect in place to lone sub directories for doc.wikimedia.org. So while master/js -\u003e master/ is breaking. master/ -\u003e master/js/ is not.",
+      "range": {
+        "startLine": 77,
+        "startChar": 10,
+        "endLine": 77,
+        "endChar": 45
+      },
+      "revId": "48a636a0681e7368a505cb8e89e38df50964a408",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "434d1a33_bbdeccd5",
         "filename": "jjb/mediawiki-extensions.yaml",
         "patchSetId": 3
