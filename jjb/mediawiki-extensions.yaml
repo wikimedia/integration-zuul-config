@@ -150,9 +150,9 @@
     triggers:
      - zuul
     builders:
+     - docker-castor-load
      - docker-log-dir
      - docker-src-dir
-     - docker-cache-dir
      - docker-ci-src-setup-mwext
      - docker-run:
         options: '--volume "$(pwd)"/src:/mediawiki'
@@ -166,6 +166,7 @@
         thresholds:
           failed:
             total-all: 1
+     - castor-save-workspace-cache
      - docker-cleanup
 
 - job:
@@ -203,9 +204,9 @@
     triggers:
      - zuul
     builders:
+     - docker-castor-load
      - docker-log-dir
      - docker-src-dir
-     - docker-cache-dir
      - docker-ci-src-setup-mwext
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.3.2
@@ -219,6 +220,7 @@
         thresholds:
           failed:
             total-all: 1
+     - castor-save-workspace-cache
      - docker-cleanup
 
 - job:
