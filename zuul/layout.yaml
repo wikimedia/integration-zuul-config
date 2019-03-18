@@ -1073,6 +1073,10 @@ jobs:
   - name: ^.*-coverage-(docker-)?publish$
     branch: master
 
+  - name: ^.*-jsduck-docker$
+    files:
+     - '^.*\.(js|json|css)$'
+
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
 
@@ -1120,7 +1124,7 @@ jobs:
   - name: 'integration-config-zuul-layout-validate-docker'
     branch: (?!labs)
 
-  - name: 'mwext-node10-docs-docker-publish'
+  - name: 'mwext-jsduck-publish'
     branch: ^master$
 
   - name: 'mwext-MobileFrontend-npm-run-lint-modules-docker'
@@ -3706,9 +3710,9 @@ projects:
       - name: extension-quibble
       - name: extension-coverage
       - name: extension-seccheck
-      - name: extension-javascript-documentation
     postmerge:
       - mwext-doxygen-publish
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/CollapsibleSections
     template:
@@ -4033,7 +4037,8 @@ projects:
       - name: extension-gate
       - name: extension-coverage
       - name: extension-seccheck
-      - name: extension-javascript-documentation
+    postmerge:
+      - mwext-node10-docs-docker-publish
 
   - name: eventlogging
     test:
@@ -4091,9 +4096,11 @@ projects:
     template:
      - name: extension-gate
      - name: mwgate-rake
+     - name: extension-jsduck
      - name: extension-coverage
      - name: extension-seccheck
-     - name: extension-javascript-documentation
+    postmerge:
+     - mwext-jsduck-publish
 
   - name: mediawiki/extensions/Form
     template:
@@ -4279,10 +4286,12 @@ projects:
 
   - name: mediawiki/extensions/GuidedTour
     template:
+      - name: extension-jsduck
       - name: extension-gate
       - name: extension-coverage
       - name: extension-seccheck
-      - name: extension-javascript-documentation
+    postmerge:
+     - mwext-jsduck-publish
 
   - name: mediawiki/extensions/GWToolset
     template:
@@ -4389,9 +4398,9 @@ projects:
       - name: extension-quibble
       - name: extension-coverage
       - name: extension-seccheck
-      - name: extension-javascript-documentation
     postmerge:
       - mwext-doxygen-publish
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
@@ -4613,10 +4622,12 @@ projects:
     template:
       - name: extension-quibble
       - name: mwgate-rake
+      - name: extension-jsduck
       - name: extension-phan
       - name: extension-seccheck
       - name: mwselenium-legacy
-      - name: extension-javascript-documentation
+    postmerge:
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/MusicBrainzAuth
     template:
@@ -7002,7 +7013,7 @@ projects:
   - name: mediawiki/extensions/OOJsUIAjaxLogin
     template:
       - name: extension-quibble
-      - name: extension-javascript-documentation
+      - name: extension-jsduck
 
   - name: mediawiki/extensions/PagesList
     template:
@@ -7640,9 +7651,11 @@ projects:
     template:
       - name: extension-gate
       - name: extension-quibble
+      - name: extension-jsduck
       - name: extension-coverage
       - name: extension-seccheck
-      - name: extension-javascript-documentation
+    postmerge:
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/TemplateWizard
     template:
@@ -7789,7 +7802,13 @@ projects:
       - name: commit-message-validator
       - name: mwgate-rake
       - name: extension-seccheck
-      - name: extension-javascript-documentation
+    test:
+      - mwext-VisualEditor-jsduck-docker
+    gate-and-submit: &mediawiki-extensions-visualeditor-gate-and-submit
+      - mwext-VisualEditor-jsduck-docker
+    gate-and-submit-swat: *mediawiki-extensions-visualeditor-gate-and-submit
+    postmerge:
+      - mwext-VisualEditor-docker-publish
 
   - name: mediawiki/extensions/WebChat
     template:
@@ -7813,7 +7832,6 @@ projects:
       - name: extension-phan
       - name: mwgate-rake
       - name: extension-seccheck
-      - name: extension-javascript-documentation
     test:
       - mwselenium-quibble-docker
       - wikibase-client-docker
@@ -7825,6 +7843,7 @@ projects:
     gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
     postmerge:
       - mwext-doxygen-publish
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/WikibaseJavaScriptApi
     template:
