@@ -741,6 +741,7 @@ gatedextensions = [
     'MobileFrontend',
     'NavigationTiming',
     'SandboxLink',
+    'Scribunto',
     'SiteMatrix',
     'TemplateData',
     'Thanks',
