@@ -27,7 +27,8 @@ pipelines:
   - &test_pipeline
     name: test
     description: >
-      Jobs restricted to trusted users. Will vote +2.
+      Pipeline for jobs on patch submission that will apply the "Verified" score in Gerrit.
+      To retry these jobs, submit the comment "recheck".
     manager: IndependentPipelineManager
     source: gerrit
     trigger:
@@ -377,13 +378,14 @@ pipelines:
   - !!merge : *test_pipeline
     name: test-prio
     description: >
-      High precedence tests. Will vote +2.
+      Variation of the "test" pipeline reserved for jobs critical to infrastructure deployments and configuration changes.
     precedence: high
 
   # Dedicated pipeline for per-patch coverage report (non-voting)
   - name: coverage
     description: >
       Code coverage checks channel.
+      To retry, submit the comment "check coverage".
     manager: IndependentPipelineManager
     source: gerrit
     precedence: low
@@ -407,6 +409,7 @@ pipelines:
   - name: patch-performance
     description: >
       Per-patch performance pipeline.
+      To retry, submit the comment "check perf".
     manager: IndependentPipelineManager
     source: gerrit
     precedence: low
@@ -427,8 +430,7 @@ pipelines:
 
   - name: experimental
     description: >
-      Jobs manually triggered by whitelisted users commenting 'check experimental'.
-      Useful for experimenting new jobs.
+      Pipeline for experimental jobs. These only run after submitting the comment "check experimental".
     manager: IndependentPipelineManager
     source: gerrit
     precedence: low
@@ -446,8 +448,8 @@ pipelines:
 
   - name: php
     description: >
-      Jobs manually triggered by whitelisted users commenting 'check php'.
-      Useful for running PHP tests that are only part of gate-and-submit.
+      Slower PHPUnit jobs excluded from the "test" pipeline. These also run as part of the "gate-and-submit" pipeline.
+      To run them earlier, submit the comment "check php".
     manager: IndependentPipelineManager
     source: gerrit
     trigger:
@@ -462,15 +464,13 @@ pipelines:
     failure:
       gerrit: {}
 
-  # Actual gate (report/vote in Gerrit)
-  # Will auto-submit change on success!
-  #
-  # WARNING: Also update the "gate" pipeline when changing this one.
+  # The gate that votes on Gerrit and auto-merges commits on success!
   #
   - &gate_and_submit_pipeline
     name: gate-and-submit
     description: >
-      Patchsets that have been reviewed. Will be merged by Jenkins if tests pass.
+      Pipeline for the authoritative jobs that start when a Code-Review "+2" score
+      is submitted on Gerrit. If these pass, Jenkins will merge the commit.
     manager: DependentPipelineManager
     source: gerrit
     precedence: high
@@ -501,6 +501,7 @@ pipelines:
       gerrit:
         verified: -1
 
+  # Separate gate for SWAT deployments to reduce congestion.
   - !!merge : *gate_and_submit_pipeline
     name: gate-and-submit-swat
     trigger:
@@ -512,13 +513,12 @@ pipelines:
           approval:
             - code-review: 2
 
-  # Specialized gate for l10n-bot to ensure that l10n checks run upon its +2
-  # vote
+  # Separate gate for commits authored by l10n-bot, which run different tests.
+  # It also has a lower priority, and improved concurrency (no DependentPipelineManager).
   - !!merge : *gate_and_submit_pipeline
     name: gate-and-submit-l10n
     description: >
-      Patchsets that have been voted +2 by l10n-bot. Will be merged by Jenkins
-      if tests pass.
+      Variation of the "gate-and-submit" pipeline for l10n-bot commits.
     precedence: low
     manager: IndependentPipelineManager
     trigger:
@@ -532,7 +532,7 @@ pipelines:
             - code-review: 2
 
   - name: postmerge
-    description: Jobs triggered after a change has been merged.
+    description: Jobs for after a commit is successfully merged.
     precedence: low
     manager: IndependentPipelineManager
     source: gerrit
@@ -553,17 +553,20 @@ pipelines:
 
   # Pipeline reacting whenever a reference is updated
   - name: post
-    description: Whenever a reference is updated.
+    description: Jobs for when a branch is created or updated.
     manager: IndependentPipelineManager
     source: gerrit
     trigger:
       gerrit:
        - event: ref-updated
+         # If it starts with refs/, then it's a tag or a special branch.
+         # Without that prefix, it's a "normal" branch.
+         # https://zuul-ci.org/docs/zuul/admin/drivers/gerrit.html#trigger-configuration
          ref: ^(?!(devnull|refs/.*)).*$
 
   # Pipeline for tags (either a new one or a removal)
   - name: publish
-    description: Whenever tags are published.
+    description: Jobs ofr when a tag is created.
     manager: IndependentPipelineManager
     source: gerrit
     trigger:
