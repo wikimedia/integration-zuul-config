@@ -279,7 +279,7 @@ dependencies = {
     'MassMessage': ['LiquidThreads'],
     'Math': ['VisualEditor', 'Wikibase'],
     'MathSearch': ['Math'],
-    'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor'],
+    'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor', 'AbuseFilter'],
     'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp',
                        'skins/MinervaNeue'],
     'MultimediaViewer': ['BetaFeatures'],
