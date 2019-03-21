@@ -153,7 +153,7 @@ dependencies = {
     '3D': ['MultimediaViewer'],
     'AbuseFilter': ['AntiSpoof', 'CentralAuth', 'CodeEditor',
                     'CheckUser', 'Renameuser'],
-    'AdvancedSearch': ['Translate'],
+    'AdvancedSearch': ['BetaFeatures', 'Translate'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
     'ArticlePlaceholder': ['Wikibase', 'Scribunto'],
