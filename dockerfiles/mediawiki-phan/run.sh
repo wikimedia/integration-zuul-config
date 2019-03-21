@@ -37,7 +37,7 @@ if [ -f .phan/config.php ]; then
     # new-style phan, using modern paths and newer ast
     export PHP_ARGS='-dextension=ast_101.so'
     install_phan
-    exec /srv/phan/vendor/bin/phan -d . -p
+    exec /srv/phan/vendor/bin/phan -d . -p "$@"
 else
     # old-style, using tests/phan and MW wrapper
     export PHP_ARGS='-dextension=ast_012.so'
