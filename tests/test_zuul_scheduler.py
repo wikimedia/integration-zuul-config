@@ -725,7 +725,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertFalse(job.changeMatches(change))
 
-    def test_l10nbot_patchets_are_ignored(self):
+    def test_l10nbot_patchets_are_ignored_by_test_pipeline(self):
         test_manager = self.getPipeline('test').manager
         change = zuul.model.Change('mediawiki/core')
         change.branch = 'master'
@@ -738,6 +738,23 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertFalse(test_manager.eventMatches(l10n_event, change),
                          'l10-bot should not enter %s pipeline' %
                          test_manager.pipeline.name)
+
+    def test_l10nbot_patchets_are_ignored_by_postmerge_pipeline(self):
+        postmerge_manager = self.getPipeline('postmerge').manager
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'master'
+
+        merge_event = zuul.model.TriggerEvent()
+        merge_event.type = 'change-merged'
+        merge_event.branch = change.branch
+
+        merge_event.account = {'email': 'JohnDoe@wikimedia.org'}
+        self.assertTrue(postmerge_manager.eventMatches(merge_event, change),
+                        'postmerge accepts regular changes')
+
+        merge_event.account = {'email': 'l10n-bot@translatewiki.net'}
+        self.assertFalse(postmerge_manager.eventMatches(merge_event, change),
+                         'postmerge rejects l10n changes')
 
     # Currently failing since we're ignoring l10n-bot until we can fix
     # issues with CI being overloaded (T91707)
