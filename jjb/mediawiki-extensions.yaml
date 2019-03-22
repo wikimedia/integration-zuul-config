@@ -154,10 +154,11 @@
      - docker-log-dir
      - docker-src-dir
      - docker-ci-src-setup-mwext
-     - docker-run:
+     - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki'
         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.11'
         args: '/$ZUUL_PROJECT -m checkstyle'
+        logdir: '/log'
 
     publishers:
      - checkstyle:
