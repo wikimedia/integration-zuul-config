@@ -540,6 +540,8 @@ pipelines:
       gerrit:
         - event: change-merged
           branch: (?!^refs/meta/config)
+          email:
+           - ^(?!l10n-bot@translatewiki\.net).*$
     success-message: 'Post-merge build succeeded.'
     # Zuul needs at least one option beside --message or it will not report
     # Since Gerrit 2.8, we can vote on closed changes.
