@@ -155,7 +155,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.3.3'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.4.0'
         logdir: '/log'
     publishers:
      - archive-log-allow-empty
@@ -175,7 +175,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.3.3'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.4.0'
         logdir: '/log'
         args: '{script}'
     publishers:
@@ -194,7 +194,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10:0.2.1'
+        image: 'docker-registry.wikimedia.org/releng/node10:0.4.0'
         logdir: '/log'
         options: '--workdir="/src"'
         args: 'audit'
@@ -212,7 +212,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.3.3'
+        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.4.0'
         logdir: '/log'
     publishers:
      - archive-log-allow-empty
@@ -234,7 +234,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.3.3'
+        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.4.0'
         logdir: '/log'
      - cover-publish:
         src: 'src/coverage'
@@ -258,7 +258,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.3.3'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.4.0'
         logdir: '/log'
         args: 'doc'
      - doc-publish:
@@ -282,7 +282,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.3.3'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.4.0'
         logdir: '/log'
         args: 'doc'
      - doc-publish:
@@ -367,7 +367,7 @@
 - job-template:
     !!merge : *job_npm-run-script-node-6-docker
     name: 'selenium-daily-beta-{project}'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.3.3'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.4.0'
     triggers:
      - timed: '@daily'
     parameters:
