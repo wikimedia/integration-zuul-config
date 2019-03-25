@@ -925,6 +925,8 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
       - wmf-sonar-scanner-change
+    postmerge:
+      - wmf-sonar-scanner-branch
 
   - name: extension-quibble-composer
     php:
@@ -951,6 +953,8 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
       - wmf-sonar-scanner-change
+    postmerge:
+      - wmf-sonar-scanner-branch
 
   # Runs quibble but skip selenium tests - T196960
   - name: extension-quibble-noselenium
@@ -978,6 +982,8 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
       - wmf-sonar-scanner-change
+    postmerge:
+      - wmf-sonar-scanner-branch
 
   - name: extension-quibble-composer-noselenium
     php:
@@ -1005,6 +1011,8 @@ project-templates:
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
       - wmf-sonar-scanner-change
+    postmerge:
+      - wmf-sonar-scanner-branch
 
   # Template to run per-patch selenium browser test using mediawiki_selenium ruby gems.
   #
@@ -1116,6 +1124,8 @@ project-templates:
       - mwskin-php70-phan-docker
       - mwskin-php70-phan-seccheck-docker
       - wmf-sonar-scanner-change
+    postmerge:
+      - wmf-sonar-scanner-branch
 
   - name: skin-quibble-composer
     php:
@@ -1143,6 +1153,8 @@ project-templates:
       - mwskin-php70-phan-docker
       - mwskin-php70-phan-seccheck-docker
       - wmf-sonar-scanner-change
+    postmerge:
+      - wmf-sonar-scanner-branch
 
   - name: extension-jsduck
     test:
@@ -1458,6 +1470,7 @@ projects:
       - mediawiki-fresnel-patch-docker
     postmerge:
       - mediawiki-core-jsduck-docker-publish
+      - wmf-sonar-scanner-branch
     post:
       - train-deploy-notes
     experimental:
