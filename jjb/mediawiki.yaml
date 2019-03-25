@@ -112,11 +112,6 @@
         - php55
     jobs:
       - '{name}-jsduck-docker'
-      - '{name}-{phpflavor}lint':
-          phpflavor:
-              - php55
-              - php70
-              - hhvm
 
 # Used to decouple MediaWiki related projects from the rest of the projects in
 # gate-and-submit. See T107529.
@@ -141,11 +136,6 @@
                     image: docker-registry.wikimedia.org/releng/composer-test:0.1.6
         - '{name}-composer-validate'
         - '{name}-jsduck-docker'
-        - '{name}-{phpflavor}lint':
-            phpflavor:
-                - php55
-                - php56
-                - php70
         - '{name}-rake-docker'
         - '{name}-tox-docker'
         - '{name}-npm-node-6-docker'
