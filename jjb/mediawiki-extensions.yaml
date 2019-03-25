@@ -27,11 +27,27 @@
     projectname: '${{ZUUL_PROJECT//\//-}}'
     jobs:
       - wmf-sonar-scanner-{name}:
+         # Used for analyzing gerrit patch sets.
          name: 'change'
          branch: '$ZUUL_CHANGE'
+         args: |
+             -Dsonar.projectKey={projectname} \
+             -Dsonar.projectName={projectname} \
+             -Dsonar.organization=wmftest \
+             -Dsonar.host.url=https://sonarcloud.io \
+             -Dsonar.branch.target="$ZUUL_BRANCH" \
+             -Dsonar.branch.name={branch} \
+             -X
       - wmf-sonar-scanner-{name}:
-         name: 'branch'
+         # Used for analyzing the master branch on postmerge.
+         name: 'branch-non-voting'
          branch: '$ZUUL_BRANCH'
+         args: |
+             -Dsonar.projectKey={projectname} \
+             -Dsonar.projectName={projectname} \
+             -Dsonar.organization=wmftest \
+             -Dsonar.host.url=https://sonarcloud.io \
+             -X
 
 - job-template:
     name: 'wmf-sonar-scanner-{name}'
@@ -51,14 +67,7 @@
     - docker-run-with-log-cache-src:
        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.0'
        logdir: '/log'
-       args: |
-         -Dsonar.projectKey={projectname} \
-         -Dsonar.projectName={projectname} \
-         -Dsonar.organization=wmftest \
-         -Dsonar.host.url=https://sonarcloud.io \
-         -Dsonar.branch.target="$ZUUL_BRANCH" \
-         -Dsonar.branch.name={branch} \
-         -X
+       args: '{args}'
     wrappers:
      - ansicolor
      - timeout:
