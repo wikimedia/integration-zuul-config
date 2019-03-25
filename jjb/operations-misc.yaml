@@ -29,8 +29,8 @@
     publishers:
         - docker-cleanup
 
-- job:
-    name: 'operations-mw-config-composer-test-docker'
+- job-template:
+    name: 'operations-mw-config-composer-{run-script}-docker'
     node: DebianJessieDocker
     concurrent: true
     triggers:
@@ -49,7 +49,7 @@
         # Now in /src, just run composer test
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.5
-            args: '--ansi --working-dir=/src test'
+            args: '--ansi --working-dir=/src {run-script}'
             logdir: '/log'
     publishers:
         - archive-log-allow-empty
@@ -64,6 +64,9 @@
           - php70
           - hhvm
      - '{name}-typos-docker'
+     - 'operations-mw-config-composer-{run-script}-docker':
+         run-script:
+             - test
 
 - project:
     name: 'cumin'
