@@ -34,15 +34,6 @@
      - assert-node-version:
          version: ^v6[.]
 
-- builder:
-    name: phplint
-    builders:
-     - shell: |
-        . /srv/deployment/integration/slave-scripts/bin/global-set-env.sh
-        php --version
-        /srv/deployment/integration/slave-scripts/bin/git-changed-in-head php php5 inc phtml module install \
-        | xargs --no-run-if-empty -n1 -t php -l
-
 - publisher:
     name: archive-log-dir
     publishers:

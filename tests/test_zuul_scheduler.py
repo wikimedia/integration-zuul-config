@@ -175,14 +175,10 @@ class TestZuulScheduler(unittest.TestCase):
             return
         self.assertTrue(
             any([job for job in definition
-                 if job.endswith(('php55lint'))
-                 or job.endswith(('php56lint'))
-                 or job.endswith(('php70lint'))
-                 or job.startswith('quibble-')
+                 if job.startswith('quibble-')
                  or job.startswith('wmf-quibble')
                  or job.startswith(('composer-', 'mwgate-composer'))]),
-            'Project %s pipeline %s must have either '
-            'phplint or a composer-* job'
+            'Project %s pipeline %s must have either a composer-* job'
             % (name, pipeline))
 
     def assertProjectHasPhp55Test(self, name, definition, pipeline):
@@ -959,14 +955,11 @@ class TestZuulScheduler(unittest.TestCase):
             'quibble-donationinterface-REL1_27-zend56-docker': False,
 
             'mediawiki-core-jsduck-docker': True,
-            'mediawiki-core-php55lint': False,
-            'mediawiki-core-php70lint': True,
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
             'mediawiki-quibble-composertest-php70-docker': True,
-            'mediawiki-core-hhvmlint': True,
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
@@ -987,7 +980,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-quibble-vendor-sqlite-php70-docker': True,
             'mediawiki-quibble-vendor-postgres-php70-docker': True,
-            'mediawiki-core-hhvmlint': True,
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
