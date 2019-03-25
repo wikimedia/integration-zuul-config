@@ -30,7 +30,7 @@
         - docker-cleanup
 
 - job-template:
-    name: 'operations-mw-config-composer-{run-script}-docker'
+    name: 'operations-mw-config-{phpflavor}-composer-{run-script}-docker'
     node: DebianJessieDocker
     concurrent: true
     triggers:
@@ -42,13 +42,13 @@
         - docker-ci-src-setup-simple
         # Install solely the require-dev dependencies (T85947)
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.5
+            image: '{image}'
             options: '--entrypoint=/srv/composer/composer-install-dev-only'
             args: '/src --profile --ignore-platform-reqs'
             logdir: '/log'
         # Now in /src, just run composer test
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.5
+            image: '{image}'
             args: '--ansi --working-dir=/src {run-script}'
             logdir: '/log'
     publishers:
@@ -59,14 +59,18 @@
 - project:
     name: 'operations-mw-config'
     jobs:
-     - '{name}-{phpflavor}lint':
-         phpflavor:
-          - php70
-          - hhvm
      - '{name}-typos-docker'
-     - 'operations-mw-config-composer-{run-script}-docker':
-         run-script:
-             - test
+     - 'operations-mw-config-{phpflavor}-composer-{run-script}-docker':
+         phpflavor:
+             - hhvm:
+                 image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.5
+                 run-script: test
+             - php70:
+                 image: docker-registry.wikimedia.org/releng/composer:0.1.9
+                 run-script: lint
+             - php72:
+                 image: docker-registry.wikimedia.org/releng/composer-php72:0.1.4-s1
+                 run-script: lint
 
 - project:
     name: 'cumin'
