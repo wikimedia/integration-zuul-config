@@ -611,6 +611,11 @@ jobs:
   - name: mediawiki-quibble-vendor-mysql-hhvm-docker
     queue-name: mediawiki
 
+    # Skip postgres/sqlite on wmf/, fundraising/ (not used)
+    # and on MW < 1.32
+  - name: ^.*quibble.*(postgres|sqlite).*$
+    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+
   - name: ^.*quibble.*php70.*$
     skip-if:
       - project: '^mediawiki/core$'
@@ -624,11 +629,6 @@ jobs:
       # No need for php71 testing on wmf branches.
       - project: '^mediawiki/.*'
         branch: ^wmf/
-
-    # Skip postgres/sqlite on wmf/, fundraising/ (not used)
-    # and on MW < 1.32
-  - name: ^.*quibble.*(postgres|sqlite).*$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
 
   - name: lintr-docker
     files:
@@ -1420,30 +1420,30 @@ projects:
       - name: extension-gate
     test:
       - quibble-donationinterface-REL1_27-zend56-docker
-      - mediawiki-quibble-composer-mysql-php70-docker
-      - mediawiki-quibble-vendor-mysql-php70-docker
-      - mediawiki-quibble-composertest-php70-docker
+      - mediawiki-quibble-composer-mysql-php72-docker
+      - mediawiki-quibble-vendor-mysql-php72-docker
+      - mediawiki-quibble-composertest-php72-docker
       - composer-package-validate
       - mediawiki-core-jsduck-docker
       - mediawiki-core-php70-phan-docker
     php:
       - mediawiki-quibble-vendor-mysql-php55-docker
-      - mediawiki-quibble-vendor-sqlite-php70-docker
-      - mediawiki-quibble-vendor-postgres-php70-docker
+      - mediawiki-quibble-vendor-sqlite-php72-docker
+      - mediawiki-quibble-vendor-postgres-php72-docker
       - mediawiki-quibble-vendor-mysql-php71-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
       # non-voting - T203084
       #- quibble-donationinterface-REL1_27-zend56-docker
-      - mediawiki-quibble-composer-mysql-php70-docker
+      - mediawiki-quibble-composer-mysql-php72-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php55-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-php71-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
-      - mediawiki-quibble-composertest-php70-docker
-      - mediawiki-quibble-vendor-sqlite-php70-docker
-      - mediawiki-quibble-vendor-postgres-php70-docker
+      - mediawiki-quibble-composertest-php72-docker
+      - mediawiki-quibble-vendor-sqlite-php72-docker
+      - mediawiki-quibble-vendor-postgres-php72-docker
 
       - mediawiki-core-jsduck-docker
       - composer-package-validate
