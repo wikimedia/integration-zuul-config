@@ -645,7 +645,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         job = self.getJob(
             repo, 'test',
-            'quibble-donationinterface-REL1_27-zend56-docker')
+            'quibble-donationinterface-REL1_31-php70-docker')
 
         change = zuul.model.Change(repo)
 
@@ -951,7 +951,7 @@ class TestZuulScheduler(unittest.TestCase):
             'composer-package-validate': True,
 
             # It is not triggered for the master branch:
-            'quibble-donationinterface-REL1_27-zend56-docker': False,
+            'quibble-donationinterface-REL1_31-php70-docker': False,
 
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php70-phan-docker': True,
@@ -1027,7 +1027,7 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_quibble_jobs_are_skipped_on_fundraising_branches(self):
         change = zuul.model.Change('mediawiki/core')
-        change.branch = 'fundraising/REL1_27'
+        change.branch = 'fundraising/REL1_31'
 
         job = self.getJob(
             'mediawiki/core',
