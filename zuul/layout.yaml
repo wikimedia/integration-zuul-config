@@ -629,13 +629,13 @@ jobs:
     skip-if:
       # Disable on fundraising branches
       - project: '^mediawiki/core$'
-        branch: ^(fundraising/REL1_(27|31))$
+        branch: ^fundraising/REL1_31$
 
   - name: ^.*quibble.*php55.*$
     skip-if:
       # Disable on fundraising branches
       - project: '^mediawiki/core$'
-        branch: ^(fundraising/REL1_(27|31))$
+        branch: ^fundraising/REL1_31$
       # Disable on all branches except MW < 1.31
       - project: '^mediawiki/.*'
         branch: ^(?!(REL1_(2[789]|30)).*)
@@ -644,7 +644,7 @@ jobs:
     skip-if:
       # Disable on fundraising branches
       - project: '^mediawiki/core$'
-        branch: ^(fundraising/REL1_(27|31))$
+        branch: ^fundraising/REL1_31$
       # mwskin-Empty depends on PhpTags which fails php70 (T188585)
       - project: '^mediawiki/skins/Empty'
 
@@ -777,9 +777,9 @@ jobs:
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^quibble-donationinterface-REL1_27-zend56-docker$
+  - name: ^quibble-donationinterface-REL1_31-php70-docker$
 
-    # Pending bump of composer-merge-plugin in fundraising/REL1_27 branch - T203084
+    # Pending bump of composer-merge-plugin in fundraising/REL1_31 branch - T203084
     voting: false
 
     skip-if:
@@ -1492,7 +1492,7 @@ projects:
     template:
       - name: extension-gate
     test:
-      - quibble-donationinterface-REL1_27-zend56-docker
+      - quibble-donationinterface-REL1_31-php70-docker
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
       - mediawiki-quibble-composertest-php70-docker
@@ -1507,7 +1507,7 @@ projects:
       - mediawiki-quibble-vendor-mysql-php72-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
       # non-voting - T203084
-      #- quibble-donationinterface-REL1_27-zend56-docker
+      #- quibble-donationinterface-REL1_31-php70-docker
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php55-docker
@@ -3577,10 +3577,10 @@ projects:
     template:
       - name: extension-broken  # It is not really broken but use different jobs
     test:
-      - quibble-donationinterface-REL1_27-zend56-docker
+      - quibble-donationinterface-REL1_31-php70-docker
     #gate-and-submit:
       # non-voting - T203084
-      #- quibble-donationinterface-REL1_27-zend56-docker
+      #- quibble-donationinterface-REL1_31-php70-docker
 
   - name: mediawiki/extensions/DoubleWiki
     template:
