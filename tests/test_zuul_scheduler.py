@@ -645,7 +645,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         job = self.getJob(
             repo, 'test',
-            'quibble-donationinterface-REL1_27-zend56-docker')
+            'quibble-donationinterface-REL1_31-php70-docker')
 
         change = zuul.model.Change(repo)
 
@@ -951,7 +951,7 @@ class TestZuulScheduler(unittest.TestCase):
             'composer-package-validate': True,
 
             # It is not triggered for the master branch:
-            'quibble-donationinterface-REL1_27-zend56-docker': False,
+            'quibble-donationinterface-REL1_31-php70-docker': False,
 
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php70-phan-docker': True,
@@ -1025,14 +1025,14 @@ class TestZuulScheduler(unittest.TestCase):
                     job.changeMatches(change))
                 )
 
-    def test_quibble_jobs_are_skipped_on_fundraising_branches(self):
+    def test_quibble_71_72_jobs_are_skipped_on_fundraising_branches(self):
         change = zuul.model.Change('mediawiki/core')
-        change.branch = 'fundraising/REL1_27'
+        change.branch = 'fundraising/REL1_31'
 
         job = self.getJob(
             'mediawiki/core',
             'gate-and-submit',
-            'mediawiki-quibble-vendor-mysql-php70-docker')
+            'mediawiki-quibble-vendor-mysql-php71-docker')
         self.assertFalse(
             job.changeMatches(change),
             'Quibble must be skipped on fundraising branches')
@@ -1040,7 +1040,7 @@ class TestZuulScheduler(unittest.TestCase):
         wmf_job = self.getJob(
             'mediawiki/core',
             'gate-and-submit',
-            'wmf-quibble-vendor-mysql-php70-docker')
+            'wmf-quibble-vendor-mysql-php71-docker')
         self.assertFalse(
             wmf_job.changeMatches(change),
             'WMF Quibble job must be skipped on fundraising branches')
