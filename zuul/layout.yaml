@@ -7202,7 +7202,9 @@ projects:
       - name: extension-quibble
       - name: extension-coverage
       - name: extension-seccheck
-      - name: extension-javascript-documentation
+      - name: extension-jsduck
+    postmerge:
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/TemplateWizard
     template:
@@ -7379,7 +7381,6 @@ projects:
       - name: extension-phan
       - name: mwgate-rake
       - name: extension-seccheck
-      - name: extension-javascript-documentation
     test:
       - mwselenium-quibble-docker
       - wikibase-client-docker
@@ -7391,6 +7392,7 @@ projects:
     gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
     postmerge:
       - mwext-doxygen-publish
+      - mwext-jsduck-publish
 
   - name: mediawiki/extensions/WikibaseJavaScriptApi
     template:
