@@ -600,10 +600,10 @@ jobs:
     branch: ^(REL1_(2[789]|30))$
 
   - name: ^.*quibble-.*-docker$
-    # Quibble jobs should not be run on fundraising/REL1_27.
+    # Quibble jobs should not be run on fundraising/REL1_31.
     skip-if:
       - project: '^mediawiki/core$'
-        branch: ^(fundraising/REL1_(27|31))$
+        branch: ^(fundraising/REL1_31)$
 
   # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
   # queue-name can not be applied based on a regex, apply the name on one job.
@@ -613,7 +613,7 @@ jobs:
   - name: ^.*quibble.*php70.*$
     skip-if:
       - project: '^mediawiki/core$'
-        branch: ^(fundraising/REL1_(27|31))$
+        branch: ^(fundraising/REL1_31)$
       - project: '^mediawiki/skins/Empty'
 
   - name: ^.*quibble.*php71.*$
@@ -688,9 +688,9 @@ jobs:
 
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^quibble-donationinterface-REL1_27-zend56-docker$
+  - name: ^quibble-donationinterface-REL1_31-php70-docker$
 
-    # Pending bump of composer-merge-plugin in fundraising/REL1_27 branch - T203084
+    # Pending bump of composer-merge-plugin in fundraising/REL1_31 branch - T203084
     voting: false
 
     skip-if:
@@ -1418,7 +1418,7 @@ projects:
     template:
       - name: extension-gate
     test:
-      - quibble-donationinterface-REL1_27-zend56-docker
+      - quibble-donationinterface-REL1_31-php70-docker
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
       - mediawiki-quibble-composertest-php70-docker
@@ -1433,7 +1433,7 @@ projects:
       - mediawiki-quibble-vendor-mysql-php72-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
       # non-voting - T203084
-      #- quibble-donationinterface-REL1_27-zend56-docker
+      #- quibble-donationinterface-REL1_31-php70-docker
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php55-docker
@@ -3484,10 +3484,10 @@ projects:
     template:
       - name: extension-broken  # It is not really broken but use different jobs
     test:
-      - quibble-donationinterface-REL1_27-zend56-docker
+      - quibble-donationinterface-REL1_31-php70-docker
     #gate-and-submit:
       # non-voting - T203084
-      #- quibble-donationinterface-REL1_27-zend56-docker
+      #- quibble-donationinterface-REL1_31-php70-docker
 
   - name: mediawiki/extensions/DoubleWiki
     template:

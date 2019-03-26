@@ -71,14 +71,14 @@
       - archive-log-dir
 
 - project:
-    name: donationinterface-fundraising-branches-php56
+    name: donationinterface-fundraising-branches-php70
     branch:
-     - REL1_27
+     - REL1_31
     jobs:
-     - quibble-donationinterface-{branch}-zend56-docker
+     - quibble-donationinterface-{branch}-php70-docker
 
 - job-template:
-    name: quibble-donationinterface-{branch}-zend56-docker
+    name: quibble-donationinterface-{branch}-php70-docker
     node: DebianJessieDocker && m4executor
     concurrent: true
     triggers:
@@ -87,7 +87,7 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: docker-registry.wikimedia.org/releng/quibble-jessie-php56:0.0.28
+            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.28-1
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
             args: >
