@@ -596,20 +596,19 @@ jobs:
       - project: '^mediawiki/core$'
         branch: (?:^(fundraising/)?REL1_2[78]$)
 
+  # -------
+  # MediaWiki: Quibble and PHPUnit stuff
+  # -------
+
   # Run MediaWiki PHP 5.5 tests on MW < 1.31
   - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
     branch: ^(REL1_(2[789]|30))$
 
+  # Quibble jobs should not be run on fundraising/REL1_27.
   - name: ^.*quibble-.*-docker$
-    # Quibble jobs should not be run on fundraising/REL1_27.
     skip-if:
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
-
-  # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
-  # queue-name can not be applied based on a regex, apply the name on one job.
-  - name: mediawiki-quibble-vendor-mysql-hhvm-docker
-    queue-name: mediawiki
 
   - name: ^.*quibble.*php70.*$
     skip-if:
@@ -625,10 +624,56 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^wmf/
 
-    # Skip postgres/sqlite on wmf/, fundraising/ (not used)
-    # and on MW < 1.32
+  # Skip postgres/sqlite on wmf/, fundraising/ (not used)
+  # and on MW < 1.32
   - name: ^.*quibble.*(postgres|sqlite).*$
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+
+  - name: ^release-quibble-
+    branch: ^REL
+
+  # Run MediaWiki PHP 5.5 tests on MW < 1.31
+  - name: ^release-quibble-.*php55
+    branch: ^(REL1_(2[789]|30))$
+
+  # Skip MediaWiki tests for PHP 7.1 on wmf/, fundraising/, and MW < 1.32.
+  # Effectively only on master and REL1_32+
+  - name: ^(wmf|mediawiki).*quibble.*php71.*
+    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+  - name: ^release-quibble-vendor-mysql-php71-docker$
+    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
+
+  # Skip MediaWiki tests for PHP 7.2 on fundraising/, and MW < 1.32.
+  # Effectively only on master, REL1_32+, and wmf/.
+  - name: ^(wmf|mediawiki).*quibble.*php72.*
+    branch: (?!(fundraising)/.*|REL1_(2[789]|3[01]))
+  # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
+  - name: ^release-quibble-vendor-mysql-php72-docker$
+    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
+
+  - name: ^wmf-quibble-vendor
+    # Gated extensions are only for master and Wikimedia deployment. We do not
+    # run them on REL branches.
+    branch: (?!^(fundraising/)?REL)
+    skip-if:
+      - project: ^mediawiki/core$
+      - project: ^mediawiki/vendor$
+
+  - name: ^wmf-quibble-core-vendor
+    # Gated extensions are only for master and Wikimedia deployment. We do not
+    # run them on REL branches.
+    branch: (?!^(fundraising/)?REL)
+    skip-if:
+      - project: ^mediawiki/extensions/.*$
+
+  # -------
+  # (end of MediaWiki: Quibble and PHPUnit stuff)
+  # -------
+
+  # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
+  # queue-name can not be applied based on a regex, apply the name on one job.
+  - name: mediawiki-quibble-vendor-mysql-hhvm-docker
+    queue-name: mediawiki
 
   - name: lintr-docker
     files:
@@ -647,12 +692,6 @@ jobs:
     files:
       - '.*'
   - name: ^puppet-wmf-styleguide-rake-docker$
-    files:
-      - '.*'
-
-  # rake compiles PoolCounter daemon - Tests failing - T178517
-  - name: ^mwext-PoolCounter-rake-docker$
-    voting: false
     files:
       - '.*'
 
@@ -703,45 +742,8 @@ jobs:
 
   # Jobs testing multiple extensions together
 
-  - name: ^release-quibble-
-    branch: ^REL
-  # Run MediaWiki PHP 5.5 tests on MW < 1.31
-  - name: ^release-quibble-.*php55
-    branch: ^(REL1_(2[789]|30))$
-
-  # Skip MediaWiki tests for PHP 7.1 on wmf/, fundraising/, and MW < 1.32.
-  # Effectively only on master and REL1_32+
-  - name: ^(wmf|mediawiki).*quibble.*php71.*
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
-  - name: ^release-quibble-vendor-mysql-php71-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
-
-  # Skip MediaWiki tests for PHP 7.2 on fundraising/, and MW < 1.32.
-  # Effectively only on master, REL1_32+, and wmf/.
-  - name: ^(wmf|mediawiki).*quibble.*php72.*
-    branch: (?!(fundraising)/.*|REL1_(2[789]|3[01]))
-  # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
-  - name: ^release-quibble-vendor-mysql-php72-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
-
-
-  - name: ^wmf-quibble-vendor
-    # Gated extensions are only for master and Wikimedia deployment. We do not
-    # run them on REL branches.
-    branch: (?!^(fundraising/)?REL)
-    skip-if:
-      - project: ^mediawiki/core$
-      - project: ^mediawiki/vendor$
-
-  - name: ^wmf-quibble-core-vendor
-    # Gated extensions are only for master and Wikimedia deployment. We do not
-    # run them on REL branches.
-    branch: (?!^(fundraising/)?REL)
-    skip-if:
-      - project: ^mediawiki/extensions/.*$
-
-    # Only run patch coverage if a PHP file was
-    # changed on master.
+  # Only run patch coverage if a PHP file was
+  # changed on master.
   - name: ^.*-phpunit-coverage-patch
     branch: master
     files:
