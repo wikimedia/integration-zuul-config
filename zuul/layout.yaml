@@ -597,9 +597,6 @@ jobs:
   # Set voting
   - name: ^.*-non-voting$
     voting: false
-  - name: ^mwext-PoolCounter-rake-docker$
-    # rake compiles PoolCounter daemon - Tests failing - T178517
-    voting: false
   - name: ^quibble-donationinterface-REL1_27-zend56-docker$
     # Pending bump of composer-merge-plugin in fundraising/REL1_27 branch - T203084
     voting: false
@@ -672,11 +669,6 @@ jobs:
     files:
       - '.*'
   - name: ^puppet-wmf-styleguide-rake-docker$
-    files:
-      - '.*'
-
-  # rake compiles PoolCounter daemon - Tests failing - T178517
-  - name: ^mwext-PoolCounter-rake-docker$
     files:
       - '.*'
 
