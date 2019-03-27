@@ -585,10 +585,35 @@ jobs:
   #
   # See: http://docs.python.org/2/library/re.html#search-vs-match
 
+  # Warning: For properties that do not take multiple values (as a list),
+  #          the last setting wins. To avoid unintentional overrides
+  #          and overlapping regexes, group settings for the same property.
+
+
+  # Set parameter-function
   - name: ^.*$
     parameter-function: set_parameters
 
+  # Set voting
   - name: ^.*-non-voting$
+    voting: false
+  - name: ^mwext-PoolCounter-rake-docker$
+    # rake compiles PoolCounter daemon - Tests failing - T178517
+    voting: false
+  - name: ^quibble-donationinterface-REL1_27-zend56-docker$
+    # Pending bump of composer-merge-plugin in fundraising/REL1_27 branch - T203084
+    voting: false
+  - name: commit-message-validator
+    # Still being tested
+    # when making it voting, make sure to uncomment the job from definition
+    # from gate-and-submit
+    voting: false
+  - name: 'integration-config-zuul-layout-diff-docker'
+    voting: false
+  - name: mw-tools-codesniffer-mwcore-testrun
+    voting: false
+  - name: ^ortiz-rlang$
+    # WIP T153856
     voting: false
 
   - name: ^mediawiki-core-php70-phan-docker$
@@ -652,7 +677,6 @@ jobs:
 
   # rake compiles PoolCounter daemon - Tests failing - T178517
   - name: ^mwext-PoolCounter-rake-docker$
-    voting: false
     files:
       - '.*'
 
@@ -690,9 +714,6 @@ jobs:
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
   - name: ^quibble-donationinterface-REL1_27-zend56-docker$
-
-    # Pending bump of composer-merge-plugin in fundraising/REL1_27 branch - T203084
-    voting: false
 
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
@@ -764,13 +785,6 @@ jobs:
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
 
-  # Still being tested
-  #
-  # XXX when making it voting, make sure to uncomment the job from definition
-  # from gate-and-submit
-  - name: commit-message-validator
-    voting: false
-
   #
   # Individual adjustments
   #
@@ -800,7 +814,6 @@ jobs:
     files: '^jjb/.*'
 
   - name: 'integration-config-zuul-layout-diff-docker'
-    voting: false
     # Note how the messages are mixed up. Gotta change the job exit code.
     success-message: 'FAILURE No layout difference. Build'
     failure-message: 'SUCCESS Review the Zuul layout difference. Build'
@@ -836,18 +849,12 @@ jobs:
 
   # Job to ease reviews of MW-CS changes
   - name: mw-tools-codesniffer-mwcore-testrun
-    voting: false
     success-message: 'SUCCESS Example result against MediaWiki core'
     failure-message: 'FAILURE Example result against MediaWiki core'
 
   - name: fail-archived-repositories
     queue-name: archived-repos
     failure-message: 'This repository has been archived and new patches are not being accepted. If you want to maintain it follow https://www.mediawiki.org/wiki/Gerrit/Project_ownership#Requesting_repository_ownership and then change which jobs get run.'
-
-  # WIP T153856
-  - name: ^ortiz-rlang$
-    voting: false
-    # FIXME remove noop gate-and-submit when making it voting
 
   - name: ^fundraising-tools-tox-docker$
     skip-if:
