@@ -943,15 +943,6 @@ jobs:
     voting: false
     # FIXME remove noop gate-and-submit when making it voting
 
-  - name: ^fundraising-tools-tox-docker$
-    skip-if:
-      # Done on master, not ready on deployment branch T145012
-      #
-      # FIXME drop the 'noop' job from gate-and-submit when the skip rule is
-      # removed.
-      #
-      - branch: ^deploy$
-
 project-templates:
 
   # For extensions that have broken tests or magic behaviors that CI does not support.
@@ -3055,8 +3046,6 @@ projects:
       - fundraising-tools-tox-docker
     gate-and-submit:
       - fundraising-tools-tox-docker
-      # fundraising-tools-tox-docker is skipped on 'deploy' branch (WIP T145012)
-      - noop
 
   - name: wikimedia/fundraising/crm
     test:
