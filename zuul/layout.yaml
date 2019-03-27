@@ -621,17 +621,21 @@ jobs:
   - name: fail-archived-repositories
     queue-name: archived-repos
 
+  # Set mutex
+  - name: mwext-phpunit-coverage-docker-publish
+    # For coverage report jobs, we only want one build at a time.
+    # This is the equivalent of concurrent: false in Jenkins but handled by Zuul
+    # instead.
+    mutex: mwext-phpunit-coverage-docker-publish
+
+  # Set 'skip-if' and 'files' (mergable)
   - name: ^mediawiki-core-php70-phan-docker$
     skip-if:
       - project: '^mediawiki/core$'
         branch: (?:^(fundraising/)?REL1_2[78]$)
 
-  # Run MediaWiki PHP 5.5 tests on MW < 1.31
-  - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
-    branch: ^(REL1_(2[789]|30))$
-
   - name: ^.*quibble-.*-docker$
-    # Quibble jobs should not be run on fundraising/REL1_27.
+    # No quibble jobs on fundraising and REL1_27.
     skip-if:
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
@@ -650,37 +654,55 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^wmf/
 
-    # Skip postgres/sqlite on wmf/, fundraising/ (not used)
-    # and on MW < 1.32
-  - name: ^.*quibble.*(postgres|sqlite).*$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
-
   - name: lintr-docker
     files:
      - '^.*\.R$'
 
   - name: ^.*rake-docker$
     files:
-      # Uses python re.match() which checks at BEGINNING of the string
       - '.*\.pp$'
       - '.*\.rb'
       - '(\.rubocop|.*\.gemspec$|Gemfile)'
       - '.*([Rr]akefile|/spec/)'
-
-  # Same for mediawiki/vagrant
   - name: ^mediawiki-vagrant-rake-docker$
+    # Override '.*-rake-docker'
     files:
       - '.*'
   - name: ^puppet-wmf-styleguide-rake-docker$
+    # Override '.*-rake-docker'
     files:
       - '.*'
-
-  # Ditto for translatewiki which has puppet modules under /puppet
   - name: ^translatewiki-rake-docker$
+    # Override '.*-rake-docker'
     files:
       - '^\.puppet-lint\.rc$'
       - '^puppet/.*'
       - '(^Rakefile$|^Gemfile$)'
+
+  - name: ^(mwgate-|)composer-validate$
+    files:
+     - '^composer.json$'
+  - name: ^composer-package-validate$
+    files:
+     - '^composer.json$'
+
+  # Covered by a test
+  # TestZuulScheduler.test_donationinterface_deployment_branch_filters
+  - name: ^quibble-donationinterface-REL1_27-zend56-docker$
+    skip-if:
+      - project: ^mediawiki/extensions/DonationInterface$
+        branch: ^deployment$
+      - project: ^mediawiki/core$
+        branch: (?!fundraising/REL.*)
+
+  # Run MediaWiki PHP 5.5 tests on MW < 1.31
+  - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
+    branch: ^(REL1_(2[789]|30))$
+
+    # Skip postgres/sqlite on wmf/, fundraising/ (not used)
+    # and on MW < 1.32
+  - name: ^.*quibble.*(postgres|sqlite).*$
+    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
 
   # Experimental building of Debian packages
   # based on jenkins-debian-glue
@@ -697,25 +719,6 @@ jobs:
 
   - name: spicerack-tox-publish
     branch: ^master$
-
-  - name: ^(mwgate-|)composer-validate$
-    files:
-     - '^composer.json$'
-
-  - name: ^composer-package-validate$
-    files:
-     - '^composer.json$'
-
-  # Covered by a test
-  # TestZuulScheduler.test_donationinterface_deployment_branch_filters
-  - name: ^quibble-donationinterface-REL1_27-zend56-docker$
-
-    skip-if:
-      - project: ^mediawiki/extensions/DonationInterface$
-        branch: ^deployment$
-      - project: ^mediawiki/core$
-        branch: (?!fundraising/REL.*)
-
 
   # Jobs testing multiple extensions together
 
@@ -739,7 +742,6 @@ jobs:
   # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
   - name: ^release-quibble-vendor-mysql-php72-docker$
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
-
 
   - name: ^wmf-quibble-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
@@ -765,13 +767,6 @@ jobs:
 
   - name: mediawiki-fresnel-patch-docker
     branch: master
-
-  # For coverage report jobs, we only want one build at a time.
-  #
-  # That is the equivalent of concurrent: false in Jenkins but handled by Zuul
-  # instead.
-  - name: mwext-phpunit-coverage-docker-publish
-    mutex: mwext-phpunit-coverage-docker-publish
 
   # Only generate coverage information for master
   - name: ^.*-coverage-(docker-)?publish$
