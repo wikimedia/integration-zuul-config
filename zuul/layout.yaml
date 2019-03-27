@@ -613,6 +613,14 @@ jobs:
     # WIP T153856
     voting: false
 
+  # Set queue-name
+  - name: mediawiki-quibble-vendor-mysql-hhvm-docker
+    # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
+    # queue-name can not be applied based on a regex, apply the name on one job.
+    queue-name: mediawiki
+  - name: fail-archived-repositories
+    queue-name: archived-repos
+
   - name: ^mediawiki-core-php70-phan-docker$
     skip-if:
       - project: '^mediawiki/core$'
@@ -627,11 +635,6 @@ jobs:
     skip-if:
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
-
-  # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
-  # queue-name can not be applied based on a regex, apply the name on one job.
-  - name: mediawiki-quibble-vendor-mysql-hhvm-docker
-    queue-name: mediawiki
 
   - name: ^.*quibble.*php70.*$
     skip-if:
@@ -845,7 +848,6 @@ jobs:
     failure-message: 'FAILURE Example result against MediaWiki core'
 
   - name: fail-archived-repositories
-    queue-name: archived-repos
     failure-message: 'This repository has been archived and new patches are not being accepted. If you want to maintain it follow https://www.mediawiki.org/wiki/Gerrit/Project_ownership#Requesting_repository_ownership and then change which jobs get run.'
 
   - name: ^fundraising-tools-tox-docker$
