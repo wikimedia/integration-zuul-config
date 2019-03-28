@@ -9,6 +9,23 @@
 # - jobs: Override the pipeline configuration on a per job basis.
 #    This is how we specify behaviour for individual projects and jobs.
 #
+#    If a job matches multiple names or regexes in 'jobs', then all matching settings
+#    will be applied in order. Each property (e.g. 'voting', and 'skip-if') can only
+#    be set (values are NOT merged). The last one wins.
+#
+#    Given a job 'foo-bar', and the following jobs overrides:
+#
+#    jobs:
+#    - name: ^foo-
+#      voting: false    # wins
+#      skip-if:
+#        - project: one # loses!
+#    - name: -bar$
+#      skip-if:
+#        - project: two # wins
+#
+#   Will make job 'foo-bar' non-voting, and skipped for project 'two'.
+#
 # - projects: For each project we specify what jobs to run, in what order jobs
 #    should depend on each other and for which pipelines the jobs should run.
 #
@@ -600,18 +617,31 @@ jobs:
   # MediaWiki: Quibble and PHPUnit stuff
   # -------
 
-  # Run MediaWiki PHP 5.5 tests on MW < 1.31
-  - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
-    branch: ^(REL1_(2[789]|30))$
+  # Run PHP 5.5 tests only on MW < 1.31
+  - name: ^(mwext|mwskin|mwgate).*php55.*$
+    skip-if:
+      - project: '^mediawiki/.*'
+        branch: ^(?!(REL1_(2[789]|30)).*)
 
-  # Quibble jobs should not be run on fundraising/REL1_27.
+  # Fallback settings for all Quibble jobs
   - name: ^.*quibble-.*-docker$
     skip-if:
+      # Disable on fundraising branches
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
 
+  - name: ^.*quibble.*php55.*$
+    skip-if:
+      # Disable on fundraising branches
+      - project: '^mediawiki/core$'
+        branch: ^(fundraising/REL1_(27|31))$
+      # Disable on all branches except MW < 1.31
+      - project: '^mediawiki/.*'
+        branch: ^(?!(REL1_(2[789]|30)).*)
+
   - name: ^.*quibble.*php70.*$
     skip-if:
+      # Disable on fundraising branches
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
       - project: '^mediawiki/skins/Empty'
