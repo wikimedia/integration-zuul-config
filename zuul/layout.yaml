@@ -600,11 +600,13 @@ jobs:
   # MediaWiki: Quibble and PHPUnit stuff
   # -------
 
-  # Run MediaWiki PHP 5.5 tests on MW < 1.31
+  # Run PHP 5.5 tests only on MW < 1.31
   - name: ^(release-quibble|quibble|mediawiki|mwext|mwskin|mwgate).*php55.*$
-    branch: ^(REL1_(2[789]|30))$
+    skip-if:
+      - project: '^mediawiki/.*'
+        branch: ^(?!(REL1_(2[789]|30)).*)$
 
-  # Quibble jobs should not be run on fundraising/REL1_27.
+  # Skip Quibble jobs on some fundraising branches
   - name: ^.*quibble-.*-docker$
     skip-if:
       - project: '^mediawiki/core$'
