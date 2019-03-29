@@ -3,6 +3,7 @@
 # Copyright (c) 2014 - Antoine "hashar" Musso
 # Copyright (c) 2014 - Wikimedia Foundation Inc.
 
+from collections import defaultdict
 import ConfigParser
 import re
 import shutil
@@ -1025,6 +1026,68 @@ class TestZuulScheduler(unittest.TestCase):
                     job.name, expected_gate[job.name],
                     job.changeMatches(change))
                 )
+
+    def test_quibble_jobs_branches_filtering(self):
+        change = zuul.model.Change('mediawiki/core')
+
+        # Get MediaWiki core Quibble jobs
+        quibble_jobs = set()
+        for pipeline in ['test', 'php']:
+            job_tree = [t for (p, t) in
+                        self.getPipeline(pipeline).job_trees.iteritems()
+                        if p.name == 'mediawiki/core'][0]
+            for job in job_tree.getJobs():
+                if 'quibble' in job.name:
+                    quibble_jobs.add(job)
+
+        # Some set definining branches we are interested in testing
+        deploy_branch = {'wmf/1.99.0-wmf.42'}
+        fundraising_branches = {
+            'fundraising/REL1_27',
+            'fundraising/REL1_31',
+        }
+        rel1_27 = {'REL1_27'}
+        rel1_31 = {'REL1_31'}
+        rel1_32 = {'REL1_32'}
+        release_branches = rel1_27 | rel1_31 | rel1_32
+        master = {'master'}
+
+        all_branches = master | deploy_branch | fundraising_branches | release_branches
+
+        # Jobs default to run for any branch but we have branch filters to blacklist them.
+
+        blacklist = defaultdict(set)
+        for job in quibble_jobs:
+            if 'composer' in job.name:
+                blacklist[job.name] |= deploy_branch | fundraising_branches
+
+            if 'php55' in job.name:
+                blacklist[job.name] |= all_branches - rel1_27
+
+            if job.name.startswith('wmf-quibble'):
+                blacklist[job.name] |= all_branches - (deploy_branch | master)
+
+            if job.name.startswith('release'):
+                blacklist[job.name] |= all_branches - (release_branches | master)
+
+            if 'postgres' in job.name or 'sqlite' in job.name:
+                blacklist[job.name] |= all_branches - (master | rel1_32)
+            if 'php71' in job.name:
+                blacklist[job.name] |= all_branches - (master | rel1_32)
+            if 'php72' in job.name:
+                blacklist[job.name] |= all_branches - (master | rel1_32 | deploy_branch)
+
+        errors = []
+        for job in quibble_jobs:
+            for blacklisted_branch in blacklist[job.name]:
+                change.branch = blacklisted_branch
+                if job.changeMatches(change):
+                    errors.append('%s must not run for %s' % (job.name, blacklisted_branch))
+
+
+        self.maxDiff = None
+        self.assertListEqual([], errors)
+
 
     def test_quibble_jobs_are_skipped_on_fundraising_branches(self):
         change = zuul.model.Change('mediawiki/core')
