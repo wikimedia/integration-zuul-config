@@ -377,6 +377,7 @@ dependencies = {
     'WikiEditor': ['EventLogging', 'WikimediaEvents'],
     'WikimediaBadges': ['Wikibase'],
     'WikimediaEvents': ['EventLogging'],
+    'WikimediaMessages': ['GuidedTour', 'ORES', '../skins/MinervaNeue'],
     'Wikisource': ['Wikibase'],
     'wikihiero': ['VisualEditor'],
     'ZeroBanner': ['Echo', 'JsonConfig', 'MobileFrontend', 'VisualEditor',
