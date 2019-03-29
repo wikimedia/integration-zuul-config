@@ -577,6 +577,28 @@
                     ZUUL_BRANCH=$ZUUL_BRANCH
                     ZUUL_REF=$ZUUL_BRANCH
 
+# php5.5 is solely for REL1_27 due to EOL in June 2019.
+# We do not need wmf* jobs which are for deployment branches
+- project:
+    name: quibble-jobs-php55
+    php:
+        - php55:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.28
+    # Postgresql / sqlite do not pass on REL1_27
+    database:
+        - mysql
+    packages-source:
+        - composer
+        - vendor
+    jobs:
+        - mediawiki-quibble-{packages-source}-{database}-{php}-docker
+        - quibble-{packages-source}-{database}-{php}-docker
+        - quibble-{packages-source}-{database}-{php}-noselenium-docker
+        - release-quibble-{packages-source}-{database}-{php}-docker:
+            packages-source:
+                - vendor  # XXX should probably be composer instead
+        # No need for wmf-quibble jobs
+
 - project:
     name: quibble-jobs
     packages-source:
@@ -587,8 +609,6 @@
         - postgres
         - sqlite
     php:
-        - php55:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.28
         - php70:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.28-1
         - php71:
