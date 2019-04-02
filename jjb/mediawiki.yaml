@@ -223,6 +223,13 @@
         - junit:
             allow-empty-results: true
             results: 'log/junit*.xml'
+        - postbuildscript:
+            # MediaWiki debug logs are typically fairly large
+            builders:
+                - shell: 'find log/ -name "mw-debug-*.log" -exec gzip {{}} \+'
+            # Always run it
+            script-only-if-succeeded: false
+            script-only-if-failed: false
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - docker-cleanup
