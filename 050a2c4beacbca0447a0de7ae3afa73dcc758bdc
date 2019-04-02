@@ -34,6 +34,24 @@
       "revId": "050a2c4beacbca0447a0de7ae3afa73dcc758bdc",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b3f8594d_ce8c40a4",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-04-02T11:16:59Z",
+      "side": 0,
+      "message": "\u003e TLDR: use:\n \u003e \n \u003e - event: ref-updated\n \u003e ref: ^refs/heads/.*$\n \u003e ignore-deletes: True\n \u003e \n \u003e Bonus if we write a test :)\n \u003e \n \u003e ------------- wall\u0027otxt ---\n \u003e \n \u003e \n \u003e \n \u003e That is from 2013, and apparently we never used a post pipeline\n \u003e (based on: git log --follow -Gpost: zuul/layout.yaml ).\n \u003e \n \u003e I borrowed that either from Zuul documentation or from OpenStack\n \u003e config files. One sure thing, Zuul code as test layout that uses\n \u003e the inverted logic:\n \u003e \n \u003e - name: post\n \u003e manager: IndependentPipelineManager\n \u003e trigger:\n \u003e review_gerrit:\n \u003e - event: ref-updated\n \u003e ref: ^(?!refs/).*$\n \u003e ignore-deletes: True\n \u003e \n \u003e The logic is inverted explicitly to drop all events of the kind:\n \u003e * refs/changes/45/12345/meta\n \u003e * refs/changes/45/12345/1\n \u003e * refs/notes/review\n \u003e \n \u003e See https://phabricator.wikimedia.org/P8167 for an example of\n \u003e events emitted when a change is pushed. The first one has:\n \u003e \n \u003e refName: refs/heads/master\n \u003e \n \u003e \n \u003e The Zuul version we have -and its doc- use the negative regex\n \u003e because it matches the behavior of some old gerrit. For branches\n \u003e updates it used to report:\n \u003e \n \u003e refName: master\n \u003e \n \u003e And on deletion:\n \u003e \n \u003e refName: devnull\n \u003e \n \u003e \n \u003e Thus that regex there dismiss patchsets / notes etc as well as skip\n \u003e references deletions.\n \u003e \n \u003e In Zuul fixtures I even found the following text:\n \u003e \n \u003e \u003e Add option to ignore ref-updated events emitted by branch\n \u003e deletions\n \u003e \u003e\n \u003e \u003e https://review.openstack.org/178833\n \u003e \n \u003e Which is I guess the implementation of \u0027ignore-deletes\u0027.",
+      "parentUuid": "21c4733c_2e58d391",
+      "revId": "050a2c4beacbca0447a0de7ae3afa73dcc758bdc",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
