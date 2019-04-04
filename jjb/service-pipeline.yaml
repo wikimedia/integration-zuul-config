@@ -35,6 +35,18 @@
           same-node: false
 
 - job:
+    name: 'trigger-service-pipeline-test-and-prod-build'
+    defaults: global
+    node: blubber
+    parameters: *service-pipeline-parameters
+    builders:
+      - trigger-builds:
+          - project: service-pipeline-test-and-prod-build
+            current-parameters: true
+            block: true
+            same-node: false
+
+- job:
     name: 'trigger-service-jenkinsfile'
     defaults: global
     node: blubber
@@ -62,6 +74,15 @@
     parameters: *service-pipeline-parameters
     dsl: !include-raw:
       - service-pipeline-test.groovy
+      - service-pipeline.groovy
+
+- job:
+    name: 'service-pipeline-test-and-prod-build'
+    defaults: global
+    project-type: pipeline
+    parameters: *service-pipeline-parameters
+    dsl: !include-raw:
+      - service-pipeline-test-and-prod-build.groovy
       - service-pipeline.groovy
 
 - job:

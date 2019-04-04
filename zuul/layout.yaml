@@ -1284,6 +1284,14 @@ project-templates:
     gate-and-submit-swat:
       - trigger-service-pipeline-test
 
+  - name: service-pipeline-test-and-prod-build
+    test:
+      - trigger-service-pipeline-test-and-prod-build
+    gate-and-submit:
+      - trigger-service-pipeline-test-and-prod-build
+    gate-and-submit-swat:
+      - trigger-service-pipeline-test-and-prod-build
+
   - name: service-pipeline-test-and-publish
     postmerge:
       - trigger-service-pipeline-test-and-publish
@@ -8022,7 +8030,7 @@ projects:
 
   - name: wikibase/termbox
     template:
-      - name: service-pipeline-test
+      - name: service-pipeline-test-and-prod-build
 
   - name: wikibase/wikiba.se
     test:
