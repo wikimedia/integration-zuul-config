@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e359231_9953bee3",
+        "filename": "dockerfiles/bazel/Dockerfile.template",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-04-04T21:03:03Z",
+      "side": 1,
+      "message": "That misses a few things such as cleaning up /var/cache/apt and other things.  To get it right, docker-pkg offers a template which has everything required: apt_install.\n\nWith docker-pkg 1.1.2 or later, one can use it as:\n\n RUN {{ \"curl\n default-jdk\n gnupg2\n \"| apt_install }}\n\nUntested :)",
+      "revId": "64e8e8eede73a8cc967d67272dbe68c4a3640a93",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7275c428_5b235386",
+        "filename": "dockerfiles/bazel/Dockerfile.template",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-04-04T21:03:03Z",
+      "side": 1,
+      "message": "ditto you want to use {{ bazel | apt_install }} like above.",
+      "revId": "64e8e8eede73a8cc967d67272dbe68c4a3640a93",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b2bbbcab_8a5991ce",
+        "filename": "dockerfiles/bazel/Dockerfile.template",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-04-04T21:03:03Z",
+      "side": 1,
+      "message": "And finally you want an ENTRYPOINT so that the container runs bazel and switch to user nobody as well. Something like:\n\n USER nobody\n ENTRYPOINT [\"/path/to/bazel\"]",
+      "revId": "64e8e8eede73a8cc967d67272dbe68c4a3640a93",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
