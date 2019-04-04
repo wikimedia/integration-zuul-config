@@ -65,6 +65,15 @@
       - service-pipeline.groovy
 
 - job:
+    name: 'service-pipeline-test-and-prod-build'
+    defaults: global
+    project-type: pipeline
+    parameters: *service-pipeline-parameters
+    dsl: !include-raw:
+      - service-pipeline-test-and-prod-build.groovy
+      - service-pipeline.groovy
+
+- job:
     name: 'service-jenkinsfile'
     project-type: pipeline
     sandbox: true
