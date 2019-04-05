@@ -22,65 +22,7 @@
      - archive-log-allow-empty
      - docker-cleanup
 
-- project:
-    name: wmf-sonar-scanner
-    jobs:
-      - wmf-sonar-scanner-{name}:
-         # Used for analyzing gerrit patch sets.
-         name: 'change'
-         branch: '$ZUUL_CHANGE'
-         args: |
-             -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
-             -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
-             -Dsonar.organization=wmftest \
-             -Dsonar.host.url=https://sonarcloud.io \
-             -Dsonar.branch.target="$ZUUL_BRANCH" \
-             -Dsonar.branch.name={branch} \
-             -X
-      - wmf-sonar-scanner-{name}:
-         # Used for analyzing the master branch on postmerge.
-         name: 'branch-non-voting'
-         branch: '$ZUUL_BRANCH'
-         args: |
-             -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
-             -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
-             -Dsonar.organization=wmftest \
-             -Dsonar.host.url=https://sonarcloud.io \
-             -X
 
-- job-template:
-    name: 'wmf-sonar-scanner-{name}'
-    node: DebianJessieDocker
-    concurrent: false
-    branch: '$ZUUL_BRANCH'
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-    - docker-log-dir
-    - docker-src-dir
-    - docker-cache-dir
-    - docker-ci-src-setup-simple
-    - docker-run-with-log-cache-src:
-       image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.0'
-       logdir: '/log'
-       args: '{args}'
-    wrappers:
-     - ansicolor
-     - timeout:
-         timeout: 30
-         fail: true
-     - timestamps
-     # SONAR_API_KEY is in Jenkins credentials store
-     # https://integration.wikimedia.org/ci/credentials/
-     - credentials-binding:
-           - text:
-               credential-id: SONAR_API_KEY
-               variable: SONAR_API_KEY
-    publishers:
-        - docker-cleanup
 
 - job: # Identical to mwext-VisualEditor-docker-publish except docsrc and docdest.
     name: 'mwext-npm-doc-publish'
@@ -184,7 +126,6 @@
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-
 
 - job:
     name: 'mediawiki-i18n-check-docker'
