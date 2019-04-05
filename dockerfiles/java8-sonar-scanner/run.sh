@@ -17,11 +17,14 @@ if [[ ! -f /src/sonar-project.properties ]] && [[ ! -f /src/.sonar-project.prope
     if [[ -f /src/coverage/lcov.info ]]; then
         echo "sonar.javascript.lcov.reportPaths=/src/coverage/lcov.info" >> /src/sonar-project.properties
     fi
-    if [[ -f /log/coverage/junit.xml ]] && [[ -f /log/coverage/clover.xml ]]; then
-        echo "sonar.php.tests.reportPath=/log/coverage/junit.xml" >> /src/sonar-project.properties
-        echo "sonar.php.coverage.reportPaths=/log/coverage/clover.xml" >> /src/sonar-project.properties
+    if [[ -f "${LOG_DIR}"/junit.xml ]] && [[ -f "${LOG_DIR}"/clover.xml ]]; then
+        echo "sonar.php.tests.reportPath=${LOG_DIR}/junit.xml" >> /src/sonar-project.properties
+        echo "sonar.php.coverage.reportPaths=${LOG_DIR}/clover.xml" >> /src/sonar-project.properties
     fi
 fi
+# Output sonar-project file to assist with debugging:
+echo "== sonar-project.properties =="
+cat /src/sonar-project.properties
 
 # Initialize analysis, send data to SonarQube
 /opt/sonar-scanner/bin/sonar-scanner -Dsonar.login="$SONAR_API_KEY" "$@"
@@ -37,14 +40,17 @@ export $( cat /src/.scannerwork/report-task.txt | grep dashboardUrl )
 SONARQUBE_ANALYSIS_URL=https://sonarcloud.io/api/ce/task?id=$ceTaskId
 SONARQUBE_ANALYSIS_RESPONSE=$( curl -s -u ${SONAR_API_KEY}: ${SONARQUBE_ANALYSIS_URL} | jq -r .[].status )
 
+echo "Polling ${SONARQUBE_ANALYSIS_URL}"
+
 until ( [[ ${SONARQUBE_ANALYSIS_RESPONSE} == "SUCCESS" ]] ); do
     if [[ ${ATTEMPT_COUNTER} -eq ${MAX_ATTEMPTS} ]];then
       echo "Max attempts reached"
-      # TODO: Should be exit 1, but setting to 0 to be safe for now.
-      exit 0
+      echo "Last analysis response: ${SONARQUBE_RAW_ANALYSIS_RESPONSE}"
+      exit 1
     fi
 
-    SONARQUBE_ANALYSIS_RESPONSE=$( curl -s -u ${SONAR_API_KEY}: ${SONARQUBE_ANALYSIS_URL} | jq .[].status )
+    SONARQUBE_RAW_ANALYSIS_RESPONSE=$(curl -s -u ${SONAR_API_KEY}: ${SONARQUBE_ANALYSIS_URL} )
+    SONARQUBE_ANALYSIS_RESPONSE=$( echo ${SONARQUBE_RAW_ANALYSIS_RESPONSE} | jq -r .[].status )
     printf '.'
     ATTEMPT_COUNTER=$(($ATTEMPT_COUNTER+1))
     sleep 15
@@ -54,6 +60,7 @@ ANALYSIS_ID=$( curl -s -u ${SONAR_API_KEY}: ${SONARQUBE_ANALYSIS_URL} | jq -r .[
 QUALITY_GATE=$( curl -s -u ${SONAR_API_KEY}: https://sonarcloud.io/api/qualitygates/project_status?analysisId=${ANALYSIS_ID})
 
 # Pretty-printed JSON output fo the quality gate. Better than nothing!
+echo "== QUALITY GATE =="
 echo ${QUALITY_GATE} | jq
 QUALITY_GATE_STATUS=$(echo ${QUALITY_GATE} | jq -r .projectStatus.status)
 echo "=========================="
@@ -61,7 +68,6 @@ echo "Quality gate status: ${QUALITY_GATE_STATUS}"
 echo "Report URL: $dashboardUrl"
 echo "=========================="
 if [[ ${QUALITY_GATE_STATUS} == "ERROR" ]]; then
-    # Eventually the below should be exit 1, but since we're non-voting for now leave it as 0.
-    exit 0;
+    exit 1;
 fi
 exit 0;
