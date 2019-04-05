@@ -27,7 +27,7 @@
     jobs:
       - wmf-sonar-scanner-{name}:
          # Used for analyzing gerrit patch sets.
-         name: 'change'
+         name: 'patch-non-voting'
          branch: '$ZUUL_CHANGE'
          args: |
              -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
@@ -39,7 +39,7 @@
              -X
       - wmf-sonar-scanner-{name}:
          # Used for analyzing the master branch on postmerge.
-         name: 'branch-non-voting'
+         name: 'master-non-voting'
          branch: '$ZUUL_BRANCH'
          args: |
              -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
@@ -64,7 +64,7 @@
     - docker-cache-dir
     - docker-ci-src-setup-simple
     - docker-run-with-log-cache-src:
-       image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.0'
+       image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.2'
        logdir: '/log'
        args: '{args}'
     wrappers:
