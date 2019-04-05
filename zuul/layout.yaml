@@ -853,9 +853,6 @@ jobs:
   - name: 'mwext-doxygen-publish'
     branch: ^(REL.*|master)$
 
-  - name: 'mwext-VisualEditor-docker-publish'
-    branch: ^master$
-
   - name: 'mediawiki-selenium-bundle-yard-publish'
     branch: ^master$
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
@@ -7404,13 +7401,7 @@ projects:
       - name: commit-message-validator
       - name: mwgate-rake
       - name: extension-seccheck
-    test:
-      - mwext-VisualEditor-jsduck-docker
-    gate-and-submit: &mediawiki-extensions-visualeditor-gate-and-submit
-      - mwext-VisualEditor-jsduck-docker
-    gate-and-submit-swat: *mediawiki-extensions-visualeditor-gate-and-submit
-    postmerge:
-      - mwext-VisualEditor-docker-publish
+      - name: extension-javascript-documentation
 
   - name: mediawiki/extensions/WebChat
     template:
