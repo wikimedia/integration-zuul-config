@@ -7732,8 +7732,10 @@ projects:
       - phpunit-coverage-docker-publish
 
   - name: wikipeg
-    template:
-     - name: node10-docker
+    test:
+      - wikipeg-npm-php-docker
+    gate-and-submit:
+      - wikipeg-npm-php-docker
 
   - name: WrappedString
     template:
