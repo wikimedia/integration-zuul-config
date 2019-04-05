@@ -633,6 +633,14 @@
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
         - release-quibble-{packages-source}-{database}-{php}-docker
+        - mwext-codehealth-master-non-voting:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.31-1
+            packages-source:  composer
+            database: mysql
+        - mwext-codehealth-patch-non-voting:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.31-1
+            packages-source:  composer
+            database: mysql
         - wmf-quibble-vendor-mysql-{php}-docker:
             # We never use composer on wmf cluster
             packages-source: vendor
