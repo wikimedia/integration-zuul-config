@@ -357,6 +357,10 @@
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source {packages-source} --db {database} --db-dir /workspace/db --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /workspace/log/coverage.html"'
             logdir: '/workspace/log'
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.1'
+            logdir: '/workspace/log'
+            args: '{args}'
     publishers:
      - archive:
          artifacts: 'log/coverage.html'
@@ -368,6 +372,12 @@
          fail: true
      - ansicolor
      - timestamps
+     # SONAR_API_KEY is in Jenkins credentials store
+     # https://integration.wikimedia.org/ci/credentials/
+     - credentials-binding:
+           - text:
+               credential-id: SONAR_API_KEY
+               variable: SONAR_API_KEY
 
 # Per-patch performance report for MediaWiki core.
 - job:
@@ -398,7 +408,24 @@
     name: 'mwext-phpunit-coverage-patch-docker'
     quibble_args: '--commands=mwext-phpunit-coverage-patch'
     triggers:
-        - zuul
+      - zuul
+    builders:
+      - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.1'
+         logdir: '/log'
+         args: '{args}'
+    wrappers:
+        - ansicolor
+        - timeout:
+            timeout: 30
+            fail: true
+        - timestamps
+        # SONAR_API_KEY is in Jenkins credentials store
+        # https://integration.wikimedia.org/ci/credentials/
+        - credentials-binding:
+            - text:
+                credential-id: SONAR_API_KEY
+                variable: SONAR_API_KEY
 
 # XXX copy pasted to pass --volume cover:/workspace/cover
 - job-template:
@@ -417,6 +444,10 @@
             options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=320M'
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
+        - docker-run-with-log-cache-src:
+             image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.1'
+             logdir: '/workspace/log'
+             args: '{args}'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -429,6 +460,18 @@
                 - docker-wipe-dir:
                     dir: 'cover'
         - docker-cleanup
+    wrappers:
+        - ansicolor
+        - timeout:
+            timeout: 30
+            fail: true
+        - timestamps
+        # SONAR_API_KEY is in Jenkins credentials store
+        # https://integration.wikimedia.org/ci/credentials/
+        - credentials-binding:
+            - text:
+                credential-id: SONAR_API_KEY
+                variable: SONAR_API_KEY
 
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:

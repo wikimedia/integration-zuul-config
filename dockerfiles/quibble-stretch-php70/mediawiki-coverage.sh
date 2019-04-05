@@ -15,7 +15,8 @@ set +e
 php -d zend_extension=xdebug.so \
     tests/phpunit/phpunit.php \
         --exclude-group Dump,Broken,ParserFuzz,Stub \
-        --coverage-clover "$LOG_DIR"/clover.xml \
+        --coverage-junit "$LOG_DIR"/coverage/junit.xml \
+        --coverage-clover "$LOG_DIR"/coverage/clover.xml \
         --coverage-html "$WORKSPACE/cover" &
 cover_pid=$!
 relay_signals SIGINT SIGTERM
@@ -27,13 +28,13 @@ set -e
 # the coverage report from doc.wikimedia.org.
 test -f "$WORKSPACE"/cover/index.html
 
-if [ -s "$LOG_DIR"/clover.xml ]; then
+if [ -s "$LOG_DIR"/coverage/clover.xml ]; then
     # Since clover file is huge, compress it before archiving
     # We need to keep the original though for the cloverphp plugin
-    gzip --best --keep "$LOG_DIR"/clover.xml
+    gzip --best --keep "$LOG_DIR"/coverage/clover.xml
 
     clover-edit \
-        "$LOG_DIR"/clover.xml \
+        "$LOG_DIR"/coverage/clover.xml \
         --name "MediaWiki core" \
         --remove-full-info \
         --save "$WORKSPACE"/cover/clover.xml
