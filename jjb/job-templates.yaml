@@ -327,6 +327,28 @@
     triggers:
      - zuul
 
+# Variant for MediaWiki services /deploy repos
+# We only need to install devDependencies, and use a different entry point
+- job-template:
+    XXXXX
+    name: '{name}-deploy-node10-docker'
+    node: DebianJessieDocker
+    concurrent: true
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.5.0'
+        logdir: '/log'
+        docker_run_options_var: '--entrypoint=/run-oid.sh'
+    triggers:
+     - zuul
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
+
 - job-template: &job_npm-run-script-node-6-docker
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-run-{script}-node-6-docker'
