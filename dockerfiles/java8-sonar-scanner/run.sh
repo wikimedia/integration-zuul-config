@@ -40,8 +40,7 @@ SONARQUBE_ANALYSIS_RESPONSE=$( curl -s -u ${SONAR_API_KEY}: ${SONARQUBE_ANALYSIS
 until ( [[ ${SONARQUBE_ANALYSIS_RESPONSE} == "SUCCESS" ]] ); do
     if [[ ${ATTEMPT_COUNTER} -eq ${MAX_ATTEMPTS} ]];then
       echo "Max attempts reached"
-      # TODO: Should be exit 1, but setting to 0 to be safe for now.
-      exit 0
+      exit 1
     fi
 
     SONARQUBE_ANALYSIS_RESPONSE=$( curl -s -u ${SONAR_API_KEY}: ${SONARQUBE_ANALYSIS_URL} | jq .[].status )
@@ -61,7 +60,6 @@ echo "Quality gate status: ${QUALITY_GATE_STATUS}"
 echo "Report URL: $dashboardUrl"
 echo "=========================="
 if [[ ${QUALITY_GATE_STATUS} == "ERROR" ]]; then
-    # Eventually the below should be exit 1, but since we're non-voting for now leave it as 0.
-    exit 0;
+    exit 1;
 fi
 exit 0;
