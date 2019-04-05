@@ -24,3 +24,31 @@ if [ ! -f /src/sonar-project.properties ] && [ ! -f /src/.sonar-project.properti
 fi
 
 exec /opt/sonar-scanner/bin/sonar-scanner -Dsonar.login="$SONAR_API_KEY" "$@"
+
+ATTEMPT_COUNTER=0
+MAX_ATTEMPTS=10
+export $( cat .scannerwork/report-task.txt | grep ceTaskId )
+SONARQUBE_ANALYSIS_URL=https://sonarcloud.io/api/ce/task?id=$ceTaskId
+SONARQUBE_ANALYSIS_RESPONSE=$( curl -s -u $SONAR_API_KEY: $SONARQUBE_ANALYSIS_URL | jq .[].status )
+
+until ( [[ ${SONARQUBE_ANALYSIS_RESPONSE} == \""SUCCESS\"" ]] ); do
+    if [[ ${ATTEMPT_COUNTER} -eq ${MAX_ATTEMPTS} ]];then
+      echo "Max attempts reached"
+      exit 1
+    fi
+
+    SONARQUBE_ANALYSIS_RESPONSE=$( curl -s -u $SONAR_API_KEY: $SONARQUBE_ANALYSIS_URL | jq .[].status )
+    printf '.'
+    ATTEMPT_COUNTER=$(($ATTEMPT_COUNTER+1))
+    sleep 15
+done
+
+ANALYSIS_ID=$( curl -s -u $SONAR_API_KEY: $SONARQUBE_ANALYSIS_URL | jq .[].analysisId )
+QUALITY_GATE=$( curl -s -u $SONAR_API_KEY: https://sonarcloud.io/api/qualitygates/project_status?analysisId=$ANALYSIS_ID)
+
+echo $QUALITY_GATE | jq
+QUALITY_GATE_STATUS = echo $QUALITY_GATE | jq .projectStatus.status
+if [[ $QUALITY_GATE == \""ERROR\"" ]]; then
+    exit 1;
+fi
+exit 0;
