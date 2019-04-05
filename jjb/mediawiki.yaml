@@ -404,7 +404,7 @@
 # XXX copy pasted to pass --volume cover:/workspace/cover
 - job-template:
     !!merge : *job_quibble
-    name: 'mwext-phpunit-coverage-docker-publish'
+    name: 'mwext-phpunit-coverage-docker'
     quibble_args: '--commands=mwext-phpunit-coverage'
     triggers:
         - zuul
@@ -421,6 +421,18 @@
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
+
+# XXX copy pasted to pass --volume cover:/workspace/cover
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwext-phpunit-coverage-docker-publish'
+    triggers:
+        - zuul
+    builders:
+        - mwext-phpunit-coverage-docker
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
         - postbuildscript:
             builders:
                 - cover-extensions-publish:
@@ -430,6 +442,43 @@
                 - docker-wipe-dir:
                     dir: 'cover'
         - docker-cleanup
+
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwext-codehealth-patch'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-wipe-dir:
+            dir: '/workspace/log'
+        - docker-log-dir
+        - mwext-phpunit-coverage-docker
+            logdir: '/workspace/log'
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/npm-test:0.6.1
+            logdir: '/workspace/log'
+        - wmf-sonar-scanner-patch-non-voting:
+             logdir: '/workspace/log'
+
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwext-codehealth-master'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-wipe-dir:
+            dir: '/workspace/log'
+        - docker-log-dir
+        - mwext-phpunit-coverage-docker
+            logdir: '/workspace/log'
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/npm-test:0.6.1
+            logdir: '/workspace/log'
+        - wmf-sonar-scanner-master-non-voting:
+             logdir: '/workspace/log'
+
 
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:
