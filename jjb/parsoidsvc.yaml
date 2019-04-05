@@ -40,6 +40,25 @@
      - docker-cleanup
 
 
+- job:
+    name: 'wikipeg-npm-php-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/npm-php:0.2.0
+         logdir: '/log'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
+
 - project:
     name: parsoidsvc
     jobs:
