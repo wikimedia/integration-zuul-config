@@ -357,6 +357,8 @@
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source {packages-source} --db {database} --db-dir /workspace/db --commands "phpunit-patch-coverage check --command \"php7.0 -d zend_extension=xdebug.so tests/phpunit/phpunit.php\" --html /workspace/log/coverage.html"'
             logdir: '/workspace/log'
+        - wmf-sonar-scanner-change:
+            logdir: '/workspace/log'
     publishers:
      - archive:
          artifacts: 'log/coverage.html'
@@ -399,6 +401,9 @@
     quibble_args: '--commands=mwext-phpunit-coverage-patch'
     triggers:
         - zuul
+    builders:
+        - wmf-sonar-scanner-change:
+             logdir: '/log'
 
 # XXX copy pasted to pass --volume cover:/workspace/cover
 - job-template:
@@ -417,6 +422,8 @@
             options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=320M'
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
             logdir: '/workspace/log'
+        - wmf-sonar-scanner-branch-non-voting:
+             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -457,6 +464,8 @@
             image: '{docker_image}'
             options: '--volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=320M'
             args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db {quibble_args}'
+            logdir: '/workspace/log'
+        - wmf-sonar-scanner-branch-non-voting:
             logdir: '/workspace/log'
         - cover-publish:
             src: 'cover'

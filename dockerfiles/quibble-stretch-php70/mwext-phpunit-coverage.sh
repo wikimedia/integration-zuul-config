@@ -37,6 +37,7 @@ set +e
 php7.0 -d zend_extension=xdebug.so \
     "$MW_INSTALL_PATH"/tests/phpunit/phpunit.php \
     --testsuite extensions \
+    --coverage-junit "$LOG_DIR"/junit.xml \
     --coverage-clover "$LOG_DIR"/clover.xml \
     --coverage-html "$WORKSPACE"/cover \
     "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" &
