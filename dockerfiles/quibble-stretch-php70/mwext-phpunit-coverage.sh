@@ -12,7 +12,8 @@
 # - WORKSPACE
 #
 # Outputs:
-# - clover.xml in $LOG_DIR
+# - clover.xml in $LOG_DIR/coverage
+# - junit.xml in $LOG_DIR/coverage
 # - HTML report in $WORKSPACE/cover
 
 set -eux -o pipefail
@@ -37,7 +38,8 @@ set +e
 php7.0 -d zend_extension=xdebug.so \
     "$MW_INSTALL_PATH"/tests/phpunit/phpunit.php \
     --testsuite extensions \
-    --coverage-clover "$LOG_DIR"/clover.xml \
+    --coverage-junit "$LOG_DIR"/coverage/junit.xml \
+    --coverage-clover "$LOG_DIR"/coverage/clover.xml \
     --coverage-html "$WORKSPACE"/cover \
     "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" &
 cover_pid=$!
