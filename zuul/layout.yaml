@@ -645,6 +645,7 @@ jobs:
       # Disable on fundraising branches
       - project: '^mediawiki/core$'
         branch: ^(fundraising/REL1_(27|31))$
+      # mwskin-Empty depends on PhpTags which fails php70 (T188585)
       - project: '^mediawiki/skins/Empty'
 
   - name: ^.*quibble.*php71.*$
@@ -655,10 +656,19 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^wmf/
 
-  # Skip postgres/sqlite on wmf/, fundraising/ (not used)
-  # and on MW < 1.32
-  - name: ^.*quibble.*(postgres|sqlite).*$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+  - name: ^.*quibble.*(postgres|sqlite).*php70.*$
+    skip-if:
+      # Disable on fundraising branches (not used)
+      - project: '^mediawiki/.*'
+        branch: ^fundraising/.*$
+      # Disable on wmf branches (not used)
+      - project: '^mediawiki/.*'
+        branch: ^wmf/.*$
+      # Disable on MW < 1.32
+      - project: '^mediawiki/.*'
+        branch: ^REL1_(2[789]|3[01])$
+      # mwskin-Empty depends on PhpTags which fails php70 (T188585)
+      - project: '^mediawiki/skins/Empty'
 
   - name: ^release-quibble-
     branch: ^REL
