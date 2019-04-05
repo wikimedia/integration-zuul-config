@@ -441,6 +441,29 @@ pipelines:
     failure:
       gerrit: {}
 
+  # Dedicated pipeline for per-patch code health report (non-voting)
+  - name: codehealth
+    description: >-
+      Code health checks channel.
+      To retry, submit the comment "check codehealth".
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: low
+    trigger:
+      gerrit:
+        - event: patchset-created
+          branch: (?!^refs/meta/config)
+          email: *email_whitelist
+        - event: comment-added
+          comment: (?im)^Patch Set \d+:\n\n\s*check codehealth\.?\s*$
+          email: *email_whitelist
+    success-message: 'Code health checks OK! :)'
+    success:
+      gerrit: {}
+    failure-message: 'Code health checks failed :('
+    failure:
+      gerrit: {}
+
   - name: experimental
     description: >
       Pipeline for experimental jobs. These only run after submitting the comment "check experimental".
@@ -973,9 +996,6 @@ project-templates:
       - quibble-vendor-mysql-php73-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
-      - wmf-sonar-scanner-change
-    postmerge:
-      - wmf-sonar-scanner-branch-non-voting
 
   - name: extension-quibble-composer
     php:
@@ -1001,9 +1021,6 @@ project-templates:
       - quibble-composer-mysql-php73-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
-      - wmf-sonar-scanner-change
-    postmerge:
-      - wmf-sonar-scanner-branch-non-voting
 
   # Runs quibble but skip selenium tests - T196960
   - name: extension-quibble-noselenium
@@ -1030,9 +1047,6 @@ project-templates:
       - quibble-vendor-mysql-php73-noselenium-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
-      - wmf-sonar-scanner-change
-    postmerge:
-      - wmf-sonar-scanner-branch-non-voting
 
   - name: extension-quibble-composer-noselenium
     php:
@@ -1059,9 +1073,6 @@ project-templates:
       - quibble-composer-mysql-php73-noselenium-docker
       - mwext-php70-phan-docker
       - mwext-php70-phan-seccheck-docker
-      - wmf-sonar-scanner-change
-    postmerge:
-      - wmf-sonar-scanner-branch-non-voting
 
   # Template to run per-patch selenium browser test using mediawiki_selenium ruby gems.
   #
@@ -1146,6 +1157,12 @@ project-templates:
     coverage:
       - mwext-phpunit-coverage-patch-docker
 
+  - name: extension-codehealth
+    postmerge:
+      - mwext-codehealth-master-non-voting
+    codehealth:
+      - mwext-codehealth-patch-non-voting
+
   # Runs quibble, and includes experimental jobs
   # that are for skins.
   - name: skin-quibble
@@ -1172,9 +1189,6 @@ project-templates:
       - quibble-vendor-mysql-php73-docker
       - mwskin-php70-phan-docker
       - mwskin-php70-phan-seccheck-docker
-      - wmf-sonar-scanner-change
-    postmerge:
-      - wmf-sonar-scanner-branch-non-voting
 
   - name: skin-quibble-composer
     php:
@@ -1201,9 +1215,6 @@ project-templates:
       - quibble-composer-mysql-php73-docker
       - mwskin-php70-phan-docker
       - mwskin-php70-phan-seccheck-docker
-      - wmf-sonar-scanner-change
-    postmerge:
-      - wmf-sonar-scanner-branch-non-voting
 
   - name: extension-jsduck
     test:
@@ -1517,7 +1528,6 @@ projects:
       - mediawiki-fresnel-patch-docker
     postmerge:
       - mediawiki-core-jsduck-docker-publish
-      - wmf-sonar-scanner-branch-non-voting
     post:
       - train-deploy-notes
     experimental:
@@ -1527,7 +1537,6 @@ projects:
       - mwgate-composer-php70-docker
       - mediawiki-quibble-composer-mysql-php55-docker
       - mediawiki-core-php70-phan-seccheck-docker
-      - wmf-sonar-scanner-change
 
   - name: mediawiki/debian
     test:
@@ -3615,6 +3624,7 @@ projects:
       - name: extension-gate
       - name: extension-phan
       - name: extension-coverage
+      - name: extension-codehealth
       - name: extension-seccheck
 
   - name: mediawiki/extensions/EditAccount
@@ -4452,6 +4462,7 @@ projects:
       - name: extension-quibble
       - name: mwgate-rake
       - name: extension-coverage
+      - name: extension-codehealth
       - name: extension-seccheck
       - name: extension-phan
 
@@ -5237,6 +5248,7 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-coverage
+      - name: extension-codehealth
       - name: extension-phan
       - name: extension-seccheck
 
