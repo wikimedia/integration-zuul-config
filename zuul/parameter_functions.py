@@ -147,6 +147,7 @@ dependencies = {
     'skins/BlueSpiceCalumma': ['BlueSpiceFoundation'],
     'skins/MinervaNeue': ['MobileFrontend'],
     'skins/Empty': ['PhpTags'],
+    'skins/Refreshed': ['SocialProfile'],
 
     # Extensions
     # One can add a skin by using: 'skin/XXXXX'
