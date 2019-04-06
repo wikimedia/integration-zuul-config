@@ -52,7 +52,14 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/npm-php:0.2.0
+         image: docker-registry.wikimedia.org/releng/composer-php72:0.1.5
+         options: '--workdir /src'
+         args: 'install'
+         logdir: '/log'
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/npm-php:0.2.2
+         options: '--workdir /src'
+         args: 'it'
          logdir: '/log'
     publishers:
      - archive-log-allow-empty
