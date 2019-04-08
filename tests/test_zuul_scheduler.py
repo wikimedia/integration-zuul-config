@@ -1144,10 +1144,10 @@ class TestZuulScheduler(unittest.TestCase):
 
         wmf_quibble_job = self.getJob(
             repo, 'gate-and-submit',
-            'wmf-quibble-vendor-mysql-php70-docker')
+            'wmf-quibble-vendor-mysql-php72-docker')
         release_job = self.getJob(
             repo, 'gate-and-submit',
-            'release-quibble-vendor-mysql-php70-docker')
+            'release-quibble-vendor-mysql-php72-docker')
 
         change = zuul.model.Change(repo)
 
