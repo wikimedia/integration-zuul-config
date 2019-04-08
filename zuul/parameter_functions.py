@@ -220,7 +220,7 @@ dependencies = {
     'BlueSpiceWatchList': ['BlueSpiceFoundation'],
     'BlueSpiceWhoIsOnline': ['BlueSpiceFoundation'],
     'BounceHandler': ['Echo', 'CentralAuth'],
-    'Campaigns': ['EventLogging'],
+    'Campaigns': ['EventLogging', 'MobileFrontend'],
     'Capiunto': ['Scribunto'],
     'CentralAuth': ['AbuseFilter', 'AntiSpoof', 'EventLogging', 'MassMessage',
                     'MobileFrontend', 'Renameuser', 'TitleBlacklist',
