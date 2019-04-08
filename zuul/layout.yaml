@@ -677,15 +677,15 @@ jobs:
   - name: ^release-quibble-.*php55
     branch: ^(REL1_(2[789]|30))$
 
-  # Skip MediaWiki tests for PHP 7.1 on wmf/, fundraising/, and MW < 1.32.
-  # Effectively only on master and REL1_32+
-  - name: ^(wmf|mediawiki).*quibble.*php71.*
+  # Skip MediaWiki tests for PHP 7.0 and 7.1 on wmf/, fundraising/, and MW < 1.32.
+  # Effectively only run them on master and REL1_32+
+  - name: ^(wmf|mediawiki).*quibble.*php7(0|1).*
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
-  - name: ^release-quibble-vendor-mysql-php71-docker$
+  - name: ^release-quibble-vendor-mysql-php7(0|1)-docker$
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
 
   # Skip MediaWiki tests for PHP 7.2 on fundraising/, and MW < 1.32.
-  # Effectively only on master, REL1_32+, and wmf/.
+  # Effectively only run them on master, REL1_32+, and wmf/.
   - name: ^(wmf|mediawiki).*quibble.*php72.*
     branch: (?!(fundraising)/.*|REL1_(2[789]|3[01]))
   # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
