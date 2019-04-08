@@ -47,16 +47,6 @@
         artifacts: 'log/'
         allow-empty: true
 
-# Validate a composer.json
-- builder:
-    name: composer-validate
-    builders:
-     - shell: |
-        set -u
-        cd "{dir}"
-        [[ -f "composer.json" ]] || exit 0
-        composer --ansi validate --no-check-publish
-
 # Validate a composer.json so it can be published on packagist.org
 - builder:
     name: composer-validate-package

@@ -73,30 +73,6 @@
      - build-discarder:
          days-to-keep: 15
 
-# Job for anything with a composer.json, but *isn't* going to be
-# published on packagist.org.
-- job: &job_composer-validate
-    name: composer-validate
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-
-    triggers:
-     - zuul
-    builders:
-     - composer-validate:
-        dir: '.'
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-
-- job-template:
-    !!merge : *job_composer-validate
-    name: '{name}-composer-validate'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job-template: &composer-package-phpflavor-docker
     name: 'composer-package-{phpflavor}-docker'
     node: DebianJessieDocker

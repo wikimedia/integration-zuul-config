@@ -152,10 +152,9 @@ class TestZuulScheduler(unittest.TestCase):
     # Tests
 
     def assertProjectHasComposerValidate(self, name, definition, pipeline):
-        # composer-validate
         # composer-validate-package
         # composer-test-(zend|hhvm)
-        # mwgate-composer-validate
+        # mwgate-composer-*
         if pipeline in ['experimental', 'gate-and-submit-l10n']:
             return
         self.assertTrue(
