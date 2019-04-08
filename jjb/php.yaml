@@ -90,13 +90,6 @@
      - build-discarder:
          days-to-keep: 15
 
-- job-template:
-    !!merge : *job_composer-validate
-    name: '{name}-composer-validate'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job-template: &composer-package-phpflavor-docker
     name: 'composer-package-{phpflavor}-docker'
     node: DebianJessieDocker

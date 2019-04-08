@@ -155,7 +155,7 @@ class TestZuulScheduler(unittest.TestCase):
         # composer-validate
         # composer-validate-package
         # composer-test-(zend|hhvm)
-        # mwgate-composer-validate
+        # mwgate-composer-*
         if pipeline in ['experimental', 'gate-and-submit-l10n']:
             return
         self.assertTrue(
