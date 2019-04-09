@@ -788,6 +788,16 @@ jobs:
 
   - name: mediawiki-fresnel-patch-docker
     branch: master
+    # Point to full output instead of default (tail-trimmed) output.
+    # This is (oddly) to make the output visually shorter.
+    # The reason the full output will be visually shorter is because nothing
+    # will be partially cut off, and thus the collapsible sections work.
+    #
+    # Without this, you land in the middle of 100s of lines of unintersting output.
+    #
+    # With this, you land at collapsed sections, with right after that "Fresnel result"
+    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/consoleFull'
+    failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/consoleFull'
 
   # For coverage report jobs, we only want one build at a time.
   #
