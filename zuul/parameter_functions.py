@@ -234,6 +234,7 @@ dependencies = {
     'CodeEditor': ['WikiEditor'],
     'CodeMirror': ['WikiEditor', 'VisualEditor'],
     'CollaborationKit': ['EventLogging', 'VisualEditor'],
+    'ContactPage': ['ConfirmEdit'],
     'ContentTranslation': ['AbuseFilter', 'Echo', 'EventLogging',
                            'UniversalLanguageSelector', 'VisualEditor'],
     'ContributorsAddon': ['Contributors'],
