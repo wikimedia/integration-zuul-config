@@ -11,7 +11,7 @@ export FRESNEL_DIR="$LOG_DIR/fresnel_records"
 
 fresnel record "after"
 
-git checkout HEAD~1
+git checkout -q HEAD~1
 
 fresnel record "before"
 
