@@ -656,20 +656,6 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^wmf/
 
-  - name: ^.*quibble.*postgres.*php70.*$
-    skip-if:
-      # Disable on fundraising branches (pgsql not used)
-      - project: '^mediawiki/.*'
-        branch: ^fundraising/.*$
-      # Disable on wmf branches (pgsql not used)
-      - project: '^mediawiki/.*'
-        branch: ^wmf/.*$
-      # Disable on MW < 1.32 (pgsql not yet passing)
-      - project: '^mediawiki/.*'
-        branch: ^REL1_(2[789]|3[01])$
-      # Disable on mwskin-Empty (depends on PhpTags which fails php70, T188585)
-      - project: '^mediawiki/skins/Empty'
-
   - name: ^release-quibble-
     branch: ^REL
 
@@ -701,6 +687,18 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^wmf/.*$
       # Disable on MW < 1.32 (sqlite not yet passing)
+      - project: '^mediawiki/.*'
+        branch: ^REL1_(2[789]|3[01])$
+
+  - name: ^.*quibble.*postgres.*php72.*$
+    skip-if:
+      # Disable on fundraising branches (pgsql not used)
+      - project: '^mediawiki/.*'
+        branch: ^fundraising/.*$
+      # Disable on wmf branches (pgsql not used)
+      - project: '^mediawiki/.*'
+        branch: ^wmf/.*$
+      # Disable on MW < 1.32 (pgsql not yet passing)
       - project: '^mediawiki/.*'
         branch: ^REL1_(2[789]|3[01])$
 
@@ -1502,7 +1500,7 @@ projects:
     php:
       - mediawiki-quibble-vendor-mysql-php55-docker
       - mediawiki-quibble-vendor-sqlite-php72-docker
-      - mediawiki-quibble-vendor-postgres-php70-docker
+      - mediawiki-quibble-vendor-postgres-php72-docker
       - mediawiki-quibble-vendor-mysql-php71-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
     gate-and-submit: &mediawiki-core-gate-and-submit
@@ -1516,7 +1514,7 @@ projects:
       - mediawiki-quibble-vendor-mysql-php72-docker
       - mediawiki-quibble-composertest-php70-docker
       - mediawiki-quibble-vendor-sqlite-php72-docker
-      - mediawiki-quibble-vendor-postgres-php70-docker
+      - mediawiki-quibble-vendor-postgres-php72-docker
 
       - mediawiki-core-jsduck-docker
       - composer-package-validate
