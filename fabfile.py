@@ -58,7 +58,7 @@ def deploy_docker():
         docker_pkg = '/srv/deployment/docker-pkg/venv/bin/docker-pkg'
         docker_pkg_config = '/etc/docker-pkg/integration.yaml'
         dockerfiles = '/etc/zuul/wikimedia/dockerfiles'
-        cmd = '{} -c {} {}'.format(
+        cmd = '{} -c {} build {}'.format(
             docker_pkg, docker_pkg_config, dockerfiles)
 
         run(cmd)
