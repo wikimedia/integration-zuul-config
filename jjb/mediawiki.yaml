@@ -607,6 +607,9 @@
     project-type: matrix
     execution-strategy:
         sequential: true
+        #Filter out some combination. For example php55 is solely for REL1_27
+        combination-filter: |
+            (php=="php55").implies(ZUUL_BRANCH=="REL1_27")
     parameters:
         - matrix-combinations:
             name: combo
