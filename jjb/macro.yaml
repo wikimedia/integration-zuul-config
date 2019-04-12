@@ -54,17 +54,6 @@
      - shell: |
         composer --ansi validate
 
-- builder:
-    name: composer-install
-    builders:
-     - shell: |
-        set -ux
-        cd "{dir}"
-        [[ -f "composer.json" ]] || exit 0
-        export HTTP_PROXY_REQUEST_FULLURI=false
-        export HTTPS_PROXY_REQUEST_FULLURI=false
-        composer install --ansi --no-progress --prefer-dist --profile -v
-
 # Sends job duration (ms) to a statsd timer if node is labeled "stats-*",
 # allowing for the collection and analysis of job performance on different
 # groups of nodes.
