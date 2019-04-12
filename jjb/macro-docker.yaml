@@ -153,18 +153,21 @@
         args: '{obj:args|}'
         logdir: '{obj:logdir}'
 
-# Use a docker image to clone for a MediaWiki extension or skin
+ # Prepare the sources using Quibble.
+ # Notably run composer update in the thing to install mediawiki/phan-config.
 - builder:
     name: docker-ci-src-setup-mwext
     builders:
-     - docker-run:
-        options: >-
-          --volume "$(pwd)"/src:/src
-          --volume "$(pwd)"/cache:/cache
-          --volume /srv/git:/srv/git
-          --entrypoint "bash"
-        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.9'
-        args: '/srv/setup-mwext.sh'
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-1
+         options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
+         args: |
+             --git-parallel=8'
+             --packages-source=vendor
+             --db=sqlite --db-dir=/workspace/db
+             --skip=all
+             --commands 'cd "$THING_SUBNAME" && composer update --ansi --no-progress --prefer-dist --profile'
+         logdir: '/workspace/log'
 
 # Use a docker image to clone for MediaWiki core
 - builder:
