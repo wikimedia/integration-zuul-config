@@ -57,23 +57,6 @@
     triggers:
         - timed: "H 20 * * *"
 
-# Job for libraries that are published as composer packages.
-# Includes full validation that packagist.org requires.
-- job:
-    name: composer-package-validate
-    node: contintLabsSlave && DebianJessie
-    defaults: use-remote-zuul-shallow-clone
-    concurrent: true
-
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        composer --ansi validate
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-
 - job-template: &composer-package-phpflavor-docker
     name: 'composer-package-{phpflavor}-docker'
     node: DebianJessieDocker

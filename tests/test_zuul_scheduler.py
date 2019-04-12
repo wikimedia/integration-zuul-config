@@ -948,8 +948,6 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_mwcore_switch_to_quibble(self):
         expected_test = {
-            'composer-package-validate': True,
-
             # It is not triggered for the master branch:
             'quibble-donationinterface-REL1_31-php70-docker': False,
 
@@ -967,7 +965,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mwgate-npm-node-6-docker': True,
         }
         expected_gate = {
-            'composer-package-validate': True,
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php70-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,

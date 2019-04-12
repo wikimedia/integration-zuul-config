@@ -774,10 +774,6 @@ jobs:
   - name: spicerack-tox-publish
     branch: ^master$
 
-  - name: ^composer-package-validate$
-    files:
-     - '^composer.json$'
-
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
   - name: ^quibble-donationinterface-REL1_31-php70-docker$
@@ -1496,7 +1492,6 @@ projects:
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
       - mediawiki-quibble-composertest-php70-docker
-      - composer-package-validate
       - mediawiki-core-jsduck-docker
       - mediawiki-core-php70-phan-docker
     php:
@@ -1519,7 +1514,6 @@ projects:
       - mediawiki-quibble-vendor-postgres-php70-docker
 
       - mediawiki-core-jsduck-docker
-      - composer-package-validate
       - mediawiki-core-php70-phan-docker
     gate-and-submit-swat: *mediawiki-core-gate-and-submit
     coverage:
@@ -6442,20 +6436,12 @@ projects:
       - name: extension-quibble-composer
       - name: extension-coverage
       - name: extension-seccheck
-    test:
-      - composer-package-validate
-    gate-and-submit:
-      - composer-package-validate
 
   - name: mediawiki/extensions/WikibaseQualityConstraints
     template:
       - name: extension-quibble-composer
       - name: extension-coverage
       - name: extension-seccheck
-    test:
-      - composer-package-validate
-    gate-and-submit:
-      - composer-package-validate
 
   - name: mediawiki/extensions/WikibaseQualityExternalValidation
     template:
@@ -6466,10 +6452,6 @@ projects:
       - name: extension-gate
       - name: extension-quibble
       - name: extension-seccheck
-    test:
-      - composer-package-validate
-    gate-and-submit:
-      - composer-package-validate
     experimental:
       - mwselenium-quibble-docker
 
