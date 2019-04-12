@@ -47,13 +47,6 @@
         artifacts: 'log/'
         allow-empty: true
 
-# Validate a composer.json so it can be published on packagist.org
-- builder:
-    name: composer-validate-package
-    builders:
-     - shell: |
-        composer --ansi validate
-
 # Sends job duration (ms) to a statsd timer if node is labeled "stats-*",
 # allowing for the collection and analysis of job performance on different
 # groups of nodes.

@@ -68,7 +68,8 @@
     triggers:
      - zuul
     builders:
-     - composer-validate-package
+     - shell: |
+        composer --ansi validate
     properties:
      - build-discarder:
          days-to-keep: 15
