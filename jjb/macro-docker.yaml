@@ -153,19 +153,6 @@
         args: '{obj:args|}'
         logdir: '{obj:logdir}'
 
-# Use a docker image to clone for a MediaWiki extension or skin
-- builder:
-    name: docker-ci-src-setup-mwext
-    builders:
-     - docker-run:
-        options: >-
-          --volume "$(pwd)"/src:/src
-          --volume "$(pwd)"/cache:/cache
-          --volume /srv/git:/srv/git
-          --entrypoint "bash"
-        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.9'
-        args: '/srv/setup-mwext.sh'
-
 # Use a docker image to clone for MediaWiki core
 - builder:
     name: docker-ci-src-setup-mw
