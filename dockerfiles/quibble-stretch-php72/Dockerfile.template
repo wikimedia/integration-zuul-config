@@ -39,6 +39,11 @@ RUN {{ mediawiki_deps | apt_install }}
 RUN {{ "php-xdebug" | apt_install }} \
     && phpdismod xdebug
 
+#
+# CI utilities to generate PHPUnit coverage
+#
+COPY mediawiki-coverage.sh /usr/local/bin/mediawiki-coverage
+
 # Unprivileged
 RUN install --directory /workspace --owner=nobody --group=nogroup
 USER nobody
