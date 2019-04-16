@@ -1,3 +1,5 @@
+from glob import iglob as glob
+import json
 import os
 import unittest
 
@@ -185,3 +187,32 @@ class TestMwDependencies(unittest.TestCase):
         self.assertNotIn(
             'mediawiki/extensions/ExtJSBase', deps['EXT_DEPENDENCIES'],
             'BlueSpice@REL1_27 must not depend on ExtJSBase T196454')
+
+    def test_real(self):
+        exts_repo = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '../../../mediawiki/extensions')
+        if not os.path.isdir(exts_repo):
+            self.skipTest('%s does not exist.' % exts_repo)
+
+        all_requires = {}
+        for extjson in glob(exts_repo + '/*/extension.json'):
+            with open(extjson) as f:
+                info = json.load(f)
+
+            ext_name = os.path.basename(os.path.dirname(extjson))
+
+            requires = info.get('requires', {})
+
+            ext_requires = [e.encode()
+                            for e in requires.get('extensions', {}).keys()]
+            skin_requires = ['skins/%' % skin_name
+                         for skin_name in requires.get('skins', {}.keys())]
+            requires = ext_requires + skin_requires
+
+            if not requires:
+                continue
+            all_requires[ext_name] = requires
+
+        self.maxDiff = None
+        self.assertEquals(dependencies, all_requires)
