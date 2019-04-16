@@ -720,9 +720,9 @@ jobs:
 
   - name: ^composer-package-php70-docker$
     # T220540: skip php70 tests on new SecurityCheckPlugin development branch
-    branch: ^(2\.x)$
     skip-if:
       - project: ^mediawiki/tools/phan/SecurityCheckPlugin$
+        branch: ^(2\.x)$
 
   # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
   # queue-name can not be applied based on a regex, apply the name on one job.
