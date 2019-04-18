@@ -637,6 +637,9 @@ jobs:
     skip-if:
       # mwskin-Empty depends on PhpTags which fails php70 (T188585)
       - project: '^mediawiki/skins/Empty'
+      # Disable on fundraising branches
+      - project: '^mediawiki/core$'
+        branch: ^fundraising/REL1_31$
 
   - name: ^.*quibble.*php71.*$
     skip-if:
