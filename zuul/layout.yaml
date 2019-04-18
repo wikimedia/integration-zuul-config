@@ -624,8 +624,8 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^(?!(REL1_(2[789]|30)).*)
 
-  # Fallback settings for all Quibble jobs
-  - name: ^.*quibble-.*-docker$
+  # Fallback settings for Quibble jobs
+  - name: ^mediawiki-quibble-(vendor|composertest)-php70-docker$
     skip-if:
       # Disable on fundraising branches
       - project: '^mediawiki/core$'
