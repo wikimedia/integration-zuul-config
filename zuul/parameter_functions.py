@@ -314,7 +314,7 @@ dependencies = {
     'QuizGame': ['Renameuser', 'SocialProfile'],
     'RandomGameUnit': ['SocialProfile', 'PictureGame', 'PollNY', 'QuizGame'],
     'RegexFun': ['ParserFunctions', 'Arrays'],
-    'RelatedArticles': ['BetaFeatures', 'MobileFrontend'],
+    'RelatedArticles': ['BetaFeatures', 'MobileFrontend', 'Disambiguator'],
     'ReplaceText': ['AdminLinks'],
     'RevisionSlider': ['MobileFrontend'],
     'Score': ['VisualEditor'],
