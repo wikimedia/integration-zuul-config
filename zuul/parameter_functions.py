@@ -305,7 +305,7 @@ dependencies = {
     'PictureGame': ['SocialProfile'],
     'PollNY': ['SocialProfile'],
     'Popups': ['BetaFeatures', 'TextExtracts', 'PageImages', 'EventLogging',
-               'Cite'],
+               'Cite', 'Gadgets'],
     'Premoderation': ['skins/Vector'],
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
