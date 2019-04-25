@@ -330,7 +330,7 @@ dependencies = {
     'SportsTeams': ['SocialProfile', 'UserStatus'],
     'StopForumSpam': ['AbuseFilter'],
     'SyntaxHighlight_GeSHi': ['VisualEditor'],
-    'TEI': ['CodeMirror', 'VisualEditor'],
+    'TEI': ['CodeMirror', 'Math', 'VisualEditor'],
     'TemplateWizard': ['TemplateData', 'WikiEditor'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TheWikipediaLibrary': ['Echo'],
