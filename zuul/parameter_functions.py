@@ -555,35 +555,47 @@ gatedextensions = [
     'ZeroBanner',
     'ZeroPortal',
 ]
+gatedskins = [
+    'MinervaNeue',
+    'Vector',
+]
 
 
 def set_gated_extensions(item, job, params):
     deps = []
+    skin_deps = []
     # When triggered from the experimental pipeline, add the project to the
     # list of dependencies. Used to inject an extension which is not yet
     # participating.
-    if(
-        params['ZUUL_PIPELINE'] == 'experimental'
-        and params['ZUUL_PROJECT'].startswith('mediawiki/extensions/')
-    ):
-        deps.append(params['ZUUL_PROJECT'].split('/')[-1])
+    if(params['ZUUL_PIPELINE'] == 'experimental'):
+        if params['ZUUL_PROJECT'].startswith('mediawiki/extensions/'):
+            deps.append(params['ZUUL_PROJECT'].split('/')[-1])
+        if params['ZUUL_PROJECT'].startswith('mediawiki/skins/'):
+            skin_deps.append(params['ZUUL_PROJECT'].split('/')[-1])
 
     deps.extend(tarballextensions)
 
     # Only run gate extensions on non REL1_XX branches
     if not params['ZUUL_BRANCH'].startswith('REL1_'):
         deps.extend(gatedextensions)
+        skin_deps.extend(gatedskins)
 
     deps = sorted(list(set(deps)))
+    skin_deps = sorted(list(set(skin_deps)))
 
     params['EXT_DEPENDENCIES'] = '\\n'.join(
         'mediawiki/extensions/' + dep for dep in deps
+    )
+    params['SKIN_DEPENDENCIES'] = '\\n'.join(
+        'mediawiki/skins/' + skin for skin in skin_deps
     )
 
     # So we can cd $EXT_NAME && composer test - T161895
     split = params['ZUUL_PROJECT'].split('/')
     if len(split) == 3 and split[1] == 'extensions':
         params['EXT_NAME'] = split[-1]
+    if len(split) == 3 and split[1] == 'skins':
+        params['SKIN_NAME'] = split[-1]
 
 
 # Map from ZUUL_PROJECT to DOC_PROJECT
