@@ -28,15 +28,15 @@ NEW_VERSION="${VERSIONS[0]}"
 echo "Building Changelog for ${OLD_VERSION}..${NEW_VERSION}"
 
 # Update the mediawiki/tools/release repo, envvar set by dockerfile
-git -C "$TOOLS_RELEASE_DIR" pull --quiet origin master
-git -C "$TOOLS_RELEASE_DIR" submodule --quiet update --init --recursive
+git -C "$RELEASE_TOOLS_DIR" pull --quiet origin master
+git -C "$RELEASE_TOOLS_DIR" submodule --quiet update --init --recursive
 
 # Actually make deploy notes
-python3 "$TOOLS_RELEASE_DIR"/make-deploy-notes/makedeploynotes.py \
+python3 "$RELEASE_TOOLS_DIR"/make-deploy-notes/makedeploynotes.py \
     "$OLD_VERSION" "$NEW_VERSION" > \
         "$LOG_DIR/deploy-notes-${NEW_VERSION}"
 
 # Upload deploy notes
-php "$TOOLS_RELEASE_DIR"/make-deploy-notes/jenkinsUploadChangelog.php \
+php "$RELEASE_TOOLS_DIR"/make-deploy-notes/jenkinsUploadChangelog.php \
     "$NEW_VERSION" \
     "$LOG_DIR/deploy-notes-${NEW_VERSION}"
