@@ -15,18 +15,19 @@
           #!/usr/bin/env bash
           set -euxo pipefail
 
-          # Only new refs, not ref updates
-          if [[ "$ZUUL_OLDREV" != "00000000000000000000000000000000" ]]; then
-            exit 1
+          if [[ "$ZUUL_OLDREV" != "0000000000000000000000000000000000000000" ]]; then
+            echo "Job is only for new refs, not ref updates..."
+            exit 0
           fi
 
-          # A branch, but not a REL branch
           if [[ ! $ZUUL_REF =~ "refs/heads/wmf/1." ]]; then
-            exit 1
+            echo "Job is not for this branch..."
+            exit 0
           fi
       - docker-log-dir
+      - docker-src-dir
       - docker-run-with-log-cache-src:
-          image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.2'
+          image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.3'
           logdir: '/log'
     wrappers:
       - timeout:
