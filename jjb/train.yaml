@@ -16,7 +16,7 @@
           set -euxo pipefail
 
           # Only new refs, not ref updates
-          if [[ "$ZUUL_OLDREV" != "00000000000000000000000000000000" ]]; then
+          if [[ "$ZUUL_OLDREV" != "0000000000000000000000000000000000000000" ]]; then
             exit 1
           fi
 
@@ -25,8 +25,9 @@
             exit 1
           fi
       - docker-log-dir
+      - docker-src-dir
       - docker-run-with-log-cache-src:
-          image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.2'
+          image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.3'
           logdir: '/log'
     wrappers:
       - timeout:
