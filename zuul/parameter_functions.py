@@ -247,6 +247,7 @@ dependencies = {
     'Echo': ['CentralAuth', 'EducationProgram', 'EventLogging'],
     'ElectronPdfService': ['Collection'],
     'EmailAuthorization': ['PluggableAuth'],
+    'EventLogging': ['SyntaxHighlight_GeSHi'],
     'ExternalGuidance': ['MobileFrontend'],
     'FanBoxes': ['SocialProfile'],
     'FileAnnotations': ['EventLogging'],
