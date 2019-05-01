@@ -353,6 +353,7 @@ dependencies = {
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite', 'TemplateData'],
     'WhoIsWatching': ['Echo'],
+    'WikiLove': ['Flow', 'LiquidThreads'],
     'Wikibase': [
         'ArticlePlaceholder',
         'CirrusSearch',
