@@ -235,7 +235,7 @@ dependencies = {
                      'GeoData', 'BetaFeatures', 'SiteMatrix'],
     'CodeEditor': ['WikiEditor'],
     'CodeMirror': ['WikiEditor', 'VisualEditor'],
-    'CollaborationKit': ['EventLogging', 'VisualEditor'],
+    'CollaborationKit': ['EventLogging', 'VisualEditor', 'PageImages'],
     'ContactPage': ['ConfirmEdit'],
     'ContentTranslation': ['AbuseFilter', 'Echo', 'EventLogging',
                            'UniversalLanguageSelector', 'VisualEditor'],
