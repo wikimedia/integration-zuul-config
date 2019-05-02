@@ -118,6 +118,15 @@
                  entrypoint: utils/zuul-layout-validate.sh
 
 - project:
+    name: 'integration-pipelinelib'
+    jobs:
+     - '{name}-docker-doc-publish':
+         image: 'docker-registry.wikimedia.org/releng/gradle:0.3.0'
+         args: 'groovydoc'
+         docsrc: 'src/build/docs/groovydoc'
+         docdest: 'pipelinelib'
+
+- project:
     name: 'integration-quibble'
     jobs:
         - '{name}-tox-publish':
