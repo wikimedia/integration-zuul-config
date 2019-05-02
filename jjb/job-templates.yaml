@@ -51,6 +51,30 @@
     triggers:
      - zuul
 
+# Generate project documentation using docker and publish it
+- job-template:
+    name: '{name}-docker-doc-publish'
+    node: DebianJessieDocker
+    triggers:
+     - zuul
+    builders:
+     - docker-cache-dir
+     - docker-log-dir
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: '{image}'
+         logdir: '/log'
+         args: '{obj:args|}'
+         options: >-
+           --workdir /src
+     - doc-publish:
+        docsrc: '{docsrc}'
+        docdest: '{docdest}'
+    publishers:
+     - archive-log-allow-empty
+     - docker-cleanup
+
 # Same as '{name}-maven-java8-docker' but src is bindmounted so we can later
 # retrieve the site from /src/target/ and push it to doc.wikimedia.org
 - job-template: &job_template_maven-java8-docker-site-publish
