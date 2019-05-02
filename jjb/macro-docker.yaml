@@ -212,3 +212,27 @@
           --cache-dir /srv/git
           https://gerrit.wikimedia.org/r/p
           {projects}
+
+# Generate project documentation using docker and publish it
+- job-template:
+    name: '{name}-docker-doc-publish'
+    defaults: global
+    node: DebianJessieDocker
+    triggers:
+     - zuul
+    logdir: '/log'
+    builders:
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: '{image}'
+         logdir: '{logdir}'
+         args: '{obj:args|}'
+     - doc-publish:
+        docsrc: '{docsrc}'
+        docdest: '{docdest}'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
