@@ -1,0 +1,4 @@
+FROM {{ "ci-stretch" | image_tag }}
+RUN {{ "gradle" | apt_install }}
+USER nobody
+ENTRYPOINT ["gradle"]
