@@ -695,6 +695,85 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertFalse(test_manager.eventMatches(event, change))
 
+    def test_recheck_on_approved_change_triggers_gate(self):
+        user_comment = 'recheck'
+        gate_manager = self.getPipeline('gate-and-submit').manager
+
+        change = zuul.model.Change(self.sched.getProject('mediawiki/core'))
+        change.branch = 'master'
+        # Change already has received a code-review +2
+        change.approvals = [{'type': 'Code-Review',
+                             'description': 'Code Review',
+                             'value': '2',
+                             'by': {'email': 'someone@wikimedia.org'},
+                             }]
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'comment-added'
+        event.comment = 'Patch Set 1:\n\n%s' % user_comment
+        event.branch = change.branch
+        # Gerrit comment-added event carries the patch approvals
+        event.approvals = change.approvals
+
+        self.assertTrue(
+            gate_manager.eventMatches(event, change),
+            "gate-and-submit must accepts '%s' on a change having CR+2" % (
+                user_comment)
+        )
+
+    def test_test_pipelines_reject_approved_changes(self):
+        indep_pipelines = [
+            p for p in self.getPipelines()
+            if p.manager.__class__.__name__ == 'IndependentPipelineManager']
+
+        self.assertGreater(len(indep_pipelines), 0)
+
+        errors = []
+
+        # Pipelines reacting to 'recheck'
+        recheck_pipelines = []
+        for p in indep_pipelines:
+            for ef in p.manager.event_filters:
+                if [c for c in ef._comments if 'recheck' in c]:
+                    recheck_pipelines.append(p)
+                    break
+
+        self.assertGreater(len(recheck_pipelines), 0)
+
+        change = zuul.model.Change(self.sched.getProject('mediawiki/core'))
+        change.branch = 'master'
+        # Change already has received a code-review +2
+        change.approvals = [{'type': 'Code-Review',
+                             'description': 'Code Review',
+                             'value': '2',
+                             'by': {'email': 'someone@wikimedia.org'},
+                             }]
+
+        change_without_approvals = zuul.model.Change(
+            self.sched.getProject('mediawiki/core'))
+        change_without_approvals.branch = 'master'
+
+        # They should reject CR+2 changes
+        for p in recheck_pipelines:
+            try:
+                self.assertFalse(
+                    p.manager.addChange(change),
+                    "Independent pipeline '%s' must not process "
+                    "a change having Code-Review +2" % (p.name)
+                )
+            except AssertionError, e:
+                errors.append(str(e))
+            try:
+                self.assertTrue(
+                    p.manager.addChange(change_without_approvals),
+                    "Independent pipeline '%s' must accept a change "
+                    "without any approval" % (p.name)
+                )
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.assertListEqual([], errors, "\n" + "\n".join(errors))
+
     def test_pipelines_trustiness(self):
         test_manager = self.getPipeline('test').manager
         change = zuul.model.Change('mediawiki/core')
