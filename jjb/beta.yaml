@@ -254,6 +254,12 @@
           if [ -O "$LOCKFILE" ]; then
             rm "$LOCKFILE"
           fi
+
+          # scap/sh closes blindly close all potentially available file
+          # descriptors. With one million of them, that slow down each command
+          # execution by 240 ms. T204762
+          ulimit -n 512
+
           /usr/bin/scap sync "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
 
     properties:
