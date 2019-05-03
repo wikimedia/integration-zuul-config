@@ -12,7 +12,7 @@
 # - WORKSPACE
 #
 # Outputs:
-# - clover.xml in $LOG_DIR
+# - clover.xml and junit.xml in $LOG_DIR
 # - HTML report in $WORKSPACE/cover
 
 set -eux -o pipefail
@@ -39,12 +39,16 @@ php7.0 -d zend_extension=xdebug.so \
     --testsuite extensions \
     --coverage-clover "$LOG_DIR"/clover.xml \
     --coverage-html "$WORKSPACE"/cover \
+    --log-junit "$LOG_DIR"/junit.xml \
     "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" &
 cover_pid=$!
 relay_signals SIGINT SIGTERM
 wait "$cover_pid"
 set -e
 
+# We don't want this script to interfere with anything, ensure that any possible errors
+# are ignored.
+phpunit-junit-edit "$LOG_DIR/junit.xml" || true
 
 # But bails out if no HTML coverage report has been generated
 test -f "$WORKSPACE"/cover/index.html
