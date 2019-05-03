@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "a78128fe_4cfb5dc0",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-03T21:46:48Z",
+      "side": 1,
+      "message": "Historically we had a macro.yaml and job-templates.yaml which derailed quickly in a myriad of different files.\n\nWhen starting the first iteration of migrating to docker, someone created a macro-docker.yaml but we pilled job templates in the job-templates.yaml :]\n\nSurely that should be reorganized a bit!",
+      "parentUuid": "adeab16e_2de53e97",
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7d6b1769_e45dd339",
         "filename": "jjb/macro-docker.yaml",
         "patchSetId": 3
@@ -84,6 +102,30 @@
     },
     {
       "key": {
+        "uuid": "ad5777a9_c2be35d5",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-03T21:46:48Z",
+      "side": 1,
+      "message": "Yup I do not mind having it stated explicitly. I was just pointing out that JJB has a convention of using a \"global\" default.  That is defined in jjb/default.yaml and we used to have several kind of defaults, thanks fully nowadays there are only three left (global, beta, selenium).",
+      "parentUuid": "d0c1cd54_ac28b074",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 20
+      },
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44bb39f2_7ed30fee",
         "filename": "jjb/macro-docker.yaml",
         "patchSetId": 3
@@ -113,6 +155,24 @@
       "side": 1,
       "message": "Alright, but if the `logdir` argument is effectively useless, let\u0027s remove it!",
       "parentUuid": "44bb39f2_7ed30fee",
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "87475bb1_1e547527",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-03T21:46:48Z",
+      "side": 1,
+      "message": "It is actually required by the docker macro :]  What I meant is that you defined it as a variable of the job template so eventually one can override it when defining the project:\n\n - project:\n    name: pipelinelib\n    job:\n      - \u0027{name}-docker-doc-publish\u0027:\n          logdir: /workspace/log\n\nWhich would be passed to the job template and override the \"logdir: \u0027/log\u0027\".  But the macro \u0027docker-log-dir\u0027 does not honor that variable and creates a \"log\" directory regardless.\n\nSo since there is no need to have logdir to be overridden at the project level, it should just be inlined / hardcoded when invoking the macro below at line 224 :)",
+      "parentUuid": "8f4d003d_6328df1b",
       "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
@@ -154,6 +214,30 @@
       "side": 1,
       "message": "Honestly, I didn\u0027t necessarily need/want castor for this particular job, but I thought to define something generally useful for other jobs/templates. I might just remove the castor parts if they add too much complexity.\n\nI\u0027ll look at addressing the home directory issue for the gradle image.",
       "parentUuid": "718b4e60_8d12538b",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 34
+      },
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d804600d_16d1600f",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-03T21:46:48Z",
+      "side": 1,
+      "message": "I have missed the cache persistence when approving the gradle container and mentioned it here for later thoughts.  I don\u0027t think it is a big deal and we can live without a cache indeed.\n\nThen it would be nice to figure out which material could benefit from being persisted being build. I agree it can be done later and should not be a blocker of this change :]",
+      "parentUuid": "2788b739_11163dd8",
       "range": {
         "startLine": 231,
         "startChar": 0,
