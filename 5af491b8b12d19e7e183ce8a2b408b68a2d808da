@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "adeab16e_2de53e97",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1731
+      },
+      "writtenOn": "2019-05-03T16:43:17Z",
+      "side": 1,
+      "message": "There doesn\u0027t seem to be an existing convention around where to put job templates (they\u0027re just about everywhere) so I chose this file since it\u0027s docker related. I took macros to mean just about anything JJB that expands to job definition, in which case a job template is more of a macro than a builder or publisher.",
+      "parentUuid": "055c4b1e_b3f58c33",
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7d6b1769_e45dd339",
         "filename": "jjb/macro-docker.yaml",
         "patchSetId": 3
@@ -30,6 +48,30 @@
       "writtenOn": "2019-05-03T08:45:52Z",
       "side": 1,
       "message": "That is implied ;)",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 20
+      },
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d0c1cd54_ac28b074",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1731
+      },
+      "writtenOn": "2019-05-03T16:43:17Z",
+      "side": 1,
+      "message": "Ok. I\u0027ll remove it. However, this is also a pattern used throughout the existing templates so those should be addressed at some point.",
+      "parentUuid": "7d6b1769_e45dd339",
       "range": {
         "startLine": 213,
         "startChar": 0,
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "8f4d003d_6328df1b",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1731
+      },
+      "writtenOn": "2019-05-03T16:43:17Z",
+      "side": 1,
+      "message": "Alright, but if the `logdir` argument is effectively useless, let\u0027s remove it!",
+      "parentUuid": "44bb39f2_7ed30fee",
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "718b4e60_8d12538b",
         "filename": "jjb/macro-docker.yaml",
         "patchSetId": 3
@@ -70,6 +130,30 @@
       "writtenOn": "2019-05-03T08:45:52Z",
       "side": 1,
       "message": "I have +2ed and build the container releng/gradle:0.1.0 though I forgot to check where gradle actually write its cache files or what kind of cached materials we want to persist between builds.\n\nApparently Gradle does not honor XDG_CACHE_HOME (set by us to /cache) and it defaults on ~/.gradle which would fail as the user nobody since its homedir is intentionally set to a non existent directory (/nonexistent).   That can be configured via the environment variable GRADLE_USER_HOME , then I do not know what is cached there, potentially there will be temporary compiled items that do not need to persist.\n\n\nWe would need to check what it is doing and then adjust releng/gradle:0.1.0 accordingly by passing some configuration settings :-]   It is not a blocker per see though.",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 34
+      },
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2788b739_11163dd8",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 1731
+      },
+      "writtenOn": "2019-05-03T16:43:17Z",
+      "side": 1,
+      "message": "Honestly, I didn\u0027t necessarily need/want castor for this particular job, but I thought to define something generally useful for other jobs/templates. I might just remove the castor parts if they add too much complexity.\n\nI\u0027ll look at addressing the home directory issue for the gradle image.",
+      "parentUuid": "718b4e60_8d12538b",
       "range": {
         "startLine": 231,
         "startChar": 0,
