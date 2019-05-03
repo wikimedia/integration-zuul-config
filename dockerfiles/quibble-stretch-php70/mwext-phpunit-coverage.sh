@@ -13,6 +13,7 @@
 #
 # Outputs:
 # - clover.xml in $LOG_DIR
+# - junit.xml in $LOG_DIR
 # - HTML report in $WORKSPACE/cover
 
 set -eux -o pipefail
@@ -38,6 +39,7 @@ php7.0 -d zend_extension=xdebug.so \
     "$MW_INSTALL_PATH"/tests/phpunit/phpunit.php \
     --testsuite extensions \
     --coverage-clover "$LOG_DIR"/clover.xml \
+    --log-junit "$LOG_DIR"/junit.xml \
     --coverage-html "$WORKSPACE"/cover \
     "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" &
 cover_pid=$!
@@ -45,6 +47,7 @@ relay_signals SIGINT SIGTERM
 wait "$cover_pid"
 set -e
 
+phpunit-junit-edit "$LOG_DIR/junit.xml"
 
 # But bails out if no HTML coverage report has been generated
 test -f "$WORKSPACE"/cover/index.html
