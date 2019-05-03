@@ -431,6 +431,79 @@
                     dir: 'cover'
         - docker-cleanup
 
+- project:
+    name: mwext-codehealth
+    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-1
+    packages-source:  composer
+    database: mysql
+    jobs:
+      - mwext-codehealth-{name}:
+         # Used for analyzing gerrit patch sets.
+         name: 'patch-non-voting'
+         branch: '$ZUUL_CHANGE'
+         sonar_args: |
+             -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.organization=wmftest \
+             -Dsonar.host.url=https://sonarcloud.io \
+             -Dsonar.branch.target="$ZUUL_BRANCH" \
+             -Dsonar.branch.name={branch} \
+             -X
+      - mwext-codehealth-{name}:
+         # Used for analyzing the master branch on postmerge.
+         name: 'master-non-voting'
+         branch: '$ZUUL_BRANCH'
+         sonar_args: |
+             -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.organization=wmftest \
+             -Dsonar.host.url=https://sonarcloud.io \
+             -X
+
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwext-codehealth-{name}'
+    node: DebianJessieDocker && m4executor
+    concurrent: false
+    branch: '$ZUUL_BRANCH'
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+    - docker-log-dir
+    - docker-src-dir
+    - docker-cache-dir
+    - docker-castor-load
+    - docker-ci-src-setup-simple
+    - docker-run-with-log-and-workspace-cache:
+        image: '{docker_image}'
+        options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
+        args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --commands=mwext-phpunit-coverage'
+        logdir: '/workspace/log'
+    - docker-run-with-log-cache-src:
+        image: docker-registry.wikimedia.org/releng/npm-test:0.6.1
+        logdir: '/workspace/log'
+    - docker-run-with-log-cache-src:
+       image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.2'
+       logdir: '/workspace/log'
+       args: '{sonar_args}'
+    wrappers:
+     - ansicolor
+     - timeout:
+         timeout: 30
+         fail: true
+     - timestamps
+     # SONAR_API_KEY is in Jenkins credentials store
+     # https://integration.wikimedia.org/ci/credentials/
+     - credentials-binding:
+           - text:
+               credential-id: SONAR_API_KEY
+               variable: SONAR_API_KEY
+    publishers:
+        - docker-cleanup
+
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:
     !!merge : *job_quibble
