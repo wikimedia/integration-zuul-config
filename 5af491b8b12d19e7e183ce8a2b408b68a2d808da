@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "055c4b1e_b3f58c33",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-03T08:45:52Z",
+      "side": 1,
+      "message": "The macro-docker.yaml file only has JJB builder/publisher macros.  The job template would be better placed in jjb/job-templates.yaml  potentially just above the job template that uses maven to generate doc ( \u0027{name}-maven-java8-docker-site-publish\u0027 ).",
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7d6b1769_e45dd339",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-03T08:45:52Z",
+      "side": 1,
+      "message": "That is implied ;)",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 20
+      },
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44bb39f2_7ed30fee",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-03T08:45:52Z",
+      "side": 1,
+      "message": "Usually I just pass /log to the macro docker-run-with-log-cache-src  since there is no need to override it usually (and we have the docker-log-dir macro anyway which is hardcoded to create a /log dir).",
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "718b4e60_8d12538b",
+        "filename": "jjb/macro-docker.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-03T08:45:52Z",
+      "side": 1,
+      "message": "I have +2ed and build the container releng/gradle:0.1.0 though I forgot to check where gradle actually write its cache files or what kind of cached materials we want to persist between builds.\n\nApparently Gradle does not honor XDG_CACHE_HOME (set by us to /cache) and it defaults on ~/.gradle which would fail as the user nobody since its homedir is intentionally set to a non existent directory (/nonexistent).   That can be configured via the environment variable GRADLE_USER_HOME , then I do not know what is cached there, potentially there will be temporary compiled items that do not need to persist.\n\n\nWe would need to check what it is doing and then adjust releng/gradle:0.1.0 accordingly by passing some configuration settings :-]   It is not a blocker per see though.",
+      "range": {
+        "startLine": 231,
+        "startChar": 0,
+        "endLine": 231,
+        "endChar": 34
+      },
+      "revId": "5af491b8b12d19e7e183ce8a2b408b68a2d808da",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
