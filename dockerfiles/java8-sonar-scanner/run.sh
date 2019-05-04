@@ -29,6 +29,9 @@ cat /src/sonar-project.properties
 # Initialize analysis, send data to SonarQube
 /opt/sonar-scanner/bin/sonar-scanner -Dsonar.login="$SONAR_API_KEY" "$@"
 
+# Wait a few seconds to give the analysis a chance to complete
+sleep 5
+
 # Poll for analysis completion.
 echo "Checking for analysis completion"
 ATTEMPT_COUNTER=0
@@ -56,10 +59,13 @@ until ( [[ ${SONARQUBE_ANALYSIS_RESPONSE} == "SUCCESS" ]] ); do
     sleep 15
 done
 
+# Wait a few seconds for the quality gates API.
+sleep 5
+
 ANALYSIS_ID=$( curl -s -u ${SONAR_API_KEY}: ${SONARQUBE_ANALYSIS_URL} | jq -r .[].analysisId )
 QUALITY_GATE=$( curl -s -u ${SONAR_API_KEY}: https://sonarcloud.io/api/qualitygates/project_status?analysisId=${ANALYSIS_ID})
 
-# Pretty-printed JSON output fo the quality gate. Better than nothing!
+# Pretty-printed JSON output of the quality gate. Better than nothing!
 echo "== QUALITY GATE =="
 echo ${QUALITY_GATE} | jq
 QUALITY_GATE_STATUS=$(echo ${QUALITY_GATE} | jq -r .projectStatus.status)
