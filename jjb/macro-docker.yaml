@@ -166,8 +166,8 @@
              --tmpfs /workspace/db:size=320M
          args: >
              --git-parallel=8
-             --packages-source=vendor
-             --db=sqlite --db-dir=/workspace/db
+             --packages-source=composer
+             --db=mysql --db-dir=/workspace/db
              --skip=all
              --commands 'cd "$THING_SUBNAME" && composer update --ansi --no-progress --prefer-dist --profile'
          logdir: '/workspace/log'
