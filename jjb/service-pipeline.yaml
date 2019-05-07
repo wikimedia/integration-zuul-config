@@ -1,6 +1,5 @@
 - job:
     name: 'trigger-service-pipeline-test-and-publish'
-    defaults: global
     node: blubber
     parameters: &service-pipeline-parameters
       - string:
@@ -24,7 +23,6 @@
 
 - job:
     name: 'trigger-service-pipeline-test'
-    defaults: global
     node: blubber
     parameters: *service-pipeline-parameters
     builders:
@@ -36,7 +34,6 @@
 
 - job:
     name: 'trigger-service-jenkinsfile'
-    defaults: global
     node: blubber
     parameters: *service-pipeline-parameters
     builders:
@@ -48,7 +45,6 @@
 
 - job:
     name: 'service-pipeline-test-and-publish'
-    defaults: global
     project-type: pipeline
     parameters: *service-pipeline-parameters
     dsl: !include-raw:
@@ -57,7 +53,6 @@
 
 - job:
     name: 'service-pipeline-test'
-    defaults: global
     project-type: pipeline
     parameters: *service-pipeline-parameters
     dsl: !include-raw:
