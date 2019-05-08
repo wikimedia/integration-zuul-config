@@ -356,6 +356,7 @@ dependencies = {
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite', 'TemplateData'],
+    'WebAuthn': ['OATHAuth'],
     'WhoIsWatching': ['Echo'],
     'WikiLove': ['Flow', 'LiquidThreads'],
     'Wikibase': [
