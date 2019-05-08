@@ -352,6 +352,7 @@ dependencies = {
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite', 'TemplateData'],
     'WhoIsWatching': ['Echo'],
+    'WebAuthn': ['OATHAuth'],
     'Wikibase': [
         'ArticlePlaceholder',
         'CirrusSearch',
