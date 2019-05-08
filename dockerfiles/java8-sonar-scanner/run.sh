@@ -7,27 +7,33 @@ umask 002
 
 set +x
 
-if [[ ! -f /src/sonar-project.properties ]] && [[ ! -f /src/.sonar-project.properties ]]; then
+EXT_NAME=$(basename "$ZUUL_PROJECT")
+cd /workspace/src/extensions/$EXT_NAME
+
+if [[ ! -f sonar-project.properties ]] && [[ ! -f .sonar-project.properties ]]; then
     # Create directories if they don't already exist, so that sonar-scanner doesn't throw an error
-    mkdir -p /src/resources /src/includes /src/src /src/modules /src/maintenance /src/tests
-    touch /src/sonar-project.properties
-    echo "sonar.sources=includes,src,modules,maintenance" >> /src/sonar-project.properties
-    echo "sonar.tests=tests" >> /src/sonar-project.properties
+    mkdir -p resources includes src modules maintenance tests
+    touch sonar-project.properties
+    echo "sonar.sources=includes,src,modules,maintenance" >> sonar-project.properties
+    echo "sonar.tests=tests" >> sonar-project.properties
     # If test coverage exists, add this to the properties file.
-    if [[ -f /src/coverage/lcov.info ]]; then
-        echo "sonar.javascript.lcov.reportPaths=/src/coverage/lcov.info" >> /src/sonar-project.properties
+    if [[ -f coverage/lcov.info ]]; then
+        echo "sonar.javascript.lcov.reportPaths=coverage/lcov.info" >> sonar-project.properties
     fi
     if [[ -f /workspace/log/junit.xml ]] && [[ -f /workspace/log/clover.xml ]]; then
-        echo "sonar.php.tests.reportPath=/workspace/log/junit.xml" >> /src/sonar-project.properties
-        echo "sonar.php.coverage.reportPaths=/workspace/log/clover.xml" >> /src/sonar-project.properties
+        echo "sonar.php.tests.reportPath=/workspace/log/junit.xml" >> sonar-project.properties
+        echo "sonar.php.coverage.reportPaths=/workspace/log/clover.xml" >> sonar-project.properties
     fi
 fi
 # Output sonar-project file to assist with debugging:
 echo "== sonar-project.properties =="
-cat /src/sonar-project.properties
+cat sonar-project.properties
 
 # Initialize analysis, send data to SonarQube
 /opt/sonar-scanner/bin/sonar-scanner -Dsonar.login="$SONAR_API_KEY" "$@"
+
+# Remove sonar-project.properties file
+rm sonar-project.properties
 
 # Wait a few seconds to give the analysis a chance to complete
 sleep 5
