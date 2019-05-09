@@ -338,7 +338,7 @@ dependencies = {
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
-    'TranslationNotifications': ['Translate'],
+    'TranslationNotifications': ['Translate', 'CentralAuth', 'SiteMatrix'],
     'TopTenPages': ['HitCounters'],
     'TorBlock': ['AbuseFilter'],
     'TwnMainPage': ['Translate'],
