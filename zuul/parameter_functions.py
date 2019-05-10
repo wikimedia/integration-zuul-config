@@ -108,6 +108,8 @@ def set_parameters(item, job, params):
         # https://horizon.wikimedia.org/project/sudo/
         #
 
+        if 'nocheck' in job.name:
+            params['DEB_BUILD_OPTIONS'] = 'nocheck'
         if 'backports' in job.name:  # T173999
             params['BACKPORTS'] = 'yes'
         # Always set the value to be safe (T144094)
@@ -116,7 +118,6 @@ def set_parameters(item, job, params):
         if params['ZUUL_PROJECT'] == 'integration/zuul':
             # Uses dh_virtualenv which needs access to pypy.python.org
             params['PBUILDER_USENETWORK'] = 'yes'
-            params['DEB_BUILD_OPTIONS'] = 'nocheck'
         elif (params['ZUUL_PROJECT'] == 'operations/debs/varnish4'):
             # VTC tests take forever
             params['BUILD_TIMEOUT'] = 60  # minutes
