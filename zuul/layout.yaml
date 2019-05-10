@@ -766,6 +766,11 @@ jobs:
   - name: spicerack-tox-publish
     branch: ^master$
 
+  # Tox is for the patch branches, for the debian packaging branch the tests
+  # are run by dh_virtualenv.
+  - name: integration-zuul-tox-docker
+    branch: ^patch-queue/debian/
+
   # Covered by a test
   # TestZuulScheduler.test_donationinterface_deployment_branch_filters
   - name: ^quibble-donationinterface-REL1_31-php70-docker$
@@ -1436,6 +1441,8 @@ projects:
       - debian-glue-non-voting
     gate-and-submit:
       - debian-glue-nocheck
+    experimental:  # For the patch-queue branches - T222952
+      - integration-zuul-tox-docker
 
   - name: mapdata
     test:
