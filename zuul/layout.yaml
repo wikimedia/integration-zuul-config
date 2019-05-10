@@ -1438,10 +1438,12 @@ projects:
   - name: integration/zuul
     test:
       - debian-glue-nocheck
-      - debian-glue-non-voting
     gate-and-submit:
       - debian-glue-nocheck
-    experimental:  # For the patch-queue branches - T222952
+    experimental:
+      # Tests timeout for some reason - T222952
+      - debian-glue
+      # For the patch-queue branches - T222952
       - integration-zuul-tox-docker
 
   - name: mapdata
