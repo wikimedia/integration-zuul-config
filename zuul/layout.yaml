@@ -4521,10 +4521,13 @@ projects:
       - name: extension-quibble
 
   - name: mediawiki/extensions/WebAuthn
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+    test: &extension-webauthn
+      - quibble-vendor-mysql-php72-docker
+      - mwgate-npm-node-6-docker
+    gate-and-submit: *extension-webauthn
+    gate-and-submit-swat: *extension-webauthn
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
 
   - name: mediawiki/extensions/WikimediaEditorTasks
     template:
