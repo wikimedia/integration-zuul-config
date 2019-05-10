@@ -622,6 +622,11 @@ jobs:
       - project: '^mediawiki/core$'
         branch: ^fundraising/REL1_31$
 
+  - name: ^.*quibble.*hhvm.*$
+    skip-if:
+      # WebAuthn is designed only for PHP7.2+
+      - project: '^mediawiki/extensions/WebAuthn'
+
   - name: ^.*quibble.*php55.*$
     skip-if:
       # Disable on fundraising branches
