@@ -322,7 +322,7 @@ dependencies = {
     'RelatedArticles': ['BetaFeatures', 'MobileFrontend', 'Disambiguator'],
     'ReplaceText': ['AdminLinks'],
     'RevisionSlider': ['MobileFrontend'],
-    'Score': ['VisualEditor', 'TimedMediaHandler'],
+    'Score': ['VisualEditor', 'TimedMediaHandler', 'Wikibase'],
     'Scribunto': ['SyntaxHighlight_GeSHi'],
     'SemanticLinks': ['VisualEditor'],
     'SiteMetrics': ['SocialProfile'],
