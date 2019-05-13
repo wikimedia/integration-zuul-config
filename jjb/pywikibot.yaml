@@ -15,7 +15,7 @@
              - fasttest-py34
 
 - job-group:
-    name: pywikibot-tox
+    name: pywikibot-tox-jobs
     jobs:
         - '{name}-tox-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.3.2
@@ -24,21 +24,21 @@
 - project:
     name: pywikibot-CommonsDelinker
     jobs:
-        - pywikibot-tox
+        - pywikibot-tox-jobs
 - project:
     name: pywikibot-FLOSSbot
     jobs:
-        - pywikibot-tox
+        - pywikibot-tox-jobs
 - project:
     name: pywikibot-xqbot
     jobs:
-        - pywikibot-tox
+        - pywikibot-tox-jobs
 # End of pywikibot bots
 
 - project:
     name: pywikibot-wikibase
     jobs:
-        - pywikibot-tox
+        - pywikibot-tox-jobs
 
 - project:
     name: pywikibot-i18n
