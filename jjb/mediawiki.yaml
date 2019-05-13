@@ -483,7 +483,9 @@
         image: docker-registry.wikimedia.org/releng/npm-test:0.6.1
         options: '--volume "$(pwd)"/src/extensions/"$EXT_NAME":/src'
         logdir: '/workspace/log'
-        args: 'test:unit'
+        # Whether tests pass/fail is unimportant, what we want here is the coverage report. If an extension
+        # does not have test:unit defined, we don't want the entire job to fail.
+        args: 'test:unit || true'
     - shell: |
         sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
     - docker-run-with-log-and-workspace-cache:
