@@ -53,6 +53,7 @@
 - job-template:
     name: '{name}-tox-publish'
     node: DebianJessieDocker
+    docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.3.1'
     triggers:
      - zuul
     builders:
@@ -60,7 +61,7 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/tox:0.3.1'
+         image: '{obj:docker_image_var}'
          logdir: '/log'
          args: '-e "{obj:docenv|doc}"'
      - doc-publish:
@@ -75,6 +76,7 @@
 - job-template:
     name: '{name}-tox-tag-publish'
     node: DebianJessieDocker
+    docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.3.1'
     triggers:
      - zuul-post
     builders:
@@ -82,7 +84,7 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/tox:0.3.1'
+         image: '{obj:docker_image_var}'
          logdir: '/log'
          args: '-e "{obj:docenv|doc}"'
      - doc-publish:
