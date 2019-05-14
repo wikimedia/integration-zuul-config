@@ -1,0 +1,14 @@
+FROM {{ "dev-stretch-php72" | image_tag }} AS dev-stretch-php72
+
+# We don't want the default index.html for running PHP applications, and
+# xdebug is a major performance drag, so disable it here (it's already
+# been disabled for CLI PHP in stretch-php72).
+
+RUN {{ "apache2 libapache2-mod-php" | apt_install }} \
+    && rm /var/www/html/index.html \
+    && phpdismod xdebug
+
+EXPOSE 80
+EXPOSE 443
+
+ENTRYPOINT [ "/usr/sbin/apache2ctl", "-D", "FOREGROUND" ]
