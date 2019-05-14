@@ -48,10 +48,6 @@ pipelines:
       To retry these jobs, submit the comment "recheck".
     manager: IndependentPipelineManager
     source: gerrit
-    reject:
-      # Patches handled by gate pipelines - T105474
-      approval:
-        - code-review: 2
     trigger:
       gerrit:
         - event: patchset-created
