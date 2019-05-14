@@ -38,4 +38,4 @@ fi
 CONFIG="/opt/phan/vendor/mediawiki/phan-taint-check-plugin/scripts/$SECCHECK_MODE"
 
 # Save the output as `seccheck-issues`
-php $PHAN -d . -k $CONFIG --output "php://stdout" "$@" | tee /mediawiki/seccheck-issues
+php $PHAN -d . -k $CONFIG -m checkstyle --output "php://stdout" "$@" | tee /mediawiki/seccheck-issues
