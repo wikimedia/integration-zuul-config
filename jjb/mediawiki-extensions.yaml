@@ -106,8 +106,8 @@
      - docker-ci-src-setup-mwext
      - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.11'
-        args: '/$ZUUL_PROJECT -m checkstyle'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.15'
+        args: '/$ZUUL_PROJECT'
         logdir: '/log'
 
     publishers:
@@ -159,9 +159,8 @@
      - docker-src-dir
      - docker-ci-src-setup-mwext
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.3.2
+         image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.3.3
          options: '--volume "$(pwd)"/src:/mediawiki'
-         args: '-m checkstyle'
          logdir: '/log'
     publishers:
      - checkstyle:
