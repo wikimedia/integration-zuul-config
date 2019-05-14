@@ -253,6 +253,7 @@ dependencies = {
     'FanBoxes': ['SocialProfile'],
     'FileAnnotations': ['EventLogging'],
     'FileExporter': ['BetaFeatures'],
+    'FileImporter': ['WikiEditor'],
     'FlaggedRevs': ['Scribunto'],
     'Flow': ['AbuseFilter', 'BetaFeatures', 'CentralAuth', 'CirrusSearch',
              'ConfirmEdit', 'Echo', 'Elastica', 'LiquidThreads',
