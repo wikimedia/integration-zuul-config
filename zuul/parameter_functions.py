@@ -204,6 +204,7 @@ dependencies = {
     'BlueSpicePermissionManager': ['BlueSpiceFoundation'],
     'BlueSpicePrivacy': ['BlueSpiceFoundation'],
     'BlueSpiceQrCode': ['BlueSpiceFoundation'],
+    'BlueSpiceRating': ['BlueSpiceFoundation'],
     'BlueSpiceRSSFeeder': ['BlueSpiceFoundation'],
     'BlueSpiceReaders': ['BlueSpiceFoundation'],
     'BlueSpiceSMWConnector': ['BlueSpiceFoundation'],
