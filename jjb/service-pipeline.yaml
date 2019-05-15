@@ -1,7 +1,15 @@
-- job:
-    name: 'trigger-service-pipeline-test-and-publish'
+# Templates for projects using pipelinelib's PipelineBuilder
+# (.pipeline/config.yaml)
+- job-template:
+    name: 'trigger-{name}-pipeline-{pipeline}'
     node: blubber
     parameters: &service-pipeline-parameters
+      - string:
+          name: PLIB_PIPELINE
+          description: >-
+            Name of a specific project pipeline to execute as
+            defined in the project's .pipeline/config.yaml
+          default: '{pipeline}'
       - string:
           name: ZUUL_URL
       - string:
@@ -14,6 +22,28 @@
           name: ZUUL_CHANGE
       - string:
           name: ZUUL_PATCHSET
+    builders:
+      - trigger-builds:
+        - project: '{name}-pipeline-{pipeline}'
+          current-parameters: true
+          block: true
+          same-node: false
+
+- job-template:
+    name: '{name}-pipeline-{pipeline}'
+    project-type: pipeline
+    parameters: *service-pipeline-parameters
+    dsl: !include-raw:
+      - service-pipeline-builder.groovy
+
+# Specific service-pipeline jobs (will ultimately be deprecated in favor of
+# using the above templates to generate project-specific pipeline jobs that
+# execute according to each project's .pipeline/config.yaml)
+- job:
+    name: 'trigger-service-pipeline-test-and-publish'
+    defaults: global
+    node: blubber
+    parameters: *service-pipeline-parameters
     builders:
       - trigger-builds:
         - project: service-pipeline-test-and-publish
