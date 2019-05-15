@@ -1277,21 +1277,6 @@ project-templates:
     gate-and-submit-swat:
       - composer-php72-docker
 
-  - name: mwgate-composer
-    test:
-      - mwgate-composer-php55-docker
-      - mwgate-composer-hhvm-docker
-    gate-and-submit:
-      - mwgate-composer-php55-docker
-      - mwgate-composer-hhvm-docker
-    experimental:
-      - mwgate-composer-php70-docker
-    gate-and-submit-swat:
-      # FIXME wmf/ branches only care about hhvm and php7.2
-      - mwgate-composer-php55-docker
-      - mwgate-composer-hhvm-docker
-
-
   - name: composer-test-php55-package
     test:
       - composer-package-hhvm-docker
@@ -4835,9 +4820,20 @@ projects:
   # that loads all of them and run test suite.
   - name: mediawiki/extensions/BlueSpiceExtensions
     template:
-      - name: mwgate-composer
       - name: extension-broken
       - name: mwgate-npm
+    test:
+      - mwgate-composer-php55-docker
+      - mwgate-composer-hhvm-docker
+    gate-and-submit:
+      - mwgate-composer-php55-docker
+      - mwgate-composer-hhvm-docker
+    experimental:
+      - mwgate-composer-php70-docker
+    gate-and-submit-swat:
+      # FIXME wmf/ branches only care about hhvm and php7.2
+      - mwgate-composer-php55-docker
+      - mwgate-composer-hhvm-docker
 
   - name: mediawiki/extensions/BlueSpiceFoundation
     template:
