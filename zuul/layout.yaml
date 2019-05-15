@@ -1266,17 +1266,20 @@ project-templates:
 
   - name: composer-test
     test:
+      - composer-php72-docker
       - composer-php55-docker
       - composer-hhvm-docker
     gate-and-submit:
+      - composer-php72-docker
+      - composer-php70-docker
       - composer-php55-docker
       - composer-hhvm-docker
-      - composer-php70-docker
     gate-and-submit-swat:
       # FIXME wmf/ branches only care about hhvm and php7.2
+      - composer-php72-docker
+      - composer-php70-docker
       - composer-php55-docker
       - composer-hhvm-docker
-      - composer-php70-docker
 
   - name: mwgate-composer
     test:
