@@ -389,6 +389,8 @@ dependencies = {
     'WikidataPageBanner': ['Wikibase'],
     'WikiEditor': ['EventLogging', 'WikimediaEvents'],
     'WikimediaBadges': ['Wikibase'],
+    'WikimediaEditorTasks': ['Wikibase', 'CirrusSearch',
+                             'WikibaseCirrusSearch'],
     'WikimediaEvents': ['EventLogging', 'MobileFrontend', 'AbuseFilter',
                         'GrowthExperiments', 'CentralAuth', 'BetaFeatures'],
     'WikimediaMessages': ['GuidedTour', 'ORES', 'skins/MinervaNeue'],
