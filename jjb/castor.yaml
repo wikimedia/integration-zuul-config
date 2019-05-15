@@ -76,11 +76,11 @@
 #
 - job: &job_castor_save
     name: castor-save
-    node: contint1001
+    node: integration-castor03
     concurrent: true
     properties:
      - build-discarder:
-         days-to-keep: 1
+         days-to-keep: 5
     parameters:
         - string:
             name: TRIGGERED_SSH_CONNECTION
@@ -103,7 +103,14 @@
              - 'nodepool-dib-jenkins'
 
     builders:
-        - shell: "echo 'Deactivated for now'"
+        # This is horrible. Will need a better system that just prevent the job
+        # from being triggered by the upstream job.
+        - shell:
+            !include-raw: castor-save-filter.bash
+        - shell:
+            !include-raw:
+                - castor-define-namespace.bash
+                - castor-save-sync.bash
 
 - job:
     !!merge : *job_castor_save
@@ -119,4 +126,11 @@
             users:
              - 'ae711ff4-813e-4462-9a27-21bdbd4fdcb9'  # jenkins-deploy
     builders:
-        - shell: "echo 'Deactivated for now'"
+        # This is horrible. Will need a better system that just prevent the job
+        # from being triggered by the upstream job.
+        - shell:
+            !include-raw: castor-save-filter.bash
+        - shell:
+            !include-raw:
+                - castor-define-namespace.bash
+                - castor-save-workspacecache.bash
