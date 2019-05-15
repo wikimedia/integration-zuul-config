@@ -3,8 +3,7 @@
 node(nodeLabel) {
   def patchset = PatchSet.fromZuul(params)
   def runner = new PipelineRunner(this,
-                                  kubeConfig: "/etc/kubernetes/ci-staging.config",
-                                  registry: dockerRegistry)
+                                  kubeConfig: "/etc/kubernetes/ci-staging.config")
   def testImageID
   def productionImageID
   def gerritComment
