@@ -1401,13 +1401,14 @@ project-templates:
 # a set of jobs.
 projects:
   - name: blubber
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
     test:
+      - trigger-blubber-pipeline-test
       - debian-glue
     gate-and-submit:
+      - trigger-blubber-pipeline-rehearse
       - debian-glue
+    postmerge:
+      - trigger-blubber-pipeline-publish
 
   - name: integration/config
     test:
