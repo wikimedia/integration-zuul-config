@@ -499,22 +499,17 @@
         image: docker-registry.wikimedia.org/releng/npm-test:0.6.1
         options: '--volume "$(pwd)"/src/extensions/"$EXT_NAME":/src'
         logdir: '/workspace/log'
-        args: 'test:unit'
-    publishers:
-      - postbuildscript:
-          script-only-if-succeeded: false
-          script-only-if-failed: false
-          builders:
-            - shell: |
-                  if [ -f src/extensions/"$EXT_NAME"/coverage/lcov.info ]; then
-                    sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
-                  fi
-            - docker-run-with-log-and-workspace-cache:
-                image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.4'
-                options: '--volume "$(pwd)"/src:/workspace/src'
-                logdir: '/workspace/log'
-                args: '{sonar_args}'
-      - docker-cleanup
+        args: '--if-present test:unit'
+    - shell: |
+        if [ -f src/extensions/"$EXT_NAME"/coverage/lcov.info ]; then
+          sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
+        fi
+    - docker-run-with-log-and-workspace-cache:
+        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.4'
+        options: '--volume "$(pwd)"/src:/workspace/src'
+        logdir: '/workspace/log'
+        args: '{sonar_args}'
+    - docker-cleanup
 
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:
