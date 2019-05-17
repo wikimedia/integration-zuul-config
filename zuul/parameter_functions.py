@@ -535,6 +535,7 @@ tarballextensions = [
 
 gatedextensions = [
     'AbuseFilter',
+    'AntiSpoof',
     'Babel',
     'ContentTranslation',
     'CheckUser',
