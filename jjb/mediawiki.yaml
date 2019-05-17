@@ -485,16 +485,21 @@
         image: docker-registry.wikimedia.org/releng/npm-test:0.6.1
         options: '--volume "$(pwd)"/src/extensions/"$EXT_NAME":/src'
         logdir: '/workspace/log'
-        # Whether tests pass/fail is unimportant, what we want here is the coverage report. If an extension
-        # does not have test:unit defined, we don't want the entire job to fail.
-        args: 'test:unit || true'
-    - shell: |
-        sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
-    - docker-run-with-log-and-workspace-cache:
-       image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.4'
-       options: '--volume "$(pwd)"/src:/workspace/src'
-       logdir: '/workspace/log'
-       args: '{sonar_args}'
+        args: 'test:unit'
+    publishers:
+      - docker-cleanup
+      - postbuildscript:
+          script-only-if-succeeded: false
+          script-only-if-failed: false
+          builders:
+            - shell: |
+                sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
+            - docker-run-with-log-and-workspace-cache:
+                image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.4'
+                options: '--volume "$(pwd)"/src:/workspace/src'
+                logdir: '/workspace/log'
+                args: '{sonar_args}'
+
     wrappers:
      - ansicolor
      - timeout:
@@ -507,8 +512,6 @@
            - text:
                credential-id: SONAR_API_KEY
                variable: SONAR_API_KEY
-    publishers:
-        - docker-cleanup
 
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:
