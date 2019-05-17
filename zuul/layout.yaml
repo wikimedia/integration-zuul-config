@@ -484,6 +484,27 @@ pipelines:
     failure:
       gerrit: {}
 
+  # Pywikibot full test suite including unittests, nosetest, pytest and tox (non-voting)
+  - name: pywikibot
+    description: >
+      Pipeline for time-consuming Pywikibot jobs. These only run post-merge or after submitting the comment "deepcheck".
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: low
+    trigger:
+      gerrit:
+        - event: change-merged
+          branch: (?!^refs/meta/config)
+        - event: comment-added
+          comment: (?im)^Patch Set \d+:\n\n\s*deepcheck\.?\s*$
+          email: *email_whitelist
+    success-message: 'Deep check succeeded.'
+    success:
+      gerrit: {}
+    failure-message: 'Deep check failed.'
+    failure:
+      gerrit: {}
+
   - name: php
     description: >
       Slower PHPUnit jobs excluded from the "test" pipeline. These also run as part of the "gate-and-submit" pipeline.
@@ -7847,6 +7868,11 @@ projects:
       - pywikibot-core-tox-fasttest-py27-docker
       - pywikibot-core-tox-fasttest-py34-docker
       - pywikibot-core-tox-doc-docker
+    pywikibot:
+      - pywikibot-core-tox-deepcheck-py27-docker-non-voting
+      - pywikibot-core-tox-deepcheck-py34-docker-non-voting
+      - pywikibot-core-tox-deepcheck-py35-docker-non-voting
+      - pywikibot-core-tox-deepcheck-py36-docker-non-voting
     postmerge:
       - pywikibot-core-tox-publish
 
