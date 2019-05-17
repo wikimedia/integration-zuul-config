@@ -39,9 +39,10 @@ if [ -f .phan/config.php ]; then
     install_phan
     exec /srv/phan/vendor/bin/phan -d . -p "$@"
 else
-    # old-style, using tests/phan and MW wrapper
+    # old-style, using tests/phan and the wrapper shipped with mediawiki/core
     export PHP_ARGS='-dextension=ast_012.so'
     install_phan
-    exec /mediawiki/tests/phan/bin/phan "$@"
+    # Inject the extension repository as the first argument to trigger custom
+    # logic in the wrapper. T219114#5176487
+    exec /mediawiki/tests/phan/bin/phan "/mediawiki/$THING_SUBNAME" "$@"
 fi
-
