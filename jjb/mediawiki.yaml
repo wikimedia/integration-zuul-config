@@ -506,7 +506,9 @@
           script-only-if-failed: false
           builders:
             - shell: |
-                sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
+                  if [ -f src/extensions/"$EXT_NAME"/coverage/lcov.info ]; then
+                    sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
+                  fi
             - docker-run-with-log-and-workspace-cache:
                 image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.4'
                 options: '--volume "$(pwd)"/src:/workspace/src'
