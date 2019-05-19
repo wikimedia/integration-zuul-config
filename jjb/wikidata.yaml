@@ -15,6 +15,10 @@
     jobs:
       - '{name}-npm-browser-node-6-docker':
           docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.3.1
+          parameters:
+              - string:
+                - name: 'NPM_SCRIPT'
+                - default: 'test_all'
       - 'wikidata-query-gui-build'
 
 - project:

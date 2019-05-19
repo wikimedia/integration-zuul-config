@@ -22,4 +22,5 @@ ENV FIREFOX_BIN=/usr/local/bin/firefox
 ENV CHROMIUM_FLAGS="--no-sandbox"
 
 COPY run-with-xvfb.sh /run-with-xvfb.sh
-ENTRYPOINT ["/run-with-xvfb.sh"]
+RUN echo $TARGET
+ENTRYPOINT ./run-with-xvfb.sh $NPM_SCRIPT
