@@ -325,6 +325,7 @@ dependencies = {
     'RevisionSlider': ['MobileFrontend'],
     'Score': ['VisualEditor', 'TimedMediaHandler', 'Wikibase'],
     'Scribunto': ['SyntaxHighlight_GeSHi'],
+    'SecurePoll': ['CentralAuth'],
     'SemanticLinks': ['VisualEditor'],
     'SiteMetrics': ['SocialProfile'],
     'SiteScout': ['Comments', 'SocialProfile', 'VoteNY'],
