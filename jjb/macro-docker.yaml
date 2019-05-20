@@ -156,7 +156,7 @@
  # Prepare the sources using Quibble.
  # Notably run composer update in the thing to install mediawiki/phan-config.
 - builder:
-    name: docker-ci-src-setup-mwext
+    name: docker-setup-mwext-for-phan
     builders:
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-1
@@ -164,13 +164,21 @@
              --volume "$(pwd)/src:/workspace/src"
              --volume /srv/git:/srv/git:ro
              --tmpfs /workspace/db:size=320M
+         # Use vendor and skip-deps
+         # We do not want to bring in MediaWiki core dev dependencies (T223397)
          args: >
              --git-parallel=8
-             --packages-source=composer
+             --packages-source=vendor
              --db=mysql --db-dir=/workspace/db
+             --skip-deps
              --skip=all
-             --commands 'cd "$THING_SUBNAME" && composer update --ansi --no-progress --prefer-dist --profile'
          logdir: '/workspace/log'
+     # Install the extension/skin composer dev dependencies to bring in phan config
+     - docker-run-with-log-cache-src:
+        options: '--volume "$(pwd)"/src:/mediawiki'
+        image: 'docker-registry.wikimedia.org/releng/composer:0.1.9'
+        args: '--working-dir=/src/"$THING_SUBNAME" update --ansi --no-progress --prefer-dist --profile'
+        logdir: '/log'
 
 # Use a docker image to clone for MediaWiki core
 - builder:
