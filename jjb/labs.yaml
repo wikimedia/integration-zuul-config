@@ -20,13 +20,17 @@
 
 - job-template:
     name: 'labs-tools-wikibugs2-autopull'
-    node: contintLabsSlave
+    node: DebianJessieDocker
     concurrent: false
     properties:
      - build-discarder:
          days-to-keep: 15
     builders:
-      - shell: curl --fail --silent --show-error --max-time 10 https://tools.wmflabs.org/wikibugs/pull.php
+     - docker-run:
+         image: docker-registry.wikimedia.org/releng/curl:0.1.0
+         args: '--fail --silent --show-error --max-time 10 https://tools.wmflabs.org/wikibugs/pull.php'
+    publishers:
+     - docker-cleanup
 
 
 - project:
