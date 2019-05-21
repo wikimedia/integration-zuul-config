@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6a3e4dc7_de4c28c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 6097
+      },
+      "writtenOn": "2019-05-21T17:50:01Z",
+      "side": 1,
+      "message": "That\u0027s defined here https://gerrit.wikimedia.org/r/plugins/gitiles/integration/config/+/refs/heads/master/dockerfiles/java8-sonar-scanner/run.sh#86 -- the idea is that if the quality gate passed, we exit with code 0 and if it failed the quality gate, we pass exit code 1. That should then result in the pipeline reporting success/failure. With the publisher, if any step of the build fails (e.g. if `npm run-script test:unit` exits with 1), then you can\u0027t override that with the exit code from sonar-scanner in the publisher step. That\u0027s why I propose to remove the publisher implementation.",
+      "parentUuid": "577d3a3d_22377dfd",
+      "range": {
+        "startLine": 10,
+        "startChar": 47,
+        "endLine": 11,
+        "endChar": 69
+      },
+      "revId": "26dbe344efd5eebbad21fb34edfc70e550638f94",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1649b3c7_7564caaa",
         "filename": "jjb/mediawiki.yaml",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "578796d7_4c98a80c",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 6097
+      },
+      "writtenOn": "2019-05-21T17:50:01Z",
+      "side": 1,
+      "message": "it turns out that reading the manual can help sometimes :)",
+      "parentUuid": "1649b3c7_7564caaa",
+      "range": {
+        "startLine": 502,
+        "startChar": 15,
+        "endLine": 502,
+        "endChar": 27
+      },
+      "revId": "26dbe344efd5eebbad21fb34edfc70e550638f94",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "76759ba6_ae369be0",
         "filename": "jjb/mediawiki.yaml",
         "patchSetId": 2
@@ -68,6 +116,30 @@
       "revId": "26dbe344efd5eebbad21fb34edfc70e550638f94",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a9c700ed_e3edb27a",
+        "filename": "jjb/mediawiki.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 6097
+      },
+      "writtenOn": "2019-05-21T17:50:01Z",
+      "side": 1,
+      "message": "What this pipeline is concerned with is not tests passing/failing but if \"quality\" (as defined by looking at code coverage, possible bugs, code smells etc) is increasing/decreasing. So I think it\u0027s actually OK if `test:unit` fails because the unit test coverage step failed. If that happens, it means the unit tests have a problem and should be fixed (the main test pipeline will also be erroring) and merge will be prevented in any case.",
+      "parentUuid": "76759ba6_ae369be0",
+      "range": {
+        "startLine": 507,
+        "startChar": 0,
+        "endLine": 511,
+        "endChar": 28
+      },
+      "revId": "26dbe344efd5eebbad21fb34edfc70e550638f94",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": true
     }
   ]
 }
