@@ -33,6 +33,24 @@
       "revId": "7d5945f02f3bd6ea1cffacead865ad2e5e533437",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "979a87fb_e93a9557",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 1406,
+      "author": {
+        "id": 1731
+      },
+      "writtenOn": "2019-05-22T19:12:00Z",
+      "side": 1,
+      "message": "Ah, right. I should have scheduled the publish job at postmerge.\n\nRegarding the `project-pipeline` template, I\u0027m not sure we can rely on that. The \"test\" and \"publish\" pipelinelib pipelines (those defined in `.pipeline/config.yaml`) in this example (oh my, what an overloaded term \u0027pipeline\u0027 is) are likely to vary from project to project (they\u0027re defined in the project\u0027s and it\u0027s conceivable that a project might want to schedule more or fewer pipelines to run, and at different points during review.\n\nBroadly speaking, and outside the scope of this particular change, we need to figure out a way to move both the configuration of JJB pipeline projects (the content of `jjb/project-pipelines.yaml` that\u0027s in this change) and this Zuul project configuration into repos, or somewhere that is manageable by teams.",
+      "parentUuid": "9a7fbb89_36c1b78b",
+      "revId": "7d5945f02f3bd6ea1cffacead865ad2e5e533437",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
     }
   ]
 }
