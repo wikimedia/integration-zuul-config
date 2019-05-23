@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ee3d267b_de91497e",
+        "filename": "dockerfiles/npm-browser-test/Dockerfile.template",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6768
+      },
+      "writtenOn": "2019-05-23T14:07:03Z",
+      "side": 1,
+      "message": "Thanks Hashar!\n\n1. we can as well keep using `[\"/run-with-xvfb.sh\", \"echo $NPM_SCRIPT\"]. would that be fine?\n\n2. Oops yup that was unintended to be part of it and overlooked .. will change that.\n\n3. nothing should happen, other jobs use this image without specifying this env. variable, and `run.sh` (https://gerrit.wikimedia.org/r/plugins/gitiles/integration/config/+/8713f6ce6fbd919ce16532e7bae611d40f85f878/dockerfiles/npm-test/run.sh that\u0027s inside an image this one depends on) that is being called by run-with-xvfb.sh already accounts for empty arguments list and fallbacks to \u0027test\u0027 as the argument to `npm run-script`.\n\nAs for changing how we call docker run, where can we do that. I believe that\u0027s somewhere built into how jjb functions internally, as in it calls `docker run {image}` on the image defined in `docker_image_var` such in https://gerrit.wikimedia.org/r/c/integration/config/+/511308/2/jjb/wikidata.yaml#17. I do not remember reading in jjb documentation that we can configure arguments that will be appended to `docker run` command.",
+      "parentUuid": "0bee9323_2eb833b2",
+      "revId": "8713f6ce6fbd919ce16532e7bae611d40f85f878",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "38e689dd_9a9a3474",
         "filename": "jjb/wikidata.yaml",
         "patchSetId": 2
@@ -30,6 +48,30 @@
       "writtenOn": "2019-05-23T12:58:30Z",
       "side": 1,
       "message": "That parameters block would only make sense when used inside the job template definition in jjb/job-templates.yaml\n\n\nThe job template \u0027{name}-npm-browser-node-6-docker\u0027 only runs \"npm test\". It can not be passed extra arguments as it stands. We will need to define a new job template. That is arguably moare work.\n\n\n\nAnother note, the source repository has change https://gerrit.wikimedia.org/r/#/c/wikidata/query/gui/+/511309/ which defines a test_all Grunt task, but it does not define on in /package.json and thus there will be no \"npm test_all\" command available :)",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "8713f6ce6fbd919ce16532e7bae611d40f85f878",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d490a957_384ea921",
+        "filename": "jjb/wikidata.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 6768
+      },
+      "writtenOn": "2019-05-23T14:07:03Z",
+      "side": 1,
+      "message": "Good catch.. will add `test_all` to package.json.",
+      "parentUuid": "38e689dd_9a9a3474",
       "range": {
         "startLine": 18,
         "startChar": 0,
