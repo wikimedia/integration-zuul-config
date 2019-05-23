@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0bee9323_2eb833b2",
+        "filename": "dockerfiles/npm-browser-test/Dockerfile.template",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-23T12:58:30Z",
+      "side": 1,
+      "message": "There are several issue there:\n\n\n1) when removing [\"\"], Docker will then wrap the actual command with a shell. So that becomes:\n\n /bin/sh -c \"./run-with-xvfb.sh $NPM_SCRIPT\"\n\nWhich arguably not needed. Thus the [\"\"] should be kept around. See https://docs.docker.com/engine/reference/builder/#entrypoint\n\n\n2) You change the path from being absolute ( /x.sh ) to relative ( ./x.sh ).  If one ever change the working directory (docker run --workdir\u003d/something ), the command will not be found.  So we should keep the absolute directory.\n\n3) I am not sure what will happen when $NPM_SCRIPT is not set, hopefully nothing specific.  Then docker run will pass extra arguments to the entry point and thus there is no need to pass the variable here.\n\nI guess you expect to run it as:\n\n docker run -e NPM_SCRIPT\u003dtest_all docker-registry.wikimedia.org/releng/npm-browser-test\n\nWhen you can just pass the argument:\n\n docker run -e docker-registry.wikimedia.org/releng/npm-browser-test test_all\n\nDocker automatically pass \"test_all\" to the /run-with-xvfb.sh entry point.  That sheel script then spawn Xvfb / Chromedriver and invoke /run.sh passing arguments.\n\n\n/run.sh  comes from the parent image npm-test-stretch which itself get it from npm-stretch. In the end that is the file /dockerfiles/npm-test/run.sh which roughly does:\n\n npm install --no-progress\n npm run-script \"${@:-test}\"\n\n\nAll of the above to say that you do not need to change the entry point in the Docker image. It simplies default to run \u0027npm test\u0027, and passing an argument would run another npm command :]",
+      "revId": "8713f6ce6fbd919ce16532e7bae611d40f85f878",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "38e689dd_9a9a3474",
+        "filename": "jjb/wikidata.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-05-23T12:58:30Z",
+      "side": 1,
+      "message": "That parameters block would only make sense when used inside the job template definition in jjb/job-templates.yaml\n\n\nThe job template \u0027{name}-npm-browser-node-6-docker\u0027 only runs \"npm test\". It can not be passed extra arguments as it stands. We will need to define a new job template. That is arguably moare work.\n\n\n\nAnother note, the source repository has change https://gerrit.wikimedia.org/r/#/c/wikidata/query/gui/+/511309/ which defines a test_all Grunt task, but it does not define on in /package.json and thus there will be no \"npm test_all\" command available :)",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 37
+      },
+      "revId": "8713f6ce6fbd919ce16532e7bae611d40f85f878",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
