@@ -734,6 +734,9 @@ jobs:
   # queue-name can not be applied based on a regex, apply the name on one job.
   - name: mediawiki-quibble-vendor-mysql-hhvm-docker
     queue-name: mediawiki
+    skip-if:
+      # WebAuthn is designed only for PHP7.2+
+      - project: '^mediawiki/extensions/WebAuthn'
 
   - name: lintr-docker
     files:
