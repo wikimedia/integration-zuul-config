@@ -836,6 +836,10 @@ jobs:
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/consoleFull'
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/consoleFull'
 
+  - name: mwext-codehealth-patch
+    success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-extensions-{build.parameters[EXT_NAME]}&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
+    failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-extensions-{build.parameters[EXT_NAME]}&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
+
   # For coverage report jobs, we only want one build at a time.
   #
   # That is the equivalent of concurrent: false in Jenkins but handled by Zuul
