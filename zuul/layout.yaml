@@ -705,6 +705,14 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^REL1_(2[789]|3[01])$
 
+  - name: ^.*quibble.*hhvm.*$
+    skip-if:
+      # Disable on fundraising branches
+      - project: '^mediawiki/core$'
+        branch: ^fundraising/REL1_31$
+      # WebAuthn is designed only for PHP7.2+
+      - project: '^mediawiki/extensions/WebAuthn'
+
   - name: ^wmf-quibble-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
     # run them on REL branches.
