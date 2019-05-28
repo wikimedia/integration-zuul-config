@@ -276,7 +276,7 @@ dependencies = {
     'Jade': ['AbuseFilter', 'SpamBlacklist'],
     'JsonConfig': ['Scribunto'],
     'Kartographer': ['JsonConfig', 'ParserFunctions', 'VisualEditor',
-                     'WikimediaMessages'],
+                     'WikimediaMessages', 'GeoData'],
     'LanguageTool': ['VisualEditor'],
     'LDAPAuthentication2': ['LDAPProvider', 'PluggableAuth'],
     'LDAPAuthorization': ['LDAPProvider', 'PluggableAuth'],
