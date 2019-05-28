@@ -237,6 +237,7 @@ dependencies = {
     'CodeEditor': ['WikiEditor'],
     'CodeMirror': ['WikiEditor', 'VisualEditor'],
     'CollaborationKit': ['EventLogging', 'VisualEditor', 'PageImages'],
+    'ConfirmEdit': ['Math'],
     'ContactPage': ['ConfirmEdit'],
     'ContentTranslation': ['AbuseFilter', 'Echo', 'EventLogging',
                            'UniversalLanguageSelector', 'VisualEditor'],
