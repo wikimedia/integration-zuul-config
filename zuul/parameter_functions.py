@@ -358,7 +358,7 @@ dependencies = {
     'VEForAll': ['VisualEditor'],
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
-    'VisualEditor': ['Cite', 'TemplateData'],
+    'VisualEditor': ['Cite', 'TemplateData', 'FlaggedRevs', 'ConfirmEdit'],
     'WebAuthn': ['OATHAuth'],
     'WhoIsWatching': ['Echo'],
     'WikiLove': ['Flow', 'LiquidThreads'],
