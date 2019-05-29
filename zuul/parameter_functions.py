@@ -238,6 +238,7 @@ dependencies = {
     'CleanChanges': ['cldr'],
     'CodeEditor': ['WikiEditor'],
     'CodeMirror': ['WikiEditor', 'VisualEditor'],
+    'CodeReview': ['Renameuser'],
     'CollaborationKit': ['EventLogging', 'VisualEditor', 'PageImages'],
     'ConfirmEdit': ['Math'],
     'ContactPage': ['ConfirmEdit'],
