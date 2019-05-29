@@ -229,6 +229,7 @@ dependencies = {
     'CentralAuth': ['AbuseFilter', 'AntiSpoof', 'EventLogging', 'MassMessage',
                     'MobileFrontend', 'Renameuser', 'TitleBlacklist',
                     'UserMerge'],
+    'CentralNotice': ['cldr', 'CentralAuth', 'MobileFrontend', 'Translate'],
     'Challenge': ['SocialProfile'],
     'CheckUser': ['CentralAuth', 'Renameuser'],
     'Cite': ['VisualEditor'],
