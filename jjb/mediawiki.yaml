@@ -118,16 +118,6 @@
 - project:
     name: 'mwgate'
     jobs:
-        - '{name}-composer-package-{phpflavor}-docker': &phpflavor_docker
-            phpflavor:
-                - hhvm:
-                    image: docker-registry.wikimedia.org/releng/composer-package-hhvm:0.2.5
-                - php55:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php55:0.2.6
-                - php70:
-                    image: docker-registry.wikimedia.org/releng/composer-package:0.1.4
-                - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.1.5
         - '{name}-composer-{phpflavor}-docker':
             phpflavor:
                 - hhvm:
