@@ -82,6 +82,9 @@
 - job-template:
     !!merge : *composer-package-phpflavor-docker
     name: '{name}-composer-package-{phpflavor}-docker'
+    # Run more specific jobs to large executors. They might have specific
+    # needs, eg Parsoid is running Phan which requires memory - T221872
+    node: DebianJessieDocker && m4executor
     triggers:
      - zuul
 
