@@ -235,6 +235,7 @@ dependencies = {
     'Citoid': ['Cite', 'VisualEditor'],
     'CirrusSearch': ['TimedMediaHandler', 'PdfHandler', 'Cite', 'Elastica',
                      'GeoData', 'BetaFeatures', 'SiteMatrix'],
+    'CleanChanges': ['cldr'],
     'CodeEditor': ['WikiEditor'],
     'CodeMirror': ['WikiEditor', 'VisualEditor'],
     'CollaborationKit': ['EventLogging', 'VisualEditor', 'PageImages'],
