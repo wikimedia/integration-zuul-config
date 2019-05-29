@@ -286,6 +286,7 @@ dependencies = {
     'LDAPUserInfo': ['LDAPProvider'],
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
     'LightweightRDFa': ['WikiEditor'],
+    'LiquidThreads': ['Renameuser'],
     'LoginNotify': ['CentralAuth', 'CheckUser', 'Echo'],
     'MassMessage': ['Flow', 'LiquidThreads'],
     'Math': ['VisualEditor', 'Wikibase'],
