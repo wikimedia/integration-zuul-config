@@ -208,7 +208,7 @@ dependencies = {
     'BlueSpiceRSSFeeder': ['BlueSpiceFoundation'],
     'BlueSpiceReaders': ['BlueSpiceFoundation'],
     'BlueSpiceSMWConnector': ['BlueSpiceFoundation'],
-    'BlueSpiceSocial': ['BlueSpiceFoundation'],
+    'BlueSpiceSocial': ['BlueSpiceFoundation', 'BlueSpiceExtendedSearch'],
     'BlueSpiceSaferEdit': ['BlueSpiceFoundation'],
     'BlueSpiceSignHere': ['BlueSpiceFoundation'],
     'BlueSpiceSmartList': ['BlueSpiceFoundation', 'VisualEditor'],
