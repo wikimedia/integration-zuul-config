@@ -546,6 +546,7 @@ gatedextensions = [
     'AbuseFilter',
     'AntiSpoof',
     'Babel',
+    'CentralAuth',
     'ContentTranslation',
     'CheckUser',
     'CirrusSearch',
@@ -559,6 +560,7 @@ gatedextensions = [
     'GlobalPreferences',
     'GuidedTour',
     'JsonConfig',
+    'MassMessage',
     'MobileApp',
     'MobileFrontend',
     'NavigationTiming',
@@ -572,6 +574,7 @@ gatedextensions = [
     'VisualEditor',
     # Note: pre-1.31 this is switched out for Wikidata build extension
     'Wikibase',
+    'WikibaseLexeme',
     'WikibaseMediaInfo',
     'WikibaseCirrusSearch',
     'ZeroBanner',
