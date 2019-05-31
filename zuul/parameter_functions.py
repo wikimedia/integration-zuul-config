@@ -352,6 +352,7 @@ dependencies = {
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TheWikipediaLibrary': ['Echo'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
+    'TimedMediaHandler': ['BetaFeatures'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr',
                   'AbuseFilter', 'AdminLinks'],
     'TranslateSvg': ['Translate'],
