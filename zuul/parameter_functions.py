@@ -261,7 +261,7 @@ dependencies = {
     'FileAnnotations': ['EventLogging'],
     'FileExporter': ['BetaFeatures'],
     'FileImporter': ['WikiEditor'],
-    'FlaggedRevs': ['Scribunto'],
+    'FlaggedRevs': ['skins/Vector', 'Scribunto', 'GoogleNewsSitemap'],
     'Flow': ['AbuseFilter', 'BetaFeatures', 'CentralAuth', 'CirrusSearch',
              'ConfirmEdit', 'Echo', 'Elastica', 'LiquidThreads',
              'SpamBlacklist', 'VisualEditor'],
