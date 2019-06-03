@@ -247,7 +247,7 @@
 - job-template:
     !!merge : *job_quibble
     name: release-quibble-{packages-source}-{database}-{php}-docker
-    quibble_args: '--skip npm-test'
+    quibble_args: '--skip npm-test selenium'
     triggers:
         - zuul
 
@@ -257,7 +257,7 @@
     name: wmf-quibble-vendor-mysql-{php}-docker
     # We do not run mediawiki/core tests with extensions installed
     # https://phabricator.wikimedia.org/T197469#4293142
-    quibble_args: '--phpunit-testsuite=extensions --skip npm-test'
+    quibble_args: '--phpunit-testsuite=extensions --skip npm-test selenium'
     triggers:
         - zuul
 
@@ -268,7 +268,7 @@
     name: wmf-quibble-core-vendor-mysql-{php}-docker
     # We do not run mediawiki/core tests with extensions installed
     # https://phabricator.wikimedia.org/T197469#4293142
-    quibble_args: '--phpunit-testsuite=extensions --skip composer-test npm-test'
+    quibble_args: '--phpunit-testsuite=extensions --skip composer-test npm-test selenium'
     triggers:
         - zuul
 
