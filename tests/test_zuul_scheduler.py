@@ -180,16 +180,6 @@ class TestZuulScheduler(unittest.TestCase):
             'Project %s pipeline %s must have either a composer-* job'
             % (name, pipeline))
 
-    def assertProjectHasPhp55Test(self, name, definition, pipeline):
-        if pipeline != 'php5' or pipeline != 'gate-and-submit':
-            return
-        for job in definition:
-            if 'testextension-hhvm' in job:
-                self.assertTrue(True)
-                return
-        self.assertTrue(False, 'Project %s pipeline %s must have a '
-                        'php55 test job' % (name, pipeline))
-
     def assertProjectHasSkinTests(self, name, definition, pipeline):
         if pipeline != 'test':
             return
@@ -262,7 +252,6 @@ class TestZuulScheduler(unittest.TestCase):
             r'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
-                self.assertProjectHasPhp55Test,
                 self.assertProjectHasExperimentalPhan,
                 self.assertProjectHasI18nChecker,
             ],
@@ -1055,7 +1044,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
             'mediawiki-quibble-composertest-php70-docker': True,
             'release-quibble-vendor-mysql-hhvm-docker': False,
-            'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
@@ -1068,13 +1056,11 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-php72-docker': True,
             'mediawiki-quibble-vendor-mysql-php71-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
-            'mediawiki-quibble-vendor-mysql-php55-docker': False,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-quibble-vendor-sqlite-php72-docker': True,
             'mediawiki-quibble-vendor-postgres-php72-docker': True,
             'release-quibble-vendor-mysql-hhvm-docker': False,
-            'release-quibble-vendor-mysql-php55-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
             'release-quibble-vendor-mysql-php71-docker': False,
             'release-quibble-vendor-mysql-php72-docker': False,
