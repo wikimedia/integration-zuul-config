@@ -1,9 +1,8 @@
 FROM {{ "composer" | image_tag }} as composer
-FROM {{ "npm-stretch" | image_tag }} as npm-stretch
 
-FROM {{ "ci-stretch" | image_tag }}
+FROM {{ "node10" | image_tag }}
 
-# Slight digression compared to npm-stretch
+# Slight digression compared to node10
 ENV NPM_CONFIG_CACHE=/cache/npm
 
 USER root
@@ -14,9 +13,6 @@ USER root
 COPY --from=composer /srv/composer /srv/composer
 # Manually link since COPY copies symlink destination instead of the actual symlink
 RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
-COPY --from=npm-stretch /usr/local/lib/node_modules/npm/ /usr/local/lib/node_modules/npm/
-# Manually link since COPY copies symlink destination instead of the actual symlink
-RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
 
 ##########################
 # JSDuck is still needed #
