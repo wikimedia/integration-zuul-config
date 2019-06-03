@@ -1194,6 +1194,8 @@ project-templates:
   - name: extension-codehealth
     postmerge:
       - mwext-codehealth-master-non-voting
+      # Continue to publish coverage reports to usual self-hosted locations.
+      - mwext-phpunit-coverage-docker-publish
     codehealth:
       - mwext-codehealth-patch
 
@@ -3152,7 +3154,6 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-codehealth
-      - name: extension-coverage
       - name: extension-seccheck
 
   - name: mediawiki/extensions/AdminLinks
@@ -3712,7 +3713,6 @@ projects:
       - name: extension-gate
       - name: extension-phan
       - name: extension-codehealth
-      - name: extension-coverage
       - name: extension-seccheck
 
   - name: mediawiki/extensions/EditAccount
@@ -3848,7 +3848,6 @@ projects:
      - name: extension-gate
      - name: mwgate-rake
      - name: extension-codehealth
-     - name: extension-coverage
      - name: extension-seccheck
      - name: extension-javascript-documentation
 
@@ -4565,7 +4564,6 @@ projects:
       - name: extension-quibble
       - name: mwgate-rake
       - name: extension-codehealth
-      - name: extension-coverage
       - name: extension-seccheck
       - name: extension-phan
 
@@ -5378,7 +5376,6 @@ projects:
   - name: mediawiki/extensions/GrowthExperiments
     template:
       - name: extension-quibble
-      - name: extension-coverage
       - name: extension-codehealth
       - name: extension-phan
       - name: extension-seccheck
