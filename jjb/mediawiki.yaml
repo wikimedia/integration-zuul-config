@@ -483,7 +483,7 @@
     - docker-src-dir
     - docker-castor-load
     - docker-run-with-log-and-workspace-cache:
-        image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-3
+        image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-4
         options: '--volume "$(pwd)"/src:/workspace/src --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
         args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --commands=mwext-phpunit-coverage'
         logdir: '/workspace/log'
@@ -694,15 +694,15 @@
         - sqlite
     php:
         - php70:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-4
         - php71:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php71:0.0.31-1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php71:0.0.31-2
         - php72:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.31-1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.31-4
         - php73:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.31-2
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.31-3
         - hhvm:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-hhvm:0.0.31-1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-hhvm:0.0.31-2
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
@@ -736,7 +736,7 @@
             packages-source: vendor
             database: sqlite
         - mwselenium-quibble-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.31-2
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.31-3
             packages-source: vendor
             database: mysql
 
@@ -751,7 +751,7 @@
     name: mediawiki-selenium-integration
     jobs:
         - mediawiki-selenium-integration-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.31-2
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.31-3
             packages-source: vendor
             database: mysql
             quibble_args: '--skip-deps --commands=mwselenium -- mediawiki/selenium'
@@ -774,7 +774,7 @@
     name: parsoidsvc-parsertests
     jobs:
         - parsoidsvc-parsertests-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-hhvm:0.0.31-1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-hhvm:0.0.31-2
             packages-source: composer
             database: sqlite
             quibble_args: '--commands=mediawiki/services/parsoid/tools/ci-mw-parsertests.sh'
@@ -792,7 +792,7 @@
 
 - project:
     name: wikibase
-    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-1
+    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-2
     packages-source: composer
     kind:
         - client:
