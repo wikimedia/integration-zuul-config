@@ -469,6 +469,8 @@
              -Dsonar.branch.target="$ZUUL_BRANCH" \
              -Dsonar.branch.name={branch} \
              -X
+         publishers:
+           - docker-cleanup
       - mwext-codehealth-{name}:
          # Used for analyzing the master branch on postmerge.
          name: 'master-non-voting'
@@ -479,6 +481,20 @@
              -Dsonar.organization=wmftest \
              -Dsonar.host.url=https://sonarcloud.io \
              -X
+         publishers:
+             - archive-log-allow-empty
+             - castor-save-workspace-cache
+             - postbuildscript:
+                   script-only-if-succeeded: false
+                   script-only-if-failed: false
+                   builders:
+                       -   cover-extensions-publish:
+                               src: 'cover'
+                               # Should be equivalent to $EXT_NAME
+                               dest: '$DOC_BASENAME'
+                       -   docker-wipe-dir:
+                               dir: 'cover'
+             - docker-cleanup
 
 - job-template:
     !!merge : *job_quibble
@@ -509,9 +525,11 @@
     - docker-log-dir
     - docker-src-dir
     - docker-castor-load
+    - docker-wipe-dir:
+        dir: 'cover'
     - docker-run-with-log-and-workspace-cache:
         image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-4
-        options: '--volume "$(pwd)"/src:/workspace/src --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
+        options: '--volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
         args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --commands=mwext-phpunit-coverage'
         logdir: '/workspace/log'
     - docker-run-with-log-and-workspace-cache:
@@ -528,8 +546,7 @@
         options: '--volume "$(pwd)"/src:/workspace/src'
         logdir: '/workspace/log'
         args: '{sonar_args}'
-    publishers:
-      - docker-cleanup
+    publishers: '{publishers}'
 
 # XXX copy pasted to pass --volume cover:/workspace/cover and run cover-publish
 - job-template:
