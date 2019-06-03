@@ -1,3 +1,22 @@
+- job:
+    name: 'ooui-npm-special-node10-plus-composer-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.31-2
+         options: 'jenkins'
+         logdir: '/log'
+    archive:
+     - archive-log-allow-empty
+     - docker-cleanup
+
 - project:
     name: oojs-ui
     jobs:
