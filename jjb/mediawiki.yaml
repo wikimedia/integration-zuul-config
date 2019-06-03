@@ -109,7 +109,6 @@
     name: mediawiki-core
     phpflavor:
         - hhvm
-        - php55
     jobs:
       - '{name}-jsduck-docker'
 
@@ -122,8 +121,6 @@
             phpflavor:
                 - hhvm:
                     image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.2.6
-                - php55:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php55:0.2.6
                 - php70:
                     image: docker-registry.wikimedia.org/releng/composer-test:0.1.6
                 - php72:
@@ -635,9 +632,6 @@
     project-type: matrix
     execution-strategy:
         sequential: true
-        #Filter out some combination. For example php55 is solely for REL1_27
-        combination-filter: |
-            (php=="php55").implies(ZUUL_BRANCH=="REL1_27")
     parameters:
         - matrix-combinations:
             name: combo
@@ -674,7 +668,6 @@
             name: php
             type: user-defined
             values:
-                - php55
                 - php70
                 - php71
                 - php72
@@ -690,28 +683,6 @@
                     ZUUL_PROJECT=mediawiki/core
                     ZUUL_BRANCH=$ZUUL_BRANCH
                     ZUUL_REF=$ZUUL_BRANCH
-
-# php5.5 is solely for REL1_27 due to EOL in June 2019.
-# We do not need wmf* jobs which are for deployment branches
-- project:
-    name: quibble-jobs-php55
-    php:
-        - php55:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-jessie-php55:0.0.31-1
-    # Postgresql / sqlite do not pass on REL1_27
-    database:
-        - mysql
-    packages-source:
-        - composer
-        - vendor
-    jobs:
-        - mediawiki-quibble-{packages-source}-{database}-{php}-docker
-        - quibble-{packages-source}-{database}-{php}-docker
-        - quibble-{packages-source}-{database}-{php}-noselenium-docker
-        - release-quibble-{packages-source}-{database}-{php}-docker:
-            packages-source:
-                - vendor  # XXX should probably be composer instead
-        # No need for wmf-quibble jobs
 
 - project:
     name: quibble-jobs
