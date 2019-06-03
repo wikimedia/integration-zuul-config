@@ -54,6 +54,20 @@
          logdir: '/log'
 
 - job:
+    name: 'integration-composer-check-php72-docker'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/php72:0.1.3'
+         args: '/src/vendor/bin/composer --version'
+         logdir: '/log'
+
+- job:
     name: integration-config-qa
     node: DebianJessieDocker
     triggers:
