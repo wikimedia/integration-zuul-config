@@ -452,6 +452,17 @@
              -Dsonar.organization=wmftest \
              -Dsonar.host.url=https://sonarcloud.io \
              -X
+         publisher:
+             - archive-log-allow-empty
+             - castor-save-workspace-cache
+             - postbuildscript:
+                   builders:
+                       -   cover-extensions-publish:
+                               src: 'cover'
+                               # Should be equivalent to $EXT_NAME
+                               dest: '$DOC_BASENAME'
+                       -   docker-wipe-dir:
+                               dir: 'cover'
 
 - job-template:
     !!merge : *job_quibble
