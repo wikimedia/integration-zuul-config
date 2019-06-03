@@ -558,6 +558,7 @@ gatedextensions = [
     'Echo',
     'Elastica',
     'EventLogging',
+    'FileImporter',
     'Flow',
     'GeoData',
     'GlobalCssJs',
