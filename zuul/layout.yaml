@@ -626,10 +626,6 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
-  # Pending migration T223348
-  - name: wikimedia-fundraising-crm-composer-php72-docker
-    voting: false
-
   - name: ^mediawiki-core-php70-phan-docker$
     skip-if:
       - project: '^mediawiki/core$'
@@ -2990,11 +2986,10 @@ projects:
 
   - name: wikimedia/fundraising/crm
     test:
-      - wikimedia-fundraising-crm-composer-php56-docker
       - wikimedia-fundraising-crm-composer-php72-docker
       - wikimedia-fundraising-civicrm
     gate-and-submit:
-      - wikimedia-fundraising-crm-composer-php56-docker
+      - wikimedia-fundraising-crm-composer-php72-docker
       - wikimedia-fundraising-civicrm
     experimental:
       - wikimedia-fundraising-civicrm-docker
