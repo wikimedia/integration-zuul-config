@@ -391,7 +391,8 @@
 - job-template:
     !!merge : *job_npm-run-script-node-6-docker
     name: 'selenium-daily-beta-{project}'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.5.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.0'
+    docker_entry_point: '--entrypoint=/run-with-xvfb.sh'
     triggers:
      - timed: '@daily'
     parameters:
@@ -422,7 +423,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        options: '--env LOG_DIR=/log'
+        options: '--env LOG_DIR=/log {obj:docker_entry_point|}'
         image: '{obj:docker_image_var}'
         logdir: '/log'
         args: 'selenium-daily'
