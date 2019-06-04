@@ -421,7 +421,7 @@ phan_dependencies = {
     'ConfirmEdit': ['Math'],
     'ContactPage': ['ConfirmEdit'],
     'ContentTranslation': ['AbuseFilter', 'BetaFeatures', 'Echo',
-                           'EventLogging'],
+                           'EventLogging', 'GlobalPreferences'],
     'Dashiki': ['JsonConfig'],
     'Disambiguator': ['VisualEditor'],
     'Echo': ['CentralAuth', 'EventLogging'],
