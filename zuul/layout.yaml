@@ -764,6 +764,10 @@ jobs:
     skip-if:
       # WebAuthn is designed only for PHP7.2+
       - project: '^mediawiki/extensions/WebAuthn'
+      # BlueSpiceExtendedSearch needs elastica 6.3 wich requires php7.0+
+      - project: '^mediawiki/extensions/BlueSpiceExtendedSearch'
+      # BlueSpiceSocial extensions need elastica 6.3 wich requires php7.0+
+      - project: '^mediawiki/extensions/BlueSpiceSocial*'
 
   - name: lintr-docker
     files:
@@ -4843,7 +4847,7 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceExtendedSearch
     template:
-      - name: extension-broken
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceExtendedStatistics
     template:
