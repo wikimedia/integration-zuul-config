@@ -912,6 +912,8 @@ jobs:
 
   - name: 'mwext-MobileFrontend-npm-run-lint-modules-docker'
     branch: ^(REL.*|master|wmf\/)$
+    # Non-voting, pending fix for this to work in node10 T224997
+    voting: false
 
   - name: 'mwext-npm-doc-publish'
     branch: ^master$
@@ -4343,8 +4345,9 @@ projects:
       - name: extension-seccheck
     test:
       - mwext-MobileFrontend-npm-run-lint-modules-docker
-    gate-and-submit:
-      - mwext-MobileFrontend-npm-run-lint-modules-docker
+    # Non-voting, pending fix for this to work in node10 T224997
+    # gate-and-submit:
+    #  - mwext-MobileFrontend-npm-run-lint-modules-docker T224997
     postmerge:
       - mwext-doxygen-publish
       - mwext-npm-doc-publish
