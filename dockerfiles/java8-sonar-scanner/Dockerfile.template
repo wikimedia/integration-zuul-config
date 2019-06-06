@@ -22,6 +22,7 @@ RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/nod
 
 USER nobody
 WORKDIR /workspace/src
+COPY poll-for-response.sh /usr/local/bin/poll-sonar-for-response
 COPY run.sh /run.sh
 CMD [ "--version" ]
 ENTRYPOINT [ "/run.sh" ]
