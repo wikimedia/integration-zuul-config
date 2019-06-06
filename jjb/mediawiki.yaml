@@ -426,6 +426,68 @@
         - docker-cleanup
 
 - project:
+    name: mwcore-codehealth
+    packages-source:  composer
+    database: mysql
+    jobs:
+      - mwcore-codehealth-{name}:
+         # Used for analyzing gerrit patch sets.
+         name: 'patch'
+         branch: '$ZUUL_CHANGE'
+         sonar_args: |
+             -Dsonar.projectKey=mediawiki-core \
+             -Dsonar.projectName=mediawiki-core \
+             -Dsonar.organization=wmftest \
+             -Dsonar.host.url=https://sonarcloud.io \
+             -Dsonar.branch.target="$ZUUL_BRANCH" \
+             -Dsonar.branch.name={branch} \
+             -X
+      - mwcore-codehealth-{name}:
+         # Used for analyzing the master branch on postmerge.
+         name: 'master-non-voting'
+         branch: '$ZUUL_BRANCH'
+         sonar_args: |
+             -Dsonar.projectKey=mediawiki-core \
+             -Dsonar.projectName=mediawiki-core \
+             -Dsonar.organization=wmftest \
+             -Dsonar.host.url=https://sonarcloud.io \
+             -X
+
+- job-template:
+    !!merge : *job_quibble
+    name: 'mwcore-codehealth-{name}'
+    node: DebianJessieDocker && m4executor
+    concurrent: true
+    branch: '$ZUUL_BRANCH'
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+
+    wrappers:
+     - ansicolor
+     - timeout:
+         timeout: 30
+         fail: true
+     - timestamps
+     - credentials-binding:
+           - text:
+               credential-id: SONAR_API_KEY
+               variable: SONAR_API_KEY
+    builders:
+    - docker-log-dir
+    - docker-src-dir
+    - docker-castor-load
+    - docker-run-with-log-and-workspace-cache:
+        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.5'
+        options: '--volume "$(pwd)"/src:/workspace/src'
+        logdir: '/workspace/log'
+        args: '{sonar_args}'
+    publishers:
+      - docker-cleanup
+
+- project:
     name: mwext-codehealth
     packages-source:  composer
     database: mysql
