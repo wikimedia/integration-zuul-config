@@ -137,37 +137,6 @@
 
 # Phan! (T132636)
 - job:
-    name: 'mediawiki-core-php70-phan-docker'
-    node: DebianJessieDocker && m4executor
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - docker-log-dir
-     - docker-src-dir
-     - docker-cache-dir
-     - docker-castor-load
-     - docker-ci-src-setup-mw
-     - docker-run-with-log-cache-src:
-        options: '--volume "$(pwd)"/src:/mediawiki --entrypoint=/run-core.sh'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.15'
-        args: '-m checkstyle'
-        logdir: '/log'
-
-    publishers:
-     - castor-save-workspace-cache
-     - checkstyle:
-        pattern: 'src/tests/phan/issues/latest'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
-     - docker-cleanup
-
-- job:
     name: 'mediawiki-core-php72-phan-docker'
     node: DebianJessieDocker && m4executor
     concurrent: true
