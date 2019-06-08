@@ -1038,7 +1038,7 @@ class TestZuulScheduler(unittest.TestCase):
             'quibble-donationinterface-REL1_31-php70-docker': False,
 
             'mediawiki-core-jsduck-docker': True,
-            'mediawiki-core-php70-phan-docker': True,
+            'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
@@ -1051,7 +1051,7 @@ class TestZuulScheduler(unittest.TestCase):
         }
         expected_gate = {
             'mediawiki-core-jsduck-docker': True,
-            'mediawiki-core-php70-phan-docker': True,
+            'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php72-docker': True,
             'mediawiki-quibble-vendor-mysql-php71-docker': True,
