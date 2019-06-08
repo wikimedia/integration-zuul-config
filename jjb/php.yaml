@@ -117,37 +117,6 @@
      - zuul
 
 - job:
-    name: 'php70-phan-docker'
-    node: DebianJessieDocker && m4executor
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - docker-log-dir
-     - docker-src-dir
-     - docker-cache-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-        image: docker-registry.wikimedia.org/releng/composer-php72:0.1.4-s1
-        args: '--ansi --working-dir=/src update'
-        logdir: '/log'
-     - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.15'
-        options: '--entrypoint /run-libraries.sh'
-        logdir: '/log'
-    publishers:
-     - checkstyle:
-        pattern: 'log/phan-issues'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
-     - docker-cleanup
-
-- job:
     name: 'php72-phan-docker'
     node: DebianJessieDocker && m4executor
     concurrent: true
