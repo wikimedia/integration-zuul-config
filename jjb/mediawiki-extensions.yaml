@@ -90,43 +90,6 @@
      - docker-cleanup
 
 # Phan! (T153039)
-- job: &job_mwext-php70-phan-docker
-    name: 'mwext-php70-phan-docker'
-    node: DebianJessieDocker && m4executor
-    concurrent: true
-    properties:
-     - build-discarder:
-         days-to-keep: 15
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-log-dir
-     - docker-src-dir
-     - docker-setup-mwext-for-phan
-     - docker-run-with-log-cache-src:
-        options: '--volume "$(pwd)"/src:/mediawiki'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.15'
-        args: '-m checkstyle'
-        logdir: '/log'
-
-    publishers:
-     - checkstyle:
-        pattern: 'log/phan-issues'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
-     - castor-save-workspace-cache
-     - docker-cleanup
-
-- job:
-    name: 'mwskin-php70-phan-docker'
-    !!merge : *job_mwext-php70-phan-docker
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job: &job_mwext-php72-phan-docker
     name: 'mwext-php72-phan-docker'
     node: DebianJessieDocker && m4executor
