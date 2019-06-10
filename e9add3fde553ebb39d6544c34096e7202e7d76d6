@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab8c6a04_645851ab",
+        "filename": "jjb/php.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 34
+      },
+      "writtenOn": "2019-06-10T13:34:43Z",
+      "side": 1,
+      "message": "According to the diff, this job now no longer has \u0027publishers\u0027 set.\n\n\n\n\n$ colordiff -u output/php70-phan-docker output/php72-phan-docker \n--- output/php70-phan-docker\t2019-06-10 14:20:21.000000000 +0100\n+++ output/php72-phan-docker\t2019-06-10 14:20:21.000000000 +0100\n@@ -177,12 +177,78 @@\n-  \u0027docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.15\u0027 \n+  \u0027docker-registry.wikimedia.org/releng/mediawiki-phan:0.2.0\u0027 \n \u003c/command\u003e\n     \u003c/hudson.tasks.Shell\u003e\n   \u003c/builders\u003e\n-  \u003cpublishers/\u003e\n+  \u003cpublishers\u003e\n+    \u003chudson.plugins.checkstyle.CheckStylePublisher plugin\u003d\"checkstyle\"\u003e\n+      \u003chealthy/\u003e .. \n+    \u003c/org.jenkinsci.plugins.postbuildscript.PostBuildScript\u003e\n+  \u003c/publishers\u003e\n   \u003cbuildWrappers\u003e\n     \u003chudson.plugins.build__timeout.BuildTimeoutWrapper\u003e",
+      "range": {
+        "startLine": 120,
+        "startChar": 10,
+        "endLine": 120,
+        "endChar": 29
+      },
+      "revId": "e9add3fde553ebb39d6544c34096e7202e7d76d6",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
