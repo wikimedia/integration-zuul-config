@@ -41,6 +41,8 @@ def set_parameters(item, job, params):
         'mwselenium-quibble',
         'mwext-php70-phan',
         'mwskin-php70-phan',
+        'mwext-php72-phan',
+        'mwskin-php72-phan',
         'mwext-phpunit-coverage',
         'mwext-codehealth',
         'mediawiki-quibble',
