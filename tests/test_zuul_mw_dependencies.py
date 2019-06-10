@@ -135,6 +135,16 @@ class TestMwDependencies(unittest.TestCase):
             set(['skin/Common'])
             )
 
+    def test_no_recursion(self):
+        mapping = {
+            'A': ['B'],
+            'B': ['C'],
+        }
+        self.assertEqual(
+            get_dependencies('A', mapping, recurse=False),
+            set(['B'])
+        )
+
     def test_inject_skin_on_an_extension(self):
         deps = self.fetch_dependencies(
             job_name='mediawiki-quibble-composer-mysql-php70-docker',

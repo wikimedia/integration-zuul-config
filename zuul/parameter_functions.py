@@ -143,6 +143,7 @@ def set_parameters(item, job, params):
 # Values are assumed to be MediaWiki extensions. Skins have to be prefixed with
 # 'skins/'.  The has is used by the set_mw_dependencies() parameter function
 # below.
+# Note! This list is not used by Phan. Scroll down farther for that list.
 dependencies = {
     # Skins are listed first to highlight the skin dependencies
     'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
@@ -415,6 +416,75 @@ dependencies = {
                    'VisualEditor', 'ZeroBanner'],
 }
 
+# Dependencies used in phan jobs.
+# This list is *not* recursively processed.
+phan_dependencies = {
+    'AbuseFilter': ['CheckUser'],
+    'AdvancedSearch': ['BetaFeatures'],
+    'ApiFeatureUsage': ['Elastica'],
+    'ArticlePlaceholder': ['Scribunto', 'Wikibase'],
+    'BounceHandler': ['CentralAuth', 'Echo'],
+    'Campaigns': ['EventLogging', 'MobileFrontend'],
+    'Capiunto': ['Scribunto'],
+    'CentralNotice': ['CentralAuth', 'MobileFrontend', 'Translate', 'cldr'],
+    'CheckUser': ['CentralAuth', 'Renameuser'],
+    'CirrusSearch': ['BetaFeatures', 'Elastica', 'SiteMatrix'],
+    'Citoid': ['Cite', 'VisualEditor'],
+    'CleanChanges': ['cldr'],
+    'CollaborationKit': ['EventLogging', 'PageImages', 'VisualEditor'],
+    'ConfirmEdit': ['Math'],
+    'ContactPage': ['ConfirmEdit'],
+    'ContentTranslation': ['AbuseFilter', 'BetaFeatures', 'Echo',
+                           'EventLogging'],
+    'Dashiki': ['JsonConfig'],
+    'Disambiguator': ['VisualEditor'],
+    'Echo': ['CentralAuth', 'EventLogging'],
+    'FileExporter': ['BetaFeatures'],
+    'FundraisingTranslateWorkflow': ['Translate'],
+    'GettingStarted': ['CentralAuth', 'CirrusSearch', 'MobileFrontend',
+                       'VisualEditor'],
+    'GrowthExperiments': ['EventLogging', 'PageImages', 'PageViewInfo',
+                          'skins/MinervaNeue'],
+    'Kartographer': ['GeoData', 'JsonConfig'],
+    'LoginNotify': ['CentralAuth', 'Echo'],
+    'Math': ['VisualEditor', 'Wikibase'],
+    'MobileApp': ['AbuseFilter'],
+    'MobileFrontend': ['AbuseFilter', 'CentralAuth', 'LiquidThreads',
+                       'PageImages', 'Wikibase', 'XAnalytics'],
+    'Newsletter': ['Echo'],
+    'PageTriage': ['Echo', 'ORES'],
+    'ParserFunctions': ['Scribunto'],
+    'Popups': ['BetaFeatures', 'EventLogging', 'Gadgets'],
+    'QuizGame': ['Renameuser', 'SocialProfile'],
+    'RelatedArticles': ['Disambiguator'],
+    'ReplaceText': ['AdminLinks'],
+    'Score': ['TimedMediaHandler', 'Wikibase'],
+    'Scribunto': ['SyntaxHighlight_GeSHi'],
+    'SecurePoll': ['CentralAuth'],
+    'SocialProfile': ['Echo'],
+    'SpamBlacklist': ['CheckUser', 'EventLogging'],
+    'StopForumSpam': ['AbuseFilter'],
+    'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
+    'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
+    'TorBlock': ['AbuseFilter'],
+    'TranslationNotifications': ['CentralAuth', 'SiteMatrix', 'Translate'],
+    'TwoColConflict': ['BetaFeatures', 'EventLogging', 'WikiEditor'],
+    'UniversalLanguageSelector': ['Babel', 'BetaFeatures', 'MobileFrontend',
+                                  'cldr'],
+    'UploadWizard': ['EventLogging'],
+    'WikiEditor': ['EventLogging', 'WikimediaEvents'],
+    'WikiLove': ['Flow', 'LiquidThreads'],
+    'WikibaseCirrusSearch': ['CirrusSearch', 'Wikibase'],
+    'WikibaseLexemeCirrusSearch': ['CirrusSearch', 'Wikibase',
+                                   'WikibaseCirrusSearch', 'WikibaseLexeme'],
+    'Wikidata.org': ['Wikibase'],
+    'WikidataPageBanner': ['PageImages', 'Wikibase'],
+    'WikimediaBadges': ['Wikibase'],
+    'WikimediaEvents': ['AbuseFilter', 'BetaFeatures', 'CentralAuth',
+                        'EventLogging', 'GrowthExperiments', 'MobileFrontend'],
+    'WikimediaMessages': ['GuidedTour', 'ORES', 'skins/MinervaNeue']
+}
+
 
 def set_mw_dependencies(item, job, params):
     """
@@ -456,7 +526,14 @@ def set_mw_dependencies(item, job, params):
         dep_key = split[-1]
         params['EXT_NAME'] = split[-1]
 
-    deps = get_dependencies(dep_key, dependencies)
+    if '-phan-' in job.name:
+        mapping = phan_dependencies
+        recurse = False
+    else:
+        mapping = dependencies
+        recurse = True
+
+    deps = get_dependencies(dep_key, mapping, recurse)
 
     # Split extensions and skins
     skin_deps = {d for d in deps if d.startswith('skins/')}
@@ -482,13 +559,14 @@ def set_mw_dependencies(item, job, params):
     params['EXT_DEPENDENCIES'] = glue_deps('mediawiki/extensions/', ext_deps)
 
 
-def get_dependencies(key, mapping):
+def get_dependencies(key, mapping, recurse=True):
     """
     Get the full set of dependencies required by an extension
 
     :param key: extension base name or skin as 'skin/BASENAME'
     :param mapping: mapping of repositories to their dependencies
-    :return: set of dependencies, recursively processed
+    :param recurse: Whether to recursively process dependencies
+    :return: set of dependencies
     """
     resolved = set()
 
@@ -500,7 +578,7 @@ def get_dependencies(key, mapping):
             for dep in mapping[ext]:
                 deps.add(dep)
 
-                if dep not in resolved:
+                if recurse and dep not in resolved:
                     deps = deps.union(resolve_deps(dep))
 
         return deps
