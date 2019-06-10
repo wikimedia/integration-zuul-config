@@ -426,6 +426,7 @@ phan_dependencies = {
     'FundraisingTranslateWorkflow': ['Translate'],
     'GettingStarted': ['CentralAuth', 'CirrusSearch', 'MobileFrontend',
                        'VisualEditor'],
+    'GeoData': ['CirrusSearch', 'Elastica'],
     'GrowthExperiments': ['EventLogging', 'PageImages', 'PageViewInfo',
                           'skins/MinervaNeue'],
     'Kartographer': ['GeoData', 'JsonConfig'],
