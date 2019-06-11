@@ -180,16 +180,6 @@ class TestZuulScheduler(unittest.TestCase):
             'Project %s pipeline %s must have either a composer-* job'
             % (name, pipeline))
 
-    def assertProjectHasPhp55Test(self, name, definition, pipeline):
-        if pipeline != 'php5' or pipeline != 'gate-and-submit':
-            return
-        for job in definition:
-            if 'testextension-hhvm' in job:
-                self.assertTrue(True)
-                return
-        self.assertTrue(False, 'Project %s pipeline %s must have a '
-                        'php55 test job' % (name, pipeline))
-
     def assertProjectHasSkinTests(self, name, definition, pipeline):
         if pipeline != 'test':
             return
@@ -262,7 +252,6 @@ class TestZuulScheduler(unittest.TestCase):
             r'mediawiki/extensions/\w+$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
-                self.assertProjectHasPhp55Test,
                 self.assertProjectHasExperimentalPhan,
                 self.assertProjectHasI18nChecker,
             ],
