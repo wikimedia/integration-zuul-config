@@ -89,6 +89,8 @@
                 wikimedia/fundraising/crm/drupal
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/civicrm:0.1.0
+            # $WORKSPACE is leaked from the host environment
+            options: "--env WORKSPACE=''"
             logdir: /log
     publishers:
         - xunit:
