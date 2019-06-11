@@ -527,7 +527,7 @@
           sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
         fi
     - docker-run-with-log-and-workspace-cache:
-        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.4'
+        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.5'
         options: '--volume "$(pwd)"/src:/workspace/src'
         logdir: '/workspace/log'
         args: '{sonar_args}'
