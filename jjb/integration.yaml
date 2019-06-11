@@ -40,20 +40,6 @@
 
 # Super basic sanity check for integration/composer repo
 - job:
-    name: 'integration-composer-check-php55-docker'
-    node: DebianJessieDocker
-    concurrent: true
-    triggers:
-     - zuul
-    builders:
-     - docker-src-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/php55:0.1.2'
-         args: '/src/vendor/bin/composer --version'
-         logdir: '/log'
-
-- job:
     name: 'integration-composer-check-php72-docker'
     node: DebianJessieDocker
     concurrent: true
