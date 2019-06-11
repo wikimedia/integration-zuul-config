@@ -639,12 +639,6 @@ jobs:
   # MediaWiki: Quibble and PHPUnit stuff
   # -------
 
-  # Run PHP 5.5 tests only on MW < 1.31
-  - name: ^(mwext|mwskin|mwgate).*php55.*$
-    skip-if:
-      - project: '^mediawiki/.*'
-        branch: ^(?!(REL1_(2[789]|30)).*)
-
   # Fallback settings for all Quibble jobs
   - name: ^.*quibble-.*-docker$
     skip-if:
@@ -1250,35 +1244,16 @@ project-templates:
   - name: composer-test
     test:
       - composer-php72-docker
-      - composer-php55-docker
       - composer-hhvm-docker
     gate-and-submit:
       - composer-php72-docker
       - composer-php70-docker
-      - composer-php55-docker
       - composer-hhvm-docker
     gate-and-submit-swat:
       # FIXME wmf/ branches only care about hhvm and php7.2
       - composer-php72-docker
       - composer-php70-docker
-      - composer-php55-docker
       - composer-hhvm-docker
-
-  - name: composer-test-php55-package
-    test:
-      - composer-package-hhvm-docker
-      - composer-package-php55-docker
-      - composer-package-php70-docker
-      - composer-package-php71-docker
-      - composer-package-php72-docker
-      - composer-package-php73-docker
-    gate-and-submit:
-      - composer-package-hhvm-docker
-      - composer-package-php55-docker
-      - composer-package-php70-docker
-      - composer-package-php71-docker
-      - composer-package-php72-docker
-      - composer-package-php73-docker
 
   - name: composer-test-package
     test:
@@ -1583,12 +1558,10 @@ projects:
       - name: extension-gate
     test:
       - mwgate-composer-hhvm-docker
-      - mwgate-composer-php55-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
     gate-and-submit:
       - mwgate-composer-hhvm-docker
-      - mwgate-composer-php55-docker
 
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
@@ -1865,11 +1838,9 @@ projects:
     template:
       - name: node10-docker
     test:
-      - composer-php55-docker
       - composer-php72-docker
       - labs-tools-heritage-tox-docker
     gate-and-submit:
-      - composer-php55-docker
       - composer-php72-docker
       - labs-tools-heritage-tox-docker
     gate-and-submit-l10n:
@@ -2032,10 +2003,8 @@ projects:
     template:
      - name: node10-docker
     test:
-     - composer-php55-docker
      - composer-php56-docker
     gate-and-submit:
-     - composer-php55-docker
      - composer-php56-docker
     postmerge:
      - integration-docroot-deploy
@@ -4855,11 +4824,9 @@ projects:
       - name: extension-broken
       - name: mwgate-npm
     test:
-      - mwgate-composer-php55-docker
       - mwgate-composer-php72-docker
       - mwgate-composer-hhvm-docker
     gate-and-submit:
-      - mwgate-composer-php55-docker
       - mwgate-composer-php72-docker
       - mwgate-composer-hhvm-docker
     experimental:
@@ -7014,7 +6981,7 @@ projects:
 
   - name: mediawiki/services/jobrunner
     template:
-      - name: composer-test-php55-package
+      - name: composer-test-package
 
   - name: mediawiki/services/kask
     template:
@@ -7770,7 +7737,6 @@ projects:
     test:
       - php-compile-hhvm-jessie-docker
       - php-compile-hhvm-stretch-docker
-      - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
@@ -7778,7 +7744,6 @@ projects:
     gate-and-submit:
       - php-compile-hhvm-jessie-docker
       - php-compile-hhvm-stretch-docker
-      - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
@@ -7790,7 +7755,6 @@ projects:
     test:
       - php-compile-hhvm-jessie-docker
       - php-compile-hhvm-stretch-docker
-      - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
@@ -7798,7 +7762,6 @@ projects:
     gate-and-submit:
       - php-compile-hhvm-jessie-docker
       - php-compile-hhvm-stretch-docker
-      - php-compile-php55-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
@@ -8057,7 +8020,7 @@ projects:
 
   - name: wikimedia/slimapp
     template:
-     - name: composer-test-php55-package
+     - name: composer-test-package
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
