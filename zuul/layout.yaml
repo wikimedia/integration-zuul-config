@@ -858,6 +858,8 @@ jobs:
 
   - name: wikimedia-fundraising-civicrm
     branch: (?!.*deployment.*|^contrib$)
+  - name: wikimedia-fundraising-civicrm-docker
+    branch: (?!.*deployment.*|^contrib$)
 
   # Still being tested
   #
@@ -3056,24 +3058,32 @@ projects:
     gate-and-submit:
       - wikimedia-fundraising-crm-composer-php56-docker
       - wikimedia-fundraising-civicrm
+    experimental:
+      - wikimedia-fundraising-civicrm-docker
 
   - name: wikimedia/fundraising/crm/civicrm
     test:
       - wikimedia-fundraising-civicrm
     gate-and-submit:
       - wikimedia-fundraising-civicrm
+    experimental:
+      - wikimedia-fundraising-civicrm-docker
 
   - name: wikimedia/fundraising/crm/drupal
     test:
       - wikimedia-fundraising-civicrm
     gate-and-submit:
       - wikimedia-fundraising-civicrm
+    experimental:
+      - wikimedia-fundraising-civicrm-docker
 
   - name: wikimedia/fundraising/crm/vendor
     test:
       - wikimedia-fundraising-civicrm
     gate-and-submit:
       - wikimedia-fundraising-civicrm
+    experimental:
+      - wikimedia-fundraising-civicrm-docker
 
   - name: wikimedia/fundraising/slander
     template:

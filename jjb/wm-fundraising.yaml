@@ -72,6 +72,33 @@
              pattern: 'log/junit-phpunit.xml'
       - archive-log-dir
 
+- job:
+    name: wikimedia-fundraising-civicrm-docker
+    node: DebianJessieDocker && m4executor
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-log-dir
+        - docker-src-dir
+        - docker-zuul-cloner:
+            projects: >
+                wikimedia/fundraising/crm
+                wikimedia/fundraising/crm/civicrm-buildkit
+                wikimedia/fundraising/crm/civicrm
+                wikimedia/fundraising/crm/drupal
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/civicrm:0.1.0
+            logdir: /log
+    publishers:
+        - xunit:
+           types:
+            - phpunit:
+               pattern: 'log/junit-phpunit.xml'
+        - archive-log-allow-empty
+        - docker-cleanup
+
+
 - project:
     name: donationinterface-fundraising-branches-php70
     branch:
