@@ -460,6 +460,7 @@ phan_dependencies = {
     'WikiEditor': ['EventLogging', 'WikimediaEvents'],
     'WikiLove': ['Flow', 'LiquidThreads'],
     'WikibaseCirrusSearch': ['CirrusSearch', 'Wikibase'],
+    'WikibaseLexeme': ['Wikibase'],
     'WikibaseLexemeCirrusSearch': ['CirrusSearch', 'Wikibase',
                                    'WikibaseCirrusSearch', 'WikibaseLexeme'],
     'Wikidata.org': ['Wikibase'],
