@@ -945,6 +945,11 @@ jobs:
     voting: false
     # FIXME remove noop gate-and-submit when making it voting
 
+  # heritage is untested in PHP 7x, so making non-voting for now -- JDF 2019-06-07
+  - name: composer-php72-docker
+    project: '^labs/tools/heritage$'
+    voting: false
+
 project-templates:
 
   # For extensions that have broken tests or magic behaviors that CI does not support.
@@ -1895,9 +1900,11 @@ projects:
       - name: node10-docker
     test:
       - composer-php55-docker
+      - composer-php72-docker
       - labs-tools-heritage-tox-docker
     gate-and-submit:
       - composer-php55-docker
+      - composer-php72-docker
       - labs-tools-heritage-tox-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
