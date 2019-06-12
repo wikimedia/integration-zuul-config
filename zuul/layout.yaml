@@ -7035,10 +7035,9 @@ projects:
       - name: tox-docker
 
   - name : mediawiki/services/recommendation-api
-    test:
-      - recommendation-api-npm-node-6-docker
-    gate-and-submit:
-      - recommendation-api-npm-node-6-docker
+    template:
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
 
   - name : mediawiki/services/recommendation-api/deploy
     test:
