@@ -423,6 +423,7 @@ phan_dependencies = {
     'Dashiki': ['JsonConfig'],
     'Disambiguator': ['VisualEditor'],
     'Echo': ['CentralAuth', 'EventLogging'],
+    'EventBus': ['CentralNotice'],
     'FileExporter': ['BetaFeatures'],
     'FundraisingTranslateWorkflow': ['Translate'],
     'GettingStarted': ['CentralAuth', 'CirrusSearch', 'MobileFrontend',
