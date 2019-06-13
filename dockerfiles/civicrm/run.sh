@@ -6,7 +6,7 @@ set -o pipefail
 LOG_DIR=${LOG_DIR:-/log}
 
 if [ ! -d /src/wikimedia/fundraising/crm ]; then
-    echo "Civi CRM not found at /src/wikimedia/fundraising/crm"
+    echo "CiviCRM not found at /src/wikimedia/fundraising/crm"
     echo "You must first clone the git repositories and volume mount"
     echo "them to /src."
     exit 1
