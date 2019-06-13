@@ -834,8 +834,6 @@ jobs:
   - name: ^.*-coverage-(docker-)?publish$
     branch: master
 
-  - name: wikimedia-fundraising-civicrm
-    branch: (?!.*deployment.*|^contrib$)
   - name: wikimedia-fundraising-civicrm-docker
     branch: (?!.*deployment.*|^contrib$)
 
@@ -2987,35 +2985,28 @@ projects:
     test:
       - wikimedia-fundraising-crm-composer-php56-docker
       - wikimedia-fundraising-crm-composer-php72-docker
-      - wikimedia-fundraising-civicrm
+      - wikimedia-fundraising-civicrm-docker
     gate-and-submit:
       - wikimedia-fundraising-crm-composer-php56-docker
-      - wikimedia-fundraising-civicrm
-    experimental:
       - wikimedia-fundraising-civicrm-docker
+    experimental:
 
   - name: wikimedia/fundraising/crm/civicrm
     test:
-      - wikimedia-fundraising-civicrm
+      - wikimedia-fundraising-civicrm-docker
     gate-and-submit:
-      - wikimedia-fundraising-civicrm
-    experimental:
       - wikimedia-fundraising-civicrm-docker
 
   - name: wikimedia/fundraising/crm/drupal
     test:
-      - wikimedia-fundraising-civicrm
+      - wikimedia-fundraising-civicrm-docker
     gate-and-submit:
-      - wikimedia-fundraising-civicrm
-    experimental:
       - wikimedia-fundraising-civicrm-docker
 
   - name: wikimedia/fundraising/crm/vendor
     test:
-      - wikimedia-fundraising-civicrm
+      - wikimedia-fundraising-civicrm-docker
     gate-and-submit:
-      - wikimedia-fundraising-civicrm
-    experimental:
       - wikimedia-fundraising-civicrm-docker
 
   - name: wikimedia/fundraising/slander
