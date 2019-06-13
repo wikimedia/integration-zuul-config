@@ -663,23 +663,27 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^wmf/
 
+  # Skip MediaWiki tests for PHP 7.0 except for REL1_31, REL1_32, and REL1_33.
+  - name: ^(wmf|mediawiki).*quibble.*php71.*
+    branch: ^REL1_3[123]$
+  - name: ^release-quibble-vendor-mysql-php71-docker$
+    branch: ^REL1_3[123]$
+
   - name: ^release-quibble-
     branch: ^REL
 
-  # Skip MediaWiki tests for PHP 7.1 on wmf/, fundraising/, and MW < 1.32.
-  # Effectively only on master and REL1_32+
+  # Skip MediaWiki tests for PHP 7.1 except for REL1_32 and REL1_33.
   - name: ^(wmf|mediawiki).*quibble.*php71.*
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+    branch: ^REL1_3[23]$
   - name: ^release-quibble-vendor-mysql-php71-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
+    branch: ^REL1_3[23]$
 
-  # Skip MediaWiki tests related to PHP 7.2 support on fundraising/, and MW < 1.32.
-  # Effectively only on master, REL1_32+, and wmf/.
+  # Skip MediaWiki tests for PHP 7.2 except for REL1_33 (later, REL1_33+) and master.
   - name: ^(wmf|mediawiki).*quibble.*php72.*
-    branch: (?!(fundraising)/.*|REL1_(2[789]|3[01]))
+    branch: ^(REL1_33|master)$
   # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
   - name: ^release-quibble-vendor-mysql-php72-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
+    branch: ^REL1_33$
 
   - name: ^.*quibble.*sqlite.*php72.*$
     skip-if:
