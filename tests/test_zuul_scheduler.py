@@ -1059,7 +1059,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-quibble-vendor-sqlite-php72-docker': True,
-            'mediawiki-quibble-vendor-postgres-php72-docker': True,
+            'mediawiki-quibble-vendor-postgres-php72-docker': False,
             'release-quibble-vendor-mysql-hhvm-docker': False,
             'release-quibble-vendor-mysql-php70-docker': False,
             'release-quibble-vendor-mysql-php71-docker': False,
@@ -1186,7 +1186,7 @@ class TestZuulScheduler(unittest.TestCase):
     def test_postgres_sqlite_job(self):
         repo = 'mediawiki/core'
         job = self.getJob(
-            repo, 'gate-and-submit',
+            repo, 'experimental',
             'mediawiki-quibble-vendor-postgres-php72-docker')
 
         change = zuul.model.Change(repo)
