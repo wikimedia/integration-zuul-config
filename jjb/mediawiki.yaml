@@ -460,6 +460,7 @@
       - mwext-codehealth-{name}:
          # Used for analyzing gerrit patch sets.
          name: 'patch'
+         concurrent: true
          branch: '$ZUUL_CHANGE'
          sonar_args: |
              -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
@@ -474,6 +475,7 @@
       - mwext-codehealth-{name}:
          # Used for analyzing the master branch on postmerge.
          name: 'master-non-voting'
+         concurrent: false
          branch: '$ZUUL_BRANCH'
          sonar_args: |
              -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
@@ -500,7 +502,7 @@
     !!merge : *job_quibble
     name: 'mwext-codehealth-{name}'
     node: DebianJessieDocker && m4executor
-    concurrent: true
+    concurrent: '{concurrent}'
     branch: '$ZUUL_BRANCH'
     properties:
      - build-discarder:
