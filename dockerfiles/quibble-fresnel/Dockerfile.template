@@ -2,28 +2,6 @@ FROM {{ "quibble-stretch-php72" | image_tag }}
 
 USER root
 
-#############################
-#  Install Node.js and npm  #
-#############################
-
-# Based on 'node10' and 'node10-test'
-# * Copying result of apt_install (for nodejs) is hard.
-# * Add 'build-essential' and 'python' for node-gyp.
-# * Put npm in /usr/local instead of /usr because
-#   quibble-stretch already has an outdated npm at /usr/local.
-# * firefox-esr, because funnily enough, without firefox-esr,
-#   chromium --headless is broken. There are numerous libs that
-#   chromium only needs for headless and aren't specified in Debian
-#   as deps. The full list is documented at:
-#   https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/troubleshooting.md
-#   But, so far we've always installed firefox-esr alongside (e.g. npm-browser-test
-#   and node10-test-browser), so keep doing that for now.
-RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/node10" > /etc/apt/sources.list.d/stretch-node10.list \
-    && {{ "nodejs python build-essential firefox-esr" | apt_install }} \
-    && git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/npm.git /srv/npm \
-    && rm -rf /srv/npm/.git \
-    && ln -sf /srv/npm/bin/npm-cli.js /usr/local/bin/npm
-
 #
 # Install Fresnel
 #
