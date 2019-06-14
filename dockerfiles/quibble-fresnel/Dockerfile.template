@@ -1,4 +1,4 @@
-FROM {{ "quibble-stretch" | image_tag }}
+FROM {{ "quibble-stretch-php72" | image_tag }}
 
 USER root
 
@@ -23,29 +23,6 @@ RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/nod
     && git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/npm.git /srv/npm \
     && rm -rf /srv/npm/.git \
     && ln -sf /srv/npm/bin/npm-cli.js /usr/local/bin/npm
-
-#############################
-#  Debian packages we need  #
-#############################
-{% set mediawiki_deps|replace('\n', ' ') -%}
-php-apcu
-php-bcmath
-php-cli
-php-curl
-php-gd
-php-gmp
-php-intl
-php-ldap
-php-mbstring
-php-mysql
-php-pgsql
-php-sqlite3
-php-tidy
-php-xml
-php-zip
-{%- endset -%}
-
-RUN {{ mediawiki_deps | apt_install }}
 
 #
 # Install Fresnel
