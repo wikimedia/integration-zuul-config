@@ -34,7 +34,7 @@ function relay_signals() {
 # Some tests might fail, we still want to be able to publish the coverage
 # report for those that passed.
 set +e
-php7.0 -d zend_extension=xdebug.so \
+php -d zend_extension=xdebug.so \
     "$MW_INSTALL_PATH"/tests/phpunit/phpunit.php \
     --testsuite extensions \
     --coverage-clover "$LOG_DIR"/clover.xml \

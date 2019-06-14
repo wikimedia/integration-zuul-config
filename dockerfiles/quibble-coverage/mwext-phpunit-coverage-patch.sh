@@ -23,5 +23,5 @@ cd "$MW_INSTALL_PATH/extensions/$EXT_NAME"
 phpunit-suite-edit "$MW_INSTALL_PATH/tests/phpunit/suite.xml" --cover-extension "$EXT_NAME"
 
 exec phpunit-patch-coverage check \
-    --command "php7.0 -d zend_extension=xdebug.so \"\$MW_INSTALL_PATH\"/tests/phpunit/phpunit.php" \
+    --command "php -d zend_extension=xdebug.so \"\$MW_INSTALL_PATH\"/tests/phpunit/phpunit.php" \
     --html "$LOG_DIR"/coverage.html
