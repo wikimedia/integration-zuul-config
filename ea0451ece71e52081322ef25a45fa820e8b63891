@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dd8354a7_1412b8d9",
+        "filename": "zuul/layout.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-06-14T09:44:18Z",
+      "side": 1,
+      "message": "The skip-if statements are a mess since they are not merged when there are multiple matches. The last ones override the previous match.\n\nSo we have:\n\n \u003cJob mediawiki-quibble-vendor-mysql-hhvm-docker\u003e\n - {MatchAny:{MatchAll:{ProjectMatcher:^mediawiki/core$},{BranchMatcher:^fundraising/REL1_31$}}} \n + {MatchAny:{MatchAll:{ProjectMatcher:^mediawiki/extensions/WebAuthn}}}\n\nAlso those \u0027mediawiki-quibble.*\u0027 jobs are just for mediawiki/core.  Instead the skip-if should be applied to the other quibble jobs such as quibble-vendor-mysql-hhvm-docker or release.*hhvm-docker\n\n\nIn other terms, it is a bit more complicated :-\\",
+      "revId": "ea0451ece71e52081322ef25a45fa820e8b63891",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
