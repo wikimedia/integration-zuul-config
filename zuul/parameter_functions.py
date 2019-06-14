@@ -92,7 +92,7 @@ def set_parameters(item, job, params):
     if job.name.startswith('wmf-quibble-'):
         set_gated_extensions(item, job, params)
 
-    if job.name.endswith('-publish'):
+    if job.name.endswith('-publish') or 'codehealth' in job.name:
         set_doc_variables(item, job, params)
 
     # Prevent puppeteer from downloading Chromium, we use the Debian package
