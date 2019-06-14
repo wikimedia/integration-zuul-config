@@ -3,6 +3,12 @@ FROM {{ "quibble-stretch-php72" | image_tag }}
 USER root
 
 #
+#  Install firefox-esr to make chromium --headless work  #
+#
+
+RUN {{ "firefox-esr" | apt_install }}
+
+#
 # Install Fresnel
 #
 RUN mkdir -p /opt/npm-tmp /opt/fresnel \
