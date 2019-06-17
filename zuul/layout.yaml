@@ -1308,12 +1308,6 @@ project-templates:
     gate-and-submit:
       - mwgate-rake-docker
 
-  - name: puppet-module
-    test:
-      - puppet-{name}-rake-docker
-    gate-and-submit:
-      - puppet-{name}-rake-docker
-
   - name: tox-docker
     test:
      - tox-docker
@@ -2662,50 +2656,6 @@ projects:
       - puppet-wmf-styleguide-rake-docker
     gate-and-submit:
       - puppet-wmf-styleguide-rake-docker
-
-  - name: operations/puppet/cdh
-    template:
-      - name: puppet-module
-
-  - name: operations/puppet/cdh4
-    template:
-      - name: puppet-module
-
-  - name: operations/puppet/jmxtrans
-    template:
-      - name: archived
-
-  - name: operations/puppet/kafka
-    template:
-      - name: puppet-module
-
-  - name: operations/puppet/kafkatee
-    template:
-      - name: archived
-
-  - name: operations/puppet/mariadb
-    template:
-      - name: puppet-module
-
-  - name: operations/puppet/mesos
-    template:
-      - name: archived
-
-  - name: operations/puppet/nginx
-    template:
-      - name: puppet-module
-
-  - name: operations/puppet/varnishkafka
-    template:
-      - name: archived
-
-  - name: operations/puppet/wikimetrics
-    template:
-      - name: puppet-module
-
-  - name: operations/puppet/zookeeper
-    template:
-      - name: puppet-module
 
   # Repo of misc softwares
   # Voting V+2 so ops dont idle waiting for CI to report.
