@@ -34,11 +34,15 @@ import tempfile
 import re
 from typing import Any, Dict, List, Optional
 
+from pprint import pprint
+
 import jenkins_jobs.builder
 from jenkins_jobs.formatter import deep_format
 import jenkins_jobs.formatter
 from jenkins_jobs.parser import matches
 import jenkins_jobs.parser
+from jenkins_jobs.config import JJBConfig
+from jenkins_jobs.registry import ModuleRegistry
 import yaml
 
 JOB_MATCHERS = {}  # type: Dict[str, Dict[str, Dict]]
@@ -288,7 +292,7 @@ class IndentedDumper(IndentedEmitter, yaml.serializer.Serializer,
                  canonical=None, indent=None, width=None,
                  allow_unicode=None, line_break=None,
                  encoding=None, explicit_start=None, explicit_end=None,
-                 version=None, tags=None):
+                 version=None, tags=None, sort_keys=True):
         IndentedEmitter.__init__(
             self, stream, canonical=canonical,
             indent=indent, width=width,
@@ -391,7 +395,7 @@ def expandYamlForTemplateJob(self, project, template, jobs_glob=None):
 
     for values in itertools.product(*dimensions):
         params = copy.deepcopy(project)
-        params = self.applyDefaults(params, template)
+        params = self._applyDefaults(params, template)
 
         expanded_values = {}
         for (k, v) in values:
@@ -409,12 +413,14 @@ def expandYamlForTemplateJob(self, project, template, jobs_glob=None):
             log.debug('Excluding combination %s', str(params))
             continue
 
-        allow_empty_variables = self.config \
-            and self.config.has_section('job_builder') \
-            and self.config.has_option(
-                'job_builder', 'allow_empty_variables') \
-            and self.config.getboolean(
-                'job_builder', 'allow_empty_variables')
+        # wmf: we dont require a jenkins jobs config ini file
+        #allow_empty_variables = self.config \
+        #    and self.config.has_section('job_builder') \
+        #    and self.config.has_option(
+        #        'job_builder', 'allow_empty_variables') \
+        #    and self.config.getboolean(
+        #        'job_builder', 'allow_empty_variables')
+        allow_empty_variables = False
 
         for key in template:
             if key not in params:
@@ -434,18 +440,18 @@ def expandYamlForTemplateJob(self, project, template, jobs_glob=None):
         if jobs_glob and not matches(job_name, jobs_glob):
             continue
 
-        self.formatDescription(expanded)
+        self._formatDescription(expanded)
         expanded['orig_template'] = orig_template
         expanded['template_name'] = template_name
         self.jobs.append(expanded)
         JOBS_BY_ORIG_TEMPLATE[templated_job_name] = expanded
 
 
-jenkins_jobs.parser.YamlParser.expandYamlForTemplateJob = \
+jenkins_jobs.parser.YamlParser._expandYamlForTemplateJob = \
     expandYamlForTemplateJob
 
 
-class JJB(jenkins_jobs.builder.Builder):
+class JJB(jenkins_jobs.builder.JenkinsManager):
     def __init__(self):
         self.global_config = None
         self._plugins_list = []
@@ -587,10 +593,14 @@ class Job:
                     if isinstance(build_timeout, dict):
                         timeout = build_timeout.get('timeout')
                         if timeout is not None:
-                            timeout = int(timeout) * 60
-                            # NOTE: This should be read from tenant config
-                            if timeout > 10800:
-                                timeout = 10800
+                            try:
+                                timeout = int(timeout) * 60
+                                # NOTE: This should be read from tenant config
+                                if timeout > 10800:
+                                    timeout = 10800
+                            except ValueError:
+                                # BADLY pass $BUILD_TIMEOUT parameter :-\
+                                pass
 
         return timeout
 
@@ -846,8 +856,8 @@ class Job:
         if not os.path.exists(playbook_dir):
             os.makedirs(playbook_dir)
 
-        run_playbook = os.path.join(self.job_path, 'run.yaml')
-        post_playbook = os.path.join(self.job_path, 'post.yaml')
+        run_playbook = os.path.join(playbook_dir, 'run.yaml')
+        post_playbook = os.path.join(playbook_dir, 'post.yaml')
 
         tasks = []
         workspace_task = collections.OrderedDict()
@@ -1167,12 +1177,16 @@ class ZuulMigrate:
 
     def loadJobs(self):
         self.log.debug("Loading jobs")
-        builder = JJB()
-        builder.load_files([self.job_config])
-        builder.parser.expandYaml()
+        #builder = JJB()
+        #builder.load_files([self.job_config])
+        #builder.parser.expandYaml()
+        parser = jenkins_jobs.parser.YamlParser(JJBConfig())
+        parser.load_files([self.job_config])
+        parser.expandYaml(ModuleRegistry(JJBConfig(),[]))
+
         unseen = set(self.jobs.keys())
-        for job in builder.parser.jobs:
-            builder.expandMacros(job)
+        for job in parser.jobs:
+            #builder.expandMacros(job)
             self.jobs[job['name']] = job
             unseen.discard(job['name'])
         for name in unseen:
@@ -1292,6 +1306,10 @@ class ZuulMigrate:
     def makeNewJobs(self, old_job, parent: Job=None):
         self.log.debug("makeNewJobs(%s)", old_job)
         if isinstance(old_job, str):
+
+            if old_job == 'noop':
+                return []
+
             remove_gate = True
             if old_job.startswith('gate-'):
                 # Check to see if gate- and bare versions exist
