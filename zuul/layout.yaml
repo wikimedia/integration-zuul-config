@@ -665,7 +665,7 @@ jobs:
   # Effectively only on master and REL1_32+
   - name: ^(wmf|mediawiki).*quibble.*php71.*
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
-  - name: ^release-quibble-vendor-mysql-php71-docker$
+  - name: ^release-quibble-composer-mysql-php71-docker$
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
 
   # Skip MediaWiki tests related to PHP 7.2 support on fundraising/, and MW < 1.32.
@@ -673,7 +673,7 @@ jobs:
   - name: ^(wmf|mediawiki).*quibble.*php72.*
     branch: (?!(fundraising)/.*|REL1_(2[789]|3[01]))
   # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
-  - name: ^release-quibble-vendor-mysql-php72-docker$
+  - name: ^release-quibble-composer-mysql-php72-docker$
     branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
 
   - name: ^.*quibble.*sqlite.*php72.*$
@@ -1085,7 +1085,7 @@ project-templates:
   - name: extension-gate
     test:
       # For REL branches:
-      - release-quibble-vendor-mysql-hhvm-docker
+      - release-quibble-composer-mysql-hhvm-docker
       # For master and wmf branches
       - wmf-quibble-vendor-mysql-hhvm-docker
       - wmf-quibble-core-vendor-mysql-hhvm-docker
@@ -1105,10 +1105,10 @@ project-templates:
       - wmf-quibble-vendor-mysql-php72-docker
       - wmf-quibble-core-vendor-mysql-php72-docker
       # Only triggered on REL branches:
-      - release-quibble-vendor-mysql-hhvm-docker
-      - release-quibble-vendor-mysql-php72-docker
-      - release-quibble-vendor-mysql-php71-docker
-      - release-quibble-vendor-mysql-php70-docker
+      - release-quibble-composer-mysql-hhvm-docker
+      - release-quibble-composer-mysql-php72-docker
+      - release-quibble-composer-mysql-php71-docker
+      - release-quibble-composer-mysql-php70-docker
     gate-and-submit-swat:
       - mwgate-node10-docker
       # Only triggered on master and wmf/ branches:
@@ -1121,7 +1121,7 @@ project-templates:
     experimental:
       - wmf-quibble-vendor-mysql-php73-docker
       - wmf-quibble-core-vendor-mysql-php73-docker
-      - release-quibble-vendor-mysql-php73-docker
+      - release-quibble-composer-mysql-php73-docker
       - mwext-php72-phan-docker
       - mwext-php70-phan-seccheck-docker
 
