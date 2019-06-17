@@ -1,0 +1,19 @@
+- hosts: all
+  name: Autoconverted job legacy-integration-docroot-deploy from old job integration-docroot-deploy
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          set -e
+          cd /srv/
+          git remote update
+          git checkout $ZUUL_COMMIT
+          echo "`date -R`> $ZUUL_COMMIT" >> /srv/jenkins-autodeploy
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

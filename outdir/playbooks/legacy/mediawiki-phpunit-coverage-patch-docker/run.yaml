@@ -1,0 +1,9 @@
+- hosts: all
+  name: Autoconverted job legacy-mediawiki-phpunit-coverage-patch-docker from old
+    job mediawiki-phpunit-coverage-patch-docker
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory

@@ -1,0 +1,9 @@
+- hosts: all
+  name: Autoconverted job legacy-discovery-parent-pom-maven-java8-docker-site-publish
+    from old job discovery-parent-pom-maven-java8-docker-site-publish
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory

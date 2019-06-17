@@ -1,0 +1,18 @@
+- hosts: all
+  name: Autoconverted job legacy-operations-puppet-catalog-compiler-test from old
+    job operations-puppet-catalog-compiler-test
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          PATCH=$(curl "https://gerrit.wikimedia.org/r/changes/${ZUUL_CHANGE}/revisions/current/patch");
+          NODES=$(echo $PATCH | base64 -d | grep 'Hosts: ' | sed 's/Hosts: //g' | tr '\n' ', ');
+          echo $NODES;
+          NUM_THREADS=2 MODE="change" CHANGE="${ZUUL_CHANGE}" NODES="${NODES}" puppet-compiler
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

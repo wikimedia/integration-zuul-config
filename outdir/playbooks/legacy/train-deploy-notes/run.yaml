@@ -1,0 +1,25 @@
+- hosts: all
+  name: Autoconverted job legacy-train-deploy-notes from old job train-deploy-notes
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          set -euxo pipefail
+
+          if [[ "$ZUUL_OLDREV" != "0000000000000000000000000000000000000000" ]]; then
+            echo "Job is only for new refs, not ref updates..."
+            exit 1
+          fi
+
+          if [[ ! $ZUUL_REF =~ "refs/heads/wmf/1." ]]; then
+            echo "Job is not for this branch..."
+            exit 1
+          fi
+        executable: /usr/bin/env
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

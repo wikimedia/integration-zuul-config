@@ -1,0 +1,16 @@
+- hosts: all
+  name: Autoconverted job legacy-mwext-codehealth-patch from old job mwext-codehealth-patch
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          if [ -f src/extensions/"$EXT_NAME"/coverage/lcov.info ]; then
+            sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
+          fi
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

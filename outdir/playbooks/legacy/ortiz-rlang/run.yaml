@@ -1,0 +1,24 @@
+- hosts: all
+  name: Autoconverted job legacy-ortiz-rlang from old job ortiz-rlang
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          R_LIBS_USER="$(pwd)/Rpackages"
+          export R_LIBS_USER
+          mkdir -p "$R_LIBS_USER"
+
+          R --vanilla --quiet CMD build --no-resave-data --no-manual src
+          PACKAGES=(./*.tar.gz)
+          PACKAGE="${PACKAGES[0]}"
+
+          R --vanilla --quiet -e 'options(repos="http://cran.us.r-project.org"); install.packages("devtools")'
+          R --vanilla --quiet -e 'options(repos="http://cran.us.r-project.org"); devtools::install_deps("src", dependencies = TRUE )'
+          R --vanilla --quiet CMD check --timings --no-manual "$PACKAGE"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

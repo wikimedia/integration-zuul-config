@@ -1,0 +1,9 @@
+- hosts: all
+  name: Autoconverted job legacy-analytics-wmde-toolkit-analyzer-maven-java8-docker
+    from old job analytics-wmde-toolkit-analyzer-maven-java8-docker
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory

@@ -1,0 +1,61 @@
+- hosts: all
+  name: Autoconverted job legacy-scap-beta-deb from old job scap-beta-deb
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          set -x
+          env
+          rm -rf src source
+          zuul-cloner \
+            --color \
+            --verbose \
+            --workspace source \
+            --map <(echo "clonemap: [{name: (.*), dest: .}]") \
+            --cache-dir /srv/git \
+            https://gerrit.wikimedia.org/r \
+            "$ZUUL_PROJECT"
+
+          cd source
+          NAME="$(dpkg-parsechangelog --show-field source)"
+          VERSION="$(dpkg-parsechangelog --show-field version)"
+          SHA=$(git rev-parse --short HEAD)
+
+          echo 'auto-commit' >> debian/source/options
+          echo "${NAME} source: format-3.0-but-debian-changes-patch" >> debian/source.lintian-overrides
+
+          git add .
+          git commit --amend --no-edit
+
+          export GIT_COMMIT=$(git rev-parse HEAD)
+          export GIT_BRANCH=$GIT_COMMIT
+          export SKIP_QUILT_CLEANUP=true
+          export DBP_EXTRA_OPTS=--source-option=--auto-commit
+          cd "$WORKSPACE"
+          /usr/bin/generate-git-snapshot
+
+          export distribution=jessie
+          export REPOSITORY=/srv/packages
+          export REPOS=jenkins-debian-glue
+          export SKIP_REMOVE=true
+          export BUILD_ONLY=yes
+
+          /usr/bin/build-and-provide-package
+
+          # We might consider adding --warnings
+          set -o pipefail
+          # Source package:
+          /usr/bin/lintian-junit-report --filename lintian-binary.txt *.dsc | tee lintian-binary.xml
+
+          # Binary package:
+          /usr/bin/lintian-junit-report --filename lintian-source.txt *.changes | tee lintian-source.xml
+
+          set +o pipefail
+          exit 0
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

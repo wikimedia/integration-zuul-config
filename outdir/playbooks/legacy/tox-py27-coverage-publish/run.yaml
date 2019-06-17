@@ -1,0 +1,26 @@
+- hosts: all
+  name: Autoconverted job legacy-tox-py27-coverage-publish from old job tox-py27-coverage-publish
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          mkdir -p slave-scripts
+          cd slave-scripts
+          git init
+          git fetch --depth 2 --quiet https://gerrit.wikimedia.org/r/p/integration/jenkins.git
+          git checkout --quiet FETCH_HEAD
+          git submodule --quiet update --init --recursive
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          ./slave-scripts/bin/cobertura-clover-transform.py log/coverage.xml -o log/clover.xml
+          cp log/clover.xml src/coverage/clover.xml
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
