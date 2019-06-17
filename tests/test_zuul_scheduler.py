@@ -1043,8 +1043,8 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
             'mediawiki-quibble-composertest-php70-docker': True,
-            'release-quibble-vendor-mysql-hhvm-docker': False,
-            'release-quibble-vendor-mysql-php70-docker': False,
+            'release-quibble-composer-mysql-hhvm-docker': False,
+            'release-quibble-composer-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
             'mwgate-node10-docker': True,
@@ -1060,10 +1060,10 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-composertest-php70-docker': True,
             'mediawiki-quibble-vendor-sqlite-php72-docker': True,
             'mediawiki-quibble-vendor-postgres-php72-docker': True,
-            'release-quibble-vendor-mysql-hhvm-docker': False,
-            'release-quibble-vendor-mysql-php70-docker': False,
-            'release-quibble-vendor-mysql-php71-docker': False,
-            'release-quibble-vendor-mysql-php72-docker': False,
+            'release-quibble-composer-mysql-hhvm-docker': False,
+            'release-quibble-composer-mysql-php70-docker': False,
+            'release-quibble-composer-mysql-php71-docker': False,
+            'release-quibble-composer-mysql-php72-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-vendor-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-php71-docker': False,
@@ -1130,7 +1130,8 @@ class TestZuulScheduler(unittest.TestCase):
                 'mediawiki-quibble-vendor-mysql-php70-docker': True,
                 'mwgate-composer-hhvm-docker': True,
                 'mwgate-node10-docker': True,
-                'release-quibble-vendor-mysql-hhvm-docker': True,
+                # We use composer on release branches
+                'release-quibble-composer-mysql-hhvm-docker': True,
                 # No need for the Wikimedia gated job on release branches:
                 'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
                 'wmf-quibble-vendor-mysql-hhvm-docker': False
@@ -1141,7 +1142,7 @@ class TestZuulScheduler(unittest.TestCase):
                 'mwgate-composer-hhvm-docker': True,
                 'mwgate-node10-docker': True,
                 # release-* jobs are for release branches
-                'release-quibble-vendor-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-hhvm-docker': False,
                 # Optimization for core:
                 'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
                 'wmf-quibble-vendor-mysql-hhvm-docker': False
@@ -1152,7 +1153,7 @@ class TestZuulScheduler(unittest.TestCase):
                 'mwgate-composer-hhvm-docker': True,
                 'mwgate-node10-docker': True,
                 # release-* jobs are for release branches
-                'release-quibble-vendor-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-hhvm-docker': False,
                 # Optimization for core:
                 'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
                 'wmf-quibble-vendor-mysql-hhvm-docker': False
@@ -1188,7 +1189,7 @@ class TestZuulScheduler(unittest.TestCase):
         release_job = self.getJob(
             'mediawiki/extensions/AbuseFilter',
             'gate-and-submit',
-            'release-quibble-vendor-mysql-php70-docker')
+            'release-quibble-composer-mysql-php70-docker')
 
         change = zuul.model.Change('mediawiki/extensions/AbuseFilter')
 
@@ -1231,7 +1232,7 @@ class TestZuulScheduler(unittest.TestCase):
         repo = 'mediawiki/extensions/Translate'
         release_job = self.getJob(
             repo, 'test',
-            'release-quibble-vendor-mysql-hhvm-docker')
+            'release-quibble-composer-mysql-hhvm-docker')
 
         change = zuul.model.Change(repo)
 
@@ -1285,7 +1286,7 @@ class TestZuulScheduler(unittest.TestCase):
             'wmf-quibble-vendor-mysql-php70-docker')
         release_job = self.getJob(
             repo, 'gate-and-submit',
-            'release-quibble-vendor-mysql-php70-docker')
+            'release-quibble-composer-mysql-php70-docker')
 
         change = zuul.model.Change(repo)
 
