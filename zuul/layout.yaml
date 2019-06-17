@@ -2301,6 +2301,14 @@ projects:
     template:
       - name: composer-test-package
 
+  - name: mediawiki/tools/phan/PerfCheckPlugin
+    test:
+      - composer-package-php71-docker
+    gate-and-submit:
+      - composer-package-php71-docker
+      - composer-package-php72-docker
+      - composer-package-php73-docker
+
   - name: mediawiki/tools/phan/SecurityCheckPlugin
     test:
       - composer-package-php70-docker
