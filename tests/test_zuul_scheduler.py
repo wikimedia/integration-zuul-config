@@ -1105,6 +1105,61 @@ class TestZuulScheduler(unittest.TestCase):
                     job.changeMatches(change))
                 )
 
+    def test_mwvendor(self):
+        change = zuul.model.Change('mediawiki/vendor')
+        change.files.extend(['foo.php', 'composer.json'])
+
+        job_tree = [t for (p, t) in
+                    self.getPipeline('test').job_trees.iteritems()
+                    if p.name == 'mediawiki/vendor'][0]
+        test_jobs = job_tree.getJobs()
+
+        matches = {}
+
+        for branch in ['master', 'REL1_99', 'wmf/1.99.9-wmf.99']:
+            change.branch = branch
+            matches[branch] = {
+                job.name: job.changeMatches(change)
+                for job in test_jobs
+            }
+
+        self.maxDiff = None
+        self.assertEquals({
+            'REL1_99': {
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
+                'mediawiki-quibble-vendor-mysql-php70-docker': True,
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                'release-quibble-vendor-mysql-hhvm-docker': True,
+                # No need for the Wikimedia gated job on release branches:
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            'master': {
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
+                'mediawiki-quibble-vendor-mysql-php70-docker': True,
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                # release-* jobs are for release branches
+                'release-quibble-vendor-mysql-hhvm-docker': False,
+                # Optimization for core:
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            'wmf/1.99.9-wmf.99': {
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
+                'mediawiki-quibble-vendor-mysql-php70-docker': True,
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                # release-* jobs are for release branches
+                'release-quibble-vendor-mysql-hhvm-docker': False,
+                # Optimization for core:
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                }
+            },
+            matches)
+
     def test_quibble_71_72_jobs_are_skipped_on_fundraising_branches(self):
         change = zuul.model.Change('mediawiki/core')
         change.branch = 'fundraising/REL1_31'
