@@ -1,0 +1,105 @@
+- hosts: all
+  name: Autoconverted job legacy-wikidata-query-gui-build from old job wikidata-query-gui-build
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          set -u
+          set -e
+          NODE_VERSION=`node --version`
+
+          if ( echo "$NODE_VERSION" | grep "^v6[.]" > /dev/null )
+          then
+              echo "Node version $NODE_VERSION matches '^v6[.]'"
+          else
+              echo "Assertion error: node version $NODE_VERSION does not match '^v6[.]'"
+              exit 1
+          fi
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eu +x
+          # castor-env
+          # Forge castor environement
+
+          # Replace slashes with dashes:
+          NS_PROJECT=${ZUUL_PROJECT////-}
+          NS_BRANCH=${ZUUL_BRANCH////-}
+
+          # Pill up MediaWiki extensions and skins caches together
+          if [[ "$ZUUL_PROJECT" =~ ^mediawiki/(extensions|skins)/ ]]; then
+              NS_PROJECT="castor-mw-ext-and-skins"
+          fi
+
+          # Ex: mediawiki-core/REL1_26/tox-jessie
+          # Prefer TRIGGERED_JOB_NAME when it is set
+          NS_JOB=${TRIGGERED_JOB_NAME:-$JOB_NAME}
+
+          # Ex: mediawiki-core/REL1_26/tox-jessie
+          CASTOR_NAMESPACE="${NS_PROJECT}/${NS_BRANCH}/${NS_JOB}"
+          export CASTOR_NAMESPACE
+          echo "Defined: CASTOR_NAMESPACE=\"$CASTOR_NAMESPACE\""
+
+          # castor-load
+          # Load cache from central repository
+          set -u
+
+          [[ $JOB_NAME == *'docker'* ]] && is_docker=1 || is_docker=''
+
+          if [ $is_docker ]; then
+              # For containers we mount $WORKSPACE/cache from the host to /cache in the
+              # container. It is also the value of XDG_CACHE_HOME
+              DEST="/cache"
+              # cache might persist between builds on the Docker slaves
+              rsync_delete='--delete-delay'
+          else
+              DEST="$HOME"
+              # On Nodepool it is guaranteed to be empty. Deleting would wipe
+              # /home/jenkins/workspace!
+          fi
+
+          echo "Syncing..."
+          rsync \
+            --archive \
+            ${rsync_delete:-} \
+            --delay-updates \
+            --compress \
+            --contimeout 3 \
+            rsync://integration-castor03.integration.eqiad.wmflabs:/caches/"$CASTOR_NAMESPACE"/ "$DEST" \
+            || :
+          echo -e "\nDone"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
+          node --version
+          npm --version
+          rm -rf node_modules
+          npm install
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          GIT_AUTHOR_NAME=WDQSGuiBuilder
+          GIT_COMMITTER_NAME=WDQSGuiBuilder
+          GIT_AUTHOR_EMAIL=wdqs-gui-build@lists.wikimedia.org
+          GIT_COMMITTER_EMAIL=wdqs-gui-build@lists.wikimedia.org
+
+          # We do not know Gerrit SSH host fingerprint
+          mkdir -p ~/.ssh
+          echo -ne 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\nUser wdqsguibuilder\n' >> ~/.ssh/config
+
+          npm run deploy
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

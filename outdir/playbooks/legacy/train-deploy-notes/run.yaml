@@ -1,0 +1,90 @@
+- hosts: all
+  name: Autoconverted job legacy-train-deploy-notes from old job train-deploy-notes
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          set -euxo pipefail
+
+          if [[ "$ZUUL_OLDREV" != "0000000000000000000000000000000000000000" ]]; then
+            echo "Job is only for new refs, not ref updates..."
+            exit 1
+          fi
+
+          if [[ ! $ZUUL_REF =~ "refs/heads/wmf/1." ]]; then
+            echo "Job is not for this branch..."
+            exit 1
+          fi
+        executable: /usr/bin/env
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "log"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "src"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/src" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -u
+          set -e
+          set -x
+          chmod 2777 src
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: "set -eux\nexec docker run  --volume \"$(pwd)\"/src:/src --volume \"\
+          $(pwd)\"/cache:/cache --volume \"$(pwd)\"/log:/log \\\n  --init \\\n  --rm\
+          \ \\\n  --label \"jenkins.job=$JOB_NAME\" \\\n  --label \"jenkins.build=$BUILD_NUMBER\"\
+          \ \\\n  --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=')\
+          \ \\\n  'docker-registry.wikimedia.org/releng/release-notes:0.0.3' \n# nothing\
+          \ else can be executed due to exec\n"
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

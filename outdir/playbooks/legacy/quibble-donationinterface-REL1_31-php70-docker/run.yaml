@@ -1,0 +1,68 @@
+- hosts: all
+  name: Autoconverted job legacy-quibble-donationinterface-REL1_31-php70-docker from
+    old job quibble-donationinterface-REL1_31-php70-docker
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          mkdir -m 2777 -p "cache"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --volume "$(pwd)"/cache:/cache \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/releng/castor:0.2.1' load
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "log"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M --volume "$(pwd)"/cache:/cache --volume "$(pwd)"/log:/workspace/log \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.31-5' --packages-source composer --db mysql --db-dir /workspace/db --run=phpunit --branch "REL1_31" --project-branch mediawiki/extensions/DonationInterface=master --project-branch "mediawiki/core=fundraising/REL1_31" --project-branch "mediawiki/vendor=fundraising/REL1_31" mediawiki/vendor mediawiki/extensions/DonationInterface mediawiki/extensions/FundraisingEmailUnsubscribe mediawiki/extensions/ContributionTracking mediawiki/extensions/ParserFunctions mediawiki/extensions/cldr
+
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

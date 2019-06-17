@@ -1,0 +1,552 @@
+- project-template:
+    name: archived
+    gate-and-submit:
+      jobs:
+        - legacy-fail-archived-repositories
+    test:
+      jobs:
+        - legacy-fail-archived-repositories
+
+- project-template:
+    name: commit-message-validator
+    test:
+      jobs:
+        - legacy-commit-message-validator:
+            voting: false
+
+- project-template:
+    name: composer-test
+    gate-and-submit:
+      jobs:
+        - legacy-composer-php72-docker
+        - legacy-composer-php70-docker
+        - legacy-composer-hhvm-docker
+    test:
+      jobs:
+        - legacy-composer-php72-docker
+        - legacy-composer-hhvm-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-composer-php72-docker
+        - legacy-composer-php70-docker
+        - legacy-composer-hhvm-docker
+
+- project-template:
+    name: composer-test-package
+    gate-and-submit:
+      jobs:
+        - legacy-composer-package-hhvm-docker
+        - legacy-composer-package-php70-docker
+        - legacy-composer-package-php71-docker
+        - legacy-composer-package-php72-docker
+        - legacy-composer-package-php73-docker
+    test:
+      jobs:
+        - legacy-composer-package-hhvm-docker
+        - legacy-composer-package-php70-docker
+        - legacy-composer-package-php71-docker
+        - legacy-composer-package-php72-docker
+        - legacy-composer-package-php73-docker
+
+- project-template:
+    name: composer-test-package-php72-or-later
+    gate-and-submit:
+      jobs:
+        - legacy-composer-package-php72-docker
+        - legacy-composer-package-php73-docker
+    test:
+      jobs:
+        - legacy-composer-package-php72-docker
+        - legacy-composer-package-php73-docker
+
+- project-template:
+    name: extension-broken
+    gate-and-submit-l10n:
+      jobs:
+        - legacy-mediawiki-i18n-check-docker
+    gate-and-submit:
+      jobs:
+        - legacy-mwcomposer-php70-docker
+        - legacy-mwnode10-docker
+    experimental:
+      jobs:
+        - legacy-mwext-php72-phan-docker
+        - legacy-mwext-php70-phan-seccheck-docker
+        - legacy-quibble-composer-mysql-php70-docker
+        - legacy-quibble-composer-mysql-php71-docker
+        - legacy-quibble-composer-mysql-php72-docker
+        - legacy-quibble-composer-mysql-php73-docker
+    test:
+      jobs:
+        - legacy-mwcomposer-php70-docker
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: extension-codehealth
+    postmerge:
+      jobs:
+        - legacy-mwext-codehealth-master-non-voting:
+            voting: false
+    codehealth:
+      jobs:
+        - legacy-mwext-codehealth-patch
+
+- project-template:
+    name: extension-coverage
+    postmerge:
+      jobs:
+        - legacy-mwext-phpunit-coverage-docker-publish:
+            branches: master
+    coverage:
+      jobs:
+        - legacy-mwext-phpunit-coverage-patch-docker:
+            branches: master
+            files:
+              - ^.*\.php$
+
+- project-template:
+    name: extension-gate
+    gate-and-submit-l10n:
+      jobs:
+        - legacy-mediawiki-i18n-check-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-mwnode10-docker
+        - legacy-wmf-quibble-vendor-mysql-hhvm-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-core-vendor-mysql-hhvm-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-vendor-mysql-php72-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-core-vendor-mysql-php72-docker:
+            branches: (?!^(fundraising/)?REL)
+    experimental:
+      jobs:
+        - legacy-wmf-quibble-vendor-mysql-php73-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-core-vendor-mysql-php73-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-release-quibble-vendor-mysql-php73-docker:
+            branches: ^REL
+        - legacy-mwext-php72-phan-docker
+        - legacy-mwext-php70-phan-seccheck-docker
+    php:
+      jobs:
+        - legacy-wmf-quibble-vendor-mysql-php70-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-vendor-mysql-php71-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-vendor-mysql-php72-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-core-vendor-mysql-php72-docker:
+            branches: (?!^(fundraising/)?REL)
+    gate-and-submit:
+      jobs:
+        - legacy-mwnode10-docker
+        - legacy-wmf-quibble-vendor-mysql-hhvm-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-vendor-mysql-php70-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-core-vendor-mysql-hhvm-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-vendor-mysql-php71-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-vendor-mysql-php72-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-core-vendor-mysql-php72-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-release-quibble-vendor-mysql-hhvm-docker:
+            branches: ^REL
+        - legacy-release-quibble-vendor-mysql-php72-docker:
+            branches: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
+        - legacy-release-quibble-vendor-mysql-php71-docker:
+            branches: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
+        - legacy-release-quibble-vendor-mysql-php70-docker:
+            branches: ^REL
+    test:
+      jobs:
+        - legacy-release-quibble-vendor-mysql-hhvm-docker:
+            branches: ^REL
+        - legacy-wmf-quibble-vendor-mysql-hhvm-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-wmf-quibble-core-vendor-mysql-hhvm-docker:
+            branches: (?!^(fundraising/)?REL)
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: extension-javascript-documentation
+    gate-and-submit:
+      jobs:
+        - legacy-mwext-node10-rundoc-docker
+    postmerge:
+      jobs:
+        - legacy-mwext-node10-docs-docker-publish:
+            branches: ^master$
+    test:
+      jobs:
+        - legacy-mwext-node10-rundoc-docker
+
+- project-template:
+    name: extension-phan
+    gate-and-submit:
+      jobs:
+        - legacy-mwext-php70-phan-docker
+    test:
+      jobs:
+        - legacy-mwext-php70-phan-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-mwext-php70-phan-docker
+
+- project-template:
+    name: extension-quibble
+    gate-and-submit-l10n:
+      jobs:
+        - legacy-mediawiki-i18n-check-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-docker
+        - legacy-quibble-vendor-mysql-php72-docker
+        - legacy-mwnode10-docker
+    experimental:
+      jobs:
+        - legacy-quibble-vendor-sqlite-php72-docker
+        - legacy-quibble-vendor-mysql-php73-docker
+        - legacy-mwext-php72-phan-docker
+        - legacy-mwext-php70-phan-seccheck-docker
+    php:
+      jobs:
+        - legacy-quibble-vendor-mysql-php70-docker
+        - legacy-quibble-vendor-mysql-php71-docker
+        - legacy-quibble-vendor-mysql-php72-docker
+    gate-and-submit:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-docker
+        - legacy-quibble-vendor-mysql-php70-docker
+        - legacy-quibble-vendor-mysql-php71-docker
+        - legacy-quibble-vendor-mysql-php72-docker
+        - legacy-mwnode10-docker
+    test:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-docker
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: extension-quibble-composer
+    gate-and-submit-l10n:
+      jobs:
+        - legacy-mediawiki-i18n-check-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-docker
+        - legacy-quibble-composer-mysql-php72-docker
+        - legacy-mwnode10-docker
+    experimental:
+      jobs:
+        - legacy-quibble-composer-sqlite-php72-docker
+        - legacy-quibble-composer-mysql-php73-docker
+        - legacy-mwext-php72-phan-docker
+        - legacy-mwext-php70-phan-seccheck-docker
+    php:
+      jobs:
+        - legacy-quibble-composer-mysql-php70-docker
+        - legacy-quibble-composer-mysql-php71-docker
+        - legacy-quibble-composer-mysql-php72-docker
+    gate-and-submit:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-docker
+        - legacy-quibble-composer-mysql-php70-docker
+        - legacy-quibble-composer-mysql-php71-docker
+        - legacy-quibble-composer-mysql-php72-docker
+        - legacy-mwnode10-docker
+    test:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-docker
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: extension-quibble-composer-noselenium
+    gate-and-submit-l10n:
+      jobs:
+        - legacy-mediawiki-i18n-check-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-noselenium-docker
+        - legacy-quibble-composer-mysql-php72-noselenium-docker
+        - legacy-mwnode10-docker
+    experimental:
+      jobs:
+        - legacy-quibble-composer-sqlite-php72-noselenium-docker
+        - legacy-quibble-composer-mysql-php72-noselenium-docker
+        - legacy-quibble-composer-mysql-php73-noselenium-docker
+        - legacy-mwext-php72-phan-docker
+        - legacy-mwext-php70-phan-seccheck-docker
+    php:
+      jobs:
+        - legacy-quibble-composer-mysql-php70-noselenium-docker
+        - legacy-quibble-composer-mysql-php71-noselenium-docker
+        - legacy-quibble-composer-mysql-php72-noselenium-docker
+    gate-and-submit:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-noselenium-docker
+        - legacy-quibble-composer-mysql-php70-noselenium-docker
+        - legacy-quibble-composer-mysql-php71-noselenium-docker
+        - legacy-quibble-composer-mysql-php72-noselenium-docker
+        - legacy-mwnode10-docker
+    test:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-noselenium-docker
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: extension-quibble-noselenium
+    gate-and-submit-l10n:
+      jobs:
+        - legacy-mediawiki-i18n-check-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-noselenium-docker
+        - legacy-quibble-vendor-mysql-php72-noselenium-docker
+        - legacy-mwnode10-docker
+    experimental:
+      jobs:
+        - legacy-quibble-vendor-sqlite-php72-noselenium-docker
+        - legacy-quibble-vendor-mysql-php73-noselenium-docker
+        - legacy-mwext-php72-phan-docker
+        - legacy-mwext-php70-phan-seccheck-docker
+    php:
+      jobs:
+        - legacy-quibble-vendor-mysql-php70-noselenium-docker
+        - legacy-quibble-vendor-mysql-php71-noselenium-docker
+        - legacy-quibble-vendor-mysql-php72-noselenium-docker
+    gate-and-submit:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-noselenium-docker
+        - legacy-quibble-vendor-mysql-php70-noselenium-docker
+        - legacy-quibble-vendor-mysql-php71-noselenium-docker
+        - legacy-quibble-vendor-mysql-php72-noselenium-docker
+        - legacy-mwnode10-docker
+    test:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-noselenium-docker
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: extension-seccheck
+    gate-and-submit:
+      jobs:
+        - legacy-mwext-php70-phan-seccheck-docker
+    test:
+      jobs:
+        - legacy-mwext-php70-phan-seccheck-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-mwext-php70-phan-seccheck-docker
+
+- project-template:
+    name: extension-seccheck-non-voting
+    test:
+      jobs:
+        - legacy-mwext-php70-phan-seccheck-docker-non-voting:
+            voting: false
+
+- project-template:
+    name: mwgate-npm
+    gate-and-submit:
+      jobs:
+        - legacy-mwnode10-docker
+    test:
+      jobs:
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: mwgate-rake
+    gate-and-submit:
+      jobs:
+        - legacy-mwrake-docker:
+            files:
+              - .*\.pp$
+              - .*\.rb
+              - (\.rubocop|.*\.gemspec$|Gemfile)
+              - .*([Rr]akefile|/spec/)
+    test:
+      jobs:
+        - legacy-mwrake-docker:
+            files:
+              - .*\.pp$
+              - .*\.rb
+              - (\.rubocop|.*\.gemspec$|Gemfile)
+              - .*([Rr]akefile|/spec/)
+
+- project-template:
+    name: mwgate-tox-docker
+    gate-and-submit:
+      jobs:
+        - legacy-mwtox-docker
+    test:
+      jobs:
+        - legacy-mwtox-docker
+
+- project-template:
+    name: mwselenium-legacy
+    postmerge:
+      jobs:
+        - legacy-mwselenium-quibble-docker
+    test:
+      jobs:
+        - legacy-mwselenium-quibble-docker
+
+- project-template:
+    name: node10-docker
+    gate-and-submit:
+      jobs:
+        - legacy-generic-node10-docker
+    test:
+      jobs:
+        - legacy-generic-node10-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-generic-node10-docker
+
+- project-template:
+    name: npm-docker
+    gate-and-submit:
+      jobs:
+        - legacy-npm-node-6-docker
+    experimental:
+      jobs:
+        - legacy-generic-node10-docker
+    test:
+      jobs:
+        - legacy-npm-node-6-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-npm-node-6-docker
+
+- project-template:
+    name: service-pipeline-test
+    gate-and-submit:
+      jobs:
+        - legacy-trigger-service-pipeline-test
+    test:
+      jobs:
+        - legacy-trigger-service-pipeline-test
+    gate-and-submit-swat:
+      jobs:
+        - legacy-trigger-service-pipeline-test
+
+- project-template:
+    name: service-pipeline-test-and-publish
+    postmerge:
+      jobs:
+        - legacy-trigger-service-pipeline-test-and-publish
+    publish:
+      jobs:
+        - legacy-trigger-service-pipeline-test-and-publish
+
+- project-template:
+    name: skin-phan
+    gate-and-submit:
+      jobs:
+        - legacy-mwskin-php70-phan-docker
+    test:
+      jobs:
+        - legacy-mwskin-php70-phan-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-mwskin-php70-phan-docker
+
+- project-template:
+    name: skin-quibble
+    gate-and-submit-l10n:
+      jobs:
+        - legacy-mediawiki-i18n-check-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-docker
+        - legacy-quibble-vendor-mysql-php72-docker
+        - legacy-mwnode10-docker
+    experimental:
+      jobs:
+        - legacy-quibble-vendor-sqlite-php72-docker
+        - legacy-quibble-vendor-mysql-php73-docker
+        - legacy-mwskin-php72-phan-docker
+        - legacy-mwskin-php70-phan-seccheck-docker
+    php:
+      jobs:
+        - legacy-quibble-vendor-mysql-php70-docker
+        - legacy-quibble-vendor-mysql-php71-docker
+        - legacy-quibble-vendor-mysql-php72-docker
+    gate-and-submit:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-docker
+        - legacy-quibble-vendor-mysql-php70-docker
+        - legacy-quibble-vendor-mysql-php71-docker
+        - legacy-quibble-vendor-mysql-php72-docker
+        - legacy-mwnode10-docker
+    test:
+      jobs:
+        - legacy-quibble-vendor-mysql-hhvm-docker
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: skin-quibble-composer
+    gate-and-submit-l10n:
+      jobs:
+        - legacy-mediawiki-i18n-check-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-docker
+        - legacy-quibble-composer-mysql-php72-docker
+        - legacy-mwnode10-docker
+    experimental:
+      jobs:
+        - legacy-quibble-composer-sqlite-php72-docker
+        - legacy-quibble-composer-mysql-php72-docker
+        - legacy-quibble-composer-mysql-php73-docker
+        - legacy-mwskin-php72-phan-docker
+        - legacy-mwskin-php70-phan-seccheck-docker
+    php:
+      jobs:
+        - legacy-quibble-composer-mysql-php70-docker
+        - legacy-quibble-composer-mysql-php71-docker
+        - legacy-quibble-composer-mysql-php72-docker
+    gate-and-submit:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-docker
+        - legacy-quibble-composer-mysql-php70-docker
+        - legacy-quibble-composer-mysql-php71-docker
+        - legacy-quibble-composer-mysql-php72-docker
+        - legacy-mwnode10-docker
+    test:
+      jobs:
+        - legacy-quibble-composer-mysql-hhvm-docker
+        - legacy-mwnode10-docker
+
+- project-template:
+    name: skin-seccheck
+    gate-and-submit:
+      jobs:
+        - legacy-mwskin-php70-phan-seccheck-docker
+    test:
+      jobs:
+        - legacy-mwskin-php70-phan-seccheck-docker
+    gate-and-submit-swat:
+      jobs:
+        - legacy-mwskin-php70-phan-seccheck-docker
+
+- project-template:
+    name: skin-seccheck-non-voting
+    test:
+      jobs:
+        - legacy-mwskin-php70-phan-seccheck-docker-non-voting:
+            voting: false
+
+- project-template:
+    name: tox-docker
+    gate-and-submit:
+      jobs:
+        - legacy-tox-docker
+    test:
+      jobs:
+        - legacy-tox-docker

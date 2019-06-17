@@ -1,0 +1,89 @@
+- hosts: all
+  name: Autoconverted job legacy-mwext-phpunit-coverage-docker-publish from old job
+    mwext-phpunit-coverage-docker-publish
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          mkdir -m 2777 -p "cache"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --volume "$(pwd)"/cache:/cache \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/releng/castor:0.2.1' load
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "cover"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/cover" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "log"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --volume /srv/git:/srv/git:ro --volume "$(pwd)"/cover:/workspace/cover --tmpfs /workspace/db:size=320M --volume "$(pwd)"/cache:/cache --volume "$(pwd)"/log:/workspace/log \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-1' --packages-source "composer" --db "mysql" --db-dir /workspace/db --commands=mwext-phpunit-coverage
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

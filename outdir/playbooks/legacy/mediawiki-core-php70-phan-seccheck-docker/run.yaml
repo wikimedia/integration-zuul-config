@@ -1,0 +1,99 @@
+- hosts: all
+  name: Autoconverted job legacy-mediawiki-core-php70-phan-seccheck-docker from old
+    job mediawiki-core-php70-phan-seccheck-docker
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "log"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "src"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/src" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          mkdir -m 2777 -p "cache"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --volume "$(pwd)"/src:/src --volume "$(pwd)"/cache:/cache --volume /srv/git:/srv/git --entrypoint "bash" \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/releng/ci-src-setup:0.2.9' /srv/setup-mw.sh
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -u
+          set -e
+          set -x
+          chmod 2777 src
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --env THING_SUBNAME="" --volume "$(pwd)"/src:/mediawiki --volume "$(pwd)"/src:/src --volume "$(pwd)"/cache:/cache --volume "$(pwd)"/log:/log \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.3.2' -m checkstyle
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

@@ -1,0 +1,13 @@
+- hosts: all
+  name: Autoconverted job legacy-beta-mediawiki-config-update-eqiad from old job beta-mediawiki-config-update-eqiad
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: /usr/local/bin/wmf-beta-mwconfig-update
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

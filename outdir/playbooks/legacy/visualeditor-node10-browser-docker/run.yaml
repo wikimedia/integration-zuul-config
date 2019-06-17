@@ -1,0 +1,105 @@
+- hosts: all
+  name: Autoconverted job legacy-visualeditor-node10-browser-docker from old job visualeditor-node10-browser-docker
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          mkdir -m 2777 -p "cache"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --volume "$(pwd)"/cache:/cache \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/releng/castor:0.2.1' load
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "src"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/src" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "log"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/log" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: "set -eux\nexec docker run --volume \"$(pwd)\"/src:/src --volume \"$(pwd)\"\
+          /cache:/cache --volume /srv/git:/srv/git \\\n  --init \\\n  --rm \\\n  --label\
+          \ \"jenkins.job=$JOB_NAME\" \\\n  --label \"jenkins.build=$BUILD_NUMBER\"\
+          \ \\\n  --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=')\
+          \ \\\n  'docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.1'\
+          \ \n# nothing else can be executed due to exec\n"
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -u
+          set -e
+          set -x
+          chmod 2777 src
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: "set -eux\nexec docker run  --volume \"$(pwd)\"/src:/src --volume \"\
+          $(pwd)\"/cache:/cache --volume \"$(pwd)\"/log:/log \\\n  --init \\\n  --rm\
+          \ \\\n  --label \"jenkins.job=$JOB_NAME\" \\\n  --label \"jenkins.build=$BUILD_NUMBER\"\
+          \ \\\n  --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=')\
+          \ \\\n  'docker-registry.wikimedia.org/releng/node10-test-browser:0.5.0'\
+          \ \n# nothing else can be executed due to exec\n"
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

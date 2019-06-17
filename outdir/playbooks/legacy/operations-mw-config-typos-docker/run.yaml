@@ -1,0 +1,18 @@
+- hosts: all
+  name: Autoconverted job legacy-operations-mw-config-typos-docker from old job operations-mw-config-typos-docker
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: "set -eux\nexec docker run  \\\n  --init \\\n  --rm \\\n  --label \"\
+          jenkins.job=$JOB_NAME\" \\\n  --label \"jenkins.build=$BUILD_NUMBER\" \\\
+          \n  --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=')\
+          \ \\\n  'docker-registry.wikimedia.org/releng/typos:0.0.2' \n# nothing else\
+          \ can be executed due to exec\n"
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'

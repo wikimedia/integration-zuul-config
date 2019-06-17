@@ -1,0 +1,70 @@
+- hosts: all
+  name: Autoconverted job legacy-mediawiki-i18n-check-docker from old job mediawiki-i18n-check-docker
+  tasks:
+
+    - name: Ensure legacy workspace directory
+      file:
+        path: '{{ ansible_user_dir }}/workspace'
+        state: directory
+
+    - shell:
+        cmd: |
+          set -eux
+          mkdir -m 2777 -p "src"
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -eux
+          exec docker run --user=nobody --volume "$WORKSPACE":/workspace --entrypoint=/usr/bin/find \
+            --init \
+            --rm \
+            --label "jenkins.job=$JOB_NAME" \
+            --label "jenkins.build=$BUILD_NUMBER" \
+            --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+            'docker-registry.wikimedia.org/wikimedia-stretch:latest' "/workspace/src" -mindepth 1 -delete
+          # nothing else can be executed due to exec
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: "set -eux\nexec docker run --volume \"$(pwd)\"/src:/src --volume \"$(pwd)\"\
+          /cache:/cache --volume /srv/git:/srv/git \\\n  --init \\\n  --rm \\\n  --label\
+          \ \"jenkins.job=$JOB_NAME\" \\\n  --label \"jenkins.build=$BUILD_NUMBER\"\
+          \ \\\n  --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=')\
+          \ \\\n  'docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.1'\
+          \ \n# nothing else can be executed due to exec\n"
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
+
+    - shell:
+        cmd: |
+          set -uxo pipefail
+          cd src
+
+          # Assumption: Any messages containing literal js will end in .js. Any other
+          # raw html message is in normal html context (not attribute)
+
+          git show FETCH_HEAD -U0 | grep '^+' | sed -E -e 's/<\/? ?(abbr|span|br|strong|em|pre|nowiki|charinsert|b|del|code|kbd|p|tt|div|i|big|sup|sub|samp|var|small|h1|h2|h3|h4|u)( ((class|title|lang|xml:lang|dir)=\\?["'\''][^=<>"'\'']*\\?["'\'']))* ?\/?>//g' -e 's/<!--//g' -e 's/<https?:\/\/[a-zA-Z0-9./-]*>//g' | grep '<'
+          if [[ $? == 0 ]]; then
+            echo "HTML detected. Manual review required"
+            exit 1
+          else
+            echo 'ok'
+          fi
+
+          git show FETCH_HEAD -U0 | grep '^+' | sed -E -e 's/\\\\//g' -e 's/\\[nt"]//g' | grep '\\'
+          if [[ $? == 0 ]]; then
+            echo "JSON escape sequence detected. Manual review required"
+            exit 1
+          else
+            echo 'ok'
+          fi
+
+          exit 0
+        executable: /bin/bash
+        chdir: '{{ ansible_user_dir }}/workspace'
+      environment: '{{ zuul | zuul_legacy_vars }}'
