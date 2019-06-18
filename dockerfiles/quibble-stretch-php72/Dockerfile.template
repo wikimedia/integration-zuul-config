@@ -1,5 +1,3 @@
-FROM {{ "sury-php" | image_tag }} AS sury-php
-
 FROM {{ "quibble-stretch" | image_tag }}
 
 USER root
@@ -25,14 +23,6 @@ php7.2-xml
 php7.2-zip
 {%- endset -%}
 
-# We need to get a newer version of php-ast from sury.org (T174338)
-COPY --from=sury-php /etc/apt/trusted.gpg.d/php.gpg /etc/apt/trusted.gpg.d/php.gpg
-
-RUN {{ "apt-transport-https" | apt_install }} && \
- echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/php.list
-
-# Pin sury's repo higher for the packages that exist in both stretch and sury
-COPY sury.pin /etc/apt/preferences.d/sury
 RUN {{ mediawiki_deps | apt_install }}
 
 # Install XDebug but disables it by default due to its performance impact
