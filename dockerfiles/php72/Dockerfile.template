@@ -1,4 +1,7 @@
-FROM {{ "sury-php" | image_tag }}
+FROM {{ "ci-stretch" | image_tag }}
+
+# Align with SRE provided packages
+COPY wikimedia-php72.list /etc/apt/sources.list.d/wikimedia-php72.list
 
 # zip is needed for composer to install things from dist
 # others are libraries/MediaWiki related
