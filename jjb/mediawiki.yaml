@@ -124,7 +124,7 @@
                 - php70:
                     image: docker-registry.wikimedia.org/releng/composer-test:0.1.6
                 - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php72:0.1.0
+                    image: docker-registry.wikimedia.org/releng/composer-test-php72:0.2.0
         - '{name}-jsduck-docker'
         - '{name}-rake-docker'
         - '{name}-tox-docker'
@@ -150,7 +150,7 @@
      - docker-ci-src-setup-mw
      - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki --entrypoint=/run-core.sh'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.1.15'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.3.0'
         args: '-m checkstyle'
         logdir: '/log'
 
@@ -181,7 +181,7 @@
      - docker-ci-src-setup-mw
      - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki --entrypoint=/run-core.sh'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.2.0'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.3.0'
         args: '-m checkstyle'
         logdir: '/log'
     publishers:
@@ -401,7 +401,7 @@
     builders:
         - docker-log-dir
         - docker-run-with-log:
-            image: 'docker-registry.wikimedia.org/releng/quibble-fresnel:0.0.31-6'
+            image: 'docker-registry.wikimedia.org/releng/quibble-fresnel:0.0.31-7'
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source vendor --db mysql --db-dir /workspace/db --skip-deps --commands "mediawiki-fresnel-patch"'
             logdir: '/workspace/log'
@@ -530,7 +530,7 @@
     - docker-wipe-dir:
         dir: 'cover'
     - docker-run-with-log-and-workspace-cache:
-        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-4
+        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
         options: '-e CODEHEALTH=1 --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
         args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --commands=mwext-phpunit-coverage'
         logdir: '/workspace/log'
@@ -718,7 +718,7 @@
         - php71:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php71:0.0.31-2
         - php72:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.31-4
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.31-5
         - php73:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.31-3
         - hhvm:
@@ -745,19 +745,19 @@
             # WMF cluster uses MariaDB/MySQL
             database: mysql
         - mediawiki-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-4
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
             packages-source: vendor
             database: sqlite
         - mwext-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-4
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
             packages-source:  composer
             database: mysql
         - mwext-phpunit-coverage-docker-publish:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-4
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
             packages-source:  composer
             database: mysql
         - mediawiki-core-code-coverage-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-4
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
             packages-source: vendor
             database: sqlite
         - mwselenium-quibble-docker:
