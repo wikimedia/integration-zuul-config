@@ -46,12 +46,15 @@ relay_signals SIGINT SIGTERM
 wait "$cover_pid"
 set -e
 
-# We don't want this script to interfere with anything, ensure that any possible errors
-# are ignored.
-phpunit-junit-edit "$LOG_DIR/junit.xml" || true
+if [ -f "$LOG_DIR/junit.xml" ]; then
+  phpunit-junit-edit "$LOG_DIR/junit.xml"
+fi
 
-# But bails out if no HTML coverage report has been generated
-test -f "$WORKSPACE"/cover/index.html
+# Bail out if no HTML coverage report has been generated and not operating
+# in codehealth pipeline context.
+if [[ -v CODEHEALTH ]]; then
+  test -f "$WORKSPACE"/cover/index.html
+fi
 
 if [ -s "$LOG_DIR"/clover.xml ]; then
     cp "$LOG_DIR"/clover.xml "$WORKSPACE"/cover/clover.xml
