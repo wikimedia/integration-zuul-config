@@ -730,7 +730,10 @@
         - mediawiki-quibble-composertest-{php}-docker
         - release-quibble-{packages-source}-{database}-{php}-docker:
             packages-source:
+                # On release branches, we use 'composer install' to ship dependencies - T189560
                 - composer
+                # But for mediawiki/vendor, we use it instead of composer! - T189560
+                - vendor
         - wmf-quibble-vendor-mysql-{php}-docker:
             # We never use composer on wmf cluster
             packages-source: vendor
