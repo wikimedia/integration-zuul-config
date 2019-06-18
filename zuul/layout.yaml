@@ -943,6 +943,7 @@ project-templates:
     experimental:
      - mwext-php72-phan-docker
      - mwext-php70-phan-seccheck-docker
+     - mwext-php72-phan-seccheck-docker
      - quibble-composer-mysql-php70-docker
      - quibble-composer-mysql-php71-docker
      - quibble-composer-mysql-php72-docker
@@ -956,10 +957,13 @@ project-templates:
      - mwext-php70-phan-seccheck-docker
     gate-and-submit-swat:
      - mwext-php70-phan-seccheck-docker
+    experimental:
+     - mwext-php72-phan-seccheck-docker
 
   - name: extension-seccheck-non-voting
     test:
      - mwext-php70-phan-seccheck-docker-non-voting
+     - mwext-php72-phan-seccheck-docker-non-voting
 
   # Runs quibble, and includes experimental jobs
   # that are for extensions.
@@ -982,12 +986,13 @@ project-templates:
       - quibble-vendor-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
     experimental:
       - quibble-vendor-sqlite-php72-docker
       - quibble-vendor-mysql-php73-docker
       - mwext-php72-phan-docker
       - mwext-php70-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
 
   - name: extension-quibble-composer
     php:
@@ -1008,12 +1013,13 @@ project-templates:
       - quibble-composer-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
     experimental:
       - quibble-composer-sqlite-php72-docker
       - quibble-composer-mysql-php73-docker
       - mwext-php72-phan-docker
       - mwext-php70-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
 
   # Runs quibble but skip selenium tests - T196960
   - name: extension-quibble-noselenium
@@ -1035,12 +1041,13 @@ project-templates:
       - quibble-vendor-mysql-php72-noselenium-docker
       - mwgate-node10-docker
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
     experimental:
       - quibble-vendor-sqlite-php72-noselenium-docker
       - quibble-vendor-mysql-php73-noselenium-docker
       - mwext-php72-phan-docker
       - mwext-php70-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
 
   - name: extension-quibble-composer-noselenium
     php:
@@ -1061,13 +1068,14 @@ project-templates:
       - quibble-composer-mysql-php72-noselenium-docker
       - mwgate-node10-docker
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
     experimental:
       - quibble-composer-sqlite-php72-noselenium-docker
       - quibble-composer-mysql-php72-noselenium-docker
       - quibble-composer-mysql-php73-noselenium-docker
       - mwext-php72-phan-docker
       - mwext-php70-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
 
   # Template to run per-patch selenium browser test using mediawiki_selenium ruby gems.
   #
@@ -1117,13 +1125,14 @@ project-templates:
       - wmf-quibble-vendor-mysql-php72-docker
       - wmf-quibble-core-vendor-mysql-php72-docker
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
     experimental:
       - wmf-quibble-vendor-mysql-php73-docker
       - wmf-quibble-core-vendor-mysql-php73-docker
       - release-quibble-composer-mysql-php73-docker
       - mwext-php72-phan-docker
       - mwext-php70-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
 
   - name: extension-phan
     test:
@@ -1148,10 +1157,13 @@ project-templates:
      - mwskin-php70-phan-seccheck-docker
     gate-and-submit-swat:
      - mwskin-php70-phan-seccheck-docker
+    experimental:
+     - mwskin-php72-phan-seccheck-docker-non-voting
 
   - name: skin-seccheck-non-voting
     test:
      - mwskin-php70-phan-seccheck-docker-non-voting
+     - mwskin-php72-phan-seccheck-docker-non-voting
 
   - name: extension-coverage
     postmerge:
@@ -1192,6 +1204,7 @@ project-templates:
       - quibble-vendor-mysql-php73-docker
       - mwskin-php72-phan-docker
       - mwskin-php70-phan-seccheck-docker
+      - mwskin-php72-phan-seccheck-docker
 
   - name: skin-quibble-composer
     php:
@@ -1219,6 +1232,7 @@ project-templates:
       - quibble-composer-mysql-php73-docker
       - mwskin-php72-phan-docker
       - mwskin-php70-phan-seccheck-docker
+      - mwskin-php72-phan-seccheck-docker
 
   - name: extension-javascript-documentation
     test:
@@ -1531,6 +1545,7 @@ projects:
       - mediawiki-quibble-vendor-mysql-php73-docker
       - mwgate-composer-php70-docker
       - mediawiki-core-php70-phan-seccheck-docker
+      - mediawiki-core-php72-phan-seccheck-docker
 
   - name: mediawiki/debian
     test:
