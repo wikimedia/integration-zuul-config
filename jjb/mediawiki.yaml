@@ -531,8 +531,8 @@
         dir: 'cover'
     - docker-run-with-log-and-workspace-cache:
         image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-3
-        options: '--volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
-        args: '-e CODEHEALTH=1 --packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --commands=mwext-phpunit-coverage'
+        options: '-e CODEHEALTH=1 --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
+        args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --commands=mwext-phpunit-coverage'
         logdir: '/workspace/log'
     - docker-run-with-log-and-workspace-cache:
         image: docker-registry.wikimedia.org/releng/npm-test:0.6.1
