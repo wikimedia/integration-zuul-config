@@ -2,9 +2,15 @@ FROM {{ "quibble-stretch-php72" | image_tag }}
 
 USER root
 
-#
-#  Install firefox-esr to make chromium --headless work  #
-#
+# Fresnel needs firefox-esr in order for Headless Chromium to work.
+# There are numerous libs that Chromium only needs for headless mode
+# and these are not statically linked in the distribution provioded by Google,
+# and they also aren't specified by Debian as deps for 'chromium'.
+# The full list is documented at:
+#   https://github.com/GoogleChrome/puppeteer/blob/v1.12.2/docs/troubleshooting.md
+# We've installed Firefox and Chrome together since 2015, so keep doing
+# that for now.
+# https://phabricator.wikimedia.org/T226078
 RUN {{ "python build-essential firefox-esr" | apt_install }}
 
 #
