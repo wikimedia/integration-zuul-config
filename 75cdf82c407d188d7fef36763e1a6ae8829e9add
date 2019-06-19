@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "abccdb4d_1f0d6346",
+        "filename": "dockerfiles/bazel/Dockerfile.template",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-06-19T19:39:14Z",
+      "side": 1,
+      "message": "Apt configuration is now done first ....",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 46
+      },
+      "revId": "75cdf82c407d188d7fef36763e1a6ae8829e9add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "94530435_458f61f1",
+        "filename": "dockerfiles/bazel/Dockerfile.template",
+        "patchSetId": 9
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-06-19T19:39:14Z",
+      "side": 1,
+      "message": "And there is thus a single {{ apt_install }} to install bazel and default-jdk.  The reason is that the macro deletes all /var/cache/apt material and thus when it is invoked twice, it has to do an apt-get update twice which takes a while.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 42
+      },
+      "revId": "75cdf82c407d188d7fef36763e1a6ae8829e9add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4228f6b9_2db58f3c",
+        "filename": "dockerfiles/bazel/Dockerfile.template",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-06-19T19:39:14Z",
+      "side": 1,
+      "message": "Hack in Bazel that lets one use a different directory. That might be fine. Not sure where the result of the build will occur though :-\\\n\nWe might need a dummy Bazel based program to test again.",
+      "range": {
+        "startLine": 15,
+        "startChar": 3,
+        "endLine": 15,
+        "endChar": 15
+      },
+      "revId": "75cdf82c407d188d7fef36763e1a6ae8829e9add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8736de1a_317a4df2",
+        "filename": "dockerfiles/bazel/Dockerfile.template",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-06-19T19:39:14Z",
+      "side": 1,
+      "message": "Bazel extracts some stuff on the first run which takes sometime. I felt like it would be nicer to have it occurs once at build time, saving time on future executions of the container.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 17
+      },
+      "revId": "75cdf82c407d188d7fef36763e1a6ae8829e9add",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
