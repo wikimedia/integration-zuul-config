@@ -1129,7 +1129,8 @@ class TestZuulScheduler(unittest.TestCase):
         matches = {}
 
         for branch in ['master', 'REL1_30', 'REL1_31', 'REL1_32', 'REL1_33',
-                       'REL1_34', 'REL1_99', 'wmf/1.99.9-wmf.99']:
+                       'REL1_34', 'REL1_99', 'fundraising/REL1_31',
+                       'wmf/1.99.9-wmf.99']:
             change.branch = branch
             matches[branch] = {
                 job.name: job.changeMatches(change)
@@ -1138,93 +1139,122 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.maxDiff = None
         self.assertEquals({
+            # Master branch; we don't use release jobs, otherwise all.
             'master': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
                 'mwgate-composer-hhvm-docker': True,
                 'mwgate-node10-docker': True,
-                # release-* jobs are for release branches
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
+                'mediawiki-quibble-vendor-mysql-php70-docker': True,
+                'mediawiki-quibble-vendor-mysql-php71-docker': True,
+                'mediawiki-quibble-vendor-mysql-php72-docker': True,
                 'release-quibble-composer-mysql-hhvm-docker': False,
-                # Optimization for core:
+                'release-quibble-composer-mysql-php70-docker': False,
                 'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
                 'wmf-quibble-vendor-mysql-hhvm-docker': False
                 },
+            # Old, unsupported release; it gets treated a bit like master.
             'REL1_30': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
                 'mwgate-composer-hhvm-docker': True,
                 'mwgate-node10-docker': True,
-                # We use composer on release branches
-                'release-quibble-composer-mysql-hhvm-docker': True,
-                # No need for the Wikimedia gated job on release branches:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                },
-            'REL1_31': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # We use composer on release branches
-                'release-quibble-composer-mysql-hhvm-docker': True,
-                # No need for the Wikimedia gated job on release branches:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                },
-            'REL1_32': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # We use composer on release branches
-                'release-quibble-composer-mysql-hhvm-docker': True,
-                # No need for the Wikimedia gated job on release branches:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                },
-            'REL1_33': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # We use composer on release branches
-                'release-quibble-composer-mysql-hhvm-docker': True,
-                # No need for the Wikimedia gated job on release branches:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                },
-            'REL1_34': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # We use composer on release branches
-                'release-quibble-composer-mysql-hhvm-docker': True,
-                # No need for the Wikimedia gated job on release branches:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                },
-            'REL1_99': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # We use composer on release branches
-                'release-quibble-composer-mysql-hhvm-docker': True,
-                # No need for the Wikimedia gated job on release branches:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                },
-            'wmf/1.99.9-wmf.99': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # release-* jobs are for release branches
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
+                'mediawiki-quibble-vendor-mysql-php70-docker': False,
+                'mediawiki-quibble-vendor-mysql-php71-docker': False,
+                'mediawiki-quibble-vendor-mysql-php72-docker': False,
                 'release-quibble-composer-mysql-hhvm-docker': False,
-                # Optimization for core:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
+                'release-quibble-composer-mysql-php70-docker': False,
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
                 'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            # Old, supported release; it gets PHP70 and PHP71 but not PHP72
+            'REL1_31': {
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
+                'mediawiki-quibble-vendor-mysql-php70-docker': True,
+                'mediawiki-quibble-vendor-mysql-php71-docker': True,
+                'mediawiki-quibble-vendor-mysql-php72-docker': False,
+                'release-quibble-composer-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-php70-docker': True,
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            # New, supported release; it gets PHP70, PHP71, and PHP72
+            'REL1_32': {
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
+                'mediawiki-quibble-vendor-mysql-php70-docker': True,
+                'mediawiki-quibble-vendor-mysql-php71-docker': True,
+                'mediawiki-quibble-vendor-mysql-php72-docker': False,
+                'release-quibble-composer-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-php70-docker': True,
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            # Forthcoming release; it gets PHP70 , PHP71, and PHP72
+            'REL1_33': {
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
+                'mediawiki-quibble-vendor-mysql-php70-docker': True,
+                'mediawiki-quibble-vendor-mysql-php71-docker': True,
+                'mediawiki-quibble-vendor-mysql-php72-docker': True,
+                'release-quibble-composer-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-php70-docker': True,
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            # Future release; it is mostly treated like master.
+            'REL1_34': {
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
+                'mediawiki-quibble-vendor-mysql-php70-docker': False,
+                'mediawiki-quibble-vendor-mysql-php71-docker': False,
+                'mediawiki-quibble-vendor-mysql-php72-docker': False,
+                'release-quibble-composer-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-php70-docker': False,
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            # Far future release; it is mostly treated like master.
+            'REL1_99': {
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
+                'mediawiki-quibble-vendor-mysql-php70-docker': False,
+                'mediawiki-quibble-vendor-mysql-php71-docker': False,
+                'mediawiki-quibble-vendor-mysql-php72-docker': False,
+                'release-quibble-composer-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-php70-docker': False,
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            # Production fundraising branch; special treatment, no HHVM
+            'fundraising/REL1_31': {
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
+                'mediawiki-quibble-vendor-mysql-php70-docker': False,
+                'mediawiki-quibble-vendor-mysql-php71-docker': False,
+                'mediawiki-quibble-vendor-mysql-php72-docker': False,
+                'release-quibble-composer-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-php70-docker': False,
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False
+                },
+            # Production branch; gets treated like master
+            'wmf/1.99.9-wmf.99': {
+                'mwgate-composer-hhvm-docker': True,
+                'mwgate-node10-docker': True,
+                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
+                'mediawiki-quibble-vendor-mysql-php70-docker': True,
+                'mediawiki-quibble-vendor-mysql-php71-docker': True,
+                'mediawiki-quibble-vendor-mysql-php72-docker': True,
+                'release-quibble-composer-mysql-hhvm-docker': False,
+                'release-quibble-composer-mysql-php70-docker': False,
+                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
+                'wmf-quibble-vendor-mysql-hhvm-docker': False,
                 }
             },
             matches)
