@@ -625,7 +625,8 @@ jobs:
   - name: ^mediawiki-core-php72-phan-docker$
     skip-if:
       - project: '^mediawiki/core$'
-        branch: (?:^(fundraising/)?REL1_2[78]$)
+        # Skip for fundraising, it requires php7.0 - T226156
+        branch: ^fundraising/REL1_31$
 
   # -------
   # MediaWiki: Quibble and PHPUnit stuff
