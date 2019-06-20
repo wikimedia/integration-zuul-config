@@ -1063,8 +1063,6 @@ class TestZuulScheduler(unittest.TestCase):
             'release-quibble-composer-mysql-php71-docker': False,
             'release-quibble-composer-mysql-php72-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
-            'wmf-quibble-vendor-mysql-php70-docker': False,
-            'wmf-quibble-vendor-mysql-php71-docker': False,
             'wmf-quibble-vendor-mysql-php72-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
             'wmf-quibble-core-vendor-mysql-php72-docker': True,
@@ -1175,14 +1173,14 @@ class TestZuulScheduler(unittest.TestCase):
             },
             matches)
 
-    def test_quibble_71_72_jobs_are_skipped_on_fundraising_branches(self):
+    def test_quibble_72_jobs_are_skipped_on_fundraising_branches(self):
         change = zuul.model.Change('mediawiki/core')
         change.branch = 'fundraising/REL1_31'
 
         job = self.getJob(
             'mediawiki/core',
             'gate-and-submit',
-            'mediawiki-quibble-vendor-mysql-php71-docker')
+            'mediawiki-quibble-vendor-mysql-php72-docker')
         self.assertFalse(
             job.changeMatches(change),
             'Quibble must be skipped on fundraising branches')
@@ -1190,7 +1188,7 @@ class TestZuulScheduler(unittest.TestCase):
         wmf_job = self.getJob(
             'mediawiki/core',
             'gate-and-submit',
-            'wmf-quibble-vendor-mysql-php71-docker')
+            'wmf-quibble-vendor-mysql-php72-docker')
         self.assertFalse(
             wmf_job.changeMatches(change),
             'WMF Quibble job must be skipped on fundraising branches')
@@ -1199,7 +1197,7 @@ class TestZuulScheduler(unittest.TestCase):
         wmf_quibble_job = self.getJob(
             'mediawiki/extensions/AbuseFilter',
             'gate-and-submit',
-            'wmf-quibble-vendor-mysql-php70-docker')
+            'wmf-quibble-vendor-mysql-php72-docker')
         release_job = self.getJob(
             'mediawiki/extensions/AbuseFilter',
             'gate-and-submit',
@@ -1297,7 +1295,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         wmf_quibble_job = self.getJob(
             repo, 'gate-and-submit',
-            'wmf-quibble-vendor-mysql-php70-docker')
+            'wmf-quibble-vendor-mysql-php72-docker')
         release_job = self.getJob(
             repo, 'gate-and-submit',
             'release-quibble-composer-mysql-php70-docker')
