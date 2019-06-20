@@ -662,20 +662,26 @@ jobs:
   - name: ^release-quibble-
     branch: ^REL
 
-  # Skip MediaWiki tests for PHP 7.1 on wmf/, fundraising/, and MW < 1.32.
-  # Effectively only on master and REL1_32+
-  - name: ^(wmf|mediawiki).*quibble.*php71.*
-    branch: (?!(wmf|fundraising)/.*|REL1_3[01])
-  - name: ^release-quibble-composer-mysql-php71-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_3[01]|master)
+  # Only run MediaWiki tests for PHP 7.0 on master and MW 1.31+.
+  - name: ^(wmf|mediawiki).*quibble.*php70.*
+    branch: ^(master|REL1_3[123])$
+  # Only run release-specific MediaWiki test for PHP 7.0 on master and MW 1.31+.
+  - name: ^release-quibble-composer-mysql-php70-docker$
+    branch: ^(master|REL1_3[123])$
 
-  # Skip MediaWiki tests related to PHP 7.2 support on fundraising/, and MW < 1.32.
-  # Effectively only on master, REL1_32+, and wmf/.
+  # Only run MediaWiki tests for PHP 7.1 on master and MW 1.32+.
+  - name: ^(wmf|mediawiki).*quibble.*php71.*
+    branch: ^(master|REL1_3[23])$
+  # Only run release-specific MediaWiki test for PHP 7.1 on master and MW 1.32+.
+  - name: ^release-quibble-composer-mysql-php71-docker$
+    branch: ^(master|REL1_3[23])$
+
+  # Only run MediaWiki tests for PHP 7.2 on master, wmf/ branches, and MW 1.32+.
   - name: ^(wmf|mediawiki).*quibble.*php72.*
-    branch: (?!(fundraising)/.*|REL1_3[01])
-  # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
+    branch: ^(master|wmf/.*|REL1_3[23])$
+  # Only run release-specific MediaWiki test for PHP 7.2 on master and MW 1.32+.
   - name: ^release-quibble-composer-mysql-php72-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_3[01]|master)
+    branch: ^(master|REL1_3[23])$
 
   - name: ^.*quibble.*sqlite.*php72.*$
     skip-if:
