@@ -457,6 +457,7 @@
          # Used for analyzing gerrit patch sets.
          name: 'patch'
          branch: '$ZUUL_CHANGE'
+         concurrent: true
          sonar_args: |
              -Dsonar.projectKey=mediawiki-core \
              -Dsonar.projectName=mediawiki-core \
@@ -469,6 +470,7 @@
          # Used for analyzing the master branch on postmerge.
          name: 'master-non-voting'
          branch: '$ZUUL_BRANCH'
+         concurrent: false
          sonar_args: |
              -Dsonar.projectKey=mediawiki-core \
              -Dsonar.projectName=mediawiki-core \
@@ -480,7 +482,7 @@
     !!merge : *job_quibble
     name: 'mwcore-codehealth-{name}'
     node: DebianJessieDocker && m4executor
-    concurrent: true
+    concurrent: '{concurrent}'
     branch: '$ZUUL_BRANCH'
     properties:
      - build-discarder:
