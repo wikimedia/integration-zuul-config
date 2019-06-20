@@ -664,17 +664,17 @@ jobs:
   # Skip MediaWiki tests for PHP 7.1 on wmf/, fundraising/, and MW < 1.32.
   # Effectively only on master and REL1_32+
   - name: ^(wmf|mediawiki).*quibble.*php71.*
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01]))
+    branch: (?!(wmf|fundraising)/.*|REL1_3[01])
   - name: ^release-quibble-composer-mysql-php71-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
+    branch: (?!(wmf|fundraising)/.*|REL1_3[01]|master)
 
   # Skip MediaWiki tests related to PHP 7.2 support on fundraising/, and MW < 1.32.
   # Effectively only on master, REL1_32+, and wmf/.
   - name: ^(wmf|mediawiki).*quibble.*php72.*
-    branch: (?!(fundraising)/.*|REL1_(2[789]|3[01]))
+    branch: (?!(fundraising)/.*|REL1_3[01])
   # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
   - name: ^release-quibble-composer-mysql-php72-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_(2[789]|3[01])|master)
+    branch: (?!(wmf|fundraising)/.*|REL1_3[01]|master)
 
   - name: ^.*quibble.*sqlite.*php72.*$
     skip-if:
@@ -686,7 +686,7 @@ jobs:
         branch: ^wmf/.*$
       # Disable on MW < 1.32 (sqlite not yet passing)
       - project: '^mediawiki/.*'
-        branch: ^REL1_(2[789]|3[01])$
+        branch: ^REL1_3[01]$
 
   - name: ^.*quibble.*postgres.*php72.*$
     skip-if:
@@ -698,7 +698,7 @@ jobs:
         branch: ^wmf/.*$
       # Disable on MW < 1.32 (pgsql not yet passing)
       - project: '^mediawiki/.*'
-        branch: ^REL1_(2[789]|3[01])$
+        branch: ^REL1_3[01]$
 
   - name: ^.*quibble.*hhvm.*$
     skip-if:
