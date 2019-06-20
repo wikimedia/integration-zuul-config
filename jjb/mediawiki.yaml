@@ -526,7 +526,7 @@
     - docker-wipe-dir:
         dir: 'cover'
     - docker-run-with-log-and-workspace-cache:
-        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
+        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-6
         options: '-e CODEHEALTH=1 --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
         args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --commands=mwext-phpunit-coverage'
         logdir: '/workspace/log'
@@ -714,7 +714,7 @@
         - php71:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php71:0.0.31-2
         - php72:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.31-5
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.31-6
         - php73:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.31-3
         - hhvm:
@@ -741,19 +741,19 @@
             # WMF cluster uses MariaDB/MySQL
             database: mysql
         - mediawiki-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-6
             packages-source: vendor
             database: sqlite
         - mwext-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-6
             packages-source:  composer
             database: mysql
         - mwext-phpunit-coverage-docker-publish:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-6
             packages-source:  composer
             database: mysql
         - mediawiki-core-code-coverage-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-5
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.31-6
             packages-source: vendor
             database: sqlite
         - mwselenium-quibble-docker:
