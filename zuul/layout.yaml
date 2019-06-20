@@ -827,6 +827,10 @@ jobs:
     success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-extensions-{build.parameters[EXT_NAME]}&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
     failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-extensions-{build.parameters[EXT_NAME]}&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
 
+  - name: mediawiki-core-codehealth-patch
+    success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
+    failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
+
   # For coverage report jobs, we only want one build at a time.
   #
   # That is the equivalent of concurrent: false in Jenkins but handled by Zuul
@@ -1532,8 +1536,11 @@ projects:
       - mediawiki-phpunit-coverage-patch-docker
     patch-performance:
       - mediawiki-fresnel-patch-docker
+    codehealth:
+      - mediawiki-core-codehealth-patch
     postmerge:
       - mediawiki-core-jsduck-docker-publish
+      - mediawiki-core-codehealth-master-non-voting
     post:
       - train-deploy-notes
     experimental:
