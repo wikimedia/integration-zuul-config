@@ -1041,10 +1041,8 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
-            'mediawiki-quibble-vendor-mysql-hhvm-docker': False,
             'mediawiki-quibble-composertest-php70-docker': True,
             'release-quibble-composer-mysql-hhvm-docker': False,
-            'release-quibble-composer-mysql-php70-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
             'mwgate-node10-docker': True,
@@ -1085,6 +1083,22 @@ class TestZuulScheduler(unittest.TestCase):
                     self.getPipeline('gate-and-submit').job_trees.iteritems()
                     if p.name == 'mediawiki/core'][0]
         gate_jobs = job_tree.getJobs()
+
+        expected_jobs = {
+            'test': set(expected_test),
+            'gate-and-submit': set(expected_gate),
+        }
+
+        self.maxDiff = None
+        self.longMessage = True
+        self.assertEquals(
+            expected_jobs,
+            {
+                'test': {j.name for j in test_jobs},
+                'gate-and-submit': {j.name for j in gate_jobs}
+            },
+            'The test jobs list must match the defined jobs for mediawiki/core'
+        )
 
         for job in test_jobs:
             self.assertEqual(
