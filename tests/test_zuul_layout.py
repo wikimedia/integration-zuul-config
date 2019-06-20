@@ -27,6 +27,19 @@ class TestZuulLayout(unittest.TestCase):
         with open(wmf_zuul_layout, 'r') as f:
             cls.layout = yaml.load(f)
 
+    def getExtSkinRepos(self):
+        projects = []
+        for project in self.layout['projects']:
+            if not project['name'].startswith((
+                    'mediawiki/skins', 'mediawiki/extensions')):
+                continue
+            if len(project['name'].split('/')) != 3:
+                # Skip sub repositories
+                continue
+            projects.append(project)
+
+        return projects
+
     def test_mediawiki_ext_skins_have_test_templates(self):
         one_of_templates = (
             'archived',
@@ -39,16 +52,8 @@ class TestZuulLayout(unittest.TestCase):
             'quibble-vendor',
             )
         errors = []
-        for project in self.layout['projects']:
+        for project in self.getExtSkinRepos():
             try:
-                if not project['name'].startswith((
-                        'mediawiki/skins', 'mediawiki/extensions')):
-                    continue
-
-                if len(project['name'].split('/')) != 3:
-                    # Skip sub repositories
-                    continue
-
                 has_extension_unittests = any([
                     template['name'].startswith(one_of_templates)
                     for template in project.get('template', {})
@@ -57,6 +62,33 @@ class TestZuulLayout(unittest.TestCase):
                     has_extension_unittests,
                     'Project %s in Zuul lacks an extension-unittests* '
                     'template' % project['name'])
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.maxDiff = None
+        self.assertListEqual([], errors)
+
+    def test_gated_extensions_have_quibble_regular_template(self):
+        errors = []
+        for project in self.getExtSkinRepos():
+            try:
+                if 'template' not in project:
+                    continue
+
+                templates = [template['name']
+                             for template in project.get('template')]
+                if 'extension-gate' not in templates:
+                    continue
+
+                # Extract singular 'extension' or 'skin'
+                kind = project['name'].split('/')[1][:-1]
+
+                self.assertIn(
+                    '%s-quibble' % kind,
+                    templates,
+                    'Must have "%s-quibble": %s' % (kind, project['name'])
+                )
+
             except AssertionError, e:
                 errors.append(str(e))
 
