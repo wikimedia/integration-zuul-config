@@ -50,9 +50,9 @@ if [ -f "$LOG_DIR/junit.xml" ]; then
   phpunit-junit-edit "$LOG_DIR/junit.xml"
 fi
 
-# Bail out if no HTML coverage report has been generated and not operating
-# in codehealth pipeline context.
-if [[ -v CODEHEALTH ]]; then
+# If we're not operating the in the codehealth pipeline context, check to see
+# if the HTML coverage report was generated. If it was not, exit with a failure.
+if [[ ! -v CODEHEALTH ]]; then
   test -f "$WORKSPACE"/cover/index.html
 fi
 
