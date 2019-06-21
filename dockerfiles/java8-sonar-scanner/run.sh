@@ -23,15 +23,17 @@ if [[ ! -f sonar-project.properties ]]; then
     echo "sonar.sources=resources,languages,includes,src,modules,maintenance" >> sonar-project.properties
     echo "sonar.exclusions=extensions/**/*,mw-config/**/*,node_modules/**/*,vendor/**/*,skins/**/*,logs/**/*,cache/**/*" >> sonar-project.properties
     echo "sonar.tests=tests" >> sonar-project.properties
-    # If test coverage exists, add this to the properties file.
-    if [[ -f coverage/lcov.info ]]; then
-        echo "sonar.javascript.lcov.reportPaths=coverage/lcov.info" >> sonar-project.properties
-    fi
-    if [[ -f /workspace/log/junit.xml ]] && [[ -f /workspace/log/clover.xml ]]; then
-        echo "sonar.php.tests.reportPath=/workspace/log/junit.xml" >> sonar-project.properties
-        echo "sonar.php.coverage.reportPaths=/workspace/log/clover.xml" >> sonar-project.properties
-    fi
 fi
+
+# If test coverage exists, add this to the properties file.
+if [[ -f coverage/lcov.info ]]; then
+    echo "sonar.javascript.lcov.reportPaths=coverage/lcov.info" >> sonar-project.properties
+fi
+if [[ -f /workspace/log/junit.xml ]] && [[ -f /workspace/log/clover.xml ]]; then
+    echo "sonar.php.tests.reportPath=/workspace/log/junit.xml" >> sonar-project.properties
+    echo "sonar.php.coverage.reportPaths=/workspace/log/clover.xml" >> sonar-project.properties
+fi
+
 # Output sonar-project file to assist with debugging:
 echo "== sonar-project.properties =="
 cat sonar-project.properties
