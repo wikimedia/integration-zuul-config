@@ -1,15 +1,25 @@
-FROM {{ "ci-jessie" | image_tag }}
+FROM {{ "tox" | image_tag }} AS build
 
-ARG DEBIAN_FRONTEND=noninteractive
+USER root
+RUN install --owner=nobody --group=nogroup --directory /opt/zuul
 
-# pin python-pbr https://phabricator.wikimedia.org/T153877
-RUN {{ "zuul python-pbr=0.8.2-1" | apt_install }}
+USER nobody
+RUN virtualenv --python=python2.7 --always-copy /opt/zuul \
+    && /opt/zuul/bin/pip2 install git+https://gerrit.wikimedia.org/r/integration/zuul.git#egg=zuul \
+    && /opt/zuul/bin/zuul-cloner --version
+
+FROM {{ "ci-stretch" | image_tag }}
+RUN {{ "python2.7" | apt_install }}
 
 RUN git clone --depth 1 https://gerrit.wikimedia.org/r/integration/jenkins /tmp/jenkins && \
     cp /tmp/jenkins/etc/zuul-clonemap.yaml /zuul-clonemap.yaml && \
-    rm -rf /tmp/jenkins
+    rm -rf /tmp/jenkins && \
+    mkdir -p /opt/zuul
+
+COPY --from=build /opt/zuul /opt/zuul
 
 USER nobody
-
-ENTRYPOINT ["zuul-cloner"]
+# Assert it is actually working
+RUN /opt/zuul/bin/zuul-cloner --version
+ENTRYPOINT ["/opt/zuul/bin/zuul-cloner"]
 CMD ["--help"]
