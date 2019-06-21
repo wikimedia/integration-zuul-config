@@ -56,16 +56,6 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
-- job:
-    name: 'remexhtml-phpunit-coverage-docker-publish'
-    !!merge : *phpunit-coverage-docker-publish
-    triggers:
-      - zuul
-    wrappers:
-      - timeout:
-          timeout: 90 # mins. Increased due to lots of tests
-          fail: true
-
 - project:
     name: eventlogging
     jobs:
