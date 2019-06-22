@@ -94,3 +94,36 @@ class TestZuulLayout(unittest.TestCase):
 
         self.maxDiff = None
         self.assertListEqual([], errors)
+
+    def test_bluespice_repos_use_composer_template(self):
+        errors = []
+        bsrepos = [r for r in self.getExtSkinRepos()
+                   if '/BlueSpice' in r['name']]
+        for project in bsrepos:
+            try:
+                if 'template' not in project:
+                    continue
+                templates = [template['name']
+                             for template in project.get('template')]
+
+                # Extract singular 'extension' or 'skin'
+                kind = project['name'].split('/')[1][:-1]
+
+                required = [
+                    '%s-broken' % kind,
+                    '%s-quibble-composer-noselenium' % kind,
+                    '%s-quibble-composer' % kind,
+                    ]
+                self.assertTrue(
+                    any([r in templates for r in required]),
+                    '%s must have one of [%s]. Got: %s' % (
+                        project['name'],
+                        ', '.join(required),
+                        ', '.join(templates),
+                    )
+                )
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.maxDiff = None
+        self.assertListEqual([], errors)
