@@ -451,7 +451,7 @@
 - project:
     name: mwcore-codehealth
     packages-source: composer
-    quibble_args: '--skip=all'
+    quibble_args: '--skip-install --command "vendor/bin/phpunit -d memory_limit=512M -d zend_extension=xdebug.so -c tests/phpunit/unit-tests.xml --coverage-clover \"$LOG_DIR\"/clover.xml --log-junit \"$LOG_DIR\"/junit.xml --exclude-group Dump,Broken,ParserFuzz,Stub"'
     database: mysql
     jobs:
       - mwcore-codehealth-{name}:
