@@ -451,7 +451,7 @@
 - project:
     name: mwcore-codehealth
     packages-source: composer
-    quibble_args: '--skip=all'
+    quibble_args: '--skip-install --command "composer phpunit:coverage -- --coverage-clover \"$LOG_DIR\"/clover.xml --log-junit \"$LOG_DIR\"/junit.xml"'
     database: mysql
     jobs:
       - mwcore-codehealth-{name}:
