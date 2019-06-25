@@ -10,6 +10,7 @@ def dockerMount = '/var/lib/docker'
 def disks = ['/', '/srv', dockerMount]
 
 def computerNamePrefix = 'integration-slave-'
+def masterName = 'contint1001'
 
 def ircAlerts = []
 def jobInfo = "${env.JOB_NAME} build ${env.BUILD_NUMBER}"
@@ -124,9 +125,10 @@ def checkAgents = {
     for (slave in hudson.model.Hudson.instance.slaves) {
         def computer = slave.computer
         def computerName = computer.getName()
+        def isMaster = computerName == masterName
 
         // Only check nodes that are named like integration-agents
-        if (!computerName.startsWith(computerNamePrefix)) {
+        if (!computerName.startsWith(computerNamePrefix) && !isMaster) {
             continue
         }
 
@@ -164,13 +166,16 @@ def checkAgents = {
             println "${jenkinsMessage}"
 
             if (diskObject.percent >= offlinePercentage) {
-                // The offline threshold has been reached
-                computer.setTemporarilyOffline(
-                    true,
-                    new OfflineCause.ByCLI(jenkinsMessage)
-                )
+                // Don't take the master node offline, we need it
+                if (!isMaster) {
+                    // The offline threshold has been reached
+                    computer.setTemporarilyOffline(
+                        true,
+                        new OfflineCause.ByCLI(jenkinsMessage)
+                    )
 
-                alerts.add(ircMessage)
+                    alerts.add(ircMessage)
+                }
             } else if (diskObject.percent >= cleanupPercentage && diskObject.mount == dockerMount) {
                 // The cleanup threshold for the docker mount has been reached
                 removeDockerImages(computer)
