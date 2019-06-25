@@ -6,10 +6,8 @@ def executionTimeout = params.EXECUTION_TIMEOUT_SECONDS.toInteger()
 def cleanupPercentage = params.CLEANUP_PERCENTAGE.toInteger()
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
 
-def dockerMount = '/var/lib/docker'
-def disks = ['/', '/srv', dockerMount]
-
 def computerNamePrefix = 'integration-slave-'
+def masterName = 'contint1001'
 
 def ircAlerts = []
 def jobInfo = "${env.JOB_NAME} build ${env.BUILD_NUMBER}"
@@ -30,6 +28,19 @@ String executeOn(computer, cmd) {
         'print($/' + cmd + '/$.execute().text)',
         computer.getChannel()
     )
+}
+
+def dockerMount = { computerName ->
+    switch(computerName) {
+        case masterName:
+            return '/mnt/docker'
+        default:
+            return '/var/lib/docker'
+    }
+}
+
+def disks = { computerName ->
+    ['/', '/srv', dockerMount(computerName)].toSet()
 }
 
 Map dockerImagesAndTags(computer) {
@@ -64,13 +75,13 @@ List dockerImagesToRemove(computer) {
     imageIDs
 }
 
-def checkDiskSpace = { computer ->
-    executeOn(computer, "df ${disks.join(' ')}")
+def checkDiskSpace = { computer, mountPoints ->
+    executeOn(computer, "df ${mountPoints.join(' ')}")
 }
 
 def removeDockerImages = { computer ->
     // The 10000 limit on docker rmi arguments is very conservative
-    // considering the 2097152 ARG_MAX of our slave instances and the typical
+    // considering the 2097152 ARG_MAX of our worker instances and the typical
     // 12-character Docker image ID length
     dockerImagesToRemove(computer).collate(10000).each { ids ->
         def idsJoin = ids.join(' ')
@@ -121,12 +132,13 @@ def isFailure = { build ->
 @NonCPS
 def checkAgents = {
     alerts = []
-    for (slave in hudson.model.Hudson.instance.slaves) {
-        def computer = slave.computer
+    for (worker in hudson.model.Hudson.instance.slaves) {
+        def computer = worker.computer
         def computerName = computer.getName()
+        def isMaster = computerName == masterName
 
         // Only check nodes that are named like integration-agents
-        if (!computerName.startsWith(computerNamePrefix)) {
+        if (!computerName.startsWith(computerNamePrefix) && !isMaster) {
             continue
         }
 
@@ -145,7 +157,9 @@ def checkAgents = {
             continue
         }
 
-        def diskObjects = newDisksFromDf(checkDiskSpace(computer))
+        def diskObjects = newDisksFromDf(
+            checkDiskSpace(computer, disks(computerName))
+        )
 
         diskObjects.each{ diskObject ->
             def ircMessage = String.format(
@@ -164,14 +178,17 @@ def checkAgents = {
             println "${jenkinsMessage}"
 
             if (diskObject.percent >= offlinePercentage) {
-                // The offline threshold has been reached
-                computer.setTemporarilyOffline(
-                    true,
-                    new OfflineCause.ByCLI(jenkinsMessage)
-                )
+                // Don't take the master node offline, we need it
+                if (!isMaster) {
+                    // The offline threshold has been reached
+                    computer.setTemporarilyOffline(
+                        true,
+                        new OfflineCause.ByCLI(jenkinsMessage)
+                    )
 
-                alerts.add(ircMessage)
-            } else if (diskObject.percent >= cleanupPercentage && diskObject.mount == dockerMount) {
+                    alerts.add(ircMessage)
+                }
+            } else if (diskObject.percent >= cleanupPercentage && diskObject.mount == dockerMount(computerName)) {
                 // The cleanup threshold for the docker mount has been reached
                 removeDockerImages(computer)
             }
