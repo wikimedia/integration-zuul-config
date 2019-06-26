@@ -1,0 +1,9 @@
+FROM {{ "ci-stretch" | image_tag }}
+
+USER root
+RUN {{ "helm" | apt_install }}
+
+USER nobody
+WORKDIR /src
+ENTRYPOINT ["helm"]
+CMD ["lint"]
