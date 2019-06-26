@@ -104,4 +104,16 @@
             docsrc: 'doc/build/html'
             docdest: 'spicerack/$DOC_SUBPATH'
 
-
+- job:
+    name: 'helm-lint'
+    node: DebianJessieDocker
+    concurrent: true
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-run:
+         image: docker-registry.wikimedia.org/releng/helm-lint:0.1.0
+         args: '--strict charts/*'
+    archive:
+     - docker-cleanup
