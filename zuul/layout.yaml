@@ -728,12 +728,6 @@ jobs:
   # (end of MediaWiki: Quibble and PHPUnit stuff)
   # -------
 
-  - name: ^composer-package-php70-docker$
-    # T220540: skip php70 tests on new SecurityCheckPlugin development branch
-    skip-if:
-      - project: ^mediawiki/tools/phan/SecurityCheckPlugin$
-        branch: ^(2\.x)$
-
   # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
   # queue-name can not be applied based on a regex, apply the name on one job.
   - name: mediawiki-quibble-vendor-mysql-hhvm-docker
