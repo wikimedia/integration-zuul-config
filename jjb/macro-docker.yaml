@@ -176,7 +176,7 @@
      # Install the extension/skin composer dev dependencies to bring in phan config
      - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki'
-        image: 'docker-registry.wikimedia.org/releng/composer:0.1.9'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.0'
         args: '--working-dir=/src/"$THING_SUBNAME" update --ansi --no-progress --prefer-dist --profile'
         logdir: '/log'
 
