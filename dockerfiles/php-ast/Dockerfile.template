@@ -1,7 +1,7 @@
 FROM {{ "sury-php" | image_tag }}
 
 USER root
-RUN {{ "php7.0-dev php7.1-dev php7.2-dev php7.3-dev" | apt_install }}
+RUN {{ "build-essential php7.0-dev php7.1-dev php7.2-dev php7.3-dev" | apt_install }}
 RUN install --owner=nobody --group=nogroup --directory /srv/php-ast
 RUN install --owner=nobody --group=nogroup --directory /srv/modules
 
