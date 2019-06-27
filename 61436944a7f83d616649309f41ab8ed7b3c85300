@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa260d0d_64bdd1b2",
+        "filename": "dockerfiles/quibble-stretch-php72/Dockerfile.template",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 24
+      },
+      "writtenOn": "2019-06-27T21:49:51Z",
+      "side": 0,
+      "message": "Which means the quibble image no more has php7.2-gmp but it is needed for sure :]\n\nI think the mistake is that the quibble images are all based on releng/quibble-stretch which has:\n\n FROM {{ \"composer\" | image_tag }} as composer\n FROM {{ \"node10\" | image_tag }}\n\nThe composer image does inherit from php but the image is only used to copy /srv/composer into the quibble image.  The rest is not carried.\n\nThe actual base image for quibble-stretch is \"node10\" (which get us nodejs 10 and npm.\n\n\n\nEven if it worked, I would rather keep the package explicitly defined in the quibble images.  This way we ensure we always have it even when the parent containers get changed one way or another.",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 10
+      },
+      "revId": "61436944a7f83d616649309f41ab8ed7b3c85300",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951",
+      "unresolved": false
+    }
+  ]
+}
