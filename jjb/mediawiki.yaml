@@ -538,6 +538,10 @@
              -X
          publishers:
            - docker-cleanup
+           - email-ext:
+                 recipients: qa-alerts@lists.wikimedia.org
+                 content-type: html
+                 failure: true
       - mwext-codehealth-{name}:
          # Used for analyzing the master branch on postmerge.
          name: 'master-non-voting'
@@ -563,6 +567,10 @@
                        -   docker-wipe-dir:
                                dir: 'cover'
              - docker-cleanup
+             - email-ext:
+                   recipients: qa-alerts@lists.wikimedia.org
+                   content-type: html
+                   failure: true
 
 - job-template:
     !!merge : *job_quibble
