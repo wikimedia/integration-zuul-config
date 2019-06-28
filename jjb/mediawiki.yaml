@@ -346,8 +346,13 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
-            args: '--packages-source "vendor" --db "mysql" --db-dir /workspace/db --git-parallel=8 --run composer-test'
+            options: '--volume /srv/git:/srv/git:ro'
+            args: '--packages-source "vendor" --git-parallel=8 --skip-install --run composer-test'
+            logdir: '/workspace/log'
+        - docker-run-with-log-and-workspace-cache:
+            image: '{docker_image}'
+            options: '--volume /srv/git:/srv/git:ro'
+            args: '--packages-source "vendor" --git-parallel=8 --skip=all --commands "composer phpunit:unit"'
             logdir: '/workspace/log'
     publishers:
         - archive-log-allow-empty
