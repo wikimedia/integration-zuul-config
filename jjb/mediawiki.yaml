@@ -451,7 +451,7 @@
 - project:
     name: mwcore-codehealth
     packages-source: composer
-    quibble_args: '--skip=all'
+    quibble_args: '--skip-install --commands=mediawiki-coverage'
     database: mysql
     jobs:
       - mwcore-codehealth-{name}:
@@ -506,9 +506,9 @@
     - docker-src-dir
     - docker-castor-load
     - docker-run-with-log-and-workspace-cache:
-        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.32
+        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.32-1
         options: '-e CODEHEALTH=1 --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
-        args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --git-parallel=8 {quibble_args}'
+        args: '--packages-source "{packages-source}" --git-parallel=8 {quibble_args}'
         logdir: '/workspace/log'
     - docker-run-with-log-and-workspace-cache:
         image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.4.10'
