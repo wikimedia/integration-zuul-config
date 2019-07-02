@@ -7069,10 +7069,9 @@ projects:
     #  - name: archived
 
   - name: mediawiki/services/chromium-render
-    # Repo doesn't yet pass; not enabling until this doesn't break the repo -- JDF 2019-06-12
-    # template:
-    #   - name: service-pipeline-test
-    #   - name: service-pipeline-test-and-publish
+    template:
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
     test:
       - chromium-render-npm-browser-node-6-docker
     gate-and-submit:
