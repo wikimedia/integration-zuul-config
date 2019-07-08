@@ -390,7 +390,7 @@
 
 - job-template:
     !!merge : *job_npm-run-script-node-6-docker
-    name: 'selenium-daily-beta-{project}'
+    name: 'selenium-daily-{sitename}-{project}'
     docker_image_var: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.0'
     triggers:
      - timed: '@daily'
@@ -400,7 +400,7 @@
             default: 'Selenium user'
         - string:
             name: 'MW_SERVER'
-            default: 'https://en.wikipedia.beta.wmflabs.org'
+            default: '{mw_server}'
         - string:
             name: 'ZUUL_BRANCH'
             default: 'master'
