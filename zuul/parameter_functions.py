@@ -423,7 +423,7 @@ dependencies = {
 # This list is *not* recursively processed.
 phan_dependencies = {
     'skins/Refreshed': ['SocialProfile'],
-    'AbuseFilter': ['CheckUser'],
+    'AbuseFilter': ['CheckUser', 'CentralAuth', 'Renameuser'],
     'AdvancedSearch': ['BetaFeatures'],
     'ApiFeatureUsage': ['Elastica'],
     'ArticlePlaceholder': ['Scribunto', 'Wikibase'],
