@@ -902,13 +902,15 @@
 - project:
     name: mediawiki-wdio-selenium
     project: MediaWiki
-    recipients: zfilipin@wikimedia.org qa-alerts@lists.wikimedia.org betacluster-alerts@lists.wikimedia.org
+    recipients: betacluster-alerts@lists.wikimedia.org cparle@wikimedia.org qa-alerts@lists.wikimedia.org zfilipin@wikimedia.org
     repository: mediawiki/core
     jobs:
         - 'selenium-daily-{sitename}-{project}':
             sitename:
                 - beta:
                     mw_server: 'https://en.wikipedia.beta.wmflabs.org'
+                - betacommons:
+                    mw_server: 'https://commons.wikimedia.beta.wmflabs.org'
 
 - project:
     name: 'mediawiki-php-security'
