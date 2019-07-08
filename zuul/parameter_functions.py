@@ -20,11 +20,6 @@ def set_parameters(item, job, params):
         # Quibble takes care of it
         del(params['DISPLAY'])
 
-    php7_jobs = (
-        # Shells out to PHP (T196956)
-        'mwext-MobileFrontend-npm-run-lint-modules-docker',
-        )
-
     # Sets a $PHP_BIN variable based on the job name
     if 'php56' in job.name:
         params['PHP_BIN'] = 'php5'
@@ -32,8 +27,6 @@ def set_parameters(item, job, params):
         params['PHP_BIN'] = 'php7.0'
     elif 'hhvm' in job.name:
         params['PHP_BIN'] = 'hhvm'
-    elif job.name in php7_jobs:
-        params['PHP_BIN'] = 'php7.0'
 
     mw_deps_jobs_starting_with = (
         'mwselenium-quibble',
