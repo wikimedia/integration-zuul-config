@@ -1,9 +1,24 @@
-FROM {{ "composer-php72" | image_tag }}
+FROM {{ "composer" | image_tag }}
+
+USER nobody
+RUN git clone https://github.com/nikic/php-ast /srv/php-ast && \
+    cd /srv/php-ast && \
+    # v1.0.0, use sha1 for immutability
+    git checkout 044436b0870005fcbf0f8eb9b6022d5afe6451bb && \
+    phpize && ./configure && make && \
+    cp modules/ast.so /srv/modules/ast_100.so && \
+    # v0.1.2, use sha1 for immutability
+    git clean -fdx && git checkout abfef40846cb5454dafa1808769fde851ba8dd70 && \
+    phpize && ./configure && make && \
+    cp modules/ast.so /srv/modules/ast_012.so
 
 User root
 
-# Create directory where we're going to install to
-RUN install --directory --mode 777 /opt/phan
+COPY --from=build /srv/modules/*.so /usr/lib/php/20151012/
+
+RUN phpdismod ast && \
+    # Create directory where we're going to install to
+    install --directory --mode 777 /opt/phan
 
 USER nobody
 
