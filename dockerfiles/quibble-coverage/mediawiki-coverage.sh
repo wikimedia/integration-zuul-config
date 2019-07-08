@@ -19,7 +19,9 @@ if [[ ! -v CODEHEALTH ]]; then
           --coverage-clover "$LOG_DIR"/clover.xml \
           --coverage-html "$WORKSPACE/cover" &
 else
-  composer phpunit:coverage -- \
+  phpunit-suite-edit "$MW_INSTALL_PATH/phpunit.xml.dist"
+  php -d zend_extension=xdebug.so \
+  $(which composer) phpunit:coverage \
   --coverage-clover "$LOG_DIR"/clover.xml \
   --log-junit "$LOG_DIR"/junit.xml &
 fi
@@ -55,9 +57,4 @@ if [ -s "$LOG_DIR"/clover.xml ] && [[ ! -v CODEHEALTH ]] ; then
 
     # Publish a compressed form of the xml clover report
     gzip --best --stdout "$LOG_DIR"/clover.xml > "$WORKSPACE"/cover/clover.xml.gz
-else
-  # Codehealth pipeline context, use the raw clover file.
-  if [ -s "$LOG_DIR"/clover.xml ]; then
-    cp "$LOG_DIR"/clover.xml "$WORKSPACE"/cover/clover.xml
-  fi
 fi

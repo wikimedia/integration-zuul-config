@@ -35,16 +35,20 @@ def main():
         if child.tag == 'filter':
             whitelist = child.getchildren()[0]
             assert whitelist.tag == 'whitelist'
-            # Remove the current directories that are there,
-            # we don't want to include any of them
-            for wchild in whitelist.getchildren():
-                whitelist.remove(wchild)
-            # Add the three directories we care about
-            for folder in ['src', 'includes', 'maintenance']:
-                sub = etree.SubElement(whitelist, 'directory')
-                sub.text = '../../extensions/%s/%s' \
-                           % (args.cover_extension, folder)
-                sub.set('suffix', '.php')
+            # Ensure that this property is true for CI.
+            whitelist.set('addUncoveredFilesFromWhitelist', 'true')
+
+            if args.cover_extension:
+                # Remove the current directories that are there,
+                # we don't want to include any of them
+                for wchild in whitelist.getchildren():
+                    whitelist.remove(wchild)
+                # Add the three directories we care about
+                for folder in ['src', 'includes', 'maintenance']:
+                    sub = etree.SubElement(whitelist, 'directory')
+                    sub.text = '../../extensions/%s/%s' \
+                        % (args.cover_extension, folder)
+                    sub.set('suffix', '.php')
 
     # This produces a dirty diff, strips comments, ignores newlines,
     # and so on, but no human should ever read it, hopefully.
