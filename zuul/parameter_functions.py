@@ -436,7 +436,7 @@ phan_dependencies = {
     'Echo': ['CentralAuth', 'EventLogging'],
     'FileExporter': ['BetaFeatures'],
     'Flow': ['AbuseFilter', 'BetaFeatures', 'CentralAuth', 'CirrusSearch',
-             'ConfirmEdit', 'Echo', 'Elastica', 'LiquidThreads',
+             'ConfirmEdit', 'Echo', 'Elastica', 'GuidedTour', 'LiquidThreads',
              'SpamBlacklist', 'VisualEditor'],
     'FundraisingTranslateWorkflow': ['Translate'],
     'GettingStarted': ['CentralAuth', 'CirrusSearch', 'MobileFrontend',
