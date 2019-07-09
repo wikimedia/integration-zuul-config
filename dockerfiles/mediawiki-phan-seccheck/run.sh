@@ -38,9 +38,9 @@ fi
 CONFIG="/opt/phan/vendor/mediawiki/phan-taint-check-plugin/scripts/$SECCHECK_MODE"
 
 if [ ${SECCHECK_VERSION:0:1} == "2" ]; then
-    AST_ARG='-dextension=ast_100.so'
+    AST_ARG='-dextension=ast_1.0.0.so'
 else
-    AST_ARG='-dextension=ast_012.so'
+    AST_ARG='-dextension=ast_0.1.2.so'
 fi
 
 # Save the output as `seccheck-issues`
