@@ -44,4 +44,4 @@ else
 fi
 
 # Save the output as `seccheck-issues`
-php AST_ARG $PHAN -d . -k $CONFIG --output "php://stdout" "$@" | tee /mediawiki/seccheck-issues
+php $AST_ARG $PHAN -d . -k $CONFIG --output "php://stdout" "$@" | tee /mediawiki/seccheck-issues
