@@ -20,15 +20,9 @@ fi
 
 SECCHECK_VERSION=$(jq -r '.extra."phan-taint-check-plugin"' composer.json)
 
-if [ ${SECCHECK_VERSION:0:1} == "2" ]; then
-    AST_ARG='-dextension=ast_1.0.0.so'
-else
-    AST_ARG='-dextension=ast_0.1.2.so'
-fi
-
 # Install into /opt/phan so we don't conflict with any extension dependencies
 cd /opt/phan/
-php $AST_ARG -f /usr/bin/composer require mediawiki/phan-taint-check-plugin $SECCHECK_VERSION
+php -dextension=ast_1.0.1.so -f /usr/bin/composer require mediawiki/phan-taint-check-plugin $SECCHECK_VERSION
 
 SECCHECK_MODE=${SECCHECK_MODE:-"mwext-fast-config.php"}
 
@@ -36,12 +30,8 @@ cd /mediawiki/$THING_SUBNAME
 
 # Inline the scripts/seccheck-* bash wrapper
 PHAN="/opt/phan/vendor/phan/phan/phan"
-if [ ! -f "$PHAN" ]; then
-    # Look for etsy/phan in older versions of the plugin
-    PHAN="/opt/phan/vendor/etsy/phan/phan"
-fi
 
 CONFIG="/opt/phan/vendor/mediawiki/phan-taint-check-plugin/scripts/$SECCHECK_MODE"
 
 # Save the output as `seccheck-issues`
-php $AST_ARG $PHAN -d . -k $CONFIG --output "php://stdout" "$@" | tee /mediawiki/seccheck-issues
+php -dextension=ast_1.0.1.so $PHAN -d . -k $CONFIG --output "php://stdout" "$@" | tee /mediawiki/seccheck-issues

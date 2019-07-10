@@ -1,11 +1,9 @@
 FROM {{ "php-ast" | image_tag }} AS php-ast
 
-FROM {{ "composer" | image_tag }}
+FROM {{ "composer72" | image_tag }}
 
 USER root
-# AST v1.0.0 built for PHP 7.0
-COPY --from=php-ast /usr/lib/php/20151012/ast.so /usr/lib/php/20151012/ast_1.0.0.so
-COPY --from=php-ast /usr/lib/php/20151012/ast_70_0.1.2.so /usr/lib/php/20151012/ast_0.1.2.so
+COPY --from=php-ast /usr/lib/php/20170718/ast.so /usr/lib/php/20170718/ast_1.0.1.so
 
 RUN phpdismod ast && \
     # Create directory where we're going to install to
