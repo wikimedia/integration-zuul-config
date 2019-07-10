@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Bazel wrapper to enforce some settings
+#
+# https://docs.bazel.build/versions/master/output_directories.html#bazel-internals-directory-layout
+# https://docs.bazel.build/versions/master/command-line-reference.html
+#
+set -eu
+
+exec /usr/bin/bazel --bazelrc=/var/local/bazel/bazelrc "${@}"

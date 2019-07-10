@@ -11,13 +11,14 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8
 
 RUN {{ "bazel default-jdk" | apt_install }}
 
-# Bazel config/bootstrap
-ENV TEST_TMPDIR=/opt/bazel
-RUN install --directory --mode 777 "$TEST_TMPDIR"
+# For outputUserRoot / outputBase
+RUN install --owner=nobody --group=nogroup --directory /var/local/bazel
+COPY bazel /usr/local/bin/bazel
+COPY bazelrc /var/local/bazel/bazelrc
 
 USER nobody
 # In addition to showing the actual Bazel version at build time, that also
-# triggers extraction of the Bazel installation under $TEST_TMPDIR. That saves
-# time on future invocations.
+# triggers extraction of the Bazel installation under outputUserRoot. That
+# saves time on future invocations.
 RUN bazel version
-ENTRYPOINT ["/usr/bin/bazel"]
+ENTRYPOINT ["/usr/local/bin/bazel"]
