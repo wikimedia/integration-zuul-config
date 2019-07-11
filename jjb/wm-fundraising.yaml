@@ -4,9 +4,9 @@
       - '{name}-composer-{phpflavor}-docker':
           phpflavor:
               - php56:
-                  image: docker-registry.wikimedia.org/releng/composer-test-php56:0.1.4
+                  image: docker-registry.wikimedia.org/releng/composer-test-php56:0.1.4-s1
               - php72:
-                  image: docker-registry.wikimedia.org/releng/composer-test-php72:0.2.1
+                  image: docker-registry.wikimedia.org/releng/composer-test-php72:0.2.1-s1
 
 - job:
     name: wikimedia-fundraising-civicrm-docker
@@ -24,7 +24,7 @@
                 wikimedia/fundraising/crm/civicrm
                 wikimedia/fundraising/crm/drupal
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/civicrm:0.1.1
+            image: docker-registry.wikimedia.org/releng/civicrm:0.1.1-s1
             # $WORKSPACE is leaked from the host environment
             options: "--env WORKSPACE=''"
             logdir: /log
@@ -54,7 +54,7 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.32-2
+            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.32-2-s1
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
             args: >

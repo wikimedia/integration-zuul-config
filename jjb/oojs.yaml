@@ -10,7 +10,7 @@
      - docker-src-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.32
+         image: docker-registry.wikimedia.org/releng/quibble-stretch:0.0.32-1-s1
          options: 'jenkins'
          logdir: '/log'
     archive:
@@ -21,7 +21,7 @@
     name: oojs-ui
     jobs:
         - '{name}-npm-run-{script}-node-6-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/npm-test-oojsui:0.2.2
+            docker_image_var: docker-registry.wikimedia.org/releng/npm-test-oojsui:0.2.2-s1
             # 'npm jenkins' also runs composer under Zend PHP 7.0
             script:
                 - jenkins
