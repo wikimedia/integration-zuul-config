@@ -297,7 +297,7 @@ dependencies = {
     'Math': ['VisualEditor', 'Wikibase'],
     'MathSearch': ['Math'],
     'MobileApp': ['Echo', 'MobileFrontend', 'VisualEditor', 'AbuseFilter'],
-    'MobileFrontend': ['Echo', 'VisualEditor', 'ZeroBanner', 'MobileApp',
+    'MobileFrontend': ['Echo', 'VisualEditor', 'MobileApp',
                        'skins/MinervaNeue'],
     'MultimediaViewer': ['BetaFeatures'],
     'NamespacePopups': ['PagePopups'],
@@ -401,10 +401,6 @@ dependencies = {
     'WikimediaEvents': ['EventLogging'],
     'Wikisource': ['Wikibase'],
     'wikihiero': ['VisualEditor'],
-    'ZeroBanner': ['Echo', 'JsonConfig', 'MobileFrontend', 'VisualEditor',
-                   'ZeroPortal'],
-    'ZeroPortal': ['Echo', 'JsonConfig', 'MobileFrontend', 'Scribunto',
-                   'VisualEditor', 'ZeroBanner'],
 }
 
 # Dependencies used in phan jobs.
@@ -657,8 +653,6 @@ gatedextensions = [
     'Wikibase',
     'WikibaseMediaInfo',
     'WikibaseCirrusSearch',
-    'ZeroBanner',
-    'ZeroPortal',
 ]
 gatedskins = [
     'MinervaNeue',
