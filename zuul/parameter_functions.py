@@ -380,7 +380,9 @@ dependencies = {
         'WikibaseQualityConstraints',
         'WikimediaBadges',
         'WikibaseMediaInfo',
-        'WikibaseLexeme'
+        'WikibaseLexeme',
+        'skins/MinervaNeue',
+        'MobileFrontend',
     ],
     'WikibaseCirrusSearch': ['Wikibase', 'CirrusSearch'],
     'WikibaseJavaScriptApi': ['Wikibase'],
