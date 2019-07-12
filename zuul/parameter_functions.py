@@ -364,6 +364,8 @@ dependencies = {
     'VikiTitleIcon': ['VIKI'],
     'VisualEditor': ['Cite', 'TemplateData', 'FlaggedRevs', 'ConfirmEdit'],
     'WebAuthn': ['OATHAuth'],
+    'WebDAVClientIntegration': ['WebDAV'],
+    'WebDAVMinorSave': ['WebDAV'],
     'WhoIsWatching': ['Echo'],
     'Wikibase': [
         'ArticlePlaceholder',
