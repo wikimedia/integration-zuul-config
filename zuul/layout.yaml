@@ -2287,6 +2287,10 @@ projects:
   - name: mediawiki/tools/scap
     template:
       - name: service-pipeline-test
+    test:
+      # XXX probably needs a job per supported distribution like labs/toollabs
+      # See also T210780
+      - debian-glue-non-voting
     postmerge:
       - scap-beta-deb
 
