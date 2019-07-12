@@ -30,8 +30,6 @@ def set_parameters(item, job, params):
 
     mw_deps_jobs_starting_with = (
         'mwselenium-quibble',
-        'mwext-php70-phan',
-        'mwskin-php70-phan',
         'mwext-php72-phan',
         'mwskin-php72-phan',
         'mwext-phpunit-coverage',
