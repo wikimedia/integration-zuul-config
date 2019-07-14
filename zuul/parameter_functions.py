@@ -408,6 +408,7 @@ dependencies = {
 # Dependencies used in phan jobs.
 # This list is *not* recursively processed.
 phan_dependencies = {
+    'skins/MinervaNeue': ['Echo', 'MobileFrontend'],
     'skins/Refreshed': ['SocialProfile'],
     'AbuseFilter': ['CheckUser', 'CentralAuth', 'Renameuser'],
     'AdvancedSearch': ['BetaFeatures'],
