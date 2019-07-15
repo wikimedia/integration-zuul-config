@@ -78,6 +78,13 @@
      - zuul
 
 - job:
+    name: 'mwskin-php72-phan-docker-non-voting'
+    !!merge : *job_mwext-php72-phan-docker
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
+- job:
     name: 'mediawiki-i18n-check-docker'
     node: DebianJessieDocker
     triggers:
