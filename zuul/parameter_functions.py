@@ -442,7 +442,7 @@ phan_dependencies = {
                        'VisualEditor'],
     'GeoData': ['CirrusSearch', 'Elastica'],
     'GrowthExperiments': ['EventLogging', 'PageImages', 'PageViewInfo',
-                          'skins/MinervaNeue', 'Flow'],
+                          'skins/MinervaNeue', 'Flow', 'MobileFrontend'],
     'Kartographer': ['GeoData', 'JsonConfig'],
     'LoginNotify': ['CentralAuth', 'Echo'],
     'Math': ['VisualEditor', 'Wikibase'],
