@@ -7172,6 +7172,18 @@ projects:
     template:
       - name: composer-test-package
 
+  - name: mediawiki/services/kartotherian
+    # Not ready for pipeline yet.
+    # template:
+    #     - name: service-pipeline-test
+    #     - name: service-pipeline-test-and-publish
+    test:
+      - generic-node10-browser-docker
+    gate-and-submit:
+      - generic-node10-browser-docker
+    experimental:
+      - trigger-service-pipeline-test
+
   - name: mediawiki/services/kask
     template:
       - name: service-pipeline-test
