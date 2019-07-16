@@ -1718,7 +1718,19 @@ projects:
   # eventgate-ci is a manual fork in gerrit from
   # https://github.com/wikimedia/eventgate.
   # Release changes are manually pushed to eventgate-ci in gerrit.
+  # This is deprecated in favor of eventgate-wikimedia below,
+  # and will be removed as part of
+  # https://phabricator.wikimedia.org/T226668
   - name: eventgate-ci
+    template:
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
+
+  # eventgate-wikimedia contains the wikimedia specific
+  # eventgate factory code and config.
+  # https://github.com/wikimedia/eventgate is an npm
+  # dependency.
+  - name: eventgate-wikimedia
     template:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
