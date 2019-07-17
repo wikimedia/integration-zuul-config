@@ -450,6 +450,7 @@ phan_dependencies = {
     'MobileFrontend': ['AbuseFilter', 'CentralAuth', 'LiquidThreads',
                        'PageImages', 'Wikibase', 'XAnalytics'],
     'Newsletter': ['Echo'],
+    'PageForms': ['AdminLinks', 'Cargo', 'PageSchemas'],
     'PageTriage': ['Echo', 'ORES'],
     'ParserFunctions': ['Scribunto'],
     'Popups': ['BetaFeatures', 'EventLogging', 'Gadgets'],
