@@ -1,4 +1,4 @@
-FROM {{ "ci-jessie" | image_tag }}
+FROM {{ "ci-buster" | image_tag }}
 
 # The r language itself and dependencies to build lintr
 
@@ -14,14 +14,16 @@ libcurl4-openssl-dev
 {% set rundeps|replace('\n', ' ') -%}
 libxml2-dev
 libssl-dev
+r-cran-devtools
+r-cran-git2r
+r-cran-usethis
 {%- endset -%}
 
 {% set alldeps = builddeps + " " + rundeps -%}
 
 RUN  {{ "r-base" | apt_install }}
 RUN  {{ alldeps | apt_install }}
-RUN Rscript -e 'install.packages("devtools", repos="http://cran.rstudio.com/")' && \
-    Rscript -e 'devtools::install_github("jimhester/lintr@v1.0.1")' && \
+RUN Rscript -e 'devtools::install_github("jimhester/lintr@v1.0.3")' && \
     apt-get purge --yes {{ builddeps }} && \
     apt-get autoremove --yes --purge
 
