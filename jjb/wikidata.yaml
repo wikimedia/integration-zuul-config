@@ -76,7 +76,12 @@
     builders:
         - assert-node-version-6
         - castor-load
-        - npm-install
+        - shell: |
+            . /srv/deployment/integration/slave-scripts/bin/npm-setup.sh
+            node --version
+            npm --version
+            rm -rf node_modules
+            npm install
         ## now create and publish a gerrit patch
         ## then publish the artifacts to castor?
         - shell: |
