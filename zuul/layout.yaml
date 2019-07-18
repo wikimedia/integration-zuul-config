@@ -1453,13 +1453,10 @@ projects:
       - name: archived
 
   - name: maps/kartotherian
-    test:
-      - noop
-    gate-and-submit:
-      - noop
-    experimental:
-      - kartotherian-npm-node-6-docker
+    template:
+      - name: archived
 
+  # To archive, once service has migrated to the pipeline
   - name: maps/kartotherian/deploy
     test:
       - noop
@@ -1468,19 +1465,17 @@ projects:
     experimental:
       - kartotherian-deploy-npm-node-6-docker
 
+  # To archive, once service has migrated to the pipeline (probably)
   - name: maps/kartotherian/package
     template:
         - name: service-pipeline-test
         - name: service-pipeline-test-and-publish
 
   - name: maps/tilerator
-    test:
-      - noop
-    gate-and-submit:
-      - noop
-    experimental:
-      - tilerator-npm-node-6-docker
+    template:
+      - name: archived
 
+  # To archive, once service has migrated to the pipeline
   - name: maps/tilerator/deploy
     test:
       - noop
