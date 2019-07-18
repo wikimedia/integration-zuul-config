@@ -21,13 +21,24 @@ libxml2-dev
 libmapbox-variant-dev
 libboost-program-options-dev
 libboost-thread-dev
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+# Use SRE-backported custom components where needed
+RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia libmapnik-dev" > /etc/apt/sources.list.d/backport-libmapnik-dev.list
+RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia mapnik-utils" > /etc/apt/sources.list.d/backport-mapnik-utils.list
+RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia mapnik-doc" > /etc/apt/sources.list.d/backport-mapnik-doc.list
+RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia libmapnik3.0" > /etc/apt/sources.list.d/backport-libmapnik3.0.list
+
+{% set backportPackages|replace('\n', ' ') -%}
 libmapnik-dev
 mapnik-utils
 mapnik-doc
 libmapnik3.0
 {%- endset -%}
 
-RUN {{ packages | apt_install }}
+RUN {{ backportPackages | apt_install }}
 
 
 USER nobody
