@@ -1,0 +1,42 @@
+FROM {{ "node10-test-browser" | image_tag }}
+
+USER root
+
+{% set packages|replace('\n', ' ') -%}
+fonts-dejavu
+libboost-filesystem-dev
+libboost-regex-dev
+libboost-system-dev
+libcairo2-dev
+libfreetype6-dev
+libgdal-dev
+libharfbuzz-dev
+libjpeg-dev
+libpng-dev
+libpq-dev
+libproj-dev
+libtiff-dev
+libwebp-dev
+libxml2-dev
+libmapbox-variant-dev
+libboost-program-options-dev
+libboost-thread-dev
+libmapnik-dev
+mapnik-utils
+mapnik-doc
+libmapnik3.0
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+
+USER nobody
+
+# For karma-chrome-launcher
+#
+# Developers usually configure Chrome, so point it to Chromium
+ENV CHROME_BIN=/usr/bin/chromium
+# For karma-firefox-launcher
+#
+# Firefox wrapper introduced above to set HOME to a writable directory
+ENV FIREFOX_BIN=/usr/local/bin/firefox
