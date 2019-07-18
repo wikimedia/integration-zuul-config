@@ -1288,6 +1288,14 @@ project-templates:
     gate-and-submit-swat:
       - generic-node10-docker
 
+  - name: node10-browser-docker
+    test:
+      - generic-node10-browser-docker
+    gate-and-submit:
+      - generic-node10-browser-docker
+    gate-and-submit-swat:
+      - generic-node10-browser-docker
+
   - name: service-pipeline-test
     test:
       - trigger-service-pipeline-test
@@ -1437,10 +1445,8 @@ projects:
       - integration-zuul-tox-docker
 
   - name: mapdata
-    test:
-      - generic-node10-browser-docker
-    gate-and-submit:
-      - generic-node10-browser-docker
+    template:
+      - name: node10-browser-docker
 
   - name: marvin
     template:
@@ -2981,12 +2987,12 @@ projects:
       - translatewiki-composer-hhvm-docker
 
   - name: wikimedia-cz/tracker
+    template:
+      - name: node10-browser-docker
     test:
       - wikimedia-cz-tracker-tox-docker
-      - generic-node10-browser-docker
     gate-and-submit:
       - wikimedia-cz-tracker-tox-docker
-      - generic-node10-browser-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
 
@@ -3043,10 +3049,8 @@ projects:
       - name: tox-docker
 
   - name: wikimedia/fundraising/dash
-    test:
-      - generic-node10-browser-docker
-    gate-and-submit:
-      - generic-node10-browser-docker
+    template:
+      - name: node10-browser-docker
 
   - name: wikimedia/fundraising/tools/DjangoBannerStats
     template:
@@ -3112,8 +3116,9 @@ projects:
      - name: composer-test
 
   - name: wikimedia/wikimania-scholarships
+    template:
+      - name: node10-browser-docker
     test: &wikimania-scholarships-test
-      - generic-node10-browser-docker
       - composer-php72-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
@@ -8278,18 +8283,14 @@ projects:
       - phpunit-coverage-docker-publish
 
   - name: wikimedia/portals
-    test:
-      - generic-node10-browser-docker
+    template:
+      - name: node10-browser-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
-    gate-and-submit:
-      - generic-node10-browser-docker
 
   - name: wikimedia/portals/deploy
-    test:
-      - generic-node10-browser-docker
-    gate-and-submit:
-      - generic-node10-browser-docker
+    template:
+      - name: node10-browser-docker
 
   - name: search/extra
     test:
@@ -8465,10 +8466,8 @@ projects:
       - npm-node-6-docker
 
   - name: wikibase/javascript-api
-    test:
-      - generic-node10-browser-docker
-    gate-and-submit:
-      - generic-node10-browser-docker
+    template:
+      - name: node10-browser-docker
 
   - name: wikibase/termbox
     template:
