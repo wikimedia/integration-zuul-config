@@ -620,6 +620,9 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
+  - name: trigger-mediawiki-pipeline-dev
+    voting: false
+
   # Pending migration T223348
   - name: wikimedia-fundraising-crm-composer-php72-docker
     voting: false
@@ -1535,6 +1538,7 @@ projects:
     postmerge:
       - mediawiki-core-jsduck-docker-publish
       - mwcore-codehealth-master-non-voting
+      - trigger-mediawiki-pipeline-dev
     post:
       - train-deploy-notes
     experimental:
