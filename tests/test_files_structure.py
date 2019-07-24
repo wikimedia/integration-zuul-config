@@ -1,15 +1,10 @@
+import pytest
 import subprocess
-import unittest
 
 
-class TestFilesStructure(unittest.TestCase):
-
-    def test_have_no_tabs(self):
-        try:
-            out = subprocess.check_output([
-                'git', 'grep', '-n', '-I', '-P', '\t'])
-            print(out)
-            raise AssertionError('Files have tabulations. Check output.')
-        except subprocess.CalledProcessError as e:
-            self.assertEquals(1, e.returncode,
-                              'when there is no tabs: git grep exit 1')
+def test_have_no_tabs():
+    with pytest.raises(subprocess.CalledProcessError) as e:
+        subprocess.check_call([
+            'git', 'grep', '-n', '-I', '-P', '\t'])
+        pytest.fail('A file has tabs, see stdout for details')
+    assert 1 == e.value.returncode, 'when there is no tabs: git grep exit 1'
