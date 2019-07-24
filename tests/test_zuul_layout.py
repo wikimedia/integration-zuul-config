@@ -25,7 +25,7 @@ class TestZuulLayout(unittest.TestCase):
             os.path.dirname(os.path.abspath(__file__)),
             '../zuul/layout.yaml')
         with open(wmf_zuul_layout, 'r') as f:
-            cls.layout = yaml.load(f)
+            cls.layout = yaml.safe_load(f)
 
     def getExtSkinRepos(self):
         projects = []
