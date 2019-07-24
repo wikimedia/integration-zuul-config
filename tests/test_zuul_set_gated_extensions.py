@@ -1,5 +1,4 @@
 import os
-import unittest
 
 from fakes import FakeJob
 
@@ -12,7 +11,7 @@ execfile(os.path.join(
     '../zuul/parameter_functions.py'))
 
 
-class TestSetGatedExtensions(unittest.TestCase):
+class TestSetGatedExtensions:
 
     def test_deps_applied_on_gate_jobs(self):
         params = {
@@ -22,7 +21,7 @@ class TestSetGatedExtensions(unittest.TestCase):
         }
         gate_job = FakeJob('wmf-quibble-foo')
         set_gated_extensions(None, gate_job, params)
-        self.assertIn('EXT_DEPENDENCIES', params)
+        assert 'EXT_DEPENDENCIES' in params
 
     def test_experimental_injects_project(self):
         params = {
@@ -32,8 +31,7 @@ class TestSetGatedExtensions(unittest.TestCase):
         }
         gate_job = FakeJob('wmf-quibble-foo')
         set_gated_extensions(None, gate_job, params)
-        self.assertIn('\\nmediawiki/extensions/SomeExt',
-                      params['EXT_DEPENDENCIES'])
+        assert '\\nmediawiki/extensions/SomeExt' in params['EXT_DEPENDENCIES']
 
     def test_wikibase_master(self):
         params = {
@@ -43,10 +41,9 @@ class TestSetGatedExtensions(unittest.TestCase):
         }
         gate_job = FakeJob('wmf-quibble-foo')
         set_gated_extensions(None, gate_job, params)
-        self.assertIn('\\nmediawiki/extensions/Wikibase',
-                      params['EXT_DEPENDENCIES'])
-        self.assertNotIn('\\nmediawiki/extensions/Wikidata',
-                         params['EXT_DEPENDENCIES'])
+        assert '\\nmediawiki/extensions/Wikibase' in params['EXT_DEPENDENCIES']
+        assert '\\nmediawiki/extensions/Wikidata' not in \
+               params['EXT_DEPENDENCIES']
 
     def test_wikibase_notonethirty(self):
         params = {
@@ -56,5 +53,5 @@ class TestSetGatedExtensions(unittest.TestCase):
         }
         gate_job = FakeJob('wmf-quibble-foo')
         set_gated_extensions(None, gate_job, params)
-        self.assertNotIn('\\nmediawiki/extensions/Wikibase',
-                         params['EXT_DEPENDENCIES'])
+        assert '\\nmediawiki/extensions/Wikibase' not in \
+               params['EXT_DEPENDENCIES']
