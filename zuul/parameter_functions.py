@@ -433,6 +433,7 @@ phan_dependencies = {
     'Dashiki': ['JsonConfig'],
     'Disambiguator': ['VisualEditor'],
     'Echo': ['CentralAuth', 'EventLogging'],
+    'EventBus': ['CentralNotice'],
     'FileExporter': ['BetaFeatures'],
     'Flow': ['AbuseFilter', 'BetaFeatures', 'CentralAuth', 'CirrusSearch',
              'ConfirmEdit', 'Echo', 'Elastica', 'GuidedTour', 'LiquidThreads',
