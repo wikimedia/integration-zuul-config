@@ -14,13 +14,19 @@ COPY --from=composer /srv/composer /srv/composer
 # Manually link since COPY copies symlink destination instead of the actual symlink
 RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
 
+#########################################
+# node-gyp requires python2.7 / gcc ... #
+#########################################
+RUN {{ "build-essential python" | apt_install }}
+
 ##########################
 # JSDuck is still needed #
 ##########################
-RUN {{ "ruby ruby-dev build-essential" | apt_install }} \
+# Must have build-essential
+RUN {{ "ruby ruby-dev" | apt_install }} \
     && gem install --no-rdoc --no-ri --clear-sources jsduck \
     && rm -fR /var/lib/gems/*/cache/*.gem \
-    && apt -y purge build-essential ruby-dev \
+    && apt -y purge ruby-dev \
     && apt-get -y autoremove --purge
 
 #############################
