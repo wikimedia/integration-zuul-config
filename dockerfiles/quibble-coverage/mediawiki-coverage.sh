@@ -21,7 +21,7 @@ if [[ ! -v CODEHEALTH ]]; then
 else
   phpunit-suite-edit "$MW_INSTALL_PATH/phpunit.xml.dist"
   php -d zend_extension=xdebug.so \
-  $(which composer) phpunit:coverage \
+  $(which composer) phpunit:coverage -- \
   --coverage-clover "$LOG_DIR"/clover.xml \
   --log-junit "$LOG_DIR"/junit.xml &
 fi
