@@ -22,6 +22,7 @@ RUN git clone https://gerrit.wikimedia.org/r/operations/puppet "${PUPPET_DIR}" \
     && bundle install --clean --path="${PUPPET_DIR}/.bundle"
 
 WORKDIR /srv/workspace
+
 ENTRYPOINT /bin/bash /run.sh
 
 COPY bundle-config "${PUPPET_DIR}/.bundle/bundle-config"

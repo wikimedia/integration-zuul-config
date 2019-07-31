@@ -55,6 +55,12 @@ execute_local() {
     echo "Copying your working copy to the destination"
     mkdir -p $TMP_PUPPET_DIR && cd $TMP_PUPPET_DIR
     tar --ignore-failed-read -C "$ORIGIN" -c  .  | tar -xf -
+    # Copy the tox dir, the bundle dir and Gemfile.lock
+    # from the container's puppet directory.
+    for what in ".tox" ".bundle" "Gemfile.lock"; do
+        rm -rf "${TMP_PUPPET_DIR}/${what}"
+        cp -ax "${PUPPET_DIR}/${what}" "${TMP_PUPPET_DIR}/";
+    done
     # Reproduce the docker-head tag
     TAG_REF=$(cd "$PUPPET_DIR" && git show-ref docker-head | cut -d\  -f1)
     git tag docker-head "$TAG_REF"
