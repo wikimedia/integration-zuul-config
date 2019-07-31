@@ -1374,12 +1374,12 @@ projects:
       - trigger-blubber-pipeline-publish
 
   - name: integration/config
+    template:
+      - name: tox-docker
     test:
-      - integration-config-tox-docker
       - integration-config-jjb-diff-docker
       - integration-config-zuul-layout-diff-docker
     gate-and-submit:
-      - integration-config-tox-docker
       - integration-config-jjb-diff-docker
       - integration-config-zuul-layout-validate-docker
 
@@ -2805,10 +2805,8 @@ projects:
       - name: archived
 
   - name: operations/software/cassandra-table-properties
-    test:
-     - cassandra-table-properties-tox-docker
-    gate-and-submit:
-     - cassandra-table-properties-tox-docker
+    template:
+      - name: tox-docker
     test:
       - debian-glue-non-voting
 
@@ -2821,11 +2819,10 @@ projects:
       - conftool-tox-docker
 
   - name: operations/software/cumin
+    template:
+      - name: tox-docker
     test:
       - debian-glue-backports-non-voting
-      - cumin-tox-docker
-    gate-and-submit:
-      - cumin-tox-docker
     postmerge:
       - cumin-tox-publish
     publish:
