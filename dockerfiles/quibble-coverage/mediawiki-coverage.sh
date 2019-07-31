@@ -21,9 +21,11 @@ if [[ ! -v CODEHEALTH ]]; then
 else
   phpunit-suite-edit "$MW_INSTALL_PATH/phpunit.xml.dist"
   php -d zend_extension=xdebug.so \
-  $(which composer) phpunit:coverage -- \
-  --coverage-clover "$LOG_DIR"/clover.xml \
-  --log-junit "$LOG_DIR"/junit.xml &
+    vendor/bin/phpunit \
+    --exclude-group Dump,Broken,ParserFuzz,Stub \
+    --coverage-clover "$LOG_DIR"/clover.xml \
+    --log-junit "$LOG_DIR"/junit.xml \
+    tests/phpunit/unit &
 fi
 cover_pid=$!
 relay_signals SIGINT SIGTERM
