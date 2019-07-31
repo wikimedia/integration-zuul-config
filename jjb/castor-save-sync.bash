@@ -18,7 +18,6 @@ mkdir -v -p "${DEST}"
 echo -e "Syncing cache\nFrom.. ${REMOTE_INSTANCE}\nTo.... ${DEST}"
 rsync \
   --archive \
-  --compress \
   --rsh="ssh -a -T  -o ConnectTimeout=6 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" \
   --delete-delay \
   --delay-updates \
