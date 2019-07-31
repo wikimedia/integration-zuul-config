@@ -2805,8 +2805,10 @@ projects:
       - name: archived
 
   - name: operations/software/cassandra-table-properties
-    template:
-      - name: tox-docker
+    test:
+     - cassandra-table-properties-tox-docker
+    gate-and-submit:
+     - cassandra-table-properties-tox-docker
     test:
       - debian-glue-non-voting
 
