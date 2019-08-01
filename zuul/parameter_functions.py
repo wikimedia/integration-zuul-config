@@ -171,7 +171,7 @@ dependencies = {
     'BlueSpiceEmoticons': ['BlueSpiceFoundation'],
     'BlueSpiceExpiry': ['BlueSpiceFoundation'],
     'BlueSpiceExtendedFilelist': ['BlueSpiceFoundation'],
-    'BlueSpiceExtendedSearch': ['BlueSpiceFoundation'],
+    'BlueSpiceExtendedSearch': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceExtendedStatistics': ['BlueSpiceFoundation'],
     'BlueSpiceExtensions': ['BlueSpiceFoundation'],
     'BlueSpiceFilterableTables': ['BlueSpiceFoundation'],
