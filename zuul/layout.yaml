@@ -1036,6 +1036,31 @@ project-templates:
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
+  - name: extension-quibble-composer-nohhvm
+    php:
+      - quibble-composer-mysql-php70-docker
+      - quibble-composer-mysql-php71-docker
+      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php73-docker
+    test:
+      - quibble-composer-mysql-php72-docker
+      - mwgate-node10-docker
+    gate-and-submit:
+      - quibble-composer-mysql-php70-docker
+      - quibble-composer-mysql-php71-docker
+      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php73-docker
+      - mwgate-node10-docker
+    gate-and-submit-swat:
+      - quibble-composer-mysql-php72-docker
+      - mwgate-node10-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+    experimental:
+      - quibble-composer-sqlite-php72-docker
+      - mwext-php72-phan-docker
+      - mwext-php72-phan-seccheck-docker
+
   # Runs quibble but skip selenium tests - T196960
   - name: extension-quibble-noselenium
     php:
@@ -4925,7 +4950,7 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceExtendedSearch
     template:
-      - name: extension-quibble-composer
+      - name: extension-quibble-composer-nohhvm
 
   - name: mediawiki/extensions/BlueSpiceExtendedStatistics
     template:
