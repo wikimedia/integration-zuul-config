@@ -482,6 +482,7 @@ phan_dependencies = {
     'StopForumSpam': ['AbuseFilter'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'TheWikipediaLibrary': ['Echo', 'CentralAuth', 'GlobalPreferences'],
+    'TimedMediaHandler': ['BetaFeatures'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TorBlock': ['AbuseFilter'],
     'TranslationNotifications': ['CentralAuth', 'SiteMatrix', 'Translate'],
