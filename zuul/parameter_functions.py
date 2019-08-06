@@ -465,6 +465,7 @@ phan_dependencies = {
     'SpamBlacklist': ['CheckUser', 'EventLogging'],
     'StopForumSpam': ['AbuseFilter'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
+    'TheWikipediaLibrary': ['Echo', 'CentralAuth', 'GlobalPreferences'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TorBlock': ['AbuseFilter'],
     'TranslationNotifications': ['CentralAuth', 'SiteMatrix', 'Translate'],
