@@ -460,6 +460,7 @@ phan_dependencies = {
                           'skins/MinervaNeue', 'Flow', 'MobileFrontend',
                           'Echo'],
     'Kartographer': ['GeoData', 'JsonConfig'],
+    'LiquidThreads': ['Renameuser'],
     'LoginNotify': ['CentralAuth', 'Echo'],
     'Math': ['VisualEditor', 'Wikibase'],
     'MobileApp': ['AbuseFilter'],
