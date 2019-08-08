@@ -32,7 +32,7 @@ execute() {
     export SPEC_OPTS='--tty'
 
     # Run tests
-    bundle exec rake "${RAKE_TARGET}"
+    bundle exec rake "${RAKE_TARGET}" "$@"
 }
 
 execute_ci() {
@@ -64,7 +64,7 @@ execute_local() {
     # Reproduce the docker-head tag
     TAG_REF=$(cd "$PUPPET_DIR" && git show-ref docker-head | cut -d\  -f1)
     git tag docker-head "$TAG_REF"
-    execute
+    execute -j 1
 }
 
 
