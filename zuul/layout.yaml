@@ -1501,12 +1501,6 @@ projects:
     experimental:
       - kartotherian-deploy-npm-node-6-docker
 
-  # To archive, once service has migrated to the pipeline (probably)
-  - name: maps/kartotherian/package
-    template:
-        - name: service-pipeline-test
-        - name: service-pipeline-test-and-publish
-
   - name: maps/tilerator
     template:
       - name: archived
@@ -7220,10 +7214,9 @@ projects:
       - name: composer-test-package
 
   - name: mediawiki/services/kartotherian
-    # Not ready for pipeline yet.
-    # template:
-    #     - name: service-pipeline-test
-    #     - name: service-pipeline-test-and-publish
+    template:
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
     test:
       - kartotherian-node10-browser-docker
     gate-and-submit:
