@@ -291,6 +291,7 @@ dependencies = {
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
     'LightweightRDFa': ['WikiEditor'],
     'LoginNotify': ['CentralAuth', 'CheckUser', 'Echo'],
+    'MachineVision': ['Wikibase'],
     'MassMessage': ['Flow', 'LiquidThreads'],
     'Math': ['VisualEditor', 'Wikibase'],
     'MathSearch': ['Math'],
