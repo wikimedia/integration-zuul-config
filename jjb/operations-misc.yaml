@@ -89,6 +89,14 @@
             docdest: 'docker-pkg'
 
 - project:
+    name: 'homer'
+    jobs:
+        - tox-publish-jobs:
+            docenv: 'py36-sphinx'
+            docsrc: 'doc/build/html'
+            docdest: 'homer/$DOC_SUBPATH'
+
+- project:
     name: netbox-reports
     jobs:
         - '{name}-tox-docker'

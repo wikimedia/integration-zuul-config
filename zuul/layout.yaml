@@ -781,6 +781,9 @@ jobs:
   - name: spicerack-tox-publish
     branch: ^master$
 
+  - name: homer-tox-publish
+    branch: ^master$
+
   # Tox is for the patch branches, for the debian packaging branch the tests
   # are run by dh_virtualenv.
   - name: integration-zuul-tox-docker
@@ -2889,6 +2892,14 @@ projects:
       - gerrit-docker
     gate-and-submit:
       - gerrit-docker
+
+  - name: operations/software/homer
+    template:
+      - name: tox-docker
+    postmerge:
+      - homer-tox-publish
+    publish:
+      - homer-tox-tag-publish
 
   - name: operations/software/ircyall
     template:
