@@ -34,13 +34,28 @@ function relay_signals() {
 # Some tests might fail, we still want to be able to publish the coverage
 # report for those that passed.
 set +e
-php -d zend_extension=xdebug.so \
-    "$MW_INSTALL_PATH"/tests/phpunit/phpunit.php \
-    --testsuite extensions \
-    --coverage-clover "$LOG_DIR"/clover.xml \
-    --coverage-html "$WORKSPACE"/cover \
-    --log-junit "$LOG_DIR"/junit.xml \
-    "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" &
+if [[ ! -v CODEHEALTH ]]; then
+    php -d zend_extension=xdebug.so \
+        "$MW_INSTALL_PATH"/tests/phpunit/phpunit.php \
+        --testsuite extensions \
+        --coverage-clover "$LOG_DIR"/clover.xml \
+        --coverage-html "$WORKSPACE"/cover \
+        --log-junit "$LOG_DIR"/junit.xml \
+        "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" &
+else
+    php -d zend_extension=xdebug.so \
+        vendor/bin/phpunit \
+        # This runs unit tests for all extensions in the file system. We are doing this because:
+        # 1. in the CODEHEALTH env context only the extension we care about should be cloned
+        # 2. the phpunit-suite-edit ensures that coverage reports will only be for our extension
+        # 3. the unit tests take just a few seconds to run
+        # 4. Passing in the tests/phpunit/unit directory when it doesn't exist results in exit
+        #    code 1.
+        --testsuite=extensions:unit \
+        --exclude-group Dump,Broken,ParserFuzz,Stub \
+        --coverage-clover "$LOG_DIR"/clover.xml \
+        --log-junit "$LOG_DIR"/junit.xml &
+fi
 cover_pid=$!
 relay_signals SIGINT SIGTERM
 wait "$cover_pid"
