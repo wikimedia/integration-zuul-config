@@ -43,14 +43,14 @@ if [[ ! -v CODEHEALTH ]]; then
         --log-junit "$LOG_DIR"/junit.xml \
         "$MW_INSTALL_PATH/extensions/$EXT_NAME/tests/phpunit" &
 else
+    # This runs unit tests for all extensions in the file system. We are doing this because:
+    # 1. in the CODEHEALTH env context only the extension we care about should be cloned
+    # 2. the phpunit-suite-edit ensures that coverage reports will only be for our extension
+    # 3. the unit tests take just a few seconds to run
+    # 4. Passing in the tests/phpunit/unit directory when it doesn't exist results in exit
+    #    code 1.
     php -d zend_extension=xdebug.so \
         vendor/bin/phpunit \
-        # This runs unit tests for all extensions in the file system. We are doing this because:
-        # 1. in the CODEHEALTH env context only the extension we care about should be cloned
-        # 2. the phpunit-suite-edit ensures that coverage reports will only be for our extension
-        # 3. the unit tests take just a few seconds to run
-        # 4. Passing in the tests/phpunit/unit directory when it doesn't exist results in exit
-        #    code 1.
         --testsuite=extensions:unit \
         --exclude-group Dump,Broken,ParserFuzz,Stub \
         --coverage-clover "$LOG_DIR"/clover.xml \
