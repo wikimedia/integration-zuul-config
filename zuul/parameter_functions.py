@@ -387,6 +387,9 @@ dependencies = {
         'cldr',
         'Elastica',
         'GeoData',
+        # temporarily dropped due to excessive slowness (T231198)
+        # 'Scribunto',
+        # 'Capiunto',
         'Echo',
         'PropertySuggester',
         'WikibaseQualityConstraints',
