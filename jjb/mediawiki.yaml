@@ -282,7 +282,7 @@
         - zuul
     properties:
         - build-discarder:
-            days-to-keep: 15
+            days-to-keep: 7
     builders:
         - docker-castor-load
         - docker-log-dir
@@ -309,7 +309,7 @@
         - docker-cleanup
     wrappers:
         - timeout:
-            timeout: 45  # npm is broken T198348
+            timeout: 60
             fail: true
         - timestamps
         - ansicolor
