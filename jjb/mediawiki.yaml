@@ -275,22 +275,11 @@
 
 
 - job-template:
+    !!merge : *job_quibble
     name: mediawiki-quibble-{packages-source}-{database}-{php}-docker
-    node: DebianJessieDocker && m4executor
-    concurrent: true
+    quibble_args: '--skip composer-test npm-test'
     triggers:
         - zuul
-    properties:
-        - build-discarder:
-            days-to-keep: 7
-    builders:
-        - docker-castor-load
-        - docker-log-dir
-        - docker-run-with-log-and-workspace-cache:
-            image: '{docker_image}'
-            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
-            args: '--packages-source "{packages-source}" --db "{database}" --db-dir /workspace/db --git-parallel=8 --skip composer-test npm-test'
-            logdir: '/workspace/log'
     publishers:
         - junit:
             allow-empty-results: true
@@ -307,12 +296,6 @@
               action:
                 - record-node-stats
         - docker-cleanup
-    wrappers:
-        - timeout:
-            timeout: 60
-            fail: true
-        - timestamps
-        - ansicolor
 
 - job-template:
     name: mediawiki-quibble-composertest-{php}-docker
