@@ -4,6 +4,18 @@
 # usually need to NOT process submodules (eg: zuul-cloner).
 # See https://phabricator.wikimedia.org/T44455
 
+- publisher:
+    name: compress-mw-debug-logs
+    publishers:
+        - postbuildscript:
+            # MediaWiki debug logs are typically fairly large
+            builders:
+                - shell: 'find log/ -name "mw-debug-*.log" -exec gzip {} \+'
+            # Always run it
+            script-only-if-succeeded: false
+            script-only-if-failed: false
+
+
 - job:
     name: 'mediawiki-core-jsduck-docker-publish'
     node: DebianJessieDocker
@@ -213,13 +225,7 @@
         - junit:
             allow-empty-results: true
             results: 'log/junit*.xml'
-        - postbuildscript:
-            # MediaWiki debug logs are typically fairly large
-            builders:
-                - shell: 'find log/ -name "mw-debug-*.log" -exec gzip {{}} \+'
-            # Always run it
-            script-only-if-succeeded: false
-            script-only-if-failed: false
+        - compress-mw-debug-logs
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - docker-cleanup
@@ -289,6 +295,7 @@
         - junit:
             allow-empty-results: true
             results: 'log/junit*.xml'
+        - compress-mw-debug-logs
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - conditional-publisher:
@@ -374,6 +381,7 @@
             args: '--packages-source vendor --db mysql --db-dir /workspace/db --skip-deps --commands "mediawiki-fresnel-patch"'
             logdir: '/workspace/log'
     publishers:
+        - compress-mw-debug-logs
         - archive-log-allow-empty
         - docker-cleanup
     wrappers:
