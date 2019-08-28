@@ -228,6 +228,15 @@
         - compress-mw-debug-logs
         - archive-log-allow-empty
         - castor-save-workspace-cache
+        # Job duration to statsd - T201972
+        - conditional-publisher:
+            - condition-kind: shell
+              condition-command: '
+                [ $JOB_NAME = "mediawiki-quibble-vendor-mysql-hhvm-docker" ] &&
+                [ $ZUUL_PROJECT = "mediawiki/core" ] &&
+                [ $ZUUL_BRANCH = "master" ]'
+              action:
+                - record-node-stats
         - docker-cleanup
     wrappers:
         - timeout:
@@ -280,22 +289,6 @@
     quibble_args: '--skip composer-test npm-test'
     triggers:
         - zuul
-    publishers:
-        - junit:
-            allow-empty-results: true
-            results: 'log/junit*.xml'
-        - compress-mw-debug-logs
-        - archive-log-allow-empty
-        - castor-save-workspace-cache
-        - conditional-publisher:
-            - condition-kind: shell
-              condition-command: '
-                [ $JOB_NAME = "mediawiki-quibble-vendor-mysql-hhvm-docker" ] &&
-                [ $ZUUL_PROJECT = "mediawiki/core" ] &&
-                [ $ZUUL_BRANCH = "master" ]'
-              action:
-                - record-node-stats
-        - docker-cleanup
 
 - job-template:
     name: mediawiki-quibble-composertest-{php}-docker
