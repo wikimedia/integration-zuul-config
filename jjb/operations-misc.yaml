@@ -73,8 +73,18 @@
                  run-script: lint
 
 - project:
+    name: 'cassandra-table-properties'
+    jobs:
+        - '{name}-tox-docker':
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.4.0
+            build_timeout: 20 # minutes
+
+- project:
     name: 'cumin'
     jobs:
+        - '{name}-tox-docker':
+            build_timeout: 20 # minutes
+            docker_image_var: docker-registry.wikimedia.org/releng/tox:0.4.0
         - tox-publish-jobs:
             docenv: 'py37-sphinx'
             docsrc: 'doc/build/html'

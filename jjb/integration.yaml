@@ -105,6 +105,8 @@
 - project:
     name: 'integration-config'
     jobs:
+     - '{name}-tox-docker':
+         build_timeout: 5
      - 'integration-config-{command}-docker':
          command:
              - jjb-diff:
