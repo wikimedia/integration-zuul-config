@@ -1048,6 +1048,9 @@ class TestZuulScheduler(unittest.TestCase):
             'mwgate-node10-docker': True,
         }
         expected_gate = {
+            # It is not triggered for the master branch:
+            'quibble-donationinterface-REL1_31-php70-docker': False,
+
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
@@ -1091,7 +1094,7 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.maxDiff = None
         self.longMessage = True
-        self.assertEquals(
+        self.assertEqual(
             expected_jobs,
             {
                 'test': {j.name for j in test_jobs},
