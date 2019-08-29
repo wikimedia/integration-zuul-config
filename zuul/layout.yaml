@@ -648,16 +648,12 @@ jobs:
 
   - name: ^.*quibble.*php70.*$
     skip-if:
-      # mwskin-Empty depends on PhpTags which fails php70 (T188585)
-      - project: '^mediawiki/skins/Empty'
       # Disable on fundraising branches
       - project: '^mediawiki/core$'
         branch: ^fundraising/REL1_31$
 
   - name: ^.*quibble.*php71.*$
     skip-if:
-      # PhpTags was broken on php7.0 and is still broken on php7.1 - T188585
-      - project: '^mediawiki/extensions/PhpTags'
       # No need for php71 testing on wmf branches.
       - project: '^mediawiki/.*'
         branch: ^wmf/
