@@ -1460,10 +1460,6 @@ projects:
       - name: composer-test
       - name: tox-docker
 
-  - name: integration/phpunit
-    template:
-      - name: archived
-
   - name: integration/pipelinelib
     template:
       - name: service-pipeline-test
@@ -1507,14 +1503,6 @@ projects:
     template:
       - name: node10-browser-docker
 
-  - name: marvin
-    template:
-      - name: archived
-
-  - name: maps/kartotherian
-    template:
-      - name: archived
-
   # To archive, once service has migrated to the pipeline
   - name: maps/kartotherian/deploy
     test:
@@ -1523,14 +1511,6 @@ projects:
       - noop
     experimental:
       - kartotherian-deploy-npm-node-6-docker
-
-  - name: maps/kartotherian/package
-    template:
-      - name: archived
-
-  - name: maps/tilerator
-    template:
-      - name: archived
 
   # To archive, once service has migrated to the pipeline
   - name: maps/tilerator/deploy
@@ -1754,18 +1734,6 @@ projects:
     gate-and-submit:
      - noop
 
-  - name: apps/android/java-mwapi
-    template:
-      - name: archived
-
-  - name: apps/android/wikipedia
-    template:
-      - name: archived
-
-  - name: apps/ios/wikipedia
-    template:
-      - name: archived
-
   # eventgate-ci is a manual fork in gerrit from
   # https://github.com/wikimedia/eventgate.
   # Release changes are manually pushed to eventgate-ci in gerrit.
@@ -1797,14 +1765,6 @@ projects:
   - name: labs/libraryupgrader/config
     template:
       - name: tox-docker
-
-  - name: labs/migration-assistant
-    template:
-      - name: archived
-
-  - name: labs/nagios-builder
-    template:
-      - name: archived
 
   - name: labs/striker
     test:
@@ -1843,17 +1803,9 @@ projects:
      - debian-glue-unstable
      - debian-glue-stretch
 
-  - name: labs/tools/bub
-    template:
-      - name: archived
-
   - name: labs/tools/cdnjs-index
     template:
       - name: tox-docker
-
-  - name: labs/tools/connectivity
-    template:
-      - name: archived
 
   - name: labs/tools/commons-mass-description
     test:
@@ -1862,10 +1814,6 @@ projects:
       - labs-tools-commons-mass-description-tox-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
-
-  - name: labs/tools/coursestats
-    template:
-      - name: archived
 
   - name: labs/tools/crosswatch
     template:
@@ -1881,10 +1829,6 @@ projects:
     template:
       - name: tox-docker
 
-  - name: labs/tools/flow-oauth-demo
-    template:
-      - name: archived
-
   - name: labs/tools/forrestbot
     template:
       - name: tox-docker
@@ -1892,10 +1836,6 @@ projects:
   - name: labs/tools/gblrenamemon
     template:
       - name: tox-docker
-
-  - name: labs/tools/grrrit
-    template:
-      - name: archived
 
   - name: labs/tools/harvesting-data-refinery
     test:
@@ -1951,10 +1891,6 @@ projects:
     gate-and-submit:
       - labs-tools-ldap-tox-docker
 
-  - name: labs/tools/Luke081515IRCBot
-    template:
-      - name: archived
-
   - name: labs/tools/maintain-kubeusers
     template:
       - name: tox-docker
@@ -1981,10 +1917,6 @@ projects:
     template:
       - name: tox-docker
 
-  - name: labs/tools/signpost
-    template:
-      - name: archived
-
   - name: labs/tools/stashbot
     template:
       - name: tox-docker
@@ -2008,10 +1940,6 @@ projects:
     postmerge:
      - labs-tools-wikibugs2-autopull
 
-  - name: labs/tools/wikicaptcha
-    template:
-      - name: archived
-
   - name: labs/tools/wikidata-slicer
     template:
       - name: node10-docker
@@ -2025,10 +1953,6 @@ projects:
     gate-and-submit:
       - labs-tools-wikinity-tox-docker
 
-  - name: labs/tools/Wikimedia-Emoji-Bot
-    template:
-      - name: archived
-
   - name: labs/tools/awmd-stats
     template:
       - name: tox-docker
@@ -2036,10 +1960,6 @@ projects:
   - name: labs/tools/graphql
     template:
       - name: node10-docker
-
-  - name: performance/WebPageTest
-    template:
-      - name: archived
 
   - name: performance/asoranking
     template:
@@ -2149,17 +2069,10 @@ projects:
      - name: skin-phan
      - name: skin-seccheck
 
-  - name: mediawiki/skins/CustomPage
-    template:
-     - name: archived
 
   - name: mediawiki/skins/Daddio
     template:
      - name: skin-quibble
-
-  - name: mediawiki/skins/DeepSea
-    template:
-     - name: archived
 
   - name: mediawiki/skins/DeskMessMirrored
     template:
@@ -2279,10 +2192,6 @@ projects:
      - name: skin-quibble
      - name: skin-phan
 
-  - name: mediawiki/skins/Synagonism
-    template:
-     - name: archived
-
   - name: mediawiki/skins/Tempo
     template:
      - name: skin-quibble
@@ -2309,10 +2218,6 @@ projects:
      - name: skin-seccheck
     experimental:
      - quibble-composer-mysql-php70-docker
-
-  - name: mediawiki/skins/VectorV2
-    template:
-     - name: archived
 
   - name: mediawiki/skins/webplatform
     template:
@@ -2512,9 +2417,6 @@ projects:
     gate-and-submit:
       - debian-glue
   - { name: operations/debs/nodejs,                           test: ['debian-glue-non-voting'] }
-  - name: operations/debs/nodepool
-    template:
-      - name: archived
   - { name: operations/debs/nutcracker,                       test: ['debian-glue-non-voting'] }
   - { name: operations/debs/openssl,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/openssl11,                        test: ['debian-glue-non-voting'] }
@@ -2632,9 +2534,6 @@ projects:
   - { name: operations/debs/vips,                             test: ['debian-glue-non-voting'] }
   - { name: operations/debs/wikibugs,                         test: ['debian-glue-non-voting'] }
   - { name: operations/debs/wikimedia-base,                   test: ['debian-glue-non-voting'] }
-  - name: operations/debs/wikimedia-job-runner
-    template:
-      - name: archived
   - { name: operations/debs/wikimedia-keyring,                test: ['debian-glue-non-voting'] }
   - { name: operations/debs/wikimedia-ldap-tools,             test: ['debian-glue-non-voting'] }
   - { name: operations/debs/wikimedia-lvs-realserver,         test: ['debian-glue-non-voting'] }
@@ -2784,49 +2683,21 @@ projects:
     gate-and-submit:
       - puppet-wmf-styleguide-rake-docker
 
-  - name: operations/puppet/cdh
-    template:
-      - name: archived
-
-  - name: operations/puppet/cdh4
-    template:
-      - name: archived
-
-  - name: operations/puppet/jmxtrans
-    template:
-      - name: archived
-
   - name: operations/puppet/kafka
     template:
       - name: puppet-module
-
-  - name: operations/puppet/kafkatee
-    template:
-      - name: archived
 
   - name: operations/puppet/mariadb
     template:
       - name: puppet-module
 
-  - name: operations/puppet/mesos
-    template:
-      - name: archived
-
   - name: operations/puppet/nginx
     template:
       - name: puppet-module
 
-  - name: operations/puppet/varnishkafka
-    template:
-      - name: archived
-
   - name: operations/puppet/wikimetrics
     template:
       - name: puppet-module
-
-  - name: operations/puppet/zookeeper
-    template:
-      - name: archived
 
   # Repo of misc softwares
   # Voting V+2 so ops dont idle waiting for CI to report.
@@ -2842,14 +2713,6 @@ projects:
       - acme-chief-tox-docker
     postmerge:
       - acme-chief-tox-docker
-
-  - name: operations/software/analytics-eventlogging-maintenance
-    template:
-      - name: archived
-
-  - name: operations/software/brrd
-    template:
-      - name: archived
 
   - name: operations/software/cassandra-table-properties
     test:
@@ -3225,10 +3088,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/ActivityMonitor
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/AddMessages
     template:
       - name: extension-quibble
@@ -3248,14 +3107,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Agora
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/AntiBot
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/AntiSpoof
     template:
       - name: extension-gate
@@ -3268,25 +3119,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Annotator
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/APC
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/ApiSandbox
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/ApprovedRevs
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/ArticleFeedback
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/ArticleFeedbackv5
     template:
@@ -3334,10 +3169,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/BlameMaps
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/BlogPage
     template:
       - name: extension-quibble
@@ -3345,14 +3176,6 @@ projects:
   - name: mediawiki/extensions/BoilerPlate
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/BookManager
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/BookManagerv2
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/BounceHandler
     template:
@@ -3482,14 +3305,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/ClickTracking
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/ClientSide
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/CommentStreams
     template:
       - name: extension-quibble
@@ -3550,36 +3365,12 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/Collection/OfflineContentGenerator
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/Collection/OfflineContentGenerator/text_renderer
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/Collection/OfflineContentGenerator/zim_renderer
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/CommonsMetadata
     template:
       - name: extension-quibble
       - name: extension-coverage
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/Configure
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/ConfigurableCounters
     template:
@@ -3621,18 +3412,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/CommunityApplications
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/CommunityHiring
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/CommunityVoice
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/ContactPage
     template:
       - name: extension-quibble
@@ -3643,23 +3422,11 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/FundraisingChart
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/ContributionReporting
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/ContributionTracking
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/ConventionExtension
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/CreditsSource
     template:
@@ -3674,22 +3441,6 @@ projects:
   - name: mediawiki/extensions/CreateUserPage
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/CustomData
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/CustomPage
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/CustomSidebar
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/CustomUserSignup
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/D3Loader
     template:
@@ -3792,10 +3543,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/E3Experiments
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Echo
     template:
       - name: extension-quibble
@@ -3803,10 +3550,6 @@ projects:
       - name: extension-phan
       - name: extension-codehealth
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/EditAccount
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/Editcount
     template:
@@ -3820,21 +3563,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/EditOwn
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/EditPageTracking
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/EditUser
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/EducationProgram
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/Elastica
     template:
@@ -3866,10 +3597,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/EtherEditor
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/EventLogging
     template:
       - name: extension-quibble
@@ -3895,10 +3622,6 @@ projects:
   - name: mediawiki/extensions/ExtJSBase
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/ExpandTemplates
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/ExtensionDistributor
     template:
@@ -3977,10 +3700,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/Gather
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/GettingStarted
     template:
       - name: extension-quibble
@@ -4016,10 +3735,6 @@ projects:
   - name: mediawiki/extensions/GitGadgets
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/GitHub
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/Gitweb
     template:
@@ -4070,10 +3785,6 @@ projects:
   - name: mediawiki/extensions/GoogleAdSense
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/GoogleAPIClient
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/GoogleAuthenticator
     template:
@@ -4236,10 +3947,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/JADE
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Jade
     template:
       - name: extension-quibble
@@ -4364,10 +4071,6 @@ projects:
     template:
       - name: extension-quibble-composer
 
-  - name: mediawiki/extensions/Mantle
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Math
     template:
       - name: extension-quibble
@@ -4385,10 +4088,6 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/MassAction
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/MassMessage
     template:
@@ -4507,14 +4206,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/MwEmbedSupport
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/MWSearch
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/MWVersionInfo
     template:
       - name: extension-quibble
@@ -4556,14 +4247,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Nonlinear
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/Nostalgia
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/NotebookViewer
     template:
       - name: extension-quibble
@@ -4578,19 +4261,11 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/NumberOfComments
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/OATHAuth
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/OAI
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/OAuth
     template:
@@ -4608,14 +4283,6 @@ projects:
     template:
       - name: extension-quibble-composer
 
-  - name: mediawiki/extensions/Offline
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/OggHandler
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/OpenID
     template:
       - name: extension-quibble-composer
@@ -4628,10 +4295,6 @@ projects:
   - name: mediawiki/extensions/OpenJsCad
     template:
       - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/OpenSearchXml
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/OpenStackManager
     template:
@@ -4760,14 +4423,6 @@ projects:
     template:
       - name: extension-quibble-noselenium
 
-  - name: mediawiki/extensions/AccessibilitySimulation
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/ActionEditSubmit
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/AddHTMLMetaAndTitle
     template:
       - name: extension-quibble
@@ -4780,17 +4435,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Ads
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/AdvancedMeta
     template:
       - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/AjaxLogin
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/AJAXPoll
     template:
@@ -4808,19 +4455,11 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/ApiExplorer
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/ApiFeatureUsage
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/ApiSVGProxy
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/ArticleCreationWorkflow
     template:
@@ -4836,10 +4475,6 @@ projects:
   - name: mediawiki/extensions/ArticleToCategory2
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/AssertEdit
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/Auth_remoteuser
     template:
@@ -4865,10 +4500,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/AutomaticBoardWelcome
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/AutoProxyBlock
     template:
       - name: extension-quibble
@@ -4877,17 +4508,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/AWS
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/BatchUserRights
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/BayesianFilter
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/BiblioPlus
     template:
@@ -5230,10 +4853,6 @@ projects:
     template:
       - name: extension-quibble-composer-nohhvm
 
-  - name: mediawiki/extensions/Bootstrap
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/BreadCrumbs
     template:
       - name: extension-quibble
@@ -5254,10 +4873,6 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-coverage
-
-  - name: mediawiki/extensions/CategorySlideShow
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/CategorySortHeaders
     template:
@@ -5292,21 +4907,9 @@ projects:
     template:
       - name: extension-quibble-noselenium
 
-  - name: mediawiki/extensions/CommentPages
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Comments
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/CommunityTwitter
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/ConditionalShowSection
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/CongressLookup
     template:
@@ -5314,17 +4917,9 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/Contest
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Contributors
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/Convert2Wiki
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/CountDownClock
     template:
@@ -5333,10 +4928,6 @@ projects:
   - name: mediawiki/extensions/CopyToClipboard
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/Copyvio
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/CrawlableAllPages
     template:
@@ -5354,14 +4945,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/CreditTab
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/CryoKey
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/CSS
     template:
       - name: extension-quibble
@@ -5373,10 +4956,6 @@ projects:
   - name: mediawiki/extensions/DataTransfer
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/DataTypes
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/DeleteOwn
     template:
@@ -5394,25 +4973,13 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Dice
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/DidYouKnow
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/DidYouMean
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/DisqusTag
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/DjangoAnalytics
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/DownloadCounter
     template:
@@ -5483,10 +5050,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/FeedsFromPrivateWikis
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/FileAnnotations
     template:
       - name: extension-quibble
@@ -5498,10 +5061,6 @@ projects:
   - name: mediawiki/extensions/FilterSpecialPages
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/FirstSteps
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/FlvHandler
     template:
@@ -5515,26 +5074,14 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/FormatNum
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/FormelApplet
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/Foxway
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/FundraisingEmailUnsubscribe
     template:
       - name: extension-quibble-composer
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/Genderize
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/GlobalNotice
     template:
@@ -5559,14 +5106,6 @@ projects:
   - name: mediawiki/extensions/GoogleDocTag
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/GoogleMaps
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/GooglePlusOne
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/GroupsSidebar
     template:
@@ -5623,10 +5162,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/ImageLink
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/ImageMetrics
     template:
       - name: extension-quibble
@@ -5655,10 +5190,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/InterwikiMagic
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/InviteSignup
     template:
       - name: extension-quibble
@@ -5685,10 +5216,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Less
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/LifeWeb
     template:
       - name: extension-quibble
@@ -5696,14 +5223,6 @@ projects:
   - name: mediawiki/extensions/LifeWebCore
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/LightweightRDFa
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/Limn
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/LinkFilter
     template:
@@ -5782,10 +5301,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Minifier
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Model
     template:
       - name: extension-quibble
@@ -5793,14 +5308,6 @@ projects:
   - name: mediawiki/extensions/MontserratFont
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/MOOC
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/Moodle
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/Mpdf
     template:
@@ -5880,10 +5387,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/NewUsersList
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/NoTitle
     template:
       - name: extension-quibble
@@ -5951,10 +5454,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Oversight
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/PageCreationNotif
     template:
       - name: extension-quibble
@@ -5991,10 +5490,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/PdfExport
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/PerPageLicense
     template:
       - name: extension-quibble
@@ -6003,17 +5498,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Phalanx
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/PhpHighlight
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/Pickle
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/PictureGame
     template:
@@ -6039,21 +5526,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/PrefStats
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/PrefSwitch
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/PreferencesMaster
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/Premoderation
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/PrivateDomains
     template:
@@ -6071,10 +5546,6 @@ projects:
   - name: mediawiki/extensions/ProtectSite
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/PubSubHubbub
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/PurgeClickThrough
     template:
@@ -6131,10 +5602,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/RandomFeaturedUser
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/RandomGameUnit
     template:
       - name: extension-quibble
@@ -6159,10 +5626,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/RandomUsersWithAvatars
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/ReadingLists
     template:
       - name: extension-quibble
@@ -6176,10 +5639,6 @@ projects:
   - name: mediawiki/extensions/Recoin
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/Reflect
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/RefreshSpecial
     template:
@@ -6200,14 +5659,6 @@ projects:
   - name: mediawiki/extensions/RelatedLinks
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/RelationLinks
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/RestBaseUpdateJobs
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/RevisionCommentSupplement
     template:
@@ -6263,10 +5714,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/SearchRealnames
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/SectionDisqus
     template:
       - name: extension-quibble
@@ -6286,10 +5733,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/SecurePasswords
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/SecureSessions
     template:
       - name: extension-broken  # T110465
@@ -6306,14 +5749,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/SemanticComments
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/SemanticHighcharts
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/SemanticRating
     template:
       - name: extension-quibble
@@ -6325,10 +5760,6 @@ projects:
   - name: mediawiki/extensions/SemanticWebBrowser
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/SharedCssJs
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/SharedHelpPages
     template:
@@ -6374,10 +5805,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/SimpleSurvey
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/SiteMetrics
     template:
       - name: extension-quibble
@@ -6385,10 +5812,6 @@ projects:
   - name: mediawiki/extensions/SiteSettings
     template:
       - name: extension-broken  # T196504
-
-  - name: mediawiki/extensions/SkelJS
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/SkinPerNamespace
     template:
@@ -6406,10 +5829,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Snippet
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/SocialLogin
     template:
       - name: extension-quibble
@@ -6421,10 +5840,6 @@ projects:
   - name: mediawiki/extensions/SoftwareVersion
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/SolrStore
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/SoundManager2Button
     template:
@@ -6498,14 +5913,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/Suhosin
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/SwarmExport
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/SwiftMailer
     template:
       - name: extension-quibble
@@ -6546,10 +5953,6 @@ projects:
     template:
      - name: extension-quibble
 
-  - name: mediawiki/extensions/ThemeDesigner
-    template:
-     - name: archived
-
   - name: mediawiki/extensions/TheWikipediaLibrary
     template:
       - name: extension-quibble
@@ -6565,10 +5968,6 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/ThumbParser
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/TimelineTable
     template:
@@ -6613,10 +6012,6 @@ projects:
       - name: extension-coverage
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/TwoFactorAuthentication
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/UIFeedback
     template:
       - name: extension-quibble
@@ -6629,10 +6024,6 @@ projects:
     template:
       - name: extension-quibble-noselenium
 
-  - name: mediawiki/extensions/UnitTest
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/UnusedRedirects
     template:
       - name: extension-quibble
@@ -6640,10 +6031,6 @@ projects:
   - name: mediawiki/extensions/UpdateMediaWiki
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/UploadLocal
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/UploadLogo
     template:
@@ -6686,10 +6073,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/USERNAME
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/UserPageEditProtection
     template:
       - name: extension-quibble
@@ -6697,10 +6080,6 @@ projects:
   - name: mediawiki/extensions/UserPageViewTracker
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/UserSnoop
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/UserStatus
     template:
@@ -6717,10 +6096,6 @@ projects:
   - name: mediawiki/extensions/Views
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/VisualChat
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/VoteNY
     template:
@@ -6762,21 +6137,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/WikibaseMobile
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/WikibaseSolr
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/WikiCategoryTagCloud
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/WikidataEntitySuggester
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/WikibaseCirrusSearch
     template:
@@ -6805,19 +6168,11 @@ projects:
       - name: extension-phan
       - name: extension-codehealth
 
-  - name: mediawiki/extensions/WikibaseQuality
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/WikibaseQualityConstraints
     template:
       - name: extension-quibble-composer
       - name: extension-seccheck
       - name: extension-codehealth
-
-  - name: mediawiki/extensions/WikibaseQualityExternalValidation
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/WikibaseMediaInfo
     template:
@@ -6825,10 +6180,6 @@ projects:
       - name: extension-quibble
       - name: extension-codehealth
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/WikiLabels
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/WikiLovesMonuments
     template:
@@ -6838,14 +6189,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/WikiPinger
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/WikiShare
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Wikisource
     template:
       - name: extension-quibble
@@ -6854,21 +6197,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/WikiTwidget
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/WikivoteMapsYandex
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/WindowsAzureStorage
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/XMLContentExtension
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/YetAnotherKeywords
     template:
@@ -6882,10 +6213,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/ArticleComments
-    template:
-     - name: archived
-
   - name: mediawiki/extensions/AzharAuth
     template:
      - name: extension-broken  # T110291 / T198601
@@ -6893,10 +6220,6 @@ projects:
   - name: mediawiki/extensions/Challenge
     template:
      - name: extension-quibble
-
-  - name: mediawiki/extensions/ContributorsAddon
-    template:
-     - name: archived
 
   - name: mediawiki/extensions/EditSimilar
     template:
@@ -6931,24 +6254,6 @@ projects:
   - name: mediawiki/extensions/Html2Wiki
     template:
      - name: extension-broken
-
-  - name: mediawiki/extensions/ImageTagging
-    template:
-     - name: archived
-
-  - name: mediawiki/extensions/InterwikiIntegration
-    template:
-     - name: archived
-
-  # Empty repo - 20151127
-  - name: mediawiki/extensions/InterwikiMap
-    template:
-     - name: archived
-
-  # Empty repo - 20151127
-  - name: mediawiki/extensions/IssueTracker
-    template:
-     - name: archived
 
   - name: mediawiki/extensions/LDAPAuthorization
     template:
@@ -7027,11 +6332,6 @@ projects:
     template:
      - name: extension-quibble-composer
 
-  # Empty repo - 20151127
-  - name: mediawiki/extensions/PlanOut
-    template:
-     - name: archived
-
   - name: mediawiki/extensions/PluggableAuth
     template:
      - name: extension-quibble-noselenium
@@ -7048,10 +6348,6 @@ projects:
     template:
      - name: extension-quibble
 
-  - name: mediawiki/extensions/PureWikiDeletion
-    template:
-     - name: archived
-
   - name: mediawiki/extensions/reCaptcha
     template:
      - name: extension-quibble-composer-noselenium
@@ -7059,10 +6355,6 @@ projects:
   - name: mediawiki/extensions/RecentActivityFeed
     template:
      - name: extension-quibble
-
-  - name: mediawiki/extensions/RevealEmail
-    template:
-     - name: archived
 
   - name: mediawiki/extensions/SacredText
     template:
@@ -7102,10 +6394,6 @@ projects:
     template:
      - name: extension-quibble
 
-  - name: mediawiki/extensions/TopLists
-    template:
-     - name: archived
-
   - name: mediawiki/extensions/TopTenPages
     template:
      - name: extension-quibble
@@ -7129,10 +6417,6 @@ projects:
   - name: mediawiki/extensions/VikiTitleIcon
     template:
      - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/WebCache
-    template:
-     - name: archived
 
   - name: mediawiki/extensions/WebDAV
     template:
@@ -7164,17 +6448,9 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/ZeroRatedMobileAccess
-    template:
-     - name: archived
-
   - name: mediawiki/extensions/ZoomableImages
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/normal
-    template:
-     - name: archived
 
 # End of new currently disabled extensions checks from mass extension import - Addshore
 #
@@ -7219,18 +6495,10 @@ projects:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
 
-  - name: mediawiki/services/citoid/deploy
-    template:
-      - name: archived
-
   - name: mediawiki/services/cxserver
     template:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
-
-  - name: mediawiki/services/cxserver/deploy
-    template:
-      - name: archived
 
   - name: mediawiki/services/graphoid
     template:
@@ -7347,14 +6615,6 @@ projects:
     template:
       - name: tox-docker
 
-  - name: mediawiki/services/trending-edits
-    template:
-      - name: archived
-
-  - name: mediawiki/services/trending-edits/deploy
-    template:
-      - name: archived
-
   - name: mediawiki/services/wikifeeds
     template:
       - name: service-pipeline-test
@@ -7371,10 +6631,6 @@ projects:
     template:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
-
-  - name: mediawiki/extensions/Parsoid
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/ParsoidBatchAPI
     template:
@@ -7430,10 +6686,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/PHPExcel
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Poem
     template:
       - name: extension-quibble
@@ -7455,10 +6707,6 @@ projects:
       - name: extension-seccheck
       - name: extension-javascript-documentation
 
-  - name: mediawiki/extensions/PostEdit
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/ProofreadPage
     template:
       - name: extension-quibble
@@ -7472,14 +6720,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
-
-  - name: mediawiki/extensions/RandomRootPage
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/ReaderFeedback
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/RelatedArticles
     template:
@@ -7545,10 +6785,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/SemanticExpressiveness
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/SemanticGenealogy
     template:
       - name: extension-broken  # Semantic MediaWiki is on GitHub
@@ -7565,18 +6801,6 @@ projects:
     template:
       - name: extension-broken  # Semantic MediaWiki is on GitHub
 
-  - name: mediawiki/extensions/SemanticLinks
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/SemanticMediaWiki
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/SemanticPageMaker
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/SemanticPageSeries
     template:
       - name: extension-broken  # Semantic MediaWiki is on GitHub
@@ -7584,14 +6808,6 @@ projects:
   - name: mediawiki/extensions/SemanticTasks
     template:
       - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/SemanticTitle
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/SemanticUpdateOnPurge
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/Sentry
     template:
@@ -7611,10 +6827,6 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/SimpleAntiSpam
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/SimpleFarm
     template:
@@ -7650,10 +6862,6 @@ projects:
       - name: extension-quibble
       - name: extension-phan
 
-  - name: mediawiki/extensions/Spreadsheet
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/StickToThatLanguage
     template:
       - name: extension-quibble
@@ -7664,10 +6872,6 @@ projects:
       - name: extension-coverage
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/StrategyWiki
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/SubPageList3
     template:
@@ -7693,10 +6897,6 @@ projects:
   - name: mediawiki/extensions/SVGEdit
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/SwiftCloudFiles
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/TemplateSandbox
     template:
@@ -7793,10 +6993,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/Transliterator
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/TrustedXFF
     template:
       - name: extension-quibble
@@ -7842,10 +7038,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/UserDailyContribs
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/UserMerge
     template:
       - name: extension-quibble
@@ -7866,14 +7058,6 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/Vector
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/VectorBeta
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/VipsScaler
     template:
@@ -7898,10 +7082,6 @@ projects:
   - name: mediawiki/extensions/WebChat
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/WebPlatformAuth
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/WikiEditor
     template:
@@ -7931,14 +7111,6 @@ projects:
     gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
     postmerge:
       - mwext-doxygen-publish
-
-  - name: mediawiki/extensions/WikibaseJavaScriptApi
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/Wikidata
-    template:
-      - name: archived
 
   - name: mediawiki/extensions/Wikidata.org
     template:
@@ -7997,40 +7169,12 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/WikimediaShopLink
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/WikiGrok
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/WikiObjectModel
-    template:
-      - name: archived
-
   - name: mediawiki/extensions/Wikispeech
     template:
       - name: extension-quibble-noselenium
       - name: extension-coverage
 
-  - name: mediawiki/extensions/Workflow
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/ZeroBanner
-    template:
-      - name: archived
-
-  - name: mediawiki/extensions/ZeroPortal
-    template:
-      - name: archived
-
 #### PHP Extensions ###################################################
-
-  - name: mediawiki/php/FastStringSearch
-    template:
-      - name: archived
 
   - name: mediawiki/php/excimer
     # excimer is PHP 7.1+ only
@@ -8091,10 +7235,6 @@ projects:
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
-
-  - name: pywikibot/compat
-    template:
-      - name: archived
 
   - name: pywikibot/core
     test:
@@ -8404,14 +7544,6 @@ projects:
     postmerge:
       - search-highlighter-maven-java8-docker-site-publish
 
-  - name: search/ltr
-    template:
-      - name: archived
-
-  - name: search/repository-swift
-    template:
-      - name: archived
-
   - name: search/xgboost
     test:
       - search-xgboost-maven-java8-docker
@@ -8475,14 +7607,6 @@ projects:
       - ooui-npm-special-node10-plus-composer-docker
       - generic-node10-rundoc-docker
       - generic-node10-npmaudit-docker
-
-  - name: sink_nova_ldap
-    template:
-      - name: archived
-
-  - name: sink_nova_fixed_multi
-    template:
-      - name: archived
 
   - name: jsdoc/wmf-theme
     test:
@@ -8582,10 +7706,6 @@ projects:
     experimental:
       - generic-node10-browser-docker
 
-  - name: wikidata/build-resources
-    template:
-      - name: archived
-
   - name: testing-access-wrapper
     template:
      - name: composer-test-package
@@ -8630,3 +7750,885 @@ projects:
   - name: operations/deployment-charts
     experimental:
       - helm-lint
+
+#### Archive repositories##############################################
+
+  - name: apps/android/java-mwapi
+    template:
+     - name: archived
+
+  - name: apps/android/wikipedia
+    template:
+     - name: archived
+
+  - name: apps/ios/wikipedia
+    template:
+     - name: archived
+
+  - name: integration/phpunit
+    template:
+     - name: archived
+
+  - name: labs/migration-assistant
+    template:
+     - name: archived
+
+  - name: labs/nagios-builder
+    template:
+     - name: archived
+
+  - name: labs/tools/bub
+    template:
+     - name: archived
+
+  - name: labs/tools/connectivity
+    template:
+     - name: archived
+
+  - name: labs/tools/coursestats
+    template:
+     - name: archived
+
+  - name: labs/tools/flow-oauth-demo
+    template:
+     - name: archived
+
+  - name: labs/tools/grrrit
+    template:
+     - name: archived
+
+  - name: labs/tools/Luke081515IRCBot
+    template:
+     - name: archived
+
+  - name: labs/tools/signpost
+    template:
+     - name: archived
+
+  - name: labs/tools/wikicaptcha
+    template:
+     - name: archived
+
+  - name: labs/tools/Wikimedia-Emoji-Bot
+    template:
+     - name: archived
+
+  - name: maps/kartotherian
+    template:
+     - name: archived
+
+  - name: maps/kartotherian/package
+    template:
+     - name: archived
+
+  - name: maps/tilerator
+    template:
+     - name: archived
+
+  - name: marvin
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/AccessibilitySimulation
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ActionEditSubmit
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ActivityMonitor
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Ads
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Agora
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/AjaxLogin
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Annotator
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/AntiBot
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/APC
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ApiExplorer
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ApiSandbox
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ApiSVGProxy
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ArticleComments
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ArticleFeedback
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/AssertEdit
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/AutomaticBoardWelcome
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/AWS
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/BayesianFilter
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/BlameMaps
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/BookManager
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/BookManagerv2
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Bootstrap
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CategorySlideShow
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ClickTracking
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ClientSide
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator/text_renderer
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Collection/OfflineContentGenerator/zim_renderer
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CommentPages
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CommunityApplications
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CommunityHiring
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CommunityTwitter
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CommunityVoice
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ConditionalShowSection
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Configure
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Contest
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ContributionReporting
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ContributorsAddon
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ConventionExtension
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Convert2Wiki
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Copyvio
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CreditTab
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CryoKey
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CustomData
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CustomPage
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CustomSidebar
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/CustomUserSignup
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/DataTypes
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Dice
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/DidYouMean
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/DjangoAnalytics
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/E3Experiments
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/EditAccount
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/EditOwn
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/EditPageTracking
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/EducationProgram
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/EtherEditor
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ExpandTemplates
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/FeedsFromPrivateWikis
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/FirstSteps
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/FormatNum
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Foxway
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/FundraisingChart
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Gather
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Genderize
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/GitHub
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/GoogleAPIClient
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/GoogleMaps
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/GooglePlusOne
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ImageLink
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ImageTagging
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/InterwikiIntegration
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/InterwikiMagic
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/InterwikiMap
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/IssueTracker
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/JADE
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Less
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/LightweightRDFa
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Limn
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Mantle
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/MassAction
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Minifier
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/MOOC
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Moodle
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/MwEmbedSupport
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/MWSearch
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/NewUsersList
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Nonlinear
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/normal
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Nostalgia
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/NumberOfComments
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/OAI
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Offline
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/OggHandler
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/OpenSearchXml
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Oversight
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Parsoid
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/PdfExport
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Phalanx
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/PHPExcel
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Pickle
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/PlanOut
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/PostEdit
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/PrefStats
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/PrefSwitch
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Premoderation
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/PubSubHubbub
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/PureWikiDeletion
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/RandomFeaturedUser
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/RandomRootPage
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/RandomUsersWithAvatars
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ReaderFeedback
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Reflect
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/RelationLinks
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/RestBaseUpdateJobs
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/RevealEmail
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SearchRealnames
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SecurePasswords
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SemanticComments
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SemanticExpressiveness
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SemanticHighcharts
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SemanticLinks
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SemanticMediaWiki
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SemanticPageMaker
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SemanticTitle
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SemanticUpdateOnPurge
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SharedCssJs
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SimpleAntiSpam
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SimpleSurvey
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SkelJS
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Snippet
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SolrStore
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Spreadsheet
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/StrategyWiki
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Suhosin
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SwarmExport
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/SwiftCloudFiles
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ThemeDesigner
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ThumbParser
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/TopLists
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Transliterator
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/TwoFactorAuthentication
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/UnitTest
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/UploadLocal
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/UserDailyContribs
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/USERNAME
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/UserSnoop
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Vector
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/VectorBeta
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/VisualChat
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WebCache
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WebPlatformAuth
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikibaseJavaScriptApi
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikibaseMobile
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikibaseQuality
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikibaseQualityExternalValidation
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikibaseSolr
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Wikidata
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikidataEntitySuggester
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikiGrok
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikiLabels
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikimediaShopLink
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikiObjectModel
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikiPinger
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikiShare
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikiTwidget
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/WikivoteMapsYandex
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/Workflow
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/XMLContentExtension
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ZeroBanner
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ZeroPortal
+    template:
+     - name: archived
+
+  - name: mediawiki/extensions/ZeroRatedMobileAccess
+    template:
+     - name: archived
+
+  - name: mediawiki/php/FastStringSearch
+    template:
+     - name: archived
+
+  - name: mediawiki/services/citoid/deploy
+    template:
+     - name: archived
+
+  - name: mediawiki/services/cxserver/deploy
+    template:
+     - name: archived
+
+  - name: mediawiki/services/trending-edits
+    template:
+     - name: archived
+
+  - name: mediawiki/services/trending-edits/deploy
+    template:
+     - name: archived
+
+  - name: mediawiki/skins/CustomPage
+    template:
+     - name: archived
+
+  - name: mediawiki/skins/DeepSea
+    template:
+     - name: archived
+
+  - name: mediawiki/skins/Synagonism
+    template:
+     - name: archived
+
+  - name: mediawiki/skins/VectorV2
+    template:
+     - name: archived
+
+  - name: operations/debs/nodepool
+    template:
+     - name: archived
+
+  - name: operations/debs/wikimedia-job-runner
+    template:
+     - name: archived
+
+  - name: operations/puppet/cdh
+    template:
+     - name: archived
+
+  - name: operations/puppet/cdh4
+    template:
+     - name: archived
+
+  - name: operations/puppet/jmxtrans
+    template:
+     - name: archived
+
+  - name: operations/puppet/kafkatee
+    template:
+     - name: archived
+
+  - name: operations/puppet/mesos
+    template:
+     - name: archived
+
+  - name: operations/puppet/varnishkafka
+    template:
+     - name: archived
+
+  - name: operations/puppet/zookeeper
+    template:
+     - name: archived
+
+  - name: operations/software/analytics-eventlogging-maintenance
+    template:
+     - name: archived
+
+  - name: operations/software/brrd
+    template:
+     - name: archived
+
+  - name: performance/WebPageTest
+    template:
+     - name: archived
+
+  - name: pywikibot/compat
+    template:
+     - name: archived
+
+  - name: search/ltr
+    template:
+     - name: archived
+
+  - name: search/repository-swift
+    template:
+     - name: archived
+
+  - name: sink_nova_fixed_multi
+    template:
+     - name: archived
+
+  - name: sink_nova_ldap
+    template:
+     - name: archived
+
+  - name: wikidata/build-resources
+    template:
+     - name: archived
