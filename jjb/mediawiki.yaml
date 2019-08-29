@@ -757,16 +757,6 @@
                 - composer
                 # But for mediawiki/vendor, we use it instead of composer! - T189560
                 - vendor
-        - wmf-quibble-vendor-mysql-{php}-docker:
-            # We never use composer on wmf cluster
-            packages-source: vendor
-            # WMF cluster uses MariaDB/MySQL
-            database: mysql
-        - wmf-quibble-core-vendor-mysql-{php}-docker:
-            # We never use composer on wmf cluster
-            packages-source: vendor
-            # WMF cluster uses MariaDB/MySQL
-            database: mysql
         - mwcore-phpunit-coverage-patch:
             docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.34
             packages-source: vendor
@@ -787,6 +777,24 @@
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.34-1
             packages-source: vendor
             database: mysql
+
+# MediaWiki jobs for deployment to the Wikimedia cluster
+- project:
+    name: quibble-jobs-for-wikimedia
+
+    # We never use composer
+    packages-source: vendor
+    # We only use MariaDB/MySQL
+    database: mysql
+    # And only HHVM / php7.2
+    php:
+        - hhvm:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-hhvm:0.0.34-1
+        - php72:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.34-1
+    jobs:
+        - wmf-quibble-vendor-mysql-{php}-docker
+        - wmf-quibble-core-vendor-mysql-{php}-docker
 
 # General MW-Selenium job used to dogfood the builder against MW core.
 - job-template:
