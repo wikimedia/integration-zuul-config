@@ -50,8 +50,9 @@ pipelines:
     source: gerrit
     trigger:
       gerrit:
-        - event: patchset-created
-          branch: (?!^refs/meta/config)
+        - &test-event-patchset-created
+          event: patchset-created
+          branch: (?!^refs/meta/config|^fundraising/REL)
 
           # BEWARE:
           # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
@@ -361,15 +362,17 @@ pipelines:
 
         # Let whitelisted users the ability to reenqueue a change in the test
         # pipeline by simply commenting 'recheck' on a change.
-        - event: comment-added
-          branch: (?!^refs/meta/config)
+        - &test-event-comment-recheck
+          event: comment-added
+          branch: (?!^refs/meta/config|^fundraising/REL)
           comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?(\n\n\(\d+ comment(s)?\))?\n\n\s*recheck\b
           email: *email_whitelist
 
         # Let whitelisted users CR+1 to trigger tests for an untested patch
         # (Verified 0 or 1)
-        - event: comment-added
-          branch: (?!^refs/meta/config$)
+        - &test-event-plus-one
+          event: comment-added
+          branch: (?!^refs/meta/config|^fundraising/REL)
           reject-approval:
             # hasn't been tested yet
             - verified: [-1, 2]
@@ -391,6 +394,19 @@ pipelines:
     description: >
       Variation of the "test" pipeline reserved for jobs critical to infrastructure deployments and configuration changes.
     precedence: high
+
+  - !!merge : *test_pipeline
+    name: test-fundraising
+    description: >
+      Variation of the "test" pipeline reserved for fundraising/REL* branches.
+    trigger:
+      gerrit:
+        - !!merge : *test-event-patchset-created
+          branch: ^fundraising/REL
+        - !!merge : *test-event-comment-recheck
+          branch: ^fundraising/REL
+        - !!merge : *test-event-plus-one
+          branch: ^fundraising/REL
 
   # Dedicated pipeline for per-patch coverage report (non-voting)
   - name: coverage
@@ -514,9 +530,10 @@ pipelines:
       open: True
     trigger:
       gerrit:
-        - event: comment-added
+        - &gate-and-submit-comment-added
+          event: comment-added
           branch:
-           - (?!^(refs/meta/config|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}))
+           - (?!^(refs/meta/config|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}|fundraising/REL))
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
@@ -546,6 +563,15 @@ pipelines:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
             - code-review: 2
+
+  # Separate gate for fundraising@REL* branches
+  # Saves us from having to set the branch filter on jobs
+  - !!merge : *gate_and_submit_pipeline
+    name: gate-and-submit-fundraising
+    trigger:
+      gerrit:
+        - !!merge : *gate-and-submit-comment-added
+          branch: ^fundraising/REL
 
   # Separate gate for commits authored by l10n-bot, which run different tests.
   # It also has a lower priority, and improved concurrency (no DependentPipelineManager).
@@ -786,15 +812,10 @@ jobs:
   - name: integration-zuul-tox-docker
     branch: ^patch-queue/debian/
 
-  # Covered by a test
-  # TestZuulScheduler.test_donationinterface_deployment_branch_filters
   - name: ^quibble-donationinterface-REL1_31-php70-docker$
-
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
-      - project: ^mediawiki/core$
-        branch: (?!fundraising/REL.*)
 
 
   # Jobs testing multiple extensions together
@@ -1525,7 +1546,6 @@ projects:
     template:
       - name: extension-gate
     test:
-      - quibble-donationinterface-REL1_31-php70-docker
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
       # FIXME use a normal composer job?
@@ -1539,7 +1559,6 @@ projects:
       - mediawiki-quibble-vendor-mysql-php72-docker
       - mediawiki-quibble-vendor-mysql-php73-docker
     gate-and-submit:
-      - quibble-donationinterface-REL1_31-php70-docker
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
@@ -1564,6 +1583,16 @@ projects:
       - mediawiki-core-jsduck-docker
 
       - mediawiki-core-php72-phan-docker
+
+    test-fundraising:
+      - mwgate-composer-hhvm-docker
+      - mwgate-node10-docker
+      - quibble-donationinterface-REL1_31-php70-docker
+    gate-and-submit-fundraising:
+      - mwgate-composer-hhvm-docker
+      - mwgate-node10-docker
+      - quibble-donationinterface-REL1_31-php70-docker
+
     coverage:
       - mwcore-phpunit-coverage-patch
     patch-performance:
@@ -1607,6 +1636,14 @@ projects:
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       # FIXME use php72 instead?
       - mediawiki-quibble-vendor-mysql-php70-docker
+
+    test-fundraising:
+      - mwgate-composer-hhvm-docker
+      - mwgate-node10-docker
+    gate-and-submit-fundraising:
+      - mwgate-composer-hhvm-docker
+      - mwgate-node10-docker
+
     experimental:
       - mwgate-composer-php70-docker
 

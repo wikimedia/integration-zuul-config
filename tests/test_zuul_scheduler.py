@@ -726,29 +726,6 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(test_manager.eventMatches(event, change))
 
-    def test_donationinterface_docker_job_skips_on_mediawiki_core(self):
-        repo = 'mediawiki/core'
-
-        job = self.getJob(
-            repo, 'test',
-            'quibble-donationinterface-REL1_31-php70-docker')
-
-        change = zuul.model.Change(repo)
-
-        change.branch = 'master'
-
-        self.assertFalse(job.changeMatches(change))
-
-        change.branch = 'wmf/1.99.9-wmf.999'
-        self.assertFalse(job.changeMatches(change))
-
-        change.branch = 'REL1_42'
-        self.assertFalse(job.changeMatches(change))
-
-        # Only runs on mediawiki/core fundraising branch
-        change.branch = 'fundraising/REL1_99'
-        self.assertTrue(job.changeMatches(change))
-
     def test_rake_docker_files_filters(self):
         # FIXME: should be more generic
         jobs_tree = [t for (p, t) in
@@ -1034,9 +1011,6 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_mwcore_switch_to_quibble(self):
         expected_test = {
-            # It is not triggered for the master branch:
-            'quibble-donationinterface-REL1_31-php70-docker': False,
-
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
@@ -1048,9 +1022,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mwgate-node10-docker': True,
         }
         expected_gate = {
-            # It is not triggered for the master branch:
-            'quibble-donationinterface-REL1_31-php70-docker': False,
-
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php70-docker': True,
