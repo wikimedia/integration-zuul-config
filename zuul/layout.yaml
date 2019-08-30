@@ -659,24 +659,11 @@ jobs:
     skip-if:
       - project: '^mediawiki/core$'
         # Skip for older branches, they require php7.0 - T226156
-        branch: (?:^(fundraising/)?REL1_3[12]$)
+        branch: (?:^REL1_3[12]$)
 
   # -------
   # MediaWiki: Quibble and PHPUnit stuff
   # -------
-
-  # Fallback settings for all Quibble jobs
-  - name: ^.*quibble-.*-docker$
-    skip-if:
-      # Disable on fundraising branches
-      - project: '^mediawiki/core$'
-        branch: ^fundraising/REL1_31$
-
-  - name: ^.*quibble.*php70.*$
-    skip-if:
-      # Disable on fundraising branches
-      - project: '^mediawiki/core$'
-        branch: ^fundraising/REL1_31$
 
   - name: ^.*quibble.*php71.*$
     skip-if:
@@ -687,26 +674,23 @@ jobs:
   - name: ^release-quibble-
     branch: ^REL
 
-  # Skip MediaWiki tests for PHP 7.1 on wmf/, fundraising/, and MW < 1.32.
+  # Skip MediaWiki tests for PHP 7.1 on wmf/, and MW < 1.32.
   # Effectively only on master and REL1_32+
   - name: ^(wmf|mediawiki).*quibble.*php71.*
-    branch: (?!(wmf|fundraising)/.*|REL1_3[01])
+    branch: (?!wmf/.*|REL1_3[01])
   - name: ^release-quibble-composer-mysql-php71-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_3[01]|master)
+    branch: (?!wmf/.*|REL1_3[01]|master)
 
-  # Skip MediaWiki tests related to PHP 7.2 support on fundraising/, and MW < 1.32.
+  # Skip MediaWiki tests related to PHP 7.2 support on MW < 1.32.
   # Effectively only on master, REL1_32+, and wmf/.
   - name: ^(wmf|mediawiki).*quibble.*php72.*
-    branch: (?!(fundraising)/.*|REL1_3[01])
+    branch: (?!REL1_3[01])
   # Skip the release-specific job on wmf/ branches (redundant with wmf-specific one)
   - name: ^release-quibble-composer-mysql-php72-docker$
-    branch: (?!(wmf|fundraising)/.*|REL1_3[01]|master)
+    branch: (?!wmf/.*|REL1_3[01]|master)
 
   - name: ^.*quibble.*sqlite.*php72.*$
     skip-if:
-      # Disable on fundraising branches (sqlite not used)
-      - project: '^mediawiki/.*'
-        branch: ^fundraising/.*$
       # Disable on wmf branches (sqlite not used)
       - project: '^mediawiki/.*'
         branch: ^wmf/.*$
@@ -716,9 +700,6 @@ jobs:
 
   - name: ^.*quibble.*postgres.*php72.*$
     skip-if:
-      # Disable on fundraising branches (pgsql not used)
-      - project: '^mediawiki/.*'
-        branch: ^fundraising/.*$
       # Disable on wmf branches (pgsql not used)
       - project: '^mediawiki/.*'
         branch: ^wmf/.*$
@@ -726,16 +707,10 @@ jobs:
       - project: '^mediawiki/.*'
         branch: ^REL1_3[01]$
 
-  - name: ^.*quibble.*hhvm.*$
-    skip-if:
-      # Disable on fundraising branches
-      - project: '^mediawiki/core$'
-        branch: ^fundraising/REL1_31$
-
   - name: ^wmf-quibble-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
     # run them on REL branches.
-    branch: (?!^(fundraising/)?REL)
+    branch: (?!^REL)
     skip-if:
       - project: ^mediawiki/core$
       - project: ^mediawiki/vendor$
@@ -743,7 +718,7 @@ jobs:
   - name: ^wmf-quibble-core-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
     # run them on REL branches.
-    branch: (?!^(fundraising/)?REL)
+    branch: (?!^REL)
     skip-if:
       - project: ^mediawiki/extensions/.*$
 
