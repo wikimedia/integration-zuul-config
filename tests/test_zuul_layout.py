@@ -54,6 +54,11 @@ class TestZuulLayout(unittest.TestCase):
             )
         errors = []
         for project in self.getExtSkinRepos():
+
+            # Special case!
+            if project['name'] == 'mediawiki/extensions/DonationInterface':
+                continue
+
             try:
                 has_extension_unittests = any([
                     template['name'].startswith(one_of_templates)

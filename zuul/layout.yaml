@@ -3521,12 +3521,19 @@ projects:
       - name: extension-quibble
 
   - name: mediawiki/extensions/DonationInterface
-    template:
-      - name: extension-broken  # It is not really broken but use different jobs
     test:
+      - mwgate-composer-php70-docker
+      - mwgate-node10-docker
       - quibble-donationinterface-REL1_31-php70-docker
     gate-and-submit:
+      - mwgate-composer-php70-docker
+      - mwgate-node10-docker
       - quibble-donationinterface-REL1_31-php70-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+    experimental:
+     - mwext-php72-phan-docker
+     - mwext-php72-phan-seccheck-docker
 
   - name: mediawiki/extensions/DoubleWiki
     template:
