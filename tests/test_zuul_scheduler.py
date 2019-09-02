@@ -1319,3 +1319,18 @@ class TestZuulScheduler(unittest.TestCase):
         change.branch = 'REL1_42'
         self.assertFalse(wmf_quibble_job.changeMatches(change))
         self.assertTrue(release_job.changeMatches(change))
+
+    def test_wmf_pipelines_are_only_for_mediawiki(self):
+        p = [p.name for p in self.getPipelineProjects('test-wmf')
+             if not p.name.startswith((
+                 'mediawiki/core',
+                 'mediawiki/vendor',
+                 'mediawiki/extensions/',
+                 'mediawiki/skins/',
+                 ))
+             ]
+        self.longMessage = True
+        self.assertEquals(
+            [], p,
+            'test-wmf pipeline is only for MediaWiki core, vendor, '
+            'extensions and skins')
