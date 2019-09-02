@@ -35,7 +35,6 @@ def set_parameters(item, job, params):
         'mwext-phpunit-coverage',
         'mwext-codehealth',
         'mediawiki-quibble',
-        'release-quibble',
         'quibble',
         )
     if job.name.startswith(mw_deps_jobs_starting_with):

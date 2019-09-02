@@ -253,14 +253,6 @@
     triggers:
         - zuul
 
-# For the REL branches
-- job-template:
-    !!merge : *job_quibble
-    name: release-quibble-{packages-source}-{database}-{php}-docker
-    quibble_args: '--skip npm-test'
-    triggers:
-        - zuul
-
 # For the master and wmf/* branches
 - job-template:
     !!merge : *job_quibble
@@ -751,12 +743,6 @@
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
-        - release-quibble-{packages-source}-{database}-{php}-docker:
-            packages-source:
-                # On release branches, we use 'composer install' to ship dependencies - T189560
-                - composer
-                # But for mediawiki/vendor, we use it instead of composer! - T189560
-                - vendor
         - mwcore-phpunit-coverage-patch:
             docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.34
             packages-source: vendor

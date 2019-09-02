@@ -49,15 +49,3 @@ class TestZuulSetParameters(unittest.TestCase):
         self.assertIn('EXT_DEPENDENCIES', params)
         self.assertIn('mediawiki/extensions/AbuseFilter\\n',
                       params['EXT_DEPENDENCIES'])
-
-    def test_release_quibble_jobs_get_dependencies(self):
-        job = FakeJob('release-quibble-anything')
-        params = {
-            'ZUUL_PROJECT': 'mediawiki/extensions/Translate',
-            'ZUUL_PIPELINE': 'test',
-            'ZUUL_BRANCH': 'REL1_31',
-            }
-        set_parameters(None, job, params)
-        self.assertIn('EXT_DEPENDENCIES', params)
-        self.assertIn('mediawiki/extensions/UniversalLanguageSelector\\n',
-                      params['EXT_DEPENDENCIES'])

@@ -1101,7 +1101,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-composertest-php72-docker': True,
-            'release-quibble-composer-mysql-hhvm-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
             'mwgate-node10-docker': True,
@@ -1118,11 +1117,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-composertest-php72-docker': True,
             'mediawiki-quibble-vendor-sqlite-php72-docker': True,
             'mediawiki-quibble-vendor-postgres-php72-docker': True,
-            'release-quibble-composer-mysql-hhvm-docker': False,
-            'release-quibble-composer-mysql-php70-docker': False,
-            'release-quibble-composer-mysql-php71-docker': False,
-            'release-quibble-composer-mysql-php72-docker': False,
-            'release-quibble-composer-mysql-php73-docker': False,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-vendor-mysql-php72-docker': False,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
@@ -1178,144 +1172,6 @@ class TestZuulScheduler(unittest.TestCase):
                     job.changeMatches(change))
                 )
 
-    def test_mwvendor(self):
-        change = zuul.model.Change('mediawiki/vendor')
-        change.files.extend(['foo.php', 'composer.json'])
-
-        job_tree = [t for (p, t) in
-                    self.getPipeline('test').job_trees.iteritems()
-                    if p.name == 'mediawiki/vendor'][0]
-        test_jobs = job_tree.getJobs()
-
-        matches = {}
-
-        for branch in ['master', 'REL1_99', 'wmf/1.99.9-wmf.99']:
-            change.branch = branch
-            matches[branch] = {
-                job.name: job.changeMatches(change)
-                for job in test_jobs
-            }
-
-        self.maxDiff = None
-        self.assertEquals({
-            'REL1_99': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # We use composer on release branches
-                'release-quibble-composer-mysql-hhvm-docker': True,
-                # No need for the Wikimedia gated job on release branches:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': False,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                },
-            'master': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # release-* jobs are for release branches
-                'release-quibble-composer-mysql-hhvm-docker': False,
-                # Optimization for core:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                },
-            'wmf/1.99.9-wmf.99': {
-                'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
-                'mediawiki-quibble-vendor-mysql-php70-docker': True,
-                'mwgate-composer-hhvm-docker': True,
-                'mwgate-node10-docker': True,
-                # release-* jobs are for release branches
-                'release-quibble-composer-mysql-hhvm-docker': False,
-                # Optimization for core:
-                'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
-                'wmf-quibble-vendor-mysql-hhvm-docker': False
-                }
-            },
-            matches)
-
-    def test_wmf_quibble_for_extensions(self):
-        wmf_quibble_job = self.getJob(
-            'mediawiki/extensions/AbuseFilter',
-            'gate-and-submit',
-            'wmf-quibble-vendor-mysql-php72-docker')
-        release_job = self.getJob(
-            'mediawiki/extensions/AbuseFilter',
-            'gate-and-submit',
-            'release-quibble-composer-mysql-php70-docker')
-
-        change = zuul.model.Change('mediawiki/extensions/AbuseFilter')
-
-        # wmf-quibble jobs target master and wmf branches
-        change.branch = 'wmf/1.99.9-wmf.999'
-        self.assertTrue(
-            wmf_quibble_job.changeMatches(change),
-            'wmf-quibble jobs run on wmf branches')
-        self.assertFalse(
-            release_job.changeMatches(change),
-            'release job is not for wmf branches')
-
-        change.branch = 'master'
-        self.assertTrue(
-            wmf_quibble_job.changeMatches(change),
-            'wmf-quibble jobs run on master branch')
-        self.assertFalse(
-            release_job.changeMatches(change),
-            'release job is not for master branch')
-
-        # We run it on feature branches as well:
-        change.branch = 'feature'
-        self.assertTrue(
-            wmf_quibble_job.changeMatches(change),
-            'wmf-quibble jobs run on feature branch')
-        self.assertFalse(
-            release_job.changeMatches(change),
-            'release job is not for feature branch')
-
-        # But not the release branches
-        change.branch = 'REL1_42'
-        self.assertFalse(
-            wmf_quibble_job.changeMatches(change),
-            'wmf-quibble jobs are not for REL branches')
-        self.assertTrue(
-            release_job.changeMatches(change),
-            'release jobs run on REL branches')
-
-    def test_gated_extension_run_tests_on_rel_branch(self):
-        repo = 'mediawiki/extensions/Translate'
-        release_job = self.getJob(
-            repo, 'test',
-            'release-quibble-composer-mysql-hhvm-docker')
-
-        change = zuul.model.Change(repo)
-
-        change.branch = 'REL1_42'
-        self.assertTrue(release_job.changeMatches(change))
-
-    def test_postgres_sqlite_job(self):
-        repo = 'mediawiki/core'
-        job = self.getJob(
-            repo, 'gate-and-submit',
-            'mediawiki-quibble-vendor-postgres-php72-docker')
-
-        change = zuul.model.Change(repo)
-
-        # Doesn't run on wmf/
-        change.branch = 'wmf/1.31.0-wmf.28'
-        self.assertFalse(job.changeMatches(change))
-
-        # Doesn't run on REL1_31
-        change.branch = 'REL1_31'
-        self.assertFalse(job.changeMatches(change))
-
-        # Runs on master
-        change.branch = 'master'
-        self.assertTrue(job.changeMatches(change))
-
-        # Runs on REL1_32
-        change.branch = 'REL1_32'
-        self.assertTrue(job.changeMatches(change))
-
     def test_gated_extension_run_tests_on_feature_branch(self):
         repo = 'mediawiki/extensions/CirrusSearch'
         release_job = self.getJob(
@@ -1325,34 +1181,6 @@ class TestZuulScheduler(unittest.TestCase):
         change = zuul.model.Change(repo)
 
         change.branch = 'es6'
-        self.assertTrue(release_job.changeMatches(change))
-
-    def test_gated_extension_behavior(self):
-        repo = 'mediawiki/extensions/Translate'
-
-        wmf_quibble_job = self.getJob(
-            repo, 'gate-and-submit',
-            'wmf-quibble-vendor-mysql-php72-docker')
-        release_job = self.getJob(
-            repo, 'gate-and-submit',
-            'release-quibble-composer-mysql-php70-docker')
-
-        change = zuul.model.Change(repo)
-
-        change.branch = 'master'
-        self.assertTrue(wmf_quibble_job.changeMatches(change))
-        self.assertFalse(release_job.changeMatches(change))
-
-        change.branch = 'wmf/1.99.9-wmf.999'
-        self.assertTrue(wmf_quibble_job.changeMatches(change))
-        self.assertFalse(release_job.changeMatches(change))
-
-        change.branch = 'feature'
-        self.assertTrue(wmf_quibble_job.changeMatches(change))
-        self.assertFalse(release_job.changeMatches(change))
-
-        change.branch = 'REL1_42'
-        self.assertFalse(wmf_quibble_job.changeMatches(change))
         self.assertTrue(release_job.changeMatches(change))
 
     def test_wmf_pipelines_are_only_for_mediawiki(self):
