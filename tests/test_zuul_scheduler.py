@@ -369,6 +369,35 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertFalse(manager.eventMatches(event, change))
 
+    def test_test_wmf(self):
+        test_wmf_manager = self.getPipeline('test-wmf').manager
+        test_manager = self.getPipeline('test').manager
+
+        change = zuul.model.Change('mediawiki/core')
+        change.branch = 'wmf/1.29.0-wmf.20'
+
+        event = zuul.model.TriggerEvent()
+        event.type = 'patchset-created'
+        event.account = {'email': 'anonymous@wikimedia.org'}
+        event.branch = change.branch
+
+        self.assertTrue(
+            test_wmf_manager.eventMatches(event, change),
+            'test-wmf pipeline accepts changes to wmf/ branches')
+        self.assertFalse(
+            test_manager.eventMatches(event, change),
+            'test pipeline rejects changes to wmf/ branches')
+
+        change.branch = 'master'
+        event.branch = change.branch
+
+        self.assertFalse(
+            test_wmf_manager.eventMatches(event, change),
+            'test-wmf pipeline rejects changes to master branch')
+        self.assertTrue(
+            test_manager.eventMatches(event, change),
+            'test pipeline accepts changes to master branch')
+
     def test_gate_and_submit_wmf(self):
         gs_wmf_manager = self.getPipeline('gate-and-submit-wmf').manager
         gs_manager = self.getPipeline('gate-and-submit').manager
@@ -385,6 +414,27 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertTrue(gs_wmf_manager.eventMatches(event, change))
         self.assertFalse(gs_manager.eventMatches(event, change))
+
+    def test_projects_have_both_gate_wmf_and_test_wmf(self):
+
+        errors = []
+        for (project, pipelines) in sorted(self.getProjectsDefs().iteritems()):
+            try:
+                if 'test-wmf' in pipelines:
+                    self.assertIn(
+                        'gate-and-submit-wmf', pipelines,
+                        '%s must have "gate-and-submit-wmf" pipeline '
+                        'since it has "test-wmf"' % project)
+                if 'gate-and-submit-wmf' in pipelines:
+                    self.assertIn(
+                        'test-wmf', pipelines,
+                        '%s must have "test-wmf" pipeline '
+                        'since it has "gate-and-submit-wmf"' % project)
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.maxDiff = None
+        self.assertListEqual([], errors)
 
     def test_recheck_comment_trusted_user(self):
         test_manager = self.getPipeline('test').manager

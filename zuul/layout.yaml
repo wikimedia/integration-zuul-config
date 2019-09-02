@@ -52,7 +52,7 @@ pipelines:
       gerrit:
         - &test-event-patchset-created
           event: patchset-created
-          branch: (?!^refs/meta/config|^fundraising/REL)
+          branch: (?!^refs/meta/config|^fundraising/REL|^wmf/\d\.\d{2}\.\d-wmf\.\d{1,2})
 
           # BEWARE:
           # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
@@ -364,7 +364,7 @@ pipelines:
         # pipeline by simply commenting 'recheck' on a change.
         - &test-event-comment-recheck
           event: comment-added
-          branch: (?!^refs/meta/config|^fundraising/REL)
+          branch: (?!^refs/meta/config|^fundraising/REL|^wmf/\d\.\d{2}\.\d-wmf\.\d{1,2})
           comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?(\n\n\(\d+ comment(s)?\))?\n\n\s*recheck\b
           email: *email_whitelist
 
@@ -372,7 +372,7 @@ pipelines:
         # (Verified 0 or 1)
         - &test-event-plus-one
           event: comment-added
-          branch: (?!^refs/meta/config|^fundraising/REL)
+          branch: (?!^refs/meta/config|^fundraising/REL|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2})
           reject-approval:
             # hasn't been tested yet
             - verified: [-1, 2]
@@ -394,6 +394,19 @@ pipelines:
     description: >
       Variation of the "test" pipeline reserved for jobs critical to infrastructure deployments and configuration changes.
     precedence: high
+
+  - !!merge : *test_pipeline
+    name: test-wmf
+    description: >
+      Variation of the "test" pipeline reserved for wmf/* branches.
+    trigger:
+      gerrit:
+        - !!merge : *test-event-patchset-created
+          branch: wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}
+        - !!merge : *test-event-comment-recheck
+          branch: wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}
+        - !!merge : *test-event-plus-one
+          branch: wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}
 
   - !!merge : *test_pipeline
     name: test-fundraising
@@ -948,6 +961,8 @@ project-templates:
      - mwext-php72-phan-seccheck-docker
     gate-and-submit:
      - mwext-php72-phan-seccheck-docker
+    test-wmf:
+     - mwext-php72-phan-seccheck-docker
     gate-and-submit-wmf:
      - mwext-php72-phan-seccheck-docker
 
@@ -973,6 +988,9 @@ project-templates:
       - quibble-vendor-mysql-php72-docker
       - quibble-vendor-mysql-php73-docker
       - mwgate-node10-docker
+    test-wmf:
+      - quibble-vendor-mysql-hhvm-docker
+      - mwgate-node10-docker
     gate-and-submit-wmf:
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php72-docker
@@ -991,6 +1009,9 @@ project-templates:
       - quibble-vendor-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit:
+      - quibble-vendor-mysql-php72-docker
+      - mwgate-node10-docker
+    test-wmf:
       - quibble-vendor-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit-wmf:
@@ -1020,6 +1041,9 @@ project-templates:
       - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
       - mwgate-node10-docker
+    test-wmf:
+      - quibble-composer-mysql-hhvm-docker
+      - mwgate-node10-docker
     gate-and-submit-wmf:
       - quibble-composer-mysql-hhvm-docker
       - quibble-composer-mysql-php72-docker
@@ -1045,6 +1069,9 @@ project-templates:
       - quibble-composer-mysql-php71-docker
       - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
+      - mwgate-node10-docker
+    test-wmf:
+      - quibble-composer-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit-wmf:
       - quibble-composer-mysql-php72-docker
@@ -1073,6 +1100,9 @@ project-templates:
       - quibble-vendor-mysql-php72-noselenium-docker
       - quibble-vendor-mysql-php73-noselenium-docker
       - mwgate-node10-docker
+    test-wmf:
+      - quibble-vendor-mysql-hhvm-noselenium-docker
+      - mwgate-node10-docker
     gate-and-submit-wmf:
       - quibble-vendor-mysql-hhvm-noselenium-docker
       - quibble-vendor-mysql-php72-noselenium-docker
@@ -1099,6 +1129,9 @@ project-templates:
       - quibble-composer-mysql-php71-noselenium-docker
       - quibble-composer-mysql-php72-noselenium-docker
       - quibble-composer-mysql-php73-noselenium-docker
+      - mwgate-node10-docker
+    test-wmf:
+      - quibble-composer-mysql-hhvm-noselenium-docker
       - mwgate-node10-docker
     gate-and-submit-wmf:
       - quibble-composer-mysql-hhvm-noselenium-docker
@@ -1148,6 +1181,13 @@ project-templates:
       - release-quibble-composer-mysql-php72-docker
       - release-quibble-composer-mysql-php71-docker
       - release-quibble-composer-mysql-php70-docker
+    test-wmf:
+      # For REL branches:  XXX pipeline is only for wmf branch
+      - release-quibble-composer-mysql-hhvm-docker
+      # For master and wmf branches
+      - wmf-quibble-vendor-mysql-hhvm-docker
+      - wmf-quibble-core-vendor-mysql-hhvm-docker
+      - mwgate-node10-docker
     gate-and-submit-wmf:
       - mwgate-node10-docker
       # Only triggered on master and wmf/ branches:
@@ -1166,6 +1206,8 @@ project-templates:
      - mwext-php72-phan-docker
     gate-and-submit:
      - mwext-php72-phan-docker
+    test-wmf:
+     - mwext-php72-phan-docker
     gate-and-submit-wmf:
      - mwext-php72-phan-docker
 
@@ -1174,6 +1216,8 @@ project-templates:
      - mwskin-php72-phan-docker
     gate-and-submit:
      - mwskin-php72-phan-docker
+    test-wmf:
+     - mwskin-php72-phan-docker
     gate-and-submit-wmf:
      - mwskin-php72-phan-docker
 
@@ -1181,6 +1225,8 @@ project-templates:
     test:
      - mwskin-php72-phan-seccheck-docker
     gate-and-submit:
+     - mwskin-php72-phan-seccheck-docker
+    test-wmf:
      - mwskin-php72-phan-seccheck-docker
     gate-and-submit-wmf:
      - mwskin-php72-phan-seccheck-docker
@@ -1219,6 +1265,9 @@ project-templates:
       - quibble-vendor-mysql-php72-docker
       - quibble-vendor-mysql-php73-docker
       - mwgate-node10-docker
+    test-wmf:
+      - quibble-vendor-mysql-hhvm-docker
+      - mwgate-node10-docker
     gate-and-submit-wmf:
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php72-docker
@@ -1246,6 +1295,9 @@ project-templates:
       - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
       - mwgate-node10-docker
+    test-wmf:
+      - quibble-composer-mysql-hhvm-docker
+      - mwgate-node10-docker
     gate-and-submit-wmf:
       - quibble-composer-mysql-hhvm-docker
       - quibble-composer-mysql-php72-docker
@@ -1272,6 +1324,9 @@ project-templates:
       - quibble-composer-mysql-php71-docker
       - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
+      - mwgate-node10-docker
+    test-wmf:
+      - quibble-composer-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit-wmf:
       - quibble-composer-mysql-php72-docker
@@ -1328,6 +1383,8 @@ project-templates:
       - npm-node-6-docker
     gate-and-submit:
       - npm-node-6-docker
+    test-wmf:
+      - npm-node-6-docker
     gate-and-submit-wmf:
       - npm-node-6-docker
     experimental:
@@ -1338,6 +1395,8 @@ project-templates:
       - generic-node10-docker
     gate-and-submit:
       - generic-node10-docker
+    test-wmf:
+      - generic-node10-docker
     gate-and-submit-wmf:
       - generic-node10-docker
 
@@ -1346,6 +1405,8 @@ project-templates:
       - generic-node10-browser-docker
     gate-and-submit:
       - generic-node10-browser-docker
+    test-wmf:
+      - generic-node10-browser-docker
     gate-and-submit-wmf:
       - generic-node10-browser-docker
 
@@ -1353,6 +1414,8 @@ project-templates:
     test:
       - trigger-service-pipeline-test
     gate-and-submit:
+      - trigger-service-pipeline-test
+    test-wmf:
       - trigger-service-pipeline-test
     gate-and-submit-wmf:
       - trigger-service-pipeline-test
@@ -1547,6 +1610,13 @@ projects:
       - mediawiki-quibble-vendor-sqlite-php72-docker
       - mediawiki-quibble-vendor-postgres-php72-docker
 
+      - mediawiki-core-jsduck-docker
+      - mediawiki-core-php72-phan-docker
+    test-wmf:
+      - mediawiki-quibble-composer-mysql-php70-docker
+      - mediawiki-quibble-vendor-mysql-php70-docker
+      # FIXME use a normal composer job?
+      - mediawiki-quibble-composertest-php72-docker
       - mediawiki-core-jsduck-docker
       - mediawiki-core-php72-phan-docker
     gate-and-submit-wmf:
