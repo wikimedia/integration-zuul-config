@@ -18,6 +18,29 @@ import zuul.model
 from zuul.connection import BaseConnection
 from zuul.connection.gerrit import GerritConnection
 
+MEDIAWIKI_VERSIONS = {
+    'WMF': {
+        'branch': 'wmf/1.34.0-wmf.20',
+        'pipeline-suffix': 'wmf',
+    },
+    'Fundraising': {
+        'branch': 'fundraising/REL1_31',
+        'pipeline-suffix': 'fundraising',
+    },
+    'Release 1.31': {
+        'branch': 'REL1_31',
+        'pipeline-suffix': '1.31',
+    },
+    'Release 1.32': {
+        'branch': 'REL1_32',
+        'pipeline-suffix': '1.32',
+    },
+    'Release 1.33': {
+        'branch': 'REL1_33',
+        'pipeline-suffix': '1.33',
+    },
+}
+
 
 class FakeConnection(BaseConnection):
     """
@@ -369,34 +392,40 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertFalse(manager.eventMatches(event, change))
 
-    def test_test_wmf(self):
-        test_wmf_manager = self.getPipeline('test-wmf').manager
+    def test_testpipelines(self):
         test_manager = self.getPipeline('test').manager
 
         change = zuul.model.Change('mediawiki/core')
-        change.branch = 'wmf/1.29.0-wmf.20'
 
         event = zuul.model.TriggerEvent()
         event.type = 'patchset-created'
         event.account = {'email': 'anonymous@wikimedia.org'}
-        event.branch = change.branch
 
-        self.assertTrue(
-            test_wmf_manager.eventMatches(event, change),
-            'test-wmf pipeline accepts changes to wmf/ branches')
-        self.assertFalse(
-            test_manager.eventMatches(event, change),
-            'test pipeline rejects changes to wmf/ branches')
+        for (desc, config) in MEDIAWIKI_VERSIONS.iteritems():
+            pipeline = 'test-%s' % config['pipeline-suffix']
+            manager = self.getPipeline(pipeline).manager
 
-        change.branch = 'master'
-        event.branch = change.branch
+            change.branch = config['branch']
+            event.branch = change.branch
 
-        self.assertFalse(
-            test_wmf_manager.eventMatches(event, change),
-            'test-wmf pipeline rejects changes to master branch')
-        self.assertTrue(
-            test_manager.eventMatches(event, change),
-            'test pipeline accepts changes to master branch')
+            self.assertTrue(
+                manager.eventMatches(event, change),
+                '%s pipeline accepts changes to %s branch' % (
+                    pipeline, config['branch']))
+            self.assertFalse(
+                test_manager.eventMatches(event, change),
+                'test pipeline rejects changes to %s branch' % (
+                    config['branch']))
+
+            change.branch = 'master'
+            event.branch = change.branch
+
+            self.assertFalse(
+                manager.eventMatches(event, change),
+                '%s pipeline rejects changes to master branch' % pipeline)
+            self.assertTrue(
+                test_manager.eventMatches(event, change),
+                'test pipeline accepts changes to master branch')
 
     def test_gate_and_submit_wmf(self):
         gs_wmf_manager = self.getPipeline('gate-and-submit-wmf').manager
@@ -415,23 +444,29 @@ class TestZuulScheduler(unittest.TestCase):
         self.assertTrue(gs_wmf_manager.eventMatches(event, change))
         self.assertFalse(gs_manager.eventMatches(event, change))
 
-    def test_projects_have_both_gate_wmf_and_test_wmf(self):
+    def test_projects_have_both_associated_pipelines(self):
 
         errors = []
         for (project, pipelines) in sorted(self.getProjectsDefs().iteritems()):
-            try:
-                if 'test-wmf' in pipelines:
-                    self.assertIn(
-                        'gate-and-submit-wmf', pipelines,
-                        '%s must have "gate-and-submit-wmf" pipeline '
-                        'since it has "test-wmf"' % project)
-                if 'gate-and-submit-wmf' in pipelines:
-                    self.assertIn(
-                        'test-wmf', pipelines,
-                        '%s must have "test-wmf" pipeline '
-                        'since it has "gate-and-submit-wmf"' % project)
-            except AssertionError, e:
-                errors.append(str(e))
+            for (desc, config) in MEDIAWIKI_VERSIONS.iteritems():
+                try:
+                    test_pipeline = 'test-%s' % config['pipeline-suffix']
+                    gate_pipeline = 'gate-and-submit-%s' % (
+                        config['pipeline-suffix'])
+                    if test_pipeline in pipelines:
+                        self.assertIn(
+                            gate_pipeline, pipelines,
+                            '%s must have "%s" pipeline since it has "%s"' % (
+                                project, gate_pipeline, test_pipeline)
+                        )
+                    if gate_pipeline in pipelines:
+                        self.assertIn(
+                            test_pipeline, pipelines,
+                            '%s must have "%s" since it has "%s"' % (
+                                project, test_pipeline, gate_pipeline)
+                        )
+                except AssertionError, e:
+                    errors.append(str(e))
 
         self.maxDiff = None
         self.assertListEqual([], errors)

@@ -52,7 +52,7 @@ pipelines:
       gerrit:
         - &test-event-patchset-created
           event: patchset-created
-          branch: (?!^refs/meta/config|^fundraising/REL|^wmf/\d\.\d{2}\.\d-wmf\.\d{1,2})
+          branch: (?!^refs/meta/config|^fundraising/REL|^wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}|^REL)
 
           # BEWARE:
           # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
@@ -364,7 +364,7 @@ pipelines:
         # pipeline by simply commenting 'recheck' on a change.
         - &test-event-comment-recheck
           event: comment-added
-          branch: (?!^refs/meta/config|^fundraising/REL|^wmf/\d\.\d{2}\.\d-wmf\.\d{1,2})
+          branch: (?!^refs/meta/config|^fundraising/REL|^wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}|^REL)
           comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?(\n\n\(\d+ comment(s)?\))?\n\n\s*recheck\b
           email: *email_whitelist
 
@@ -372,7 +372,7 @@ pipelines:
         # (Verified 0 or 1)
         - &test-event-plus-one
           event: comment-added
-          branch: (?!^refs/meta/config|^fundraising/REL|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2})
+          branch: (?!^refs/meta/config|^fundraising/REL|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}|^REL)
           reject-approval:
             # hasn't been tested yet
             - verified: [-1, 2]
@@ -420,6 +420,45 @@ pipelines:
           branch: ^fundraising/REL
         - !!merge : *test-event-plus-one
           branch: ^fundraising/REL
+
+  - !!merge : *test_pipeline
+    name: test-1.31
+    description: >
+      Variation of the "test" pipeline reserved for MediaWiki 1.31
+    trigger:
+      gerrit:
+        - !!merge : *test-event-patchset-created
+          branch: ^REL1_31$
+        - !!merge : *test-event-comment-recheck
+          branch: ^REL1_31$
+        - !!merge : *test-event-plus-one
+          branch: ^REL1_31$
+
+  - !!merge : *test_pipeline
+    name: test-1.32
+    description: >
+      Variation of the "test" pipeline reserved for MediaWiki 1.32
+    trigger:
+      gerrit:
+        - !!merge : *test-event-patchset-created
+          branch: ^REL1_32$
+        - !!merge : *test-event-comment-recheck
+          branch: ^REL1_32$
+        - !!merge : *test-event-plus-one
+          branch: ^REL1_32$
+
+  - !!merge : *test_pipeline
+    name: test-1.33
+    description: >
+      Variation of the "test" pipeline reserved for MediaWiki 1.33
+    trigger:
+      gerrit:
+        - !!merge : *test-event-patchset-created
+          branch: ^REL1_33$
+        - !!merge : *test-event-comment-recheck
+          branch: ^REL1_33$
+        - !!merge : *test-event-plus-one
+          branch: ^REL1_33$
 
   # Dedicated pipeline for per-patch coverage report (non-voting)
   - name: coverage
@@ -546,7 +585,7 @@ pipelines:
         - &gate-and-submit-comment-added
           event: comment-added
           branch:
-           - (?!^(refs/meta/config|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}|fundraising/REL))
+           - (?!^(refs/meta/config|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}|fundraising/REL|REL))
           email:
            - ^(?!l10n-bot@translatewiki\.net).*$
           approval:
@@ -587,6 +626,27 @@ pipelines:
       gerrit:
         - !!merge : *gate-and-submit-comment-added
           branch: ^fundraising/REL
+
+  - !!merge : *gate_and_submit_pipeline
+    name: gate-and-submit-1.31
+    trigger:
+      gerrit:
+        - !!merge : *gate-and-submit-comment-added
+          branch: ^REL1_31
+
+  - !!merge : *gate_and_submit_pipeline
+    name: gate-and-submit-1.32
+    trigger:
+      gerrit:
+        - !!merge : *gate-and-submit-comment-added
+          branch: ^REL1_32
+
+  - !!merge : *gate_and_submit_pipeline
+    name: gate-and-submit-1.33
+    trigger:
+      gerrit:
+        - !!merge : *gate-and-submit-comment-added
+          branch: ^REL1_33
 
   # Separate gate for commits authored by l10n-bot, which run different tests.
   # It also has a lower priority, and improved concurrency (no DependentPipelineManager).
