@@ -554,7 +554,9 @@ pipelines:
 
   # Separate gate for SWAT deployments to reduce congestion.
   - !!merge : *gate_and_submit_pipeline
-    name: gate-and-submit-swat
+    name: gate-and-submit-wmf
+    description: >
+      Same as gate-and-submit but dedicated to wmf/ branches.
     trigger:
       gerrit:
         - event: comment-added
@@ -946,7 +948,7 @@ project-templates:
      - mwext-php72-phan-seccheck-docker
     gate-and-submit:
      - mwext-php72-phan-seccheck-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
      - mwext-php72-phan-seccheck-docker
 
   - name: extension-seccheck-non-voting
@@ -971,7 +973,7 @@ project-templates:
       - quibble-vendor-mysql-php72-docker
       - quibble-vendor-mysql-php73-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php72-docker
       - mwgate-node10-docker
@@ -991,7 +993,7 @@ project-templates:
     gate-and-submit:
       - quibble-vendor-mysql-php72-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-vendor-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit-l10n:
@@ -1018,7 +1020,7 @@ project-templates:
       - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-composer-mysql-hhvm-docker
       - quibble-composer-mysql-php72-docker
       - mwgate-node10-docker
@@ -1044,7 +1046,7 @@ project-templates:
       - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-composer-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit-l10n:
@@ -1071,7 +1073,7 @@ project-templates:
       - quibble-vendor-mysql-php72-noselenium-docker
       - quibble-vendor-mysql-php73-noselenium-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-vendor-mysql-hhvm-noselenium-docker
       - quibble-vendor-mysql-php72-noselenium-docker
       - mwgate-node10-docker
@@ -1098,7 +1100,7 @@ project-templates:
       - quibble-composer-mysql-php72-noselenium-docker
       - quibble-composer-mysql-php73-noselenium-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-composer-mysql-hhvm-noselenium-docker
       - quibble-composer-mysql-php72-noselenium-docker
       - mwgate-node10-docker
@@ -1146,7 +1148,7 @@ project-templates:
       - release-quibble-composer-mysql-php72-docker
       - release-quibble-composer-mysql-php71-docker
       - release-quibble-composer-mysql-php70-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - mwgate-node10-docker
       # Only triggered on master and wmf/ branches:
       - wmf-quibble-vendor-mysql-hhvm-docker
@@ -1164,7 +1166,7 @@ project-templates:
      - mwext-php72-phan-docker
     gate-and-submit:
      - mwext-php72-phan-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
      - mwext-php72-phan-docker
 
   - name: skin-phan
@@ -1172,7 +1174,7 @@ project-templates:
      - mwskin-php72-phan-docker
     gate-and-submit:
      - mwskin-php72-phan-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
      - mwskin-php72-phan-docker
 
   - name: skin-seccheck
@@ -1180,7 +1182,7 @@ project-templates:
      - mwskin-php72-phan-seccheck-docker
     gate-and-submit:
      - mwskin-php72-phan-seccheck-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
      - mwskin-php72-phan-seccheck-docker
 
   - name: skin-seccheck-non-voting
@@ -1217,7 +1219,7 @@ project-templates:
       - quibble-vendor-mysql-php72-docker
       - quibble-vendor-mysql-php73-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-vendor-mysql-hhvm-docker
       - quibble-vendor-mysql-php72-docker
       - mwgate-node10-docker
@@ -1244,7 +1246,7 @@ project-templates:
       - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-composer-mysql-hhvm-docker
       - quibble-composer-mysql-php72-docker
       - mwgate-node10-docker
@@ -1271,7 +1273,7 @@ project-templates:
       - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
       - mwgate-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - quibble-composer-mysql-php72-docker
       - mwgate-node10-docker
     gate-and-submit-l10n:
@@ -1326,7 +1328,7 @@ project-templates:
       - npm-node-6-docker
     gate-and-submit:
       - npm-node-6-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - npm-node-6-docker
     experimental:
       - generic-node10-docker
@@ -1336,7 +1338,7 @@ project-templates:
       - generic-node10-docker
     gate-and-submit:
       - generic-node10-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - generic-node10-docker
 
   - name: node10-browser-docker
@@ -1344,7 +1346,7 @@ project-templates:
       - generic-node10-browser-docker
     gate-and-submit:
       - generic-node10-browser-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - generic-node10-browser-docker
 
   - name: service-pipeline-test
@@ -1352,7 +1354,7 @@ project-templates:
       - trigger-service-pipeline-test
     gate-and-submit:
       - trigger-service-pipeline-test
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - trigger-service-pipeline-test
 
   - name: service-pipeline-test-and-publish
@@ -1547,7 +1549,7 @@ projects:
 
       - mediawiki-core-jsduck-docker
       - mediawiki-core-php72-phan-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
 
@@ -1606,7 +1608,7 @@ projects:
 
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       - mediawiki-quibble-vendor-mysql-php70-docker
-    gate-and-submit-swat:
+    gate-and-submit-wmf:
       - mwgate-composer-hhvm-docker
       - mediawiki-quibble-vendor-mysql-hhvm-docker
       # FIXME use php72 instead?
@@ -7130,7 +7132,7 @@ projects:
       - mwselenium-quibble-docker
       - wikibase-client-docker
       - wikibase-repo-docker
-    gate-and-submit-swat: *mediawiki-extensions-wikibase-gate-and-submit
+    gate-and-submit-wmf: *mediawiki-extensions-wikibase-gate-and-submit
     postmerge:
       - mwext-doxygen-publish
 

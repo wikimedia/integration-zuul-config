@@ -369,8 +369,8 @@ class TestZuulScheduler(unittest.TestCase):
 
         self.assertFalse(manager.eventMatches(event, change))
 
-    def test_gate_and_submit_swat(self):
-        gs_swat_manager = self.getPipeline('gate-and-submit-swat').manager
+    def test_gate_and_submit_wmf(self):
+        gs_wmf_manager = self.getPipeline('gate-and-submit-wmf').manager
         gs_manager = self.getPipeline('gate-and-submit').manager
 
         change = zuul.model.Change('mediawiki/core')
@@ -383,7 +383,7 @@ class TestZuulScheduler(unittest.TestCase):
         event.approvals = [{
             'description': 'Code-Review', 'type': 'CRVW', 'value': '2'}]
 
-        self.assertTrue(gs_swat_manager.eventMatches(event, change))
+        self.assertTrue(gs_wmf_manager.eventMatches(event, change))
         self.assertFalse(gs_manager.eventMatches(event, change))
 
     def test_recheck_comment_trusted_user(self):
