@@ -978,7 +978,7 @@ class TestZuulScheduler(unittest.TestCase):
             ext_name[len('mediawiki/extensions/'):]  # extension basename
             for (ext_name, pipelines) in self.getProjectsDefs().iteritems()
             if ext_name.startswith('mediawiki/extensions/')
-            and 'wmf-quibble-vendor-mysql-hhvm-docker'
+            and 'wmf-quibble-vendor-mysql-php72-docker'
                 in pipelines.get('test', {})
         ])
 
@@ -1101,8 +1101,8 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-composer-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-composertest-php72-docker': True,
-            'wmf-quibble-vendor-mysql-hhvm-docker': False,
-            'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
+            'wmf-quibble-vendor-mysql-php72-docker': False,
+            'wmf-quibble-core-vendor-mysql-php72-docker': True,
             'mwgate-node10-docker': True,
         }
         expected_gate = {
@@ -1176,7 +1176,7 @@ class TestZuulScheduler(unittest.TestCase):
         repo = 'mediawiki/extensions/CirrusSearch'
         release_job = self.getJob(
             repo, 'test',
-            'wmf-quibble-vendor-mysql-hhvm-docker')
+            'wmf-quibble-vendor-mysql-php72-docker')
 
         change = zuul.model.Change(repo)
 
