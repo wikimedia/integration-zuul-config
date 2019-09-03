@@ -1190,6 +1190,7 @@ class TestZuulScheduler(unittest.TestCase):
                  'mediawiki/vendor',
                  'mediawiki/extensions/',
                  'mediawiki/skins/',
+                 'VisualEditor/VisualEditor',  # T231394
                  ))
              ]
         self.longMessage = True
