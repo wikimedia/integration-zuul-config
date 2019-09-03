@@ -461,6 +461,7 @@ phan_dependencies = {
     'Kartographer': ['GeoData', 'JsonConfig'],
     'LiquidThreads': ['Renameuser'],
     'LoginNotify': ['CentralAuth', 'Echo'],
+    'MachineVision': ['Wikibase', 'WikibaseMediaInfo'],
     'Math': ['VisualEditor', 'Wikibase'],
     'MobileApp': ['AbuseFilter'],
     'MobileFrontend': ['AbuseFilter', 'CentralAuth', 'LiquidThreads',
