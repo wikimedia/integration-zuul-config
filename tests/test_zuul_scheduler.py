@@ -1098,8 +1098,8 @@ class TestZuulScheduler(unittest.TestCase):
         expected_test = {
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php72-phan-docker': True,
-            'mediawiki-quibble-composer-mysql-php70-docker': True,
-            'mediawiki-quibble-vendor-mysql-php70-docker': True,
+            'mediawiki-quibble-composer-mysql-php72-docker': True,
+            'mediawiki-quibble-vendor-mysql-php72-docker': True,
             'mediawiki-quibble-composertest-php72-docker': True,
             'wmf-quibble-vendor-mysql-php72-docker': False,
             'wmf-quibble-core-vendor-mysql-php72-docker': True,
@@ -1108,7 +1108,7 @@ class TestZuulScheduler(unittest.TestCase):
         expected_gate = {
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php72-phan-docker': True,
-            'mediawiki-quibble-composer-mysql-php70-docker': True,
+            'mediawiki-quibble-composer-mysql-php72-docker': True,
             'mediawiki-quibble-vendor-mysql-php73-docker': True,
             'mediawiki-quibble-vendor-mysql-php72-docker': True,
             'mediawiki-quibble-vendor-mysql-php71-docker': True,
