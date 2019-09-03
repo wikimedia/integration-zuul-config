@@ -238,14 +238,14 @@ class TestZuulScheduler(unittest.TestCase):
             % (name, pipeline)
         )
 
-    def assertProjectHasVotingPHP71(self, name, definition, pipeline):
+    def assertProjectHasVotingPHP72(self, name, definition, pipeline):
         if pipeline != 'gate-and-submit':
             return
         self.assertTrue(
             any([job for job in definition
-                 if 'quibble' in job and 'php71' in job]),
+                 if 'quibble' in job and 'php72' in job]),
             'Project %s pipeline %s must have job '
-            'for PHP 7.1 quibble'
+            'for PHP 7.2 quibble'
             % (name, pipeline)
             )
 
@@ -273,7 +273,7 @@ class TestZuulScheduler(unittest.TestCase):
             r'mediawiki/core$': [
                 self.assertProjectHasComposerValidate,
                 self.assertProjectHasPhplint,
-                self.assertProjectHasVotingPHP71,
+                self.assertProjectHasVotingPHP72,
                 self.assertProjectHasI18nChecker,
             ],
             r'mediawiki/extensions/\w+$': [
@@ -1115,8 +1115,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-composer-mysql-php72-docker': True,
             'mediawiki-quibble-vendor-mysql-php73-docker': True,
             'mediawiki-quibble-vendor-mysql-php72-docker': True,
-            'mediawiki-quibble-vendor-mysql-php71-docker': True,
-            'mediawiki-quibble-vendor-mysql-php70-docker': True,
             'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php72-docker': True,
             'mediawiki-quibble-vendor-sqlite-php72-docker': True,
