@@ -180,7 +180,7 @@ class TestZuulScheduler(unittest.TestCase):
 
     def assertProjectHasComposerValidate(self, name, definition, pipeline):
         # composer-validate-package
-        # composer-test-(zend|hhvm)
+        # composer-test-*
         # mwgate-composer-*
         if pipeline in ['experimental', 'gate-and-submit-l10n']:
             return
@@ -1116,15 +1116,11 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-composer-mysql-php72-docker': True,
             'mediawiki-quibble-vendor-mysql-php73-docker': True,
             'mediawiki-quibble-vendor-mysql-php72-docker': True,
-            'mediawiki-quibble-vendor-mysql-hhvm-docker': True,
             'mediawiki-quibble-composertest-php72-docker': True,
             'mediawiki-quibble-vendor-sqlite-php72-docker': True,
             'mediawiki-quibble-vendor-postgres-php72-docker': True,
-            'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-vendor-mysql-php72-docker': False,
-            'wmf-quibble-selenium-hhvm-docker': True,
             'wmf-quibble-selenium-php72-docker': True,
-            'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
             'wmf-quibble-core-vendor-mysql-php72-docker': True,
             'mwgate-node10-docker': True,
         }
