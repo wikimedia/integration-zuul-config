@@ -40,6 +40,14 @@ class TestZuulLayout(unittest.TestCase):
 
         return projects
 
+    def getProjectTemplates(self):
+        templates = {}
+        for project_template in self.layout['project-templates']:
+            name = project_template['name']
+            del(project_template['name'])
+            templates[name] = project_template
+        return templates
+
     def test_mediawiki_ext_skins_have_test_templates(self):
         one_of_templates = (
             'archived',
@@ -134,3 +142,40 @@ class TestZuulLayout(unittest.TestCase):
 
         self.maxDiff = None
         self.assertListEqual([], errors)
+
+    def test_templates_test_jobs_are_all_in_gate(self):
+        errors = []
+        self.maxDiff = None
+
+        templates = self.getProjectTemplates()
+        for template_name in templates:
+            # Some templates are non voting or have no point in adding a job to
+            # the gate.
+            if 'gate-and-submit' not in templates[template_name]:
+                continue
+
+            for pipeline in templates[template_name]:
+                if not pipeline.startswith('test'):
+                    continue
+
+                # Find the matching gate-and-submit pipeline
+                if pipeline == 'test':
+                    gate_pipeline = 'gate-and-submit'
+                else:
+                    suffix = pipeline.rpartition('-')[2]
+                    gate_pipeline = 'gate-and-submit' + '-' + suffix
+
+                for test_job in templates[template_name][pipeline]:
+                    try:
+                        gate_jobs = templates[template_name][gate_pipeline]
+                        self.assertIn(
+                            test_job,
+                            gate_jobs,
+                            'Template %s job %s in %s must also be in %s' % (
+                                template_name, test_job,
+                                pipeline, gate_pipeline)
+                        )
+                    except AssertionError as e:
+                        errors.append(str(e))
+
+        self.assertEqual([], errors)
