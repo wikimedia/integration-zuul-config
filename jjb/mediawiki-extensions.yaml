@@ -17,6 +17,42 @@
      - archive-log-allow-empty
      - docker-cleanup
 
+- job:
+    name: 'mediawiki-i18n-check-docker'
+    node: DebianJessieDocker
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     # It's not really worth creating a docker image for this pretty
+     # "simple" bash script
+     - shell: |
+        #!/bin/bash
+        set -uxo pipefail
+        cd src
+
+        # Assumption: Any messages containing literal js will end in .js. Any other
+        # raw html message is in normal html context (not attribute)
+
+        git show FETCH_HEAD -U0 | grep '^+' | sed -E -e 's/<\/? ?(abbr|span|br|strong|em|pre|nowiki|charinsert|b|del|code|kbd|p|tt|div|i|big|sup|sub|samp|var|small|h1|h2|h3|h4|u)( ((class|title|lang|xml:lang|dir)=\\?["'\''][^=<>"'\'']*\\?["'\'']))* ?\/?>//g' -e 's/<!--//g' -e 's/<https?:\/\/[a-zA-Z0-9./-]*>//g' | grep '<'
+        if [[ $? == 0 ]]; then
+          echo "HTML detected. Manual review required"
+          exit 1
+        else
+          echo 'ok'
+        fi
+
+        git show FETCH_HEAD -U0 | grep '^+' | sed -E -e 's/\\\\//g' -e 's/\\[nt"]//g' | grep '\\'
+        if [[ $? == 0 ]]; then
+          echo "JSON escape sequence detected. Manual review required"
+          exit 1
+        else
+          echo 'ok'
+        fi
+
+        exit 0
+
 # Phan! (T153039)
 - job-template: &job_mwext-php72-phan-docker
     name: 'mwext-php72-phan-docker'
@@ -60,42 +96,6 @@
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-
-- job:
-    name: 'mediawiki-i18n-check-docker'
-    node: DebianJessieDocker
-    triggers:
-     - zuul
-    builders:
-     - docker-src-dir
-     - docker-ci-src-setup-simple
-     # It's not really worth creating a docker image for this pretty
-     # "simple" bash script
-     - shell: |
-        #!/bin/bash
-        set -uxo pipefail
-        cd src
-
-        # Assumption: Any messages containing literal js will end in .js. Any other
-        # raw html message is in normal html context (not attribute)
-
-        git show FETCH_HEAD -U0 | grep '^+' | sed -E -e 's/<\/? ?(abbr|span|br|strong|em|pre|nowiki|charinsert|b|del|code|kbd|p|tt|div|i|big|sup|sub|samp|var|small|h1|h2|h3|h4|u)( ((class|title|lang|xml:lang|dir)=\\?["'\''][^=<>"'\'']*\\?["'\'']))* ?\/?>//g' -e 's/<!--//g' -e 's/<https?:\/\/[a-zA-Z0-9./-]*>//g' | grep '<'
-        if [[ $? == 0 ]]; then
-          echo "HTML detected. Manual review required"
-          exit 1
-        else
-          echo 'ok'
-        fi
-
-        git show FETCH_HEAD -U0 | grep '^+' | sed -E -e 's/\\\\//g' -e 's/\\[nt"]//g' | grep '\\'
-        if [[ $? == 0 ]]; then
-          echo "JSON escape sequence detected. Manual review required"
-          exit 1
-        else
-          echo 'ok'
-        fi
-
-        exit 0
 
 - job-template: &job_mwext-php72-phan-seccheck-docker
     name: 'mwext-php72-phan-seccheck-docker'
