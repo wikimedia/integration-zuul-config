@@ -53,6 +53,7 @@ def deploy_docker():
     # docker-pkg does not attempt to pull images - T219398
     run('docker pull docker-registry.wikimedia.org/wikimedia-jessie')
     run('docker pull docker-registry.wikimedia.org/wikimedia-stretch')
+    run('docker pull docker-registry.wikimedia.org/wikimedia-buster')
 
     with cd('/tmp'):
         docker_pkg = '/srv/deployment/docker-pkg/venv/bin/docker-pkg'
