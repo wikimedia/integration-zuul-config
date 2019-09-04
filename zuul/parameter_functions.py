@@ -250,6 +250,7 @@ dependencies = {
     'BounceHandler': ['Echo', 'CentralAuth'],
     'Campaigns': ['EventLogging'],
     'Capiunto': ['Scribunto'],
+    'CentralNotice': ['EventLogging'],
     'Challenge': ['SocialProfile'],
     'CheckUser': ['CentralAuth', 'Renameuser'],
     'Cite': ['VisualEditor'],
