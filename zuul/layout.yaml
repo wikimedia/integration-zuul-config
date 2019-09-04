@@ -1661,21 +1661,17 @@ project-templates:
   - name: composer-test
     test:
       - composer-php72-docker
-      - composer-hhvm-docker
     gate-and-submit:
-      - composer-php72-docker
       - composer-php70-docker
-      - composer-hhvm-docker
+      - composer-php72-docker
 
   - name: composer-test-package
     test:
-      - composer-package-hhvm-docker
       - composer-package-php70-docker
       - composer-package-php71-docker
       - composer-package-php72-docker
       - composer-package-php73-docker
     gate-and-submit:
-      - composer-package-hhvm-docker
       - composer-package-php70-docker
       - composer-package-php71-docker
       - composer-package-php72-docker
@@ -2078,10 +2074,10 @@ projects:
     template:
       - name: extension-gate
     test:
-      - mwgate-composer-hhvm-docker
+      - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
     gate-and-submit:
-      - mwgate-composer-hhvm-docker
+      - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
 
     gate-and-submit-wmf:
@@ -3171,14 +3167,10 @@ projects:
 
   - name: operations/mediawiki-config
     test-prio:
-      # TODO: Drop when production is no longer running HHVM
-      - operations-mw-config-hhvm-composer-lint-docker
       - operations-mw-config-php72-composer-lint-docker
       - operations-mw-config-php72-composer-test-docker
       - operations-mw-config-typos-docker
     gate-and-submit:
-      # TODO: Drop when production is no longer running HHVM
-      - operations-mw-config-hhvm-composer-lint-docker
       - operations-mw-config-php72-composer-lint-docker
       - operations-mw-config-php72-composer-test-docker
       - operations-mw-config-typos-docker
@@ -7714,13 +7706,11 @@ projects:
 
   - name: mediawiki/php/luasandbox
     test:
-      - php-compile-hhvm-stretch-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
       - php-compile-php73-docker
     gate-and-submit:
-      - php-compile-hhvm-stretch-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
@@ -7730,13 +7720,11 @@ projects:
 
   - name: mediawiki/php/wikidiff2
     test:
-      - php-compile-hhvm-stretch-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
       - php-compile-php73-docker
     gate-and-submit:
-      - php-compile-hhvm-stretch-docker
       - php-compile-php70-docker
       - php-compile-php71-docker
       - php-compile-php72-docker
