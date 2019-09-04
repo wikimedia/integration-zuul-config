@@ -18,7 +18,7 @@
      - docker-cleanup
 
 # Phan! (T153039)
-- job: &job_mwext-php72-phan-docker
+- job-template: &job_mwext-php72-phan-docker
     name: 'mwext-php72-phan-docker'
     node: DebianJessieDocker && m4executor
     concurrent: true
@@ -47,14 +47,14 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
-- job:
+- job-template:
     name: 'mwskin-php72-phan-docker'
     !!merge : *job_mwext-php72-phan-docker
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
 
-- job:
+- job-template:
     name: 'mwskin-php72-phan-docker-non-voting'
     !!merge : *job_mwext-php72-phan-docker
     # Reinject Zuul parameters since JJB strip for some reason
@@ -97,7 +97,7 @@
 
         exit 0
 
-- job: &job_mwext-php72-phan-seccheck-docker
+- job-template: &job_mwext-php72-phan-seccheck-docker
     name: 'mwext-php72-phan-seccheck-docker'
     node: DebianJessieDocker && m4executor
     concurrent: true
@@ -126,26 +126,37 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
-- job:
+- job-template:
     name: 'mwext-php72-phan-seccheck-docker-non-voting'
     !!merge : *job_mwext-php72-phan-seccheck-docker
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
 
-- job:
+- job-template:
     name: 'mwskin-php72-phan-seccheck-docker'
     !!merge : *job_mwext-php72-phan-seccheck-docker
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
 
-- job:
+- job-template:
     name: 'mwskin-php72-phan-seccheck-docker-non-voting'
     !!merge : *job_mwext-php72-phan-seccheck-docker
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
+
+- project:
+    name: phan-jobs
+    jobs:
+        - mwext-php72-phan-docker
+        - mwskin-php72-phan-docker
+        - mwskin-php72-phan-docker-non-voting
+        - mwext-php72-phan-seccheck-docker
+        - mwext-php72-phan-seccheck-docker-non-voting
+        - mwskin-php72-phan-seccheck-docker
+        - mwskin-php72-phan-seccheck-docker-non-voting
 
 - project:
     name: wdio-selenium-daily
