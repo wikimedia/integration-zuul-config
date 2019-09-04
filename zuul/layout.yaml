@@ -969,7 +969,7 @@ project-templates:
   # For extensions that have broken tests or magic behaviors that CI does not support.
   # See also https://phabricator.wikimedia.org/T183512
   #
-  # Only php7 is added, HHVM is ignored.
+  # Only basic PHP7 linting is added.
   #
   - name: extension-broken
     test:
@@ -1171,71 +1171,6 @@ project-templates:
 
   - name: extension-quibble-composer
     php:
-      - quibble-composer-mysql-php73-docker
-    test:
-      - quibble-composer-mysql-php72-docker
-      - mwgate-node10-docker
-    gate-and-submit:
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-      - mwgate-node10-docker
-
-    test-1.31:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-    gate-and-submit-1.31:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-
-    test-1.32:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-    gate-and-submit-1.32:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-
-    test-1.33:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-    gate-and-submit-1.33:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-
-    test-1.34:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-    gate-and-submit-1.34:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-
-    test-wmf:
-      - quibble-composer-mysql-php72-docker
-      - mwgate-node10-docker
-    gate-and-submit-wmf:
-      - quibble-composer-mysql-php72-docker
-      - mwgate-node10-docker
-
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-    experimental:
-      - quibble-composer-sqlite-php72-docker
-      - mwext-php72-phan-docker
-      - mwext-php72-phan-seccheck-docker
-
-  - name: extension-quibble-composer-nohhvm
-    php:
-      - quibble-composer-mysql-php72-docker
       - quibble-composer-mysql-php73-docker
     test:
       - quibble-composer-mysql-php72-docker
@@ -1708,72 +1643,6 @@ project-templates:
 
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
-
-    experimental:
-      - quibble-composer-sqlite-php72-docker
-      - quibble-composer-mysql-php72-docker
-      - mwskin-php72-phan-docker
-      - mwskin-php72-phan-seccheck-docker
-
-  - name: skin-quibble-composer-nohhvm
-    php:
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-    test:
-      - quibble-composer-mysql-php72-docker
-      - mwgate-node10-docker
-    gate-and-submit:
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-      - mwgate-node10-docker
-
-    test-1.31:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-    gate-and-submit-1.31:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-
-    test-1.32:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-    gate-and-submit-1.32:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-
-    test-1.33:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-    gate-and-submit-1.33:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-
-    test-1.34:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-    gate-and-submit-1.34:
-      - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-
-    test-wmf:
-      - quibble-composer-mysql-php72-docker
-      - mwgate-node10-docker
-    gate-and-submit-wmf:
-      - quibble-composer-mysql-php72-docker
-      - mwgate-node10-docker
-
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
 
     experimental:
       - quibble-composer-sqlite-php72-docker
@@ -2681,7 +2550,7 @@ projects:
 
   - name: mediawiki/skins/BlueSpiceCalumma
     template:
-     - name: skin-quibble-composer-nohhvm
+     - name: skin-quibble-composer
 
   - name: mediawiki/skins/Bouquet
     template:
@@ -4925,7 +4794,7 @@ projects:
 
   - name: mediawiki/extensions/OAuth2
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
       - name: extension-phan
       - name: extension-seccheck
 
@@ -5180,23 +5049,23 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceAbout
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpicePageAccess
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceArticleInfo
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceAuthors
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceAvatars
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceBlog
     template:
@@ -5205,7 +5074,7 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceCategoryCheck
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceCategoryManager
     template:
@@ -5218,23 +5087,23 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceConfigManager
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceContextMenu
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceCountThings
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceCustomMenu
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceNamespaceCSS
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceDashboards
     template:
@@ -5246,23 +5115,23 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceEditNotifyConnector
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceEmoticons
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceExpiry
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceExtendedFilelist
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceExtendedSearch
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceExtendedStatistics
     template:
@@ -5281,11 +5150,11 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceFilterableTables
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceFoundation
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceGroupManager
     template:
@@ -5293,19 +5162,19 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceHideTitle
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceInsertCategory
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceInsertFile
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceInsertLink
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceInsertMagic
     template:
@@ -5313,39 +5182,39 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceInsertTemplate
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceInterWikiLinks
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceMenues
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceMultiUpload
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceNamespaceManager
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpicePageAssignments
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpicePageTemplates
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpicePageVersion
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpicePagesVisited
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpicePermissionManager
     template:
@@ -5357,11 +5226,11 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceQrCode
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceRating
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceRSSFeeder
     template:
@@ -5369,23 +5238,23 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceReadConfirmation
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceReminder
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceReaders
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSaferEdit
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSignHere
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSmartList
     template:
@@ -5397,79 +5266,79 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceSocial
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialArticleActions
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialBlog
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialComments
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialMicroBlog
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialProfile
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialRating
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialResolve
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialTags
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialTimelineUpdate
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialTopics
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialWatch
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSocialWikiPage
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceSubPageTree
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceTagCloud
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceUEModuleDOCX
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceUEModulePDF
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceUEModuleHTML
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceUniversalExport
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceUsageTracker
     template:
@@ -5477,31 +5346,31 @@ projects:
 
   - name: mediawiki/extensions/BlueSpiceUserManager
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceUserPreferences
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceUserSidebar
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceVisualDiff
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceVisualEditorConnector
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceWatchList
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BlueSpiceWhoIsOnline
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/BreadCrumbs
     template:
@@ -7653,7 +7522,7 @@ projects:
 
   - name: mediawiki/extensions/TwnMainPage
     template:
-      - name: extension-quibble-composer-nohhvm
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/OpenBadges
     template:
