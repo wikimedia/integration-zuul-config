@@ -994,18 +994,20 @@ project-templates:
      - mwext-php72-phan-seccheck-docker
     gate-and-submit-wmf:
      - mwext-php72-phan-seccheck-docker
-    test-1.31:
-     - mwext-php72-phan-seccheck-docker
-    gate-and-submit-1.31:
-     - mwext-php72-phan-seccheck-docker
-    test-1.32:
-     - mwext-php72-phan-seccheck-docker
-    gate-and-submit-1.32:
-     - mwext-php72-phan-seccheck-docker
-    test-1.33:
-     - mwext-php72-phan-seccheck-docker
-    gate-and-submit-1.33:
-     - mwext-php72-phan-seccheck-docker
+    # Skip Phan on release branches for now.
+    # See T231966 / T226945
+    #test-1.31:
+    # - mwext-php72-phan-seccheck-docker
+    #gate-and-submit-1.31:
+    # - mwext-php72-phan-seccheck-docker
+    #test-1.32:
+    # - mwext-php72-phan-seccheck-docker
+    #gate-and-submit-1.32:
+    # - mwext-php72-phan-seccheck-docker
+    #test-1.33:
+    # - mwext-php72-phan-seccheck-docker
+    #gate-and-submit-1.33:
+    # - mwext-php72-phan-seccheck-docker
 
   - name: extension-seccheck-non-voting
     test:
@@ -1430,18 +1432,29 @@ project-templates:
      - mwext-php72-phan-docker
     gate-and-submit:
      - mwext-php72-phan-docker
-    test-1.31:
-     - mwext-php72-phan-docker
-    gate-and-submit-1.31:
-     - mwext-php72-phan-docker
-    test-1.32:
-     - mwext-php72-phan-docker
-    gate-and-submit-1.32:
-     - mwext-php72-phan-docker
-    test-1.33:
-     - mwext-php72-phan-docker
-    gate-and-submit-1.33:
-     - mwext-php72-phan-docker
+
+    # Our phan job is broken on release branches for at least a couple reasons:
+    # - it uses php72 but some repositories have dependencies that are not
+    #   compatible/require php70
+    # - the job uses quibble --packages-source=vendor but vendor.git lacks
+    #   dependencies. So we should use composer update --no-dev instead.
+    #
+    # So stop running Phan entirely until we figure it out.
+    # See T231966 / T226945
+    #test-1.31:
+    # - mwext-php72-phan-docker
+    #gate-and-submit-1.31:
+    # - mwext-php72-phan-docker
+    #test-1.32:
+    # - mwext-php72-phan-docker
+    #gate-and-submit-1.32:
+    # - mwext-php72-phan-docker
+    #test-1.33:
+    # - mwext-php72-phan-docker
+    #gate-and-submit-1.33:
+    # - mwext-php72-phan-docker
+
+    # It is fine on wmf branches since vendor.git has all the dependencies
     test-wmf:
      - mwext-php72-phan-docker
     gate-and-submit-wmf:
@@ -1452,18 +1465,20 @@ project-templates:
      - mwskin-php72-phan-docker
     gate-and-submit:
      - mwskin-php72-phan-docker
-    test-1.31:
-     - mwskin-php72-phan-docker
-    gate-and-submit-1.31:
-     - mwskin-php72-phan-docker
-    test-1.32:
-     - mwskin-php72-phan-docker
-    gate-and-submit-1.32:
-     - mwskin-php72-phan-docker
-    test-1.33:
-     - mwskin-php72-phan-docker
-    gate-and-submit-1.33:
-     - mwskin-php72-phan-docker
+    # Skip Phan on release branches for now.
+    # See T231966 / T226945
+    #test-1.31:
+    # - mwskin-php72-phan-docker
+    #gate-and-submit-1.31:
+    # - mwskin-php72-phan-docker
+    #test-1.32:
+    # - mwskin-php72-phan-docker
+    #gate-and-submit-1.32:
+    # - mwskin-php72-phan-docker
+    #test-1.33:
+    # - mwskin-php72-phan-docker
+    #gate-and-submit-1.33:
+    # - mwskin-php72-phan-docker
     test-wmf:
      - mwskin-php72-phan-docker
     gate-and-submit-wmf:
@@ -1474,14 +1489,16 @@ project-templates:
      - mwskin-php72-phan-seccheck-docker
     gate-and-submit:
      - mwskin-php72-phan-seccheck-docker
-    test-1.31:
-     - mwskin-php72-phan-seccheck-docker
-    gate-and-submit-1.31:
-     - mwskin-php72-phan-seccheck-docker
-    test-1.32:
-     - mwskin-php72-phan-seccheck-docker
-    gate-and-submit-1.32:
-     - mwskin-php72-phan-seccheck-docker
+    # Skip Phan on release branches for now.
+    # See T231966 / T226945
+    #test-1.31:
+    # - mwskin-php72-phan-seccheck-docker
+    #gate-and-submit-1.31:
+    # - mwskin-php72-phan-seccheck-docker
+    #test-1.32:
+    # - mwskin-php72-phan-seccheck-docker
+    #gate-and-submit-1.32:
+    # - mwskin-php72-phan-seccheck-docker
     test-wmf:
      - mwskin-php72-phan-seccheck-docker
     gate-and-submit-wmf:
