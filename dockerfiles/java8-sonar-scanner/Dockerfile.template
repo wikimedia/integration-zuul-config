@@ -3,7 +3,7 @@ FROM {{ "java8" | image_tag }}
 USER root
 COPY KEYS /tmp/KEYS
 
-ENV SONAR_SCANNER_VERSION=3.3.0.1492
+ENV SONAR_SCANNER_VERSION=4.0.0.1744
 
 RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/node10" > /etc/apt/sources.list.d/stretch-node10.list \
     && {{ "nodejs gnupg wget unzip curl jq" | apt_install }} \
