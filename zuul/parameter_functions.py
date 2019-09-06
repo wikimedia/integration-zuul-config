@@ -359,7 +359,7 @@ dependencies = {
     'TEI': ['CodeMirror', 'Math', 'VisualEditor'],
     'TemplateWizard': ['TemplateData', 'WikiEditor'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
-    'TheWikipediaLibrary': ['Echo'],
+    'TheWikipediaLibrary': ['Echo', 'CentralAuth', 'GlobalPreferences'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
