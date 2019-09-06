@@ -271,7 +271,7 @@ dependencies = {
     'Echo': ['CentralAuth', 'EventLogging'],
     'ElectronPdfService': ['Collection'],
     'EmailAuthorization': ['PluggableAuth'],
-    'ExternalGuidance': ['MobileFrontend'],
+    'ExternalGuidance': ['MobileFrontend', 'UniversalLanguageSelector'],
     'FanBoxes': ['SocialProfile'],
     'FileAnnotations': ['EventLogging'],
     'FileExporter': ['BetaFeatures'],
