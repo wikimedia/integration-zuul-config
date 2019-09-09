@@ -242,9 +242,18 @@ dependencies = {
     'BlueSpiceSmartList': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceSubPageTree': ['BlueSpiceFoundation'],
     'BlueSpiceTagCloud': ['BlueSpiceFoundation'],
-    'BlueSpiceUEModuleDOCX': ['BlueSpiceFoundation'],
-    'BlueSpiceUEModulePDF': ['BlueSpiceFoundation'],
-    'BlueSpiceUEModuleHTML': ['BlueSpiceFoundation'],
+    'BlueSpiceUEModuleDOCX': [
+        'BlueSpiceFoundation',
+        'BlueSpiceUniversalExport',
+    ],
+    'BlueSpiceUEModulePDF': [
+        'BlueSpiceFoundation',
+        'BlueSpiceUniversalExport',
+    ],
+    'BlueSpiceUEModuleHTML': [
+        'BlueSpiceFoundation',
+        'BlueSpiceUniversalExport',
+    ],
     'BlueSpiceUniversalExport': ['BlueSpiceFoundation'],
     'BlueSpiceUsageTracker': ['BlueSpiceFoundation'],
     'BlueSpiceUserManager': ['BlueSpiceFoundation'],
