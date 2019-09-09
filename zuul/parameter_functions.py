@@ -347,6 +347,7 @@ dependencies = {
     'Score': ['VisualEditor', 'TimedMediaHandler', 'Wikibase'],
     'Scribunto': ['SyntaxHighlight_GeSHi'],
     'SemanticLinks': ['VisualEditor'],
+    'Shibboleth': ['PluggableAuth'],
     'SiteMetrics': ['SocialProfile'],
     'SiteScout': ['Comments', 'SocialProfile', 'VoteNY'],
     'SimpleSAMLphp': ['PluggableAuth'],
