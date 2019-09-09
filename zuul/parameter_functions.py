@@ -198,7 +198,10 @@ dependencies = {
     'BlueSpicePageAssignments': ['BlueSpiceFoundation'],
     'BlueSpicePageTemplates': ['BlueSpiceFoundation'],
     'BlueSpicePageVersion': ['BlueSpiceFoundation'],
-    'BlueSpicePagesVisited': ['BlueSpiceFoundation'],
+    'BlueSpicePagesVisited': [
+        'BlueSpiceFoundation',
+        'BlueSpiceWhoIsOnline',
+    ],
     'BlueSpicePermissionManager': ['BlueSpiceFoundation'],
     'BlueSpicePrivacy': ['BlueSpiceFoundation'],
     'BlueSpiceQrCode': ['BlueSpiceFoundation'],
