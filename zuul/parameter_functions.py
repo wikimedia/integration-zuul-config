@@ -278,6 +278,7 @@ dependencies = {
     'FileImporter': ['CentralAuth', 'WikiEditor'],
     'FlaggedRevs': ['Scribunto'],
     'Flow': ['AbuseFilter', 'Echo', 'VisualEditor'],
+    'FundraiserLandingPage': ['EventLogging'],
     'FundraisingTranslateWorkflow': ['Translate'],
     'GeoData': ['CirrusSearch'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
