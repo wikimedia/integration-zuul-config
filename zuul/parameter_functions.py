@@ -260,7 +260,11 @@ dependencies = {
     'BlueSpiceUserPreferences': ['BlueSpiceFoundation'],
     'BlueSpiceUserSidebar': ['BlueSpiceFoundation'],
     'BlueSpiceVisualDiff': ['BlueSpiceFoundation'],
-    'BlueSpiceVisualEditorConnector': ['BlueSpiceFoundation', 'VisualEditor'],
+    'BlueSpiceVisualEditorConnector': [
+        'BlueSpiceFoundation',
+        'OOJSPlus',
+        'VisualEditor',
+    ],
     'BlueSpiceWatchList': ['BlueSpiceFoundation'],
     'BlueSpiceWhoIsOnline': ['BlueSpiceFoundation'],
     'BounceHandler': ['Echo', 'CentralAuth'],
