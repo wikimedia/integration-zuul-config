@@ -9,6 +9,7 @@
 #
 
 set -eu
+set -o pipefail
 
 _dir="$(dirname "$0")"
 repodir="$(realpath "$_dir/..")"
@@ -24,7 +25,7 @@ echo "There are $(wc -l "$jobslist"|cut -d\  -f1) jobs defined."
 source "$_dir"/setup-zuul-server.inc.sh
 
 "$ZUUL_SERVER_BIN" --version
-exec "$ZUUL_SERVER_BIN" \
+"$ZUUL_SERVER_BIN" \
     -c "$repodir"/tests/fixtures/zuul-dummy.conf \
     -t "$jobslist" \
-    -l "$repodir"/zuul/layout.yaml
+    -l "$repodir"/zuul/layout.yaml 2>&1|grep -E -v '^(DEBUG|INFO):zuul'
