@@ -58,16 +58,17 @@
 
 - project:
     name: 'operations-mw-config'
+    phpflavor:
+     - hhvm:
+         image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.6-s1
+     - php72:
+         image: docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s1
     jobs:
      - '{name}-typos-docker'
      - 'operations-mw-config-{phpflavor}-composer-{run-script}-docker':
-         phpflavor:
-             - hhvm:
-                 image: docker-registry.wikimedia.org/releng/composer-hhvm:0.2.6-s1
-                 run-script: test
-             - php72:
-                 image: docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s1
-                 run-script: lint
+         run-script:
+             - lint
+             - test
 
 - project:
     name: 'cassandra-table-properties'
