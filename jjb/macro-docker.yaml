@@ -166,11 +166,18 @@
              --tmpfs /workspace/db:size=320M
          # Use vendor and skip-deps
          # We do not want to bring in MediaWiki core dev dependencies (T223397)
+         #
+         # MediaWiki installation is skipped, we do not need it. Additionally
+         # we only inject the extension dependencies required by Phan, notably
+         # we do not install dependencies of dependencies which might end up
+         # breaking the installation due to a missing extension.json
+         # requirement. (T232413)
          args: >
              --git-parallel=8
              --packages-source=vendor
              --db=mysql --db-dir=/workspace/db
              --skip-deps
+             --skip-install
              --skip=all
          logdir: '/workspace/log'
      # Install the extension/skin composer dev dependencies to bring in phan config
