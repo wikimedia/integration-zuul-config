@@ -3200,12 +3200,16 @@ projects:
 
   - name: operations/mediawiki-config
     test-prio:
+      - operations-mw-config-hhvm-composer-lint-docker
       - operations-mw-config-hhvm-composer-test-docker
       - operations-mw-config-php72-composer-lint-docker
+      - operations-mw-config-php72-composer-test-docker
       - operations-mw-config-typos-docker
     gate-and-submit:
+      - operations-mw-config-hhvm-composer-lint-docker
       - operations-mw-config-hhvm-composer-test-docker
       - operations-mw-config-php72-composer-lint-docker
+      - operations-mw-config-php72-composer-test-docker
       - operations-mw-config-typos-docker
     postmerge:
       - beta-mediawiki-config-update-eqiad
