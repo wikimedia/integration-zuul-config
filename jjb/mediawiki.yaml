@@ -541,14 +541,10 @@
     - docker-castor-load
     - docker-wipe-dir:
         dir: 'cover'
-    - docker-zuul-cloner:
-        projects: >
-            mediawiki/core
-            $ZUUL_PROJECT
     - docker-run-with-log-and-workspace-cache:
         image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.34-5
         options: '-e CODEHEALTH=1 --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro'
-        args: '--packages-source "{packages-source}" --skip-zuul --git-parallel=8 --skip-install --commands=mwext-phpunit-coverage'
+        args: '--packages-source "{packages-source}" --git-parallel=8 --skip-install --commands=mwext-phpunit-coverage'
         logdir: '/workspace/log'
     - docker-run-with-log-and-workspace-cache:
         image: docker-registry.wikimedia.org/releng/node10-test:0.5.0
