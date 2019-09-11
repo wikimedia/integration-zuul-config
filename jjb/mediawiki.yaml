@@ -283,6 +283,25 @@
         - zuul
 
 - job-template:
+    !!merge : *job_quibble
+    name: 'mediawiki-quibble-api-testing-vendor-{database}-{php}-docker'
+    quibble_args: '-c "mediawiki/tools/api-testing/ci.sh" mediawiki/tools/api-testing'
+    triggers:
+        - zuul
+
+- project:
+    name: mediawiki-api-testing
+    jobs:
+        - mediawiki-quibble-api-testing-vendor-{database}-{php}-docker:
+            php:
+                - php72:
+                    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.34-1
+            packages-source: vendor
+            database:
+                - mysql
+                - sqlite
+
+- job-template:
     name: mediawiki-quibble-composertest-{php}-docker
     node: DebianJessieDocker && m4executor
     concurrent: true

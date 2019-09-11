@@ -746,6 +746,13 @@ jobs:
     branch: master
     voting: false
 
+  # Non voting pending https://gerrit.wikimedia.org/r/#/c/mediawiki/tools/api-testing/+/530217/
+  #
+  # XXX when removing the non-voting flag, please uncomment the job from
+  # gate-and-submit
+  - name: ^mediawiki-quibble-api-testing-.*
+    voting: false
+
   # Pending migration T223348
   - name: wikimedia-fundraising-crm-composer-php72-docker
     voting: false
@@ -2941,6 +2948,16 @@ projects:
   - name: mediawiki/skins/WPtouch
     template:
      - name: skin-quibble
+
+  - name: mediawiki/tools/api-testing
+    test:
+    - mediawiki-quibble-api-testing-vendor-mysql-php72-docker
+    - mediawiki-quibble-api-testing-vendor-sqlite-php72-docker
+    # Non voting pending https://gerrit.wikimedia.org/r/#/c/mediawiki/tools/api-testing/+/530217/
+    gate-and-submit:
+    - noop
+    #- mediawiki-quibble-api-testing-vendor-mysql-php72-docker
+    #- mediawiki-quibble-api-testing-vendor-sqlite-php72-docker
 
   - name: mediawiki/tools/codesniffer
     template:
