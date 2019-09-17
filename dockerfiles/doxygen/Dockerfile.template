@@ -1,6 +1,7 @@
 # php is for filters
 FROM {{ "php72" | image_tag }}
 
+USER root
 RUN {{ "doxygen graphviz" | apt_install }}
 
 COPY run.sh /run.sh
