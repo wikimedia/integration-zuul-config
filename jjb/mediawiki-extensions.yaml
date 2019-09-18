@@ -90,13 +90,6 @@
     triggers:
      - zuul
 
-- job-template:
-    name: 'mwskin-php72-phan-docker-non-voting'
-    !!merge : *job_mwext-php72-phan-docker
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - job-template: &job_mwext-php72-phan-seccheck-docker
     name: 'mwext-php72-phan-seccheck-docker'
     node: DebianJessieDocker && m4executor
@@ -127,21 +120,7 @@
      - docker-cleanup
 
 - job-template:
-    name: 'mwext-php72-phan-seccheck-docker-non-voting'
-    !!merge : *job_mwext-php72-phan-seccheck-docker
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
-- job-template:
     name: 'mwskin-php72-phan-seccheck-docker'
-    !!merge : *job_mwext-php72-phan-seccheck-docker
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
-- job-template:
-    name: 'mwskin-php72-phan-seccheck-docker-non-voting'
     !!merge : *job_mwext-php72-phan-seccheck-docker
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
@@ -152,11 +131,8 @@
     jobs:
         - mwext-php72-phan-docker
         - mwskin-php72-phan-docker
-        - mwskin-php72-phan-docker-non-voting
         - mwext-php72-phan-seccheck-docker
-        - mwext-php72-phan-seccheck-docker-non-voting
         - mwskin-php72-phan-seccheck-docker
-        - mwskin-php72-phan-seccheck-docker-non-voting
 
 - project:
     name: wdio-selenium-daily
