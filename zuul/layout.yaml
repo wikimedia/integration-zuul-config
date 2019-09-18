@@ -7212,11 +7212,16 @@ projects:
   - name: mediawiki/services/kartotherian
     template:
       - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
     test:
       - kartotherian-node10-browser-docker
     gate-and-submit:
       - kartotherian-node10-browser-docker
+    postmerge:
+      - trigger-kartotherian-pipeline-kartotherian
+      - trigger-kartotherian-pipeline-tilerator
+    publish:
+      - trigger-kartotherian-pipeline-kartotherian
+      - trigger-kartotherian-pipeline-tilerator
 
   - name: mediawiki/services/kask
     template:
