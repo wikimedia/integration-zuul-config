@@ -5,7 +5,13 @@
       - rehearse
       - publish
     jobs:
+      # trigger-blubber-pipeline-test
+      # trigger-blubber-pipeline-rehearse
+      # trigger-blubber-pipeline-publish
       - 'trigger-{name}-pipeline-{pipeline}'
+      # blubber-pipeline-test
+      # blubber-pipeline-rehearse
+      # blubber-pipeline-publish
       - '{name}-pipeline-{pipeline}'
 
 - project:
@@ -13,5 +19,24 @@
     pipeline:
       - dev
     jobs:
+      # trigger-mediawiki-pipeline-dev
       - 'trigger-{name}-pipeline-{pipeline}'
+      # mediawiki-pipeline-dev
       - '{name}-pipeline-{pipeline}'
+
+- project:
+    name: kartotherian
+    pipeline:
+      - kartotherian
+      - tilerator
+    jobs:
+      # trigger-kartotherian-pipeline-kartotherian
+      # trigger-kartotherian-pipeline-tilerator
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # kartotherian-pipeline-kartotherian
+      # kartotherian-pipeline-tilerator
+      - '{name}-pipeline-{pipeline}'
+      # Temporarily here whilst waiting for the service to be migrated
+      # kartotherian-deploy-npm-node-6-docker
+      - '{name}-deploy-npm-node-6-docker':
+         docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.1-s1
