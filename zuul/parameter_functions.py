@@ -496,6 +496,7 @@ phan_dependencies = {
     'PageTriage': ['Echo', 'ORES'],
     'ParserFunctions': ['Scribunto'],
     'Popups': ['BetaFeatures', 'EventLogging', 'Gadgets'],
+    'PropertySuggester': ['Wikibase'],
     'QuizGame': ['Renameuser', 'SocialProfile'],
     'RelatedArticles': ['Disambiguator'],
     'ReplaceText': ['AdminLinks'],
