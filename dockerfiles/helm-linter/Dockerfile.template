@@ -1,9 +1,10 @@
 FROM {{ "ci-stretch" | image_tag }}
 
-USER root
-RUN {{ "helm" | apt_install }}
+USER ROOT
+
+RUN {{ "helm rake" | apt_install }}
 
 USER nobody
+
 WORKDIR /src
-ENTRYPOINT ["helm"]
-CMD ["lint"]
+ENTRYPOINT ["rake"]
