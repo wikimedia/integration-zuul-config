@@ -482,6 +482,7 @@ phan_dependencies = {
     'GrowthExperiments': ['EventLogging', 'PageImages', 'PageViewInfo',
                           'skins/MinervaNeue', 'Flow', 'MobileFrontend',
                           'Echo'],
+    'JsonConfig': ['Scribunto', 'Kartographer'],
     'Kartographer': ['GeoData', 'JsonConfig'],
     'LiquidThreads': ['Renameuser'],
     'LoginNotify': ['CentralAuth', 'Echo'],
