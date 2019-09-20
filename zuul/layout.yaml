@@ -960,11 +960,6 @@ jobs:
     queue-name: archived-repos
     failure-message: 'This repository has been archived and new patches are not being accepted. If you want to maintain it follow https://www.mediawiki.org/wiki/Gerrit/Project_ownership#Requesting_repository_ownership and then change which jobs get run.'
 
-  # WIP T153856
-  - name: ^ortiz-rlang$
-    voting: false
-    # FIXME remove noop gate-and-submit when making it voting
-
 project-templates:
 
   # For extensions that have broken tests or magic behaviors that CI does not support.
@@ -3638,12 +3633,6 @@ projects:
       - discovery-maven-tool-configs-maven-java8-docker
     postmerge:
       - discovery-maven-tool-configs-maven-java8-docker-site-publish
-
-  - name: wikimedia/discovery/ortiz
-    test:
-      - ortiz-rlang
-    gate-and-submit:
-      - noop
 
   - name: wikimedia/discovery/relevanceForge
     template:
