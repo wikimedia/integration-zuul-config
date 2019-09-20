@@ -6,7 +6,7 @@
 # have reported security issues. See also T74193.
 - job:
     name: 'php-composer-security-docker'
-    node: DebianJessieDocker
+    node: Docker
     triggers:
      - zuul
     builders:
@@ -59,7 +59,7 @@
 
 - job-template: &composer-package-phpflavor-docker
     name: 'composer-package-{phpflavor}-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     properties:
      - build-discarder:
@@ -84,13 +84,13 @@
     name: '{name}-composer-package-{phpflavor}-docker'
     # Run more specific jobs to large executors. They might have specific
     # needs, eg Parsoid is running Phan which requires memory - T221872
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     triggers:
      - zuul
 
 - job-template: &composer-phpflavor-docker
     name: 'composer-{phpflavor}-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     properties:
      - build-discarder:

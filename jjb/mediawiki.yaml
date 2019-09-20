@@ -18,7 +18,7 @@
 
 - job:
     name: 'mediawiki-core-jsduck-docker-publish'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     properties:
         - build-discarder:
@@ -44,7 +44,7 @@
 
 - job:
     name: 'mediawiki-core-doxygen-docker'
-    node: DebianJessieDocker
+    node: Docker
     # We dont want to overload CI when multiple branches have been updated
     concurrent: false
     triggers:
@@ -146,7 +146,7 @@
 # Phan! (T132636)
 - job:
     name: 'mediawiki-core-php72-phan-docker'
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     concurrent: true
     properties:
      - build-discarder:
@@ -176,7 +176,7 @@
 
 - job:
     name: 'mediawiki-core-php72-phan-seccheck-docker'
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     concurrent: true
     properties:
      - build-discarder:
@@ -204,7 +204,7 @@
 
 - job-template: &job_quibble
     name: quibble-{packages-source}-{database}-{php}-docker
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     quibble_args: '--skip npm-test'
     concurrent: true
     triggers:
@@ -302,7 +302,7 @@
 
 - job-template:
     name: mediawiki-quibble-composertest-{php}-docker
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     concurrent: true
     triggers:
         - zuul
@@ -447,7 +447,7 @@
 
 - job-template:
     name: 'mwcore-codehealth-{name}'
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     concurrent: '{concurrent}'
     branch: '$ZUUL_BRANCH'
     properties:
@@ -531,7 +531,7 @@
 
 - job-template:
     name: 'mwext-codehealth-{name}'
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     concurrent: '{concurrent}'
     branch: '$ZUUL_BRANCH'
     properties:
@@ -624,7 +624,7 @@
         <p>Generate <a href="https://doc.wikimedia.org/mediawiki-core/master/phpmetrics/">
         https://doc.wikimedia.org/mediawiki-core/master/phpmetrics/</a>.</p>
         <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     triggers:
         - pollscm:
@@ -815,7 +815,7 @@
 - job-template:
     !!merge : *job_quibble
     name: parsoidsvc-parsertests-docker
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     wrappers:
         - timeout:

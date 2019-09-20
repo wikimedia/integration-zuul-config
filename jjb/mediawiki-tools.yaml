@@ -7,7 +7,7 @@
 
 - job:
     name: 'mw-tools-scap-tox-doc-publish'
-    node: DebianJessieDocker
+    node: Docker
     parameters:
       # Trigger castor
       - string:
@@ -58,7 +58,7 @@
 # testing against a large sample of code.
 - job:
     name: 'mw-tools-codesniffer-mwcore-testrun'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul

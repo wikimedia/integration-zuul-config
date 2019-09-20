@@ -1,6 +1,6 @@
 - job:
     name: 'mwext-doxygen-publish'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     triggers:
      - zuul
@@ -19,7 +19,7 @@
 
 - job:
     name: 'mediawiki-i18n-check-docker'
-    node: DebianJessieDocker
+    node: Docker
     triggers:
      - zuul
     builders:
@@ -56,7 +56,7 @@
 # Phan! (T153039)
 - job-template: &job_mwext-php72-phan-docker
     name: 'mwext-php72-phan-docker'
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     concurrent: true
     properties:
      - build-discarder:
@@ -92,7 +92,7 @@
 
 - job-template: &job_mwext-php72-phan-seccheck-docker
     name: 'mwext-php72-phan-seccheck-docker'
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     concurrent: true
     properties:
      - build-discarder:

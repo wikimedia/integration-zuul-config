@@ -19,7 +19,7 @@
 
 - job:
     name: 'operations-dns-lint-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
         - zuul
@@ -31,7 +31,7 @@
 
 - job-template:
     name: 'operations-mw-config-{phpflavor}-composer-{run-script}-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
         - zuul
@@ -119,7 +119,7 @@
 
 - job:
     name: 'helm-lint'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul

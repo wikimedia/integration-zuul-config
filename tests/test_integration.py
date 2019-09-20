@@ -17,9 +17,9 @@ JENKINS_ACCEPTABLE_LABELS = [
     'blubber',  # dummy job for Zuul/Gearman which trigger a pipeline job
     'integration-castor03',  # Central cache
     'contint1001',  # Publishing
-    # The Docker slaves:
-    'DebianJessieDocker',
-    'DebianJessieDocker && m4executor',
+    # The Docker agents:
+    'Docker',
+    'Docker && m4executor',
 ]
 
 

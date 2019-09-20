@@ -6,7 +6,7 @@
 
 - job-template: &job_tox-docker
     name: 'tox-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.4.0'
     triggers:
@@ -52,7 +52,7 @@
 # Intended for changes being merged, eg in 'postmerge'
 - job-template:
     name: '{name}-tox-publish'
-    node: DebianJessieDocker
+    node: Docker
     docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.4.0'
     triggers:
      - zuul
@@ -75,7 +75,7 @@
 # Same but for ref-update, eg in 'publish'
 - job-template:
     name: '{name}-tox-tag-publish'
-    node: DebianJessieDocker
+    node: Docker
     docker_image_var: 'docker-registry.wikimedia.org/releng/tox:0.4.0'
     triggers:
      - zuul-post
@@ -103,7 +103,7 @@
 
 - job:
     name: 'tox-py27-coverage-publish'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     triggers:
         - zuul
@@ -141,7 +141,7 @@
 
 - job:
     name: 'commit-message-validator'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul

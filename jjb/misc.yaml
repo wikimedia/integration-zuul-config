@@ -3,7 +3,7 @@
 # matches the Git repository name.
 - job:
     name: 'doxygen-publish'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     triggers:
      - zuul
@@ -22,7 +22,7 @@
 
 - job: &phpunit-coverage-docker-publish
     name: 'phpunit-coverage-docker-publish'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     triggers:
      - zuul
@@ -64,7 +64,7 @@
 
 - job:
     name: 'oojs-ui-docker-publish'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     triggers:
      - zuul
@@ -94,7 +94,7 @@
 
 - job:
     name: 'oojs-ui-doxygen-publish'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     triggers:
      - zuul
@@ -134,7 +134,7 @@
 
 - job-template:
     name: '{name}-typos-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
         - zuul
@@ -159,7 +159,7 @@
 
 - job:
     name: 'audit-resources'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: false
     wrappers:
       - timeout:

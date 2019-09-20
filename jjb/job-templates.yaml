@@ -1,6 +1,6 @@
 - job-template:
     name: '{name}-jsduck-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul
@@ -18,7 +18,7 @@
 # CI for gerrit
 - job:
     name: 'gerrit-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     wrappers:
       # need's to be 1 hour and 30 mins to give gerrit enough time to build.
@@ -49,9 +49,9 @@
 
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
-    # m4executor label are slaves with 4GBytes memory. Lot of our Java
+    # m4executor label are agents with 4GBytes memory. Lot of our Java
     # repositories require extra memory such as mjolnir or refinery.
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     concurrent: true
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.5.1
     triggers:
@@ -87,7 +87,7 @@
 # Generate project documentation using docker and publish it
 - job-template:
     name: '{name}-docker-doc-publish'
-    node: DebianJessieDocker
+    node: Docker
     triggers:
      - zuul
     builders:
@@ -112,9 +112,9 @@
 # retrieve the site from /src/target/ and push it to doc.wikimedia.org
 - job-template: &job_template_maven-java8-docker-site-publish
     name: '{name}-maven-java8-docker-site-publish'
-    # m4executor label are slaves with 4GBytes memory. Lot of our Java
+    # m4executor label are agents with 4GBytes memory. Lot of our Java
     # repositories require extra memory such as mjolnir or refinery.
-    node: DebianJessieDocker && m4executor
+    node: Docker && m4executor
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.5.1
     triggers:
         - zuul
@@ -179,7 +179,7 @@
 
 - job-template: &job_npm-node-6-docker
     name: 'npm-node-6-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.6.1-s1'
     docker_run_options_var: ''
@@ -202,7 +202,7 @@
 # Node.js 10 job for 'npm install-test'
 - job-template:
     name: '{name}-node10-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul
@@ -222,7 +222,7 @@
 # Node.js 10 job for 'npm install & npm run {script}'
 - job-template:
     name: '{name}-node10-run{script}-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul
@@ -242,7 +242,7 @@
 
 - job-template:
     name: '{name}-node10-npmaudit-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul
@@ -259,7 +259,7 @@
 # Node.js 10 job for 'npm install-test' (with browsers installed)
 - job-template:
     name: '{name}-node10-browser-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul
@@ -281,7 +281,7 @@
 # to doc.wikimedia.org/cover/:DOC_PROJECT
 - job:
     name: 'generic-node10-browser-coverage-docker-publish'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul
@@ -305,7 +305,7 @@
 # - DOC_SUBPATH: determined in parameter_functions.py (branch or tag)
 - job:
     name: generic-node10-docs-docker-publish
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul
@@ -329,7 +329,7 @@
 # - DOC_SUBPATH: determined in parameter_functions.py (branch or tag)
 - job:
     name: mwext-node10-docs-docker-publish
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul

@@ -19,7 +19,7 @@
 # entrypoint: script to run. Relative to integration/config root dir
 - job-template:
     name: 'integration-config-{command}-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
         - zuul
@@ -41,7 +41,7 @@
 # Super basic sanity check for integration/composer repo
 - job:
     name: 'integration-composer-check-php72-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     triggers:
      - zuul
@@ -55,7 +55,7 @@
 
 - job:
     name: integration-config-qa
-    node: DebianJessieDocker
+    node: Docker
     triggers:
      - timed: '0 3 * * *'
     scm:

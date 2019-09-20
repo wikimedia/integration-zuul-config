@@ -1,6 +1,6 @@
 - job-template: &job_rake-docker
     name: 'rake-docker'
-    node: DebianJessieDocker
+    node: Docker
     concurrent: true
     docker_image_var: 'docker-registry.wikimedia.org/releng/rake:0.2.1'
     triggers:
@@ -36,7 +36,7 @@
 # doc.wikimedia.org using an intermediate rsync repository in labs.
 - job-template:
     name: '{name}-bundle-yard-publish'
-    node: DebianJessieDocker
+    node: Docker
     triggers:
      - zuul
     builders:

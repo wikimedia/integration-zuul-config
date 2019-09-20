@@ -8,7 +8,7 @@ if [ $is_docker ]; then
     # For containers we mount $WORKSPACE/cache from the host to /cache in the
     # container. It is also the value of XDG_CACHE_HOME
     DEST="/cache"
-    # cache might persist between builds on the Docker slaves
+    # cache might persist between builds on the Docker agents
     rsync_delete='--delete-delay'
 else
     DEST="$HOME"
