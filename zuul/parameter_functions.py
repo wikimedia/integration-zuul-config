@@ -523,6 +523,8 @@ phan_dependencies = {
     'WikibaseLexeme': ['Wikibase'],
     'WikibaseLexemeCirrusSearch': ['CirrusSearch', 'Wikibase',
                                    'WikibaseCirrusSearch', 'WikibaseLexeme'],
+    'WikibaseMediaInfo': ['Wikibase', 'CirrusSearch', 'Elastica',
+                          'WikibaseCirrusSearch'],
     'Wikidata.org': ['Wikibase'],
     'WikidataPageBanner': ['PageImages', 'Wikibase'],
     'WikimediaBadges': ['Wikibase'],
