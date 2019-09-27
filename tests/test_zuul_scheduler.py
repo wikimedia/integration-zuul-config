@@ -1107,6 +1107,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-composertest-php72-docker': True,
             'wmf-quibble-vendor-mysql-php72-docker': False,
             'wmf-quibble-core-vendor-mysql-php72-docker': True,
+            'wmf-quibble-selenium-php72-docker': True,
             'mwgate-node10-docker': True,
         }
         expected_gate = {
@@ -1121,6 +1122,8 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-postgres-php72-docker': True,
             'wmf-quibble-vendor-mysql-hhvm-docker': False,
             'wmf-quibble-vendor-mysql-php72-docker': False,
+            'wmf-quibble-selenium-hhvm-docker': True,
+            'wmf-quibble-selenium-php72-docker': True,
             'wmf-quibble-core-vendor-mysql-hhvm-docker': True,
             'wmf-quibble-core-vendor-mysql-php72-docker': True,
             'mwgate-node10-docker': True,

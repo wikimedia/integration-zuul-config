@@ -773,6 +773,11 @@ jobs:
     skip-if:
       - project: ^mediawiki/extensions/.*$
 
+  - name: ^wmf-quibble-selenium
+    # Gated extensions are only for master and Wikimedia deployment. We do not
+    # run them on REL branches.
+    branch: (?!^REL)
+
   # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
   # queue-name can not be applied based on a regex, apply the name on most used
   # jobs.
@@ -1459,10 +1464,12 @@ project-templates:
       # For master
       - wmf-quibble-core-vendor-mysql-php72-docker
       - wmf-quibble-vendor-mysql-php72-docker
+      - wmf-quibble-selenium-php72-docker
       - mwgate-node10-docker
     php:
       - wmf-quibble-core-vendor-mysql-hhvm-docker
       - wmf-quibble-vendor-mysql-hhvm-docker
+      - wmf-quibble-selenium-hhvm-docker
     gate-and-submit:
       - mwgate-node10-docker
       # Only triggered on master
@@ -1470,11 +1477,15 @@ project-templates:
       - wmf-quibble-core-vendor-mysql-hhvm-docker
       - wmf-quibble-vendor-mysql-php72-docker
       - wmf-quibble-core-vendor-mysql-php72-docker
+      - wmf-quibble-selenium-hhvm-docker
+      - wmf-quibble-selenium-php72-docker
     test-wmf:
       # For wmf branches
       - mwgate-node10-docker
       - wmf-quibble-vendor-mysql-php72-docker
       - wmf-quibble-core-vendor-mysql-php72-docker
+      - wmf-quibble-selenium-hhvm-docker
+      - wmf-quibble-selenium-php72-docker
     gate-and-submit-wmf:
       - mwgate-node10-docker
       # Only triggered on wmf/ branches
@@ -1482,6 +1493,8 @@ project-templates:
       - wmf-quibble-core-vendor-mysql-hhvm-docker
       - wmf-quibble-vendor-mysql-php72-docker
       - wmf-quibble-core-vendor-mysql-php72-docker
+      - wmf-quibble-selenium-hhvm-docker
+      - wmf-quibble-selenium-php72-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
     experimental:
