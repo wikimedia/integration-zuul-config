@@ -385,7 +385,7 @@ dependencies = {
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'Translate': ['UniversalLanguageSelector', 'EventLogging', 'cldr'],
     'TranslateSvg': ['Translate'],
-    'TranslationNotifications': ['Translate'],
+    'TranslationNotifications': ['MassMessage', 'Translate'],
     'TopTenPages': ['HitCounters'],
     'TorBlock': ['AbuseFilter'],
     'TwnMainPage': ['Translate'],
