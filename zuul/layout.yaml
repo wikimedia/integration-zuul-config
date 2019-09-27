@@ -742,7 +742,7 @@ jobs:
   - name: ^.*-non-voting$
     voting: false
 
-  - name: trigger-mediawiki-pipeline-dev
+  - name: trigger-mediawiki-pipeline-publish
     branch: master
     voting: false
 
@@ -2217,7 +2217,7 @@ projects:
     postmerge:
       - mediawiki-core-jsduck-docker-publish
       - mwcore-codehealth-master-non-voting
-      - trigger-mediawiki-pipeline-dev
+      - trigger-mediawiki-pipeline-publish
     post:
       - train-deploy-notes
     experimental:
