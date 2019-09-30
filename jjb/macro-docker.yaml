@@ -187,19 +187,6 @@
         args: '--working-dir=/src/"$THING_SUBNAME" update --ansi --no-progress --prefer-dist --profile'
         logdir: '/log'
 
-# Use a docker image to clone for MediaWiki core
-- builder:
-    name: docker-ci-src-setup-mw
-    builders:
-     - docker-run:
-        options: >-
-          --volume "$(pwd)"/src:/src
-          --volume "$(pwd)"/cache:/cache
-          --volume /srv/git:/srv/git
-          --entrypoint "bash"
-        image: 'docker-registry.wikimedia.org/releng/ci-src-setup:0.3.1-s2'
-        args: '/srv/setup-mw.sh'
-
 # Use a docker image to clone the repository into /src
 - builder:
     name: docker-ci-src-setup-simple
