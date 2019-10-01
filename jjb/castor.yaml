@@ -137,6 +137,7 @@
 - job:
     !!merge : *job_castor_save
     name: castor-save-workspace-cache
+    node: contint1001
     wrappers:
         - ansicolor
         - timeout:
@@ -148,11 +149,4 @@
             users:
              - 'ae711ff4-813e-4462-9a27-21bdbd4fdcb9'  # jenkins-deploy
     builders:
-        # This is horrible. Will need a better system that just prevent the job
-        # from being triggered by the upstream job.
-        - shell:
-            !include-raw: castor-save-filter.bash
-        - shell:
-            !include-raw:
-                - castor-define-namespace.bash
-                - castor-save-workspacecache.bash
+        - shell: /bin/true
