@@ -590,7 +590,8 @@
 - job-template:
     !!merge : *job_quibble
     name: 'mwcore-phpunit-coverage-master'
-    concurrent: false
+    node: integration-agent-jessie-docker-1001
+    concurrent: true
     properties:
         - build-discarder:
             days-to-keep: 30
