@@ -130,6 +130,7 @@
     jobs:
         - '{name}-composer-{phpflavor}-docker':
             phpflavor:
+                # Still used by Fundraising for now -- JDF 2019-10-02
                 - hhvm:
                     image: docker-registry.wikimedia.org/releng/composer-test-hhvm:0.2.6-s1
                 - php70:
@@ -239,7 +240,7 @@
         - docker-cleanup
     wrappers:
         - timeout:
-            timeout: 60 # HHVM quibble jobs for Wikibase 'stack' take ~45 mins
+            timeout: 60 # Quibble jobs for Wikibase 'stack' can take ~45 mins
             fail: true
         - timestamps
         - ansicolor
@@ -726,7 +727,6 @@
                 - php71
                 - php72
                 - php73
-                - hhvm
     builders:
         - trigger-builds:
             - project: 'mediawiki-quibble-${packagessource}-${database}-${php}-docker'
@@ -756,8 +756,6 @@
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.35
         - php73:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.35
-        - hhvm:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-hhvm:0.0.35
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
@@ -792,10 +790,8 @@
     packages-source: vendor
     # We only use MariaDB/MySQL
     database: mysql
-    # And only HHVM / php7.2
+    # And only php7.2
     php:
-        - hhvm:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-hhvm:0.0.35
         - php72:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.35
     jobs:
