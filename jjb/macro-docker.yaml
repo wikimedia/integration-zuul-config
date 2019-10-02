@@ -99,7 +99,7 @@
           --rm \
           --label "jenkins.job=$JOB_NAME" \
           --label "jenkins.build=$BUILD_NUMBER" \
-          --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL|HHVM_REPO_CENTRAL_PATH)=') \
+          --env-file <(/usr/bin/env|egrep -v '^(HOME|SHELL|PATH|LOGNAME|MAIL)=') \
           '{image}' {obj:args|}
         # nothing else can be executed due to exec
 
