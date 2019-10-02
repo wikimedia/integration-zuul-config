@@ -125,7 +125,6 @@ class TestZuulLayout(unittest.TestCase):
 
                 required = [
                     '%s-broken' % kind,
-                    '%s-quibble-composer-nohhvm' % kind,
                     '%s-quibble-composer-noselenium' % kind,
                     '%s-quibble-composer' % kind,
                     ]

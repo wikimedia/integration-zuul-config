@@ -25,8 +25,6 @@ def set_parameters(item, job, params):
         params['PHP_BIN'] = 'php5'
     elif 'php70' in job.name:
         params['PHP_BIN'] = 'php7.0'
-    elif 'hhvm' in job.name:
-        params['PHP_BIN'] = 'hhvm'
 
     mw_deps_jobs_starting_with = (
         'mwselenium-quibble',
@@ -75,7 +73,7 @@ def set_parameters(item, job, params):
     ):
         params['MW_COMPOSER_MERGE_MW_IN_VENDOR'] = 1
 
-    # At least parallel-lint is slow under HHVM
+    # parallel-lint can be slow
     if params['ZUUL_PROJECT'].startswith('mediawiki/vendor'):
         params['COMPOSER_PROCESS_TIMEOUT'] = 600
 
