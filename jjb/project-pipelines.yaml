@@ -25,6 +25,16 @@
       - '{name}-pipeline-{pipeline}'
 
 - project:
+    name: parsoid
+    pipeline:
+      - publish
+    jobs:
+      # trigger-parsoid-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # parsoid-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
+
+- project:
     name: kartotherian
     pipeline:
       - kartotherian
