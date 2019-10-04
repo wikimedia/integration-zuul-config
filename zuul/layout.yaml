@@ -886,6 +886,21 @@ jobs:
   - name: mwext-phpunit-coverage-docker-publish
     mutex: mwext-phpunit-coverage-docker-publish
 
+  # Zuul does not know whether a Jenkins job is marked as non concurrent and
+  # would thus trigger the associated Gearman function multiple times.
+  # The Gearman plugin assign each build to a node and each of its executors
+  # are locked waiting for the build to start. Since builds are hold by the
+  # Jenkins queue, the node is entirely locked and can not process any other
+  # builds.
+  #
+  # Instead handle the non concurrency at Zuul level using a mutex.
+  #
+  # T234259
+  - name: mwcore-codehealth-master-non-voting
+    mutex: mwcore-codehealth-master-non-voting
+  - name: mwext-codehealth-master-non-voting
+    mutex: mwext-codehealth-master-non-voting
+
   # Only generate coverage information for master
   - name: ^.*-coverage-(docker-)?publish$
     branch: master
