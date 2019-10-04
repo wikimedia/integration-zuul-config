@@ -7,6 +7,7 @@
 - job:
     name: 'php-composer-security-docker'
     node: Docker
+    concurrent: false
     triggers:
      - zuul
     builders:
@@ -23,6 +24,7 @@
 
 - job-template:
     name: '{repogroup}-php-security'
+    concurrent: false
     project-type: matrix
     execution-strategy:
         sequential: true
@@ -60,7 +62,6 @@
 - job-template: &composer-package-phpflavor-docker
     name: 'composer-package-{phpflavor}-docker'
     node: Docker
-    concurrent: true
     properties:
      - build-discarder:
          days-to-keep: 15
@@ -91,7 +92,6 @@
 - job-template: &composer-phpflavor-docker
     name: 'composer-{phpflavor}-docker'
     node: Docker
-    concurrent: true
     properties:
      - build-discarder:
          days-to-keep: 15

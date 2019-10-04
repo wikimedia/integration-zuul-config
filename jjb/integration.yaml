@@ -20,7 +20,6 @@
 - job-template:
     name: 'integration-config-{command}-docker'
     node: Docker
-    concurrent: true
     triggers:
         - zuul
     builders:
@@ -42,7 +41,6 @@
 - job:
     name: 'integration-composer-check-php72-docker'
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -56,6 +54,7 @@
 - job:
     name: integration-config-qa
     node: Docker
+    concurrent: false
     triggers:
      - timed: '0 3 * * *'
     scm:

@@ -1,7 +1,6 @@
 - job-template: &job_rake-docker
     name: 'rake-docker'
     node: Docker
-    concurrent: true
     docker_image_var: 'docker-registry.wikimedia.org/releng/rake:0.2.1'
     triggers:
         - zuul
@@ -37,6 +36,7 @@
 - job-template:
     name: '{name}-bundle-yard-publish'
     node: Docker
+    concurrent: false
     triggers:
      - zuul
     builders:

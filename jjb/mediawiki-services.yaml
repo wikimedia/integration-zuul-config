@@ -21,7 +21,6 @@
 - job:
     name: kartotherian-node10-browser-docker
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -64,7 +63,6 @@
 - job-template:
     name: 'mobileapps-periodic-test'
     node: Docker
-    concurrent: true
     triggers:
      - timed: '@hourly'
     parameters:

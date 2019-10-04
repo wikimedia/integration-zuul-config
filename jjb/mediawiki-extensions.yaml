@@ -20,6 +20,7 @@
 - job:
     name: 'mediawiki-i18n-check-docker'
     node: Docker
+    concurrent: false
     triggers:
      - zuul
     builders:
@@ -57,7 +58,6 @@
 - job-template: &job_mwext-php72-phan-docker
     name: 'mwext-php72-phan-docker'
     node: Docker && m4executor
-    concurrent: true
     properties:
      - build-discarder:
          days-to-keep: 15
@@ -93,7 +93,6 @@
 - job-template: &job_mwext-php72-phan-seccheck-docker
     name: 'mwext-php72-phan-seccheck-docker'
     node: Docker && m4executor
-    concurrent: true
     properties:
      - build-discarder:
          days-to-keep: 15

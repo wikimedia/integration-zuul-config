@@ -1,6 +1,10 @@
 - job-template:
     name: '{name}-release'
     project-type: maven
+    node: contintLabsSlave && DebianJessie
+    concurrent: false
+
+    jdk: 'Debian - OpenJdk 8'
     parameters:
       - string:
           name: 'GIT_URL'
@@ -18,8 +22,6 @@
           name: 'GIT_COMMIT'
           default: '{release-branch}'
 
-    jdk: 'Debian - OpenJdk 8'
-    node: contintLabsSlave && DebianJessie
     scm:
       - git:
           url: '$GIT_URL/$GIT_PROJECT'
@@ -63,6 +65,10 @@
 - job-template:
     name: '{name}-update-jars'
     project-type: freestyle
+    node: contintLabsSlave && DebianJessie
+    concurrent: false
+
+    jdk: 'Debian - OpenJdk 8'
     parameters:
       - string:
           name: 'GIT_URL'
@@ -76,8 +82,6 @@
       - string:
           name: 'RELEASE_VERSION'
 
-    jdk: 'Debian - OpenJdk 8'
-    node: contintLabsSlave && DebianJessie
     scm:
       - git:
           url: '$GIT_URL/$GIT_PROJECT'
@@ -131,7 +135,6 @@
 - job:
     name: 'analytics-wikistats'
     node: Docker
-    concurrent: true
     triggers:
         - zuul
     builders:

@@ -1,7 +1,6 @@
 - job-template:
     name: '{name}-jsduck-docker'
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -19,7 +18,6 @@
 - job:
     name: 'gerrit-docker'
     node: Docker
-    concurrent: true
     wrappers:
       # need's to be 1 hour and 30 mins to give gerrit enough time to build.
       # It can sometimes take a while.
@@ -52,7 +50,6 @@
     # m4executor label are agents with 4GBytes memory. Lot of our Java
     # repositories require extra memory such as mjolnir or refinery.
     node: Docker && m4executor
-    concurrent: true
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.5.1
     triggers:
         - zuul
@@ -88,6 +85,7 @@
 - job-template:
     name: '{name}-docker-doc-publish'
     node: Docker
+    concurrent: false
     triggers:
      - zuul
     builders:
@@ -115,6 +113,7 @@
     # m4executor label are agents with 4GBytes memory. Lot of our Java
     # repositories require extra memory such as mjolnir or refinery.
     node: Docker && m4executor
+    concurrent: false
     docker_image_var: docker-registry.wikimedia.org/releng/java8:0.5.1
     triggers:
         - zuul
@@ -180,7 +179,6 @@
 - job-template: &job_npm-node-6-docker
     name: 'npm-node-6-docker'
     node: Docker
-    concurrent: true
     docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.6.1-s1'
     docker_run_options_var: ''
     triggers:
@@ -203,7 +201,6 @@
 - job-template:
     name: '{name}-node10-docker'
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -223,7 +220,6 @@
 - job-template:
     name: '{name}-node10-run{script}-docker'
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -243,7 +239,6 @@
 - job-template:
     name: '{name}-node10-npmaudit-docker'
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -260,7 +255,6 @@
 - job-template:
     name: '{name}-node10-browser-docker'
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -282,7 +276,6 @@
 - job:
     name: 'generic-node10-browser-coverage-docker-publish'
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -306,7 +299,6 @@
 - job:
     name: generic-node10-docs-docker-publish
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:
@@ -330,7 +322,6 @@
 - job:
     name: mwext-node10-docs-docker-publish
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:

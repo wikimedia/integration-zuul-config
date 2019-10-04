@@ -8,6 +8,7 @@
 - job:
     name: 'mw-tools-scap-tox-doc-publish'
     node: Docker
+    concurrent: false
     parameters:
       # Trigger castor
       - string:
@@ -59,7 +60,6 @@
 - job:
     name: 'mw-tools-codesniffer-mwcore-testrun'
     node: Docker
-    concurrent: true
     triggers:
      - zuul
     builders:

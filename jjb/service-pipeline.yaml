@@ -3,7 +3,6 @@
 - job-template:
     name: 'trigger-{name}-pipeline-{pipeline}'
     node: trigger
-    concurrent: true
     parameters: &project-pipeline-parameters
       - string:
           name: PLIB_PIPELINE
@@ -33,7 +32,6 @@
 - job-template:
     name: '{name}-pipeline-{pipeline}'
     project-type: pipeline
-    concurrent: true
     parameters: *project-pipeline-parameters
     dsl: !include-raw:
       - service-pipeline-builder.groovy
@@ -44,7 +42,6 @@
 - job:
     name: 'trigger-service-pipeline-test-and-publish'
     node: trigger
-    concurrent: true
     parameters: &service-pipeline-parameters
       - string:
           name: ZUUL_URL
@@ -68,7 +65,6 @@
 - job:
     name: 'trigger-service-pipeline-test'
     node: trigger
-    concurrent: true
     parameters: *service-pipeline-parameters
     builders:
       - trigger-builds:
@@ -80,7 +76,6 @@
 - job:
     name: 'trigger-service-jenkinsfile'
     node: trigger
-    concurrent: true
     parameters: *service-pipeline-parameters
     builders:
       - trigger-builds:
@@ -92,7 +87,6 @@
 - job:
     name: 'service-pipeline-test-and-publish'
     project-type: pipeline
-    concurrent: true
     parameters: *service-pipeline-parameters
     dsl: !include-raw:
       - service-pipeline-production.groovy
@@ -101,7 +95,6 @@
 - job:
     name: 'service-pipeline-test'
     project-type: pipeline
-    concurrent: true
     parameters: *service-pipeline-parameters
     dsl: !include-raw:
       - service-pipeline-test.groovy
@@ -110,7 +103,6 @@
 - job:
     name: 'service-jenkinsfile'
     project-type: pipeline
-    concurrent: true
     sandbox: true
     parameters: *service-pipeline-parameters
     pipeline-scm:
