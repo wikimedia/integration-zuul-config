@@ -470,6 +470,8 @@ phan_dependencies = {
     'Echo': ['CentralAuth', 'EventLogging'],
     'EventBus': ['CentralNotice'],
     'FileExporter': ['BetaFeatures'],
+    'FlaggedRevs': ['Scribunto', 'Echo', 'GoogleNewsSitemap', 'MobileFrontend',
+                    'skins/Vector'],
     'Flow': ['AbuseFilter', 'BetaFeatures', 'CentralAuth', 'CirrusSearch',
              'ConfirmEdit', 'Echo', 'Elastica', 'GuidedTour', 'LiquidThreads',
              'SpamBlacklist', 'VisualEditor'],
