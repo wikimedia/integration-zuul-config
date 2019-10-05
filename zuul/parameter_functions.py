@@ -510,6 +510,8 @@ phan_dependencies = {
     'TimedMediaHandler': ['BetaFeatures'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
     'TorBlock': ['AbuseFilter'],
+    'Translate': ['AbuseFilter', 'AdminLinks', 'cldr', 'Elastica',
+                  'TranslationNotifications'],
     'TranslationNotifications': ['CentralAuth', 'SiteMatrix', 'Translate'],
     'TwoColConflict': ['BetaFeatures', 'EventLogging', 'WikiEditor'],
     'UniversalLanguageSelector': ['Babel', 'BetaFeatures', 'MobileFrontend',
