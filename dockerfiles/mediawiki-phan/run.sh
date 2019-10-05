@@ -25,8 +25,7 @@ else
     if jq -e '.extra."phan"' $CFG_COMPOSER; then
         PHAN_VERSION=$(jq -r '.extra."phan"' $CFG_COMPOSER)
     else
-        # Old-style, fallback to 0.8
-        PHAN_VERSION="0.8"
+        # New mediawiki-phan-config, phan is already required
     fi
 fi
 
@@ -34,5 +33,7 @@ fi
 export COLUMNS=80
 
 export PHP_ARGS='-dextension=ast_101.so'
-install_phan
+if [ -z "$PHAN_VERSION" ]; then
+    install_phan
+fi
 exec /srv/phan/vendor/bin/phan -d . -p "$@"
