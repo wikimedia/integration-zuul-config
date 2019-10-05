@@ -7,11 +7,8 @@ umask 002
 cd /mediawiki/
 
 if [ ! -f .phan/config.php ]; then
-    # Look in old location
-    if [ ! -f tests/phan/config.php ]; then
-        echo "Phan config not found"
-        exit 0
-    fi
+    echo "Phan config not found"
+    exit 0
 fi
 
 function install_phan {
@@ -36,14 +33,6 @@ fi
 # Bypass expensive Symfony\Component\Console\Terminal::getWidth() (T219114#5084302)
 export COLUMNS=80
 
-if [ -f .phan/config.php ]; then
-    # new-style phan, using modern paths and newer ast
-    export PHP_ARGS='-dextension=ast_101.so'
-    install_phan
-    exec /srv/phan/vendor/bin/phan -d . "$@"
-else
-    # old-style, using tests/phan and MW wrapper
-    export PHP_ARGS='-dextension=ast_012.so'
-    install_phan
-    exec /mediawiki/tests/phan/bin/phan "$@"
-fi
+export PHP_ARGS='-dextension=ast_101.so'
+install_phan
+exec /srv/phan/vendor/bin/phan -d . -p "$@"

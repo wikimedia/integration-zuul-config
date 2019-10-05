@@ -10,11 +10,7 @@ RUN git clone https://github.com/nikic/php-ast /srv/php-ast && \
     # v1.0.1, use sha1 for immutability
     git checkout e2953889168c7724e7a3dd385d279b77780967d9 && \
     phpize && ./configure && make && \
-    cp modules/ast.so /srv/modules/ast_101.so && \
-    # v0.1.2, use sha1 for immutability
-    git clean -fdx && git checkout abfef40846cb5454dafa1808769fde851ba8dd70 && \
-    phpize && ./configure && make && \
-    cp modules/ast.so /srv/modules/ast_012.so
+    cp modules/ast.so /srv/modules/ast_101.so
 
 FROM {{ "composer-php72" | image_tag }}
 

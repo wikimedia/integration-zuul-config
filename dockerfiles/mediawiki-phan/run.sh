@@ -7,11 +7,8 @@ umask 002
 cd "/mediawiki/$THING_SUBNAME"
 
 if [ ! -f "/mediawiki/$THING_SUBNAME/.phan/config.php" ]; then
-    # Look in old location
-    if [ ! -f "/mediawiki/$THING_SUBNAME/tests/phan/config.php" ]; then
-        echo "Phan config not found"
-        exit 0
-    fi
+    echo "Phan config not found"
+    exit 0
 fi
 
 function install_phan {
@@ -33,16 +30,9 @@ else
     fi
 fi
 
-if [ -f .phan/config.php ]; then
-    # new-style phan, using modern paths and newer ast
-    export PHP_ARGS='-dextension=ast_101.so'
-    install_phan
-    exec /srv/phan/vendor/bin/phan -d . "$@"
-else
-    # old-style, using tests/phan and the wrapper shipped with mediawiki/core
-    export PHP_ARGS='-dextension=ast_012.so'
-    install_phan
-    # Inject the extension repository as the first argument to trigger custom
-    # logic in the wrapper. T219114#5176487
-    exec /mediawiki/tests/phan/bin/phan "/mediawiki/$THING_SUBNAME" "$@"
-fi
+# Bypass expensive Symfony\Component\Console\Terminal::getWidth() (T219114#5084302)
+export COLUMNS=80
+
+export PHP_ARGS='-dextension=ast_101.so'
+install_phan
+exec /srv/phan/vendor/bin/phan -d . -p "$@"
