@@ -2795,22 +2795,12 @@ projects:
       - scap-beta-deb
 
   - name: mediawiki/tools/phan
-    test:
-      - composer-package-php71-docker
-      - composer-package-php72-docker
-      - composer-package-php73-docker
-    gate-and-submit:
-      - composer-package-php71-docker
-      - composer-package-php72-docker
-      - composer-package-php73-docker
+    template:
+     - name: composer-test-package-php72-or-later
 
   - name: mediawiki/tools/phan/PerfCheckPlugin
-    test:
-      - composer-package-php71-docker
-    gate-and-submit:
-      - composer-package-php71-docker
-      - composer-package-php72-docker
-      - composer-package-php73-docker
+    template:
+     - name: composer-test-package-php72-or-later
 
   - name: mediawiki/tools/phan/SecurityCheckPlugin
     test:
