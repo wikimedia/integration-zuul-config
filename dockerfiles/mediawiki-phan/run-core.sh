@@ -32,7 +32,16 @@ fi
 export COLUMNS=80
 
 export PHP_ARGS='-dextension=ast_101.so'
-if [ -z "$PHAN_VERSION" ]; then
+
+if [ ! -z "$PHAN_VERSION" ]; then
+    # Old phan
     install_phan
+    exec /srv/phan/vendor/bin/phan -d . -p "$@"
+elif [ -f "/mediawiki/vendor/bin/phan" ]; then
+    # New phan, it's already in vendor
+    exec vendor/bin/phan -d . -p "$@"
+else
+    # No phan version specified (like new phan) but phan not installed. No way.
+    echo "No version of phan is required, and none was found"
+    exit 0
 fi
-exec /srv/phan/vendor/bin/phan -d . -p "$@"
