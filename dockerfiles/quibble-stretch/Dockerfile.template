@@ -34,7 +34,6 @@ RUN {{ "ruby ruby-dev" | apt_install }} \
 #############################
 {% set quibble_deps|replace('\n', ' ') -%}
 python3
-python3-setuptools
 python3-pip
 python3-wheel
 {%- endset -%}
@@ -71,6 +70,7 @@ xauth
 
 {% set alldeps = quibble_deps + " " + zuul_deps + " " + mediawiki_deps + " " + browsers_deps -%}
 RUN {{ alldeps | apt_install }} \
+    && pip3 install --upgrade 'setuptools<=41' \
     && LATEST_TAG=$(git ls-remote --refs --tags https://gerrit.wikimedia.org/r/p/integration/quibble.git|cut -f2|cut -d/ -f3|sort --version-sort -r|head -n1) \
     && pip3 install git+https://gerrit.wikimedia.org/r/p/integration/quibble.git@"${LATEST_TAG}"#egg=quibble \
     && rm -fR "$XDG_CACHE_HOME"/pip \
