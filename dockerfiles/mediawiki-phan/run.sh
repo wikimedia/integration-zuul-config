@@ -24,7 +24,9 @@ else
     CFG_COMPOSER="vendor/mediawiki/mediawiki-phan-config/composer.json"
     if jq -e '.extra."phan"' $CFG_COMPOSER; then
         PHAN_VERSION=$(jq -r '.extra."phan"' $CFG_COMPOSER)
-    # else New mediawiki-phan-config, phan is already required
+    else
+        # New mediawiki-phan-config, phan is already required
+        PHAN_VERSION=""
     fi
 fi
 
@@ -39,7 +41,7 @@ if [ ! -z "$PHAN_VERSION" ]; then
     exec /srv/phan/vendor/bin/phan -d . -p "$@"
 elif [ -f "/mediawiki/$THING_SUBNAME/vendor/bin/phan" ]; then
     # New phan, it's already in vendor
-    exec /mediawiki/$THING_SUBNAME/vendor/bin/phan -d . -p "$@"
+    exec vendor/bin/phan -d . -p "$@"
 else
     # No phan version specified (like new phan) but phan not installed. No way.
     echo "No version of phan is required, and none was found"

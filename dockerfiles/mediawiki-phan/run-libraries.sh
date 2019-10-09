@@ -24,7 +24,9 @@ else
     CFG_COMPOSER="vendor/mediawiki/mediawiki-phan-config/composer.json"
     if jq -e '.extra."phan"' $CFG_COMPOSER; then
         PHAN_VERSION=$(jq -r '.extra."phan"' $CFG_COMPOSER)
-    # else New mediawiki-phan-config, phan is already required
+    else
+        # New mediawiki-phan-config, phan is already required
+        PHAN_VERSION=""
     fi
 fi
 
