@@ -285,6 +285,7 @@ dependencies = {
     'CookieWarning': ['MobileFrontend'],
     'CustomPage': ['skins/CustomPage'],
     'Dashiki': ['JsonConfig'],
+    'DiscussionTools': ['VisualEditor'],
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
     'Echo': ['CentralAuth', 'EventLogging'],
