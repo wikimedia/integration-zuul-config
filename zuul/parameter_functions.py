@@ -495,6 +495,7 @@ phan_dependencies = {
                        'PageImages', 'Wikibase', 'XAnalytics'],
     'Newsletter': ['Echo'],
     'OAuth': ['Echo'],
+    'OpenStackManager': ['LdapAuthentication', 'Echo', 'TitleBlacklist'],
     'PageForms': ['AdminLinks', 'Cargo', 'PageSchemas'],
     'PageTriage': ['Echo', 'ORES'],
     'ParserFunctions': ['Scribunto'],
