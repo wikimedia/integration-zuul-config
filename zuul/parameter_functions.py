@@ -501,6 +501,7 @@ phan_dependencies = {
     'Popups': ['BetaFeatures', 'EventLogging', 'Gadgets'],
     'PropertySuggester': ['Wikibase'],
     'QuizGame': ['Renameuser', 'SocialProfile'],
+    'ReadingLists': ['SiteMatrix'],
     'RelatedArticles': ['Disambiguator'],
     'ReplaceText': ['AdminLinks'],
     'Score': ['TimedMediaHandler', 'Wikibase'],
