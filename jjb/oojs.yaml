@@ -9,7 +9,9 @@
      - docker-src-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.38
+         image: docker-registry.wikimedia.org/releng/node10-test-browser-php72-composer:0.1.1
+         # 'npm run jenkins' also runs composer
+         options: '--entrypoint /run-with-xvfb.sh'
          args: 'jenkins'
          logdir: '/log'
     archive:
