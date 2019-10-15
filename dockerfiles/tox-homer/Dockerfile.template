@@ -1,0 +1,6 @@
+FROM {{ "tox" | image_tag }}
+
+USER root
+RUN {{ "libffi-dev" | apt_install }}
+
+USER nobody
