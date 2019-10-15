@@ -95,10 +95,13 @@
 - project:
     name: 'homer'
     jobs:
+        - '{name}-tox-docker':
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.1.0
         - tox-publish-jobs:
             docenv: 'py36-sphinx'
             docsrc: 'doc/build/html'
             docdest: 'homer/$DOC_SUBPATH'
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.1.0
 
 - project:
     name: netbox-reports

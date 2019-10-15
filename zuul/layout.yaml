@@ -3307,8 +3307,10 @@ projects:
       - gerrit-docker
 
   - name: operations/software/homer
-    template:
-      - name: tox-docker
+    test:
+      - homer-tox-docker
+    gate-and-submit:
+      - homer-tox-docker
     postmerge:
       - homer-tox-publish
     publish:
