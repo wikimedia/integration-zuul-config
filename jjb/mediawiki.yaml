@@ -292,7 +292,8 @@
 - job-template:
     !!merge : *job_quibble
     name: mediawiki-quibble-{packages-source}-{database}-{php}-docker
-    quibble_args: '--skip composer-test,npm-test'
+    # Selenium tests are run via the mediawiki-quibble-selenium-* job defined below
+    quibble_args: '--skip selenium,composer-test,npm-test'
     triggers:
         - zuul
 
