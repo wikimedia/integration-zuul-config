@@ -298,6 +298,13 @@
 
 - job-template:
     !!merge : *job_quibble
+    name: mediawiki-quibble-selenium-{packages-source}-docker
+    quibble_args: '--run selenium'
+    triggers:
+        - zuul
+
+- job-template:
+    !!merge : *job_quibble
     name: 'mediawiki-quibble-api-testing-vendor-{database}-{php}-docker'
     quibble_args: '-c "mediawiki/tools/api-testing/ci.sh" mediawiki/tools/api-testing'
     triggers:
@@ -763,6 +770,9 @@
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
+        - mediawiki-quibble-selenium-{packages-source}-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.38
+            database: 'mysql'
         - mwcore-phpunit-coverage-patch:
             docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.38
             packages-source: vendor
