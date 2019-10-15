@@ -1,0 +1,12 @@
+# Docker image with nodejs, jsduck, and browsers installed.
+# Executes 'npm run {cmd:test}' in /src.
+
+FROM {{ "node10-test-browser" | image_tag }}
+
+USER root
+
+FROM {{ "composer-test-php72" | image_tag }} as composer
+
+USER nobody
+
+ENTRYPOINT "echo 'This image does not define an entrypoint, you have to define one yourself'; exit 1"
