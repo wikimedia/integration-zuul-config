@@ -1,12 +1,56 @@
-# Docker image with nodejs, jsduck, and browsers installed.
-# Executes 'npm run {cmd:test}' in /src.
+# Docker image with nodejs, jsduck, and browsers installed, plus composer.
+
+FROM {{ "composer-php72" | image_tag }} as composer
+
+FROM {{ "php72" | image_tag }} as php72
 
 FROM {{ "node10-test-browser" | image_tag }}
 
+## START: O, my kingdom for multiple inheritance!
+# Copied from the php72 image; keep this synchronised!
+
 USER root
 
-FROM {{ "composer-test-php72" | image_tag }} as composer
+# Align with SRE provided packages
+COPY --from=php72 /etc/apt/sources.list.d/wikimedia-php72.list /etc/apt/sources.list.d/wikimedia-php72.list
+
+# zip is needed for composer to install things from dist
+# others are libraries/MediaWiki related
+# php7.2-gd isn't installable, so it's skipped.
+{% set packages|replace('\n', ' ') -%}
+php7.2-cli
+php7.2-zip
+php-ast
+php7.2-bcmath
+php7.2-curl
+php7.2-dba
+php7.2-gmp
+php7.2-mbstring
+php-redis
+php7.2-sqlite3
+php-xdebug
+php7.2-xml
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+# Disable xdebug by default due to its performance impact
+RUN phpdismod xdebug
+
+RUN {{ "jq" | apt_install }}
+
+# phantomjs crashes when there is no DISPLAY
+ENV QT_QPA_PLATFORM=offscreen
+
+# HACK: We manually copy across composer, like all the other images that need it
+COPY --from=composer /srv/composer /srv/composer
+
+# Manually link since COPY copies symlink destination instead of the actual symlink
+RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
+
+## END: O, my kingdom for multiple inheritance!
 
 USER nobody
 
+WORKDIR /src
 ENTRYPOINT "echo 'This image does not define an entrypoint, you have to define one yourself'; exit 1"
