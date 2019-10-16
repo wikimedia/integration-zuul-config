@@ -163,6 +163,7 @@ dependencies = {
     'BlueSpiceCountThings': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceCustomMenu': ['BlueSpiceFoundation'],
     'BlueSpiceDashboards': ['BlueSpiceFoundation'],
+    'BlueSpiceDistributionConnector': ['BlueSpiceFoundation'],
     'BlueSpiceEchoConnector': ['BlueSpiceFoundation', 'Echo'],
     'BlueSpiceEditNotifyConnector': [
         'BlueSpiceFoundation',
