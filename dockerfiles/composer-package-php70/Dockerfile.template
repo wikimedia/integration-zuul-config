@@ -1,0 +1,16 @@
+FROM {{ "php-ast" | image_tag }} as ast
+
+FROM {{ "composer-php70" | image_tag }}
+
+USER root
+
+# FIXME: Don't hardcode the phpapi version (but php-config is in php-dev pkg)
+# This will override the already-existing ast
+COPY --from=ast /usr/lib/php/20151012/ast.so /usr/lib/php/20151012/ast.so
+
+# Enable xdebug for PHPUnit coverage reports
+RUN phpenmod xdebug
+
+USER nobody
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]

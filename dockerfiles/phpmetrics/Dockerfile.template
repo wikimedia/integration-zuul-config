@@ -1,4 +1,4 @@
-FROM {{ "composer" | image_tag }}
+FROM {{ "composer-php70" | image_tag }}
 
 USER root
 RUN mkdir -p /opt/composer-tmp /opt/phpmetrics \
@@ -17,4 +17,3 @@ RUN install --directory /src --owner=nobody --group=nogroup
 USER nobody
 WORKDIR /src
 ENTRYPOINT ["/usr/local/bin/phpmetrics"]
-
