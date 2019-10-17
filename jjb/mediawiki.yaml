@@ -158,7 +158,7 @@
            mediawiki/core
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s3'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s4'
         options: '--volume "$(pwd)"/src:/mediawiki'
         args: '--working-dir=/mediawiki update --ansi --no-progress --prefer-dist --profile'
         logdir: '/log'
@@ -194,7 +194,7 @@
            mediawiki/core
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s3'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s4'
         options: '--volume "$(pwd)"/src:/mediawiki'
         args: '--working-dir=/mediawiki update --ansi --no-progress --prefer-dist --profile'
         logdir: '/log'
@@ -670,7 +670,7 @@
             dir: 'phpmetrics-report'
         - docker-run:
             options: '-v "$(pwd)"/phpmetrics-report:/phpmetrics-report -v "$(pwd)"/log:/log -v "$(pwd)"/src:/src'
-            image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.3-s1
+            image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.3-s4
             args: '--report-html=/phpmetrics-report --report-violations=/log/violations-phpmetrics.xml .'
         - doc-publish:
             docsrc: phpmetrics-report
