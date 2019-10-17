@@ -486,6 +486,7 @@ phan_dependencies = {
     'GrowthExperiments': ['EventLogging', 'PageImages', 'PageViewInfo',
                           'skins/MinervaNeue', 'Flow', 'MobileFrontend',
                           'Echo'],
+    'ImageRating': ['SocialProfile', 'VoteNY'],
     'JsonConfig': ['Scribunto', 'Kartographer'],
     'Kartographer': ['GeoData', 'JsonConfig'],
     'LiquidThreads': ['Renameuser'],
