@@ -8146,7 +8146,7 @@ projects:
       - generic-node10-browser-coverage-docker-publish
 
   - name: oojs/ui
-    # composer hhvm is already run by npm-run-jenkins T155483
+    # composer is run by npm-run-jenkins T155483
     template:
      - name: composer-test-package
     test:
@@ -8160,9 +8160,6 @@ projects:
     postmerge:
       - oojs-ui-doxygen-publish
       - oojs-ui-docker-publish
-    experimental:
-      - generic-node10-rundoc-docker
-      - generic-node10-npmaudit-docker
 
   - name: jsdoc/wmf-theme
     test:
