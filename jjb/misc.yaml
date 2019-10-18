@@ -34,7 +34,7 @@
 
      # composer install
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s4
+         image: docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s5
          options: '--workdir /src'
          # prefer-dist to get cacheable content
          args: 'install --no-progress --prefer-dist'
@@ -152,7 +152,7 @@
      - '{name}-composer-{phpflavor}-docker':
          phpflavor:
              - php70:
-                 image: docker-registry.wikimedia.org/releng/composer-test-php70:0.1.1
+                 image: docker-registry.wikimedia.org/releng/composer-test-php70:0.1.1-s1
 
 - project:
     name: gerrit-plugins
