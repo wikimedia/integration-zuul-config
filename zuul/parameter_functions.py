@@ -303,6 +303,7 @@ dependencies = {
     'FundraisingTranslateWorkflow': ['Translate'],
     'GeoData': ['CirrusSearch'],
     'GettingStarted': ['CentralAuth', 'EventLogging', 'GuidedTour'],
+    'GlobalCheckUser': ['CentralAuth', 'CheckUser'],
     'GlobalContribs': ['Editcount'],
     'Graph': ['CodeEditor', 'JsonConfig', 'VisualEditor'],
     'GraphViz': ['ImageMap'],
