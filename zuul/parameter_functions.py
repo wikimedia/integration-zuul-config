@@ -171,7 +171,7 @@ dependencies = {
         'EditNotify',
     ],
     'BlueSpiceEmoticons': ['BlueSpiceFoundation'],
-    'BlueSpiceExpiry': ['BlueSpiceFoundation'],
+    'BlueSpiceExpiry': ['BlueSpiceFoundation', 'BlueSpiceReminder'],
     'BlueSpiceExtendedFilelist': ['BlueSpiceFoundation'],
     'BlueSpiceExtendedSearch': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceExtendedStatistics': ['BlueSpiceFoundation',
