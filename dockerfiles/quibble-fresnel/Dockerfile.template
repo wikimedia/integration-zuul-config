@@ -20,7 +20,7 @@ RUN mkdir -p /opt/npm-tmp /opt/fresnel \
     && chown nobody:nogroup /opt/npm-tmp /opt/fresnel
 USER nobody
 RUN cd /opt/fresnel \
-    && NPM_CONFIG_cache=/opt/npm-tmp NPM_CONFIG_update_notifier=false npm install fresnel@0.4.0 \
+    && NPM_CONFIG_cache=/opt/npm-tmp NPM_CONFIG_update_notifier=false npm install fresnel@0.5.0 \
     && find /opt/npm-tmp -mindepth 1 -delete
 USER root
 RUN rm -rf /opt/npm-tmp \
