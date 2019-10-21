@@ -938,7 +938,9 @@ jobs:
   - name: 'integration-config-jjb-diff-docker'
     success-message: 'SUCCESS Review the XML difference.'
     failure-message: 'FAILURE Failed to compare your patchset with the current configuration.'
-    files: '^jjb/.*'
+    files:
+      - '^jjb/.*'
+      - '^jenkins-jobs-requirements.txt$'
 
   - name: 'integration-config-zuul-layout-diff-docker'
     voting: false
