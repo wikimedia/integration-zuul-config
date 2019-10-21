@@ -8,13 +8,15 @@
     name: compress-mw-debug-logs
     publishers:
         - postbuildscript:
-            # MediaWiki debug logs are typically fairly large
             builders:
-                - shell: 'find log/ -name "mw-debug-*.log" -exec gzip {} \+'
-            # Always run it
-            script-only-if-succeeded: false
-            script-only-if-failed: false
-
+                - build-on:
+                    - SUCCESS
+                    - UNSTABLE
+                    - FAILURE
+                    - ABORTED
+                  build-steps:
+                    # MediaWiki debug logs are typically fairly large
+                    - shell: 'find log/ -name "mw-debug-*.log" -exec gzip {} \+'
 
 - job:
     name: 'mediawiki-core-jsduck-docker-publish'
@@ -435,13 +437,26 @@
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - postbuildscript:
+            mark-unstable-if-failed: true
             builders:
-                - cover-extensions-publish:
-                    src: 'cover'
-                    # Should be equivalent to $EXT_NAME
-                    dest: '$DOC_BASENAME'
-                - docker-wipe-dir:
-                    dir: 'cover'
+              - build-on:
+                  - SUCCESS
+                build-steps:
+                  - cover-extensions-publish:
+                      src: 'cover'
+                      # Should be equivalent to $EXT_NAME
+                      dest: '$DOC_BASENAME'
+        - postbuildscript:
+            mark-unstable-if-failed: false
+            builders:
+              - build-on:
+                  - SUCCESS
+                  - UNSTABLE
+                  - FAILURE
+                  - ABORTED
+                build-steps:
+                  - docker-wipe-dir:
+                      dir: 'cover'
         - docker-cleanup
 
 - project:
@@ -543,13 +558,22 @@
              - archive-log-allow-empty
              - castor-save-workspace-cache
              - postbuildscript:
-                   script-only-if-succeeded: false
-                   script-only-if-failed: false
-                   builders:
-                       -   cover-extensions-publish:
+                 mark-unstable-if-failed: true
+                 builders:
+                   - build-steps:
+                       -  cover-extensions-publish:
                                src: 'cover'
                                # Should be equivalent to $EXT_NAME
                                dest: '$DOC_BASENAME'
+             - postbuildscript:
+                 mark-unstable-if-failed: false
+                 builders:
+                   - build-on:
+                       - SUCCESS
+                       - UNSTABLE
+                       - FAILURE
+                       - ABORTED
+                     build-steps:
                        -   docker-wipe-dir:
                                dir: 'cover'
              - docker-cleanup

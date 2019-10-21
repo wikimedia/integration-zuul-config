@@ -154,9 +154,10 @@
     publishers:
         - postbuildscript:
               builders:
-                  - doc-publish:
-                      docsrc: 'src/target/staging'
-                      docdest: '{name}'
+                - build-steps:
+                    - doc-publish:
+                        docsrc: 'src/target/staging'
+                        docdest: '{name}'
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - docker-cleanup
@@ -169,9 +170,10 @@
     publishers:
         - postbuildscript:
               builders:
-                  - doc-publish:
-                      docsrc: 'src/target/staging'
-                      docdest: '{name}-{project}'
+                - build-steps:
+                    - doc-publish:
+                        docsrc: 'src/target/staging'
+                        docdest: '{name}-{project}'
         - archive-log-allow-empty
         - castor-save-workspace-cache
         - docker-cleanup

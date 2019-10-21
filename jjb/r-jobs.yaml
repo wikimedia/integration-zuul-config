@@ -16,11 +16,15 @@
      - ansicolor
     publishers:
      - postbuildscript:
-        builders:
-          - shell: "! grep -q -P 'style:' log/lintr.log"
-            # Postbuild options are confusing, setting both to false ensures the script always runs.
-            onsuccess: False
-            onfailure: False
+         mark-unstable-if-failed: true
+         builders:
+             - build-on:
+                 - SUCCESS
+                 - FAILURE
+                 - UNSTABLE
+                 - ABORTED
+               build-steps:
+                 - shell: "! grep -q -P 'style:' log/lintr.log"
      - archive-log-dir
      - docker-cleanup
 

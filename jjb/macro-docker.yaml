@@ -11,15 +11,19 @@
     name: docker-reap-containers
     publishers:
      - postbuildscript:
-         script-only-if-succeeded: false
-         script-only-if-failed: false
          builders:
-          - shell: |
-              set -euxo pipefail
-              docker ps -q \
-                --filter label=jenkins.job=$JOB_NAME \
-                --filter label=jenkins.build=$BUILD_NUMBER \
-                | xargs --no-run-if-empty docker stop
+          - build-on:
+              - SUCCESS
+              - UNSTABLE
+              - FAILURE
+              - ABORTED
+            build-steps:
+              - shell: |
+                  set -euxo pipefail
+                  docker ps -q \
+                    --filter label=jenkins.job=$JOB_NAME \
+                    --filter label=jenkins.build=$BUILD_NUMBER \
+                    | xargs --no-run-if-empty docker stop
 
 # Delete everything in $WORKSPACE.
 # publisher for all Docker based jobs.
@@ -30,20 +34,24 @@
      # any owner within the workspace directory and use `find` which more
      # handily processes dotfiles. Then delete the workspace directory itself.
      - postbuildscript:
-         script-only-if-succeeded: false
-         script-only-if-failed: false
          builders:
-           - docker-run:
-              image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
-              options: >-
-                --user=root
-                --volume "$WORKSPACE":/workspace
-                --entrypoint=/usr/bin/find
-              args: >-
-                "/workspace" -mindepth 1 -delete
-           - shell: |
-              set -u
-              rmdir "$WORKSPACE"
+          - build-on:
+              - SUCCESS
+              - UNSTABLE
+              - FAILURE
+              - ABORTED
+            build-steps:
+              - docker-run:
+                 image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+                 options: >-
+                   --user=root
+                   --volume "$WORKSPACE":/workspace
+                   --entrypoint=/usr/bin/find
+                 args: >-
+                   "/workspace" -mindepth 1 -delete
+              - shell: |
+                 set -u
+                 rmdir "$WORKSPACE"
 
 # Perform all cleanup operations for a Docker build. This should generally be
 # used as the final publisher for all Docker based jobs.

@@ -9,63 +9,72 @@
     name: castor-save
     publishers:
      - postbuildscript:
-         script-only-if-succeeded: True
          builders:
-          - trigger-builds:
-              - project: castor-save
-                # Pass ZUUL and others
-                current-parameters: True
-                # Pass:
-                # - job name to namespace the central cache
-                # - ssh connection which holds the slave IP to which castor
-                #   will rsync from
-                predefined-parameters: |
-                    TRIGGERED_JOB_NAME=$JOB_NAME
-                    TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
-                # Must be blocking or the instance might be disposed
-                block: true
-                # Ignore any error
-                block-thresholds:
-                    build-step-failure-threshold: 'never'
-                    unstable-threshold: 'never'
-                    failure-threshold: 'never'
+           - build-on:
+              - SUCCESS
+             build-steps:
+              - trigger-builds:
+                  - project: castor-save
+                    # Pass ZUUL and others
+                    current-parameters: True
+                    # Pass:
+                    # - job name to namespace the central cache
+                    # - ssh connection which holds the slave IP to which castor
+                    #   will rsync from
+                    predefined-parameters: |
+                        TRIGGERED_JOB_NAME=$JOB_NAME
+                        TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
+                    # Must be blocking or the instance might be disposed
+                    block: true
+                    # Ignore any error
+                    block-thresholds:
+                        build-step-failure-threshold: 'never'
+                        unstable-threshold: 'never'
+                        failure-threshold: 'never'
 
 - publisher:
     name: castor-save-workspace-cache
     publishers:
      - postbuildscript:
-         script-only-if-succeeded: True
          builders:
-          - trigger-builds:
-              - project: castor-save-workspace-cache
-                # Pass ZUUL and others
-                current-parameters: True
-                # Pass:
-                # - job name to namespace the central cache
-                # - ssh connection which holds the slave IP to which castor
-                #   will rsync from
-                predefined-parameters: |
-                    TRIGGERED_JOB_NAME=$JOB_NAME
-                    TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
-                    TRIGGERED_WORKSPACE=$WORKSPACE
-                # Must be blocking or the instance might be disposed
-                block: true
-                # Ignore any error
-                block-thresholds:
-                    build-step-failure-threshold: 'never'
-                    unstable-threshold: 'never'
-                    failure-threshold: 'never'
+           - build-on:
+              - SUCCESS
+             build-steps:
+              - trigger-builds:
+                  - project: castor-save-workspace-cache
+                    # Pass ZUUL and others
+                    current-parameters: True
+                    # Pass:
+                    # - job name to namespace the central cache
+                    # - ssh connection which holds the slave IP to which castor
+                    #   will rsync from
+                    predefined-parameters: |
+                        TRIGGERED_JOB_NAME=$JOB_NAME
+                        TRIGGERED_SSH_CONNECTION=$SSH_CONNECTION
+                        TRIGGERED_WORKSPACE=$WORKSPACE
+                    # Must be blocking or the instance might be disposed
+                    block: true
+                    # Ignore any error
+                    block-thresholds:
+                        build-step-failure-threshold: 'never'
+                        unstable-threshold: 'never'
+                        failure-threshold: 'never'
      # Delete /cache material that just have been saved. Do that inside a
      # container since files are owned by 'nobody'
      - postbuildscript:
-         script-only-if-succeeded: false
          mark-unstable-if-failed: false
          builders:
-             - shell: 'echo "Clearing $WORKSPACE/cache"'
-             - docker-run:
-                options: '--volume "$(pwd)"/cache:/cache'
-                image: 'docker-registry.wikimedia.org/releng/castor:0.2.1'
-                args: 'clear || :'
+           - build-on:
+                 - SUCCESS
+                 - UNSTABLE
+                 - FAILURE
+                 - ABORTED
+             build-steps:
+                 - shell: 'echo "Clearing $WORKSPACE/cache"'
+                 - docker-run:
+                    options: '--volume "$(pwd)"/cache:/cache'
+                    image: 'docker-registry.wikimedia.org/releng/castor:0.2.1'
+                    args: 'clear || :'
 
 # Entry point to load cache from central cache
 #
