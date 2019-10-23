@@ -97,11 +97,19 @@ class TestZuulLayout(unittest.TestCase):
                 # Extract singular 'extension' or 'skin'
                 kind = project['name'].split('/')[1][:-1]
 
-                self.assertIn(
-                    '%s-quibble' % kind,
-                    templates,
-                    'Must have "%s-quibble": %s' % (kind, project['name'])
-                )
+                if 'extension-quibble-only-selenium' in templates:
+                    self.assertIn(
+                        'extension-quibble-noselenium',
+                        templates,
+                        'Must have both noselenium and only-selenium'
+                    )
+                    self.assertNotIn('extension-quibble', templates)
+                else:
+                    self.assertIn(
+                        '%s-quibble' % kind,
+                        templates,
+                        'Must have "%s-quibble": %s' % (kind, project['name'])
+                    )
 
             except AssertionError, e:
                 errors.append(str(e))

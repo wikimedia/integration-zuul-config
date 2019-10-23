@@ -1314,6 +1314,40 @@ project-templates:
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
+  # Just for Selenium T232759
+  # Should be combined with 'extension-quibble-noselenium' to split Selenium
+  # tests to standalone jobs.
+  - name: extension-quibble-only-selenium
+    test:
+      - quibble-vendor-selenium-docker
+    gate-and-submit:
+      - quibble-vendor-selenium-docker
+
+    test-1.31:
+      - quibble-composer-selenium-docker
+    gate-and-submit-1.31:
+      - quibble-composer-selenium-docker
+
+    test-1.32:
+      - quibble-composer-selenium-docker
+    gate-and-submit-1.32:
+      - quibble-composer-selenium-docker
+
+    test-1.33:
+      - quibble-composer-selenium-docker
+    gate-and-submit-1.33:
+      - quibble-composer-selenium-docker
+
+    test-1.34:
+      - quibble-composer-selenium-docker
+    gate-and-submit-1.34:
+      - quibble-composer-selenium-docker
+
+    test-wmf:
+      - quibble-vendor-selenium-docker
+    gate-and-submit-wmf:
+      - quibble-vendor-selenium-docker
+
   - name: extension-quibble-composer-noselenium
     php:
       - quibble-composer-mysql-php73-noselenium-docker
@@ -7670,7 +7704,8 @@ projects:
   - name: mediawiki/extensions/Wikibase
     template:
       - name: mwgate-npm
-      - name: extension-quibble
+      - name: extension-quibble-noselenium
+      - name: extension-quibble-only-selenium
       - name: extension-gate
       - name: extension-phan
       - name: extension-javascript-documentation
