@@ -31,3 +31,6 @@
 - job:
     !!merge : *job_lintr-docker
     name: lintr-docker-non-voting
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
