@@ -24,7 +24,10 @@ php7.2-sqlite3
 php7.2-tidy
 php7.2-xml
 php7.2-zip
+php-wikidiff2
 {%- endset -%}
+# See T236333 for wikidiff2 rationale; may need ported forward to
+# quibble-stretch-php73 at some point in future.
 
 RUN {{ mediawiki_deps | apt_install }}
 
