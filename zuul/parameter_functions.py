@@ -154,7 +154,6 @@ dependencies = {
     'BlueSpiceArticleInfo': ['BlueSpiceFoundation'],
     'BlueSpiceAuthors': ['BlueSpiceFoundation'],
     'BlueSpiceAvatars': ['BlueSpiceFoundation'],
-    'BlueSpiceBlog': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceCategoryCheck': ['BlueSpiceFoundation'],
     'BlueSpiceCategoryManager': ['BlueSpiceFoundation'],
     'BlueSpiceChecklist': ['BlueSpiceFoundation', 'VisualEditor'],
