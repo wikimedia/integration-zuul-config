@@ -28,4 +28,5 @@ source "$_dir"/setup-zuul-server.inc.sh
 "$ZUUL_SERVER_BIN" \
     -c "$repodir"/tests/fixtures/zuul-dummy.conf \
     -t "$jobslist" \
-    -l "$repodir"/zuul/layout.yaml 2>&1|grep -E -v '^(DEBUG|INFO):zuul'
+    -l "$repodir"/zuul/layout.yaml 2>&1|(grep -E -v '^(DEBUG|INFO):zuul' || :)
+# note grep status is ignored, we don't care wether we had a match or not.
