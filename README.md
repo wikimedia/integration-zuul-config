@@ -10,17 +10,21 @@ When you tweak or add jobs, follow the documentation maintained on mediawiki.org
 
 For more about the Jenkins Job Builder software and how to use it, refer to the upstream documentation:
 
-  http://ci.openstack.org/jenkins-job-builder/
+  https://docs.openstack.org/infra/jenkins-job-builder/
 
 ## Example Usage
 
+You should run Jenkins job builder using:
+
+    $ tox -e jenkin-jobs -- <arguments>
+
 Generate XML files for Jenkins jobs from YAML files:
 
-    $ jenkins-jobs test config/jjb/ -o output/
+    $ tox -e jenkins-jobs -- test ./jjb/ -o output/
 
 Update Jenkins jobs which name starts with "selenium":
 
-    $ jenkins-jobs --conf etc/jenkins_jobs.ini update config/jjb/ selenium*
+    $ tox -e jenkins-jobs --conf jenkins_jobs.ini update ./jjb/ selenium*
 
 ## Running tests
 
