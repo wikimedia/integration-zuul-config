@@ -966,9 +966,11 @@ jobs:
 
   - name: mediawiki-core-jsduck-docker
     branch: ^(REL.*|master)$
-
   - name: mediawiki-core-jsduck-docker-publish
-    branch: ^(REL.*|master)$
+    # This excludes wmf-branches (instead of including master/REL-branches) so that
+    # it may run on for tags in the 'publish' pipeline (T232055)
+    skip-if:
+      - branch: ^wmf/.*$
 
   # Job to ease reviews of MW-CS changes
   - name: mw-tools-codesniffer-mwcore-testrun
