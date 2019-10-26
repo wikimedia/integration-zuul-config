@@ -774,13 +774,15 @@ def set_doc_variables(item, job, params):
     doc_subpath = ''
 
     # ref-updated
-    # Tags: 'refs/tags/foo'
-    # Branch: 'master'
     if hasattr(change, 'ref'):
         tag = re.match(r'^refs/tags/(.*)', change.ref)
         if tag:
+            # For jobs from Zuul "publish" pipeline,
+            # using the "zuul-post" trigger in their Jenkins job.
+            # Example value 'refs/tags/v1.2.3' -> 'v1.2.3'
             doc_subpath = tag.group(1)
         else:
+            # Branch: 'master'
             doc_subpath = change.ref
     # Changes
     elif hasattr(change, 'refspec'):
