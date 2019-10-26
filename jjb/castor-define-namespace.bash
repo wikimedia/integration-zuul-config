@@ -2,9 +2,12 @@ set -eu +x
 # castor-env
 # Forge castor environement
 
-# Replace slashes with dashes:
+# Fallback to loading cache from master when run during
+# Zuul 'publish' pipeline for Git tags (T232055)
+branch=${ZUUL_BRANCH:-master}
+# Replace slashes with dashes
 NS_PROJECT=${ZUUL_PROJECT////-}
-NS_BRANCH=${ZUUL_BRANCH////-}
+NS_BRANCH=${branch////-}
 
 # Pill up MediaWiki extensions and skins caches together
 if [[ "$ZUUL_PROJECT" =~ ^mediawiki/(extensions|skins)/ ]]; then
