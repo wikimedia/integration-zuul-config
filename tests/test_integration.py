@@ -46,7 +46,8 @@ class IntegrationTests(unittest.TestCase):
         jjb_dir = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             '../jjb')
-        jjb_test = JenkinsJobs(args=['test', jjb_dir, '-o', out_dir])
+        jjb_test = JenkinsJobs(args=[
+            'test', jjb_dir, '--config-xml', '-o', out_dir])
         # Fake the list of plugins to skip retrieval
         jjb_test.jjb_config.builder['plugins_info'] = []
         jjb_test.execute()
@@ -59,7 +60,7 @@ class IntegrationTests(unittest.TestCase):
 
     def test_jenkins_jobs_have_a_timeout(self):
         lack_timeout = []
-        for job_file in glob(self.jjb_out_dir + '/*'):
+        for job_file in glob(self.jjb_out_dir + '/*/config.xml'):
             with open(job_file) as f:
                 if 'BuildTimeoutWrapper' not in f.read():
                     lack_timeout.append(os.path.basename(f.name))
@@ -73,7 +74,7 @@ class IntegrationTests(unittest.TestCase):
     @attr('qa')
     def test_jenkins_jobs_assigned_nodes(self):
         legacy_node = {}
-        for job_file in sorted(glob(self.jjb_out_dir + '/*')):
+        for job_file in sorted(glob(self.jjb_out_dir + '/*/config.xml')):
             root = ET.parse(job_file).getroot()
 
             # Can not handle pipeline jobs
