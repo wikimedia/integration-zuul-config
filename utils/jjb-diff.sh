@@ -32,11 +32,11 @@ git archive HEAD^|tar -C "$parent_config" -x
 echo "--------------------------------------------"
 echo " File changed"
 echo "--------------------------------------------"
-(diff --recursive --brief "$test_dir"/output-parent "$test_dir"/output-proposed || : ) | $DIFF_HIGHLIGHT_BIN
+(cd "$test_dir"; diff --recursive --brief ./output-parent ./output-proposed || : ) | $DIFF_HIGHLIGHT_BIN
 
 
 echo "--------------------------------------------"
 echo " Full diff"
 echo "--------------------------------------------"
-(diff --recursive --new-file -u "$test_dir"/output-parent "$test_dir"/output-proposed || : ) | $DIFF_HIGHLIGHT_BIN
+(cd "$test_dir"; diff --recursive --new-file -u ./output-parent ./output-proposed || : ) | $DIFF_HIGHLIGHT_BIN
 echo "Done."
