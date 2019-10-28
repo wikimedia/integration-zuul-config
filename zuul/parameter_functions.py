@@ -255,6 +255,7 @@ dependencies = {
     ],
     'BlueSpiceUniversalExport': ['BlueSpiceFoundation'],
     'BlueSpiceUsageTracker': ['BlueSpiceFoundation'],
+    'BlueSpiceUserInfo': ['BlueSpiceFoundation'],
     'BlueSpiceUserManager': ['BlueSpiceFoundation'],
     'BlueSpiceUserSidebar': ['BlueSpiceFoundation'],
     'BlueSpiceVisualDiff': ['BlueSpiceFoundation'],
