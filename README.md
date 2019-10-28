@@ -20,7 +20,7 @@ You should run Jenkins job builder using:
 
 Generate XML files for Jenkins jobs from YAML files:
 
-    $ tox -e jenkins-jobs -- test ./jjb/ -o output/
+    $ tox -e jenkins-jobs -- test ./jjb/ --config-xml -o output/
 
 Update Jenkins jobs which name starts with "selenium":
 

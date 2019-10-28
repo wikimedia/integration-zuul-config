@@ -18,7 +18,7 @@ mkdir -p "$test_dir"/{output-parent,output-proposed}
 echo "Generating config for proposed patchset..."
 (cd "$base_dir"
  $JJB_BIN --version
- $JJB_TEST ./jjb -o "$test_dir"/output-proposed)
+ $JJB_TEST ./jjb --config-xml -o "$test_dir"/output-proposed)
 
 echo "Generating config for parent patchset..."
 parent_config=$(mktemp -d --tmpdir)
@@ -26,17 +26,17 @@ git archive HEAD^|tar -C "$parent_config" -x
 (cd "$parent_config"
  tox -e jenkins-jobs --notest
  $JJB_BIN --version
- $JJB_TEST "$parent_config"/jjb -o "$test_dir"/output-parent
+ $JJB_TEST "$parent_config"/jjb --config-xml -o "$test_dir"/output-parent
 )
 
 echo "--------------------------------------------"
 echo " File changed"
 echo "--------------------------------------------"
-(diff --brief "$test_dir"/output-parent "$test_dir"/output-proposed || : ) | $DIFF_HIGHLIGHT_BIN
+(diff --recursive --brief "$test_dir"/output-parent "$test_dir"/output-proposed || : ) | $DIFF_HIGHLIGHT_BIN
 
 
 echo "--------------------------------------------"
 echo " Full diff"
 echo "--------------------------------------------"
-(diff --new-file -u "$test_dir"/output-parent "$test_dir"/output-proposed || : ) | $DIFF_HIGHLIGHT_BIN
+(diff --recursive --new-file -u "$test_dir"/output-parent "$test_dir"/output-proposed || : ) | $DIFF_HIGHLIGHT_BIN
 echo "Done."
