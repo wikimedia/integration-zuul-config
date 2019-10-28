@@ -34,3 +34,10 @@ to run the test suite. Running `tox` in the main dir of your local clone runs th
 ## Whitelist volunteer users
 
 https://www.mediawiki.org/wiki/Continuous_integration/Whitelist
+
+# Deployments
+
+We use Fabric has an helper for deployment. It has to be version 1.x and
+requires Python 2.7. A virtual environment `fabric` is provided through tox:
+
+    $ tox -e fabric -- <arguments>
