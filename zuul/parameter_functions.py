@@ -458,7 +458,7 @@ phan_dependencies = {
     'Capiunto': ['Scribunto'],
     'CentralAuth': ['AbuseFilter', 'AntiSpoof', 'EventLogging', 'MassMessage',
                     'MobileFrontend', 'Renameuser', 'TitleBlacklist',
-                    'UserMerge'],
+                    'UserMerge', 'Echo'],
     'CentralNotice': ['CentralAuth', 'MobileFrontend', 'Translate', 'cldr'],
     'CheckUser': ['CentralAuth', 'Renameuser'],
     'CirrusSearch': ['BetaFeatures', 'Elastica', 'SiteMatrix'],
