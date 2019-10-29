@@ -851,6 +851,9 @@ jobs:
      - '^.*\.php$'
 
   - name: mediawiki-fresnel-patch-docker
+    # Equivalent to concurrent: false in Jenkins but handled by Zuul instead.
+    mutex: mediawiki-fresnel-patch-docker
+
     branch: master
     # Point to full output instead of default (tail-trimmed) output.
     # This is (oddly) to make the output visually shorter.
