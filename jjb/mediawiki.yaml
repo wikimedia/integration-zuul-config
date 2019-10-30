@@ -58,7 +58,7 @@
         - docker-src-dir
         - docker-ci-src-setup-simple
         - shell: |
-            touch src/LocalSettings.php
+            echo -e '<?php\n$wgServer = "http://127.0.0.1";\n' > src/LocalSettings.php
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/doxygen:0.5.0-s1
             options: '--workdir /src --entrypoint=/usr/bin/php'
@@ -110,7 +110,7 @@
                 https://gerrit.wikimedia.org/r/p/mediawiki/vendor.git \
                 src/vendor
         - shell: |
-            touch src/LocalSettings.php
+            echo -e '<?php\n$wgServer = "http://127.0.0.1";\n' > src/LocalSettings.php
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/doxygen:0.5.0-s1
             options: '--workdir /src --entrypoint=/usr/bin/php'
