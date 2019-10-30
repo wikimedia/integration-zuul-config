@@ -24,7 +24,7 @@ Generate XML files for Jenkins jobs from YAML files:
 
 Update Jenkins jobs which name starts with "selenium":
 
-    $ tox -e jenkins-jobs --conf jenkins_jobs.ini update ./jjb/ selenium*
+    $ tox -e jenkins-jobs -- --conf jenkins_jobs.ini update ./jjb/ selenium*
 
 ## Running tests
 
