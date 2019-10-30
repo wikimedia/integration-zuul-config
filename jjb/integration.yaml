@@ -36,6 +36,12 @@
     publishers:
         - castor-save-workspace-cache
         - docker-cleanup
+    wrappers:
+        - timeout:
+            timeout: '{timeout|30}'
+            fail: true
+        - timestamps
+        - ansicolor
 
 # Super basic sanity check for integration/composer repo
 - job:
@@ -113,8 +119,10 @@
              - jjb-diff:
                  entrypoint: utils/jjb-diff.sh
              - zuul-layout-diff:
+                 timeout: 3  # minutes
                  entrypoint: utils/zuul-layout-diff.sh
              - zuul-layout-validate:
+                 timeout: 3  # minutes
                  entrypoint: utils/zuul-layout-validate.sh
 
 - project:
