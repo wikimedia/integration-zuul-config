@@ -193,6 +193,7 @@ dependencies = {
     'BlueSpiceMultiUpload': ['BlueSpiceFoundation'],
     'BlueSpiceNamespaceCSS': ['BlueSpiceFoundation'],
     'BlueSpiceNamespaceManager': ['BlueSpiceFoundation'],
+    'BlueSpiceNSFileRepoConnector': ['BlueSpiceFoundation', 'NSFileRepo'],
     'BlueSpicePageAccess': ['BlueSpiceFoundation'],
     'BlueSpicePageAssignments': ['BlueSpiceFoundation'],
     'BlueSpicePageTemplates': ['BlueSpiceFoundation'],
