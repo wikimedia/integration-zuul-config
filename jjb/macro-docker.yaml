@@ -167,7 +167,7 @@
     name: docker-setup-mwext-for-phan
     builders:
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.39-s1
+         image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.39-s4
          options: >-
              --volume "$(pwd)/src:/workspace/src"
              --volume /srv/git:/srv/git:ro
@@ -191,7 +191,7 @@
      # Install the extension/skin composer dev dependencies to bring in phan config
      - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki'
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s5'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s7'
         args: '--working-dir=/src/"$THING_SUBNAME" update --ansi --no-progress --prefer-dist --profile'
         logdir: '/log'
 
