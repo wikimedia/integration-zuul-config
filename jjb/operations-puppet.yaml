@@ -26,8 +26,7 @@
          reference-repo: '/srv/git/operations/puppet.git'
          basedir: gitpolling
          submodule:
-             disable: false
-             recursive: true
+             disable: true
     parameters:
         - string:
             name: 'ZUUL_URL'
@@ -140,18 +139,6 @@
          os:
            - stretch:
                image: 'docker-registry.wikimedia.org/releng/operations-puppet:0.5.4-s1'
-
-- project:
-    name: 'puppet-modules'
-    jobs:
-     - '{name}-rake-docker':
-         name:
-          - puppet-jmxtrans
-          - puppet-kafka
-          - puppet-kafkatee
-          - puppet-mariadb
-          - puppet-varnishkafka
-          - puppet-wikimetrics
 
 - project:
     name: puppet-wmf-styleguide

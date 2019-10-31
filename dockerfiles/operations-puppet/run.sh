@@ -43,7 +43,6 @@ execute_ci() {
     git pull --quiet zuul production
     git fetch --quiet zuul "$ZUUL_REF"
     git checkout --quiet FETCH_HEAD
-    git submodule --quiet update --init --recursive
     execute | tee "${LOG_DIR}/rake.log"
 }
 
