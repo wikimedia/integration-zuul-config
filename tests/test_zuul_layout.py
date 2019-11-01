@@ -186,3 +186,8 @@ class TestZuulLayout(unittest.TestCase):
                         errors.append(str(e))
 
         self.assertEqual([], errors)
+
+    def test_pipelines_names_do_not_have_dots(self):
+        self.longMessage = True
+        for p in self.layout['pipelines']:
+            self.assertNotIn('.', p['name'])
