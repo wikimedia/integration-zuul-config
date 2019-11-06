@@ -15,7 +15,7 @@
      - docker-ci-src-setup-simple
      - docker-run:
         options: '--volume "$(pwd)"/src:/src --entrypoint=/srv/composer/security-check'
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s5'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s7'
     publishers:
       - email:
          recipients: none
@@ -124,11 +124,11 @@
                 - php70:
                     image: docker-registry.wikimedia.org/releng/composer-package-php70:0.1.1-s1
                 - php71:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php71:0.1.7-s4
+                    image: docker-registry.wikimedia.org/releng/composer-package-php71:0.1.7-s5
                 - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.2.2-s6
+                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.2.2-s8
                 - php73:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php73:0.1.7-s4
+                    image: docker-registry.wikimedia.org/releng/composer-package-php73:0.1.7-s5
         - 'composer-{phpflavor}-docker':
             phpflavor:
                 - php56:
@@ -136,7 +136,7 @@
                 - php70:
                     image: docker-registry.wikimedia.org/releng/composer-test-php70:0.1.1-s1
                 - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php72:0.2.1-s4
+                    image: docker-registry.wikimedia.org/releng/composer-test-php72:0.2.1-s6
 
 - project:
     name: 'wikimedia-apps-php-security'
