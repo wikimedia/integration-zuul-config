@@ -7874,12 +7874,10 @@ projects:
       - pywikibot-core-tox-publish
 
   - name: pywikibot/i18n
-    test:
-      - generic-node10-docker
+    template:
+      - name: node10-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
-    gate-and-submit:
-      - generic-node10-docker
 
   - name: pywikibot/wikibase
     test:
@@ -8230,10 +8228,8 @@ projects:
       - oojs-ui-docker-publish
 
   - name: jsdoc/wmf-theme
-    test:
-     - generic-node10-docker
-    gate-and-submit:
-     - generic-node10-docker
+    template:
+      - name: node10-docker
 
   - name: unicodejs
     test:
