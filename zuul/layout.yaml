@@ -934,7 +934,6 @@ jobs:
     success-message: 'SUCCESS Deployed documentation to https://doc.wikimedia.org/Parsoid/master/'
     failure-message: 'FAILURE Failed to deploy documentation :-/'
 
-
   - name: integration-docroot-deploy
     branch: ^master$
     success-message: 'SUCCESS Updated https://integration.wikimedia.org/ . WARN: https://doc.wikimedia.org/ need manual update: ssh doc1001.eqiad.wmnet git -C /srv/docroot pull'
@@ -1867,6 +1866,9 @@ project-templates:
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
+
+#### Continuous integration and other developer services #######
+
   - name: blubber
     test:
       - trigger-blubber-pipeline-test
@@ -1904,6 +1906,16 @@ projects:
   - name: integration/dashboard
     template:
       - name: tox-docker
+
+  - name: integration/docroot
+    template:
+     - name: node10-docker
+    test:
+     - composer-php56-docker
+    gate-and-submit:
+     - composer-php56-docker
+    postmerge:
+     - integration-docroot-deploy
 
   - name: integration/jenkinsci/postbuildscript-plugin
     test:
@@ -1955,27 +1967,130 @@ projects:
       # For the patch-queue branches - T222952
       - integration-zuul-tox-docker
 
-  - name: mapdata
+  - name: mediawiki/tools/api-testing
+    test:
+    - mediawiki-quibble-api-testing-vendor-mysql-php72-docker
+    - mediawiki-quibble-api-testing-vendor-sqlite-php72-docker
+    gate-and-submit:
+    - mediawiki-quibble-api-testing-vendor-mysql-php72-docker
+    - mediawiki-quibble-api-testing-vendor-sqlite-php72-docker
+
+  - name: mediawiki/tools/codesniffer
     template:
-      - name: node10-browser-docker
-
-  # To archive, once service has migrated to the pipeline
-  - name: maps/kartotherian/deploy
+     - name: composer-test-package-php72-or-later
     test:
-      - noop
-    gate-and-submit:
-      - noop
-    experimental:
-      - kartotherian-deploy-npm-node-6-docker
+     - mw-tools-codesniffer-mwcore-testrun
+    postmerge:
+      - phpunit-coverage-docker-publish
 
-  # To archive, once service has migrated to the pipeline
-  - name: maps/tilerator/deploy
+  - name: mediawiki/tools/cookiecutter-library
+    template:
+     - name: tox-docker
+
+  - name: mediawiki/tools/minus-x
+    template:
+     - name: composer-test-package-php72-or-later
+
+  - name: mediawiki/tools/mwdumper
     test:
-      - noop
+      - mwdumper-maven-java8-docker
     gate-and-submit:
-      - noop
+      - mwdumper-maven-java8-docker
+
+  - name: mediawiki/tools/phpunit-patch-coverage
+    template:
+     - name: composer-test-package-php72-or-later
+    postmerge:
+      - phpunit-coverage-docker-publish
+
+  - name: mediawiki/tools/release
+    template:
+      - name: composer-test-package-php72-or-later
+      - name: tox-docker
+
+  - name: mediawiki/tools/releng
+    template:
+      - name: tox-docker
+    postmerge:
+      - mw-tools-releng-tox-publish
+
+  - name: mediawiki/tools/scap
+    template:
+      - name: service-pipeline-test
+    test:
+      # XXX probably needs a job per supported distribution like labs/toollabs
+      # See also T210780
+      - debian-glue-non-voting
+    postmerge:
+      - scap-beta-deb
+
+  - name: mediawiki/tools/phan
+    template:
+     - name: composer-test-package-php72-or-later
+
+  - name: mediawiki/tools/phan/PerfCheckPlugin
+    template:
+     - name: composer-test-package-php72-or-later
+
+  - name: mediawiki/tools/phan/SecurityCheckPlugin
+    template:
+     - name: composer-test-package-php72-or-later
+
+  - name: mediawiki/vagrant
+    test:
+      - mediawiki-vagrant-rake-docker
+    gate-and-submit:
+      - mediawiki-vagrant-rake-docker
+    postmerge:
+      - mediawiki-vagrant-puppet-doc-publish
+
+  - name: performance/asoranking
+    template:
+      - name: tox-docker
+
+  - name: performance/bttostatsv
+    template:
+      - name: node10-docker
+
+  - name: performance/synthetic-monitoring-tests
+    template:
+      - name: node10-docker
+
+  - name: performance/coal
+    template:
+      - name: tox-docker
+
+  - name: performance/docroot
+    template:
+      - name: node10-docker
+
+  - name: performance/fresnel
+    test:
+      - fresnel-node10-browser-docker
+    gate-and-submit:
+      - fresnel-node10-browser-docker
+    postmerge:
+      - generic-node10-browser-coverage-docker-publish
+
+  - name: performance/navtiming
+    template:
+      - name: tox-docker
+
+  - name: performance/perfromance
+    template:
+      - name: node10-docker
+
+  - name: releng/local-charts
     experimental:
-      - tilerator-deploy-npm-node-6-docker
+      - helm-lint
+
+  - name: operations/deployment-charts
+    test-prio:
+      - helm-lint
+    gate-and-submit:
+      - helm-lint
+
+#### MediaWiki itself ##########################################
 
   - name: mediawiki/core
     template:
@@ -2139,10 +2254,6 @@ projects:
     test:
       - debian-glue-non-voting
 
-  - name: mediawiki/event-schemas
-    template:
-      - name: node10-docker
-
   - name: mediawiki/vendor
     template:
       - name: extension-gate
@@ -2173,426 +2284,68 @@ projects:
     experimental:
       - mwgate-composer-php72-docker
 
-  - name: analytics/aggregator
-    template:
-      - name: tox-docker
+#### MediaWiki skins ###########################################
 
-  - name: analytics/aqs
-    template:
-      - name: node10-docker
+#### MediaWiki skins used in Wikimedia production ##############
 
-  - name: analytics/blog
+  - name: mediawiki/skins/CologneBlue
     template:
-      - name: tox-docker
+     - name: skin-quibble
+     - name: skin-phan
+     - name: skin-seccheck
 
-  - name: analytics/dashiki
+  - name: mediawiki/skins/EUCopyrightCampaignSkin
+    template:
+     - name: skin-phan
+     - name: skin-quibble
+     - name: skin-seccheck
+
+  - name: mediawiki/skins/MinervaNeue
+    template:
+     - name: extension-gate
+     - name: mwgate-rake
+     - name: skin-quibble
+     - name: skin-phan
+     - name: skin-seccheck
+     - name: mwselenium-legacy
+     - name: extension-javascript-documentation
+    postmerge:
+     - mwext-doxygen-publish
+
+  - name: mediawiki/skins/Modern
+    template:
+     - name: skin-phan
+     - name: skin-quibble
+     - name: skin-seccheck
+
+  - name: mediawiki/skins/MonoBook
+    template:
+     - name: skin-phan
+     - name: skin-quibble
+     - name: skin-seccheck
+
+  - name: mediawiki/skins/Nostalgia
+    template:
+     - name: skin-quibble
+     - name: skin-phan
+     - name: skin-seccheck
+
+  - name: mediawiki/skins/Timeless
+    template:
+     - name: skin-phan
+     - name: skin-quibble
+     - name: skin-seccheck
+
+  - name: mediawiki/skins/Vector
+    template:
+     - name: extension-gate
+     - name: skin-quibble
+     - name: skin-phan
+     - name: skin-seccheck
     experimental:
-      - generic-node10-docker
+     - quibble-composer-mysql-php72-docker
 
-  - name: analytics/geowiki
-    template:
-      - name: tox-docker
-
-  - name: analytics/quarry/web
-    template:
-      - name: tox-docker
-      - name: node10-docker
-
-  - name: analytics/limn-mobile-data
-    template:
-      - name: tox-docker
-
-  - name: analytics/limn-language-data
-    test:
-     - noop
-    gate-and-submit:
-     - noop
-
-  - name: analytics/mediawiki-storage
-    template:
-      - name: node10-browser-docker
-
-  - name: analytics/multimedia
-    template:
-      - name: tox-docker
-
-  - name: analytics/refinery/source
-    test:
-     - analytics-refinery-maven-java8-docker
-    gate-and-submit:
-     - analytics-refinery-maven-java8-docker
-
-  - name: analytics/reportupdater
-    template:
-      - name: tox-docker
-
-  - name: analytics/wikistats
-    test:
-     - analytics-wikistats
-    gate-and-submit:
-     - analytics-wikistats
-    postmerge:
-     - analytics-wikistats
-
-  - name: analytics/wikistats2
-    template:
-      - name: node10-browser-docker
-
-  - name: analytics/wikimetrics
-    template:
-      - name: tox-docker
-
-  - name: analytics/wmde/scripts
-    test:
-      - composer-php70-docker
-    gate-and-submit:
-      - composer-php70-docker
-
-  - name: analytics/wmde/toolkit-analyzer
-    test:
-      - analytics-wmde-toolkit-analyzer-maven-java8-docker
-    gate-and-submit:
-      - analytics-wmde-toolkit-analyzer-maven-java8-docker
-
-  - name: analytics/wmde/toolkit-analyzer-build
-    gate-and-submit:
-     - noop
-
-  - name: analytics/wmde/WDCM
-    test:
-     - noop
-     - lintr-docker-non-voting
-    gate-and-submit:
-     - noop
-    experimental:
-     - lintr-docker
-
-  - name: analytics/wmde/WDCM-packages
-    test:
-     - noop
-    gate-and-submit:
-     - noop
-
-  - name: analytics/wmde/WDCM-Overview-Dashboard
-    test:
-     - noop
-    gate-and-submit:
-     - noop
-
-  - name: analytics/wmde/WDCM-Semantics-Dashboard
-    test:
-     - noop
-    gate-and-submit:
-     - noop
-
-  - name: analytics/wmde/WDCM-Usage-Dashboard
-    test:
-     - noop
-    gate-and-submit:
-     - noop
-
-  - name: analytics/wmde/WDCM-ShinyServerFrontPage
-    test:
-     - noop
-    gate-and-submit:
-     - noop
-
-  # eventgate-ci is a manual fork in gerrit from
-  # https://github.com/wikimedia/eventgate.
-  # Release changes are manually pushed to eventgate-ci in gerrit.
-  # This is deprecated in favor of eventgate-wikimedia below,
-  # and will be removed as part of
-  # https://phabricator.wikimedia.org/T226668
-  - name: eventgate-ci
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
-
-  # eventgate-wikimedia contains the wikimedia specific
-  # eventgate factory code and config.
-  # https://github.com/wikimedia/eventgate is an npm
-  # dependency.
-  - name: eventgate-wikimedia
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
-
-  - name: labs/codesearch
-    template:
-      - name: tox-docker
-
-  - name: labs/libraryupgrader
-    template:
-      - name: tox-docker
-
-  - name: labs/libraryupgrader/config
-    template:
-      - name: tox-docker
-
-  - name: labs/striker
-    test:
-      - labs-striker-tox-docker
-    gate-and-submit:
-      - labs-striker-tox-docker
-
-  - name: labs/striker/deploy
-    test:
-      - noop
-    gate-and-submit:
-      - noop
-
-  - name: labs/striker/staticfiles
-    test:
-      - noop
-    gate-and-submit:
-      - noop
-
-  - name: labs/striker/wheels
-    test:
-      - noop
-    gate-and-submit:
-      - noop
-
-  - name: labs/toollabs
-    template:
-      - name: tox-docker
-    test:
-     # Single branch supporting multiple distributions T210780
-     - debian-glue-unstable
-     - debian-glue-trusty
-     - debian-glue-jessie
-     - debian-glue-stretch
-    gate-and-submit:
-     - debian-glue-unstable
-     - debian-glue-stretch
-
-  - name: labs/tools/cdnjs-index
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/commons-mass-description
-    test:
-      - labs-tools-commons-mass-description-tox-docker
-    gate-and-submit:
-      - labs-tools-commons-mass-description-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-  - name: labs/tools/crosswatch
-    template:
-      - name: tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-  - name: labs/tools/extdist
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/extreg-wos
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/forrestbot
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/gblrenamemon
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/harvesting-data-refinery
-    test:
-      - labs-tools-harvesting-data-refinery-tox-docker
-    gate-and-submit:
-      - labs-tools-harvesting-data-refinery-tox-docker
-
-  - name: labs/tools/heritage
-    template:
-      - name: node10-docker
-    test:
-      - composer-php72-docker
-      - labs-tools-heritage-tox-docker
-    gate-and-submit:
-      - composer-php72-docker
-      - labs-tools-heritage-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-    postmerge:
-     - tox-py27-coverage-publish
-
-  - name: labs/tools/ipwatcher
-    test:
-      - labs-tools-ipwatcher-tox-docker
-    gate-and-submit:
-      - labs-tools-ipwatcher-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-  - name: labs/tools/urbanecmbot
-    test:
-      - labs-tools-urbanecmbot-tox-docker
-    gate-and-submit:
-      - labs-tools-urbanecmbot-tox-docker
-
-  - name: labs/tools/guc
-    test:
-      - composer-php72-docker
-    gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
-    gate-and-submit:
-      - composer-php72-docker
-
-  - name: labs/tools/Isa
-    test:
-      - labs-tools-Isa-tox-docker
-    gate-and-submit:
-      - labs-tools-Isa-tox-docker
-
-  - name: labs/tools/ldap
-    test:
-      - labs-tools-ldap-tox-docker
-    gate-and-submit:
-      - labs-tools-ldap-tox-docker
-
-  - name: labs/tools/maintain-kubeusers
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/map-of-monuments
-    test:
-      - labs-tools-map-of-monuments-tox-docker
-    gate-and-submit:
-      - labs-tools-map-of-monuments-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-  - name: labs/tools/massmailer
-    test:
-      - labs-tools-massmailer-tox-docker
-    gate-and-submit:
-      - labs-tools-massmailer-tox-docker
-
-  - name: labs/tools/ptable
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/shorturls
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/stashbot
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/stewardbots
-    template:
-      - name: composer-test-package-php72-or-later
-      - name: tox-docker
-
-  - name: labs/tools/watch-translations
-    test:
-      - labs-tools-watch-translations-tox-docker
-    gate-and-submit:
-      - labs-tools-watch-translations-tox-docker
-
-  - name: labs/tools/weapon-of-mass-description
-    test:
-      - labs-tools-weapon-of-mass-description-tox-docker
-    gate-and-submit:
-      - labs-tools-weapon-of-mass-description-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-  - name: labs/tools/wikibugs2
-    template:
-      - name: tox-docker
-    postmerge:
-     - labs-tools-wikibugs2-autopull
-
-  - name: labs/tools/wikidata-slicer
-    template:
-      - name: node10-docker
-      - name: tox-docker
-
-  - name: labs/tools/wikinity
-    test:
-      - labs-tools-wikinity-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-    gate-and-submit:
-      - labs-tools-wikinity-tox-docker
-
-  - name: labs/tools/awmd-stats
-    template:
-      - name: tox-docker
-
-  - name: labs/tools/graphql
-    template:
-      - name: node10-docker
-
-  - name: performance/asoranking
-    template:
-      - name: tox-docker
-
-  - name: performance/bttostatsv
-    template:
-      - name: node10-docker
-
-  - name: performance/synthetic-monitoring-tests
-    template:
-      - name: node10-docker
-
-  - name: performance/coal
-    template:
-      - name: tox-docker
-
-  - name: performance/docroot
-    template:
-      - name: node10-docker
-
-  - name: performance/fresnel
-    test:
-      - fresnel-node10-browser-docker
-    gate-and-submit:
-      - fresnel-node10-browser-docker
-    postmerge:
-      - generic-node10-browser-coverage-docker-publish
-
-  - name: performance/navtiming
-    template:
-      - name: tox-docker
-
-  - name: performance/perfromance
-    template:
-      - name: node10-docker
-
-  - name: integration/docroot
-    template:
-     - name: node10-docker
-    test:
-     - composer-php56-docker
-    gate-and-submit:
-     - composer-php56-docker
-    postmerge:
-     - integration-docroot-deploy
-
-  - name: mediawiki/ruby/api
-    test:
-      - mediawiki-ruby-api-rake-docker
-    gate-and-submit:
-      - mediawiki-ruby-api-rake-docker
-    postmerge:
-     - mediawiki-ruby-api-bundle-yard-publish
-
-  - name: mediawiki/selenium
-    test:
-     - mediawiki-selenium-rake-docker
-     - mediawiki-selenium-integration-docker
-    gate-and-submit:
-     - mediawiki-selenium-rake-docker
-     - mediawiki-selenium-integration-docker
-    postmerge:
-     - mediawiki-selenium-bundle-yard-publish
+#### Other MediaWiki skins #####################################
 
   - name: mediawiki/skins/Amethyst
     template:
@@ -2628,13 +2381,6 @@ projects:
     template:
      - name: skin-quibble
 
-  - name: mediawiki/skins/CologneBlue
-    template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
-
-
   - name: mediawiki/skins/Daddio
     template:
      - name: skin-quibble
@@ -2660,12 +2406,6 @@ projects:
      - name: skin-quibble
 
   - name: mediawiki/skins/Example
-    template:
-     - name: skin-phan
-     - name: skin-quibble
-     - name: skin-seccheck
-
-  - name: mediawiki/skins/EUCopyrightCampaignSkin
     template:
      - name: skin-phan
      - name: skin-quibble
@@ -2701,39 +2441,9 @@ projects:
     template:
      - name: skin-quibble
 
-  - name: mediawiki/skins/MinervaNeue
-    template:
-     - name: extension-gate
-     - name: mwgate-rake
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
-     - name: mwselenium-legacy
-     - name: extension-javascript-documentation
-    postmerge:
-     - mwext-doxygen-publish
-
-  - name: mediawiki/skins/Modern
-    template:
-     - name: skin-phan
-     - name: skin-quibble
-     - name: skin-seccheck
-
-  - name: mediawiki/skins/MonoBook
-    template:
-     - name: skin-phan
-     - name: skin-quibble
-     - name: skin-seccheck
-
   - name: mediawiki/skins/Nimbus
     template:
      - name: skin-quibble
-
-  - name: mediawiki/skins/Nostalgia
-    template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
 
   - name: mediawiki/skins/p2wiki
     template:
@@ -2761,12 +2471,6 @@ projects:
     template:
      - name: skin-quibble
 
-  - name: mediawiki/skins/Timeless
-    template:
-     - name: skin-phan
-     - name: skin-quibble
-     - name: skin-seccheck
-
   - name: mediawiki/skins/Tomas
     template:
      - name: skin-quibble
@@ -2774,15 +2478,6 @@ projects:
   - name: mediawiki/skins/Truglass
     template:
      - name: skin-quibble
-
-  - name: mediawiki/skins/Vector
-    template:
-     - name: extension-gate
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
-    experimental:
-     - quibble-composer-mysql-php72-docker
 
   - name: mediawiki/skins/webplatform
     template:
@@ -2796,86 +2491,7 @@ projects:
     template:
      - name: skin-quibble
 
-  - name: mediawiki/tools/api-testing
-    test:
-    - mediawiki-quibble-api-testing-vendor-mysql-php72-docker
-    - mediawiki-quibble-api-testing-vendor-sqlite-php72-docker
-    gate-and-submit:
-    - mediawiki-quibble-api-testing-vendor-mysql-php72-docker
-    - mediawiki-quibble-api-testing-vendor-sqlite-php72-docker
-
-  - name: mediawiki/tools/codesniffer
-    template:
-     - name: composer-test-package-php72-or-later
-    test:
-     - mw-tools-codesniffer-mwcore-testrun
-    postmerge:
-      - phpunit-coverage-docker-publish
-
-  - name: mediawiki/tools/cookiecutter-library
-    template:
-     - name: tox-docker
-
-  - name: mediawiki/tools/minus-x
-    template:
-     - name: composer-test-package-php72-or-later
-
-  - name: mediawiki/tools/mwdumper
-    test:
-      - mwdumper-maven-java8-docker
-    gate-and-submit:
-      - mwdumper-maven-java8-docker
-
-  - name: mediawiki/tools/phpunit-patch-coverage
-    template:
-     - name: composer-test-package-php72-or-later
-    postmerge:
-      - phpunit-coverage-docker-publish
-
-  - name: mediawiki/tools/release
-    template:
-      - name: composer-test-package-php72-or-later
-      - name: tox-docker
-
-  - name: mediawiki/tools/releng
-    template:
-      - name: tox-docker
-    postmerge:
-      - mw-tools-releng-tox-publish
-
-  - name: mediawiki/tools/scap
-    template:
-      - name: service-pipeline-test
-    test:
-      # XXX probably needs a job per supported distribution like labs/toollabs
-      # See also T210780
-      - debian-glue-non-voting
-    postmerge:
-      - scap-beta-deb
-
-  - name: mediawiki/tools/phan
-    template:
-     - name: composer-test-package-php72-or-later
-
-  - name: mediawiki/tools/phan/PerfCheckPlugin
-    template:
-     - name: composer-test-package-php72-or-later
-
-  - name: mediawiki/tools/phan/SecurityCheckPlugin
-    template:
-     - name: composer-test-package-php72-or-later
-
-  - name: mediawiki/vagrant
-    test:
-      - mediawiki-vagrant-rake-docker
-    gate-and-submit:
-      - mediawiki-vagrant-rake-docker
-    postmerge:
-      - mediawiki-vagrant-puppet-doc-publish
-
-  - name: node-rdkafka-statsd
-    template:
-      - name: node10-docker
+#### Site Reliability Engineering ("Operations") tools #########
 
   - name: cergen
     test:
@@ -3453,181 +3069,9 @@ projects:
     template:
       - name: tox-docker
 
-  - name: react.i18n
-    template:
-      - name: node10-docker
-
-  - name: react.ooui
-    template:
-      - name: node10-docker
-
-  - name: research/recommendation-api
-    template:
-      - name: tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-  - name: translatewiki
-    test:
-      - translatewiki-rake-docker
-      - composer-php72-docker
-    gate-and-submit:
-      - translatewiki-rake-docker
-      - composer-php72-docker
-
-  - name: wikimedia-cz/tracker
-    template:
-      - name: node10-browser-docker
-    test:
-      - wikimedia-cz-tracker-tox-docker
-    gate-and-submit:
-      - wikimedia-cz-tracker-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-  - name: wikimedia-cz/tools
-    test:
-      - wikimedia-cz-tools-tox-docker
-    gate-and-submit:
-      - wikimedia-cz-tools-tox-docker
-
-  - name: wikimedia-cz/events
-    test:
-      - wikimedia-cz-events-tox-docker
-    gate-and-submit:
-      - wikimedia-cz-events-tox-docker
-
-  - name: wikimedia-cz/mediawiki-config
-    test:
-      - wikimedia-cz-mediawiki-config-composer-php70-docker
-    gate-and-submit:
-      - wikimedia-cz-mediawiki-config-composer-php70-docker
-
-  - name: wikimedia-cz/web-theme
-    test:
-      - composer-php72-docker
-    gate-and-submit:
-      - composer-php72-docker
-
-  - name: wikimedia-cz/web-plugin
-    test:
-      - composer-php72-docker
-    gate-and-submit:
-      - composer-php72-docker
-
-  - name: wikimedia-ui-base
-    template:
-      - name: node10-docker
-
-  - name: wikimedia/discovery/discovery-parent-pom
-    test:
-      - discovery-parent-pom-maven-java8-docker
-    gate-and-submit:
-      - discovery-parent-pom-maven-java8-docker
-    postmerge:
-      - discovery-parent-pom-maven-java8-docker-site-publish
-
-  - name: wikimedia/discovery/discovery-maven-tool-configs
-    test:
-      - discovery-maven-tool-configs-maven-java8-docker
-    gate-and-submit:
-      - discovery-maven-tool-configs-maven-java8-docker
-    postmerge:
-      - discovery-maven-tool-configs-maven-java8-docker-site-publish
-
-  - name: wikimedia/discovery/relevanceForge
-    template:
-      - name: tox-docker
-
-  - name: wikimedia/discovery/analytics
-    template:
-      - name: tox-docker
-
-  - name: wikimedia/fundraising/dash
-    template:
-      - name: node10-browser-docker
-
-  - name: wikimedia/fundraising/tools/DjangoBannerStats
-    template:
-      - name: tox-docker
-
-  - name: wikimedia/fundraising/process-control
-    template:
-      - name: tox-docker
-
-  - name: wikimedia/fundraising/stats
-    gate-and-submit:
-      - noop
-    experimental:
-      - tox-docker
-
-  - name: wikimedia/fundraising/tools
-    test:
-      - fundraising-tools-tox-docker
-    gate-and-submit:
-      - fundraising-tools-tox-docker
-
-  - name: wikimedia/fundraising/crm
-    test:
-      - wikimedia-fundraising-crm-composer-php72-docker
-      - wikimedia-fundraising-civicrm-docker
-    gate-and-submit:
-      - wikimedia-fundraising-civicrm-docker
-    experimental:
-      - wikimedia-fundraising-crm-composer-php70-docker
-
-  - name: wikimedia/fundraising/crm/civicrm
-    test:
-      - wikimedia-fundraising-civicrm-docker
-    gate-and-submit:
-      - wikimedia-fundraising-civicrm-docker
-
-  - name: wikimedia/fundraising/crm/drupal
-    test:
-      - wikimedia-fundraising-civicrm-docker
-    gate-and-submit:
-      - wikimedia-fundraising-civicrm-docker
-
-  - name: wikimedia/fundraising/crm/vendor
-    test:
-      - wikimedia-fundraising-civicrm-docker
-    gate-and-submit:
-      - wikimedia-fundraising-civicrm-docker
-
-  - name: wikimedia/fundraising/slander
-    template:
-      - name: tox-docker
-
-  - name: wikimedia/fundraising/SmashPig
-    test:
-      - composer-php70-docker
-    gate-and-submit:
-      - composer-php70-docker
-
-  - name: wikimedia/iegreview
-    template:
-     - name: composer-test
-    gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
-
-  - name: wikimedia/wikimania-scholarships
-    template:
-      - name: node10-browser-docker
-    test: &wikimania-scholarships-test
-      - composer-php72-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-    gate-and-submit: *wikimania-scholarships-test
-
-  - name: wikimedia/textcat
-    template:
-     - name: composer-test-package-php72-or-later
-
-  - name: wikimedia/lucene-explain-parser
-    template:
-     - name: composer-test-package-php72-or-later
-
 #### MediaWiki extensions ######################################
+
+#### MediaWiki extensions used in Wikimedia production #########
 
   - name: mediawiki/extensions/3D
     template:
@@ -3643,23 +3087,11 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/AccountInfo
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/ActiveAbstract
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/AddMessages
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/AddPersonalUrls
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/AdvancedSearch
     template:
@@ -3667,10 +3099,6 @@ projects:
       - name: extension-phan
       - name: extension-codehealth
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/AdminLinks
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/AntiSpoof
     template:
@@ -3680,21 +3108,18 @@ projects:
       - name: extension-coverage
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/AnonPrivacy
+  - name: mediawiki/extensions/ApiFeatureUsage
     template:
       - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
 
-  - name: mediawiki/extensions/ApprovedRevs
+  - name: mediawiki/extensions/ArticleCreationWorkflow
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/ArticleFeedbackv5
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ArticleMetaDescription
-    template:
-      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-coverage
+      - name: extension-seccheck
 
   - name: mediawiki/extensions/ArticlePlaceholder
     template:
@@ -3702,18 +3127,6 @@ projects:
       - name: extension-coverage
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/Arrays
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ArticleRatings
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/Athena
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/Babel
     template:
@@ -3723,10 +3136,6 @@ projects:
       - name: extension-coverage
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/BaseHooks
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/BetaFeatures
     template:
       - name: extension-quibble
@@ -3734,24 +3143,12 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/BlogPage
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/BoilerPlate
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/BounceHandler
     template:
       - name: extension-quibble
       - name: extension-coverage
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/Buggy
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/Calendar
     template:
@@ -3772,27 +3169,25 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/CategoryTagSorter
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/CategoryTree
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/CategoryWatch
+  - name: mediawiki/extensions/CentralAuth
     template:
       - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
 
-  - name: mediawiki/extensions/ChangeAuthor
+  - name: mediawiki/extensions/CentralNotice
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/ChangeUserPasswords
-    template:
-      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
 
   - name: mediawiki/extensions/CharInsert
     template:
@@ -3808,6 +3203,16 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
+  - name: mediawiki/extensions/CirrusSearch
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-codehealth
+    postmerge:
+      - mwext-doxygen-publish
+
   - name: mediawiki/extensions/Cite
     template:
       - name: extension-coverage
@@ -3815,10 +3220,6 @@ projects:
       - name: extension-gate
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/CiteDrawer
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/CiteThisPage
     template:
@@ -3840,45 +3241,6 @@ projects:
       - name: extension-coverage
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/CentralAuth
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/CentralNotice
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/CirrusSearch
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-codehealth
-    postmerge:
-      - mwext-doxygen-publish
-
-  - name: mediawiki/extensions/CleanChanges
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/CommentStreams
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/CookieWarning
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
 
   - name: mediawiki/extensions/CodeEditor
     template:
@@ -3917,14 +3279,6 @@ projects:
     postmerge:
       - mwext-doxygen-publish
 
-  - name: mediawiki/extensions/CollapsibleSections
-    template:
-     - name: extension-quibble
-
-  - name: mediawiki/extensions/CollapsibleVector
-    template:
-     - name: extension-quibble
-
   - name: mediawiki/extensions/Collection
     template:
       - name: extension-quibble
@@ -3939,19 +3293,23 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/ConfigurableCounters
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ConfirmAccount
-    template:
-      - name: extension-quibble-noselenium
-
   - name: mediawiki/extensions/ConfirmEdit
     template:
       - name: extension-quibble
       - name: extension-gate
       - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/CongressLookup
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/ContactPage
+    template:
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
@@ -3962,32 +3320,6 @@ projects:
       - name: extension-coverage
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/ContributionCredits
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ContributionScores
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ContributionsList
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/CommonMessages
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ContactPage
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/FlickrAPI
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/ContributionTracking
     template:
@@ -4001,59 +3333,10 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/CreatePageUw
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/CreateUserPage
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/D3Loader
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DarkMode
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/Dashiki
     template:
       - name: extension-quibble
       - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/DateDiff
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DebateTree
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DebugMode
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DebugTemplates
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DeleteBatch
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DeletePagesForGood
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DeleteUserPages
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DisableAccount
-    template:
-      - name: extension-quibble
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Disambiguator
@@ -4062,34 +3345,11 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/Discourse
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/DiscussionTools
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/DiscussionThreading
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/DismissableSiteNotice
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/DisplayTitle
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-
-  - name: mediawiki/extensions/DocBookExport
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/DonationInterface
     test:
@@ -4112,20 +3372,11 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/Drafts
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-
   - name: mediawiki/extensions/DynamicSidebar
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/DumpHTML
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/Echo
     template:
@@ -4134,22 +3385,6 @@ projects:
       - name: extension-phan
       - name: extension-codehealth
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/Editcount
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/EditcountAdditions
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/EditNotify
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/EditUser
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/Elastica
     template:
@@ -4164,22 +3399,25 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/EmailAuth
+  - name: mediawiki/extensions/EntitySchema
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+      - name: extension-phan
+      - name: extension-codehealth
+
+  - name: mediawiki/extensions/EUCopyrightCampaign
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/EventBus
     template:
       - name: extension-quibble
       - name: extension-coverage
-
-  - name: mediawiki/extensions/EmailAuthorization
-    template:
-      - name: extension-quibble-noselenium
-
-  - name: mediawiki/extensions/EmailCapture
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/EmailDiff
-    template:
-      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
 
   - name: mediawiki/extensions/EventLogging
     template:
@@ -4189,23 +3427,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-javascript-documentation
-
-  - name: eventlogging
-    test:
-      - eventlogging-tox-docker
-    gate-and-submit:
-      - eventlogging-tox-docker
-
-  - name: mediawiki/extensions/EventBus
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/ExtJSBase
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/ExtensionDistributor
     template:
@@ -4221,21 +3442,25 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/EUCopyrightCampaign
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/FeaturedFeeds
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/Figures
+  - name: mediawiki/extensions/FileExporter
     template:
       - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/FileImporter
+    template:
+      - name: extension-gate
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-coverage
+      - name: extension-seccheck
 
   - name: mediawiki/extensions/FlaggedRevs
     template:
@@ -4252,18 +3477,6 @@ projects:
      - name: extension-phan
      - name: extension-seccheck
      - name: extension-javascript-documentation
-
-  - name: mediawiki/extensions/Form
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/FormPreloadPostCache
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/FormWizard
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/FundraiserLandingPage
     template:
@@ -4285,17 +3498,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/GettingStarted
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Genealogy
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-
   - name: mediawiki/extensions/GeoCrumbs
     template:
       - name: extension-quibble
@@ -4310,41 +3512,17 @@ projects:
       - name: extension-coverage
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/GeoGebra
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/Git2Pages
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GitGadgets
+  - name: mediawiki/extensions/GettingStarted
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/Gitweb
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/GlobalBlocking
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/GlobalContributions
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GlobalContribs
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GlobalCheckUser
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/GlobalCssJs
     template:
@@ -4374,55 +3552,11 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/GoogleAdSense
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GoogleAuthenticator
-    template:
-      - name: extension-quibble-noselenium
-
-  - name: mediawiki/extensions/GoogleAnalyticsMetrics
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GoogleAnalyticsTopPages
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GoogleAppEngine
-    template:
-      - name: extension-quibble-composer-noselenium
-
-  - name: mediawiki/extensions/GoogleCustomWikiSearch
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GoogleGeocode
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GoogleLogin
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/GoogleNewsSitemap
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/GooglePlaces
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GoogleSiteSearch
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/GPGMail
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/Graph
     template:
@@ -4431,14 +3565,12 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/GraphQL
-    template:
-      - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/GraphViz
+  - name: mediawiki/extensions/GrowthExperiments
     template:
       - name: extension-quibble
-      - name: extension-coverage
+      - name: extension-codehealth
+      - name: extension-phan
+      - name: extension-seccheck
 
   - name: mediawiki/extensions/GuidedTour
     template:
@@ -4456,56 +3588,12 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/HAWelcome
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/HelpPages
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/HighlightjsIntegration
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/Hreflang
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/I18nTags
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/Ids
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ImageCompare
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/ImageMap
     template:
       - name: extension-quibble
       - name: extension-gate
       - name: extension-seccheck
       - name: extension-phan
-
-  - name: mediawiki/extensions/ImapAuthorization
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ImportArticles
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ImportFreeImages
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ImportUsers
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/InputBox
     template:
@@ -4520,6 +3608,12 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
+  - name: mediawiki/extensions/intersection
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
   - name: mediawiki/extensions/Interwiki
     template:
       - name: extension-quibble
@@ -4527,17 +3621,7 @@ projects:
       - name: extension-seccheck
       - name: extension-phan
 
-  - name: mediawiki/extensions/InterwikiExtracts
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/InterwikiSorting
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/intersection
     template:
       - name: extension-quibble
       - name: extension-phan
@@ -4547,6 +3631,12 @@ projects:
     template:
       - name: extension-quibble
       - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Josa
+    template:
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
@@ -4580,51 +3670,11 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/LanguageTool
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/LastModified
-    template:
-      - name: extension-quibble
-
   - name: mediawiki/extensions/LdapAuthentication
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-
-  - name: mediawiki/extensions/LdapGroups
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/LDAPAuthentication2
-    template:
-     - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/LDAPGroups
-    template:
-     - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/LDAPProvider
-    template:
-     - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/LDAPUserInfo
-    template:
-     - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/Lingo
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/LinkedWiki
-    template:
-      - name: extension-broken  # T198919
-
-  - name: mediawiki/extensions/LinkTarget
-    template:
-      - name: extension-quibble
 
   - name: mediawiki/extensions/Linter
     template:
@@ -4664,22 +3714,6 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/Mailgun
-    template:
-      - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/Math
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  # Broken due to T87390 / T117659
-  - name: mediawiki/extensions/MathSearch
-    template:
-      - name: extension-broken
-
   - name: mediawiki/extensions/MapSources
     template:
       - name: extension-quibble
@@ -4692,6 +3726,1104 @@ projects:
       - name: extension-coverage
       - name: extension-phan
       - name: extension-seccheck
+
+  - name: mediawiki/extensions/Math
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/MobileApp
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/MobileFrontend
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-codehealth
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-javascript-documentation
+    postmerge:
+      - mwext-doxygen-publish
+
+  - name: mediawiki/extensions/MultimediaViewer
+    template:
+      - name: extension-quibble
+      - name: mwgate-rake
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: mwselenium-legacy
+      - name: extension-javascript-documentation
+
+  - name: mediawiki/extensions/NavigationTiming
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Newsletter
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/NewUserMessage
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Nuke
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/OATHAuth
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/OAuth
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/OpenStackManager
+    template:
+      - name: extension-quibble-noselenium
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/ORES
+    template:
+      - name: extension-quibble
+      - name: extension-codehealth
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/PageAssessments
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/PagedTiffHandler
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/PageImages
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/PageTriage
+    template:
+      - name: extension-quibble
+      - name: mwgate-rake
+      - name: extension-codehealth
+      - name: extension-seccheck
+      - name: extension-phan
+
+  - name: mediawiki/extensions/PageViewInfo
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/ParserFunctions
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-seccheck
+      - name: extension-phan
+      - name: extension-coverage
+
+  # Not currently in production, but will be brought back for the Parsoid migration
+  - name: mediawiki/extensions/ParserMigration
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/ParsoidBatchAPI
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/PdfHandler
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-seccheck
+      - name: extension-phan
+
+  - name: mediawiki/extensions/PerformanceInspector
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+      - name: extension-phan
+
+  - name: mediawiki/extensions/Poem
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-seccheck
+      - name: extension-phan
+
+  - name: mediawiki/extensions/PoolCounter
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Popups
+    template:
+      - name: extension-quibble
+      - name: extension-codehealth
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-javascript-documentation
+
+  - name: mediawiki/extensions/ProofreadPage
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/PropertySuggester
+    template:
+      - name: extension-quibble-composer
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/QuickSurveys
+    template:
+      - name: extension-quibble
+      - name: mwgate-rake
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: mwselenium-legacy
+
+  - name: mediawiki/extensions/Quiz
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/ReadingLists
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/RelatedArticles
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Renameuser
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+      - name: extension-phan
+
+  # Not on production, but in the MediaWiki release tarball
+  - name: mediawiki/extensions/ReplaceText
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/RevisionSlider
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: mwselenium-legacy
+
+  - name: mediawiki/extensions/RSS
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SandboxLink
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Score
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: mwgate-npm
+
+  - name: mediawiki/extensions/Scribunto
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/SearchExtraNS
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SecureLinkFixer
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SecurePoll
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Sentry
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/ShortUrl
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SiteMatrix
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SkinPerPage
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SpamBlacklist
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-seccheck
+      - name: extension-phan
+      - name: extension-coverage
+
+  # Planned to be used on Beta Cluster.
+  - name: mediawiki/extensions/StopForumSpam
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SubPageList3
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SubpageSortkey
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/SyntaxHighlight_GeSHi
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TemplateData
+    template:
+      - name: extension-gate
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-javascript-documentation
+
+  - name: mediawiki/extensions/TemplateSandbox
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TemplateStyles
+    template:
+     - name: extension-quibble-composer
+     - name: extension-coverage
+     - name: extension-phan
+     - name: extension-seccheck
+
+  - name: mediawiki/extensions/TemplateWizard
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TextExtracts
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Thanks
+    template:
+      - name: extension-quibble
+      - name: extension-gate  # T86687
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TheWikipediaLibrary
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TimedMediaHandler
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/timeline
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/TitleBlacklist
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/TocTree
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TorBlock
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Translate
+    template:
+      - name: extension-quibble
+      - name: extension-codehealth
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TranslationNotifications
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TrustedXFF
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/TwoColConflict
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-coverage
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/UniversalLanguageSelector
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/UploadsLink
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/UploadWizard
+    template:
+      - name: extension-quibble
+      - name: mwgate-tox-docker
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/UrlShortener
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/UserMerge
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+      - name: extension-coverage
+      - name: extension-phan
+
+  - name: mediawiki/extensions/VipsScaler
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/VisualEditor
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: commit-message-validator
+      - name: mwgate-rake
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-javascript-documentation
+
+  - name: mediawiki/extensions/WebAuthn
+    template:
+      # TODO: Replace with extension-quibble when that is PHP72+ only
+      - name: extension-quibble-php72-plus
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Wikibase
+    template:
+      - name: mwgate-npm
+      - name: extension-quibble-noselenium
+      - name: extension-quibble-only-selenium
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-javascript-documentation
+      - name: mwgate-rake
+      - name: extension-seccheck
+      - name: extension-codehealth
+    test:
+      - mwselenium-quibble-docker
+      - wikibase-client-docker
+      - wikibase-repo-docker
+    gate-and-submit: &mediawiki-extensions-wikibase-gate-and-submit
+      - mwselenium-quibble-docker
+      - wikibase-client-docker
+      - wikibase-repo-docker
+    gate-and-submit-wmf: *mediawiki-extensions-wikibase-gate-and-submit
+    postmerge:
+      - mwext-doxygen-publish
+
+  - name: mediawiki/extensions/WikibaseCirrusSearch
+    template:
+      - name: extension-gate
+      - name: extension-quibble
+      - name: extension-seccheck
+      - name: extension-phan
+
+  - name: mediawiki/extensions/WikibaseLexeme
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+      - name: extension-phan
+      - name: extension-codehealth
+
+  - name: mediawiki/extensions/WikibaseLexemeCirrusSearch
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+      - name: extension-phan
+
+  - name: mediawiki/extensions/WikibaseMediaInfo
+    template:
+      - name: extension-gate
+      - name: extension-quibble
+      - name: extension-codehealth
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikibaseQualityConstraints
+    template:
+      - name: extension-quibble-composer
+      - name: extension-phan
+      - name: extension-seccheck
+      - name: extension-codehealth
+
+  - name: mediawiki/extensions/Wikidata.org
+    template:
+      - name: extension-quibble-composer
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikidataPageBanner
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikiEditor
+    template:
+      - name: extension-quibble
+      - name: extension-gate
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/wikihiero
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikiLove
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikimediaBadges
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikimediaEditorTasks
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikimediaEvents
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikimediaIncubator
+    template:
+      - name: extension-quibble-noselenium
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikimediaMaintenance
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/WikimediaMessages
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Wikisource
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/XAnalytics
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+#### Other MediaWiki extensions ################################
+
+  - name: mediawiki/extensions/AccountInfo
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/AddMessages
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/AddPersonalUrls
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/AdminLinks
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/AnonPrivacy
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ApprovedRevs
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ArticleFeedbackv5
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ArticleMetaDescription
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Arrays
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ArticleRatings
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Athena
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/BaseHooks
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/BlogPage
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/BoilerPlate
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Buggy
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/CategoryTagSorter
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/CategoryWatch
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ChangeAuthor
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ChangeUserPasswords
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/CiteDrawer
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/CleanChanges
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/CommentStreams
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/CookieWarning
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/CollapsibleSections
+    template:
+     - name: extension-quibble
+
+  - name: mediawiki/extensions/CollapsibleVector
+    template:
+     - name: extension-quibble
+
+  - name: mediawiki/extensions/ConfigurableCounters
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ConfirmAccount
+    template:
+      - name: extension-quibble-noselenium
+
+  - name: mediawiki/extensions/ContributionCredits
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ContributionScores
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ContributionsList
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/CommonMessages
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/FlickrAPI
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/CreatePageUw
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/CreateUserPage
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/D3Loader
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DarkMode
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DateDiff
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DebateTree
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DebugMode
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DebugTemplates
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DeleteBatch
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DeletePagesForGood
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DeleteUserPages
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DisableAccount
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Discourse
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DiscussionTools
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/DiscussionThreading
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/DisplayTitle
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/DocBookExport
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Drafts
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+
+  - name: mediawiki/extensions/DumpHTML
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Editcount
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/EditcountAdditions
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/EditNotify
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/EditUser
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/EmailAuth
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/EmailAuthorization
+    template:
+      - name: extension-quibble-noselenium
+
+  - name: mediawiki/extensions/EmailCapture
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/EmailDiff
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ExtJSBase
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Figures
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Form
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/FormPreloadPostCache
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/FormWizard
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Genealogy
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/GeoGebra
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Git2Pages
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GitGadgets
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Gitweb
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GlobalContributions
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GlobalContribs
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GlobalCheckUser
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GoogleAdSense
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GoogleAuthenticator
+    template:
+      - name: extension-quibble-noselenium
+
+  - name: mediawiki/extensions/GoogleAnalyticsMetrics
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GoogleAnalyticsTopPages
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GoogleAppEngine
+    template:
+      - name: extension-quibble-composer-noselenium
+
+  - name: mediawiki/extensions/GoogleCustomWikiSearch
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GoogleGeocode
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GoogleLogin
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GooglePlaces
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GoogleSiteSearch
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GPGMail
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/GraphQL
+    template:
+      - name: extension-quibble-composer
+
+  - name: mediawiki/extensions/GraphViz
+    template:
+      - name: extension-quibble
+      - name: extension-coverage
+
+  - name: mediawiki/extensions/HAWelcome
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/HelpPages
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/HighlightjsIntegration
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Hreflang
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/I18nTags
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Ids
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ImageCompare
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ImapAuthorization
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ImportArticles
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ImportFreeImages
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/ImportUsers
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/InterwikiExtracts
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/LanguageTool
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/LastModified
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/LdapGroups
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/LDAPAuthentication2
+    template:
+     - name: extension-quibble-composer
+
+  - name: mediawiki/extensions/LDAPGroups
+    template:
+     - name: extension-quibble-composer
+
+  - name: mediawiki/extensions/LDAPProvider
+    template:
+     - name: extension-quibble-composer
+
+  - name: mediawiki/extensions/LDAPUserInfo
+    template:
+     - name: extension-quibble-composer
+
+  - name: mediawiki/extensions/Lingo
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/LinkedWiki
+    template:
+      - name: extension-broken  # T198919
+
+  - name: mediawiki/extensions/LinkTarget
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Mailgun
+    template:
+      - name: extension-quibble-composer
+
+  # Broken due to T87390 / T117659
+  - name: mediawiki/extensions/MathSearch
+    template:
+      - name: extension-broken
 
   - name: mediawiki/extensions/MassMessageEmail
     template:
@@ -4725,41 +4857,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/MobileFrontend
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-codehealth
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-javascript-documentation
-    postmerge:
-      - mwext-doxygen-publish
-
-  - name: mediawiki/extensions/MobileApp
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/MolHandler
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/FileImporter
-    template:
-      - name: extension-gate
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-coverage
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/FileExporter
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/FileSystemImageServer
     template:
@@ -4790,15 +4890,6 @@ projects:
       - name: extension-quibble
       - name: extension-coverage
 
-  - name: mediawiki/extensions/MultimediaViewer
-    template:
-      - name: extension-quibble
-      - name: mwgate-rake
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: mwselenium-legacy
-      - name: extension-javascript-documentation
-
   - name: mediawiki/extensions/MusicBrainzAuth
     template:
       - name: extension-quibble
@@ -4811,13 +4902,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/NavigationTiming
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/NewestPages
     template:
       - name: extension-quibble
@@ -4825,12 +4909,6 @@ projects:
   - name: mediawiki/extensions/NewUserActions
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/NewUserMessage
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/NewUserNotif
     template:
@@ -4851,25 +4929,6 @@ projects:
   - name: mediawiki/extensions/NotesLink
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/Nuke
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/OATHAuth
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/OAuth
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/OAuth2
     template:
@@ -4894,25 +4953,6 @@ projects:
     template:
       - name: extension-quibble-composer
 
-  - name: mediawiki/extensions/OpenStackManager
-    template:
-      - name: extension-quibble-noselenium
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/ORES
-    template:
-      - name: extension-quibble
-      - name: extension-codehealth
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/PageAssessments
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/PageBlock
     template:
       - name: extension-quibble
@@ -4922,48 +4962,13 @@ projects:
       - name: extension-quibble
       - name: extension-coverage
 
-  - name: mediawiki/extensions/PagedTiffHandler
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/PageImages
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/PagePopups
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/PageTriage
-    template:
-      - name: extension-quibble
-      - name: mwgate-rake
-      - name: extension-codehealth
-      - name: extension-seccheck
-      - name: extension-phan
-
   - name: mediawiki/extensions/ParentPage
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/ParserFunctions
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-seccheck
-      - name: extension-phan
-      - name: extension-coverage
-
-  - name: mediawiki/extensions/ParserMigration
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/Patroller
     template:
@@ -4999,24 +5004,9 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/WebAuthn
-    template:
-      # TODO: Replace with extension-quibble when that is PHP72+ only
-      - name: extension-quibble-php72-plus
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/WikimediaEditorTasks
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/WikiSEO
     template:
         - name: extension-quibble
-
-# Start of new currently disabled extensions checks from mass extension import - Addshore
 
   - name: mediawiki/extensions/AbsenteeLandlord
     template:
@@ -5057,19 +5047,6 @@ projects:
   - name: mediawiki/extensions/AnchorHandler
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/ApiFeatureUsage
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/ArticleCreationWorkflow
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-coverage
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/ArticleIndex
     template:
@@ -5525,12 +5502,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/CongressLookup
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/Contributors
     template:
       - name: extension-quibble
@@ -5622,13 +5593,6 @@ projects:
   - name: mediawiki/extensions/EnhanceContactForm
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/EntitySchema
-    template:
-      - name: extension-quibble
-      - name: extension-seccheck
-      - name: extension-phan
-      - name: extension-codehealth
 
   - name: mediawiki/extensions/ErrorHandler
     template:
@@ -5723,13 +5687,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/GrowthExperiments
-    template:
-      - name: extension-quibble
-      - name: extension-codehealth
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/HashTables
     template:
       - name: extension-quibble
@@ -5805,12 +5762,6 @@ projects:
   - name: mediawiki/extensions/InviteSignup
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/Josa
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/JSBreadCrumbs
     template:
@@ -5993,12 +5944,6 @@ projects:
     template:
       - name: extension-quibble-noselenium
 
-  - name: mediawiki/extensions/Newsletter
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/NoTitle
     template:
       - name: extension-quibble
@@ -6151,12 +6096,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/PropertySuggester
-    template:
-      - name: extension-quibble-composer
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/ProtectSite
     template:
       - name: extension-quibble
@@ -6184,15 +6123,6 @@ projects:
   - name: mediawiki/extensions/QuickResponse
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/QuickSurveys
-    template:
-      - name: extension-quibble
-      - name: mwgate-rake
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: mwselenium-legacy
 
   - name: mediawiki/extensions/QuickSearchLookup
     template:
@@ -6240,13 +6170,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/ReadingLists
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-coverage
-
   - name: mediawiki/extensions/ReassignEdits
     template:
       - name: extension-quibble
@@ -6279,13 +6202,6 @@ projects:
     template:
       - name: extension-broken  # T196529
 
-  - name: mediawiki/extensions/RevisionSlider
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: mwselenium-legacy
-
   - name: mediawiki/extensions/RightFunctions
     template:
       - name: extension-quibble
@@ -6297,13 +6213,6 @@ projects:
   - name: mediawiki/extensions/SafeDelete
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/SandboxLink
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/Sarcasm
     template:
@@ -6340,13 +6249,6 @@ projects:
   - name: mediawiki/extensions/SecureHTML
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/SecureLinkFixer
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/SecureSessions
     template:
@@ -6549,13 +6451,6 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/TemplateStyles
-    template:
-     - name: extension-quibble-composer
-     - name: extension-coverage
-     - name: extension-phan
-     - name: extension-seccheck
-
   - name: mediawiki/extensions/TestLanguageNameGrammar
     template:
       - name: extension-quibble
@@ -6567,12 +6462,6 @@ projects:
   - name: mediawiki/extensions/Theme
     template:
      - name: extension-quibble
-
-  - name: mediawiki/extensions/TheWikipediaLibrary
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/THICC
     template:
@@ -6620,13 +6509,6 @@ projects:
     template:
       - name: extension-broken  # T110470
 
-  - name: mediawiki/extensions/TwoColConflict
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-coverage
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/UIFeedback
     template:
       - name: extension-quibble
@@ -6650,23 +6532,6 @@ projects:
   - name: mediawiki/extensions/UploadLogo
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/UploadsLink
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/UrlGetParameters
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/UrlShortener
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/URNames
     template:
@@ -6752,57 +6617,11 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/WikibaseCirrusSearch
-    template:
-      - name: extension-gate
-      - name: extension-quibble
-      - name: extension-seccheck
-      - name: extension-phan
-
-  - name: mediawiki/extensions/WikibaseLexemeCirrusSearch
-    template:
-      - name: extension-quibble
-      - name: extension-seccheck
-      - name: extension-phan
-
-  - name: mediawiki/extensions/WikidataPageBanner
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/WikibaseLexeme
-    template:
-      - name: extension-quibble
-      - name: extension-seccheck
-      - name: extension-phan
-      - name: extension-codehealth
-
-  - name: mediawiki/extensions/WikibaseQualityConstraints
-    template:
-      - name: extension-quibble-composer
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-codehealth
-
-  - name: mediawiki/extensions/WikibaseMediaInfo
-    template:
-      - name: extension-gate
-      - name: extension-quibble
-      - name: extension-codehealth
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/WikiLovesMonuments
     template:
       - name: extension-quibble
 
   - name: mediawiki/extensions/WikipediaExtracts
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/Wikisource
     template:
       - name: extension-quibble
 
@@ -6934,13 +6753,6 @@ projects:
     template:
      - name: extension-quibble
 
-  - name: mediawiki/extensions/PageViewInfo
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
   - name: mediawiki/extensions/PaginateText
     template:
      - name: extension-quibble
@@ -7059,18 +6871,197 @@ projects:
     template:
       - name: extension-quibble
 
-  - name: mediawiki/extensions/XAnalytics
+  - name: mediawiki/extensions/ZoomableImages
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/PasswordlessLogin
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/PhpTags
+    template:
+      - name: extension-quibble
+  - name: mediawiki/extensions/PhpTagsFunctions
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/PhpTagsMaps
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/PhpTagsSMW
+    template:
+      - name: extension-quibble-composer
+
+  - name: mediawiki/extensions/PhpTagsSPARQL
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/PhpTagsStorage
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/PhpTagsWidgets
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/PhpTagsWiki
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/RelatedSites
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/ReplaceSet
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/SemanticACL
+    template:
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
+
+  - name: mediawiki/extensions/SemanticBundle
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/SemanticDrilldown
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/SemanticGenealogy
+    template:
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
+
+  - name: mediawiki/extensions/SemanticImageAnnotator
+    template:
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
+
+  - name: mediawiki/extensions/SemanticImageInput
+    template:
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
+
+  - name: mediawiki/extensions/SemanticInternalObjects
+    template:
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
+
+  - name: mediawiki/extensions/SemanticPageSeries
+    template:
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
+
+  - name: mediawiki/extensions/SemanticTasks
+    template:
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
+
+  - name: mediawiki/extensions/SimpleFarm
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Solarium
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/SpamDiffTool
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+
+  - name: mediawiki/extensions/StickToThatLanguage
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Sudo
+    template:
+      - name: extension-quibble
+      - name: extension-seccheck
+
+  - name: mediawiki/extensions/Survey
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/SVGEdit
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/SideBarMenu
+    template:
+      - name: extension-quibble-composer
+
+  - name: mediawiki/extensions/TitleKey
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/TwnMainPage
+    template:
+      - name: extension-quibble-composer
+
+  - name: mediawiki/extensions/OpenBadges
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/OpenLayers
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/UnblockMe
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/UnicodeConverter
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/UploadBlacklist
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/UrlGetParameters
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/UserOptionStats
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/UserThrottle
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/Variables
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
-  - name: mediawiki/extensions/ZoomableImages
+  - name: mediawiki/extensions/VirtualKeyboard
     template:
       - name: extension-quibble
 
-# End of new currently disabled extensions checks from mass extension import - Addshore
-#
+  - name: mediawiki/extensions/WebChat
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/WebToolsManager
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/WikiForum
+    template:
+      - name: extension-quibble
+
+  - name: mediawiki/extensions/WikiLexicalData
+    template:
+      - name: extension-broken  # T198089
+
+  - name: mediawiki/extensions/Wikispeech
+    template:
+      - name: extension-quibble-noselenium
+      - name: extension-coverage
+
+#### MediaWiki-related services used in Wikimedia production ###
+
   - name: 3d2png
     # Repo doesn't yet pass; not enabling until this doesn't break the repo -- JDF 2019-06-12
     # template:
@@ -7084,6 +7075,52 @@ projects:
   - name: 3d2png/deploy
     experimental:
       - 3d2png-deploy-npm-node-6-docker
+
+  # eventgate-ci is a manual fork in gerrit from
+  # https://github.com/wikimedia/eventgate.
+  # Release changes are manually pushed to eventgate-ci in gerrit.
+  # This is deprecated in favor of eventgate-wikimedia below,
+  # and will be removed as part of
+  # https://phabricator.wikimedia.org/T226668
+  - name: eventgate-ci
+    template:
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
+
+  # eventgate-wikimedia contains the wikimedia specific
+  # eventgate factory code and config.
+  # https://github.com/wikimedia/eventgate is an npm
+  # dependency.
+  - name: eventgate-wikimedia
+    template:
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
+
+  - name: mapdata
+    template:
+      - name: node10-browser-docker
+
+  # To archive, once service has migrated to the pipeline
+  - name: maps/kartotherian/deploy
+    test:
+      - noop
+    gate-and-submit:
+      - noop
+    experimental:
+      - kartotherian-deploy-npm-node-6-docker
+
+  # To archive, once service has migrated to the pipeline
+  - name: maps/tilerator/deploy
+    test:
+      - noop
+    gate-and-submit:
+      - noop
+    experimental:
+      - tilerator-deploy-npm-node-6-docker
+
+  - name: mediawiki/event-schemas
+    template:
+      - name: node10-docker
 
   - name: mediawiki/services/change-propagation
     template:
@@ -7116,6 +7153,12 @@ projects:
     template:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
+
+  - name: eventlogging
+    test:
+      - eventlogging-tox-docker
+    gate-and-submit:
+      - eventlogging-tox-docker
 
   - name: mediawiki/services/graphoid
     template:
@@ -7252,555 +7295,135 @@ projects:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
 
-  - name: mediawiki/extensions/ParsoidBatchAPI
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/PasswordlessLogin
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/PdfHandler
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-seccheck
-      - name: extension-phan
-
-  - name: mediawiki/extensions/PerformanceInspector
-    template:
-      - name: extension-quibble
-      - name: extension-seccheck
-      - name: extension-phan
-
-  - name: mediawiki/extensions/PhpTags
-    template:
-      - name: extension-quibble
-  - name: mediawiki/extensions/PhpTagsFunctions
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/PhpTagsMaps
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/PhpTagsSMW
-    template:
-      - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/PhpTagsSPARQL
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/PhpTagsStorage
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/PhpTagsWidgets
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/PhpTagsWiki
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/Poem
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-seccheck
-      - name: extension-phan
-
-  - name: mediawiki/extensions/PoolCounter
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Popups
-    template:
-      - name: extension-quibble
-      - name: extension-codehealth
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-javascript-documentation
-
-  - name: mediawiki/extensions/ProofreadPage
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Quiz
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-coverage
-
-  - name: mediawiki/extensions/RelatedArticles
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/RelatedSites
-    template:
-      - name: extension-quibble
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Renameuser
-    template:
-      - name: extension-quibble
-      - name: extension-seccheck
-      - name: extension-phan
-
-  - name: mediawiki/extensions/ReplaceSet
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/ReplaceText
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/RSS
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Score
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: mwgate-npm
-
-  - name: mediawiki/extensions/SearchExtraNS
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/SecurePoll
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/SemanticACL
-    template:
-      - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/SemanticBundle
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/SemanticDrilldown
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/SemanticGenealogy
-    template:
-      - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/SemanticImageAnnotator
-    template:
-      - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/SemanticImageInput
-    template:
-      - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/SemanticInternalObjects
-    template:
-      - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/SemanticPageSeries
-    template:
-      - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/SemanticTasks
-    template:
-      - name: extension-broken  # Semantic MediaWiki is on GitHub
-
-  - name: mediawiki/extensions/Sentry
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Scribunto
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-coverage
-
-  - name: mediawiki/extensions/ShortUrl
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/SimpleFarm
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/SiteMatrix
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-seccheck
+#### Wikimedia analytics tools #################################
 
-  - name: mediawiki/extensions/SkinPerPage
+  - name: analytics/aggregator
     template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+      - name: tox-docker
 
-  - name: mediawiki/extensions/Solarium
+  - name: analytics/aqs
     template:
-      - name: extension-quibble
+      - name: node10-docker
 
-  - name: mediawiki/extensions/SpamBlacklist
+  - name: analytics/blog
     template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-seccheck
-      - name: extension-phan
-      - name: extension-coverage
+      - name: tox-docker
 
-  - name: mediawiki/extensions/SpamDiffTool
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-
-  - name: mediawiki/extensions/StickToThatLanguage
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/StopForumSpam
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/SubPageList3
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/SubpageSortkey
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Sudo
-    template:
-      - name: extension-quibble
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Survey
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/SVGEdit
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/TemplateSandbox
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/TextExtracts
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/SideBarMenu
-    template:
-      - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/SyntaxHighlight_GeSHi
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/TemplateData
-    template:
-      - name: extension-gate
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-javascript-documentation
-
-  - name: mediawiki/extensions/TemplateWizard
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Thanks
-    template:
-      - name: extension-quibble
-      - name: extension-gate  # T86687
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/TimedMediaHandler
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/timeline
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-coverage
-
-  - name: mediawiki/extensions/TitleBlacklist
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-coverage
-
-  - name: mediawiki/extensions/TitleKey
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/TocTree
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+  - name: analytics/dashiki
+    experimental:
+      - generic-node10-docker
 
-  - name: mediawiki/extensions/TorBlock
+  - name: analytics/geowiki
     template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+      - name: tox-docker
 
-  - name: mediawiki/extensions/Translate
+  - name: analytics/quarry/web
     template:
-      - name: extension-quibble
-      - name: extension-codehealth
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-seccheck
+      - name: tox-docker
+      - name: node10-docker
 
-  - name: mediawiki/extensions/TranslationNotifications
+  - name: analytics/limn-mobile-data
     template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+      - name: tox-docker
 
-  - name: mediawiki/extensions/TrustedXFF
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/TwnMainPage
-    template:
-      - name: extension-quibble-composer
-
-  - name: mediawiki/extensions/OpenBadges
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/OpenLayers
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/UnblockMe
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/UnicodeConverter
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/UniversalLanguageSelector
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/UploadBlacklist
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/UploadWizard
-    template:
-      - name: extension-quibble
-      - name: mwgate-tox-docker
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/UserMerge
-    template:
-      - name: extension-quibble
-      - name: extension-seccheck
-      - name: extension-coverage
-      - name: extension-phan
-
-  - name: mediawiki/extensions/UserOptionStats
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/UserThrottle
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/Variables
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/VipsScaler
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/VirtualKeyboard
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/VisualEditor
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: commit-message-validator
-      - name: mwgate-rake
-      - name: extension-phan
-      - name: extension-seccheck
-      - name: extension-javascript-documentation
-
-  - name: mediawiki/extensions/WebChat
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/WebToolsManager
-    template:
-      - name: extension-quibble
-
-  - name: mediawiki/extensions/WikiEditor
-    template:
-      - name: extension-quibble
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-seccheck
-
-  - name: mediawiki/extensions/Wikibase
-    template:
-      - name: mwgate-npm
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
-      - name: extension-gate
-      - name: extension-phan
-      - name: extension-javascript-documentation
-      - name: mwgate-rake
-      - name: extension-seccheck
-      - name: extension-codehealth
+  - name: analytics/limn-language-data
     test:
-      - mwselenium-quibble-docker
-      - wikibase-client-docker
-      - wikibase-repo-docker
-    gate-and-submit: &mediawiki-extensions-wikibase-gate-and-submit
-      - mwselenium-quibble-docker
-      - wikibase-client-docker
-      - wikibase-repo-docker
-    gate-and-submit-wmf: *mediawiki-extensions-wikibase-gate-and-submit
+     - noop
+    gate-and-submit:
+     - noop
+
+  - name: analytics/mediawiki-storage
+    template:
+      - name: node10-browser-docker
+
+  - name: analytics/multimedia
+    template:
+      - name: tox-docker
+
+  - name: analytics/refinery/source
+    test:
+     - analytics-refinery-maven-java8-docker
+    gate-and-submit:
+     - analytics-refinery-maven-java8-docker
+
+  - name: analytics/reportupdater
+    template:
+      - name: tox-docker
+
+  - name: analytics/wikistats
+    test:
+     - analytics-wikistats
+    gate-and-submit:
+     - analytics-wikistats
     postmerge:
-      - mwext-doxygen-publish
+     - analytics-wikistats
 
-  - name: mediawiki/extensions/Wikidata.org
+  - name: analytics/wikistats2
     template:
-      - name: extension-quibble-composer
-      - name: extension-phan
-      - name: extension-seccheck
+      - name: node10-browser-docker
 
-  - name: mediawiki/extensions/WikiForum
+  - name: analytics/wikimetrics
     template:
-      - name: extension-quibble
+      - name: tox-docker
 
-  - name: mediawiki/extensions/WikiLexicalData
-    template:
-      - name: extension-broken  # T198089
+  - name: analytics/wmde/scripts
+    test:
+      - composer-php70-docker
+    gate-and-submit:
+      - composer-php70-docker
 
-  - name: mediawiki/extensions/WikiLove
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+  - name: analytics/wmde/toolkit-analyzer
+    test:
+      - analytics-wmde-toolkit-analyzer-maven-java8-docker
+    gate-and-submit:
+      - analytics-wmde-toolkit-analyzer-maven-java8-docker
 
-  - name: mediawiki/extensions/wikihiero
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+  - name: analytics/wmde/toolkit-analyzer-build
+    gate-and-submit:
+     - noop
 
-  - name: mediawiki/extensions/WikimediaBadges
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
+  - name: analytics/wmde/WDCM
+    test:
+     - noop
+     - lintr-docker-non-voting
+    gate-and-submit:
+     - noop
+    experimental:
+     - lintr-docker
 
-  - name: mediawiki/extensions/WikimediaEvents
-    template:
-      - name: extension-quibble
-      - name: extension-coverage
-      - name: extension-phan
-      - name: extension-seccheck
+  - name: analytics/wmde/WDCM-packages
+    test:
+     - noop
+    gate-and-submit:
+     - noop
 
-  - name: mediawiki/extensions/WikimediaIncubator
-    template:
-      - name: extension-quibble-noselenium
-      - name: extension-phan
-      - name: extension-seccheck
+  - name: analytics/wmde/WDCM-Overview-Dashboard
+    test:
+     - noop
+    gate-and-submit:
+     - noop
 
-  - name: mediawiki/extensions/WikimediaMaintenance
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+  - name: analytics/wmde/WDCM-Semantics-Dashboard
+    test:
+     - noop
+    gate-and-submit:
+     - noop
 
-  - name: mediawiki/extensions/WikimediaMessages
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-seccheck
+  - name: analytics/wmde/WDCM-Usage-Dashboard
+    test:
+     - noop
+    gate-and-submit:
+     - noop
 
-  - name: mediawiki/extensions/Wikispeech
+  - name: analytics/wmde/WDCM-ShinyServerFrontPage
+    test:
+     - noop
+    gate-and-submit:
+     - noop
+
+  - name: node-rdkafka-statsd
     template:
-      - name: extension-quibble-noselenium
-      - name: extension-coverage
+      - name: node10-docker
 
 #### PHP Extensions ###################################################
 
@@ -7859,49 +7482,7 @@ projects:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
-  - name: pywikibot/core
-    test:
-      - pywikibot-core-tox-docker
-      - pywikibot-core-tox-fasttest-py27-docker
-      - pywikibot-core-tox-fasttest-py34-docker
-      - pywikibot-core-tox-doc-docker
-    gate-and-submit:
-      - pywikibot-core-tox-docker
-      - pywikibot-core-tox-fasttest-py27-docker
-      - pywikibot-core-tox-fasttest-py34-docker
-      - pywikibot-core-tox-doc-docker
-    postmerge:
-      - pywikibot-core-tox-publish
-
-  - name: pywikibot/i18n
-    template:
-      - name: node10-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
-
-  - name: pywikibot/wikibase
-    test:
-      - pywikibot-wikibase-tox-docker
-    gate-and-submit:
-      - pywikibot-wikibase-tox-docker
-
-  - name: pywikibot/bots/CommonsDelinker
-    test:
-      - pywikibot-CommonsDelinker-tox-docker
-    gate-and-submit:
-      - pywikibot-CommonsDelinker-tox-docker
-
-  - name: pywikibot/bots/xqbot
-    test:
-      - pywikibot-xqbot-tox-docker
-    gate-and-submit:
-      - pywikibot-xqbot-tox-docker
-
-  - name: pywikibot/bots/FLOSSbot
-    test:
-      - pywikibot-FLOSSbot-tox-docker
-    gate-and-submit:
-      - pywikibot-FLOSSbot-tox-docker
+#### MediaWiki libraries #######################################
 
   - name: cdb
     template:
@@ -8111,6 +7692,287 @@ projects:
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
+
+#### Tools deployed on Wikimedia Cloud Services (aka "Labs") ###
+
+  - name: labs/codesearch
+    template:
+      - name: tox-docker
+
+  - name: labs/libraryupgrader
+    template:
+      - name: tox-docker
+
+  - name: labs/libraryupgrader/config
+    template:
+      - name: tox-docker
+
+  - name: labs/striker
+    test:
+      - labs-striker-tox-docker
+    gate-and-submit:
+      - labs-striker-tox-docker
+
+  - name: labs/striker/deploy
+    test:
+      - noop
+    gate-and-submit:
+      - noop
+
+  - name: labs/striker/staticfiles
+    test:
+      - noop
+    gate-and-submit:
+      - noop
+
+  - name: labs/striker/wheels
+    test:
+      - noop
+    gate-and-submit:
+      - noop
+
+  - name: labs/toollabs
+    template:
+      - name: tox-docker
+    test:
+     # Single branch supporting multiple distributions T210780
+     - debian-glue-unstable
+     - debian-glue-trusty
+     - debian-glue-jessie
+     - debian-glue-stretch
+    gate-and-submit:
+     - debian-glue-unstable
+     - debian-glue-stretch
+
+  - name: labs/tools/cdnjs-index
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/commons-mass-description
+    test:
+      - labs-tools-commons-mass-description-tox-docker
+    gate-and-submit:
+      - labs-tools-commons-mass-description-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+  - name: labs/tools/crosswatch
+    template:
+      - name: tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+  - name: labs/tools/extdist
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/extreg-wos
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/forrestbot
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/gblrenamemon
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/harvesting-data-refinery
+    test:
+      - labs-tools-harvesting-data-refinery-tox-docker
+    gate-and-submit:
+      - labs-tools-harvesting-data-refinery-tox-docker
+
+  - name: labs/tools/heritage
+    template:
+      - name: node10-docker
+    test:
+      - composer-php72-docker
+      - labs-tools-heritage-tox-docker
+    gate-and-submit:
+      - composer-php72-docker
+      - labs-tools-heritage-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+    postmerge:
+     - tox-py27-coverage-publish
+
+  - name: labs/tools/ipwatcher
+    test:
+      - labs-tools-ipwatcher-tox-docker
+    gate-and-submit:
+      - labs-tools-ipwatcher-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+  - name: labs/tools/urbanecmbot
+    test:
+      - labs-tools-urbanecmbot-tox-docker
+    gate-and-submit:
+      - labs-tools-urbanecmbot-tox-docker
+
+  - name: labs/tools/guc
+    test:
+      - composer-php72-docker
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
+    gate-and-submit:
+      - composer-php72-docker
+
+  - name: labs/tools/Isa
+    test:
+      - labs-tools-Isa-tox-docker
+    gate-and-submit:
+      - labs-tools-Isa-tox-docker
+
+  - name: labs/tools/ldap
+    test:
+      - labs-tools-ldap-tox-docker
+    gate-and-submit:
+      - labs-tools-ldap-tox-docker
+
+  - name: labs/tools/maintain-kubeusers
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/map-of-monuments
+    test:
+      - labs-tools-map-of-monuments-tox-docker
+    gate-and-submit:
+      - labs-tools-map-of-monuments-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+  - name: labs/tools/massmailer
+    test:
+      - labs-tools-massmailer-tox-docker
+    gate-and-submit:
+      - labs-tools-massmailer-tox-docker
+
+  - name: labs/tools/ptable
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/shorturls
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/stashbot
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/stewardbots
+    template:
+      - name: composer-test-package-php72-or-later
+      - name: tox-docker
+
+  - name: labs/tools/watch-translations
+    test:
+      - labs-tools-watch-translations-tox-docker
+    gate-and-submit:
+      - labs-tools-watch-translations-tox-docker
+
+  - name: labs/tools/weapon-of-mass-description
+    test:
+      - labs-tools-weapon-of-mass-description-tox-docker
+    gate-and-submit:
+      - labs-tools-weapon-of-mass-description-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+  - name: labs/tools/wikibugs2
+    template:
+      - name: tox-docker
+    postmerge:
+     - labs-tools-wikibugs2-autopull
+
+  - name: labs/tools/wikidata-slicer
+    template:
+      - name: node10-docker
+      - name: tox-docker
+
+  - name: labs/tools/wikinity
+    test:
+      - labs-tools-wikinity-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+    gate-and-submit:
+      - labs-tools-wikinity-tox-docker
+
+  - name: labs/tools/awmd-stats
+    template:
+      - name: tox-docker
+
+  - name: labs/tools/graphql
+    template:
+      - name: node10-docker
+
+#### pywikibot #################################################
+
+  - name: pywikibot/core
+    test:
+      - pywikibot-core-tox-docker
+      - pywikibot-core-tox-fasttest-py27-docker
+      - pywikibot-core-tox-fasttest-py34-docker
+      - pywikibot-core-tox-doc-docker
+    gate-and-submit:
+      - pywikibot-core-tox-docker
+      - pywikibot-core-tox-fasttest-py27-docker
+      - pywikibot-core-tox-fasttest-py34-docker
+      - pywikibot-core-tox-doc-docker
+    postmerge:
+      - pywikibot-core-tox-publish
+
+  - name: pywikibot/i18n
+    template:
+      - name: node10-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+  - name: pywikibot/wikibase
+    test:
+      - pywikibot-wikibase-tox-docker
+    gate-and-submit:
+      - pywikibot-wikibase-tox-docker
+
+  - name: pywikibot/bots/CommonsDelinker
+    test:
+      - pywikibot-CommonsDelinker-tox-docker
+    gate-and-submit:
+      - pywikibot-CommonsDelinker-tox-docker
+
+  - name: pywikibot/bots/xqbot
+    test:
+      - pywikibot-xqbot-tox-docker
+    gate-and-submit:
+      - pywikibot-xqbot-tox-docker
+
+  - name: pywikibot/bots/FLOSSbot
+    test:
+      - pywikibot-FLOSSbot-tox-docker
+    gate-and-submit:
+      - pywikibot-FLOSSbot-tox-docker
+
+#### Other tools ###############################################
+
+  - name: mediawiki/ruby/api
+    test:
+      - mediawiki-ruby-api-rake-docker
+    gate-and-submit:
+      - mediawiki-ruby-api-rake-docker
+    postmerge:
+     - mediawiki-ruby-api-bundle-yard-publish
+
+  - name: mediawiki/selenium
+    test:
+     - mediawiki-selenium-rake-docker
+     - mediawiki-selenium-integration-docker
+    gate-and-submit:
+     - mediawiki-selenium-rake-docker
+     - mediawiki-selenium-integration-docker
+    postmerge:
+     - mediawiki-selenium-bundle-yard-publish
 
   - name: wikimedia/security/tooling
     template:
@@ -8402,17 +8264,181 @@ projects:
     gate-and-submit:
       - noop
 
-  - name: releng/local-charts
-    experimental:
-      - helm-lint
+  - name: react.i18n
+    template:
+      - name: node10-docker
 
-  - name: operations/deployment-charts
-    test-prio:
-      - helm-lint
+  - name: react.ooui
+    template:
+      - name: node10-docker
+
+  - name: research/recommendation-api
+    template:
+      - name: tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+  - name: translatewiki
+    test:
+      - translatewiki-rake-docker
+      - composer-php72-docker
     gate-and-submit:
-      - helm-lint
+      - translatewiki-rake-docker
+      - composer-php72-docker
 
-#### Archive repositories##############################################
+  - name: wikimedia-cz/tracker
+    template:
+      - name: node10-browser-docker
+    test:
+      - wikimedia-cz-tracker-tox-docker
+    gate-and-submit:
+      - wikimedia-cz-tracker-tox-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+  - name: wikimedia-cz/tools
+    test:
+      - wikimedia-cz-tools-tox-docker
+    gate-and-submit:
+      - wikimedia-cz-tools-tox-docker
+
+  - name: wikimedia-cz/events
+    test:
+      - wikimedia-cz-events-tox-docker
+    gate-and-submit:
+      - wikimedia-cz-events-tox-docker
+
+  - name: wikimedia-cz/mediawiki-config
+    test:
+      - wikimedia-cz-mediawiki-config-composer-php70-docker
+    gate-and-submit:
+      - wikimedia-cz-mediawiki-config-composer-php70-docker
+
+  - name: wikimedia-cz/web-theme
+    test:
+      - composer-php72-docker
+    gate-and-submit:
+      - composer-php72-docker
+
+  - name: wikimedia-cz/web-plugin
+    test:
+      - composer-php72-docker
+    gate-and-submit:
+      - composer-php72-docker
+
+  - name: wikimedia-ui-base
+    template:
+      - name: node10-docker
+
+  - name: wikimedia/discovery/discovery-parent-pom
+    test:
+      - discovery-parent-pom-maven-java8-docker
+    gate-and-submit:
+      - discovery-parent-pom-maven-java8-docker
+    postmerge:
+      - discovery-parent-pom-maven-java8-docker-site-publish
+
+  - name: wikimedia/discovery/discovery-maven-tool-configs
+    test:
+      - discovery-maven-tool-configs-maven-java8-docker
+    gate-and-submit:
+      - discovery-maven-tool-configs-maven-java8-docker
+    postmerge:
+      - discovery-maven-tool-configs-maven-java8-docker-site-publish
+
+  - name: wikimedia/discovery/relevanceForge
+    template:
+      - name: tox-docker
+
+  - name: wikimedia/discovery/analytics
+    template:
+      - name: tox-docker
+
+  - name: wikimedia/fundraising/dash
+    template:
+      - name: node10-browser-docker
+
+  - name: wikimedia/fundraising/tools/DjangoBannerStats
+    template:
+      - name: tox-docker
+
+  - name: wikimedia/fundraising/process-control
+    template:
+      - name: tox-docker
+
+  - name: wikimedia/fundraising/stats
+    gate-and-submit:
+      - noop
+    experimental:
+      - tox-docker
+
+  - name: wikimedia/fundraising/tools
+    test:
+      - fundraising-tools-tox-docker
+    gate-and-submit:
+      - fundraising-tools-tox-docker
+
+  - name: wikimedia/fundraising/crm
+    test:
+      - wikimedia-fundraising-crm-composer-php72-docker
+      - wikimedia-fundraising-civicrm-docker
+    gate-and-submit:
+      - wikimedia-fundraising-civicrm-docker
+    experimental:
+      - wikimedia-fundraising-crm-composer-php70-docker
+
+  - name: wikimedia/fundraising/crm/civicrm
+    test:
+      - wikimedia-fundraising-civicrm-docker
+    gate-and-submit:
+      - wikimedia-fundraising-civicrm-docker
+
+  - name: wikimedia/fundraising/crm/drupal
+    test:
+      - wikimedia-fundraising-civicrm-docker
+    gate-and-submit:
+      - wikimedia-fundraising-civicrm-docker
+
+  - name: wikimedia/fundraising/crm/vendor
+    test:
+      - wikimedia-fundraising-civicrm-docker
+    gate-and-submit:
+      - wikimedia-fundraising-civicrm-docker
+
+  - name: wikimedia/fundraising/slander
+    template:
+      - name: tox-docker
+
+  - name: wikimedia/fundraising/SmashPig
+    test:
+      - composer-php70-docker
+    gate-and-submit:
+      - composer-php70-docker
+
+  - name: wikimedia/iegreview
+    template:
+     - name: composer-test
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
+
+  - name: wikimedia/wikimania-scholarships
+    template:
+      - name: node10-browser-docker
+    test: &wikimania-scholarships-test
+      - composer-php72-docker
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+    gate-and-submit: *wikimania-scholarships-test
+
+  - name: wikimedia/textcat
+    template:
+     - name: composer-test-package-php72-or-later
+
+  - name: wikimedia/lucene-explain-parser
+    template:
+     - name: composer-test-package-php72-or-later
+
+#### Archive repositories ######################################
 
   - name: apps/android/java-mwapi
     template:
