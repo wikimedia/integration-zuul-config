@@ -146,6 +146,10 @@ def test_gerrit_active_projects_are_in_zuul():
 def test_mediawiki_repos_use_quibble():
     for project in getZuulLayoutProjects():
         name = project['name']
+        if name == 'mediawiki/extensions/DonationInterface':
+            # Does not use any Quibble template but a specific job
+            continue
+
         if (
             not name.startswith('mediawiki/extensions')
             or len(name.split('/')) != 3
