@@ -152,6 +152,7 @@ dependencies = {
     'BlogPage': ['Comments', 'SocialProfile', 'VoteNY'],
     'BlueSpiceAbout': ['BlueSpiceFoundation'],
     'BlueSpiceArticleInfo': ['BlueSpiceFoundation'],
+    'BlueSpiceArticlePreviewCapture': ['BlueSpiceFoundation'],
     'BlueSpiceAuthors': ['BlueSpiceFoundation'],
     'BlueSpiceAvatars': ['BlueSpiceFoundation'],
     'BlueSpiceBookshelf': ['BlueSpiceFoundation'],
