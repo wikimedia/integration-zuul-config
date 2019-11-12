@@ -201,6 +201,7 @@ dependencies = {
     'BlueSpiceNSFileRepoConnector': ['BlueSpiceFoundation', 'NSFileRepo'],
     'BlueSpicePageAccess': ['BlueSpiceFoundation'],
     'BlueSpicePageAssignments': ['BlueSpiceFoundation'],
+    'BlueSpicePageFormsConnector': ['BlueSpiceFoundation', 'PageForms'],
     'BlueSpicePageTemplates': ['BlueSpiceFoundation'],
     'BlueSpicePageVersion': ['BlueSpiceFoundation'],
     'BlueSpicePagesVisited': [
