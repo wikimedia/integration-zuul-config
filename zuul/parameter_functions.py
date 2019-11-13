@@ -275,6 +275,7 @@ dependencies = {
     ],
     'BlueSpiceWatchList': ['BlueSpiceFoundation'],
     'BlueSpiceWhoIsOnline': ['BlueSpiceFoundation'],
+    'BlueSpiceWikiExplorer': ['BlueSpiceFoundation'],
     'BounceHandler': ['Echo', 'CentralAuth'],
     'Campaigns': ['EventLogging'],
     'Capiunto': ['Scribunto'],
