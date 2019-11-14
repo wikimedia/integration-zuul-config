@@ -248,6 +248,9 @@ dependencies = {
     'BlueSpiceSmartList': ['BlueSpiceFoundation', 'VisualEditor'],
     'BlueSpiceSubPageTree': ['BlueSpiceFoundation'],
     'BlueSpiceTagCloud': ['BlueSpiceFoundation'],
+    'BlueSpiceUEModuleBookPDF': ['BlueSpiceFoundation',
+                                 'BlueSpiceUniversalExport',
+                                 'BlueSpiceBookshelf'],
     'BlueSpiceUEModuleDOCX': [
         'BlueSpiceFoundation',
         'BlueSpiceUniversalExport',
