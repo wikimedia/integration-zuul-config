@@ -552,7 +552,8 @@ phan_dependencies = {
     'WikimediaIncubator': ['CentralAuth'],
     'WikimediaMaintenance': ['CentralAuth', 'CirrusSearch', 'cldr', 'Cognate',
                              'MassMessage', 'Wikibase'],
-    'WikimediaMessages': ['GuidedTour', 'ORES', 'skins/MinervaNeue']
+    'WikimediaMessages': ['GuidedTour', 'ORES', 'skins/MinervaNeue'],
+    'Wikisource': ['Wikibase']
 }
 
 
