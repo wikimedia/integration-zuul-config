@@ -11,7 +11,7 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/doxygen:0.5.0-s3
+         image: docker-registry.wikimedia.org/releng/doxygen:0.5.0-s4
          logdir: '/log'
      - doc-publish:
         docsrc: 'src/doc/html'
@@ -34,14 +34,14 @@
 
      # composer install
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s7
+         image: docker-registry.wikimedia.org/releng/composer-php72:0.2.1-s8
          options: '--workdir /src'
          # prefer-dist to get cacheable content
          args: 'install --no-progress --prefer-dist'
          logdir: /log
      # phpunit coverage
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/php72:0.2.3
+         image: docker-registry.wikimedia.org/releng/php72:0.2.4
          options: '--workdir /src'
          logdir: /log
          args: |
