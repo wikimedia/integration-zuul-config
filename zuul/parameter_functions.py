@@ -250,7 +250,8 @@ dependencies = {
     'BlueSpiceTagCloud': ['BlueSpiceFoundation'],
     'BlueSpiceUEModuleBookPDF': ['BlueSpiceFoundation',
                                  'BlueSpiceUniversalExport',
-                                 'BlueSpiceBookshelf'],
+                                 'BlueSpiceBookshelf',
+                                 'BlueSpiceUEModulePDF'],
     'BlueSpiceUEModuleDOCX': [
         'BlueSpiceFoundation',
         'BlueSpiceUniversalExport',
