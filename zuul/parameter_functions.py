@@ -264,11 +264,7 @@ dependencies = {
         'BlueSpiceFoundation',
         'BlueSpiceUniversalExport',
     ],
-    'BlueSpiceRecursive': [
-        'BlueSpiceFoundation',
-        'BlueSpiceUniversalExport',
-    ],
-    'BlueSpiceSubpages': [
+    'BlueSpiceUEModuleSubpages': [
         'BlueSpiceFoundation',
         'BlueSpiceUniversalExport',
     ],
