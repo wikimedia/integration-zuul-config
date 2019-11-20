@@ -25,6 +25,17 @@
       - '{name}-pipeline-{pipeline}'
 
 - project:
+    name: wikimedia-production
+    pipeline:
+      # We don't yet have a test entry point, nor a chart for deployment.
+      - publish
+    jobs:
+      # trigger-mediawiki-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # mediawiki-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
+
+- project:
     name: parsoid
     pipeline:
       - publish

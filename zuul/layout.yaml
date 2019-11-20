@@ -2227,11 +2227,12 @@ projects:
     experimental:
       - mwgate-composer-php72-docker
 
-  # VERY EXPERIMENTAL WIKIMEDIA PRODUCTION BUILD
+  # VERY EXPERIMENTAL WIKIMEDIA PRODUCTION BUILD WITH NO TESTS YET
   - name: wikimedia/production
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
+    gate-and-submit:
+      - noop
+    postmerge:
+      - trigger-wikimedia-production-pipeline-publish
 
 #### MediaWiki skins ###########################################
 
