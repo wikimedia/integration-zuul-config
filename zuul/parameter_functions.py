@@ -264,7 +264,7 @@ dependencies = {
         'BlueSpiceFoundation',
         'BlueSpiceUniversalExport',
     ],
-    'BlueSpiceUEModuleSubpages': [
+    'BlueSpiceUEModulePDFSubpages': [
         'BlueSpiceFoundation',
         'BlueSpiceUniversalExport',
     ],
