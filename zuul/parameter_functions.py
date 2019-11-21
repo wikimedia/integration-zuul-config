@@ -485,7 +485,7 @@ phan_dependencies = {
     'CirrusSearch': ['BetaFeatures', 'Elastica', 'SiteMatrix'],
     'Citoid': ['Cite', 'VisualEditor'],
     'CleanChanges': ['cldr'],
-    'CollaborationKit': ['EventLogging', 'PageImages', 'VisualEditor'],
+    'CollaborationKit': ['EventLogging', 'PageImages', 'VisualEditor', 'Flow'],
     'ConfirmEdit': ['Math'],
     'ContactPage': ['ConfirmEdit'],
     'ContentTranslation': ['AbuseFilter', 'BetaFeatures', 'CentralAuth',
