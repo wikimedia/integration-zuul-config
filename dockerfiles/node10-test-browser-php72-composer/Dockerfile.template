@@ -4,6 +4,8 @@ FROM {{ "composer-php72" | image_tag }} as composer
 
 FROM {{ "php72" | image_tag }} as php72
 
+FROM {{ "php-ast" | image_tag }} as php-ast
+
 FROM {{ "node10-test-browser" | image_tag }}
 
 ## START: O, my kingdom for multiple inheritance!
@@ -38,6 +40,13 @@ RUN {{ packages | apt_install }}
 RUN phpdismod xdebug
 
 RUN {{ "jq" | apt_install }}
+
+# This will override the already-existing ast
+COPY --from=php-ast /usr/lib/php/20170718/ast.so /usr/lib/php/20170718/ast_1.0.1.so
+
+# There should be a nicer way to do this.
+RUN printf '%s\n%s\n%s\n' '; configuration for php ast module' '; priority=20' 'extension=ast_1.0.1.so' > /etc/php/7.2/mods-available/ast.ini
+RUN echo "extension=ast_1.0.1.so" > /etc/php/7.2/cli/conf.d/20-ast.ini
 
 # phantomjs crashes when there is no DISPLAY
 ENV QT_QPA_PLATFORM=offscreen
