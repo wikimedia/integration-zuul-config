@@ -1685,6 +1685,36 @@ project-templates:
       - composer-package-php72-docker
       - composer-package-php73-docker
 
+  - name: php-compile-php70-or-later
+    test:
+     - php-compile-php70-docker
+     - php-compile-php71-docker
+     - php-compile-php72-docker
+     - php-compile-php73-docker
+    gate-and-submit:
+     - php-compile-php70-docker
+     - php-compile-php71-docker
+     - php-compile-php72-docker
+     - php-compile-php73-docker
+
+  - name: php-compile-php71-or-later
+    test:
+     - php-compile-php71-docker
+     - php-compile-php72-docker
+     - php-compile-php73-docker
+    gate-and-submit:
+     - php-compile-php71-docker
+     - php-compile-php72-docker
+     - php-compile-php73-docker
+
+  - name: php-compile-php72-or-later
+    test:
+     - php-compile-php72-docker
+     - php-compile-php73-docker
+    gate-and-submit:
+     - php-compile-php72-docker
+     - php-compile-php73-docker
+
   - name: npm-docker
     test:
       - npm-node-6-docker
@@ -7403,51 +7433,22 @@ projects:
 
   - name: mediawiki/php/excimer
     # excimer is PHP 7.1+ only
-    test:
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-      - php-compile-php73-docker
-    gate-and-submit:
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-      - php-compile-php73-docker
+    template:
+      - name: php-compile-php71-or-later
 
   - name: mediawiki/php/luasandbox
-    test:
-      - php-compile-php70-docker
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-      - php-compile-php73-docker
-    gate-and-submit:
-      - php-compile-php70-docker
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-      - php-compile-php73-docker
+    template:
+      - name: php-compile-php70-or-later
     postmerge:
       - doxygen-publish
 
   - name: mediawiki/php/wikidiff2
-    test:
-      - php-compile-php70-docker
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-      - php-compile-php73-docker
-    gate-and-submit:
-      - php-compile-php70-docker
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-      - php-compile-php73-docker
+    template:
+      - name: php-compile-php70-or-later
 
   - name: mediawiki/php/wmerrors
-    # no check pipeline since -build runs code :-)
-    test:
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-      - php-compile-php73-docker
-    gate-and-submit:
-      - php-compile-php71-docker
-      - php-compile-php72-docker
-      - php-compile-php73-docker
+    template:
+      - name: php-compile-php71-or-later
 
   - name: mediawiki/oauthclient-php
     template:
