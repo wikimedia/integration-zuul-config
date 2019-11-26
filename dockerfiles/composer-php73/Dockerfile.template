@@ -7,7 +7,7 @@ COPY --from=composer /srv/composer /srv/composer
 USER root
 RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
 
-RUN {{ "jq" | apt_install }}
+RUN {{ "jq curl" | apt_install }}
 
 USER nobody
 
