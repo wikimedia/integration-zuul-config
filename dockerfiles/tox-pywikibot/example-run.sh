@@ -11,4 +11,4 @@ docker run \
     --env ZUUL_REF=master \
     --volume /"$(pwd)"/log://log \
     --volume /"$(pwd)"/cache://cache \
-    docker-registry.wikimedia.org/releng/tox-pywikibot:latest -e nose34
+    docker-registry.wikimedia.org/releng/tox-pywikibot:latest -e nose35
