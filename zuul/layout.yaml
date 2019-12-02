@@ -1038,6 +1038,7 @@ project-templates:
      - mwext-php72-phan-seccheck-docker
      - quibble-composer-mysql-php72-docker
      - quibble-composer-mysql-php73-docker
+     - quibble-composer-mysql-php74-docker
     # Surely they are never going to be elected for wmf/ branching or SWAT
 
   - name: extension-seccheck
@@ -1132,6 +1133,7 @@ project-templates:
 
     experimental:
       - quibble-vendor-sqlite-php72-docker
+      - quibble-vendor-mysql-php74-docker
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
@@ -1196,6 +1198,7 @@ project-templates:
 
     experimental:
       - quibble-composer-sqlite-php72-docker
+      - quibble-composer-mysql-php74-docker
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
@@ -1261,6 +1264,7 @@ project-templates:
 
     experimental:
       - quibble-vendor-sqlite-php72-noselenium-docker
+      - quibble-vendor-mysql-php74-noselenium-docker
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
@@ -1359,6 +1363,7 @@ project-templates:
 
     experimental:
       - quibble-composer-sqlite-php72-noselenium-docker
+      - quibble-composer-mysql-php74-noselenium-docker
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
@@ -1582,6 +1587,7 @@ project-templates:
 
     experimental:
       - quibble-vendor-sqlite-php72-docker
+      - quibble-vendor-mysql-php74-docker
       - mwskin-php72-phan-docker
       - mwskin-php72-phan-seccheck-docker
 
@@ -1647,6 +1653,7 @@ project-templates:
     experimental:
       - quibble-composer-sqlite-php72-docker
       - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php74-docker
       - mwskin-php72-phan-docker
       - mwskin-php72-phan-seccheck-docker
 
@@ -1676,6 +1683,8 @@ project-templates:
       - composer-package-php71-docker
       - composer-package-php72-docker
       - composer-package-php73-docker
+    experimental:
+      - composer-package-php74-docker
 
   - name: composer-test-package-php72-or-later
     test:
@@ -1684,6 +1693,8 @@ project-templates:
     gate-and-submit:
       - composer-package-php72-docker
       - composer-package-php73-docker
+    experimental:
+      - composer-package-php74-docker
 
   - name: php-compile-php70-or-later
     test:
@@ -1696,6 +1707,8 @@ project-templates:
      - php-compile-php71-docker
      - php-compile-php72-docker
      - php-compile-php73-docker
+    experimental:
+      - php-compile-php74-docker
 
   - name: php-compile-php71-or-later
     test:
@@ -1706,6 +1719,8 @@ project-templates:
      - php-compile-php71-docker
      - php-compile-php72-docker
      - php-compile-php73-docker
+    experimental:
+      - php-compile-php74-docker
 
   - name: php-compile-php72-or-later
     test:
@@ -1714,6 +1729,8 @@ project-templates:
     gate-and-submit:
      - php-compile-php72-docker
      - php-compile-php73-docker
+    experimental:
+      - php-compile-php74-docker
 
   - name: npm-docker
     test:
@@ -2220,7 +2237,8 @@ projects:
       - train-deploy-notes
     experimental:
       # Experimental php version
-      - mediawiki-quibble-vendor-mysql-php72-docker
+      - mediawiki-quibble-composer-mysql-php74-docker
+      - mediawiki-quibble-vendor-mysql-php74-docker
       - mwgate-composer-php72-docker
       - mediawiki-core-php72-phan-seccheck-docker
 
@@ -7250,6 +7268,7 @@ projects:
       - trigger-parsoid-pipeline-publish
     experimental:
       - generic-node10-npmaudit-docker
+      - parsoidsvc-composer-package-php74-docker
 
   - name: mediawiki/services/parsoid/deploy
     test:
