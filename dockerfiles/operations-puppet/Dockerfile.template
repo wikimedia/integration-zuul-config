@@ -9,9 +9,12 @@ rake ruby ruby-dev ca-certificates default-libmysqlclient-dev mtail \
 isc-dhcp-server unzip lua-busted file"""
 %}
 
+ARG PIP_DISABLE_PIP_VERSION_CHECK=1
+
 USER root
 RUN {{ pkgs_to_install | apt_install }} \
     && pip3 install --no-cache-dir setuptools \
+    && rm -fR "$XDG_CACHE_HOME/pip" \
     && install --owner=nobody --group=nogroup --directory /srv/workspace
 
 USER nobody
