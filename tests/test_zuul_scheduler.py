@@ -1112,6 +1112,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-core-jsduck-docker': True,
             'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php72-docker': True,
+            'mediawiki-quibble-vendor-mysql-php74-docker': True,
             'mediawiki-quibble-vendor-mysql-php73-docker': True,
             'mediawiki-quibble-vendor-mysql-php72-docker': True,
             'mediawiki-quibble-composertest-php72-docker': True,
