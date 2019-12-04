@@ -69,37 +69,27 @@
         - zuul
     builders:
         - shell: |
-            # Clone from Gerrit to $WORKSPACE /source
-            #
+            echo "*** Nuking previous build source tree ***"
+
+            # We clone from Gerrit to $WORKSPACE /source
+            rm -fR source
+
             # Have to first clone from Gerrit to have all the branches
             # (debian/upstream/master...) to be at their proper tip. The git
             # repositories on the zuul-merger instances have their head set at
-            # arbitrary merge commits. Zuul cloner then checkout the
-            # appropriate patch.
-            #
-            # The inlined clone map is to force zuul-cloner to use /source as a
-            # workspace, else it would clone under /source/$ZUUL_PROJECT (the
-            # default).
-            zuul-cloner --version
-            echo "*** Nuking previous build source tree ***"
-            rm -fR source
-            zuul-cloner \
-                 --color \
-                 --verbose \
-                 --workspace source \
-                 --map <(echo "clonemap: [{{name: (.*), dest: .}}]") \
-                 --cache-dir /srv/git \
-                 https://gerrit.wikimedia.org/r/p \
-                 "$ZUUL_PROJECT"
+            # arbitrary merge commits.
+            git clone https://gerrit.wikimedia.org/r/"$ZUUL_PROJECT" source
+
+            # Fetch change from the zuul-merger and check it out
+            git -C ./source fetch "$ZUUL_URL"/"$ZUUL_PROJECT" "$ZUUL_REF"
+            git -C ./source checkout FETCH_HEAD
+
         - shell: |
             # jenkins-debian-glue expects the job to be run with the Jenkins
             # git plugin which exposes metadata via GIT_ environement
             # variables.
-            #export GIT_BRANCH="$ZUUL_BRANCH"
             export GIT_COMMIT="$ZUUL_COMMIT"
-            # generate-git-snapshot checkout -f $GIT_BRANCH but zuul-cloner
-            # checkout the patch in a detached branch, not in the local branch
-            # $ZUUL_BRANCH
+            # generate-git-snapshot does a `git checkout -f "$GIT_BRANCH"`
             export GIT_BRANCH="$GIT_COMMIT"
 
             # Always build against the debian/changelog indicated distribution,
