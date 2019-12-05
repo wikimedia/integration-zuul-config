@@ -954,6 +954,9 @@ jobs:
 
   - name: operations-mw-config-php72-composer-diffConfig-docker
     voting: false
+    # Note that the results are the other way around because we're using `git diff --exit-code`.
+    success-message: 'FAILURE No change detected against the current configuration.'
+    failure-message: 'SUCCESS Please carefully review the change in effective configuration.'
 
   - name: 'integration-config-zuul-layout-diff-docker'
     voting: false
