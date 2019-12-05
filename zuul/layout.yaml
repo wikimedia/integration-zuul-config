@@ -952,6 +952,9 @@ jobs:
       - '^jjb/.*'
       - '^tox.ini$'
 
+  - name: operations-mw-config-php72-composer-diffConfig-docker
+    voting: false
+
   - name: 'integration-config-zuul-layout-diff-docker'
     voting: false
     # Note how the messages are mixed up. Gotta change the job exit code.
@@ -2861,10 +2864,13 @@ projects:
     test-prio:
       - operations-mw-config-php72-composer-lint-docker
       - operations-mw-config-php72-composer-test-docker
+      - operations-mw-config-php72-composer-diffConfig-docker
       - operations-mw-config-typos-docker
     gate-and-submit:
       - operations-mw-config-php72-composer-lint-docker
       - operations-mw-config-php72-composer-test-docker
+      # Not allowed whilst non-voting:
+      # - operations-mw-config-php72-composer-diffConfig-docker
       - operations-mw-config-typos-docker
     postmerge:
       - beta-mediawiki-config-update-eqiad
