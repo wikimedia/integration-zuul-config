@@ -86,10 +86,9 @@
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
         - zuul
-
 - job:
     name: 'operations-puppet-wmf-style-guide'
-    node: DebianJessie
+    node: Docker
     concurrent: false
     triggers:
         - pollscm:
@@ -99,19 +98,31 @@
          url: 'https://gerrit.wikimedia.org/r/p/operations/puppet.git'
          branches:
              - production
-         basedir: 'src'
-         wipe-workspace: true
-         do-not-fetch-tags: true
+         reference-repo: '/srv/git/operations/puppet.git'
+         basedir: gitpolling
          submodule:
              disable: true
+    parameters:
+        - string:
+            name: 'ZUUL_URL'
+            default: 'https://gerrit.wikimedia.org/r/p'
+        - string:
+            name: 'ZUUL_PROJECT'
+            default: 'operations/puppet'
+        - string:
+            name: 'ZUUL_REF'
+            default: 'production'
     builders:
-        - shell: |
-            set -o pipefail
-            rm -fR log
-            mkdir -p log
-            cd src
-            bundle install --path ../bundle
-            bundle exec rake global:wmf_style | tee "$WORKSPACE/log/rake.log"
+        - docker-log-dir
+        - docker-src-dir
+        - docker-cache-dir
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/operations-puppet:0.6.1
+            logdir: '/log'
+            options: '-e RAKE_TARGET=global:wmf_style'
+            # Have host capture the output.
+            # To be processed by the Warnings publisher.
+            args: ' | tee "$WORKSPACE/log/rake.log"'
     wrappers:
         - timeout:
             timeout: 3  # minutes
@@ -130,6 +141,7 @@
             new-thresholds:
                 failed:
                     new-all: 1
+        - docker-cleanup
 
 - project:
     name: 'operations-puppet'
