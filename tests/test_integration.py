@@ -23,7 +23,6 @@ JENKINS_ACCEPTABLE_LABELS = [
     'trigger',
     # The Docker agents:
     'Docker',
-    'Docker && m4executor',
 ]
 
 

@@ -174,7 +174,7 @@
 # Phan! (T132636)
 - job:
     name: 'mediawiki-core-php72-phan-docker'
-    node: Docker && m4executor
+    node: Docker
     properties:
      - build-discarder:
          days-to-keep: 15
@@ -211,7 +211,7 @@
 
 - job:
     name: 'mediawiki-core-php72-phan-seccheck-docker'
-    node: Docker && m4executor
+    node: Docker
     properties:
      - build-discarder:
          days-to-keep: 15
@@ -246,7 +246,7 @@
 
 - job-template: &job_quibble
     name: quibble-{packages-source}-{database}-{php}-docker
-    node: Docker && m4executor
+    node: Docker
     quibble_args: '--skip npm-test'
     triggers:
         - zuul
@@ -365,7 +365,7 @@
 
 - job-template:
     name: mediawiki-quibble-composertest-{php}-docker
-    node: Docker && m4executor
+    node: Docker
     triggers:
         - zuul
     builders:
@@ -519,7 +519,7 @@
 
 - job-template:
     name: 'mwcore-codehealth-{name}'
-    node: Docker && m4executor
+    node: Docker
     branch: '$ZUUL_BRANCH'
     properties:
      - build-discarder:
@@ -609,7 +609,7 @@
 
 - job-template:
     name: 'mwext-codehealth-{name}'
-    node: Docker && m4executor
+    node: Docker
     branch: '$ZUUL_BRANCH'
     properties:
      - build-discarder:
