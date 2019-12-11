@@ -182,6 +182,9 @@
             echo "*** Overriding HOOKDIR ***"
             echo "HOOKDIR=$PBUILDER_HOOKDIR" >> job-pbuilderrc
 
+            echo "*** Forcing colors in pbuilderrc ***"
+            echo "USECOLORS=yes" >> job-pbuilderrc
+
 
             # Regression in Buster. Fixed in jenkins-debian-glue v0.20.1
             echo "ADDITIONAL_BUILDRESULTS+=(../*.lintian.txt)" >> job-pbuilderrc
