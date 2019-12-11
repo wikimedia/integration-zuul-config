@@ -5,10 +5,12 @@ FROM {{ "node10" | image_tag }}
 
 USER root
 
-# build-essential: for compilation.
-# python: for node-gyp.
-# ruby: for jsduck.
-RUN {{ "ruby ruby2.3 ruby2.3-dev rubygems-integration python build-essential" | apt_install }} \
+# Packages:
+# * build-essential: for compilation.
+# * python: for node-gyp.
+# * ruby: for jsduck.
+# * curl: for use by repo-local bash scripts and npm-run commands (T239246).
+RUN {{ "ruby ruby2.3 ruby2.3-dev rubygems-integration python build-essential curl" | apt_install }} \
     && gem install --no-rdoc --no-ri jsduck
 
 USER nobody
