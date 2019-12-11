@@ -195,6 +195,15 @@
 
             export PBUILDER_CONFIG="$WORKSPACE/job-pbuilderrc"
             export LINTIAN=true
+
+            # Skip:
+            # * signing (-sa)
+            # * debian/rules clean, since we start from a fresh workspace
+            export DEBBUILDOPTS="-sa -nc"
+            # When setting DEBBUILDOPTS, jenkins-debian-glue requires
+            # SKIP_ARCH_BUILD to be set
+            export SKIP_ARCH_BUILD=false
+
             /usr/bin/build-and-provide-package
         # Linters
         - debian-glue-lintian
