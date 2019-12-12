@@ -13,8 +13,10 @@ ATTEMPT_COUNTER=0
 MAX_ATTEMPTS=10
 
 # For convenience, export the variables for the analysis task ID and the dashboard URL
-export $( cat .scannerwork/report-task.txt | grep ceTaskId )
-export $( cat .scannerwork/report-task.txt | grep dashboardUrl )
+# Get the path to the report directory from the respective run script
+PATH_TO_REPORT=$1
+export $( cat ${PATH_TO_REPORT}/report-task.txt | grep ceTaskId )
+export $( cat ${PATH_TO_REPORT}/report-task.txt | grep dashboardUrl )
 SONARQUBE_ANALYSIS_URL=https://sonarcloud.io/api/ce/task?id=$ceTaskId
 SONARQUBE_ANALYSIS_RESPONSE=$( curl -s -u ${SONAR_API_KEY}: ${SONARQUBE_ANALYSIS_URL} | jq -r .[].status )
 

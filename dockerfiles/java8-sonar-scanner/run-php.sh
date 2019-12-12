@@ -48,4 +48,4 @@ fi
 # Wait a few seconds to give the analysis a chance to complete
 sleep 5
 
-poll-sonar-for-response
+poll-sonar-for-response .scannerwork

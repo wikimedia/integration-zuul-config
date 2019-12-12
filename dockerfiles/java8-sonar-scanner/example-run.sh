@@ -9,4 +9,4 @@ docker run \
     --env SONAR_API_KEY=yourkey \
     --volume /"$(pwd)"://src \
     docker-registry.wikimedia.org/releng/java8-sonar-scanner \
-        -Dsonar.host.url=https://sonarqube.wikimedia.org
+        -Dsonar.host.url=https://sonarcloud.io
