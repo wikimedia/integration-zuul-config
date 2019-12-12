@@ -49,14 +49,10 @@
           set -x
           env
           rm -rf src source
-          zuul-cloner \
-            --color \
-            --verbose \
-            --workspace source \
-            --map <(echo "clonemap: [{name: (.*), dest: .}]") \
-            --cache-dir /srv/git \
-            https://gerrit.wikimedia.org/r \
-            "$ZUUL_PROJECT"
+
+          git clone https://gerrit.wikimedia.org/r/"$ZUUL_PROJECT" source
+          git -C ./source fetch "$ZUUL_URL"/"$ZUUL_PROJECT" "$ZUUL_REF"
+          git -C ./source checkout FETCH_HEAD
 
           cd source
           NAME="$(dpkg-parsechangelog --show-field source)"
