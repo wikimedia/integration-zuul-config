@@ -988,6 +988,8 @@ jobs:
   - name: mediawiki-core-jsduck-docker
     branch: ^(REL.*|master)$
   - name: mediawiki-core-jsduck-docker-publish
+    # Like the doxygen job, we dont want to run it concurrently.
+    mutex: mediawiki-core-jsduck-docker-publish
     # This excludes wmf-branches (instead of including master/REL-branches) so that
     # it may run on for tags in the 'publish' pipeline (T232055)
     skip-if:
