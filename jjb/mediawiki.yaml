@@ -60,7 +60,7 @@
         - shell: |
             echo -e '<?php\n$wgServer = "http://127.0.0.1";\n' > src/LocalSettings.php
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/doxygen:0.5.0-s4
+            image: docker-registry.wikimedia.org/releng/doxygen:0.6.0
             options: '--workdir /src --entrypoint=/usr/bin/php'
             logdir: '/log'
             args: |
@@ -112,7 +112,7 @@
         - shell: |
             echo -e '<?php\n$wgServer = "http://127.0.0.1";\n' > src/LocalSettings.php
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/doxygen:0.5.0-s4
+            image: docker-registry.wikimedia.org/releng/doxygen:0.6.0
             options: '--workdir /src --entrypoint=/usr/bin/php'
             logdir: '/log'
             args: |
