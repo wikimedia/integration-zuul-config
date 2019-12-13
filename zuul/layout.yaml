@@ -550,8 +550,10 @@ pipelines:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check codehealth\.?\s*$
           email: *email_whitelist
+    success-message: 'Code health checks OK! :)'
     success:
       gerrit: {}
+    failure-message: 'Code health checks failed, but this patch can still be merged.'
     failure:
       gerrit: {}
 
@@ -879,12 +881,12 @@ jobs:
     failure-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/consoleFull'
 
   - name: mwext-codehealth-patch
-    success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-extensions-{build.parameters[EXT_NAME]}&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
-    failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-extensions-{build.parameters[EXT_NAME]}&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
+    success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-extensions-{build.parameters[EXT_NAME]}&branch={build.parameters[ZUUL_CHANGE]}-{build.parameters[ZUUL_PATCHSET]}&resolved=false'
+    failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-extensions-{build.parameters[EXT_NAME]}&branch={build.parameters[ZUUL_CHANGE]}-{build.parameters[ZUUL_PATCHSET]}&resolved=false'
 
   - name: mwcore-codehealth-patch
-    success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
-    failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}&resolved=false'
+    success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}-{build.parameters[ZUUL_PATCHSET]}&resolved=false'
+    failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}-{build.parameters[ZUUL_PATCHSET]}&resolved=false'
 
   # For coverage report jobs, we only want one build at a time.
   #
