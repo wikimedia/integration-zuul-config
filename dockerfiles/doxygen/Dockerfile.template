@@ -2,10 +2,10 @@ FROM {{ "ci-buster" | image_tag }}
 
 USER root
 
-# php-cli is for filters
+# php packages are for mediawiki/core and maintenance/mwdocgen.php
 # Doxygen got backported
 RUN echo "deb http://apt.wikimedia.org/wikimedia buster-wikimedia component/ci" > /etc/apt/sources.list.d/component-ci.list \
-    && {{ "doxygen graphviz php-cli" | apt_install }}
+    && {{ "doxygen graphviz php-cli php-mbstring php-xml" | apt_install }}
 
 COPY run.sh /run.sh
 
