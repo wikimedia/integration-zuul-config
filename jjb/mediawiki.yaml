@@ -497,7 +497,7 @@
       - mwcore-codehealth-{name}:
          # Used for analyzing gerrit patch sets.
          name: 'patch'
-         branch: '$ZUUL_CHANGE'
+         branch: '$ZUUL_CHANGE-$ZUUL_PATCHSET'
          sonar_args: |
              -Dsonar.projectKey=mediawiki-core \
              -Dsonar.projectName=mediawiki-core \
@@ -562,7 +562,8 @@
       - mwext-codehealth-{name}:
          # Used for analyzing gerrit patch sets.
          name: 'patch'
-         branch: '$ZUUL_CHANGE'
+         branch: '$ZUUL_CHANGE-$ZUUL_PATCHSET'
+         # Branch name changes for each revision, e.g. 519448-1, 519448-2
          sonar_args: |
              -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
              -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
