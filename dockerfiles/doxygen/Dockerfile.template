@@ -1,8 +1,11 @@
-# php is for filters
-FROM {{ "php72" | image_tag }}
+FROM {{ "ci-buster" | image_tag }}
 
 USER root
-RUN {{ "doxygen graphviz" | apt_install }}
+
+# php-cli is for filters
+# Doxygen got backported
+RUN echo "deb http://apt.wikimedia.org/wikimedia buster-wikimedia component/ci" > /etc/apt/sources.list.d/component-ci.list \
+    && {{ "doxygen graphviz php-cli" | apt_install }}
 
 COPY run.sh /run.sh
 
