@@ -9,7 +9,7 @@ import unittest
 import xml.etree.ElementTree as ET
 
 from jenkins_jobs.cli.entry import JenkinsJobs
-from nose.plugins.attrib import attr
+import pytest
 import zuul.cmd.server
 
 JENKINS_ACCEPTABLE_LABELS = [
@@ -70,7 +70,7 @@ class IntegrationTests(unittest.TestCase):
             [], lack_timeout,
             'All Jenkins jobs must have a timeout')
 
-    @attr('qa')
+    @pytest.mark.qa
     def test_jenkins_jobs_assigned_nodes(self):
         legacy_node = {}
         for job_file in sorted(glob(self.jjb_out_dir + '/*/config.xml')):
