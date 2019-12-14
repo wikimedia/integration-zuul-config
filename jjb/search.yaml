@@ -27,3 +27,50 @@
         - '{name}-maven-java8-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/java8-mjolnir:0.2.1
             maven_args: --file jvm/pom.xml clean verify
+
+- project:
+    name: java-codehealth
+    packages-source: composer
+    database: mysql
+    jobs:
+      - java-codehealth-{name}:
+         # Used for analyzing gerrit patch sets.
+         name: 'patch'
+         branch: '$ZUUL_CHANGE'
+         publishers:
+           - docker-cleanup
+
+- job-template:
+    name: 'java-codehealth-{name}'
+    node: Docker
+    concurrent: false
+    branch: '$ZUUL_BRANCH'
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+
+    wrappers:
+     - ansicolor
+     - timeout:
+         timeout: 30
+         fail: true
+     - timestamps
+     # SONAR_API_KEY is in Jenkins credentials store
+     # https://integration.wikimedia.org/ci/credentials/
+     - credentials-binding:
+           - text:
+               credential-id: SONAR_API_KEY
+               variable: SONAR_API_KEY
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-src-dir
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.5.0'
+            # Bypass CI fetch/checkout which would discard material from the install stage
+            options: '--entrypoint=/run-java --volume "$(pwd)"/src:/workspace/src'
+            logdir: '/workspace/log'
+    publishers:
+      - docker-cleanup
