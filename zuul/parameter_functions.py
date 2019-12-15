@@ -305,6 +305,7 @@ dependencies = {
                            'UniversalLanguageSelector', 'VisualEditor'],
     'ContributorsAddon': ['Contributors'],
     'CookieWarning': ['MobileFrontend'],
+    'CreateAPage': ['WikiEditor'],
     'CustomPage': ['skins/CustomPage'],
     'Dashiki': ['JsonConfig'],
     'DiscussionTools': ['VisualEditor'],
