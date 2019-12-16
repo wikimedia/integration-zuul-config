@@ -1,4 +1,5 @@
 import os
+import unittest
 
 from fakes import FakeItemChange
 
@@ -9,19 +10,21 @@ execfile(os.path.join(
     '../zuul/parameter_functions.py'))
 
 
-class TestDocFunctions:
+class TestDocFunctions(unittest.TestCase):
 
     def assertDocSubpath(self, expected, item):
         params = {}
         set_doc_variables(item, None, params)
-        assert 'DOC_SUBPATH' in params, "Missing parameter: 'DOC_SUBPATH': %s"\
-                                        % expected
-        assert expected == params.get('DOC_SUBPATH')
+        self.assertIn(
+            'DOC_SUBPATH', params,
+            "Missing parameter: 'DOC_SUBPATH': %s" % expected)
+        self.assertEqual(expected, params.get('DOC_SUBPATH'))
 
     def assertNoDocSubpath(self, item):
         params = {}
         set_doc_variables(item, None, params)
-        assert 'DOC_SUBPATH' not in params, 'DOC_SUBPATH should not be set'
+        self.assertNotIn('DOC_SUBPATH', params,
+                         'DOC_SUBPATH should not be set')
 
     def test_change_with_no_ref_nor_refspec(self):
         self.assertNoDocSubpath(FakeItemChange('master'))
@@ -52,4 +55,4 @@ class TestDocFunctions:
         for project, expected in projects.items():
             params = {'ZUUL_PROJECT': project}
             set_doc_variables(FakeItemChange('', ref='master'), None, params)
-            assert params['DOC_PROJECT'] == expected
+            self.assertEqual(params['DOC_PROJECT'], expected)

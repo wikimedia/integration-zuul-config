@@ -9,10 +9,11 @@ Runs daily on Wikimedia Jenkins:
 
 import json
 import os
+import unittest
 import urllib
 import yaml
 
-import pytest
+from nose.plugins.attrib import attr
 
 GERRIT_IGNORE = (
     'All-Avatars',
@@ -60,16 +61,20 @@ class ZuulProjects(list):
         return "<zuul projects>"
 
 
-@pytest.fixture(scope='module')
-def gerrit_repos():
+# Globals, initialized in setup()
+GERRIT_REPOS = None
+ZUUL_PROJECTS = None
+
+
+def getGerritRepos():
     req = urllib.urlopen(
         'https://gerrit.wikimedia.org/r/projects/?type=code&description')
     # Strip Gerrit json harness: )]}'
     req.readline()
-    return GerritRepos({
+    return {
         name: meta['state']
         for (name, meta) in json.load(req).iteritems()
-    })
+    }
 
 
 def getZuulLayoutProjects():
@@ -81,44 +86,58 @@ def getZuulLayoutProjects():
     return projects
 
 
-@pytest.fixture(scope='module')
-def zuul_projects():
+def setup():
+    global GERRIT_REPOS
+    global ZUUL_PROJECTS
+    # Make them custom dict and list that hide __repr__(). See note above
+    GERRIT_REPOS = GerritRepos(getGerritRepos())
     project_names = [p['name'] for p in getZuulLayoutProjects()]
-    return ZuulProjects(sorted(project_names))
+    ZUUL_PROJECTS = ZuulProjects(project_names)
 
 
-@pytest.mark.qa
-def test_repo_in_zuul(gerrit_repos, zuul_projects):
-    repos = [repo for (repo, state) in gerrit_repos.iteritems()
+test = unittest.TestCase('__init__')
+qa = True  # attribute for nose filtering
+
+
+@attr('qa')
+def test_repo_in_zuul():
+    repos = [repo for (repo, state) in GERRIT_REPOS.iteritems()
              if repo.startswith(('mediawiki/extensions', 'mediawiki/skins'))
              and len(repo.split('/')) == 3  # skip sub repos
              and state == 'ACTIVE']
     for repo in sorted(repos):
-        assert repo in zuul_projects, 'Mediawiki repo is in Zuul: %s' % repo
+        test.assertIn.__func__.description = (
+            'Mediawiki repo is in Zuul: %s' % repo)
+        yield test.assertIn, repo, ZUUL_PROJECTS
+    del(test.assertIn.__func__.description)
 
 
-@pytest.mark.qa
-def test_zuul_projects_are_in_gerrit(zuul_projects, gerrit_repos):
+@attr('qa')
+def test_zuul_projects_are_in_gerrit():
     """All projects in Zuul layout.yaml must be active in Gerrit"""
-    for zuul_project in sorted(zuul_projects):
-        assert zuul_project in gerrit_repos, \
-            "Zuul project is in Gerrit: %s" % zuul_project
+    for zuul_project in sorted(ZUUL_PROJECTS):
+        test.assertIn.__func__.description = (
+            "Zuul project is in Gerrit: %s" % zuul_project)
+        yield test.assertIn, zuul_project, GERRIT_REPOS
+    del(test.assertIn.__func__.description)
 
 
-@pytest.mark.qa
-def test_gerrit_active_projects_are_in_zuul(gerrit_repos, zuul_projects):
+@attr('qa')
+def test_gerrit_active_projects_are_in_zuul():
     """All Gerrit active projects are in Zuul layout.yaml"""
     gerrit_active = [
-        repo for (repo, state) in gerrit_repos.iteritems()
+        repo for (repo, state) in GERRIT_REPOS.iteritems()
         if state == 'ACTIVE'
         and repo not in GERRIT_IGNORE
     ]
     for gerrit_project in sorted(gerrit_active):
-        assert gerrit_project in zuul_projects, \
-            "Gerrit project is in Zuul: %s" % gerrit_project
+        test.assertIn.__func__.description = (
+            "Gerrit project is in Zuul: %s" % gerrit_project)
+        yield test.assertIn, gerrit_project, ZUUL_PROJECTS
+    del(test.assertIn.__func__.description)
 
 
-@pytest.mark.qa
+@attr('qa')
 def test_mediawiki_repos_use_quibble():
     for project in getZuulLayoutProjects():
         name = project['name']
@@ -146,11 +165,13 @@ def test_mediawiki_repos_use_quibble():
             or 'extension-quibble-composer' in templates
             or 'extension-quibble-noselenium' in templates
             or 'extension-quibble-composer-noselenium' in templates)
-        assert has_quibble is True, \
+        test.assertIn.__func__.description = (
+            'MediaWiki extension uses Quibble: %s' % name)
+        yield test.assertTrue, has_quibble, \
             'Quibble template not found for %s' % name
 
 
-@pytest.mark.qa
+@attr('qa')
 def test_repos_with_debian_files_have_debian_glue_job():
 
     def has_debian_glue(zuul_project_def):
@@ -179,5 +200,7 @@ def test_repos_with_debian_files_have_debian_glue_job():
         [change['project'] for change in json.load(req)]
     )))
     for d in debian_projects:
-        assert d in debian_glued, \
+        test.assertTrue.__func__.description = (
+            'Debian glue jobs for: %s' % d)
+        yield test.assertTrue, (d in debian_glued), \
             'Repository with debian changes but no debian glue job: %s' % d
