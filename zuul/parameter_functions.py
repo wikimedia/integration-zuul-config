@@ -451,7 +451,7 @@ dependencies = {
                                    'CirrusSearch',
                                    'WikibaseCirrusSearch'],
     'WikibaseMediaInfo': ['Wikibase', 'UniversalLanguageSelector',
-                          'WikibaseCirrusSearch', 'Kartographer'],
+                          'WikibaseCirrusSearch'],
     'WikibaseQuality': ['Wikibase'],
     'WikibaseQualityConstraints': ['Wikibase'],
     'WikibaseQualityExternalValidation': ['Wikibase', 'WikibaseQuality'],
