@@ -1693,6 +1693,12 @@ project-templates:
       - composer-php70-docker
       - composer-php72-docker
 
+  - name: composer-test-php72-or-later
+    test:
+      - composer-php72-docker
+    gate-and-submit:
+      - composer-php72-docker
+
   - name: composer-test-package
     test:
       - composer-package-php70-docker
@@ -2105,7 +2111,7 @@ projects:
 
   - name: labs/tools/sonarqubebot
     template:
-      - name: composer-test
+      - name: composer-test-php72-or-later
 
 #### MediaWiki itself ##########################################
 
