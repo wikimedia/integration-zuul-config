@@ -995,7 +995,7 @@ class TestZuulScheduler(unittest.TestCase):
             'In JJB: add extension to "gatedextensions"')
 
     def test_pipelines_have_report_action_to_gerrit(self):
-        not_reporting = ['post', 'publish']
+        not_reporting = ['post', 'publish', 'codehealth']
         required_actions = ['success', 'failure']
         reporting_pipelines = [
             p for p in self.getPipelines()

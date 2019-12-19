@@ -552,10 +552,11 @@ pipelines:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check codehealth\.?\s*$
           email: *email_whitelist
-    success-message: 'Code health checks OK! :)'
-    success:
-      gerrit: {}
-    failure-message: 'Code health checks failed, but this patch can still be merged.'
+    # Success is reported via Verified +1 by SonarQube Bot
+    # https://gerrit.wikimedia.org/r/admin/projects/labs/tools/sonarqubebot
+    # depending on whether the quality gates in SonarQube passed/failed.
+    # Failure is reported back to gerrit in case of low-level failures,
+    # and not the actual outcome of the SonarQube analysis.
     failure:
       gerrit: {}
 
