@@ -1,4 +1,14 @@
 - project:
+    # blubber-doc/examples/helloworldoid
+    name: helloworldoid
+    pipeline:
+      - test
+    jobs:
+      # trigger-helloworldoid-pipeline-test
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # helloworldoid-pipeline-test
+      - '{name}-pipeline-{pipeline}'
+
     name: blubber
     pipeline:
       - test
