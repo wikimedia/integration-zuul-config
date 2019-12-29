@@ -509,6 +509,7 @@ phan_dependencies = {
                           'skins/MinervaNeue', 'Flow', 'MobileFrontend',
                           'Echo'],
     'ImageRating': ['SocialProfile', 'VoteNY'],
+    'intersection': ['PageImages'],
     'JsonConfig': ['Scribunto', 'Kartographer'],
     'Kartographer': ['GeoData', 'JsonConfig'],
     'LiquidThreads': ['Renameuser'],
