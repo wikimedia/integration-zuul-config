@@ -7238,6 +7238,14 @@ projects:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
 
+  - name: schemas/event/primary
+    template:
+      - name: node10-docker
+
+  - name: schemas/event/secondary
+    template:
+      - name: node10-docker
+
   - name: mapdata
     template:
       - name: node10-browser-docker
@@ -7260,6 +7268,8 @@ projects:
     experimental:
       - tilerator-deploy-npm-node-6-docker
 
+  # To archive once schemas/event/{primary,secondary} are used everywhere.
+  # https://phabricator.wikimedia.org/T240985
   - name: mediawiki/event-schemas
     template:
       - name: node10-docker
