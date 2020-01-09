@@ -36,7 +36,6 @@
       - java-codehealth-{name}:
          # Used for analyzing gerrit patch sets.
          name: 'patch'
-         branch: '$ZUUL_CHANGE'
          publishers:
            - docker-cleanup
 
@@ -44,13 +43,11 @@
     name: 'java-codehealth-{name}'
     node: Docker
     concurrent: false
-    branch: '$ZUUL_BRANCH'
     properties:
      - build-discarder:
          days-to-keep: 15
     triggers:
      - zuul
-
     wrappers:
      - ansicolor
      - timeout:
@@ -68,7 +65,7 @@
         - docker-log-dir
         - docker-src-dir
         - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.5.1'
+            image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.5.2'
             # Bypass CI fetch/checkout which would discard material from the install stage
             options: '--entrypoint=/run-java --volume "$(pwd)"/src:/workspace/src'
             logdir: '/workspace/log'
