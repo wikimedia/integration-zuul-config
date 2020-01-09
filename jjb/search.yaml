@@ -64,10 +64,10 @@
         - docker-castor-load
         - docker-log-dir
         - docker-src-dir
+        - docker-ci-src-setup-simple
         - docker-run-with-log-cache-src:
             image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.5.2'
-            # Bypass CI fetch/checkout which would discard material from the install stage
-            options: '--entrypoint=/run-java.sh --volume "$(pwd)"/src:/workspace/src'
+            options: '--entrypoint=/run-java.sh --workdir=/src'
             logdir: '/workspace/log'
     publishers:
       - docker-cleanup
