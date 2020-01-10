@@ -14,7 +14,7 @@ set +x
 if [[ $ZUUL_BRANCH = "master" ]]; then
   ./mvnw -gs /settings.xml sonar:sonar
 else
-  ./mvnw -gs /settings.xml sonar:sonar -Dsonar.branch.target="$ZUUL_BRANCH" -Dsonar.branch.name="$ZUUL_CHANGE-$ZUUL_PATCHSET"
+  ./mvnw -gs /settings.xml sonar:sonar -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT" -Dsonar.branch.target="$ZUUL_BRANCH" -Dsonar.branch.name="$ZUUL_CHANGE-$ZUUL_PATCHSET"
 fi
 # Analysis is sent via a webhook from SonarQube to a web application (SonarQube Bot)
 # and the bot will comment in gerrit with Verified +1 for success or comment only
