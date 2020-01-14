@@ -500,6 +500,7 @@
          sonar_args: |
              -Dsonar.projectKey=mediawiki-core \
              -Dsonar.projectName=mediawiki-core \
+             -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT" \
              -Dsonar.organization=wmftest \
              -Dsonar.host.url=https://sonarcloud.io \
              -Dsonar.branch.target="$ZUUL_BRANCH" \
@@ -566,6 +567,7 @@
          sonar_args: |
              -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
              -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT" \
              -Dsonar.organization=wmftest \
              -Dsonar.host.url=https://sonarcloud.io \
              -Dsonar.branch.target="$ZUUL_BRANCH" \
