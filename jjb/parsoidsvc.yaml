@@ -65,6 +65,31 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+# This is an horrendous hack; delete as soon as Parsoid is a proper composer library!
+- job-template:
+    name: '{name}-deploy-composer-testonly-{phpflavor}-docker'
+    node: Docker
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-cache-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: '{image}'
+        options: '--workdir /src'
+        logdir: '/log'
+        # We want to run `composer test` without `composer install`
+        args: 'test'
+    publishers:
+     - castor-save-workspace-cache
+     - docker-cleanup
+
 - project:
     name: parsoidsvc
     jobs:
@@ -77,6 +102,10 @@
             script:
                 - roundtrip
                 - toolcheck
+        - '{name}-deploy-composer-testonly-{phpflavor}-docker':
+            phpflavor:
+              - php72:
+                  image: docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s1
 
         # For the source repo
         - '{name}-npm-node-6-docker'
