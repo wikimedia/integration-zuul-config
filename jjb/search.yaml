@@ -29,6 +29,12 @@
             maven_args: --file jvm/pom.xml clean verify
 
 - project:
+    name: wikimedia-discovery-analytics
+    jobs:
+        - '{name}-tox-docker':
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-pyspark:0.5.1
+
+- project:
     name: java-codehealth
     packages-source: composer
     database: mysql
