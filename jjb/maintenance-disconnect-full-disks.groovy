@@ -6,7 +6,7 @@ def executionTimeout = params.EXECUTION_TIMEOUT_SECONDS.toInteger()
 def cleanupPercentage = params.CLEANUP_PERCENTAGE.toInteger()
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
 
-def computerNamePrefix = 'integration-slave-'
+def computerNamePrefix = 'integration-agent-'
 def masterName = 'contint1001'
 
 def ircAlerts = []
