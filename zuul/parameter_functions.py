@@ -551,6 +551,7 @@ phan_dependencies = {
     'UniversalLanguageSelector': ['Babel', 'BetaFeatures', 'MobileFrontend',
                                   'cldr'],
     'UploadWizard': ['EventLogging'],
+    'WebAuthn': ['OATHAuth'],
     'WikiEditor': ['EventLogging', 'WikimediaEvents'],
     'WikiLove': ['Flow', 'LiquidThreads'],
     'WikibaseCirrusSearch': ['CirrusSearch', 'Wikibase'],
