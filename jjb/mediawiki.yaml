@@ -266,15 +266,6 @@
         - compress-mw-debug-logs
         - archive-log-allow-empty
         - castor-save-workspace-cache
-        # Job duration to statsd - T201972
-        - conditional-publisher:
-            - condition-kind: shell
-              condition-command: '
-                [ $JOB_NAME = "mediawiki-quibble-vendor-mysql-php72-docker" ] &&
-                [ $ZUUL_PROJECT = "mediawiki/core" ] &&
-                [ $ZUUL_BRANCH = "master" ]'
-              action:
-                - record-node-stats
         - docker-cleanup
     wrappers:
         - timeout:
