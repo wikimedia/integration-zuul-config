@@ -413,6 +413,7 @@ dependencies = {
     'TranslationNotifications': ['MassMessage', 'Translate'],
     'TopTenPages': ['HitCounters'],
     'TorBlock': ['AbuseFilter'],
+    'TwitterCards': ['TextExtracts'],
     'TwnMainPage': ['Translate'],
     'TwoColConflict': ['BetaFeatures', 'EventLogging', 'WikiEditor'],
     'UniversalLanguageSelector': ['EventLogging'],
