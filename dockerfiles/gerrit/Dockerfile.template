@@ -13,7 +13,8 @@ RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/nod
 
 # curl is required by Gerrit tools/download_file.py
 # zip by src/tools/js/download_bower.py
-RUN {{ "curl zip python3" | apt_install }}
+# TODO: Migrate to python3 (and python3-minimal)
+RUN {{ "curl zip python-minimal python2" | apt_install }}
 
 USER nobody
 
