@@ -122,6 +122,9 @@ class TestZuulLayout(unittest.TestCase):
         bsrepos = [r for r in self.getExtSkinRepos()
                    if '/BlueSpice' in r['name']]
         for project in bsrepos:
+            if project['name'] in ['mediawiki/extensions/BlueSpiceMenues']:
+                # Ignore archived project
+                continue
             try:
                 if 'template' not in project:
                     continue
