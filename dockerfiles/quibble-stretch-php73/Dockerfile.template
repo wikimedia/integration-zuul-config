@@ -38,6 +38,9 @@ RUN {{ mediawiki_deps | apt_install }}
 # Install XDebug but disables it by default due to its performance impact
 RUN {{ "php-xdebug" | apt_install }} \
     && phpdismod xdebug
+# Same for pcov, although the performance overheade should be minimal
+RUN {{ "php7.3-pcov" | apt_install }} \
+    && phpdismod pcov
 
 # Unprivileged
 RUN install --directory /workspace --owner=nobody --group=nogroup
