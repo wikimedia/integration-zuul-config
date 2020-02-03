@@ -318,14 +318,15 @@
     triggers:
         - zuul
 
+# Main Quibble testing; excludes Selenium and API testing, done in own jobs.
 - job-template:
     !!merge : *job_quibble
     name: mediawiki-quibble-{packages-source}-{database}-{php}-docker
-    # Selenium tests are run via the mediawiki-quibble-selenium-* job defined below
-    quibble_args: '--skip selenium,composer-test,npm-test'
+    quibble_args: '--skip selenium,composer-test,npm-test,api-testing'
     triggers:
         - zuul
 
+# Selenium-only Quibble testing.
 - job-template:
     !!merge : *job_quibble
     name: mediawiki-quibble-selenium-{packages-source}-docker
@@ -333,6 +334,15 @@
     triggers:
         - zuul
 
+# API-only Quibble testing.
+- job-template:
+    !!merge : *job_quibble
+    name: mediawiki-quibble-apitests-{packages-source}-docker
+    quibble_args: '--run api-testing'
+    triggers:
+        - zuul
+
+# Testing for API testing framework repo.
 - job-template:
     !!merge : *job_quibble
     name: 'mediawiki-quibble-api-testing-vendor-{database}-{php}-docker'
@@ -829,6 +839,9 @@
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
         - mediawiki-quibble-selenium-{packages-source}-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s1
+            database: 'mysql'
+        - mediawiki-quibble-apitests-{packages-source}-docker:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s1
             database: 'mysql'
         - mwcore-phpunit-coverage-patch:
