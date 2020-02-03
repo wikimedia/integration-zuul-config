@@ -2027,6 +2027,7 @@ projects:
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
+      - mediawiki-quibble-apitests-vendor-docker
       - mediawiki-core-jsduck-docker
       - mediawiki-core-php72-phan-docker
     php:
@@ -2041,6 +2042,7 @@ projects:
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
+      - mediawiki-quibble-apitests-vendor-docker
       - mediawiki-quibble-vendor-sqlite-php72-docker
       - mediawiki-quibble-vendor-postgres-php72-docker
 
@@ -2112,6 +2114,7 @@ projects:
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
+      - mediawiki-quibble-apitests-vendor-docker
       - mediawiki-core-jsduck-docker
       - mediawiki-core-php72-phan-docker
     gate-and-submit-wmf:
@@ -2121,6 +2124,7 @@ projects:
       - mediawiki-quibble-composertest-php72-docker
 
       - mediawiki-quibble-selenium-vendor-docker
+      - mediawiki-quibble-apitests-vendor-docker
 
       # FIXME jsduck is most probably no more used on wmf branches
       - mediawiki-core-jsduck-docker
@@ -2159,7 +2163,6 @@ projects:
       - mediawiki-quibble-vendor-mysql-php74-docker
       - mwgate-composer-php72-docker
       - mediawiki-core-php72-phan-seccheck-docker
-      - mediawiki-quibble-apitests-vendor-docker
 
   - name: mediawiki/debian
     test:
@@ -2172,15 +2175,18 @@ projects:
       - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
+      - mediawiki-quibble-apitests-vendor-docker
     gate-and-submit:
       - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
+      - mediawiki-quibble-apitests-vendor-docker
 
     gate-and-submit-wmf:
       - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
+      - mediawiki-quibble-apitests-vendor-docker
 
     # CI no more supports mediawiki/vendor on release branches, folks should
     # use composer install instead. T189560
