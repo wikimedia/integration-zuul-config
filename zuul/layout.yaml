@@ -8225,12 +8225,10 @@ projects:
       - wikidata-query-blazegraph-maven-java8-docker
 
   - name: wikidata/query/gui
-    test:
-      - generic-node10-browser-docker
+    template:
+      - name: node10-browser-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
-    gate-and-submit:
-      - generic-node10-browser-docker
     postmerge:
       - wikidata-query-gui-build
 
