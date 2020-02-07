@@ -449,6 +449,7 @@ dependencies = {
         'WikibaseLexeme',
         'skins/MinervaNeue',
         'MobileFrontend',
+        'Math',
     ],
     'WikibaseCirrusSearch': ['Wikibase', 'CirrusSearch'],
     'WikibaseJavaScriptApi': ['Wikibase'],
