@@ -113,19 +113,15 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/tox:0.4.0
+         image: docker-registry.wikimedia.org/releng/tox:0.4.1
          logdir: '/log'
          args: '-e py27 -- --cover-html --cover-html-dir=coverage/ --cover-xml --cover-xml-file=/log/coverage.xml'
-     # FIXME: we would probably want a Docker container for slave scripts
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/tox:0.4.1
+         options: '--entrypoint=/usr/bin/cobertura-clover-transform'
+         logdir: '/log'
+         args: '/log/coverage.xml -o /log/clover.xml'
      - shell: |
-         mkdir -p slave-scripts
-         cd slave-scripts
-         git init
-         git fetch --depth 2 --quiet https://gerrit.wikimedia.org/r/p/integration/jenkins.git
-         git checkout --quiet FETCH_HEAD
-         git submodule --quiet update --init --recursive
-     - shell: |
-         ./slave-scripts/bin/cobertura-clover-transform.py log/coverage.xml -o log/clover.xml
          cp log/clover.xml src/coverage/clover.xml
      - cover-publish:
         src: 'src/coverage'
