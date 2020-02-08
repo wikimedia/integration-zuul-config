@@ -8,6 +8,7 @@ python3-dev
 python3.4-dev
 python3.6-dev
 python3.7-dev
+python3-lxml
 python3-wheel
 pypy
 gcc
@@ -21,6 +22,8 @@ libssl-dev
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1
 
 ADD pyall.list /etc/apt/sources.list.d/pyall.list
+ADD cobertura-clover-transform.py /usr/bin/cobertura-clover-transform
+ADD cobertura-clover-transform.xslt /usr/bin/cobertura-clover-transform.xslt
 
 RUN {{ packages | apt_install }} \
     && pip install pip==8.1.2 && pip3 install pip==8.1.2 \
