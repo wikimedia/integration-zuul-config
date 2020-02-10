@@ -44,3 +44,23 @@
     jobs:
       - 'php-compile-{name}-docker':
           image: php74-compile:0.0.3
+
+- job:
+    name: 'php74-compile-coverage-publish'
+    node: Docker
+    triggers:
+     - zuul
+    builders:
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - docker-run:
+        options: '--volume "$(pwd)"/src:/src'
+        image: 'docker-registry.wikimedia.org/releng/php74-compile:0.0.4'
+     - cover-publish:
+        src: 'src/coverage'
+        dest: '$DOC_PROJECT'
+    publishers:
+      - archive:
+          artifacts: 'src/tests/*.log'
+          allow-empty: true
+      - docker-cleanup
