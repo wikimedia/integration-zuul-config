@@ -54,7 +54,7 @@
      - docker-src-dir
      - docker-ci-src-setup-simple
      - docker-run:
-        options: '--volume "$(pwd)"/src:/src'
+        options: '--volume "$(pwd)"/src:/src --entrypoint=/run-coverage.sh'
         image: 'docker-registry.wikimedia.org/releng/php74-compile:0.0.4'
      - cover-publish:
         src: 'src/coverage'
