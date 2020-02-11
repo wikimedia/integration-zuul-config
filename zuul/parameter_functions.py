@@ -423,7 +423,7 @@ dependencies = {
     'VEForAll': ['VisualEditor'],
     'VikiSemanticTitle': ['VIKI'],
     'VikiTitleIcon': ['VIKI'],
-    'VisualEditor': ['Cite', 'TemplateData', 'ConfirmEdit'],
+    'VisualEditor': ['Cite', 'TemplateData', 'FlaggedRevs', 'ConfirmEdit'],
     'WebAuthn': ['OATHAuth'],
     'WebDAVClientIntegration': ['WebDAV'],
     'WebDAVMinorSave': ['WebDAV'],
