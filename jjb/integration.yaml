@@ -93,20 +93,6 @@
          types:
              - junit:
                  pattern: 'log/junit*.xml'
-     - email-ext:
-         recipients: releng@lists.wikimedia.org qa-alerts@lists.wikimedia.org
-         content-type: html
-         failure: true
-         unstable: true
-         body: |
-             ${SCRIPT, template="wikimedia.template"}
-             <h2>Changes since last build</h2>
-             <p>
-             ${CHANGES_SINCE_LAST_BUILD}</p>
-             <h2>Console output</h2>
-             <pre>
-             ${BUILD_LOG}
-             </pre>
      - docker-cleanup
 
 - project:
