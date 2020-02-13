@@ -998,6 +998,11 @@ jobs:
     queue-name: archived-repos
     failure-message: 'This repository has been archived and new patches are not being accepted. If you want to maintain it follow https://www.mediawiki.org/wiki/Gerrit/Privilege_policy#Requesting_Gerrit_privileges and then change which jobs get run.'
 
+  - name: train-deploy-notes
+    branch: ^wmf/
+    files:
+      - '^includes/DefaultSettings\.php$'
+
 project-templates:
 
   # For extensions that have broken tests or magic behaviors that CI does not support.

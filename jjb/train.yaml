@@ -12,21 +12,11 @@
     triggers:
       - zuul
     builders:
-      - shell: |
-          #!/usr/bin/env bash
-          set -euxo pipefail
-
-          if [[ "$ZUUL_OLDREV" != "0000000000000000000000000000000000000000" ]]; then
-            echo "Job is only for new refs, not ref updates..."
-            exit 1
-          fi
-
-          if [[ ! $ZUUL_REF =~ "refs/heads/wmf/1." ]]; then
-            echo "Job is not for this branch..."
-            exit 1
-          fi
       - docker-log-dir
       - docker-src-dir
+      - docker-ci-src-setup-simple:
+          options: >
+            --env GIT_NO_SUBMODULES=yes
       - docker-run-with-log-cache-src:
           image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.3'
           logdir: '/log'
