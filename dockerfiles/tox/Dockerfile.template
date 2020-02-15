@@ -35,6 +35,8 @@ RUN {{ packages | apt_install }} \
     && rm -fR "$XDG_CACHE_HOME/pip"
 
 USER nobody
+# workaround https://github.com/pypa/virtualenv/issues/1640
+ENV XDG_DATA_HOME=/tmp
 WORKDIR /src
 ENTRYPOINT ["/run.sh"]
 COPY run.sh /run.sh
