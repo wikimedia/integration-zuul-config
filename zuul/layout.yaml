@@ -7835,11 +7835,10 @@ projects:
   - name: labs/tools/heritage
     template:
       - name: node10-docker
+      - name: composer-test-php72-or-later
     test:
-      - composer-php72-docker
       - labs-tools-heritage-tox-docker
     gate-and-submit:
-      - composer-php72-docker
       - labs-tools-heritage-tox-docker
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
@@ -7865,12 +7864,10 @@ projects:
       - labs-tools-urbanecmbot-tox-docker
 
   - name: labs/tools/guc
-    test:
-      - composer-php72-docker
+    template:
+      - name: composer-test-php72-or-later
     gate-and-submit-l10n:
      - mediawiki-i18n-check-docker
-    gate-and-submit:
-      - composer-php72-docker
 
   - name: labs/tools/Isa
     test:
@@ -8351,12 +8348,12 @@ projects:
       - mediawiki-i18n-check-docker
 
   - name: translatewiki
+    template:
+      - name: composer-test-php72-or-later
     test:
       - translatewiki-rake-docker
-      - composer-php72-docker
     gate-and-submit:
       - translatewiki-rake-docker
-      - composer-php72-docker
 
   - name: wikimedia-cz/tracker
     template:
@@ -8387,16 +8384,12 @@ projects:
       - wikimedia-cz-mediawiki-config-composer-php70-docker
 
   - name: wikimedia-cz/web-theme
-    test:
-      - composer-php72-docker
-    gate-and-submit:
-      - composer-php72-docker
+    template:
+      - name: composer-test-php72-or-later
 
   - name: wikimedia-cz/web-plugin
-    test:
-      - composer-php72-docker
-    gate-and-submit:
-      - composer-php72-docker
+    template:
+      - name: composer-test-php72-or-later
 
   - name: wikimedia-ui-base
     template:
@@ -8498,11 +8491,9 @@ projects:
   - name: wikimedia/wikimania-scholarships
     template:
       - name: node10-browser-docker
-    test: &wikimania-scholarships-test
-      - composer-php72-docker
+      - name: composer-test-php72-or-later
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
-    gate-and-submit: *wikimania-scholarships-test
 
   - name: wikimedia/textcat
     template:
