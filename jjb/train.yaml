@@ -14,9 +14,8 @@
     builders:
       - docker-log-dir
       - docker-src-dir
-      - docker-ci-src-setup-simple:
-          options: >
-            --env GIT_NO_SUBMODULES=yes
+      - docker-ci-src-setup:
+          submodules: false
       - docker-run-with-log-cache-src:
           image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.4'
           logdir: '/log'

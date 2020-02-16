@@ -195,16 +195,31 @@
         args: '--working-dir=/src/"$THING_SUBNAME" update --ansi --no-progress --prefer-dist --profile'
         logdir: '/log'
 
+# Use a docker image to clone the repository into /src with explicit options.
+#
+# Parameters:
+#
+# submodules (bool): whether or not to update/initialize repo submodules
+#
+- builder:
+    name: docker-ci-src-setup
+    builders:
+     - docker-run:
+        options: !j2: >-
+          --volume "$(pwd)"/src:/src
+          --volume "$(pwd)"/cache:/cache
+          --volume /srv/git:/srv/git:ro
+          {%- if not submodules %}
+          --env GIT_NO_SUBMODULES=yes
+          {%- endif %}
+        image: 'docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.1'
+
 # Use a docker image to clone the repository into /src
 - builder:
     name: docker-ci-src-setup-simple
     builders:
-     - docker-run:
-        options: >-
-          --volume "$(pwd)"/src:/src
-          --volume "$(pwd)"/cache:/cache
-          --volume /srv/git:/srv/git:ro
-        image: 'docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.2.1'
+      - docker-ci-src-setup:
+          submodules: true
 
 - builder:
     name: docker-zuul-cloner
