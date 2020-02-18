@@ -1,3 +1,13 @@
+- publisher:
+    name: email-wikidata-ci-status
+    publishers:
+     - email-ext:
+         recipients: wikidata-ci-status@wikimedia.de
+         attach-build-log: true
+         first-failure: true
+         aborted: true
+         failure: false
+         fixed: true
 - job-template:
     name: '{name}-release-silent'
     project-type: maven
@@ -84,3 +94,13 @@
     jobs:
         - '{name}-maven-java8-docker':
             maven_args: --file analyzer/pom.xml test
+
+- project:
+    name: wikibase-daily-npm-audit
+    project:
+        - Wikibase:
+            repository: mediawiki/extensions/Wikibase
+    jobs:
+     - '{name}-daily-node10-npmaudit-docker':
+        recipients:
+         - email-wikidata-ci-status

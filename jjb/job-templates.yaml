@@ -235,6 +235,23 @@
     publishers:
      - docker-cleanup
 
+- job-template:
+    name: '{name}-daily-node10-npmaudit-docker'
+    node: Docker
+    triggers:
+    - timed: '@daily'
+    builders:
+    - docker-src-dir
+    - docker-log-dir
+    - docker-ci-src-setup-simple
+    - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/node10:0.5.0'
+        logdir: '/log'
+        options: '--workdir="/src"'
+        args: 'audit'
+    publishers:
+    - docker-cleanup
+
 # Node.js 10 job for 'npm install-test' (with browsers installed)
 - job-template:
     name: '{name}-node10-browser-docker'
