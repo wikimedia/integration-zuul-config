@@ -1775,6 +1775,10 @@ project-templates:
     gate-and-submit-1_34:
       - mwgate-tox-docker
 
+  - name: mediawiki-i18n-check
+    gate-and-submit-l10n:
+     - mediawiki-i18n-check-docker
+
   - name: commit-message-validator
     test:
      - commit-message-validator
@@ -2781,8 +2785,7 @@ projects:
     template:
       - name: composer-test
       - name: node10-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
 
   - name: operations/dumps/import-tools
     template:
@@ -3336,6 +3339,8 @@ projects:
 
   # Special handling
   - name: mediawiki/extensions/DonationInterface
+    template:
+      - name: mediawiki-i18n-check
     test:
       - mwgate-composer-php70-docker
       - mwgate-node10-docker
@@ -3344,8 +3349,6 @@ projects:
       - mwgate-composer-php70-docker
       - mwgate-node10-docker
       - quibble-donationinterface-REL1_31-php70-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
     experimental:
      - mwext-php72-phan-docker
      - mwext-php72-phan-seccheck-docker
@@ -7430,8 +7433,7 @@ projects:
   - name: analytics/wikistats2
     template:
       - name: node10-browser-docker
-    gate-and-submit-l10n:
-    - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
 
   - name: analytics/wikimetrics
     template:
@@ -7805,18 +7807,17 @@ projects:
       - name: tox-docker
 
   - name: labs/tools/commons-mass-description
+    template:
+      - name: mediawiki-i18n-check
     test:
       - labs-tools-commons-mass-description-tox-docker
     gate-and-submit:
       - labs-tools-commons-mass-description-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
 
   - name: labs/tools/crosswatch
     template:
       - name: tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
 
   - name: labs/tools/coverme
     template:
@@ -7856,12 +7857,11 @@ projects:
     template:
       - name: node10-docker
       - name: composer-test-php72-or-later
+      - name: mediawiki-i18n-check
     test:
       - labs-tools-heritage-tox-docker
     gate-and-submit:
       - labs-tools-heritage-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
     postmerge:
      - tox-py27-coverage-publish
 
@@ -7874,12 +7874,12 @@ projects:
       - name: composer-test-php72-or-later
 
   - name: labs/tools/ipwatcher
+    template:
+      - name: mediawiki-i18n-check
     test:
       - labs-tools-ipwatcher-tox-docker
     gate-and-submit:
       - labs-tools-ipwatcher-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
 
   - name: labs/tools/urbanecmbot
     test:
@@ -7890,8 +7890,7 @@ projects:
   - name: labs/tools/guc
     template:
       - name: composer-test-php72-or-later
-    gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
 
   - name: labs/tools/Isa
     test:
@@ -7910,12 +7909,12 @@ projects:
       - name: tox-docker
 
   - name: labs/tools/map-of-monuments
+    template:
+      - name: mediawiki-i18n-check
     test:
       - labs-tools-map-of-monuments-tox-docker
     gate-and-submit:
       - labs-tools-map-of-monuments-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
 
   - name: labs/tools/massmailer
     test:
@@ -7977,28 +7976,28 @@ projects:
       - name: node10-browser-docker
 
   - name: labs/tools/watch-translations
+    template:
+      - name: mediawiki-i18n-check
     test:
       - labs-tools-watch-translations-tox-docker
     gate-and-submit:
       - labs-tools-watch-translations-tox-docker
-    gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
 
   - name: labs/tools/weapon-of-mass-description
+    template:
+      - name: mediawiki-i18n-check
     test:
       - labs-tools-weapon-of-mass-description-tox-docker
     gate-and-submit:
       - labs-tools-weapon-of-mass-description-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
 
   - name: labs/tools/wiki2email
+    template:
+      - name: mediawiki-i18n-check
     test:
       - labs-tools-wiki2email-tox-docker
     gate-and-submit:
       - labs-tools-wiki2email-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
 
   - name: labs/tools/wikibugs2
     template:
@@ -8012,10 +8011,10 @@ projects:
       - name: tox-docker
 
   - name: labs/tools/wikinity
+    template:
+      - name: mediawiki-i18n-check
     test:
       - labs-tools-wikinity-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
     gate-and-submit:
       - labs-tools-wikinity-tox-docker
 
@@ -8050,8 +8049,7 @@ projects:
   - name: pywikibot/i18n
     template:
       - name: node10-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
 
   - name: pywikibot/wikibase
     test:
@@ -8113,8 +8111,7 @@ projects:
       - name: node10-browser-docker
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
 
   - name: wikimedia/portals/deploy
     template:
@@ -8209,12 +8206,11 @@ projects:
   - name: oojs/ui
     # composer is run by npm-run-jenkins T155483
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
+      - name: mediawiki-i18n-check
     test:
       - ooui-npm-special-node10-plus-composer-docker
       - oojs-ui-rake-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
     gate-and-submit:
       - ooui-npm-special-node10-plus-composer-docker
       - oojs-ui-rake-docker
@@ -8240,6 +8236,8 @@ projects:
       - generic-node10-docs-docker-publish
 
   - name: VisualEditor/VisualEditor
+    template:
+      - name: mediawiki-i18n-check
     test:
       - visualeditor-node10-browser-docker
       - generic-node10-rundoc-docker
@@ -8280,8 +8278,6 @@ projects:
       - visualeditor-node10-browser-docker
       - generic-node10-rundoc-docker
       - visualeditor-rake-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
     postmerge:
       - generic-node10-browser-coverage-docker-publish
 
@@ -8304,8 +8300,7 @@ projects:
   - name: wikidata/query/gui
     template:
       - name: node10-browser-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
     postmerge:
       - wikidata-query-gui-build
 
@@ -8342,13 +8337,12 @@ projects:
 
   - name: avro-php
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
 
   - name: data-values/value-view
     template:
-     - name: node10-browser-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: node10-browser-docker
+      - name: mediawiki-i18n-check
 
   - name: testing-access-wrapper
     template:
@@ -8384,8 +8378,7 @@ projects:
   - name: wikipedia/gadgets/ProveIt
     template:
       - name: node10-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
     gate-and-submit:
       - noop
 
@@ -8400,8 +8393,7 @@ projects:
   - name: research/recommendation-api
     template:
       - name: tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
 
   - name: translatewiki
     template:
@@ -8414,12 +8406,11 @@ projects:
   - name: wikimedia-cz/tracker
     template:
       - name: node10-browser-docker
+      - name: mediawiki-i18n-check
     test:
       - wikimedia-cz-tracker-tox-docker
     gate-and-submit:
       - wikimedia-cz-tracker-tox-docker
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
 
   - name: wikimedia-cz/tools
     test:
@@ -8540,16 +8531,14 @@ projects:
 
   - name: wikimedia/iegreview
     template:
-     - name: composer-test
-    gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - name: composer-test
+      - name: mediawiki-i18n-check
 
   - name: wikimedia/wikimania-scholarships
     template:
       - name: node10-browser-docker
       - name: composer-test-php72-or-later
-    gate-and-submit-l10n:
-      - mediawiki-i18n-check-docker
+      - name: mediawiki-i18n-check
 
   - name: wikimedia/textcat
     template:
