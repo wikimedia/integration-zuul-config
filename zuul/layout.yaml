@@ -788,7 +788,7 @@ jobs:
 
   - name: lintr-docker
     files:
-     - '^.*\.R$'
+      - '^.*\.R$'
 
   - name: ^.*rake-docker$
     files:
@@ -855,7 +855,7 @@ jobs:
   - name: ^.*-phpunit-coverage-patch
     branch: master
     files:
-     - '^.*\.php$'
+      - '^.*\.php$'
 
   - name: mediawiki-fresnel-patch-docker
     # Equivalent to concurrent: false in Jenkins but handled by Zuul instead.
@@ -1012,52 +1012,52 @@ project-templates:
   #
   - name: extension-broken
     test:
-     - mwgate-composer-php72-docker
-     - mwgate-node10-docker
+      - mwgate-composer-php72-docker
+      - mwgate-node10-docker
     gate-and-submit:
-     - mwgate-composer-php72-docker
-     - mwgate-node10-docker
+      - mwgate-composer-php72-docker
+      - mwgate-node10-docker
 
     test-1_31:
-     - mwgate-composer-php72-docker
-     - mwgate-node10-docker
+      - mwgate-composer-php72-docker
+      - mwgate-node10-docker
     gate-and-submit-1_31:
-     - mwgate-composer-php72-docker
-     - mwgate-node10-docker
+      - mwgate-composer-php72-docker
+      - mwgate-node10-docker
 
     test-1_33:
-     - mwgate-composer-php72-docker
-     - mwgate-node10-docker
+      - mwgate-composer-php72-docker
+      - mwgate-node10-docker
     gate-and-submit-1_33:
-     - mwgate-composer-php72-docker
-     - mwgate-node10-docker
+      - mwgate-composer-php72-docker
+      - mwgate-node10-docker
 
     test-1_34:
-     - mwgate-composer-php72-docker
-     - mwgate-node10-docker
+      - mwgate-composer-php72-docker
+      - mwgate-node10-docker
     gate-and-submit-1_34:
-     - mwgate-composer-php72-docker
-     - mwgate-node10-docker
+      - mwgate-composer-php72-docker
+      - mwgate-node10-docker
 
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
     experimental:
-     - mwext-php72-phan-docker
-     - mwext-php72-phan-seccheck-docker
-     - quibble-composer-mysql-php72-docker
-     - quibble-composer-mysql-php73-docker
-     - quibble-composer-mysql-php74-docker
+      - mwext-php72-phan-docker
+      - mwext-php72-phan-seccheck-docker
+      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php73-docker
+      - quibble-composer-mysql-php74-docker
     # Surely they are never going to be elected for wmf/ branching or SWAT
 
   - name: extension-seccheck
     test:
-     - mwext-php72-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
     gate-and-submit:
-     - mwext-php72-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
     test-wmf:
-     - mwext-php72-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
     gate-and-submit-wmf:
-     - mwext-php72-phan-seccheck-docker
+      - mwext-php72-phan-seccheck-docker
 
     # Skip Phan on release branches for now.
     # See T231966 / T226945
@@ -1375,9 +1375,9 @@ project-templates:
 
   - name: extension-phan
     test:
-     - mwext-php72-phan-docker
+      - mwext-php72-phan-docker
     gate-and-submit:
-     - mwext-php72-phan-docker
+      - mwext-php72-phan-docker
 
     # Our phan job is broken on release branches for at least a couple reasons:
     # - it uses php72 but some repositories have dependencies that are not
@@ -1402,15 +1402,15 @@ project-templates:
 
     # It is fine on wmf branches since vendor.git has all the dependencies
     test-wmf:
-     - mwext-php72-phan-docker
+      - mwext-php72-phan-docker
     gate-and-submit-wmf:
-     - mwext-php72-phan-docker
+      - mwext-php72-phan-docker
 
   - name: skin-phan
     test:
-     - mwskin-php72-phan-docker
+      - mwskin-php72-phan-docker
     gate-and-submit:
-     - mwskin-php72-phan-docker
+      - mwskin-php72-phan-docker
 
     # Skip Phan on release branches for now.
     # See T231966 / T226945
@@ -1428,15 +1428,15 @@ project-templates:
     # - mwskin-php72-phan-docker
 
     test-wmf:
-     - mwskin-php72-phan-docker
+      - mwskin-php72-phan-docker
     gate-and-submit-wmf:
-     - mwskin-php72-phan-docker
+      - mwskin-php72-phan-docker
 
   - name: skin-seccheck
     test:
-     - mwskin-php72-phan-seccheck-docker
+      - mwskin-php72-phan-seccheck-docker
     gate-and-submit:
-     - mwskin-php72-phan-seccheck-docker
+      - mwskin-php72-phan-seccheck-docker
 
     # Skip Phan on release branches for now.
     # See T231966 / T226945
@@ -1454,9 +1454,9 @@ project-templates:
     # - mwskin-php72-phan-seccheck-docker
 
     test-wmf:
-     - mwskin-php72-phan-seccheck-docker
+      - mwskin-php72-phan-seccheck-docker
     gate-and-submit-wmf:
-     - mwskin-php72-phan-seccheck-docker
+      - mwskin-php72-phan-seccheck-docker
 
   - name: extension-coverage
     postmerge:
@@ -1527,7 +1527,7 @@ project-templates:
       - mwgate-node10-docker
 
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
 
     experimental:
       - quibble-vendor-sqlite-php72-docker
@@ -1581,7 +1581,7 @@ project-templates:
       - mwgate-node10-docker
 
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
 
     experimental:
       - quibble-composer-sqlite-php72-docker
@@ -1637,45 +1637,45 @@ project-templates:
 
   - name: php-compile-php70-or-later
     test:
-     - php-compile-php70-docker
-     - php-compile-php71-docker
-     - php-compile-php72-docker
-     - php-compile-php73-docker
-     - php-compile-php74-docker
+      - php-compile-php70-docker
+      - php-compile-php71-docker
+      - php-compile-php72-docker
+      - php-compile-php73-docker
+      - php-compile-php74-docker
     gate-and-submit:
-     - php-compile-php70-docker
-     - php-compile-php71-docker
-     - php-compile-php72-docker
-     - php-compile-php73-docker
-     - php-compile-php74-docker
+      - php-compile-php70-docker
+      - php-compile-php71-docker
+      - php-compile-php72-docker
+      - php-compile-php73-docker
+      - php-compile-php74-docker
     postmerge:
-     - php74-compile-coverage-publish
+      - php74-compile-coverage-publish
 
   - name: php-compile-php71-or-later
     test:
-     - php-compile-php71-docker
-     - php-compile-php72-docker
-     - php-compile-php73-docker
-     - php-compile-php74-docker
+      - php-compile-php71-docker
+      - php-compile-php72-docker
+      - php-compile-php73-docker
+      - php-compile-php74-docker
     gate-and-submit:
-     - php-compile-php71-docker
-     - php-compile-php72-docker
-     - php-compile-php73-docker
-     - php-compile-php74-docker
+      - php-compile-php71-docker
+      - php-compile-php72-docker
+      - php-compile-php73-docker
+      - php-compile-php74-docker
     postmerge:
-     - php74-compile-coverage-publish
+      - php74-compile-coverage-publish
 
   - name: php-compile-php72-or-later
     test:
-     - php-compile-php72-docker
-     - php-compile-php73-docker
-     - php-compile-php74-docker
+      - php-compile-php72-docker
+      - php-compile-php73-docker
+      - php-compile-php74-docker
     gate-and-submit:
-     - php-compile-php72-docker
-     - php-compile-php73-docker
-     - php-compile-php74-docker
+      - php-compile-php72-docker
+      - php-compile-php73-docker
+      - php-compile-php74-docker
     postmerge:
-     - php74-compile-coverage-publish
+      - php74-compile-coverage-publish
 
   - name: npm-docker
     test:
@@ -1753,15 +1753,15 @@ project-templates:
 
   - name: tox-docker
     test:
-     - tox-docker
+      - tox-docker
     gate-and-submit:
-     - tox-docker
+      - tox-docker
 
   - name: mwgate-tox-docker
     test:
-     - mwgate-tox-docker
+      - mwgate-tox-docker
     gate-and-submit:
-     - mwgate-tox-docker
+      - mwgate-tox-docker
     test-1_31:
       - mwgate-tox-docker
     gate-and-submit-1_31:
@@ -1777,20 +1777,20 @@ project-templates:
 
   - name: mediawiki-i18n-check
     gate-and-submit-l10n:
-     - mediawiki-i18n-check-docker
+      - mediawiki-i18n-check-docker
 
   - name: commit-message-validator
     test:
-     - commit-message-validator
+      - commit-message-validator
     # non-voting / under test
     #gate-and-submit:
     # - commit-message-validator
 
   - name: archived
     test:
-     - fail-archived-repositories
+      - fail-archived-repositories
     gate-and-submit:
-     - fail-archived-repositories
+      - fail-archived-repositories
 
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
@@ -1844,13 +1844,13 @@ projects:
 
   - name: integration/docroot
     template:
-     - name: node10-docker
+      - name: node10-docker
     test:
-     - composer-php56-docker
+      - composer-php56-docker
     gate-and-submit:
-     - composer-php56-docker
+      - composer-php56-docker
     postmerge:
-     - integration-docroot-deploy
+      - integration-docroot-deploy
 
   - name: integration/jenkinsci/postbuildscript-plugin
     test:
@@ -1912,19 +1912,19 @@ projects:
 
   - name: mediawiki/tools/codesniffer
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     test:
-     - mw-tools-codesniffer-mwcore-testrun
+      - mw-tools-codesniffer-mwcore-testrun
     postmerge:
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/tools/cookiecutter-library
     template:
-     - name: tox-docker
+      - name: tox-docker
 
   - name: mediawiki/tools/minus-x
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
 
   - name: mediawiki/tools/mwdumper
     test:
@@ -1934,7 +1934,7 @@ projects:
 
   - name: mediawiki/tools/phpunit-patch-coverage
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - phpunit-coverage-docker-publish
 
@@ -1961,15 +1961,15 @@ projects:
 
   - name: mediawiki/tools/phan
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
 
   - name: mediawiki/tools/phan/PerfCheckPlugin
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
 
   - name: mediawiki/tools/phan/SecurityCheckPlugin
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
 
   - name: mediawiki/vagrant
     test:
@@ -1981,7 +1981,7 @@ projects:
 
   - name: performance/arc-lamp
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
 
   - name: performance/asoranking
     template:
@@ -2233,207 +2233,207 @@ projects:
 
   - name: mediawiki/skins/CologneBlue
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
 
   - name: mediawiki/skins/EUCopyrightCampaignSkin
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
 
   - name: mediawiki/skins/MinervaNeue
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
-     - name: extension-gate
-     - name: extension-javascript-documentation
-     - name: mwgate-rake
-     - name: mwselenium-legacy
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
+      - name: extension-gate
+      - name: extension-javascript-documentation
+      - name: mwgate-rake
+      - name: mwselenium-legacy
     postmerge:
-     - mwext-doxygen-publish
+      - mwext-doxygen-publish
 
   - name: mediawiki/skins/Modern
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
 
   - name: mediawiki/skins/MonoBook
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
 
   - name: mediawiki/skins/Nostalgia
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
 
   - name: mediawiki/skins/Timeless
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
 
   - name: mediawiki/skins/Vector
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
-     - name: extension-gate
-     - name: extension-javascript-documentation
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
+      - name: extension-gate
+      - name: extension-javascript-documentation
     experimental:
-     - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-docker
 
 #### Other MediaWiki skins #####################################
 
   - name: mediawiki/skins/Amethyst
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Anisa
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
 
   - name: mediawiki/skins/apex
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Athena
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/BlueSky
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/BlueSpiceSkin
     template:
-     - name: skin-quibble-composer
+      - name: skin-quibble-composer
 
   - name: mediawiki/skins/BlueSpiceCalumma
     template:
-     - name: skin-quibble-composer
+      - name: skin-quibble-composer
 
   - name: mediawiki/skins/Bouquet
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Daddio
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/DeskMessMirrored
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Dusk
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/DuskToDawn
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Empty
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/erudite
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Example
     template:
-     - name: skin-quibble
-     - name: skin-phan
-     - name: skin-seccheck
+      - name: skin-quibble
+      - name: skin-phan
+      - name: skin-seccheck
 
   - name: mediawiki/skins/Gamepress
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/GreyStuff
     template:
-     - name: skin-quibble
-     - name: skin-phan
+      - name: skin-quibble
+      - name: skin-phan
 
   - name: mediawiki/skins/HasSomeColours
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Mask
     template:
-     - name: skin-quibble
-     - name: skin-phan
+      - name: skin-quibble
+      - name: skin-phan
 
   - name: mediawiki/skins/Material
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/mediawiki-strapping
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Metrolook
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Nimbus
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/p2wiki
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Poncho
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Refreshed
     template:
-     - name: skin-quibble
-     - name: skin-phan
+      - name: skin-quibble
+      - name: skin-phan
 
   - name: mediawiki/skins/Schulenburg
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Splash
     template:
-     - name: skin-quibble
-     - name: skin-phan
+      - name: skin-quibble
+      - name: skin-phan
 
   - name: mediawiki/skins/Tempo
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Tomas
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/Truglass
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/webplatform
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/WoOgLeShades
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
   - name: mediawiki/skins/WPtouch
     template:
-     - name: skin-quibble
+      - name: skin-quibble
 
 #### Site Reliability Engineering ("Operations") tools #########
 
@@ -2849,10 +2849,10 @@ projects:
 
   - name: operations/software/cassandra-table-properties
     test:
-     - cassandra-table-properties-tox-docker
-     - debian-glue-non-voting
+      - cassandra-table-properties-tox-docker
+      - debian-glue-non-voting
     gate-and-submit:
-     - cassandra-table-properties-tox-docker
+      - cassandra-table-properties-tox-docker
 
   - name: operations/software/censorship-monitoring
     template:
@@ -3350,8 +3350,8 @@ projects:
       - mwgate-node10-docker
       - quibble-donationinterface-REL1_31-php70-docker
     experimental:
-     - mwext-php72-phan-docker
-     - mwext-php72-phan-seccheck-docker
+      - mwext-php72-phan-docker
+      - mwext-php72-phan-seccheck-docker
 
   - name: mediawiki/extensions/DoubleWiki
     template:
@@ -3374,7 +3374,7 @@ projects:
       - name: extension-gate
       - name: extension-coverage
     experimental:
-     - quibble-vendor-postgres-php73-docker
+      - quibble-vendor-postgres-php73-docker
 
   - name: mediawiki/extensions/Elastica
     template:
@@ -4529,7 +4529,7 @@ projects:
 
   - name: mediawiki/extensions/AzharAuth
     template:
-     - name: extension-broken  # T110291 / T198601
+      - name: extension-broken  # T110291 / T198601
 
   - name: mediawiki/extensions/BaseHooks
     template:
@@ -5538,7 +5538,7 @@ projects:
   # Depends on SemanticForms and Semantic MediaWiki which are on GitHub
   - name: mediawiki/extensions/HierarchyBuilder
     template:
-     - name: extension-broken
+      - name: extension-broken
 
   - name: mediawiki/extensions/HighlightjsIntegration
     template:
@@ -5567,7 +5567,7 @@ projects:
   # Require $wgNamespacesWithSubpages set to TRUE in the MAIN namespace.
   - name: mediawiki/extensions/Html2Wiki
     template:
-     - name: extension-broken
+      - name: extension-broken
 
   - name: mediawiki/extensions/HTMLets
     template:
@@ -5676,7 +5676,7 @@ projects:
 
   - name: mediawiki/extensions/LDAPAuthentication2
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/LDAPAuthorization
     template:
@@ -5684,15 +5684,15 @@ projects:
 
   - name: mediawiki/extensions/LDAPGroups
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/LDAPProvider
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/LDAPUserInfo
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/LifeWeb
     template:
@@ -5842,8 +5842,8 @@ projects:
 
   - name: mediawiki/extensions/MiniInvite
     template:
-     - name: extension-quibble
-     - name: extension-phan
+      - name: extension-quibble
+      - name: extension-phan
 
   - name: mediawiki/extensions/MinimumNameLength
     template:
@@ -6194,7 +6194,7 @@ projects:
 
   - name: mediawiki/extensions/ParserFun
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/PasswordlessLogin
     template:
@@ -6271,7 +6271,7 @@ projects:
 
   - name: mediawiki/extensions/PluggableAuth
     template:
-     - name: extension-quibble-noselenium
+      - name: extension-quibble-noselenium
 
   - name: mediawiki/extensions/PluggableSSO
     template:
@@ -6413,7 +6413,7 @@ projects:
 
   - name: mediawiki/extensions/reCaptcha
     template:
-     - name: extension-quibble-composer-noselenium
+      - name: extension-quibble-composer-noselenium
 
   - name: mediawiki/extensions/Recoin
     template:
@@ -6530,7 +6530,7 @@ projects:
 
   - name: mediawiki/extensions/SemanticDependency
     template:
-     - name: extension-broken  # Semantic MediaWiki is on GitHub
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/SemanticDrilldown
     template:
@@ -6626,7 +6626,7 @@ projects:
 
   - name: mediawiki/extensions/SimpleSAMLphp
     template:
-     - name: extension-quibble-noselenium
+      - name: extension-quibble-noselenium
 
   - name: mediawiki/extensions/SimpleSecurity
     template:
@@ -6830,7 +6830,7 @@ projects:
 
   - name: mediawiki/extensions/THICC
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/ThrottleOverride
     template:
@@ -6990,15 +6990,15 @@ projects:
 
   - name: mediawiki/extensions/VIKI
     template:
-     - name: extension-broken  # Semantic MediaWiki is on GitHub
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/VikiSemanticTitle
     template:
-     - name: extension-broken  # Semantic MediaWiki is on GitHub
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/VikiTitleIcon
     template:
-     - name: extension-broken  # Semantic MediaWiki is on GitHub
+      - name: extension-broken  # Semantic MediaWiki is on GitHub
 
   - name: mediawiki/extensions/VirtualKeyboard
     template:
@@ -7022,15 +7022,15 @@ projects:
 
   - name: mediawiki/extensions/WebDAV
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/WebDAVClientIntegration
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/WebDAVMinorSave
     template:
-     - name: extension-quibble-composer
+      - name: extension-quibble-composer
 
   - name: mediawiki/extensions/WebToolsManager
     template:
@@ -7400,9 +7400,9 @@ projects:
 
   - name: analytics/limn-language-data
     test:
-     - noop
+      - noop
     gate-and-submit:
-     - noop
+      - noop
 
   - name: analytics/mediawiki-storage
     template:
@@ -7414,9 +7414,9 @@ projects:
 
   - name: analytics/refinery/source
     test:
-     - analytics-refinery-maven-java8-docker
+      - analytics-refinery-maven-java8-docker
     gate-and-submit:
-     - analytics-refinery-maven-java8-docker
+      - analytics-refinery-maven-java8-docker
 
   - name: analytics/reportupdater
     template:
@@ -7424,11 +7424,11 @@ projects:
 
   - name: analytics/wikistats
     test:
-     - analytics-wikistats
+      - analytics-wikistats
     gate-and-submit:
-     - analytics-wikistats
+      - analytics-wikistats
     postmerge:
-     - analytics-wikistats
+      - analytics-wikistats
 
   - name: analytics/wikistats2
     template:
@@ -7453,46 +7453,46 @@ projects:
 
   - name: analytics/wmde/toolkit-analyzer-build
     gate-and-submit:
-     - noop
+      - noop
 
   - name: analytics/wmde/WDCM
     test:
-     - noop
-     - lintr-docker-non-voting
+      - noop
+      - lintr-docker-non-voting
     gate-and-submit:
-     - noop
+      - noop
     experimental:
-     - lintr-docker
+      - lintr-docker
 
   - name: analytics/wmde/WDCM-packages
     test:
-     - noop
+      - noop
     gate-and-submit:
-     - noop
+      - noop
 
   - name: analytics/wmde/WDCM-Overview-Dashboard
     test:
-     - noop
+      - noop
     gate-and-submit:
-     - noop
+      - noop
 
   - name: analytics/wmde/WDCM-Semantics-Dashboard
     test:
-     - noop
+      - noop
     gate-and-submit:
-     - noop
+      - noop
 
   - name: analytics/wmde/WDCM-Usage-Dashboard
     test:
-     - noop
+      - noop
     gate-and-submit:
-     - noop
+      - noop
 
   - name: analytics/wmde/WDCM-ShinyServerFrontPage
     test:
-     - noop
+      - noop
     gate-and-submit:
-     - noop
+      - noop
 
   - name: node-rdkafka-statsd
     template:
@@ -7530,49 +7530,49 @@ projects:
 
   - name: cdb
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: purtle
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: utfnormal
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: at-ease
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: base-convert
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: css-sanitizer
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: php-session-serializer
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
@@ -7593,14 +7593,14 @@ projects:
 
   - name: IPSet
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: RelPath
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
@@ -7613,49 +7613,49 @@ projects:
 
   - name: WrappedString
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: CLDRPluralRuleParser
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: HtmlFormatter
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/alea
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/Assert
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/Equivset
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/etcd
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
@@ -7683,21 +7683,21 @@ projects:
 
   - name: mediawiki/libs/PasswordBlacklist
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/RemexHtml
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/ScopedCallback
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
@@ -7711,28 +7711,28 @@ projects:
 
   - name: mediawiki/libs/Timestamp
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/WaitConditionLoop
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/XMPReader
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
 
   - name: mediawiki/libs/Zest
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
@@ -7780,15 +7780,15 @@ projects:
       - name: tox-docker
     test:
      # Single branch supporting multiple distributions T210780
-     - debian-glue-unstable
-     - debian-glue-jessie
-     - debian-glue-stretch
-     - debian-glue-buster
+      - debian-glue-unstable
+      - debian-glue-jessie
+      - debian-glue-stretch
+      - debian-glue-buster
     gate-and-submit:
-     - debian-glue-unstable
-     - debian-glue-jessie
-     - debian-glue-stretch
-     - debian-glue-buster
+      - debian-glue-unstable
+      - debian-glue-jessie
+      - debian-glue-stretch
+      - debian-glue-buster
 
   - name: labs/tools/apt-browser
     template:
@@ -7863,7 +7863,7 @@ projects:
     gate-and-submit:
       - labs-tools-heritage-tox-docker
     postmerge:
-     - tox-py27-coverage-publish
+      - tox-py27-coverage-publish
 
   - name: labs/tools/indic-wscontest
     template:
@@ -8003,7 +8003,7 @@ projects:
     template:
       - name: tox-docker
     postmerge:
-     - labs-tools-wikibugs2-autopull
+      - labs-tools-wikibugs2-autopull
 
   - name: labs/tools/wikidata-slicer
     template:
@@ -8083,17 +8083,17 @@ projects:
     gate-and-submit:
       - mediawiki-ruby-api-rake-docker
     postmerge:
-     - mediawiki-ruby-api-bundle-yard-publish
+      - mediawiki-ruby-api-bundle-yard-publish
 
   - name: mediawiki/selenium
     test:
-     - mediawiki-selenium-rake-docker
-     - mediawiki-selenium-integration-docker
+      - mediawiki-selenium-rake-docker
+      - mediawiki-selenium-integration-docker
     gate-and-submit:
-     - mediawiki-selenium-rake-docker
-     - mediawiki-selenium-integration-docker
+      - mediawiki-selenium-rake-docker
+      - mediawiki-selenium-integration-docker
     postmerge:
-     - mediawiki-selenium-bundle-yard-publish
+      - mediawiki-selenium-bundle-yard-publish
 
   - name: wikimedia/security/tooling
     template:
@@ -8101,7 +8101,7 @@ projects:
 
   - name: wikimedia/slimapp
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
@@ -8346,7 +8346,7 @@ projects:
 
   - name: testing-access-wrapper
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
     postmerge:
       - doxygen-publish
       - phpunit-coverage-docker-publish
@@ -8542,81 +8542,81 @@ projects:
 
   - name: wikimedia/textcat
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
 
   - name: wikimedia/lucene-explain-parser
     template:
-     - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later
 
 #### Archive repositories ######################################
 
   - name: apps/android/java-mwapi
     template:
-     - name: archived
+      - name: archived
 
   - name: apps/android/wikipedia
     template:
-     - name: archived
+      - name: archived
 
   - name: apps/ios/wikipedia
     template:
-     - name: archived
+      - name: archived
 
   - name: integration/phpunit
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/migration-assistant
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/nagios-builder
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/bub
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/connectivity
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/coursestats
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/discordwiki
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/flow-oauth-demo
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/grrrit
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/Luke081515IRCBot
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/signpost
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/wikicaptcha
     template:
-     - name: archived
+      - name: archived
 
   - name: labs/tools/Wikimedia-Emoji-Bot
     template:
-     - name: archived
+      - name: archived
 
   - name: maps/kartotherian
     template:
-     - name: archived
+      - name: archived
 
   # Don't ask. -- JDF 2019-09-16
   # - name: maps/kartotherian/package
@@ -8625,87 +8625,87 @@ projects:
 
   - name: maps/tilerator
     template:
-     - name: archived
+      - name: archived
 
   - name: marvin
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/AccessibilitySimulation
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ActionEditSubmit
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ActivityMonitor
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Ads
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Agora
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/AjaxLogin
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Annotator
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/AntiBot
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/APC
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ApiExplorer
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ApiSandbox
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ApiSVGProxy
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ArticleComments
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ArticleFeedback
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/AssertEdit
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/AutomaticBoardWelcome
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/AWS
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/BayesianFilter
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/BlameMaps
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/BlueSpiceMenues
     template:
@@ -8713,215 +8713,215 @@ projects:
 
   - name: mediawiki/extensions/BookManager
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/BookManagerv2
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Bootstrap
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CategorySlideShow
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ClickTracking
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ClientSide
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/bundler
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/latex_renderer
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/text_renderer
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Collection/OfflineContentGenerator/zim_renderer
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CommentPages
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CommunityApplications
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CommunityHiring
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CommunityTwitter
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CommunityVoice
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ConditionalShowSection
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Configure
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Contest
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ContributionReporting
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ContributorsAddon
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ConventionExtension
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Convert2Wiki
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Copyvio
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CreditTab
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CryoKey
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CustomData
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CustomPage
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CustomSidebar
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/CustomUserSignup
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/DataTypes
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Dice
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/DidYouMean
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/DjangoAnalytics
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/E3Experiments
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/EditAccount
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/EditOwn
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/EditPageTracking
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/EducationProgram
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/EtherEditor
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ExpandTemplates
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/FeedsFromPrivateWikis
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/FirstSteps
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/FormatNum
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Foxway
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/FundraisingChart
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Gather
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Genderize
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/GitHub
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/GoogleAPIClient
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/GoogleMaps
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/GooglePlusOne
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ImageLink
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ImageMetrics
     template:
@@ -8929,27 +8929,27 @@ projects:
 
   - name: mediawiki/extensions/ImageTagging
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/InterwikiIntegration
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/InterwikiMagic
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/InterwikiMap
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/IssueTracker
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/JADE
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/LdapGroups
     template:
@@ -8957,67 +8957,67 @@ projects:
 
   - name: mediawiki/extensions/Less
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/LightweightRDFa
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Limn
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Mantle
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/MassAction
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Minifier
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/MOOC
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Moodle
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/MwEmbedSupport
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/MWSearch
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/NewUsersList
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Nonlinear
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/normal
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Nostalgia
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/NumberOfComments
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/OAI
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/OAuth2
     template:
@@ -9025,83 +9025,83 @@ projects:
 
   - name: mediawiki/extensions/Offline
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/OggHandler
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/OpenSearchXml
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Oversight
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Parsoid
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/PdfExport
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Phalanx
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/PHPExcel
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Pickle
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/PlanOut
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/PostEdit
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/PrefStats
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/PrefSwitch
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Premoderation
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/PubSubHubbub
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/PureWikiDeletion
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/RandomFeaturedUser
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/RandomRootPage
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/RandomUsersWithAvatars
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ReaderFeedback
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/RecentActivityFeed
     template:
@@ -9109,111 +9109,111 @@ projects:
 
   - name: mediawiki/extensions/Reflect
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/RelationLinks
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/RestBaseUpdateJobs
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/RevealEmail
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SearchRealnames
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SecurePasswords
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SemanticComments
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SemanticExpressiveness
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SemanticHighcharts
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SemanticLinks
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SemanticMediaWiki
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SemanticPageMaker
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SemanticTasks
     template:
-     - name: archived # Extension now on Github
+      - name: archived # Extension now on Github
 
   - name: mediawiki/extensions/SemanticTitle
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SemanticUpdateOnPurge
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SharedCssJs
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SimpleAntiSpam
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SimpleSurvey
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SkelJS
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Snippet
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SolrStore
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Spreadsheet
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/StrategyWiki
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Suhosin
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SwarmExport
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/SwiftCloudFiles
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/TagContent
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Teahouse
     template:
@@ -9221,11 +9221,11 @@ projects:
 
   - name: mediawiki/extensions/ThemeDesigner
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ThumbParser
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/TimezoneSelector
     template:
@@ -9233,43 +9233,43 @@ projects:
 
   - name: mediawiki/extensions/TopLists
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Transliterator
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/TwoFactorAuthentication
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/UnitTest
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/UploadLocal
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/UserDailyContribs
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/USERNAME
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/UserSnoop
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Vector
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/VectorBeta
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ViewFiles
     template:
@@ -9277,228 +9277,228 @@ projects:
 
   - name: mediawiki/extensions/VisualChat
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WebCache
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WebPlatformAuth
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikibaseJavaScriptApi
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikibaseMobile
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikibaseQuality
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikibaseQualityExternalValidation
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikibaseSolr
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Wikidata
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikidataEntitySuggester
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikiGrok
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikiLabels
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikimediaShopLink
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikiObjectModel
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikiPinger
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikiShare
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikiTwidget
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/WikivoteMapsYandex
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/Workflow
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/XMLContentExtension
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ZeroBanner
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ZeroPortal
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/extensions/ZeroRatedMobileAccess
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/php/FastStringSearch
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/services/citoid/deploy
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/services/cxserver/deploy
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/services/trending-edits
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/services/trending-edits/deploy
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/skins/CustomPage
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/skins/DeepSea
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/skins/Synagonism
     template:
-     - name: archived
+      - name: archived
 
   - name: mediawiki/skins/VectorV2
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/debs/hhvm
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/debs/nodepool
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/debs/wikimedia-job-runner
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/cdh
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/cdh4
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/jmxtrans
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/kafka
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/kafkatee
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/mariadb
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/mesos
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/nginx
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/varnishkafka
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/wikimetrics
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/puppet/zookeeper
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/software/analytics-eventlogging-maintenance
     template:
-     - name: archived
+      - name: archived
 
   - name: operations/software/brrd
     template:
-     - name: archived
+      - name: archived
 
   - name: performance/WebPageTest
     template:
-     - name: archived
+      - name: archived
 
   - name: performance/perflogbot
     template:
-     - name: archived
+      - name: archived
 
   - name: pywikibot/compat
     template:
-     - name: archived
+      - name: archived
 
   - name: search/ltr
     template:
-     - name: archived
+      - name: archived
 
   - name: search/repository-swift
     template:
-     - name: archived
+      - name: archived
 
   - name: sink_nova_fixed_multi
     template:
-     - name: archived
+      - name: archived
 
   - name: sink_nova_ldap
     template:
-     - name: archived
+      - name: archived
 
   - name: wikibase/wikiba.se
     template:
-     - name: archived
+      - name: archived
 
   - name: wikidata/build-resources
     template:
-     - name: archived
+      - name: archived
