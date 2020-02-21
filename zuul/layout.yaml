@@ -2806,13 +2806,13 @@ projects:
       - operations-mw-config-php72-composer-test-docker
       - operations-mw-config-php72-composer-diffConfig-docker
       - operations-mw-config-typos-docker
+      - tox-docker
     gate-and-submit:
       - operations-mw-config-php72-composer-lint-docker
       - operations-mw-config-php72-composer-test-docker
       # Not allowed whilst non-voting:
       # - operations-mw-config-php72-composer-diffConfig-docker
       - operations-mw-config-typos-docker
-    experimental:
       - tox-docker
     postmerge:
       - beta-mediawiki-config-update-eqiad
@@ -2830,7 +2830,7 @@ projects:
       - puppet-wmf-styleguide-rake-docker
 
   # Repo of misc softwares
-  # Voting V+2 so ops dont idle waiting for CI to report.
+  # Voting V+2 so ops don't idle waiting for CI to report.
   - name: operations/software
     template:
       - name: tox-docker
