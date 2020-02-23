@@ -95,6 +95,46 @@
      - archive-log-dir
      - docker-cleanup
 
+# Job to run phan against MW core.
+# TODO perhaps we can reduce duplication with mw-tools-codesniffer-mwcore-testrun
+- job:
+    name: 'mw-tools-phan-mwcore-testrun'
+    node: Docker
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-zuul-cloner:
+         projects: >
+             mediawiki/core
+             mediawiki/tools/phan
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s1'
+         options: '--workdir /src/mediawiki/tools/phan'
+         args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
+         logdir: '/log'
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+         options: '--user=nobody --entrypoint=/bin/bash'
+         args: '-c "mkdir -p /src/vendor/mediawiki"'
+         logdir: '/log'
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+         options: '--user=nobody --entrypoint=/bin/mv'
+         args: '/src/mediawiki/tools/phan /src/vendor/mediawiki/mediawiki-phan-config'
+         logdir: '/log'
+     - docker-run-with-log-cache-src:
+         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s1'
+         options: '--workdir /src --entrypoint=/src/vendor/mediawiki/mediawiki-phan-config/vendor/bin/phan'
+         args: '--long-progress-bar'
+         logdir: '/log'
+    publishers:
+     - castor-save-workspace-cache
+     - archive-log-dir
+     - docker-cleanup
+
 - project:
     name: mwdumper
     jobs:

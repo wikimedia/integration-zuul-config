@@ -995,6 +995,12 @@ jobs:
     success-message: 'SUCCESS Example result against MediaWiki core'
     failure-message: 'FAILURE Example result against MediaWiki core'
 
+  # Job to test phan changes on MW core
+  - name: mw-tools-phan-mwcore-testrun
+    voting: false
+    success-message: 'SUCCESS Example result against MediaWiki core'
+    failure-message: 'FAILURE Example result against MediaWiki core'
+
   - name: fail-archived-repositories
     queue-name: archived-repos
     failure-message: 'This repository has been archived and new patches are not being accepted. If you want to maintain it follow https://www.mediawiki.org/wiki/Gerrit/Privilege_policy#Requesting_Gerrit_privileges and then change which jobs get run.'
@@ -1963,6 +1969,8 @@ projects:
   - name: mediawiki/tools/phan
     template:
       - name: composer-test-package-php72-or-later
+    test:
+      - mw-tools-phan-mwcore-testrun
 
   - name: mediawiki/tools/phan/PerfCheckPlugin
     template:
