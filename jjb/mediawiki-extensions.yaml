@@ -1,3 +1,6 @@
+# Publishing workspace/docs to doc.wikimedia.org/:DOC_PROJECT/:DOC_SUBPATH/php/
+# - DOC_PROJECT: determined in parameter_functions.py (mw extension name)
+# - DOC_SUBPATH: determined in parameter_functions.py (branch or tag)
 - job:
     name: 'mwext-doxygen-publish'
     node: Docker
@@ -12,7 +15,7 @@
          logdir: '/log'
      - doc-publish:
         docsrc: 'src/docs/php'
-        docdest: '$DOC_BASENAME/$DOC_SUBPATH/php'
+        docdest: '$DOC_PROJECT/$DOC_SUBPATH/php'
     publishers:
      - archive-log-allow-empty
      - docker-cleanup
