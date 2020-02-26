@@ -15,7 +15,7 @@ sed -i 's#vendor/mediawiki/mediawiki-phan-config/#mediawiki/tools/phan/#' .phan/
 
 export PHP_ARGS='-dextension=ast_101.so'
 
-composer install
+composer update
 
 # Bypass expensive Symfony\Component\Console\Terminal::getWidth() (T219114#5084302)
 export COLUMNS=80
