@@ -111,24 +111,8 @@
              mediawiki/core
              mediawiki/tools/phan
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s1'
-         options: '--workdir /src/mediawiki/tools/phan'
-         args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
-         logdir: '/log'
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
-         options: '--user=nobody --entrypoint=/bin/bash'
-         args: '-c "mkdir -p /src/vendor/mediawiki"'
-         logdir: '/log'
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
-         options: '--user=nobody --entrypoint=/bin/mv'
-         args: '/src/mediawiki/tools/phan /src/vendor/mediawiki/mediawiki-phan-config'
-         logdir: '/log'
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s1'
-         options: '--workdir /src --entrypoint=/src/vendor/mediawiki/mediawiki-phan-config/vendor/bin/phan'
-         args: '--long-progress-bar'
+         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-testrun:0.1.0'
+         options: '--workdir /src'
          logdir: '/log'
     publishers:
      - castor-save-workspace-cache
