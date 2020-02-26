@@ -6,7 +6,7 @@
     builders:
     - shell: |
         PATCH=$(curl "https://gerrit.wikimedia.org/r/changes/${ZUUL_CHANGE}/revisions/current/patch");
-        NODES=$(echo $PATCH | base64 -d | grep 'Hosts: ' | sed 's/Hosts: //g' | paste -s -d ', ');
+        NODES=$(echo $PATCH | base64 -d | grep 'Hosts: ' | sed 's/Hosts: //g' | paste -s -d ',');
         echo $NODES;
         NUM_THREADS=4 MODE="change" CHANGE="${ZUUL_CHANGE}" NODES="${NODES}" puppet-compiler
     properties:
