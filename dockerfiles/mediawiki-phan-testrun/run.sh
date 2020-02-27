@@ -15,9 +15,9 @@ sed -i 's#vendor/mediawiki/mediawiki-phan-config/#mediawiki/tools/phan/#' .phan/
 
 export PHP_ARGS='-dextension=ast_101.so'
 
-composer update
+composer update --ansi --no-progress --prefer-dist --profile
 
 # Bypass expensive Symfony\Component\Console\Terminal::getWidth() (T219114#5084302)
 export COLUMNS=80
 
-exec vendor/bin/phan --long-progress-bar
+exec vendor/bin/phan --long-progress-bar --require-config-exists
