@@ -103,15 +103,16 @@
     triggers:
      - zuul
     builders:
-     - docker-castor-load
      - docker-log-dir
      - docker-src-dir
+     - docker-cache-dir
+     - docker-castor-load
      - docker-zuul-cloner:
          projects: >
              mediawiki/core
              mediawiki/tools/phan
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-testrun:0.1.3'
+         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-testrun:0.1.4'
          options: '--workdir /src'
          logdir: '/log'
     publishers:
