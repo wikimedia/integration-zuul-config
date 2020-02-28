@@ -49,12 +49,12 @@
       goals: clean package
       settings:
         'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig.ArchivaCredentialsSettings'
+
 - project:
     name: wikidata-query-gui
     jobs:
       - '{name}-npm-browser-node-6-docker':
           docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.4.1-s1
-      - 'wikidata-query-gui-build'
 
 - project:
     name: wikidata-query-rdf
@@ -84,64 +84,3 @@
     jobs:
         - '{name}-maven-java8-docker':
             maven_args: --file analyzer/pom.xml test
-
-- job:
-    name: 'wikidata-query-gui-build'
-    node: DebianJessie
-    concurrent: false
-    triggers:
-     - zuul
-    parameters:
-        # Zuul parameters for Castor
-        - string:
-            name: 'ZUUL_BRANCH'
-            default: 'master'
-        - string:
-            name: 'ZUUL_PROJECT'
-            default: 'wikidata/query/gui'
-        - string:
-            name: 'ZUUL_PIPELINE'
-            default: 'postmerge'
-    scm:
-        - git:
-            url: https://gerrit.wikimedia.org/r/wikidata/query/gui
-            branches:
-                - master
-            refspec: master
-            wipe-workspace: true
-            clean:
-                after: true
-            submodule:
-                disable: false
-    builders:
-        - assert-node-version-6
-        - castor-load
-        - shell: |
-            node --version
-            npm --version
-            rm -rf node_modules
-            npm install
-        ## now create and publish a gerrit patch
-        ## then publish the artifacts to castor?
-        - shell: |
-            GIT_AUTHOR_NAME=WDQSGuiBuilder
-            GIT_COMMITTER_NAME=WDQSGuiBuilder
-            GIT_AUTHOR_EMAIL=wdqs-gui-build@lists.wikimedia.org
-            GIT_COMMITTER_EMAIL=wdqs-gui-build@lists.wikimedia.org
-
-            # We do not know Gerrit SSH host fingerprint
-            mkdir -p ~/.ssh
-            echo -ne 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\nUser wdqsguibuilder\n' >> ~/.ssh/config
-
-            npm run deploy
-    wrappers:
-        - ansicolor
-        - timeout:
-            timeout: 15 # minutes
-        - timestamps
-        - ssh-agent-credentials:
-            users:
-                - 'wdqsguibuilder'
-    publishers:
-        - archive-log-allow-empty
-        - castor-save
