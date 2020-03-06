@@ -2,7 +2,7 @@
 # (.pipeline/config.yaml)
 - job-template:
     name: 'trigger-{name}-pipeline-{pipeline}'
-    node: trigger
+    node: contint1001
     parameters: &project-pipeline-parameters
       - string:
           name: PLIB_PIPELINE
@@ -41,7 +41,7 @@
 # execute according to each project's .pipeline/config.yaml)
 - job:
     name: 'trigger-service-pipeline-test-and-publish'
-    node: trigger
+    node: contint1001
     parameters: &service-pipeline-parameters
       - string:
           name: ZUUL_URL
@@ -64,7 +64,7 @@
 
 - job:
     name: 'trigger-service-pipeline-test'
-    node: trigger
+    node: contint1001
     parameters: *service-pipeline-parameters
     builders:
       - trigger-builds:
@@ -75,7 +75,7 @@
 
 - job:
     name: 'trigger-service-jenkinsfile'
-    node: trigger
+    node: contint1001
     parameters: *service-pipeline-parameters
     builders:
       - trigger-builds:
