@@ -72,3 +72,11 @@
       # kartotherian-deploy-npm-node-6-docker
       - '{name}-deploy-npm-node-6-docker':
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.2.1-s1
+
+- project:
+    name: toolforge-ingress-admission-controller
+    pipeline:
+      - test
+    jobs:
+      - 'trigger-{name}-pipeline-{pipeline}'
+      - '{name}-pipeline-{pipeline}'
