@@ -114,6 +114,9 @@ def set_parameters(item, job, params):
               == 'operations/software/varnish/varnishkafka'):
             # needed for librdkafka1 >= 0.11.5
             params['BACKPORTS'] = 'yes'
+        elif (params['ZUUL_PROJECT'] == 'operations/software/atskafka'):
+            # needed by go build to access gopkg.in
+            params['PBUILDER_USENETWORK'] = 'yes'
         elif (params['ZUUL_PROJECT'] == 'operations/debs/trafficserver'):
             # Building ATS takes a while
             params['BUILD_TIMEOUT'] = 60  # minutes
