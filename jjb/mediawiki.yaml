@@ -272,6 +272,18 @@
         - junit:
             allow-empty-results: true
             results: 'log/junit*.xml'
+        # Then compress the raw Junit files from PHPUnit. The junit plugin
+        # already concatenated them in a junitResult.xml in the build
+        # directory.
+        - postbuildscript:
+            builders:
+                - build-on:
+                    - SUCCESS
+                    - UNSTABLE
+                    - FAILURE
+                    - ABORTED
+                  build-steps:
+                    - shell: 'find log/ -name "junit*.xml" -exec gzip {{}} \+'
         - compress-mw-debug-logs
         - archive-log-allow-empty
         - castor-save-workspace-cache
