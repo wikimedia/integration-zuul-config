@@ -44,6 +44,25 @@
         - docker-cleanup
 
 - job:
+    name: mediawiki-core-javascript-docker
+    node: Docker
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.0'
+        logdir: '/log'
+        args: doc
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
+
+- job:
     name: mediawiki-core-javascript-docker-publish
     node: Docker
     triggers:
