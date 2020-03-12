@@ -19,31 +19,6 @@
                     - shell: 'find log/ -name "mw-debug-*.log" -exec gzip {} \+'
 
 - job:
-    name: 'mediawiki-core-jsduck-docker-publish'
-    node: Docker
-    properties:
-        - build-discarder:
-            days-to-keep: 15
-    triggers:
-        - zuul
-    builders:
-        - docker-castor-load
-        - docker-log-dir
-        - docker-src-dir
-        - docker-ci-src-setup-simple
-        - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/npm-test:0.6.1-s1
-            args: 'doc'
-            logdir: '/log'
-        - doc-publish:
-           docsrc: 'src/docs/js'
-           docdest: 'mediawiki-core/$DOC_SUBPATH/js'
-    publishers:
-        - archive-log-allow-empty
-        - castor-save-workspace-cache
-        - docker-cleanup
-
-- job:
     name: mediawiki-core-javascript-docker
     node: Docker
     triggers:
@@ -185,11 +160,6 @@
         - shell:
             !include-raw:
                 - assert-no-mediawiki-errors.bash
-
-- project:
-    name: mediawiki-core
-    jobs:
-      - '{name}-jsduck-docker'
 
 # Used to decouple MediaWiki related projects from the rest of the projects in
 # gate-and-submit. See T107529.
