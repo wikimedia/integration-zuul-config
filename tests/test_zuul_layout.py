@@ -105,6 +105,9 @@ class TestZuulLayout(unittest.TestCase):
                     )
                     self.assertNotIn('extension-quibble', templates)
                 else:
+                    if 'extension-quibble-not-php74' in templates:
+                        continue
+
                     self.assertIn(
                         '%s-quibble' % kind,
                         templates,
