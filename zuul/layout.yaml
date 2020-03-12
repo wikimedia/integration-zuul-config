@@ -981,11 +981,12 @@ jobs:
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
     branch: ^master$
 
-  - name: mediawiki-core-jsduck-docker
+  - name: mediawiki-core-javascript-docker
     branch: ^(REL.*|master)$
-  - name: mediawiki-core-jsduck-docker-publish
+
+  - name: mediawiki-core-javascript-docker-publish
     # Like the doxygen job, we dont want to run it concurrently.
-    mutex: mediawiki-core-jsduck-docker-publish
+    mutex: mediawiki-core-javascript-docker-publish
     # This excludes wmf-branches (instead of including master/REL-branches) so that
     # it may run on for tags in the 'publish' pipeline (T232055)
     skip-if:
@@ -2067,7 +2068,7 @@ projects:
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
       - mediawiki-quibble-apitests-vendor-docker
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
       - mediawiki-core-php72-phan-docker
     php:
       - mediawiki-quibble-vendor-sqlite-php72-docker
@@ -2087,7 +2088,7 @@ projects:
       - mediawiki-quibble-vendor-sqlite-php72-docker
       - mediawiki-quibble-vendor-postgres-php72-docker
 
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
       - mediawiki-core-php72-phan-docker
 
     test-1_31:
@@ -2095,7 +2096,7 @@ projects:
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-composer-docker
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
     gate-and-submit-1_31:
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-composer-mysql-php72-docker
@@ -2105,14 +2106,14 @@ projects:
       - mediawiki-quibble-selenium-composer-docker
       # Sqlite broken on 1.31
       #- mediawiki-quibble-composer-sqlite-php72-docker
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
 
     test-1_33:
       - mediawiki-quibble-composer-mysql-php72-docker
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-composer-docker
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
 
       - mediawiki-core-php72-phan-docker
     gate-and-submit-1_33:
@@ -2125,7 +2126,7 @@ projects:
       - mediawiki-quibble-selenium-composer-docker
       - mediawiki-quibble-composer-sqlite-php72-docker
       - mediawiki-quibble-composer-postgres-php72-docker
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
 
       - mediawiki-core-php72-phan-docker
 
@@ -2134,7 +2135,7 @@ projects:
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-composer-docker
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
 
       - mediawiki-core-php72-phan-docker
     gate-and-submit-1_34:
@@ -2145,7 +2146,7 @@ projects:
       - mediawiki-quibble-selenium-composer-docker
       - mediawiki-quibble-composer-sqlite-php72-docker
       - mediawiki-quibble-composer-postgres-php72-docker
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
 
       - mediawiki-core-php72-phan-docker
 
@@ -2156,7 +2157,7 @@ projects:
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
       - mediawiki-quibble-apitests-vendor-docker
-      - mediawiki-core-jsduck-docker
+      - mediawiki-core-javascript-docker
       - mediawiki-core-php72-phan-docker
     gate-and-submit-wmf:
       - mediawiki-quibble-vendor-mysql-php72-docker
@@ -2166,9 +2167,6 @@ projects:
 
       - mediawiki-quibble-selenium-vendor-docker
       - mediawiki-quibble-apitests-vendor-docker
-
-      # FIXME jsduck is most probably no more used on wmf branches
-      - mediawiki-core-jsduck-docker
 
       - mediawiki-core-php72-phan-docker
 
@@ -2188,20 +2186,19 @@ projects:
     codehealth:
       - mwcore-codehealth-patch
     postmerge:
-      - mediawiki-core-jsduck-docker-publish
+      - mediawiki-core-javascript-docker-publish
       - mwcore-codehealth-master-non-voting
       # Temporarily disable publishing for SRE T242775
       # - trigger-mediawiki-pipeline-publish
     publish:
       # When release tags are created
-      - mediawiki-core-jsduck-docker-publish
+      - mediawiki-core-javascript-docker-publish
       - mediawiki-core-doxygen-docker-publish
     post:
       - train-deploy-notes
     experimental:
       - mwgate-composer-php72-docker
       - mediawiki-core-php72-phan-seccheck-docker
-      - mediawiki-core-javascript-docker
 
   - name: mediawiki/debian
     test:

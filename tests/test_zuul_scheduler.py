@@ -1096,7 +1096,7 @@ class TestZuulScheduler(unittest.TestCase):
 
     def test_mwcore_switch_to_quibble(self):
         expected_test = {
-            'mediawiki-core-jsduck-docker': True,
+            'mediawiki-core-javascript-docker': True,
             'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php72-docker': True,
             'mediawiki-quibble-vendor-mysql-php72-docker': True,
@@ -1109,7 +1109,7 @@ class TestZuulScheduler(unittest.TestCase):
             'mwgate-node10-docker': True,
         }
         expected_gate = {
-            'mediawiki-core-jsduck-docker': True,
+            'mediawiki-core-javascript-docker': True,
             'mediawiki-core-php72-phan-docker': True,
             'mediawiki-quibble-composer-mysql-php72-docker': True,
             'mediawiki-quibble-vendor-mysql-php74-docker': True,
