@@ -464,8 +464,6 @@ dependencies = {
     'WikidataPageBanner': ['Wikibase'],
     'WikiEditor': ['EventLogging', 'WikimediaEvents'],
     'WikimediaBadges': ['Wikibase'],
-    'WikimediaEditorTasks': ['Wikibase', 'CirrusSearch',
-                             'WikibaseCirrusSearch'],
     'WikimediaEvents': ['EventLogging'],
     'Wikisource': ['Wikibase'],
     'wikihiero': ['VisualEditor'],
