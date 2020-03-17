@@ -317,6 +317,7 @@ dependencies = {
     'Echo': ['CentralAuth', 'EventLogging'],
     'ElectronPdfService': ['Collection'],
     'EmailAuthorization': ['PluggableAuth'],
+    'EventLogging': ['EventStreamConfig'],
     'ExternalGuidance': ['MobileFrontend', 'UniversalLanguageSelector'],
     'FanBoxes': ['SocialProfile'],
     'FileAnnotations': ['EventLogging'],
