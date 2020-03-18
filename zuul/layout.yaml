@@ -981,9 +981,6 @@ jobs:
   - name: 'mediawiki-ruby-api-bundle-yard-publish'
     branch: ^master$
 
-  - name: mediawiki-core-javascript-docker
-    branch: ^(REL.*|master)$
-
   - name: mediawiki-core-javascript-docker-publish
     # Like the doxygen job, we dont want to run it concurrently.
     mutex: mediawiki-core-javascript-docker-publish
@@ -2057,7 +2054,6 @@ projects:
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
       - mediawiki-quibble-apitests-vendor-docker
-      - mediawiki-core-javascript-docker
       - mediawiki-core-php72-phan-docker
     php:
       # This is the diff between the optimised test-pipeline and the gate.
@@ -2087,8 +2083,6 @@ projects:
       - mediawiki-quibble-apitests-vendor-docker
       - mediawiki-quibble-vendor-sqlite-php72-docker
       - mediawiki-quibble-vendor-postgres-php72-docker
-
-      - mediawiki-core-javascript-docker
       - mediawiki-core-php72-phan-docker
 
     test-1_31:
@@ -2096,7 +2090,6 @@ projects:
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-composer-docker
-      - mediawiki-core-javascript-docker
     gate-and-submit-1_31:
       - mediawiki-quibble-composer-mysql-php70-docker
       - mediawiki-quibble-composer-mysql-php72-docker
@@ -2106,15 +2099,12 @@ projects:
       - mediawiki-quibble-selenium-composer-docker
       # Sqlite broken on 1.31
       #- mediawiki-quibble-composer-sqlite-php72-docker
-      - mediawiki-core-javascript-docker
 
     test-1_33:
       - mediawiki-quibble-composer-mysql-php72-docker
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-composer-docker
-      - mediawiki-core-javascript-docker
-
       - mediawiki-core-php72-phan-docker
     gate-and-submit-1_33:
       - mediawiki-quibble-composer-mysql-php70-docker
@@ -2126,8 +2116,6 @@ projects:
       - mediawiki-quibble-selenium-composer-docker
       - mediawiki-quibble-composer-sqlite-php72-docker
       - mediawiki-quibble-composer-postgres-php72-docker
-      - mediawiki-core-javascript-docker
-
       - mediawiki-core-php72-phan-docker
 
     test-1_34:
@@ -2135,8 +2123,6 @@ projects:
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-composer-docker
-      - mediawiki-core-javascript-docker
-
       - mediawiki-core-php72-phan-docker
     gate-and-submit-1_34:
       - mediawiki-quibble-composer-mysql-php72-docker
@@ -2146,8 +2132,6 @@ projects:
       - mediawiki-quibble-selenium-composer-docker
       - mediawiki-quibble-composer-sqlite-php72-docker
       - mediawiki-quibble-composer-postgres-php72-docker
-      - mediawiki-core-javascript-docker
-
       - mediawiki-core-php72-phan-docker
 
     test-wmf:
@@ -2157,7 +2141,6 @@ projects:
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
       - mediawiki-quibble-apitests-vendor-docker
-      - mediawiki-core-javascript-docker
       - mediawiki-core-php72-phan-docker
     gate-and-submit-wmf:
       - mediawiki-quibble-vendor-mysql-php72-docker
