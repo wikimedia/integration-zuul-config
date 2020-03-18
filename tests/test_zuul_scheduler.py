@@ -1098,8 +1098,6 @@ class TestZuulScheduler(unittest.TestCase):
         expected_test = {
             'mediawiki-core-javascript-docker': True,
             'mediawiki-core-php72-phan-docker': True,
-            'mediawiki-quibble-composer-mysql-php72-docker': True,
-            'mediawiki-quibble-vendor-mysql-php72-docker': True,
             'mediawiki-quibble-composertest-php72-docker': True,
             'mediawiki-quibble-apitests-vendor-docker': True,
             'mediawiki-quibble-selenium-vendor-docker': True,

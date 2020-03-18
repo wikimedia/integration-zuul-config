@@ -2053,8 +2053,6 @@ projects:
     template:
       - name: extension-gate
     test:
-      - mediawiki-quibble-composer-mysql-php72-docker
-      - mediawiki-quibble-vendor-mysql-php72-docker
       # FIXME use a normal composer job?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-docker
@@ -2062,9 +2060,20 @@ projects:
       - mediawiki-core-javascript-docker
       - mediawiki-core-php72-phan-docker
     php:
+      # This is the diff between the optimised test-pipeline and the gate.
+      #
+      # The main quibble job that runs PHPUnit tests is:
+      #   wmf-quibble-core-vendor-mysql-php72-docker (for mediawiki/core and /vendor)
+      #   wmf-quibble-vendor-mysql-php72-docker      (for other mediawiki/* repos)
+      #
+      # Without wmf extensions (same deps/db/php as main)
+      - mediawiki-quibble-vendor-mysql-php72-docker
+      # Without wmf extensions: alternate deps (composer instead of vendor)
+      - mediawiki-quibble-composer-mysql-php72-docker
+      # Without wmf extensions: alternate db backends
       - mediawiki-quibble-vendor-sqlite-php72-docker
       - mediawiki-quibble-vendor-postgres-php72-docker
-      - mediawiki-quibble-vendor-mysql-php72-docker
+      # Without wmf extensions: alternate php versions
       - mediawiki-quibble-vendor-mysql-php73-docker
       - mediawiki-quibble-vendor-mysql-php74-docker
     gate-and-submit:
