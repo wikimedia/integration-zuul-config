@@ -727,6 +727,7 @@ gatedextensions = [
     'Echo',
     'Elastica',
     'EventLogging',
+    'EventStreamConfig',
     'FileImporter',
     'Flow',
     'GeoData',
