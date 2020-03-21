@@ -304,6 +304,7 @@ dependencies = {
     'CodeEditor': ['WikiEditor'],
     'CodeMirror': ['WikiEditor', 'VisualEditor'],
     'CollaborationKit': ['EventLogging', 'VisualEditor'],
+    'ConfigManager': ['BlueSpiceFoundation'],
     'ContentTranslation': ['AbuseFilter', 'Echo', 'EventLogging',
                            'UniversalLanguageSelector', 'VisualEditor'],
     'ContributorsAddon': ['Contributors'],
