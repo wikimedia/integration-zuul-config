@@ -6,6 +6,9 @@
     triggers:
       - timed: '*/5 * * * *'
     project-type: pipeline
+    properties:
+        - build-discarder:
+            days-to-keep: 7
     parameters:
         - string:
             name: 'EXECUTION_TIMEOUT_SECONDS'

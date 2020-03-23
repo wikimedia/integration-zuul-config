@@ -175,12 +175,10 @@ def checkAgents = {
                 diskObject.toString()
             )
 
-            println "${jenkinsMessage}"
-
             if (diskObject.percent >= offlinePercentage) {
                 // Don't take the master node offline, we need it
                 if (!isMaster) {
-                    // The offline threshold has been reached
+                    println "${jenkinsMessage} offline threshold has been reached"
                     computer.setTemporarilyOffline(
                         true,
                         new OfflineCause.ByCLI(jenkinsMessage)
@@ -189,7 +187,7 @@ def checkAgents = {
                     alerts.add(ircMessage)
                 }
             } else if (diskObject.percent >= cleanupPercentage && diskObject.mount == dockerMount(computerName)) {
-                // The cleanup threshold for the docker mount has been reached
+                println "${jenkinsMessage} cleanup threshold for Docker mount has been reached"
                 removeDockerImages(computer)
             }
         }
