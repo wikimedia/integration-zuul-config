@@ -240,7 +240,21 @@
     node: Docker
     triggers:
     - timed: '@daily'
+    parameters:
+        - string:
+              name: 'ZUUL_PROJECT'
+              default: '{repository}'
+        - string:
+              name: 'ZUUL_REF'
+              default: 'master'
+        - string:
+              name: 'ZUUL_URL'
+              default: 'https://gerrit.wikimedia.org/r/p/'
+        - string:
+              name: 'NPM_CONFIG_cache'
+              default: '/cache'
     builders:
+    - docker-cache-dir
     - docker-src-dir
     - docker-log-dir
     - docker-ci-src-setup-simple
