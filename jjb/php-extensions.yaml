@@ -25,19 +25,19 @@
     name: php71
     jobs:
       - 'php-compile-{name}-docker':
-          image: php71-compile:0.1.3-s3
+          image: php71-compile:0.1.3-s4
 
 - project:
     name: php72
     jobs:
       - 'php-compile-{name}-docker':
-          image: php72-compile:0.2.1-s6
+          image: php72-compile:0.2.1-s7
 
 - project:
     name: php73
     jobs:
       - 'php-compile-{name}-docker':
-          image: php73-compile:0.2.3-s3
+          image: php73-compile:0.2.3-s4
 
 - project:
     name: php74
@@ -55,7 +55,7 @@
      - docker-ci-src-setup-simple
      - docker-run:
         options: '--volume "$(pwd)"/src:/src --entrypoint=/run-coverage.sh'
-        image: 'docker-registry.wikimedia.org/releng/php74-compile:0.0.4'
+        image: 'docker-registry.wikimedia.org/releng/php74-compile:0.0.4-s1'
      - cover-publish:
         src: 'src/coverage'
         dest: '$DOC_PROJECT'
