@@ -1,6 +1,6 @@
 FROM {{ "ci-stretch" | image_tag }}
 
-RUN {{ "openjdk-8-jdk-headless" | apt_install }}
+RUN {{ "openjdk-8-jdk-headless openssh-client" | apt_install }}
 
 # Install a more recent Maven version
 COPY KEYS /tmp/KEYS
