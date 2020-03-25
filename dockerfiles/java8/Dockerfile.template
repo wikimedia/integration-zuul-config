@@ -2,6 +2,8 @@ FROM {{ "ci-stretch" | image_tag }}
 
 RUN {{ "openjdk-8-jdk-headless openssh-client" | apt_install }}
 
+COPY gerrit_ssh_host_key /etc/ssh/ssh_known_hosts
+
 # Install a more recent Maven version
 COPY KEYS /tmp/KEYS
 COPY apache-maven-3.5.2-bin.tar.gz.asc /tmp/apache-maven-3.5.2-bin.tar.gz.asc
