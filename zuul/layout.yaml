@@ -1011,6 +1011,10 @@ jobs:
     files:
       - '^includes/Defines\.php$'
 
+  # Kubernetes migration tutorial
+  - name: trigger-helloworldoid-pipeline-publish
+    branch: ^kubernetes-tutorial$
+
 project-templates:
 
   # For extensions that have broken tests or magic behaviors that CI does not support.
@@ -1810,7 +1814,10 @@ projects:
     test:
       - trigger-helloworldoid-pipeline-test
     gate-and-submit:
+    # all test jobs must have a gate and submit pipeline defined
       - noop
+    postmerge:
+      - trigger-helloworldoid-pipeline-publish
 
   - name: cloud/toolforge/ingress-admission-controller
     test:
