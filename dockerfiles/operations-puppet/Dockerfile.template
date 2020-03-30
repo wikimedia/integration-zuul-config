@@ -1,4 +1,4 @@
-FROM {{ "tox" | image_tag }}
+FROM {{ "ci-buster" | image_tag }}
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
@@ -6,7 +6,7 @@ ENV PUPPET_DIR='/srv/workspace/puppet'
 
 {% set pkgs_to_install = """build-essential bundler  rubygems-integration \
 rake ruby ruby-dev ca-certificates default-libmysqlclient-dev mtail \
-isc-dhcp-server unzip lua-busted file"""
+isc-dhcp-server unzip lua-busted file python3-dev python3-pip tox python-dev python-pip python3-wheel python-wheel systemd"""
 %}
 
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1
