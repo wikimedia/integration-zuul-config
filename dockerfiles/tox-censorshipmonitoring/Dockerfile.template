@@ -1,0 +1,6 @@
+FROM {{ "tox" | image_tag }}
+
+USER root
+RUN {{ "python3-dev libpq-dev gcc" | apt_install }}
+
+USER nobody
