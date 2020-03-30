@@ -117,7 +117,7 @@
         - docker-src-dir
         - docker-cache-dir
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/operations-puppet:0.6.2
+            image: docker-registry.wikimedia.org/releng/operations-puppet:0.7.0
             logdir: '/log'
             options: '-e RAKE_TARGET=global:wmf_style'
             # Have host capture the output.
@@ -151,6 +151,8 @@
          os:
            - stretch:
                image: 'docker-registry.wikimedia.org/releng/operations-puppet:0.6.2'
+           - buster:
+               image: 'docker-registry.wikimedia.org/releng/operations-puppet:0.7.0'
 
 - project:
     name: puppet-wmf-styleguide
