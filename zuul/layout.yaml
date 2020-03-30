@@ -2860,8 +2860,10 @@ projects:
       - cassandra-table-properties-tox-docker
 
   - name: operations/software/censorship-monitoring
-    template:
-      - name: tox-docker
+    test:
+      - censorshipmonitoring-tox-docker
+    gate-and-submit:
+      - censorshipmonitoring-tox-docker
 
   - name: operations/software/conftool
     test:
