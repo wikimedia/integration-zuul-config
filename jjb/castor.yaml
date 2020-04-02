@@ -122,15 +122,19 @@
             name: ZUUL_PIPELINE
             description: 'Name of Zuul pipeline. Must be gate-and-submit or postmerge to actually save cache.'
     wrappers:
-        - ansicolor
-        - timeout:
-            timeout: 1  # minutes
-            abort: false
-            fail: false
-        - timestamps
-        - ssh-agent-credentials:
-            users:
-             - 'nodepool-dib-jenkins'
+      - timeout:
+          timeout: 1 # minutes
+          abort: false
+          fail: false
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
+      - ssh-agent-credentials:
+          users:
+            - 'nodepool-dib-jenkins'
 
     builders:
         # This is horrible. Will need a better system that just prevent the job
@@ -146,14 +150,18 @@
     !!merge : *job_castor_save
     name: castor-save-workspace-cache
     wrappers:
-        - ansicolor
-        - timeout:
-            timeout: 1  # minutes
-            abort: false
-            fail: false
-        - timestamps
-        - ssh-agent-credentials:
-            users:
+      - timeout:
+          timeout: 1 # minutes
+          abort: false
+          fail: false
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
+      - ssh-agent-credentials:
+          users:
              - 'ae711ff4-813e-4462-9a27-21bdbd4fdcb9'  # jenkins-deploy
     builders:
         # This is horrible. Will need a better system that just prevent the job

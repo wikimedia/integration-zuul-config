@@ -275,6 +275,10 @@
             fail: true
         - timestamps
         - ansicolor
+        - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
 # Skipping selenium tests - T196960
 - job-template:
@@ -387,6 +391,10 @@
             fail: true
         - timestamps
         - ansicolor
+        - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
 # Per-patch coverage for MediaWiki core.
 - job-template:
@@ -409,11 +417,15 @@
          allow-empty: true
      - docker-cleanup
     wrappers:
-     - timeout:
-         timeout: 60
-         fail: true
-     - ansicolor
-     - timestamps
+      - timeout:
+          timeout: 60
+          fail: true
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
 # Per-patch performance report for MediaWiki core.
 - job:
@@ -433,11 +445,15 @@
         - archive-log-allow-empty
         - docker-cleanup
     wrappers:
-     - timeout:
-         timeout: 30
-         fail: true
-     - ansicolor
-     - timestamps
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
 - job-template:
     !!merge : *job_quibble
@@ -534,9 +550,12 @@
          fail: true
      - timestamps
      - credentials-binding:
-           - text:
-               credential-id: SONAR_API_KEY
-               variable: SONAR_API_KEY
+          - text:
+              credential-id: SONAR_API_KEY
+              variable: SONAR_API_KEY
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     builders:
     - docker-log-dir
     - docker-src-dir
@@ -626,9 +645,12 @@
      # SONAR_API_KEY is in Jenkins credentials store
      # https://integration.wikimedia.org/ci/credentials/
      - credentials-binding:
-           - text:
-               credential-id: SONAR_API_KEY
-               variable: SONAR_API_KEY
+          - text:
+              credential-id: SONAR_API_KEY
+              variable: SONAR_API_KEY
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
     builders:
     - docker-log-dir
@@ -725,6 +747,10 @@
             fail: true
         - ansicolor
         - timestamps
+        - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     builders:
         - docker-log-dir
         - docker-wipe-dir:
@@ -909,6 +935,10 @@
             fail: true
         - timestamps
         - ansicolor
+        - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     triggers:
         - zuul
 

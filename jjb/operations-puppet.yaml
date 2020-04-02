@@ -64,10 +64,14 @@
         logdir: '/srv/workspace/log'
         image: '{image}'
     wrappers:
-     - timeout:
-         timeout: 5 # minutes
-     - timestamps
-     - ansicolor
+      - timeout:
+          timeout: 5 # minutes
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     publishers:
      - xunit:
          types:
@@ -124,10 +128,14 @@
             # To be processed by the Warnings publisher.
             args: ' | tee "$WORKSPACE/log/rake.log"'
     wrappers:
-        - timeout:
-            timeout: 3  # minutes
-        - timestamps
-        - ansicolor
+      - timeout:
+          timeout: 3  # minutes
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     publishers:
         - archive-log-dir
         - warnings:

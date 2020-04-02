@@ -37,11 +37,15 @@
         - castor-save-workspace-cache
         - docker-cleanup
     wrappers:
-        - timeout:
-            timeout: '{timeout|30}'
-            fail: true
-        - timestamps
-        - ansicolor
+      - timeout:
+          timeout: '{timeout|30}'
+          fail: true
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
 # Super basic sanity check for integration/composer repo
 - job:

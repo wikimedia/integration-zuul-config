@@ -3,13 +3,17 @@
     name: 'gerrit-docker'
     node: Docker
     wrappers:
-      # need's to be 1 hour and 30 mins to give gerrit enough time to build.
+      # needs to be 1 hour and 30 mins to give gerrit enough time to build.
       # It can sometimes take a while.
       - timeout:
           timeout: 90
           fail: true
       - timestamps
       - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     triggers:
      - zuul
     builders:
@@ -54,6 +58,10 @@
           fail: true
       - timestamps
       - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
 # Convenience alias with name/project variables
 - job-template:
@@ -125,12 +133,15 @@
           fail: true
       - timestamps
       - ansicolor
-      # SONAR_API_KEY is in Jenkins credentials store
-      # https://integration.wikimedia.org/ci/credentials/
       - credentials-binding:
+          # SONAR_API_KEY is in Jenkins credentials store
+          # https://integration.wikimedia.org/ci/credentials/
           - text:
               credential-id: SONAR_API_KEY
               variable: SONAR_API_KEY
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     publishers:
         - postbuildscript:
               builders:
@@ -476,6 +487,9 @@
           - text:
               credential-id: selenium-user-beta
               variable: MEDIAWIKI_PASSWORD
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache

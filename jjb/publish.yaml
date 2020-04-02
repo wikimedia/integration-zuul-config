@@ -60,19 +60,23 @@
     triggers:
      - zuul
     wrappers:
-     - ansicolor
-     - timeout:
-         timeout: 3  # minutes
-         fail: true
-     - timestamps
-     - ssh-agent-credentials:
-         users:
-          - 'ae711ff4-813e-4462-9a27-21bdbd4fdcb9'  # jenkins-deploy
-     - workspace-cleanup
+      - timeout:
+          timeout: 3 # minutes
+          fail: true
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
+      - ssh-agent-credentials:
+          users:
+            - 'ae711ff4-813e-4462-9a27-21bdbd4fdcb9'  # jenkins-deploy
+      - workspace-cleanup
     publishers:
-     - workspace-cleanup
+      - workspace-cleanup
     builders:
-     - shell: |
+      - shell: |
          set -u
          set +x
          ssh_config=($TRIGGERED_SSH_CONNECTION)

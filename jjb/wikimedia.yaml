@@ -69,13 +69,17 @@
                 ssh://portalsbuilder@gerrit.wikimedia.org:29418/wikimedia/portals/deploy.git \
                 HEAD:refs/publish/master
     wrappers:
-        - ansicolor
-        - timeout:
-            timeout: 15 # minutes
-        - timestamps
-        - ssh-agent-credentials:
-            users:
-                - 'portalsbuilder'
+      - timeout:
+          timeout: 15 # minutes
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
+      - ssh-agent-credentials:
+          users:
+            - 'portalsbuilder'
     publishers:
         - archive-log-allow-empty
         - email-ext:

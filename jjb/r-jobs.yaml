@@ -10,10 +10,14 @@
         image: 'docker-registry.wikimedia.org/releng/lintr:0.2.1'
         logdir: '/log'
     wrappers:
-     - timeout:
-         timeout: 5 # minute
-     - timestamps
-     - ansicolor
+      - timeout:
+          timeout: 5 # minute
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     publishers:
      - postbuildscript:
          mark-unstable-if-failed: true

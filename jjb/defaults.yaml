@@ -7,8 +7,8 @@
     concurrent: true
 
     properties:
-     - build-discarder:
-         days-to-keep: 30
+      - build-discarder:
+          days-to-keep: 30
 
     wrappers:
       - timeout:
@@ -16,3 +16,7 @@
           fail: true
       - timestamps
       - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN

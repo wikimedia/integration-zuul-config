@@ -57,10 +57,10 @@
           artifacts: 'log/*.log, log/junit/*.xml, log/report.html, log/*.png'
 
     wrappers:
-      - ansicolor
       - timeout:
           timeout: 300
       - timestamps
+      - ansicolor
       # Wiki usernames and passwords are held in the Jenkins credentials store (must be logged in)
       # https://integration.wikimedia.org/ci/credentials/store/system/domain/selenium/
       - credentials-binding:
@@ -76,3 +76,6 @@
           - text:
               credential-id: sauce-ondemand-access-key
               variable: SAUCE_ONDEMAND_ACCESS_KEY
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN

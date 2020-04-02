@@ -29,6 +29,10 @@
           timeout: 30
       - timestamps
       - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
 # FIXME: unify with debian-glue
 # this job is designed to handle our special little scap corner-cases
@@ -156,6 +160,10 @@
       - timestamps
       - timeout:
           timeout: 45
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
     # We do not have a good way to detect databases modifications, so just spam
     # the beta cluster with update requests.
@@ -271,6 +279,10 @@
       - timestamps
       - timeout:
           timeout: 60
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
 
     publishers:
       - beta-irc

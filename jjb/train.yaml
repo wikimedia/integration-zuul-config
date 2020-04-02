@@ -25,10 +25,13 @@
       - timestamps
       - ansicolor
       - credentials-binding:
-        - username-password-separated:
-            credential-id: ReleaseNotesBot
-            username: MEDIAWIKI_USR
-            password: MEDIAWIKI_PSW
+          - username-password-separated:
+              credential-id: ReleaseNotesBot
+              username: MEDIAWIKI_USR
+              password: MEDIAWIKI_PSW
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
     publishers:
       - archive-log-dir
       - docker-cleanup
