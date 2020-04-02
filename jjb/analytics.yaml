@@ -1,3 +1,13 @@
+- publisher:
+    name: irc-wikimedia-analytics
+    publishers:
+        - ircbot:
+            notify-start: true
+            message-type: summary
+            channels:
+                - name: '#wikimedia-analytics'
+                  notify-only: true
+
 - job-template:
     name: '{name}-maven-release-docker'
     node: Docker
@@ -72,6 +82,7 @@
           body: |
             The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
             See $BUILD_URL for details.
+      - irc-wikimedia-analytics
       - archive-log-allow-empty
       - castor-save-workspace-cache
       - docker-cleanup
@@ -129,6 +140,7 @@
           body: |
             The build $BUILD_NUMBER for $GIT_PROJECT has finished.
             See $BUILD_URL for details.
+      - irc-wikimedia-analytics
 
 - project:
     name: 'analytics-refinery'
