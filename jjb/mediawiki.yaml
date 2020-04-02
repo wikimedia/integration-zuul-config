@@ -150,9 +150,9 @@
         - '{name}-composer-{phpflavor}-docker':
             phpflavor:
                 - php70:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php70:0.1.1-s1
+                    image: docker-registry.wikimedia.org/releng/composer-test-php70:0.1.1-s2
                 - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php72:0.2.1-s9
+                    image: docker-registry.wikimedia.org/releng/composer-test-php72:0.2.1-s10
         - '{name}-rake-docker'
         - '{name}-tox-docker'
         - '{name}-node10-docker'
@@ -178,13 +178,13 @@
            mediawiki/core
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s2'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s3'
         options: '--volume "$(pwd)"/src:/mediawiki'
         args: '--working-dir=/mediawiki update --ansi --no-progress --prefer-dist --profile'
         logdir: '/log'
      - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki --entrypoint=/run-core.sh'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.5.3-s7'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.5.3-s8'
         args: '-m checkstyle'
         logdir: '/log'
     publishers:
@@ -214,12 +214,12 @@
            mediawiki/core
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s2'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.2.2-s3'
         options: '--volume "$(pwd)"/src:/mediawiki'
         args: '--working-dir=/mediawiki update --ansi --no-progress --prefer-dist --profile'
         logdir: '/log'
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.4.0-s9
+         image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.4.0-s10
          options: '--env THING_SUBNAME="" --env SECCHECK_MODE="mw-config.php" --volume "$(pwd)"/src:/mediawiki' # FIXME container should use /src
          args: '-m checkstyle'
          logdir: '/log'
@@ -358,7 +358,7 @@
         - mediawiki-quibble-api-testing-vendor-{database}-{php}-docker:
             php:
                 - php72:
-                    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s3
+                    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s4
             packages-source: vendor
             database:
                 - mysql
@@ -424,7 +424,7 @@
     builders:
         - docker-log-dir
         - docker-run-with-log:
-            image: 'docker-registry.wikimedia.org/releng/quibble-fresnel:0.0.40-s3'
+            image: 'docker-registry.wikimedia.org/releng/quibble-fresnel:0.0.40-s4'
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             args: '--packages-source vendor --db mysql --db-dir /workspace/db --skip-deps --commands "mediawiki-fresnel-patch"'
             logdir: '/workspace/log'
@@ -542,7 +542,7 @@
     - docker-src-dir
     - docker-castor-load
     - docker-run-with-log-and-workspace-cache:
-        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s3
+        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s4
         options: '-e CODEHEALTH=1 --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
         args: '--packages-source "{packages-source}" --git-parallel=8 {quibble_args}'
         logdir: '/workspace/log'
@@ -637,7 +637,7 @@
     - docker-wipe-dir:
         dir: 'cover'
     - docker-run-with-log-and-workspace-cache:
-        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s3
+        image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s4
         options: '-e CODEHEALTH=1 --volume "$(pwd)"/src:/workspace/src --volume "$(pwd)"/cover:/workspace/cover --volume /srv/git:/srv/git:ro'
         args: '--packages-source "{packages-source}" --git-parallel=8 --skip-install --commands=mwext-phpunit-coverage'
         logdir: '/workspace/log'
@@ -731,7 +731,7 @@
             dir: 'phpmetrics-report'
         - docker-run:
             options: '-v "$(pwd)"/phpmetrics-report:/phpmetrics-report -v "$(pwd)"/log:/log -v "$(pwd)"/src:/src'
-            image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.3-s5
+            image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.3-s6
             args: '--report-html=/phpmetrics-report --report-violations=/log/violations-phpmetrics.xml .'
         - doc-publish:
             docsrc: phpmetrics-report
@@ -821,47 +821,47 @@
         - sqlite
     php:
         - php70:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.40-s1
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.40-s2
         - php71:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php71:0.0.40-s2
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php71:0.0.40-s3
         - php72:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s4
         - php73:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.40-s2
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.40-s3
         - php74:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php74:0.0.40-s2
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php74:0.0.40-s3
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
         - quibble-{packages-source}-selenium-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s4
             database: 'mysql'
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
         - mediawiki-quibble-selenium-{packages-source}-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s4
             database: 'mysql'
         - mediawiki-quibble-apitests-{packages-source}-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s4
             database: 'mysql'
         - mwcore-phpunit-coverage-patch:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s4
             packages-source: vendor
             database: sqlite
         - mwcore-phpunit-coverage-master:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s4
             packages-source: vendor
             database: sqlite
         - mwext-phpunit-coverage-patch-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s4
             packages-source:  composer
             database: mysql
         - mwext-phpunit-coverage-docker-publish:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-coverage:0.0.40-s4
             packages-source:  composer
             database: mysql
         - mwselenium-quibble-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.40-s4
             packages-source: vendor
             database: mysql
 
@@ -876,7 +876,7 @@
     # And only php7.2
     php:
         - php72:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s4
     jobs:
         - wmf-quibble-vendor-mysql-{php}-docker
         - wmf-quibble-core-vendor-mysql-{php}-docker
@@ -893,7 +893,7 @@
     name: mediawiki-selenium-integration
     jobs:
         - mediawiki-selenium-integration-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.40-s4
 
             packages-source: vendor
             database: mysql
@@ -916,7 +916,7 @@
     name: parsoidsvc-parsertests
     jobs:
         - parsoidsvc-parsertests-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s3
+            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s4
             packages-source: composer
             database: sqlite
             quibble_args: '--commands=mediawiki/services/parsoid/tools/ci-mw-parsertests.sh'
@@ -934,7 +934,7 @@
 
 - project:
     name: wikibase
-    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s3
+    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.40-s4
     packages-source: composer
     kind:
         - client:
