@@ -90,11 +90,6 @@
 
           set +o pipefail
           exit 0
-      - trigger-builds:
-        - project: beta-publish-deb
-          predefined-parameters: 'COPY_FROM=${JOB_NAME}'
-          block: false
-          same-node: false
     publishers:
       - xunit:
           thresholdsmode: 'number'
@@ -106,6 +101,15 @@
                   pattern: 'lintian-*.xml'
       - archive:
           artifacts: '*.gz,*.bz2,*.xz,*.deb,*.dsc,*.buildinfo,*.changes,debc.txt,*lintian.txt,*lintian.xml'
+      - postbuildscript:
+          builders:
+            - build-on:
+                - SUCCESS
+              build-steps:
+                  - trigger-builds:
+                      - project: beta-publish-deb
+                        predefined-parameters: 'COPY_FROM=${JOB_NAME}'
+                        block: true
 
 - job:
     name: beta-publish-deb
