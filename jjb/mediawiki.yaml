@@ -507,7 +507,6 @@
              -Dsonar.host.url=https://sonarcloud.io \
              -Dsonar.branch.target="$ZUUL_BRANCH" \
              -Dsonar.branch.name={branch} \
-             -X
       - mwcore-codehealth-{name}:
          # Used for analyzing the master branch on postmerge.
          name: 'master-non-voting'
@@ -517,7 +516,6 @@
              -Dsonar.projectName=mediawiki-core \
              -Dsonar.organization=wmftest \
              -Dsonar.host.url=https://sonarcloud.io \
-             -X
 
 - job-template:
     name: 'mwcore-codehealth-{name}'
@@ -574,7 +572,6 @@
              -Dsonar.host.url=https://sonarcloud.io \
              -Dsonar.branch.target="$ZUUL_BRANCH" \
              -Dsonar.branch.name={branch} \
-             -X
          publishers:
            - docker-cleanup
       - mwext-codehealth-{name}:
@@ -586,7 +583,6 @@
              -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
              -Dsonar.organization=wmftest \
              -Dsonar.host.url=https://sonarcloud.io \
-             -X
          publishers:
              - archive-log-allow-empty
              - castor-save-workspace-cache
