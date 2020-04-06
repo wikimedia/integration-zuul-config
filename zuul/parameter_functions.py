@@ -631,15 +631,6 @@ def set_mw_dependencies(item, job, params):
     skin_deps = {d for d in deps if d.startswith('skins/')}
     ext_deps = deps - skin_deps
 
-    # BlueSpiceFoundation depends on ExtJSBase in master but not in REL1_27.
-    # ExtJSBase started with REL1_30 anyway. T196454
-    if (
-        '/BlueSpice' in params['ZUUL_PROJECT']  # skin + extensions
-        and params['ZUUL_BRANCH'] == 'REL1_27'
-        and 'ExtJSBase' in ext_deps
-    ):
-        ext_deps.remove('ExtJSBase')
-
     # Export with a literal \n character and have bash expand it later via
     # 'echo -e $XXX_DEPENDENCIES'.
     def glue_deps(prefix, deps):

@@ -185,13 +185,3 @@ class TestMwDependencies(unittest.TestCase):
         self.assertIn('EXT_DEPENDENCIES', deps)
         self.assertEqual('mediawiki/extensions/ExtJSBase',
                          deps['EXT_DEPENDENCIES'])
-
-        # Ditto but with REL1_27
-        deps = self.fetch_dependencies(
-            job_name='quibble-composer-mysql-php70-docker',
-            project='mediawiki/extensions/BlueSpiceFoundation',
-            branch='REL1_27')
-        self.assertIn('EXT_DEPENDENCIES', deps)
-        self.assertNotIn(
-            'mediawiki/extensions/ExtJSBase', deps['EXT_DEPENDENCIES'],
-            'BlueSpice@REL1_27 must not depend on ExtJSBase T196454')
