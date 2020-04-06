@@ -5,14 +5,17 @@ FROM {{ "node10" | image_tag }}
 # Slight digression compared to node10
 ENV NPM_CONFIG_CACHE=/cache/npm
 
-USER root
+#####################
+#  Inject composer  #
+#####################
 
-#############################
-#  Inject composer and npm  #
-#############################
+# Install composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+# Grab our composer helper scripts
 COPY --from=composer /srv/composer /srv/composer
-# Manually link since COPY copies symlink destination instead of the actual symlink
-RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
+
+USER root
 
 #########################################
 # node-gyp requires python2.7 / gcc ... #

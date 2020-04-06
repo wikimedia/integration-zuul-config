@@ -2,10 +2,13 @@ FROM {{ "composer-php70" | image_tag }} as composer
 
 FROM {{ "php56" | image_tag }}
 
+# Install composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+# Grab our composer helper scripts
 COPY --from=composer /srv/composer /srv/composer
-# Manually link since COPY copies symlink destination instead of the actual symlink
+
 USER root
-RUN ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
 
 RUN {{ "jq" | apt_install }}
 

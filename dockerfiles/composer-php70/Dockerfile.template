@@ -2,17 +2,27 @@ FROM {{ "php70" | image_tag }}
 
 USER root
 
-RUN git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/composer.git /srv/composer \
-    && rm -rf /srv/composer/.git \
-    && ln -s /srv/composer/vendor/bin/composer /usr/bin/composer
+RUN mkdir /srv/composer
 
-# Script to 'composer require' solely dev dependencies. Copied to /srv/composer
-# since child containers usually: COPY --from=composer /srv/composer /srv/composer
-COPY composer-install-dev-only.bash /srv/composer/composer-install-dev-only
-COPY security-check.sh /srv/composer/security-check
-COPY run-composer.sh /srv/composer/run-composer.sh
+COPY composer.phar.sha256sum /srv/composer/composer.phar.sha256sum
 
 RUN {{ "jq curl" | apt_install }}
+
+RUN cd /srv/composer \
+    && curl --silent --fail --output composer.phar https://getcomposer.org/download/1.10.5/composer.phar \
+    && sha256sum -c composer.phar.sha256sum
+
+RUN chmod +x /srv/composer/composer.phar \
+    && mv /srv/composer/composer.phar /usr/bin/composer
+
+# Various helpful scripts, copied to /srv/composer; child containers are expected to copy them if needed.
+
+# Script to `composer require` solely dev dependencies.
+COPY composer-install-dev-only.bash /srv/composer/composer-install-dev-only
+# Script to check with php-security-checker.wmflabs.org after `composer install` for issues.
+COPY security-check.sh /srv/composer/security-check
+# Wrapper script for composer that uses `COMPOSER_GITHUB_OAUTHTOKEN` if set.
+COPY run-composer.sh /srv/composer/run-composer.sh
 
 USER nobody
 
@@ -20,5 +30,5 @@ USER nobody
 # spam warnings about it.
 ENV COMPOSER_DISABLE_XDEBUG_WARN=1
 
-ENTRYPOINT ["/srv/composer/run-composer.sh"]
+ENTRYPOINT ["/usr/bin/composer/run-composer.sh"]
 CMD ["help"]
