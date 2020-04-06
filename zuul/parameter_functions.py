@@ -634,8 +634,7 @@ def set_mw_dependencies(item, job, params):
     # EventStreamConfig only requires MW >= REL1_35.
     # Therefore remove it from REL1_31, REL1_33, REL1_34. T249514
     if (
-        params['ZUUL_PROJECT'] == 'mediawiki/extensions/EventLogging'
-        and params['ZUUL_BRANCH'] in ['REL1_31', 'REL1_33', 'REL1_34']
+        params['ZUUL_BRANCH'] in ['REL1_31', 'REL1_33', 'REL1_34']
         and 'EventStreamConfig' in ext_deps
     ):
         ext_deps.remove('EventStreamConfig')
