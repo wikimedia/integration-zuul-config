@@ -85,6 +85,57 @@
               credential-id: composer-github-oauthtoken
               variable: COMPOSER_GITHUB_OAUTHTOKEN
 
+# Special job for Fundraising-specific extensions where master must maintain PHP70/REL1_31 compatibility.
+- project:
+    name: fundraising-branches-php70
+    ext:
+     - FundraisingEmailUnsubscribe
+     - ContributionTracking
+     - ParserFunctions
+     - cldr
+    branch:
+     - REL1_31
+    jobs:
+     - quibble-fundraising-{ext}-{branch}-php70-docker
+
+- job-template:
+    name: quibble-fundraising-{ext}-{branch}-php70-docker
+    node: Docker
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.40-s2
+            options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
+            # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
+            args: >
+                --packages-source composer --db mysql --db-dir /workspace/db --run=phpunit
+                --branch "{branch}"
+                --project-branch mediawiki/extensions/{ext}=master
+                --project-branch "mediawiki/core=fundraising/{branch}"
+                --project-branch "mediawiki/vendor=fundraising/{branch}"
+                mediawiki/vendor
+                mediawiki/extensions/{ext}
+            logdir: '/workspace/log'
+    publishers:
+        - junit:
+            results: 'log/junit*.xml'
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+        - docker-cleanup
+    wrappers:
+      - timeout:
+          timeout: 30
+          fail: true
+      - timestamps
+      - ansicolor
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
+
 - project:
     name: fundraising-tools
     jobs:
