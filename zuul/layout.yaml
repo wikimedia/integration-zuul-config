@@ -3328,12 +3328,15 @@ projects:
       - name: extension-coverage
       - name: extension-gate
 
+  # Special handling because Fundraising uses this on PHP70/REL1_31
   - name: mediawiki/extensions/ContributionTracking
     template:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-    experimental:
+    test:
+      - quibble-fundraising-ContributionTracking-REL1_31-php70-docker
+    gate-and-submit:
       - quibble-fundraising-ContributionTracking-REL1_31-php70-docker
 
   - name: mediawiki/extensions/CreditsSource
@@ -3517,7 +3520,9 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
-    experimental:
+    test:
+      - quibble-fundraising-FundraisingEmailUnsubscribe-REL1_31-php70-docker
+    gate-and-submit:
       - quibble-fundraising-FundraisingEmailUnsubscribe-REL1_31-php70-docker
 
   - name: mediawiki/extensions/FundraisingTranslateWorkflow
