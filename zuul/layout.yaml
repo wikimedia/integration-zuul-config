@@ -3244,6 +3244,8 @@ projects:
       - name: extension-seccheck
       - name: extension-coverage
       - name: extension-gate
+    experimental:
+      - quibble-fundraising-cldr-REL1_31-php70-docker
 
   - name: mediawiki/extensions/CodeEditor
     template:
@@ -3331,6 +3333,8 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
+    experimental:
+      - quibble-fundraising-ContributionTracking-REL1_31-php70-docker
 
   - name: mediawiki/extensions/CreditsSource
     template:
@@ -3506,6 +3510,15 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
+
+  # Special handling because Fundraising uses this on PHP70/REL1_31
+  - name: mediawiki/extensions/FundraisingEmailUnsubscribe
+    template:
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-seccheck
+    experimental:
+      - quibble-fundraising-FundraisingEmailUnsubscribe-REL1_31-php70-docker
 
   - name: mediawiki/extensions/FundraisingTranslateWorkflow
     template:
@@ -3882,6 +3895,8 @@ projects:
       - name: extension-seccheck
       - name: extension-coverage
       - name: extension-gate
+    experimental:
+      - quibble-fundraising-ParserFunctions-REL1_31-php70-docker
 
   # Not currently in production, but will be brought back for the Parsoid migration
   - name: mediawiki/extensions/ParserMigration
@@ -5423,11 +5438,6 @@ projects:
   - name: mediawiki/extensions/FormWizard
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/FundraisingEmailUnsubscribe
-    template:
-      - name: extension-quibble-composer
-      - name: extension-seccheck
 
   - name: mediawiki/extensions/GenerateMochaConfig
     template:
