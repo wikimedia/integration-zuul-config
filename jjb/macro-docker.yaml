@@ -103,6 +103,7 @@
         #!/bin/bash
         set -eux
         exec docker run {obj:options|} \
+          --security-opt seccomp=unconfined \
           --init \
           --rm \
           --label "jenkins.job=$JOB_NAME" \
