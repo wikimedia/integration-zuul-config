@@ -3517,13 +3517,18 @@ projects:
   # Special handling because Fundraising uses this on PHP70/REL1_31
   - name: mediawiki/extensions/FundraisingEmailUnsubscribe
     template:
-      - name: extension-quibble
+    # Known broken on master
+    # - name: extension-quibble
+      - name: mediawiki-i18n-check
       - name: extension-phan
       - name: extension-seccheck
     test:
       - quibble-fundraising-FundraisingEmailUnsubscribe-REL1_31-php70-docker
     gate-and-submit:
       - quibble-fundraising-FundraisingEmailUnsubscribe-REL1_31-php70-docker
+    experimental:
+      - mwext-php72-phan-docker
+      - mwext-php72-phan-seccheck-docker
 
   - name: mediawiki/extensions/FundraisingTranslateWorkflow
     template:

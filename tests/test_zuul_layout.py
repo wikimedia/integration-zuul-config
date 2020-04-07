@@ -60,11 +60,16 @@ class TestZuulLayout(unittest.TestCase):
             'extension-gate',
             'quibble-vendor',
             )
+        # Special cases for Fundraising reasons
+        special_cases = (
+            'mediawiki/extensions/DonationInterface',
+            'mediawiki/extensions/FundraisingEmailUnsubscribe'
+            )
+
         errors = []
         for project in self.getExtSkinRepos():
 
-            # Special case!
-            if project['name'] == 'mediawiki/extensions/DonationInterface':
+            if project['name'] in special_cases:
                 continue
 
             try:
