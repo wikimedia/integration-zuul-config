@@ -54,7 +54,6 @@ class TestZuulLayout(unittest.TestCase):
             'extension-broken',
             'extension-unittests',
             'extension-quibble',
-            'extension-quibble-php72-plus',
             'skin-tests',
             'skin-quibble',
             'extension-gate',

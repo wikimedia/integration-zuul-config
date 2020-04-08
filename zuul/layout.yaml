@@ -1151,6 +1151,10 @@ project-templates:
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
+  # Special job template that runs composer rather than than relying
+  # on mediawiki/vendor for quibble.
+  #
+  # Should *not* be used for Wikimedia production.
   - name: extension-quibble-composer
     php:
       - quibble-composer-mysql-php73-docker
@@ -1207,7 +1211,10 @@ project-templates:
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
-  # Runs quibble but skip selenium tests - T196960
+  # Special job template that runs the quibble jobs but skips the
+  # selenium tests - T196960
+  #
+  # Should be used in conjunction with the selenium-only template.
   - name: extension-quibble-noselenium
     php:
       - quibble-vendor-mysql-php73-noselenium-docker
@@ -1264,9 +1271,9 @@ project-templates:
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
-  # Just for Selenium T232759
-  # Should be combined with 'extension-quibble-noselenium' to split Selenium
-  # tests to standalone jobs.
+  # Special job template that runs just the selenium quibble jobs - T232759
+  #
+  # Should be used in conjunction with the noselenium template.
   - name: extension-quibble-only-selenium
     test:
       - quibble-vendor-selenium-docker
@@ -1348,6 +1355,18 @@ project-templates:
       - quibble-composer-sqlite-php72-noselenium-docker
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
+
+  # Special job template that runs the "standalone" jobs - T225068
+  - name: extension-quibble-only-standalone
+    php:
+      - quibble-vendor-mysql-php73-phpunit-standalone-docker
+      - quibble-vendor-mysql-php74-phpunit-standalone-docker
+    test:
+      - quibble-vendor-mysql-php72-phpunit-standalone-docker
+    gate-and-submit:
+      - quibble-vendor-mysql-php72-phpunit-standalone-docker
+      - quibble-vendor-mysql-php73-phpunit-standalone-docker
+      - quibble-vendor-mysql-php74-phpunit-standalone-docker
 
   # Template to run per-patch selenium browser test using mediawiki_selenium ruby gems.
   #
@@ -4054,8 +4073,7 @@ projects:
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
-    experimental:
-      - quibble-vendor-mysql-php72-phpunit-standalone-docker
+      - name: extension-quibble-only-standalone
 
   - name: mediawiki/extensions/SearchExtraNS
     template:
