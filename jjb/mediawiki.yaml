@@ -296,6 +296,14 @@
     triggers:
         - zuul
 
+# Special job that runs the "standalone" phpunit tests for a repo T225068
+- job-template:
+    !!merge : *job_quibble
+    name: quibble-{packages-source}-{database}-{php}-phpunit-standalone-docker
+    quibble_args: '--run phpunit-standalone'
+    triggers:
+        - zuul
+
 # For the master and wmf/* branches
 - job-template:
     !!merge : *job_quibble
@@ -862,6 +870,7 @@
         - quibble-{packages-source}-selenium-docker:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.41
             database: 'mysql'
+        - quibble-{packages-source}-{database}-{php}-phpunit-standalone-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
         - mediawiki-quibble-selenium-{packages-source}-docker:
