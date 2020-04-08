@@ -716,10 +716,10 @@ gatedextensions = [
     'AbuseFilter',
     'AntiSpoof',
     'Babel',
-    'ContentTranslation',
     'CheckUser',
     'CirrusSearch',
     'cldr',
+    'ContentTranslation',
     'Echo',
     'Elastica',
     'EventLogging',
@@ -742,10 +742,9 @@ gatedextensions = [
     'Translate',
     'UniversalLanguageSelector',
     'VisualEditor',
-    # Note: pre-1.31 this is switched out for Wikidata build extension
     'Wikibase',
-    'WikibaseMediaInfo',
     'WikibaseCirrusSearch',
+    'WikibaseMediaInfo',
 ]
 gatedskins = [
     'MinervaNeue',
