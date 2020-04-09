@@ -746,6 +746,7 @@ gatedextensions = [
     'Wikibase',
     'WikibaseCirrusSearch',
     'WikibaseMediaInfo',
+    'WikimediaMessages',
 ]
 gatedskins = [
     'MinervaNeue',
