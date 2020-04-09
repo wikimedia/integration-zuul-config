@@ -18,6 +18,14 @@ import zuul.model
 from zuul.connection import BaseConnection
 from zuul.connection.gerrit import GerritConnection
 
+tarballextensions = None  # defined for flake8
+gatedextensions = None  # defined for flake8
+
+# Import function
+execfile(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    '../zuul/parameter_functions.py'))
+
 MEDIAWIKI_VERSIONS = {
     'WMF': {
         'branch': 'wmf/1.34.0-wmf.20',
@@ -963,15 +971,8 @@ class TestZuulScheduler(unittest.TestCase):
     def test_gated_extensions_lists_are_in_sync(self):
         self.longMessage = True
 
-        global_env = {}
-        execfile(os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            '../zuul/parameter_functions.py'),
-            global_env)
-        tarballextensions = set(global_env['tarballextensions'])
-        gatedextensions = set(global_env['gatedextensions'])
-
-        allextensions = tarballextensions.union(gatedextensions)
+        # Variables come from parameter_functions
+        allextensions = set(tarballextensions).union(set(gatedextensions))
 
         # Grab projects having the gate job 'wmf-quibble-*'
         gated_in_zuul = set([
