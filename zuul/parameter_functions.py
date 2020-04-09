@@ -731,6 +731,7 @@ gatedextensions = [
     'GlobalPreferences',
     'GuidedTour',
     'JsonConfig',
+    'Kartographer',
     'MobileApp',
     'MobileFrontend',
     'NavigationTiming',
