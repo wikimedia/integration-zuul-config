@@ -8,6 +8,16 @@ import unittest
 
 import yaml
 
+from fakes import FakeJob
+
+dependencies = None  # defined for flake8
+set_parameters = None  # defined for flake8
+
+# Import function
+execfile(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    '../zuul/parameter_functions.py'))
+
 
 class TestZuulLayout(unittest.TestCase):
     """
@@ -201,3 +211,57 @@ class TestZuulLayout(unittest.TestCase):
         self.longMessage = True
         for p in self.layout['pipelines']:
             self.assertNotIn('.', p['name'])
+
+    # Wikibase has a lot Selenium tests and we run them in a standalone job
+    # (T232759). Any repository depending on Wikibase should follow the same
+    # scheme.
+    def test_selenium_tests_in_their_own_jobs_when_wikibase(self):
+        wikibase_dependents = []
+        params = {'ZUUL_BRANCH': 'master'}
+        job = FakeJob('quibble-vendor-mysql-php72-docker')
+
+        for repo in sorted(dependencies.keys()):
+            if repo.startswith('skins/'):
+                full_name = 'mediawiki/' + repo
+            else:
+                full_name = 'mediawiki/extensions/' + repo
+            params['ZUUL_PROJECT'] = full_name
+
+            set_parameters(None, job, params)
+            if('\\nmediawiki/extensions/Wikibase\\n'
+               not in params['EXT_DEPENDENCIES']):
+                continue
+            wikibase_dependents.append(full_name)
+
+        self.assertNotEqual(
+            [], wikibase_dependents,
+            'There must be some repositories depending on Wikibase')
+
+        # No check the layout. The repositories should have Selenium
+        # tests split to a different job, which in the Zuul layout means
+        # having the templates:
+        # - extension-quibble-noselenium
+        # - extension-quibble-only-selenium
+        split_templates = {
+            'extension-quibble-noselenium',
+            'extension-quibble-only-selenium'}
+
+        errors = []
+        for project in self.layout['projects']:
+            if project['name'] not in wikibase_dependents:
+                continue
+            templates = {t['name'] for t in project.get('template')}
+            if templates == ['archived']:
+                continue
+            try:
+                msg = ('%s depends on Wikibase and must have Selenium jobs '
+                       'split using %s' % (
+                           project['name'],
+                           ', '.join(split_templates)
+                       ))
+                self.assertGreaterEqual(templates, split_templates, msg)
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.maxDiff = None
+        self.assertListEqual([], errors)
