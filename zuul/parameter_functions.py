@@ -594,6 +594,7 @@ def set_mw_dependencies(item, job, params):
     if not params['ZUUL_PROJECT'].startswith((
         'mediawiki/extensions/',
         'mediawiki/skins/',
+        'mediawiki/services/parsoid',
     )):
         return
 
@@ -610,6 +611,10 @@ def set_mw_dependencies(item, job, params):
         dep_key = 'skins' + '/' + split[-1]
         # 'Vector'
         params['SKIN_NAME'] = split[-1]
+    elif split[1] == 'services':
+        # Lookup key in 'dependencies. Example: 'services/parsoid'
+        dep_key = 'services' + '/' + split[-1]
+        params['SERVICE_NAME'] = split[-1]
     else:
         # Lookup key in 'dependencies. Example: 'Foobar'
         dep_key = split[-1]
