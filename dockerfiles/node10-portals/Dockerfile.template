@@ -1,0 +1,15 @@
+FROM {{ "node10-test" | image_tag }}
+
+USER root
+
+{% set packages|replace('\n', ' ') -%}
+python-pkgconfig
+build-essential
+libpng-dev
+libfreetype6
+libfontconfig
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+USER nobody
