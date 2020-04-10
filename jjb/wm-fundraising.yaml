@@ -4,9 +4,9 @@
       - '{name}-composer-{phpflavor}-docker':
           phpflavor:
               - php70:
-                  image: docker-registry.wikimedia.org/releng/composer-test-php70:0.1.1-s2
+                  image: docker-registry.wikimedia.org/releng/composer-test-php70:0.2.0
               - php72:
-                  image: docker-registry.wikimedia.org/releng/composer-test-php72:0.2.1-s10
+                  image: docker-registry.wikimedia.org/releng/composer-test-php72:0.3.0
 
 - job:
     name: wikimedia-fundraising-civicrm-docker
@@ -52,7 +52,7 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.41
+            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.41-s1
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
             args: >
@@ -107,7 +107,7 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.41
+            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.41-s1
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
             args: >
