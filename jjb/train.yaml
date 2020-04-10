@@ -13,11 +13,8 @@
       - zuul
     builders:
       - docker-log-dir
-      - docker-src-dir
-      - docker-ci-src-setup:
-          submodules: false
-      - docker-run-with-log-cache-src:
-          image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.4'
+      - docker-run-with-log:
+          image: 'docker-registry.wikimedia.org/releng/release-notes:0.0.6'
           logdir: '/log'
     wrappers:
       - timeout:
