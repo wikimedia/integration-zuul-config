@@ -8,6 +8,7 @@ Usage:
   access the following hosts and uses
   the proper username and key:
    - contint1001.wikimedia.org
+   - contint2001.wikimedia.org
    - integration-cumin.integration.eqiad.wmflabs
 * Run $ fab deploy_zuul
 
@@ -40,11 +41,11 @@ def _update_integration_config(
 @task
 def deploy_docker():
     """Update docker-pkg built images"""
-    env.host_string = 'contint1001.wikimedia.org'
+    env.host_string = 'contint2001.wikimedia.org'
 
     updated = _update_integration_config(
         diff_dir='dockerfiles',
-        log_msg='Updating docker-pkg files on contint1001 for [url]'
+        log_msg='Updating docker-pkg files on contint2001 for [url]'
     )
 
     if not updated:
