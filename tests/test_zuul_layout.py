@@ -265,3 +265,77 @@ class TestZuulLayout(unittest.TestCase):
 
         self.maxDiff = None
         self.assertListEqual([], errors)
+
+    def test_wikimedia_production_repos_have_requirements(self):
+        errors = []
+        for project in self.getExtSkinRepos():
+            try:
+                if 'template' not in project:
+                    continue
+
+                templates = [template['name']
+                             for template in project.get('template')]
+                if 'in-wikimedia-production' not in templates:
+                    continue
+
+                name = project['name'].split('/')[2]
+                # Extract singular 'extension' or 'skin'
+                kind = project['name'].split('/')[1][:-1]
+
+                if project['name'] not in [
+                        # Fix tracked in T250421
+                        'mediawiki/extensions/CodeReview',
+                        # Fix tracked in T224763
+                        'mediawiki/extensions/DonationInterface']:
+                    self.assertIn(
+                        '%s-phan' % kind,
+                        templates,
+                        'Production %s %s must have "%s-phan"'
+                        % (kind, name, kind)
+                    )
+
+                if project['name'] not in [
+                        # Fix tracked in T202384
+                        'mediawiki/extensions/DonationInterface']:
+                    self.assertIn(
+                        '%s-seccheck' % kind,
+                        templates,
+                        'Production %s %s must have "%s-seccheck"'
+                        % (kind, name, kind)
+                    )
+
+                if 'extension-quibble-only-selenium' in templates:
+                    self.assertNotIn(
+                        'extension-quibble',
+                        templates,
+                        'Production %s %s shouldn\'t also have "%s-quibble"'
+                        % (kind, name, kind)
+                    )
+                    self.assertIn(
+                        'extension-quibble-noselenium',
+                        templates,
+                        'Production %s %s must have "%s-quibble-noselenium"'
+                        % (kind, name, kind)
+                    )
+                else:
+                    if project['name'] not in [
+                            # Fix tracked in T249576
+                            'mediawiki/extensions/DonationInterface',
+                            # Fix tracked in T249576
+                            'mediawiki/extensions/FundraisingEmailUnsubscribe',
+                            # Fix tracked in T250420
+                            'mediawiki/extensions/OpenStackManager',
+                            # Fix tracked in T250418
+                            'mediawiki/extensions/WikimediaIncubator']:
+                        self.assertIn(
+                            '%s-quibble' % kind,
+                            templates,
+                            'Production %s %s must have "%s-quibble"'
+                            % (kind, name, kind)
+                        )
+
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.maxDiff = None
+        self.assertListEqual([], errors)

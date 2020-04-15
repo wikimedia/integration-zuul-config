@@ -1814,6 +1814,11 @@ project-templates:
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
 
+  # This is a placeholder template for all extensions and skins in Wikimedia production
+  # It is used in the test suite to ensure that requirements are met; in itself it adds
+  # no jobs.
+  - name: in-wikimedia-production
+
   - name: commit-message-validator
     test:
       - commit-message-validator
@@ -2281,12 +2286,14 @@ projects:
 
   - name: mediawiki/skins/CologneBlue
     template:
+      - name: in-wikimedia-production
       - name: skin-quibble
       - name: skin-phan
       - name: skin-seccheck
 
   - name: mediawiki/skins/MinervaNeue
     template:
+      - name: in-wikimedia-production
       - name: skin-quibble
       - name: skin-phan
       - name: skin-seccheck
@@ -2299,30 +2306,35 @@ projects:
 
   - name: mediawiki/skins/Modern
     template:
+      - name: in-wikimedia-production
       - name: skin-quibble
       - name: skin-phan
       - name: skin-seccheck
 
   - name: mediawiki/skins/MonoBook
     template:
+      - name: in-wikimedia-production
       - name: skin-quibble
       - name: skin-phan
       - name: skin-seccheck
 
   - name: mediawiki/skins/Nostalgia
     template:
+      - name: in-wikimedia-production
       - name: skin-quibble
       - name: skin-phan
       - name: skin-seccheck
 
   - name: mediawiki/skins/Timeless
     template:
+      - name: in-wikimedia-production
       - name: skin-quibble
       - name: skin-phan
       - name: skin-seccheck
 
   - name: mediawiki/skins/Vector
     template:
+      - name: in-wikimedia-production
       - name: skin-quibble
       - name: skin-phan
       - name: skin-seccheck
@@ -3112,12 +3124,14 @@ projects:
 
   - name: mediawiki/extensions/3D
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/AbuseFilter
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3126,12 +3140,14 @@ projects:
 
   - name: mediawiki/extensions/ActiveAbstract
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/AdvancedSearch
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3140,6 +3156,7 @@ projects:
 
   - name: mediawiki/extensions/AntiSpoof
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3148,12 +3165,14 @@ projects:
 
   - name: mediawiki/extensions/ApiFeatureUsage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/ArticleCreationWorkflow
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3161,6 +3180,7 @@ projects:
 
   - name: mediawiki/extensions/ArticlePlaceholder
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -3169,6 +3189,7 @@ projects:
 
   - name: mediawiki/extensions/Babel
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3177,6 +3198,7 @@ projects:
 
   - name: mediawiki/extensions/BetaFeatures
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3184,6 +3206,7 @@ projects:
 
   - name: mediawiki/extensions/BounceHandler
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3191,18 +3214,21 @@ projects:
 
   - name: mediawiki/extensions/Calendar
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Campaigns
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Capiunto
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3210,12 +3236,14 @@ projects:
 
   - name: mediawiki/extensions/CategoryTree
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/CentralAuth
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3223,6 +3251,7 @@ projects:
 
   - name: mediawiki/extensions/CentralNotice
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3230,12 +3259,14 @@ projects:
 
   - name: mediawiki/extensions/CharInsert
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/CheckUser
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3244,6 +3275,7 @@ projects:
 
   - name: mediawiki/extensions/CirrusSearch
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-quibble-only-standalone
@@ -3257,6 +3289,7 @@ projects:
 
   - name: mediawiki/extensions/Cite
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3266,6 +3299,7 @@ projects:
 
   - name: mediawiki/extensions/CiteThisPage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3273,12 +3307,14 @@ projects:
 
   - name: mediawiki/extensions/Citoid
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/cldr
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3289,6 +3325,7 @@ projects:
 
   - name: mediawiki/extensions/CodeEditor
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3296,6 +3333,7 @@ projects:
 
   - name: mediawiki/extensions/CodeMirror
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3303,6 +3341,7 @@ projects:
 
   - name: mediawiki/extensions/CodeReview
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
      # FIXME: Missing phan
      # - name: extension-phan
@@ -3311,6 +3350,7 @@ projects:
 
   - name: mediawiki/extensions/Cognate
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3318,6 +3358,7 @@ projects:
 
   - name: mediawiki/extensions/CollaborationKit
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3328,6 +3369,7 @@ projects:
 
   - name: mediawiki/extensions/Collection
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3335,6 +3377,7 @@ projects:
 
   - name: mediawiki/extensions/CommonsMetadata
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3342,6 +3385,7 @@ projects:
 
   - name: mediawiki/extensions/ConfirmEdit
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3350,18 +3394,21 @@ projects:
 
   - name: mediawiki/extensions/CongressLookup
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/ContactPage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/ContentTranslation
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3371,6 +3418,7 @@ projects:
   # Special handling because Fundraising uses this on PHP70/REL1_31
   - name: mediawiki/extensions/ContributionTracking
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3381,30 +3429,35 @@ projects:
 
   - name: mediawiki/extensions/CreditsSource
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Dashiki
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Disambiguator
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/DiscussionTools
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/DismissableSiteNotice
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3412,6 +3465,7 @@ projects:
   # Special handling
   - name: mediawiki/extensions/DonationInterface
     template:
+      - name: in-wikimedia-production
       - name: mediawiki-i18n-check
     test:
       - mwgate-composer-php70-docker
@@ -3427,18 +3481,21 @@ projects:
 
   - name: mediawiki/extensions/DoubleWiki
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/DynamicSidebar
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Echo
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3448,6 +3505,7 @@ projects:
 
   - name: mediawiki/extensions/Elastica
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3455,12 +3513,14 @@ projects:
 
   - name: mediawiki/extensions/ElectronPdfService
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/EntitySchema
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3469,6 +3529,7 @@ projects:
 
   - name: mediawiki/extensions/EventBus
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3480,6 +3541,7 @@ projects:
 
   - name: mediawiki/extensions/EventLogging
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3489,6 +3551,7 @@ projects:
 
   - name: mediawiki/extensions/EventStreamConfig
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3497,6 +3560,7 @@ projects:
 
   - name: mediawiki/extensions/ExtensionDistributor
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3504,6 +3568,7 @@ projects:
 
   - name: mediawiki/extensions/ExternalGuidance
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3511,18 +3576,21 @@ projects:
 
   - name: mediawiki/extensions/FeaturedFeeds
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/FileExporter
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/FileImporter
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3531,6 +3599,7 @@ projects:
 
   - name: mediawiki/extensions/FlaggedRevs
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3538,6 +3607,7 @@ projects:
 
   - name: mediawiki/extensions/Flow
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3549,6 +3619,7 @@ projects:
 
   - name: mediawiki/extensions/FundraiserLandingPage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3556,6 +3627,7 @@ projects:
   # Special handling because Fundraising uses this on PHP70/REL1_31
   - name: mediawiki/extensions/FundraisingEmailUnsubscribe
     template:
+      - name: in-wikimedia-production
     # Known broken on master
     # - name: extension-quibble
       - name: mediawiki-i18n-check
@@ -3571,12 +3643,14 @@ projects:
 
   - name: mediawiki/extensions/FundraisingTranslateWorkflow
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Gadgets
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3585,12 +3659,14 @@ projects:
 
   - name: mediawiki/extensions/GeoCrumbs
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/GeoData
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -3600,18 +3676,21 @@ projects:
 
   - name: mediawiki/extensions/GettingStarted
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/GlobalBlocking
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/GlobalCssJs
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3620,6 +3699,7 @@ projects:
 
   - name: mediawiki/extensions/GlobalPreferences
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3628,24 +3708,28 @@ projects:
 
   - name: mediawiki/extensions/GlobalUsage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/GlobalUserPage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/GoogleNewsSitemap
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Graph
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3653,6 +3737,7 @@ projects:
 
   - name: mediawiki/extensions/GrowthExperiments
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3661,6 +3746,7 @@ projects:
 
   - name: mediawiki/extensions/GuidedTour
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3670,6 +3756,7 @@ projects:
 
   - name: mediawiki/extensions/GWToolset
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3677,6 +3764,7 @@ projects:
 
   - name: mediawiki/extensions/ImageMap
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3684,6 +3772,7 @@ projects:
 
   - name: mediawiki/extensions/InputBox
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3691,18 +3780,21 @@ projects:
 
   - name: mediawiki/extensions/Insider
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/intersection
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Interwiki
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3710,12 +3802,14 @@ projects:
 
   - name: mediawiki/extensions/InterwikiSorting
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Jade
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3723,12 +3817,14 @@ projects:
 
   - name: mediawiki/extensions/Josa
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/JsonConfig
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3737,6 +3833,7 @@ projects:
 
   - name: mediawiki/extensions/Kartographer
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3748,24 +3845,28 @@ projects:
 
   - name: mediawiki/extensions/LabeledSectionTransclusion
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/LandingCheck
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/LdapAuthentication
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Linter
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3773,24 +3874,28 @@ projects:
 
   - name: mediawiki/extensions/LiquidThreads
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Listings
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/LocalisationUpdate
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/LoginNotify
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3798,6 +3903,7 @@ projects:
 
   - name: mediawiki/extensions/MachineVision
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -3805,12 +3911,14 @@ projects:
 
   - name: mediawiki/extensions/MapSources
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/MassMessage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3818,6 +3926,7 @@ projects:
 
   - name: mediawiki/extensions/Math
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -3826,6 +3935,7 @@ projects:
 
   - name: mediawiki/extensions/MobileApp
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3833,6 +3943,7 @@ projects:
 
   - name: mediawiki/extensions/MobileFrontend
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3845,6 +3956,7 @@ projects:
 
   - name: mediawiki/extensions/MultimediaViewer
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3854,6 +3966,7 @@ projects:
 
   - name: mediawiki/extensions/NavigationTiming
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3861,30 +3974,35 @@ projects:
 
   - name: mediawiki/extensions/Newsletter
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/NewUserMessage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Nuke
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/OATHAuth
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/OAuth
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3892,13 +4010,14 @@ projects:
 
   - name: mediawiki/extensions/OpenStackManager
     template:
-      # FIXME: Document why this is using the composer variant.
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/ORES
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3907,18 +4026,21 @@ projects:
 
   - name: mediawiki/extensions/PageAssessments
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/PagedTiffHandler
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/PageImages
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3926,6 +4048,7 @@ projects:
 
   - name: mediawiki/extensions/PageTriage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3935,6 +4058,7 @@ projects:
 
   - name: mediawiki/extensions/PageViewInfo
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3942,6 +4066,7 @@ projects:
 
   - name: mediawiki/extensions/ParserFunctions
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3953,18 +4078,21 @@ projects:
   # Not currently in production, but will be brought back for the Parsoid migration
   - name: mediawiki/extensions/ParserMigration
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/ParsoidBatchAPI
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/PdfHandler
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3972,12 +4100,14 @@ projects:
 
   - name: mediawiki/extensions/PerformanceInspector
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Poem
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -3985,12 +4115,14 @@ projects:
 
   - name: mediawiki/extensions/PoolCounter
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Popups
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4002,6 +4134,7 @@ projects:
 
   - name: mediawiki/extensions/ProofreadPage
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4009,6 +4142,7 @@ projects:
 
   - name: mediawiki/extensions/PropertySuggester
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -4016,6 +4150,7 @@ projects:
 
   - name: mediawiki/extensions/PushNotifications
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4023,6 +4158,7 @@ projects:
 
   - name: mediawiki/extensions/QuickSurveys
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4032,6 +4168,7 @@ projects:
 
   - name: mediawiki/extensions/Quiz
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4039,6 +4176,7 @@ projects:
 
   - name: mediawiki/extensions/ReadingLists
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4046,12 +4184,14 @@ projects:
 
   - name: mediawiki/extensions/RelatedArticles
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Renameuser
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4059,12 +4199,14 @@ projects:
   # Not on production, but in the MediaWiki release tarball
   - name: mediawiki/extensions/ReplaceText
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/RevisionSlider
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4072,12 +4214,14 @@ projects:
 
   - name: mediawiki/extensions/RSS
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/SandboxLink
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4085,15 +4229,16 @@ projects:
 
   - name: mediawiki/extensions/Score
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
-      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: mwgate-npm
 
   - name: mediawiki/extensions/Scribunto
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-quibble-only-standalone
       - name: extension-phan
@@ -4102,12 +4247,14 @@ projects:
 
   - name: mediawiki/extensions/SearchExtraNS
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/SecureLinkFixer
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4115,24 +4262,28 @@ projects:
 
   - name: mediawiki/extensions/SecurePoll
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Sentry
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/ShortUrl
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/SiteMatrix
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4140,6 +4291,7 @@ projects:
 
   - name: mediawiki/extensions/SpamBlacklist
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4149,6 +4301,7 @@ projects:
   # Planned to be used on Beta Cluster.
   - name: mediawiki/extensions/StopForumSpam
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4156,24 +4309,28 @@ projects:
 
   - name: mediawiki/extensions/SubPageList3
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/SubpageSortkey
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/SyntaxHighlight_GeSHi
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TemplateData
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4183,12 +4340,14 @@ projects:
 
   - name: mediawiki/extensions/TemplateSandbox
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TemplateStyles
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4196,12 +4355,14 @@ projects:
 
   - name: mediawiki/extensions/TemplateWizard
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TextExtracts
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4209,6 +4370,7 @@ projects:
 
   - name: mediawiki/extensions/Thanks
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4216,12 +4378,14 @@ projects:
 
   - name: mediawiki/extensions/TheWikipediaLibrary
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TimedMediaHandler
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4229,6 +4393,7 @@ projects:
 
   - name: mediawiki/extensions/timeline
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4236,6 +4401,7 @@ projects:
 
   - name: mediawiki/extensions/TitleBlacklist
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4243,18 +4409,21 @@ projects:
 
   - name: mediawiki/extensions/TocTree
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TorBlock
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Translate
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4264,18 +4433,21 @@ projects:
 
   - name: mediawiki/extensions/TranslationNotifications
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TrustedXFF
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TwoColConflict
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4283,6 +4455,7 @@ projects:
 
   - name: mediawiki/extensions/UniversalLanguageSelector
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4291,12 +4464,14 @@ projects:
 
   - name: mediawiki/extensions/UploadsLink
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/UploadWizard
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4305,6 +4480,7 @@ projects:
 
   - name: mediawiki/extensions/UrlShortener
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4312,6 +4488,7 @@ projects:
 
   - name: mediawiki/extensions/UserMerge
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4319,12 +4496,14 @@ projects:
 
   - name: mediawiki/extensions/VipsScaler
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/VisualEditor
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4335,12 +4514,14 @@ projects:
 
   - name: mediawiki/extensions/WebAuthn
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/Wikibase
     template:
+      - name: in-wikimedia-production
       # Split the quibble tests into selenium-only and no-selenium for speed
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
@@ -4367,6 +4548,7 @@ projects:
 
   - name: mediawiki/extensions/WikibaseCirrusSearch
     template:
+      - name: in-wikimedia-production
       # Split the quibble tests into selenium-only and no-selenium for speed
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
@@ -4376,6 +4558,7 @@ projects:
 
   - name: mediawiki/extensions/WikibaseLexeme
     template:
+      - name: in-wikimedia-production
       # Split the quibble tests into selenium-only and no-selenium for speed
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
@@ -4386,6 +4569,7 @@ projects:
 
   - name: mediawiki/extensions/WikibaseLexemeCirrusSearch
     template:
+      - name: in-wikimedia-production
       # Split the quibble tests into selenium-only and no-selenium for speed
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
@@ -4394,6 +4578,7 @@ projects:
 
   - name: mediawiki/extensions/WikibaseMediaInfo
     template:
+      - name: in-wikimedia-production
       # Split the quibble tests into selenium-only and no-selenium for speed
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
@@ -4405,6 +4590,7 @@ projects:
 
   - name: mediawiki/extensions/WikibaseQualityConstraints
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -4414,6 +4600,7 @@ projects:
 
   - name: mediawiki/extensions/Wikidata.org
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -4421,6 +4608,7 @@ projects:
 
   - name: mediawiki/extensions/WikidataPageBanner
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -4429,6 +4617,7 @@ projects:
 
   - name: mediawiki/extensions/WikiEditor
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4436,18 +4625,21 @@ projects:
 
   - name: mediawiki/extensions/wikihiero
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/WikiLove
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/WikimediaBadges
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -4456,12 +4648,14 @@ projects:
 
   - name: mediawiki/extensions/WikimediaEditorTasks
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/WikimediaEvents
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4469,18 +4663,21 @@ projects:
 
   - name: mediawiki/extensions/WikimediaIncubator
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/WikimediaMaintenance
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/WikimediaMessages
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
@@ -4488,6 +4685,7 @@ projects:
 
   - name: mediawiki/extensions/Wikisource
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble-noselenium
       - name: extension-quibble-only-selenium
       - name: extension-phan
@@ -4495,6 +4693,7 @@ projects:
 
   - name: mediawiki/extensions/XAnalytics
     template:
+      - name: in-wikimedia-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
