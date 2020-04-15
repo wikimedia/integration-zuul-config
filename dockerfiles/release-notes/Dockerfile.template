@@ -4,10 +4,13 @@ ENV RELEASE_TOOLS_DIR=/srv/workspace/release
 
 {% set packages|replace('\n', ' ') -%}
 git
+python3-pygerrit2
 python3-requests
+python3-yaml
 php-cli
 php-curl
 jq
+curl
 {%- endset -%}
 
 RUN {{ packages | apt_install }} \
