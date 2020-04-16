@@ -13,3 +13,7 @@ libfontconfig
 RUN {{ packages | apt_install }}
 
 USER nobody
+
+COPY run.sh /run.sh
+# Inherited ENTRYPOINT:
+# ENTRYPOINT ["/run.sh"]
