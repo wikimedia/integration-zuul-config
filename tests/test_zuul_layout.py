@@ -251,8 +251,6 @@ class TestZuulLayout(unittest.TestCase):
                     if project['name'] not in [
                             # Fix tracked in T249576
                             'mediawiki/extensions/DonationInterface',
-                            # Fix tracked in T249576
-                            'mediawiki/extensions/FundraisingEmailUnsubscribe',
                             # Fix tracked in T250420
                             'mediawiki/extensions/OpenStackManager',
                             # Fix tracked in T250418
@@ -263,6 +261,47 @@ class TestZuulLayout(unittest.TestCase):
                             'Production %s %s must have "%s-quibble"'
                             % (kind, name, kind)
                         )
+
+            except AssertionError, e:
+                errors.append(str(e))
+
+        self.maxDiff = None
+        self.assertListEqual([], errors)
+
+    def test_wikimedia_fundraising_production_repos_have_requirements(self):
+        errors = []
+        for project in self.getExtSkinRepos():
+            try:
+                if 'template' not in project:
+                    continue
+
+                templates = [template['name']
+                             for template in project.get('template')]
+                if 'in-wikimedia-fundraising-production' not in templates:
+                    continue
+
+                name = project['name'].split('/')[2]
+                # Extract singular 'extension' or 'skin'
+                kind = project['name'].split('/')[1][:-1]
+
+                # TODO: Rename to quibble-fundraising-donationinterface-REL...
+                # for consistency with all the others. (Note that the DI job
+                # runs all four extensions, whereas the others currently only
+                # run themselves, so this is a non-trivial change.)
+                if project['name'] == 'mediawiki/extensions/DonationInterface':
+                    self.assertIn(
+                        'quibble-donationinterface-REL1_35-php73-docker',
+                        project['gate-and-submit'],
+                        'Fundraising %s %s must have FR G&S job for REL1_35'
+                        % (kind, name)
+                    )
+                else:
+                    self.assertIn(
+                        'quibble-fundraising-%s-REL1_35-php73-docker' % name,
+                        project['gate-and-submit'],
+                        'Fundraising %s %s must have FR job G&S for REL1_35'
+                        % (kind, name)
+                    )
 
             except AssertionError, e:
                 errors.append(str(e))

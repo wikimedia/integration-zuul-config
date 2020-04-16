@@ -1850,10 +1850,18 @@ project-templates:
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
 
-  # This is a placeholder template for all extensions and skins in Wikimedia production
-  # It is used in the test suite to ensure that requirements are met; in itself it adds
-  # no jobs.
+  ### These are placeholder templates used in the test suite to ensure that
+  ### requirements are met; in themselves, they adds no jobs.
+
+  # Track all extensions and skins in Wikimedia production
   - name: in-wikimedia-production
+
+  # Track all extensions and skins in Wikimedia Fundraising production
+  - name: in-wikimedia-fundraising-production
+
+  # Track all extensions and skins in the MediaWiki tarball
+  # - name: in-mediawiki-tarball
+  # Not used yet.
 
   - name: commit-message-validator
     test:
@@ -3360,6 +3368,7 @@ projects:
   - name: mediawiki/extensions/cldr
     template:
       - name: in-wikimedia-production
+      - name: in-wikimedia-fundraising-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-coverage
@@ -3484,7 +3493,10 @@ projects:
   # Special handling
   - name: mediawiki/extensions/DonationInterface
     template:
+      # DonationInterface won't pass on master
+      # - name: extension-quibble
       - name: in-wikimedia-production
+      - name: in-wikimedia-fundraising-production
       - name: mediawiki-i18n-check
     test:
       - mwgate-composer-php70-docker
@@ -3631,6 +3643,7 @@ projects:
   - name: mediawiki/extensions/FundraisingEmailUnsubscribe
     template:
       - name: in-wikimedia-production
+      - name: in-wikimedia-fundraising-production
       - name: extension-quibble
       - name: mediawiki-i18n-check
       - name: extension-phan
@@ -4035,6 +4048,7 @@ projects:
   - name: mediawiki/extensions/ParserFunctions
     template:
       - name: in-wikimedia-production
+      - name: in-wikimedia-fundraising-production
       - name: extension-quibble
       - name: extension-phan
       - name: extension-coverage
