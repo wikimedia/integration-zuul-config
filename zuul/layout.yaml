@@ -1016,6 +1016,9 @@ jobs:
     failure-message: 'This repository has been archived and new patches are not being accepted. If you want to maintain it follow https://www.mediawiki.org/wiki/Gerrit/Privilege_policy#Requesting_Gerrit_privileges and then change which jobs get run.'
 
   - name: train-deploy-notes
+    voting: false
+    # Only fails if someone edits includes/Defines.php on a wmf branch that is NOT the most recent
+    failure-message: 'FAILURE to generate new changelog for mediawiki.org (safe to ignore)'
     branch: wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}$
     files:
       - '^includes/Defines\.php$'
@@ -2224,12 +2227,11 @@ projects:
       - mwcore-codehealth-master-non-voting
       # Temporarily disable publishing for SRE T242775
       # - trigger-mediawiki-pipeline-publish
+      - train-deploy-notes
     publish:
       # When release tags are created
       - mediawiki-core-javascript-docker-publish
       - mediawiki-core-doxygen-docker-publish
-    post:
-      - train-deploy-notes
     experimental:
       - mwgate-composer-php72-docker
       - mediawiki-core-php72-phan-seccheck-docker
