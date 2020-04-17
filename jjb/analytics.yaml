@@ -87,48 +87,73 @@
       - castor-save-workspace-cache
       - docker-cleanup
 
-
 - job-template:
-    name: '{name}-update-jars'
-    project-type: freestyle
-    node: DebianJessie
+    name: '{name}-update-jars-docker'
+    node: Docker
     concurrent: false
-
-    jdk: 'Debian - OpenJdk 8'
     parameters:
       - string:
-          name: 'GIT_URL'
-          default: 'ssh://{git-user}@gerrit.wikimedia.org:29418'
+          name: 'ZUUL_URL'
+          default: 'https://{git-user}@gerrit.wikimedia.org/r'
+          description: >
+              Base URL to clone the repository from.
+              HTTPS credentials for Gerrit are injected by Jenkins'
       - string:
-          name: 'GIT_PROJECT'
+          name: 'ZUUL_PROJECT'
           default: '{jar-update-project}'
+          description: 'The Gerrit project to clone'
       - string:
-          name: 'GIT_BRANCH'
+          name: 'ZUUL_REF'
           default: '{jar-update-branch}'
+          description: 'A git reference to fetch. Used by "git fetch"'
+      - string:
+          name: 'ZUUL_BRANCH'
+          default: '{jar-update-branch}'
+          description: 'Name of the local branch to checkout to'
       - string:
           name: 'RELEASE_VERSION'
-
-    scm:
-      - git:
-          url: '$GIT_URL/$GIT_PROJECT'
-          branches:
-            - 'refs/heads/$GIT_BRANCH'
-          local-branch: '$GIT_BRANCH'
-          git-config-name: '{git-user}'
-          git-config-email: '{git-user-email}'
+          description: 'Refinery source version to update jars for'
 
     wrappers:
+      # Credentials for Gerrit
+      - credentials-binding:
+          - file:
+              credential-id: maven-release-user-netrc
+              variable: NETRC_FILE
       - timeout:
-          timeout: 3
+          timeout: 30
           fail: true
-      - ssh-agent-credentials:
-          users:
-            - '{git-user-id}'
-
+      - ansicolor
+      - timestamps
     builders:
+      - docker-src-dir
+      - docker-log-dir
+      - docker-ci-src-setup-simple
+      # Create a git remote since ci-src-setup-simple only fetches
+      - docker-run-with-log-cache-src:
+          image: docker-registry.wikimedia.org/releng/jar-updater:0.0.7
+          options: --entrypoint=git
+          args: remote add origin "https://gerrit.wikimedia.org/r/$ZUUL_PROJECT"
+          logdir: '/log'
+      # The config-file-provider has the file created by the jenkins-slave and
+      # respecting umask. It is thus not readable by the nobody user in the
+      # container. setfacl lets us grant an extra permission.
+      # Credentials binding makes it readable solely by the jenkins-slave user.
       - shell: |
-          ./bin/update-refinery-source-jars -v $RELEASE_VERSION -u '{git-user}' -b $GIT_BRANCH  -m 'push'
-
+          setfacl -m user:65534:r $NETRC_FILE
+      - docker-run-with-log-cache-src:
+          options: >-
+              -v "$NETRC_FILE":/nonexistent/.netrc:ro
+              -e GIT_AUTHOR_NAME="{git-user}"
+              -e GIT_COMMITTER_NAME="{git-user}"
+              -e EMAIL="{git-user-email}"
+          image: docker-registry.wikimedia.org/releng/jar-updater:0.0.7
+          args: >-
+              -v "$RELEASE_VERSION"
+              -u '{git-user}'
+              -b "$ZUUL_BRANCH"
+              -m 'review'
+          logdir: '/log'
     publishers:
       - email-ext:
           recipients: '{recipient-emails}'
@@ -141,6 +166,8 @@
             The build $BUILD_NUMBER for $GIT_PROJECT has finished.
             See $BUILD_URL for details.
       - irc-wikimedia-analytics
+      - archive-log-allow-empty
+      - docker-cleanup
 
 - project:
     name: 'analytics-refinery'
@@ -157,7 +184,7 @@
     jobs:
      - '{name}-maven-release-docker'
      - '{name}-maven-java8-docker'
-     - '{name}-update-jars'
+     - '{name}-update-jars-docker'
 
 - job:
     name: 'analytics-wikistats'
