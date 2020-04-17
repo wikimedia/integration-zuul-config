@@ -1,0 +1,96 @@
+FROM {{ "composer-php70" | image_tag }} as composer
+
+FROM {{ "ci-buster" | image_tag }}
+
+######################
+#  Install node/npm  #
+######################
+
+RUN {{ "nodejs npm" | apt_install }}
+
+# Slight digression compared to node10
+ENV NPM_CONFIG_CACHE=/cache/npm
+
+#####################
+#  Inject composer  #
+#####################
+
+# Install composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+# Grab our composer helper scripts
+COPY --from=composer /srv/composer /srv/composer
+
+USER root
+
+#########################################
+# node-gyp requires python2.7 / gcc ... #
+#########################################
+RUN {{ "build-essential python" | apt_install }}
+
+##########################
+# JSDuck is still needed #
+##########################
+# Must have build-essential
+RUN {{ "ruby ruby-dev" | apt_install }} \
+    && gem install --no-rdoc --no-ri --clear-sources jsduck \
+    && rm -fR /var/lib/gems/*/cache/*.gem \
+    && apt -y purge ruby-dev \
+    && apt-get -y autoremove --purge
+
+#############################
+#  Debian packages we need  #
+#############################
+{% set quibble_deps|replace('\n', ' ') -%}
+python3
+python3-pip
+python3-wheel
+{%- endset -%}
+
+# Some Zuul dependencies from Debian, rest will be installed from PYPI
+# NOTE quibble embeds a copy of zuul cloner and does not rely on the whole
+# Debian package.
+{% set zuul_deps|replace('\n', ' ') -%}
+python3-extras
+python3-six
+python3-git
+python3-yaml
+{%- endset -%}
+
+{% set mediawiki_deps|replace('\n', ' ') -%}
+djvulibre-bin
+imagemagick
+libimage-exiftool-perl
+mariadb-server
+postgresql
+postgresql-client
+procps
+tidy
+{%- endset -%}
+
+{% set browsers_deps|replace('\n', ' ') -%}
+chromium-driver
+chromium
+ffmpeg
+libgtk-3-0
+xvfb
+xauth
+{%- endset -%}
+
+{% set alldeps = quibble_deps + " " + zuul_deps + " " + mediawiki_deps + " " + browsers_deps -%}
+RUN {{ alldeps | apt_install }} \
+    && pip3 install --upgrade 'setuptools<=41' \
+    && LATEST_TAG=$(git ls-remote --refs --tags https://gerrit.wikimedia.org/r/p/integration/quibble.git|cut -f2|cut -d/ -f3|sort --version-sort -r|head -n1) \
+    && pip3 install git+https://gerrit.wikimedia.org/r/p/integration/quibble.git@"${LATEST_TAG}"#egg=quibble \
+    && rm -fR "$XDG_CACHE_HOME"/pip \
+    && apt-get purge -y python3-pip python3-wheel \
+    && apt-get autoremove -y --purge \
+    && rm -fR /var/lib/mysql
+
+COPY mariadb.cnf /etc/mysql/mariadb.conf.d/80-mediawiki.cnf
+
+# Unprivileged
+RUN install --directory /workspace --owner=nobody --group=nogroup
+USER nobody
+WORKDIR /workspace
+ENTRYPOINT ["/usr/local/bin/quibble"]
