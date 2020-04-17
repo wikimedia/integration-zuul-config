@@ -5,7 +5,7 @@ USER root
 
 # Dependencies for analytics/refinery bin/update-refinery-source-jars
 RUN echo "deb http://apt.wikimedia.org/wikimedia buster-wikimedia main" > /etc/apt/sources.list.d/wikimedia.list
-RUN {{ "git-fat wget" | apt_install }}
+RUN {{ "git-fat curl wget" | apt_install }}
 COPY run.sh /run.sh
 
 USER nobody
