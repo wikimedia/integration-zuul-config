@@ -11,4 +11,4 @@ if [ ! -x "$SCRIPT" ]; then
 fi
 
 cd /src
-exec "$SCRIPT"
+exec "$SCRIPT" "${@}"
