@@ -95,6 +95,18 @@
         - docker-cleanup
 
 - job:
+    name: 'fresh-test'
+    node: Docker
+    triggers:
+        - zuul
+    builders:
+     - docker-src-dir
+     - docker-ci-src-setup-simple
+     - shell: TERM=xterm ./src/test
+    publishers:
+        - docker-cleanup
+
+- job:
     name: 'fail-archived-repositories'
     node: contint1001
     concurrent: false
