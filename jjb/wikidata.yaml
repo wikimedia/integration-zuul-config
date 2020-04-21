@@ -8,80 +8,12 @@
          aborted: true
          failure: false
          fixed: true
-- job-template:
-    name: '{name}-release-silent'
-    project-type: maven
-    node: DebianJessie
-    concurrent: false
-
-    jdk: 'Debian - OpenJdk 8'
-    parameters:
-      - string:
-          name: 'GIT_URL'
-          default: 'ssh://{git-user}@gerrit.wikimedia.org:29418'
-      - string:
-          name: 'GIT_PROJECT'
-          default: '{release-project}'
-      - string:
-          name: 'GIT_BRANCH'
-          default: '{release-branch}'
-      - string:
-          name: 'GIT_REF'
-          default: '{release-branch}'
-      - string:
-          name: 'GIT_COMMIT'
-          default: '{release-branch}'
-
-    scm:
-      - git:
-          url: '$GIT_URL/$GIT_PROJECT'
-          branches:
-            - '$GIT_BRANCH'
-          local-branch: '$GIT_BRANCH'
-          git-config-name: '{git-user}'
-          git-config-email: '{git-user-email}'
-
-    wrappers:
-      - timeout:
-          timeout: 30
-          fail: true
-      - maven-release:
-          release-goals:
-            -Dresume=false -Duser.name='{git-user}' -Djdk.net.URLClassPath.disableClassPathURLCheck=true release:prepare release:perform
-          dry-run-goals:
-            -Dresume=false -Duser.name='{git-user}' -Djdk.net.URLClassPath.disableClassPathURLCheck=true -DdryRun=true release:prepare
-          num-successful-builds: 1
-      - ssh-agent-credentials:
-          users:
-            - '{git-user-id}'
-
-    maven:
-      goals: clean package
-      settings:
-        'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig.ArchivaCredentialsSettings'
 
 - project:
     name: wikidata-query-gui
     jobs:
       - '{name}-npm-browser-node-6-docker':
           docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.5.0
-
-- project:
-    name: wikidata-query-rdf
-    git-user: maven-release-user
-    git-user-email: maven-release-user@wikimedia.org
-    git-user-id: maven-release-user
-    release-project: wikidata/query/rdf
-    release-branch: master
-    jar-update-project: wikidata/query/rdf
-    jar-update-branch: master
-    jobs:
-      - '{name}-maven-java8-docker':
-          docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.3.1
-      - '{name}-maven-java8-docker-site-publish':
-          docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.3.1
-      - '{name}-release-silent'
-
 
 - project:
     name: wikidata-query-blazegraph
@@ -102,3 +34,93 @@
      - '{name}-daily-node10-npmaudit-docker':
 #        recipients:
 #         - email-wikidata-ci-status
+
+- job-template:
+    name: '{name}-maven-release-docker-wdqs'
+    node: Docker
+    concurrent: false
+    parameters:
+      - string:
+          name: 'ZUUL_URL'
+          default: 'https://{git-user}@gerrit.wikimedia.org/r'
+          description: >
+              Base URL to clone the repository from.
+              HTTPS credentials for Gerrit are injected by Jenkins'
+      - string:
+          name: 'ZUUL_PROJECT'
+          default: '{release-project}'
+          description: 'The Gerrit project to clone'
+      - string:
+          name: 'ZUUL_REF'
+          default: '{release-branch}'
+          description: 'A git reference to fetch. Used by "git fetch"'
+      - string:
+          name: 'ZUUL_BRANCH'
+          default: '{release-branch}'
+          description: 'Name of the local branch to checkout to'
+    wrappers:
+      # Credentials for Gerrit
+      - credentials-binding:
+          - file:
+              credential-id: maven-release-user-netrc
+              variable: NETRC_FILE
+      # Credentials for Archiva
+      - config-file-provider:
+          files:
+              - file-id: 'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig.ArchivaCredentialsSettings'
+                target: archiva-credentials.xml
+      - timeout:
+          timeout: 30
+          fail: true
+      - ansicolor
+      - timestamps
+    builders:
+      - docker-castor-load
+      - docker-log-dir
+      # The config-file-provider has the file created by the jenkins-slave and
+      # respecting umask. It is thus not readable by the nobody user in the
+      # container. setfacl lets us grant an extra permission.
+      # Credentials binding makes it readable solely by the jenkins-slave user.
+      - shell: |
+          setfacl -m user:65534:r archiva-credentials.xml $NETRC_FILE
+      - docker-run-with-log-and-workspace-cache:
+          options: >-
+              -v "$NETRC_FILE":/nonexistent/.netrc:ro
+              -v "$WORKSPACE/archiva-credentials.xml":/archiva-credentials.xml
+              -e GIT_AUTHOR_NAME="{git-user}"
+              -e GIT_COMMITTER_NAME="{git-user}"
+              -e EMAIL="{git-user-email}"
+          image: docker-registry.wikimedia.org/releng/java8:0.6.3
+          logdir: '/log'
+          args: >-
+              -Dresume=false
+              -Duser.name='{git-user}'
+              --settings /archiva-credentials.xml
+              -B
+              release:prepare release:perform -Darguments=-Dgpg.skip=true
+    publishers:
+     - email-ext:
+         recipients: '{recipient-emails}'
+         reply-to: '{replyto-emails}'
+         always: true
+         content-type: text
+         subject: Update on build $BUILD_TAG
+         body: |
+           The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
+           See $BUILD_URL for details.
+
+- project:
+    name: wikidata-query-rdf
+    git-user: maven-release-user
+    git-user-email: maven-release-user@wikimedia.org
+    git-user-id: maven-release-user
+    release-project: wikidata/query/rdf
+    release-branch: master
+    recipient-emails: discovery-alerts@lists.wikimedia.org
+    replyto-emails: discovery-alerts@lists.wikimedia.org
+    jar-update-project: wikidata/query/rdf
+    jar-update-branch: master
+
+    jobs:
+     - '{name}-maven-release-docker-wdqs'
+     - '{name}-maven-java8-docker'
