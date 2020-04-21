@@ -386,6 +386,7 @@ dependencies = {
     'PronunciationRecording': ['UploadWizard'],
     'ProofreadPage': ['LabeledSectionTransclusion', 'VisualEditor'],
     'PropertySuggester': ['Wikibase'],
+    'PushNotifications': ['Echo'],
     'QuickSurveys': ['EventLogging'],
     'QuizGame': ['Renameuser', 'SocialProfile'],
     'RandomGameUnit': ['SocialProfile', 'PictureGame', 'PollNY', 'QuizGame'],
