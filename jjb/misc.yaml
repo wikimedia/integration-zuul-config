@@ -92,6 +92,31 @@
         - docker-cleanup
 
 - job:
+    name: fresh-test
+    node: Qemu
+    concurrent: false
+    triggers:
+     - zuul
+    parameters:
+        - string:
+            name: 'QEMU_TEST_COMMAND'
+            default: './test'
+            description: 'The command to run inside the Qemu VM, after the Gerrit patch is checked out.'
+    wrappers:
+      - timeout:
+          timeout: 30 # minutes
+          fail: true
+      - timestamps
+      - ansicolor
+      - workspace-cleanup
+    builders:
+      - shell:
+          !include-raw: qemu-run.bash
+    publishers:
+      - archive-log-allow-empty
+      - workspace-cleanup
+
+- job:
     name: 'fail-archived-repositories'
     node: contint1001
     concurrent: false
