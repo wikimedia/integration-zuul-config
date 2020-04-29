@@ -95,6 +95,7 @@
           args: >-
               -Dresume=false
               -Duser.name='{git-user}'
+              -DdeveloperConnection="scm:git:$ZUUL_URL/$ZUUL_PROJECT"
               --settings /archiva-credentials.xml
               -B
               release:prepare release:perform -Darguments=-Dgpg.skip=true
