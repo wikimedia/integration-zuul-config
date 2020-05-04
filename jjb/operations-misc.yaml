@@ -44,11 +44,9 @@
         - docker-log-dir
         - docker-src-dir
         - docker-ci-src-setup-simple
-        # Install solely the require-dev dependencies (T85947)
         - docker-run-with-log-cache-src:
             image: '{image}'
-            options: '--entrypoint=/srv/composer/composer-install-dev-only'
-            args: '/src --profile --ignore-platform-reqs'
+            args: 'install --working-dir=/src --no-progress --prefer-dist'
             logdir: '/log'
         # Now in /src, just run composer test
         - docker-run-with-log-cache-src:
