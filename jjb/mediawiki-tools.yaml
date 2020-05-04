@@ -70,7 +70,7 @@
              mediawiki/core
              mediawiki/tools/codesniffer
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s1'
+         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s2'
          options: '--workdir /src/mediawiki/tools/codesniffer'
          args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
      - docker-run-with-log-cache-src:
@@ -82,7 +82,7 @@
          options: '--user=nobody --entrypoint=/bin/mv'
          args: '/src/mediawiki/tools/codesniffer /src/vendor/mediawiki/mediawiki-codesniffer'
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s1'
+         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s2'
          options: '--workdir /src --entrypoint=/src/vendor/mediawiki/mediawiki-codesniffer/vendor/bin/phpcs'
          args: '-s -p'
     publishers:
@@ -107,7 +107,7 @@
              mediawiki/core
              mediawiki/tools/phan
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-testrun:0.1.5-s3'
+         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-testrun:0.1.5-s4'
          options: '--workdir /src'
     publishers:
      - castor-save-workspace-cache
