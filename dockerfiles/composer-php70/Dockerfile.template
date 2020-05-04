@@ -17,8 +17,6 @@ RUN chmod +x /srv/composer/composer.phar \
 
 # Various helpful scripts, copied to /srv/composer; child containers are expected to copy them if needed.
 
-# Script to `composer require` solely dev dependencies.
-COPY composer-install-dev-only.bash /srv/composer/composer-install-dev-only
 # Script to check with php-security-checker.wmflabs.org after `composer install` for issues.
 COPY security-check.sh /srv/composer/security-check
 # Wrapper script for composer that uses `COMPOSER_GITHUB_OAUTHTOKEN` if set.
