@@ -150,23 +150,11 @@
                     new-all: 1
         - docker-cleanup
 
-- job-template:
-    !!merge : *job_operations_puppet_tests
-    name: 'operations-puppet-tests-{os}-docker-test'
-    node: puppetTEST
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-        - zuul
-
 - project:
     name: 'operations-puppet'
     jobs:
      - operations-puppet-doc
      - operations-puppet-tests-{os}-docker:
-         os:
-           - buster:
-               image: 'docker-registry.wikimedia.org/releng/operations-puppet:0.7.1'
-     - operations-puppet-tests-{os}-docker-test:
          os:
            - buster:
                image: 'docker-registry.wikimedia.org/releng/operations-puppet:0.7.1'
