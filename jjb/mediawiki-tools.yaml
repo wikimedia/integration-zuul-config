@@ -44,7 +44,6 @@
       - docker-src-dir
       - docker-run-with-log-cache-src:
           image: 'docker-registry.wikimedia.org/releng/tox:0.4.3'
-          logdir: '/log'
           args: '-e doc'
       - doc-publish:
           docsrc: 'src/docs/_build/html'
@@ -74,22 +73,18 @@
          image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s1'
          options: '--workdir /src/mediawiki/tools/codesniffer'
          args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
-         logdir: '/log'
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
          options: '--user=nobody --entrypoint=/bin/bash'
          args: '-c "mkdir -p /src/vendor/mediawiki"'
-         logdir: '/log'
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
          options: '--user=nobody --entrypoint=/bin/mv'
          args: '/src/mediawiki/tools/codesniffer /src/vendor/mediawiki/mediawiki-codesniffer'
-         logdir: '/log'
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s1'
          options: '--workdir /src --entrypoint=/src/vendor/mediawiki/mediawiki-codesniffer/vendor/bin/phpcs'
          args: '-s -p'
-         logdir: '/log'
     publishers:
      - castor-save-workspace-cache
      - archive-log-dir
@@ -114,7 +109,6 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-testrun:0.1.5-s3'
          options: '--workdir /src'
-         logdir: '/log'
     publishers:
      - castor-save-workspace-cache
      - archive-log-dir

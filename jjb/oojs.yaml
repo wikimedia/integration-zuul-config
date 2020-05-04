@@ -13,7 +13,6 @@
          # 'npm run jenkins' also runs composer
          options: '--entrypoint /run-with-xvfb.sh'
          args: 'jenkins'
-         logdir: '/log'
     publishers:
      - archive-log-allow-empty
      - docker-cleanup
@@ -34,7 +33,6 @@
          # npm run-script jenkins runs 'npm test' and 'npm run doc'
          options: '--entrypoint /run-with-xvfb.sh'
          args: 'jenkins'
-         logdir: '/log'
      # Publish everything in a single job!
      - cover-publish:
         src: 'src/coverage'
@@ -60,7 +58,6 @@
      - docker-src-dir
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/doxygen:0.6.1-s1
-         logdir: '/log'
      - doc-publish:
         docsrc: 'src/doc/html'
         docdest: 'oojs-ui/$DOC_SUBPATH/php'

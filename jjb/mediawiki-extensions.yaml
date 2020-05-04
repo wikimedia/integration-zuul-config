@@ -12,7 +12,6 @@
      - docker-src-dir
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/doxygen:0.6.1-s1
-         logdir: '/log'
      - doc-publish:
         docsrc: 'src/docs/php'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH/php'
@@ -77,7 +76,6 @@
         options: '--volume "$(pwd)"/src:/mediawiki'
         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.5.3-s10'
         args: '-m checkstyle'
-        logdir: '/log'
     publishers:
      - checkstyle:
         pattern: 'log/phan-issues'
@@ -112,7 +110,6 @@
          image: docker-registry.wikimedia.org/releng/mediawiki-phan-seccheck:0.4.0-s12
          options: '--volume "$(pwd)"/src:/mediawiki'
          args: '-m checkstyle'
-         logdir: '/log'
     publishers:
      - checkstyle:
         pattern: 'src/seccheck-issues'

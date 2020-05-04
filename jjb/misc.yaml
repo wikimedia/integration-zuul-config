@@ -12,7 +12,6 @@
      - docker-src-dir
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/doxygen:0.6.1-s1
-         logdir: '/log'
      - doc-publish:
         docsrc: 'src/doc/html'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
@@ -38,12 +37,10 @@
          options: '--workdir /src'
          # prefer-dist to get cacheable content
          args: 'install --no-progress --prefer-dist'
-         logdir: /log
      # phpunit coverage
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/php72:0.2.7
          options: '--workdir /src'
-         logdir: /log
          args: |
              -d zend_extension=xdebug.so \
              ./vendor/bin/phpunit \
@@ -127,7 +124,6 @@
      - docker-log-dir
      - docker-run-with-log:
          image: docker-registry.wikimedia.org/releng/wikimedia-audit-resources:0.1.2
-         logdir: '/log'
     publishers:
      - archive:
          artifacts: 'log/*.log'

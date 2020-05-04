@@ -120,7 +120,7 @@
      - docker-run:
         options: >-
           {obj:options|}
-          --volume "$(pwd)"/log:{logdir}
+          --volume "$(pwd)"/log:{obj:logdir|/log}
         image: '{obj:image}'
         args: '{obj:args|}'
 
@@ -139,7 +139,7 @@
           --volume "$(pwd)"/cache:/cache
         image: '{obj:image}'
         args: '{obj:args|}'
-        logdir: '{obj:logdir}'
+        logdir: '{obj:logdir|/log}'
 
 # Run a docker image with cache, log, and src directories
 #
@@ -160,7 +160,7 @@
           --volume "$(pwd)"/src:/src
         image: '{obj:image}'
         args: '{obj:args|}'
-        logdir: '{obj:logdir}'
+        logdir: '{obj:logdir|/log}'
 
  # Prepare the sources using Quibble.
  # Notably run composer update in the thing to install mediawiki/phan-config.
@@ -194,7 +194,6 @@
         options: '--volume "$(pwd)"/src:/mediawiki'
         image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s1'
         args: '--working-dir=/src/"$THING_SUBNAME" update --ansi --no-progress --prefer-dist --profile'
-        logdir: '/log'
 
 # Use a docker image to clone the repository into /src with explicit options.
 #

@@ -24,7 +24,6 @@
       - docker-run-with-log-cache-src:
           image: 'docker-registry.wikimedia.org/releng/gerrit:0.1.0-s7'
           options: '--volume /srv/git:/srv/git:ro'
-          logdir: '/log'
     publishers:
       - archive:
          artifacts: >
@@ -46,7 +45,6 @@
         - docker-run-with-log-and-workspace-cache:
             options: '{obj:docker_run_options|}'
             image: '{obj:docker_image_var}'
-            logdir: '/log'
             args: '{obj:maven_args}'
     publishers:
         - archive-log-allow-empty
@@ -85,7 +83,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
          image: '{image}'
-         logdir: '/log'
          args: '{obj:args|}'
          options: >-
            --workdir /src
@@ -112,19 +109,16 @@
         # It is a two steps process. clean install then site site:stage - T208496
         - docker-run-with-log-cache-src:
             image: '{obj:docker_image_var}'
-            logdir: '/log'
             args: 'clean install'
         - docker-run-with-log-cache-src:
             image: '{obj:docker_image_var}'
             # Bypass CI fetch/checkout which would discard material from the install stage
             options: '--entrypoint=/usr/local/bin/mvn'
-            logdir: '/log'
             args: 'site site:stage'
         - docker-run-with-log-cache-src:
             image: '{obj:docker_image_var}'
             # Bypass CI fetch/checkout which would discard material from the install stage
             options: '--entrypoint=/usr/local/bin/mvn'
-            logdir: '/log'
             # Sonar analysis requires the sonarcloud API key to be present in the SONAR_API_KEY environment variable
             args: 'sonar:sonar'
     wrappers:
@@ -184,7 +178,6 @@
      - docker-run-with-log-cache-src:
         options: '{obj:docker_run_options_var}'
         image: '{obj:docker_image_var}'
-        logdir: '/log'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -203,7 +196,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.0'
-        logdir: '/log'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -222,7 +214,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.0'
-        logdir: '/log'
         args: '{script}'
     publishers:
      - archive-log-allow-empty
@@ -240,7 +231,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10:0.5.0'
-        logdir: '/log'
         options: '--workdir="/src"'
         args: 'audit'
     publishers:
@@ -271,7 +261,6 @@
     - docker-ci-src-setup-simple
     - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10:0.5.0'
-        logdir: '/log'
         options: '--workdir="/src"'
         args: 'audit'
     publishers:
@@ -290,7 +279,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.0-s1'
-        logdir: '/log'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -311,7 +299,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.1'
-        logdir: '/log'
      - cover-publish:
         src: 'src/coverage'
         dest: '$DOC_PROJECT'
@@ -334,7 +321,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.0'
-        logdir: '/log'
         args: 'doc'
      - doc-publish:
         docsrc: 'src/docs'
@@ -357,7 +343,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.0'
-        logdir: '/log'
         args: 'doc'
      - doc-publish:
         docsrc: 'src/docs'
@@ -416,7 +401,6 @@
      - docker-run-with-log-cache-src:
         options: '{obj:docker_run_options_var}'
         image: '{obj:docker_image_var}'
-        logdir: '/log'
         args: '{script}'
 
 
@@ -474,7 +458,6 @@
      - docker-run-with-log-cache-src:
         options: '--env LOG_DIR=/log --entrypoint=/run-with-xvfb.sh'
         image: '{obj:docker_image_var}'
-        logdir: '/log'
         args: 'selenium-daily'
     wrappers:
       - timeout:

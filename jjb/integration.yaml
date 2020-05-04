@@ -32,7 +32,6 @@
         - docker-run-with-log-cache-src:
             image: 'docker-registry.wikimedia.org/releng/tox:0.4.3'
             options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/{entrypoint}'
-            logdir: '/log'
     publishers:
         - castor-save-workspace-cache
         - docker-cleanup
@@ -59,7 +58,6 @@
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/php72:0.2.7'
          args: '/src/vendor/bin/composer --version'
-         logdir: '/log'
     publishers:
      - docker-cleanup
 
@@ -89,7 +87,6 @@
      - docker-log-dir
      - docker-run-with-log-and-workspace-cache:
          image: 'docker-registry.wikimedia.org/releng/tox:0.4.3'
-         logdir: '/log'
          args: '-e qa -- --xunit-file=/log/junit-qa.xml'
     publishers:
      - archive-log-dir

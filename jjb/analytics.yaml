@@ -64,7 +64,6 @@
               -e GIT_COMMITTER_NAME="{git-user}"
               -e EMAIL="{git-user-email}"
           image: docker-registry.wikimedia.org/releng/java8:0.6.3
-          logdir: '/log'
           args: >-
               -Dresume=false
               -Djdk.net.URLClassPath.disableClassPathURLCheck=true
@@ -134,7 +133,6 @@
           image: docker-registry.wikimedia.org/releng/jar-updater:0.0.7
           options: --entrypoint=git
           args: remote add origin "https://gerrit.wikimedia.org/r/$ZUUL_PROJECT"
-          logdir: '/log'
       # The config-file-provider has the file created by the jenkins-slave and
       # respecting umask. It is thus not readable by the nobody user in the
       # container. setfacl lets us grant an extra permission.
@@ -153,7 +151,6 @@
               -u '{git-user}'
               -b "$ZUUL_BRANCH"
               -m 'review'
-          logdir: '/log'
     publishers:
       - email-ext:
           recipients: '{recipient-emails}'

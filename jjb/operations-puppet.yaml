@@ -43,7 +43,6 @@
         - docker-cache-dir
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/rake:0.2.1
-            logdir: '/log'
             args: 'global:doc'
         - doc-publish:
             docsrc: 'src/doc'
@@ -123,7 +122,6 @@
         - docker-cache-dir
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/operations-puppet:0.7.1
-            logdir: '/log'
             options: '-e RAKE_TARGET=global:wmf_style'
             # Have host capture the output.
             # To be processed by the Warnings publisher.

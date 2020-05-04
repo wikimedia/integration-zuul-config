@@ -9,7 +9,6 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{obj:docker_image_var}'
-            logdir: '/log'
     wrappers:
       - timeout:
           timeout: '{obj:build_timeout|3}'  # minutes
@@ -49,7 +48,6 @@
      - docker-src-dir
      - docker-run-with-log-cache-src:
          image: 'docker-registry.wikimedia.org/releng/rake:0.2.1'
-         logdir: '/log'
          args: 'yard'
      - doc-publish:
          docsrc: 'src/doc'

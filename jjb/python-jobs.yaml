@@ -15,7 +15,6 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{obj:docker_image_var}'
-            logdir: '/log'
     wrappers:
       - timeout:
           timeout: '{obj:build_timeout|20}'  # minutes
@@ -47,7 +46,6 @@
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
             image: '{obj:docker_image_var}'
-            logdir: '/log'
             args: '-e "{toxenv}"'
 
 # Call tox env 'docvenv' (default: 'doc' to generate documentation in labs and
@@ -66,7 +64,6 @@
      - docker-src-dir
      - docker-run-with-log-cache-src:
          image: '{obj:docker_image_var}'
-         logdir: '/log'
          args: '-e "{obj:docenv|doc}"'
      - doc-publish:
         docsrc: 'src/{docsrc}'
@@ -90,7 +87,6 @@
      - docker-src-dir
      - docker-run-with-log-cache-src:
          image: '{obj:docker_image_var}'
-         logdir: '/log'
          args: '-e "{obj:docenv|doc}"'
      - doc-publish:
         docsrc: 'src/{docsrc}'
@@ -118,12 +114,10 @@
      - docker-src-dir
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/tox:0.4.3
-         logdir: '/log'
          args: '-e py27 -- --cover-html --cover-html-dir=coverage/ --cover-xml --cover-xml-file=/log/coverage.xml'
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/tox:0.4.3
          options: '--entrypoint=/usr/bin/cobertura-clover-transform'
-         logdir: '/log'
          args: '/log/coverage.xml -o /log/clover.xml'
      - shell: |
          cp log/clover.xml src/coverage/clover.xml

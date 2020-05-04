@@ -30,7 +30,6 @@
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-kartotherian:0.1.2'
-        logdir: '/log'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -86,7 +85,6 @@
      - docker-run-with-log-cache-src:
         image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.0'
         args: 'periodic'
-        logdir: '/log'
     publishers:
      - irc-wikimedia-infrastructure
      - docker-cleanup

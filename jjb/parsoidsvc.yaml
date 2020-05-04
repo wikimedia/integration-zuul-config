@@ -9,7 +9,6 @@
      - docker-src-dir
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/doxygen:0.6.1-s1
-         logdir: '/log'
      - doc-publish:
         docsrc: 'src/doc/html'
         docdest: 'Parsoid-PHP/$DOC_SUBPATH'
@@ -32,12 +31,10 @@
          image: docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s1
          options: '--workdir /src'
          args: 'install'
-         logdir: '/log'
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/npm-php:0.3.0
          options: '--workdir /src'
          args: 'it'
-         logdir: '/log'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -61,7 +58,6 @@
      - docker-run-with-log-cache-src:
         image: '{image}'
         options: '--workdir /src'
-        logdir: '/log'
         # We want to run `composer test` without `composer install`
         args: 'test'
     publishers:
