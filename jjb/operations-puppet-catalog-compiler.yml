@@ -22,8 +22,12 @@
 
                 Leave blank to have the software select nodes for you (by
                 parsing site.pp and matches that with the node list it had).
-        - string:
+        - choice:
             name: COMPILER_MODE
+            choices:
+                - change
+                - future
+                - change,future
             description: |
                 Sets the way the compiler will run
                 <ul>
