@@ -1,3 +1,46 @@
+# Manually triggered flavor
+- job:
+    name: operations-puppet-catalog-compiler
+    description: 'The Puppet compiler. Use it to check your changes :)'
+    concurrent: true
+    node: puppet-compiler-node
+    properties:
+        - build-discarder:
+            days-to-keep: 60
+    parameters:
+        - string:
+            name: NUM_THREADS
+            default: 2
+            description: "Number of threads used on the labs instance to compile catalog. Don't use more than four!"
+        - string:
+            name: GERRIT_CHANGE_NUMBER
+            description: "The Gerrit change number (without patchset number) that will be fetched from Gerrit to compile the catalogs"
+        - string:
+            name: LIST_OF_NODES
+            description: |
+                List of nodes (comma separated) to compile catalogs against.
+
+                Leave blank to have the software select nodes for you (by
+                parsing site.pp and matches that with the node list it had).
+        - string:
+            name: COMPILER_MODE
+            description: |
+                Sets the way the compiler will run
+                <ul>
+                    <li>"change" is the standard way the compiler works</li>
+                    <li>"future" checks if the change compiles with the two</li>
+                      parsers, and if there are differences</li>
+                    <li>"change,future" runs both modes.</li>
+                </ul>
+    builders:
+        - shell: |
+            NUM_THREADS="${NUM_THREADS}" MODE="${COMPILER_MODE}" CHANGE="${GERRIT_CHANGE_NUMBER}" NODES="${LIST_OF_NODES}" puppet-compiler
+    wrappers:
+    - timeout:
+        timeout: 180
+        type: absolute
+
+# Triggered from the Zuul experimental pipeline
 - job:
     name: operations-puppet-catalog-compiler-test
     node: puppet-compiler-node
