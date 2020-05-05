@@ -2567,7 +2567,11 @@ projects:
     gate-and-submit:
       - debian-glue
   - { name: operations/debs/helm-secrets,                     test: ['debian-glue-non-voting'] }
-  - { name: operations/debs/helm3,                            test: ['debian-glue-backports-non-voting'] }
+  - name: operations/debs/helm3
+    test:
+      - debian-glue-backports
+    gate-and-submit:
+      - debian-glue-backports
   - name: operations/debs/helmfile
     test:
       - debian-glue
