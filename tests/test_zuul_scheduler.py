@@ -367,7 +367,7 @@ class TestZuulScheduler(unittest.TestCase):
             lacks_gate.append(project)
 
         self.maxDiff = None
-        self.assertEqual([], lacks_gate)
+        self.assertEqual([], sorted(lacks_gate))
 
     def assertPipelinesDoNotOverlap(self, pipeline_name_1, pipeline_name_2,
                                     msg=None):
