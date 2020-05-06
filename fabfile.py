@@ -9,7 +9,7 @@ Usage:
   the proper username and key:
    - contint1001.wikimedia.org
    - contint2001.wikimedia.org
-   - integration-cumin.integration.eqiad.wmflabs
+   - integration-cumin-01.integration.eqiad.wmflabs
 * Run $ fab deploy_zuul
 
 """
@@ -83,18 +83,18 @@ def deploy_zuul():
 
 @task
 def deploy_slave_scripts():
-    """Pull integration/jenkins on CI labs slaves"""
+    """Pull integration/jenkins onto the WMCS-hosted CI agents"""
     with settings(sudo_user='root'):
-        env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
+        env.host_string = 'integration-cumin-01.integration.eqiad.wmflabs'
         sudo("cumin --force 'name:agent-docker' "
              "'cd /srv/deployment/integration/slave-scripts && git pull'")
 
 
 @task
 def docker_pull_image(imageName):
-    """Pull a docker image onto the docker slaves"""
+    """Pull a docker image onto the WMCS-hosted CI agents"""
     with settings(sudo_user='root'):
-        env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
+        env.host_string = 'integration-cumin-01.integration.eqiad.wmflabs'
         sudo("cumin --force 'name:agent-docker' "
              "'docker pull " + imageName + "'")
 
