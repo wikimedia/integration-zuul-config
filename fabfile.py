@@ -86,7 +86,7 @@ def deploy_slave_scripts():
     """Pull integration/jenkins on CI labs slaves"""
     with settings(sudo_user='root'):
         env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
-        sudo("cumin --force 'name:slave-docker' "
+        sudo("cumin --force 'name:agent-docker' "
              "'cd /srv/deployment/integration/slave-scripts && git pull'")
 
 
@@ -95,7 +95,7 @@ def docker_pull_image(imageName):
     """Pull a docker image onto the docker slaves"""
     with settings(sudo_user='root'):
         env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
-        sudo("cumin --force 'name:slave-docker' "
+        sudo("cumin --force 'name:agent-docker' "
              "'docker pull " + imageName + "'")
 
 
