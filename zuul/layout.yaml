@@ -7656,9 +7656,10 @@ projects:
       - poolcounter-tox-docker
 
   - name: mediawiki/services/push-notifications
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
+    test:
+      - trigger-typescript-service-pipeline-test
+    gate-and-submit:
+      - trigger-typescript-service-pipeline-publish
 
   - name: mediawiki/services/rcstream
     template:
