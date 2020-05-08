@@ -37,7 +37,12 @@ while ! ssh $SSH_OPTS $VM_TARGET 'true'; do
 done
 echo 'Connected!'
 
-# Copy test command to VM
+# Define run command for wikimedia/fresh Jenkins job
+# TODO: Set this as Jenkins build parameter.
+# See https://phabricator.wikimedia.org/T250808#6117684
+QEMU_RUN_COMMAND='./test'
+
+# Copy run command to VM
 printf '
 set -eux -o pipefail
 
@@ -49,7 +54,7 @@ git checkout --quiet -b %q FETCH_HEAD
 git submodule --quiet update --init --recursive
 
 %q
-' "${ZUUL_URL}/${ZUUL_PROJECT}" "${ZUUL_REF}" "${ZUUL_BRANCH}" "${QEMU_TEST_COMMAND}" > test_command.sh
+' "${ZUUL_URL}/${ZUUL_PROJECT}" "${ZUUL_REF}" "${ZUUL_BRANCH}" "${QEMU_RUN_COMMAND}" > test_command.sh
 scp $SCP_OPTS test_command.sh $VM_TARGET:/tmp/test_command.sh 2>log/scp_err
 
 # Run test command
