@@ -7,7 +7,7 @@ def cleanupPercentage = params.CLEANUP_PERCENTAGE.toInteger()
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
 
 def computerNamePrefix = 'integration-agent-'
-def masterName = 'contint1001'
+def masterName = 'contint2001'
 
 def ircAlerts = []
 def jobInfo = "${env.JOB_NAME} build ${env.BUILD_NUMBER}"
@@ -197,7 +197,7 @@ def checkAgents = {
 }
 
 timeout(time: executionTimeout, unit: 'SECONDS') {
-    node('contint1001') {
+    node('contint2001') {
         stage('Check agents') {
             ircAlerts = checkAgents()
         }
