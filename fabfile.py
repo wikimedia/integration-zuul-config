@@ -74,7 +74,7 @@ def deploy_docker():
 @task
 def deploy_zuul():
     """Deploy a Zuul layout change"""
-    env.host_string = 'contint1001.wikimedia.org'
+    env.host_string = 'contint2001.wikimedia.org'
 
     if _update_integration_config():
         with settings(sudo_user='root'):
