@@ -358,7 +358,6 @@ class TestZuulScheduler(unittest.TestCase):
                 # Weird edge cases:
                 or project in [
                     'integration/zuul',
-                    'mediawiki/debian',
                     ]
                 # Some repos just have experimental:
                 or pipelines == ['experimental']
