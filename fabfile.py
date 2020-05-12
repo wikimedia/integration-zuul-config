@@ -41,11 +41,11 @@ def _update_integration_config(
 @task
 def deploy_docker():
     """Update docker-pkg built images"""
-    env.host_string = 'contint2001.wikimedia.org'
+    env.host_string = 'contint.wikimedia.org'
 
     updated = _update_integration_config(
         diff_dir='dockerfiles',
-        log_msg='Updating docker-pkg files on contint2001 for [url]'
+        log_msg='Updating docker-pkg files on contint primary for [url]'
     )
 
     if not updated:
@@ -74,7 +74,7 @@ def deploy_docker():
 @task
 def deploy_zuul():
     """Deploy a Zuul layout change"""
-    env.host_string = 'contint2001.wikimedia.org'
+    env.host_string = 'contint.wikimedia.org'
 
     if _update_integration_config():
         with settings(sudo_user='root'):
