@@ -1,0 +1,28 @@
+FROM {{ "java8" | image_tag }}
+
+USER root
+COPY KEYS /tmp/KEYS
+
+ENV SBT_VERSION=1.2.8
+
+RUN cd /tmp \
+    && {{ "curl gnupg" | apt_install }} \
+    && curl -sLO https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb \
+    && curl -sLO https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb.asc \
+    && gpg --batch --import /tmp/KEYS \
+    && gpg --verify sbt-$SBT_VERSION.deb.asc \
+    && dpkg -i sbt-$SBT_VERSION.deb \
+    && apt purge --yes curl gnupg \
+    && rm -rf ~/.gnupg \
+    && rm /tmp/sbt*
+
+# TODO: Would be nice to download scala here rather than at runtime, but I
+# can't find signed binaries.
+
+COPY sbtopts /etc/sbt/sbtopts
+
+USER nobody
+WORKDIR /workspace/src
+
+COPY run.sh /run.sh
+ENTRYPOINT [ "/run.sh" ]
