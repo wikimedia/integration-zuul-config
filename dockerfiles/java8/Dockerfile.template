@@ -14,6 +14,7 @@ RUN {{ "gnupg wget" | apt_install }} \
     && gpg --verify apache-maven-3.5.2-bin.tar.gz.asc \
     && tar -C /opt -zxf apache-maven-3.5.2-bin.tar.gz \
     && apt purge --yes gnupg wget \
+    && rm -f /tmp/apache-maven* \
     && rm -rf ~/.gnupg
 
 # sonar:sonar does not support XDG_CACHE_HOME - T207046
