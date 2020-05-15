@@ -1103,60 +1103,71 @@ project-templates:
   # that are for extensions.
   - name: extension-quibble
     php:
-      - quibble-vendor-mysql-php73-docker
-      - quibble-vendor-mysql-php74-docker
+      - quibble-vendor-mysql-php73-noselenium-docker
+      - quibble-vendor-mysql-php74-noselenium-docker
     test:
-      - quibble-vendor-mysql-php72-docker
+      - quibble-vendor-mysql-php72-noselenium-docker
+      - quibble-vendor-selenium-docker
       - mwgate-node10-docker
     gate-and-submit:
-      - quibble-vendor-mysql-php72-docker
-      - quibble-vendor-mysql-php73-docker
-      - quibble-vendor-mysql-php74-docker
+      - quibble-vendor-mysql-php72-noselenium-docker
+      - quibble-vendor-mysql-php73-noselenium-docker
+      - quibble-vendor-mysql-php74-noselenium-docker
+      - quibble-vendor-selenium-docker
       - mwgate-node10-docker
 
     test-1_31:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
     gate-and-submit-1_31:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
+      - quibble-composer-mysql-php70-noselenium-docker
+      - quibble-composer-mysql-php71-noselenium-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-selenium-docker
 
     test-1_33:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
     gate-and-submit-1_33:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
+      - quibble-composer-mysql-php70-noselenium-docker
+      - quibble-composer-mysql-php71-noselenium-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-selenium-docker
 
     test-1_34:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
     gate-and-submit-1_34:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-selenium-docker
 
     test-wmf:
-      - quibble-vendor-mysql-php72-docker
+      - quibble-vendor-mysql-php72-noselenium-docker
+      - quibble-vendor-selenium-docker
       - mwgate-node10-docker
     gate-and-submit-wmf:
-      - quibble-vendor-mysql-php72-docker
+      - quibble-vendor-mysql-php72-noselenium-docker
+      - quibble-vendor-selenium-docker
       - mwgate-node10-docker
 
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
 
     experimental:
-      - quibble-vendor-sqlite-php72-docker
-      - quibble-vendor-postgres-php72-docker
+      - quibble-vendor-sqlite-php72-noselenium-docker
+      - quibble-vendor-postgres-php72-noselenium-docker
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
+
 
   # Special job template that runs composer rather than than relying
   # on mediawiki/vendor for quibble.
@@ -1164,58 +1175,68 @@ project-templates:
   # Should *not* be used for Wikimedia production.
   - name: extension-quibble-composer
     php:
-      - quibble-composer-mysql-php73-docker
-      - quibble-composer-mysql-php74-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-mysql-php74-noselenium-docker
     test:
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
       - mwgate-node10-docker
     gate-and-submit:
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
-      - quibble-composer-mysql-php74-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-mysql-php74-noselenium-docker
+      - quibble-composer-selenium-docker
       - mwgate-node10-docker
 
     test-1_31:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
     gate-and-submit-1_31:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
+      - quibble-composer-mysql-php70-noselenium-docker
+      - quibble-composer-mysql-php71-noselenium-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-selenium-docker
 
     test-1_33:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
     gate-and-submit-1_33:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php70-docker
-      - quibble-composer-mysql-php71-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
+      - quibble-composer-mysql-php70-noselenium-docker
+      - quibble-composer-mysql-php71-noselenium-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-selenium-docker
 
     test-1_34:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
     gate-and-submit-1_34:
       - mwgate-node10-docker
-      - quibble-composer-mysql-php72-docker
-      - quibble-composer-mysql-php73-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-selenium-docker
 
     test-wmf:
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
       - mwgate-node10-docker
     gate-and-submit-wmf:
-      - quibble-composer-mysql-php72-docker
+      - quibble-composer-mysql-php72-noselenium-docker
+      - quibble-composer-selenium-docker
       - mwgate-node10-docker
 
     gate-and-submit-l10n:
       - mediawiki-i18n-check-docker
 
     experimental:
-      - quibble-composer-sqlite-php72-docker
-      - quibble-composer-postgres-php72-docker
+      - quibble-composer-sqlite-php72-noselenium-docker
+      - quibble-composer-postgres-php72-noselenium-docker
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
