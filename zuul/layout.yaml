@@ -3206,8 +3206,7 @@ projects:
   - name: mediawiki/extensions/ArticlePlaceholder
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
@@ -3302,8 +3301,7 @@ projects:
   - name: mediawiki/extensions/CirrusSearch
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-quibble-only-standalone
       - name: extension-phan
       - name: extension-seccheck
@@ -3693,8 +3691,7 @@ projects:
   - name: mediawiki/extensions/GeoData
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
@@ -3930,8 +3927,7 @@ projects:
   - name: mediawiki/extensions/MachineVision
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
@@ -3953,8 +3949,7 @@ projects:
   - name: mediawiki/extensions/Math
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
@@ -4037,6 +4032,7 @@ projects:
   - name: mediawiki/extensions/OpenStackManager
     template:
       - name: in-wikimedia-production
+      # OSM changes login and so breaks selenium tests, and we haven't fixed it
       - name: extension-quibble-noselenium
       - name: extension-phan
       - name: extension-seccheck
@@ -4169,8 +4165,7 @@ projects:
   - name: mediawiki/extensions/PropertySuggester
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
@@ -4256,8 +4251,7 @@ projects:
   - name: mediawiki/extensions/Score
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: mwgate-npm
@@ -4543,9 +4537,7 @@ projects:
   - name: mediawiki/extensions/Wikibase
     template:
       - name: in-wikimedia-production
-      # Split the quibble tests into selenium-only and no-selenium for speed
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-gate
@@ -4570,9 +4562,7 @@ projects:
   - name: mediawiki/extensions/WikibaseCirrusSearch
     template:
       - name: in-wikimedia-production
-      # Split the quibble tests into selenium-only and no-selenium for speed
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-gate
@@ -4580,9 +4570,7 @@ projects:
   - name: mediawiki/extensions/WikibaseLexeme
     template:
       - name: in-wikimedia-production
-      # Split the quibble tests into selenium-only and no-selenium for speed
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-codehealth
@@ -4591,18 +4579,14 @@ projects:
   - name: mediawiki/extensions/WikibaseLexemeCirrusSearch
     template:
       - name: in-wikimedia-production
-      # Split the quibble tests into selenium-only and no-selenium for speed
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/WikibaseMediaInfo
     template:
       - name: in-wikimedia-production
-      # Split the quibble tests into selenium-only and no-selenium for speed
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-gate
@@ -4612,8 +4596,7 @@ projects:
   - name: mediawiki/extensions/WikibaseQualityConstraints
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-codehealth
@@ -4622,16 +4605,14 @@ projects:
   - name: mediawiki/extensions/Wikidata.org
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
   - name: mediawiki/extensions/WikidataPageBanner
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
@@ -4661,8 +4642,7 @@ projects:
   - name: mediawiki/extensions/WikimediaBadges
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
@@ -4685,6 +4665,7 @@ projects:
   - name: mediawiki/extensions/WikimediaIncubator
     template:
       - name: in-wikimedia-production
+      # Incubator changes site links and so breaks selenium tests, and we haven't fixed it
       - name: extension-quibble-noselenium
       - name: extension-phan
       - name: extension-seccheck
@@ -4707,8 +4688,7 @@ projects:
   - name: mediawiki/extensions/Wikisource
     template:
       - name: in-wikimedia-production
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
 
@@ -6036,8 +6016,7 @@ projects:
 
   - name: mediawiki/extensions/LifeWeb
     template:
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
 
   - name: mediawiki/extensions/LifeWebCore
     template:
@@ -6138,8 +6117,7 @@ projects:
 
   - name: mediawiki/extensions/MathSearch
     template:
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-phan
       - name: extension-seccheck
       - name: extension-coverage
@@ -7160,8 +7138,7 @@ projects:
 
   - name: mediawiki/extensions/TEI
     template:
-      - name: extension-quibble-noselenium
-      - name: extension-quibble-only-selenium
+      - name: extension-quibble
       - name: extension-seccheck
 
   - name: mediawiki/extensions/TestLanguageNameGrammar
