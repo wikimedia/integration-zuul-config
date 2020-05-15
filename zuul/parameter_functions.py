@@ -749,6 +749,7 @@ gatedextensions = [
     'Thanks',
     'TimedMediaHandler',
     'Translate',
+    'TwoColConflict',
     'UniversalLanguageSelector',
     'VisualEditor',
     'Wikibase',
