@@ -1243,7 +1243,7 @@ project-templates:
   # Special job template that runs the quibble jobs but skips the
   # selenium tests - T196960
   #
-  # Should be used in conjunction with the selenium-only template.
+  # Should *not* be used for Wikimedia production.
   - name: extension-quibble-noselenium
     php:
       - quibble-vendor-mysql-php73-noselenium-docker
@@ -1301,35 +1301,7 @@ project-templates:
       - mwext-php72-phan-docker
       - mwext-php72-phan-seccheck-docker
 
-  # Special job template that runs just the selenium quibble jobs - T232759
-  #
-  # Should be used in conjunction with the noselenium template.
-  - name: extension-quibble-only-selenium
-    test:
-      - quibble-vendor-selenium-docker
-    gate-and-submit:
-      - quibble-vendor-selenium-docker
-
-    test-1_31:
-      - quibble-composer-selenium-docker
-    gate-and-submit-1_31:
-      - quibble-composer-selenium-docker
-
-    test-1_33:
-      - quibble-composer-selenium-docker
-    gate-and-submit-1_33:
-      - quibble-composer-selenium-docker
-
-    test-1_34:
-      - quibble-composer-selenium-docker
-    gate-and-submit-1_34:
-      - quibble-composer-selenium-docker
-
-    test-wmf:
-      - quibble-vendor-selenium-docker
-    gate-and-submit-wmf:
-      - quibble-vendor-selenium-docker
-
+  # Should *not* be used for Wikimedia production.
   - name: extension-quibble-composer-noselenium
     php:
       - quibble-composer-mysql-php73-noselenium-docker
