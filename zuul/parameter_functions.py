@@ -722,6 +722,7 @@ gatedextensions = [
     'AbuseFilter',
     'AntiSpoof',
     'Babel',
+    'BetaFeatures',
     'CheckUser',
     'CirrusSearch',
     'cldr',
