@@ -162,7 +162,6 @@ def test_mediawiki_repos_use_quibble():
         has_quibble = (
             'extension-gate' in templates
             or 'extension-quibble' in templates
-            or 'extension-quibble-not-php74' in templates
             or 'extension-quibble-composer' in templates
             or 'extension-quibble-noselenium' in templates
             or 'extension-quibble-composer-noselenium' in templates)
