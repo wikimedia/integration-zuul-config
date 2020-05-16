@@ -1,9 +1,7 @@
 set -eu
 
-# The set of log files checked come from integration/jenkins
-# mediawiki/conf.d/00_set_debug_log.php
+# Set by mediawiki/includes/DevelopmentSettings.php (or Quibble):
 #
-# Namely:
 #  $wgDBerrorLog = "$wmgMwLogDir/mw-dberror.log";
 #  $wgDebugLogGroups['exception'] = "$wmgMwLogDir/mw-exception.log";
 #  $wgDebugLogGroups['error'] = "$wmgMwLogDir/mw-error.log";

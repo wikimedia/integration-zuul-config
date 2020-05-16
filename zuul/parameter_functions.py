@@ -584,9 +584,7 @@ def set_mw_dependencies(item, job, params):
     parameters EXT_DEPENDENCIES or SKIN_DEPENDENCIES. The map is configured via
     the 'dependencies' dictionary above.
 
-    Extensions and skins will both be cloned, the extensions will be listed for
-    the extensions autoloader in integration/jenkins.git, skins are
-    automatically injected by MediaWiki upon installation.
+    Extensions and skins will be cloned by Zuul-cloner.
 
     :type item: zuul.model.QueueItem
     :type job: zuul.model.Job

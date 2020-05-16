@@ -49,7 +49,6 @@ if [ -f '/.dockerenv' ] && [[ ${CHROMIUM_FLAGS:-} != *--no-sandbox* ]]; then
     export CHROMIUM_FLAGS
 fi
 
-# From mw-set-env-mw-selenium.sh
 export HEADLESS=${HEADLESS:-true}
 # Should get it from DISPLAY=:94
 export HEADLESS_DISPLAY=94
