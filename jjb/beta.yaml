@@ -142,11 +142,17 @@
 
     builders:
       - shell: |
-          # To clear out temporary directories
+          # Setup tmpfs directory
+          export TMPDIR_FS="/srv/home/jenkins-deploy/tmpfs/jenkins-${{EXECUTOR_NUMBER}}"
+          if [ -d "/srv/home/jenkins-deploy/tmpfs" ]; then
+            mkdir -p "$TMPDIR_FS"
+            chmod 777 "$TMPDIR_FS"
+            export TMPDIR="$TMPDIR_FS"
+          fi
+          # Teardown tmpfs directory
           function global_teardown() {{
-              /srv/deployment/integration/slave-scripts/bin/global-teardown.sh
+              rm -rf "$TMPDIR_FS"
           }}
-          . /srv/deployment/integration/slave-scripts/bin/global-setup.sh
           trap global_teardown EXIT
 
           /usr/local/bin/wmf-beta-update-databases.py
