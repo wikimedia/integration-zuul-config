@@ -163,7 +163,7 @@
 - job-template: &job_npm-node-6-docker
     name: 'npm-node-6-docker'
     node: Docker
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1'
     docker_run_options_var: ''
     triggers:
      - zuul
@@ -378,7 +378,7 @@
 - job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-deploy-npm-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1'
     docker_run_options_var: '--entrypoint=/run-oid.sh'
     triggers:
      - zuul
@@ -408,13 +408,13 @@
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1'
     docker_run_options_var: '--entrypoint=/run-oid.sh'
 
 - job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-browser-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.5.0'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.5.0-s1'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
