@@ -82,15 +82,6 @@ def deploy_zuul():
 
 
 @task
-def deploy_slave_scripts():
-    """Pull integration/jenkins onto the WMCS-hosted CI agents"""
-    with settings(sudo_user='root'):
-        env.host_string = 'integration-cumin-01.integration.eqiad.wmflabs'
-        sudo("cumin --force 'name:agent-docker' "
-             "'cd /srv/deployment/integration/slave-scripts && git pull'")
-
-
-@task
 def docker_pull_image(imageName):
     """Pull a docker image onto the WMCS-hosted CI agents"""
     with settings(sudo_user='root'):
