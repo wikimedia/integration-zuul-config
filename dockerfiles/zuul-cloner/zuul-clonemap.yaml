@@ -1,0 +1,35 @@
+# Clone map for Zuul cloner
+#
+# Canonical repository is integration/config.git
+# Please add tests to test_zuul_clonemap_config.py
+#
+clonemap:
+
+ # MediaWiki core
+ #
+ #  workspace/
+ #  ├── index.php
+ #  ├── thumbs.php
+ #  ....
+ #  ├── extensions/
+ #  │   ├── BarFoo/
+ #  │   └── Foobar/
+ #  ├── skins/
+ #  │   ├── SomeSkin/
+ #  │   └── OtherSkin/
+ #  └── vendor/
+
+ # MediaWiki to core/
+ - name: 'mediawiki/core'
+   dest: '.'
+
+ # Mediawiki composer dependencies go in ./vendor
+ - name: 'mediawiki/vendor'
+   dest: './vendor'
+
+ # MediaWiki extensions where they belong to
+ - name: 'mediawiki/extensions/(.*)'
+   dest: './extensions/\1'
+ # MediaWiki skins
+ - name: 'mediawiki/skins/(.*)'
+   dest: './skins/\1'
