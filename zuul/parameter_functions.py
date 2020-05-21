@@ -139,9 +139,11 @@ dependencies = {
     # Skins are listed first to highlight the skin dependencies
     'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
     'skins/BlueSpiceCalumma': ['BlueSpiceFoundation'],
+    'skins/chameleon': ['Bootstrap'],
     'skins/MinervaNeue': ['MobileFrontend'],
     'skins/Empty': ['PhpTags'],
     'skins/Refreshed': ['SocialProfile'],
+    'skins/WikimediaApiPortal': ['chameleon'],
 
     # Extensions
     # One can add a skin by using: 'skin/XXXXX'
