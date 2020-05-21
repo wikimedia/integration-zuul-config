@@ -143,7 +143,7 @@ dependencies = {
     'skins/MinervaNeue': ['MobileFrontend'],
     'skins/Empty': ['PhpTags'],
     'skins/Refreshed': ['SocialProfile'],
-    'skins/WikimediaApiPortal': ['chameleon'],
+    'skins/WikimediaApiPortal': ['skins/chameleon'],
 
     # Extensions
     # One can add a skin by using: 'skin/XXXXX'
