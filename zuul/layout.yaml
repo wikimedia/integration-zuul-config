@@ -3077,6 +3077,10 @@ projects:
   - name: operations/software/transferpy
     template:
       - name: tox-docker
+    postmerge:
+      - transferpy-tox-publish
+    publish:
+      - transferpy-tox-tag-publish
 
   # Varnish related - T180329
   - name: operations/software/varnish/libvmod-header
