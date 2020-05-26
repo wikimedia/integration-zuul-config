@@ -1,0 +1,18 @@
+FROM {{ "ci-buster" | image_tag }}
+
+USER root
+
+# Install the JRE first, else Logstash fails at install time when java isn't
+# found or hasn't been configured by dpg yet.
+# See also https://github.com/elastic/logstash/issues/6394
+#
+# make is the entrypoint used in operations/puppet to run the tests
+RUN {{ "default-jre-headless make" | apt_install }}
+
+RUN echo "deb http://apt.wikimedia.org/wikimedia buster-wikimedia thirdparty/elastic74" \
+        > /etc/apt/sources.list.d/wikimedia-elastic.list \
+    && {{ "logstash-oss logstash-filter-verifier" | apt_install }}
+
+USER nobody
+WORKDIR /src
+ENTRYPOINT [ "/usr/bin/logstash-filter-verifier" ]
