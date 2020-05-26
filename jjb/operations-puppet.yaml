@@ -90,6 +90,25 @@
         - zuul
 
 - job:
+    name: 'operations-puppet-logstash-filter-verifier'
+    node: Docker
+    concurrent: true
+    triggers:
+        - zuul
+    builders:
+        - docker-log-dir
+        - docker-src-dir
+        - docker-ci-src-setup-simple
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/logstash-filter-verifier:0.0.1'
+            options: >-
+                --workdir=/src/modules/profile/files/logstash
+                --entrypoint=make
+    publishers:
+        - archive-log-allow-empty
+        - docker-cleanup
+
+- job:
     name: 'operations-puppet-wmf-style-guide'
     node: Docker
     concurrent: false

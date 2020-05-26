@@ -973,6 +973,10 @@ jobs:
     success-message: 'FAILURE No change detected against the current configuration.'
     failure-message: 'SUCCESS Please carefully review the change in effective configuration.'
 
+  - name: operations-puppet-logstash-filter-verifier
+    files:
+      - '^modules/profile/files/logstash'
+
   - name: 'integration-config-zuul-layout-diff-docker'
     voting: false
     # Note how the messages are mixed up. Gotta change the job exit code.
@@ -2901,6 +2905,7 @@ projects:
   - name: operations/puppet
     test-prio:
       - operations-puppet-tests-buster-docker
+      - operations-puppet-logstash-filter-verifier
     experimental:
       - operations-puppet-catalog-compiler-test
 
