@@ -57,6 +57,9 @@
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
+    properties:
+        - build-discarder:
+            days-to-keep: 7
     builders:
      - docker-log-dir
      - docker-run-with-log:
