@@ -1910,12 +1910,6 @@ projects:
     postmerge:
       - integration-docroot-deploy
 
-  - name: integration/jenkinsci/postbuildscript-plugin
-    test:
-      - jenkins-plugin-postbuildscript-maven-java8-docker
-    gate-and-submit:
-      - jenkins-plugin-postbuildscript-maven-java8-docker
-
   - name: integration/pipelinelib
     template:
       - name: service-pipeline-test
@@ -8950,6 +8944,10 @@ projects:
       - name: archived
 
   - name: integration/jenkins
+    template:
+      - name: archived
+
+  - name: integration/jenkinsci/postbuildscript-plugin
     template:
       - name: archived
 
