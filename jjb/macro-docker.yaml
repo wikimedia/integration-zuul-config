@@ -102,6 +102,7 @@
      - shell: |
         #!/bin/bash
         set -eux
+        set -o pipefail
         exec docker run {obj:options|} \
           --security-opt seccomp=unconfined \
           --init \
