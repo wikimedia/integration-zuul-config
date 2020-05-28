@@ -1,11 +1,10 @@
 # Jobs related to maintenance of the ci cluster
 - job:
+    defaults: pipeline-job
     name: maintenance-disconnect-full-disks
-    node: master
     concurrent: false
     triggers:
       - timed: '*/5 * * * *'
-    project-type: pipeline
     properties:
         - build-discarder:
             days-to-keep: 7

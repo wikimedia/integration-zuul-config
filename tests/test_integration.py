@@ -60,6 +60,13 @@ class IntegrationTests(unittest.TestCase):
     def test_jenkins_jobs_have_a_timeout(self):
         lack_timeout = []
         for job_file in glob(self.jjb_out_dir + '/*/config.xml'):
+
+            # Can not handle pipeline jobs
+            # They should wrap using timeout(X) {}
+            root = ET.parse(job_file).getroot()
+            if root.tag == 'flow-definition':
+                continue
+
             with open(job_file) as f:
                 if 'BuildTimeoutWrapper' not in f.read():
                     job_name = os.path.basename(

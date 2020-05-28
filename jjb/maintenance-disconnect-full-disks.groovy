@@ -196,22 +196,24 @@ def checkAgents = {
     return alerts
 }
 
-timeout(time: executionTimeout, unit: 'SECONDS') {
-    node('contint2001') {
-        stage('Check agents') {
-            ircAlerts = checkAgents()
-        }
-        stage('Send notifications') {
-            // Alert for computers offline in IRC
-            ircAlerts.each { computer ->
-                println "${computer}: OFFLINE due to disk space"
-                sendIRCAlert("${computer}: OFFLINE due to disk space")
+timestamps {
+    timeout(time: executionTimeout, unit: 'SECONDS') {
+        node('contint2001') {
+            stage('Check agents') {
+                ircAlerts = checkAgents()
             }
+            stage('Send notifications') {
+                // Alert for computers offline in IRC
+                ircAlerts.each { computer ->
+                    println "${computer}: OFFLINE due to disk space"
+                    sendIRCAlert("${computer}: OFFLINE due to disk space")
+                }
 
-            // Job failed, but no computer is offline *necessarily*
-            if (isFailure(currentBuild)) {
-                println "Notifying of failure in IRC"
-                alertInIRC("${jobInfo}: ${currentBuild.result}")
+                // Job failed, but no computer is offline *necessarily*
+                if (isFailure(currentBuild)) {
+                    println "Notifying of failure in IRC"
+                    alertInIRC("${jobInfo}: ${currentBuild.result}")
+                }
             }
         }
     }

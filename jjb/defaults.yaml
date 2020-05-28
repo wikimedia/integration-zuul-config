@@ -19,3 +19,16 @@
           - text:
               credential-id: composer-github-oauthtoken
               variable: COMPOSER_GITHUB_OAUTHTOKEN
+
+# The wrapper from above should instead be defined inside the pipeline job DSL
+- defaults:
+    name: pipeline-job
+    description: |
+      <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+
+    project-type: pipeline
+    concurrent: true
+
+    properties:
+      - build-discarder:
+          days-to-keep: 30
