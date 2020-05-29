@@ -62,7 +62,9 @@ class IntegrationTests(unittest.TestCase):
         for job_file in glob(self.jjb_out_dir + '/*/config.xml'):
             with open(job_file) as f:
                 if 'BuildTimeoutWrapper' not in f.read():
-                    lack_timeout.append(os.path.basename(f.name))
+                    job_name = os.path.basename(
+                        os.path.dirname(f.name))
+                    lack_timeout.append(job_name)
 
         self.maxDiff = None
         self.longMessage = True
@@ -86,7 +88,9 @@ class IntegrationTests(unittest.TestCase):
 
             assignedNode = root.find('./assignedNode').text
             if assignedNode not in JENKINS_ACCEPTABLE_LABELS:
-                legacy_node[os.path.basename(job_file)] = assignedNode
+                job_name = os.path.basename(
+                    os.path.dirname(job_file))
+                legacy_node[os.path.dirname(job_name)] = assignedNode
 
         self.maxDiff = None
         self.longMessage = True
