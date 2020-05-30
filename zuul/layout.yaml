@@ -426,6 +426,18 @@ pipelines:
           approval:
             - code-review: +1
 
+        # Let LibUp run tests on the changes it doesn't +2
+        - &test-event-libup
+          event: comment-added
+          branch: (?!^refs/meta/config|^fundraising/REL|wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}|^REL)
+          reject-approval:
+            # hasn't been tested yet
+            - verified: [-1, 2]
+          email:  &libup_email
+           - ^tools\.libraryupgrader@tools\.wmflabs\.org$
+          approval:
+            - verified: +1
+
     success-message: 'Main test build succeeded.'
     success:
       gerrit:
