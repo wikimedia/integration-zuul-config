@@ -498,7 +498,7 @@ phan_dependencies = {
     'Dashiki': ['JsonConfig'],
     'Disambiguator': ['VisualEditor'],
     'Echo': ['CentralAuth', 'EventLogging'],
-    'EventBus': ['CentralNotice'],
+    'EventBus': ['CentralNotice', 'EventStreamConfig'],
     'FileExporter': ['BetaFeatures'],
     'FlaggedRevs': ['Scribunto', 'Echo', 'GoogleNewsSitemap', 'MobileFrontend',
                     'skins/Vector'],
