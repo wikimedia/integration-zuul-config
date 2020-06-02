@@ -226,22 +226,12 @@ class TestZuulLayout(unittest.TestCase):
                 if project['name'] not in [
                         # Fix tracked in T250421
                         'mediawiki/extensions/CodeReview',
-                        # Fix tracked in T224763
+                        # Fix tracked in T202384 + T224763
                         'mediawiki/extensions/DonationInterface']:
                     self.assertIn(
                         '%s-phan' % kind,
                         templates,
                         'Production %s %s must have "%s-phan"'
-                        % (kind, name, kind)
-                    )
-
-                if project['name'] not in [
-                        # Fix tracked in T202384
-                        'mediawiki/extensions/DonationInterface']:
-                    self.assertIn(
-                        '%s-seccheck' % kind,
-                        templates,
-                        'Production %s %s must have "%s-seccheck"'
                         % (kind, name, kind)
                     )
 
