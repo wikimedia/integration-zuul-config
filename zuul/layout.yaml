@@ -1691,6 +1691,34 @@ project-templates:
     gate-and-submit:
       - generic-node10-browser-docker
 
+  - name: node10-rundoc-docker
+    test:
+      - generic-node10-rundoc-docker
+    gate-and-submit:
+      - generic-node10-rundoc-docker
+
+  - name: node10-rundoc-docker-for-MW-branches
+    test:
+      - generic-node10-rundoc-docker
+    gate-and-submit:
+      - generic-node10-rundoc-docker
+    test-1_31:
+      - generic-node10-rundoc-docker
+    gate-and-submit-1_31:
+      - generic-node10-rundoc-docker
+    test-1_33:
+      - generic-node10-rundoc-docker
+    gate-and-submit-1_33:
+      - generic-node10-rundoc-docker
+    test-1_34:
+      - generic-node10-rundoc-docker
+    gate-and-submit-1_34:
+      - generic-node10-rundoc-docker
+    test-wmf:
+      - generic-node10-rundoc-docker
+    gate-and-submit-wmf:
+      - generic-node10-rundoc-docker
+
   - name: service-pipeline-test
     test:
       - trigger-service-pipeline-test
@@ -8341,12 +8369,12 @@ projects:
       - name: node10-docker
 
   - name: unicodejs
+    template:
+      - name: node10-rundoc-docker
     test:
       - unicodejs-node10-browser-docker
-      - generic-node10-rundoc-docker
     gate-and-submit:
       - unicodejs-node10-browser-docker
-      - generic-node10-rundoc-docker
     postmerge:
       - generic-node10-browser-coverage-docker-publish
       - generic-node10-docs-docker-publish
@@ -8356,36 +8384,27 @@ projects:
   - name: VisualEditor/VisualEditor
     template:
       - name: mediawiki-i18n-check
+      - name: node10-rundoc-docker-for-MW-branches
     test:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     gate-and-submit:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     test-1_31:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     gate-and-submit-1_31:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     test-1_33:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     gate-and-submit-1_33:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     test-1_34:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     gate-and-submit-1_34:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     test-wmf:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     gate-and-submit-wmf:
       - visualeditor-node10-browser-docker
-      - generic-node10-rundoc-docker
     postmerge:
       - generic-node10-browser-coverage-docker-publish
 
