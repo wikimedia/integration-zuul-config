@@ -120,20 +120,12 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
-- job-template:
-    name: 'mwskin-php72-phan-seccheck-docker'
-    !!merge : *job_mwext-php72-phan-seccheck-docker
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
 - project:
     name: phan-jobs
     jobs:
         - mwext-php72-phan-docker
         - mwskin-php72-phan-docker
         - mwext-php72-phan-seccheck-docker
-        - mwskin-php72-phan-seccheck-docker
 
 - project:
     name: wdio-selenium-daily
