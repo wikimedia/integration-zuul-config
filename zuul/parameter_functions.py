@@ -312,7 +312,7 @@ dependencies = {
     'CreateAPage': ['WikiEditor'],
     'CustomPage': ['skins/CustomPage'],
     'Dashiki': ['JsonConfig'],
-    'DiscussionTools': ['VisualEditor'],
+    'DiscussionTools': ['VisualEditor', 'Linter'],
     'Disambiguator': ['VisualEditor'],
     'DonationInterface': ['ContributionTracking'],
     'Echo': ['CentralAuth', 'EventLogging'],
