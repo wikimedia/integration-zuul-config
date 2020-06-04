@@ -11,7 +11,7 @@ cd "$SOURCE_ROOT"
 
 if [ ! -f .phan/config.php ]; then
     echo "Phan config not found"
-    exit 0
+    exit 1
 fi
 
 function install_old_phan {
@@ -48,5 +48,5 @@ elif [ -f vendor/bin/phan ]; then
 else
     # No phan version specified (like new phan) but phan not installed. No way.
     echo "No version of phan is required, and none was found"
-    exit 0
+    exit 1
 fi
