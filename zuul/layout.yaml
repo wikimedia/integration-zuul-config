@@ -1097,31 +1097,6 @@ project-templates:
       - quibble-composer-mysql-php74-docker
     # Surely they are never going to be elected for wmf/ branching or SWAT
 
-  - name: extension-seccheck
-    test:
-      - mwext-php72-phan-seccheck-docker
-    gate-and-submit:
-      - mwext-php72-phan-seccheck-docker
-    test-wmf:
-      - mwext-php72-phan-seccheck-docker
-    gate-and-submit-wmf:
-      - mwext-php72-phan-seccheck-docker
-
-    # Skip Phan on release branches for now.
-    # See T231966 / T226945
-    #test-1_31:
-    # - mwext-php72-phan-seccheck-docker
-    #gate-and-submit-1_31:
-    # - mwext-php72-phan-seccheck-docker
-    #test-1_33:
-    # - mwext-php72-phan-seccheck-docker
-    #gate-and-submit-1_33:
-    # - mwext-php72-phan-seccheck-docker
-    #test-1_34:
-    # - mwext-php72-phan-seccheck-docker
-    #gate-and-submit-1_34:
-    # - mwext-php72-phan-seccheck-docker
-
   # Runs quibble, and includes experimental jobs
   # that are for extensions.
   - name: extension-quibble
