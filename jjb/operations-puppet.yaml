@@ -104,7 +104,14 @@
         - docker-ci-src-setup-simple
         - docker-run-with-log-cache-src:
             image: 'docker-registry.wikimedia.org/releng/logstash-filter-verifier:0.0.1'
+            # Some of our logstash filters use the ruby {} plugin configured to
+            # point to a ruby script using an absolute path. That is done to
+            # guarantee our configuration point to the file since the current
+            # working directory is not guaranteed.
+            # An alternative would be to use a symlink, but that requires write
+            # access to /etc which is inconvenient.
             options: >-
+                --volume modules/profile/files/logstash/filter_scripts:/etc/logstash/filter_scripts
                 --workdir=/src/modules/profile/files/logstash
                 --entrypoint=make
     publishers:
