@@ -13,6 +13,7 @@ python3-wheel python-wheel systemd shellcheck"""
 ARG PIP_DISABLE_PIP_VERSION_CHECK=1
 
 USER root
+COPY apt.pref /etc/apt/preferences.d/pinning.pref
 RUN {{ pkgs_to_install | apt_install }} \
     && pip3 install --no-cache-dir setuptools \
     && rm -fR "$XDG_CACHE_HOME/pip" \
