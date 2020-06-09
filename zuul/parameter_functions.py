@@ -527,6 +527,7 @@ phan_dependencies = {
     'PageForms': ['AdminLinks', 'Cargo', 'PageSchemas'],
     'PageTriage': ['Echo', 'ORES'],
     'ParserFunctions': ['Scribunto'],
+    'Petition': ['CheckUser', 'cldr'],
     'Popups': ['BetaFeatures', 'EventLogging', 'Gadgets'],
     'PropertySuggester': ['Wikibase'],
     'QuizGame': ['Renameuser', 'SocialProfile'],
