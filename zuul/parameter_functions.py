@@ -540,6 +540,7 @@ phan_dependencies = {
     'SoftRedirector': ['VisualEditor'],
     'SpamBlacklist': ['CheckUser', 'EventLogging'],
     'StopForumSpam': ['AbuseFilter'],
+    'TEI': ['Math'],
     'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
     'TheWikipediaLibrary': ['Echo', 'CentralAuth', 'GlobalPreferences'],
     'TimedMediaHandler': ['BetaFeatures'],
