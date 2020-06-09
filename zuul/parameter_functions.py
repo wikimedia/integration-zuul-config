@@ -137,7 +137,6 @@ dependencies = {
     # Skins are listed first to highlight the skin dependencies
     'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
     'skins/BlueSpiceCalumma': ['BlueSpiceFoundation'],
-    'skins/chameleon': ['Bootstrap'],
     'skins/MinervaNeue': ['MobileFrontend'],
     'skins/Empty': ['PhpTags'],
     'skins/Refreshed': ['SocialProfile'],
@@ -473,7 +472,6 @@ dependencies = {
 # Dependencies used in phan jobs.
 # This list is *not* recursively processed.
 phan_dependencies = {
-    'skins/chameleon': ['Bootstrap'],
     'skins/MinervaNeue': ['Echo', 'MobileFrontend'],
     'skins/Refreshed': ['SocialProfile'],
     'AbuseFilter': ['CheckUser', 'CentralAuth', 'Renameuser'],
