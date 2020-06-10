@@ -1,45 +1,19 @@
-FROM {{ "php72-compile" | image_tag }} as build
-
-FROM {{ "php-ast" | image_tag }} as ast
-
-FROM {{ "composer-php72" | image_tag }}
+FROM {{ "composer-package-php72" | image_tag }}
 
 USER root
-
-# FIXME: Don't hardcode the phpapi version (but php-config is in php-dev pkg)
-COPY --from=build /usr/lib/php/20170718/*.so /usr/lib/php/20170718/
 
 # TODO: Should these be installed in a more base dockerfile?
 {% set mediawiki_deps|replace('\n', ' ') -%}
 php-apcu
-php7.2-bcmath
-php7.2-cli
-php7.2-curl
-php7.2-gd
 php-imagick
-php7.2-intl
 php7.2-ldap
-php7.2-mbstring
 php7.2-mysql
 php7.2-pgsql
 php7.2-sqlite3
 php7.2-tidy
-php7.2-xml
-php7.2-zip
 {%- endset -%}
 
 RUN {{ mediawiki_deps | apt_install }}
-
-# This will override the already-existing ast
-COPY --from=ast /usr/lib/php/20170718/ast.so /usr/lib/php/20170718/ast.so
-# There should be a nicer way to do this.
-RUN printf '%s\n%s\n%s\n' '; configuration for php ast module' '; priority=20' 'extension=ast.so' > /etc/php/7.2/mods-available/ast.ini
-RUN echo "extension=ast.so" > /etc/php/7.2/cli/conf.d/20-ast.ini
-
-# Create directory where we're going to install to
-RUN install --directory --mode 777 /srv/phan
-
-ENV PHAN /srv/phan/vendor/bin/phan
 
 USER nobody
 
