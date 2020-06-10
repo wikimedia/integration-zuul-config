@@ -1,24 +1,18 @@
 FROM {{ "sury-php" | image_tag }}
 
 USER root
-RUN {{ "build-essential php7.0-dev php7.1-dev php7.2-dev php7.3-dev" | apt_install }}
+RUN {{ "build-essential php7.0-dev php7.1-dev php7.2-dev php7.3-dev php7.4-dev" | apt_install }}
 RUN install --owner=nobody --group=nogroup --directory /srv/php-ast
 RUN install --owner=nobody --group=nogroup --directory /srv/modules
 
 USER nobody
 RUN git clone https://github.com/nikic/php-ast /srv/php-ast && \
     cd /srv/php-ast && \
-    # v0.1.2, use sha1 for immutability
-    git checkout abfef40846cb5454dafa1808769fde851ba8dd70 && \
-    phpize7.0 && ./configure --with-php-config=php-config7.0 && make && \
-    cp modules/ast.so /srv/modules/ast_70_0.1.2.so && \
-    # v1.0.0, use sha1 for immutability
-    git checkout 044436b0870005fcbf0f8eb9b6022d5afe6451bb && \
+    # v1.0.6, use sha1 for immutability
+    git checkout 4a15f1494500feebd7d3936ac10004c8d268a50d && \
     phpize7.0 && ./configure --with-php-config=php-config7.0 && make && \
     cp modules/ast.so /srv/modules/ast_70.so && \
     git clean -fdx && \
-    # v1.0.1, use sha1 for immutability
-    git checkout e2953889168c7724e7a3dd385d279b77780967d9 && \
     phpize7.1 && ./configure --with-php-config=php-config7.1 && make && \
     cp modules/ast.so /srv/modules/ast_71.so && \
     git clean -fdx && \
@@ -26,11 +20,14 @@ RUN git clone https://github.com/nikic/php-ast /srv/php-ast && \
     cp modules/ast.so /srv/modules/ast_72.so && \
     git clean -fdx && \
     phpize7.3 && ./configure --with-php-config=php-config7.3 && make && \
-    cp modules/ast.so /srv/modules/ast_73.so
+    cp modules/ast.so /srv/modules/ast_73.so && \
+    git clean -fdx && \
+    phpize7.4 && ./configure --with-php-config=php-config7.4 && make && \
+    cp modules/ast.so /srv/modules/ast_74.so
 
 USER root
-RUN cp /srv/modules/ast_70_0.1.2.so /usr/lib/php/20151012/ast_70_0.1.2.so && \
-    cp /srv/modules/ast_70.so /usr/lib/php/20151012/ast.so && \
+RUN cp /srv/modules/ast_70.so /usr/lib/php/20151012/ast.so && \
     cp /srv/modules/ast_71.so /usr/lib/php/20160303/ast.so && \
     cp /srv/modules/ast_72.so /usr/lib/php/20170718/ast.so && \
-    cp /srv/modules/ast_73.so /usr/lib/php/20180731/ast.so
+    cp /srv/modules/ast_73.so /usr/lib/php/20180731/ast.so && \
+    cp /srv/modules/ast_74.so /usr/lib/php/20190902/ast.so

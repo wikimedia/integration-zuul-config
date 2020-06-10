@@ -7,7 +7,7 @@ FROM {{ "composer-php74" | image_tag }}
 USER root
 
 # This will override the already-existing ast
-COPY --from=ast /usr/lib/php/20180731/ast.so /usr/lib/php/20180731/ast.so
+COPY --from=ast /usr/lib/php/20190902/ast.so /usr/lib/php/20190902/ast.so
 
 USER nobody
 COPY --from=composer-package /run.sh /run.sh
