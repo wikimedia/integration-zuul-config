@@ -36,8 +36,6 @@ fi
 # Bypass expensive Symfony\Component\Console\Terminal::getWidth() (T219114#5084302)
 export COLUMNS=80
 
-export PHP_ARGS='-dextension=ast_101.so'
-
 if [ ! -z "$PHAN_VERSION" ]; then
     # Old phan
     install_old_phan

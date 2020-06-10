@@ -1,23 +1,13 @@
 FROM {{ "php72-compile" | image_tag }} as build
 
-USER root
-RUN install --owner=nobody --group=nogroup --directory /srv/php-ast
-RUN install --owner=nobody --group=nogroup --directory /srv/modules
-
-USER nobody
-RUN git clone https://github.com/nikic/php-ast /srv/php-ast && \
-    cd /srv/php-ast && \
-    # v1.0.1, use sha1 for immutability
-    git checkout e2953889168c7724e7a3dd385d279b77780967d9 && \
-    phpize && ./configure && make && \
-    cp modules/ast.so /srv/modules/ast_101.so
+FROM {{ "php-ast" | image_tag }} as ast
 
 FROM {{ "composer-php72" | image_tag }}
 
 USER root
 
 # FIXME: Don't hardcode the phpapi version (but php-config is in php-dev pkg)
-COPY --from=build /srv/modules/*.so /usr/lib/php/20170718/
+COPY --from=build /usr/lib/php/20170718/*.so /usr/lib/php/20170718/
 
 # TODO: Should these be installed in a more base dockerfile?
 {% set mediawiki_deps|replace('\n', ' ') -%}
@@ -40,19 +30,19 @@ php7.2-zip
 
 RUN {{ mediawiki_deps | apt_install }}
 
-# Disable php-ast since we built our own versions
-RUN phpdismod ast && \
-    # Create directory where we're going to install to
-    install --directory --mode 777 /srv/phan
+# This will override the already-existing ast
+COPY --from=ast /usr/lib/php/20170718/ast.so /usr/lib/php/20170718/ast.so
+# There should be a nicer way to do this.
+RUN printf '%s\n%s\n%s\n' '; configuration for php ast module' '; priority=20' 'extension=ast.so' > /etc/php/7.2/mods-available/ast.ini
+RUN echo "extension=ast.so" > /etc/php/7.2/cli/conf.d/20-ast.ini
+
+# Create directory where we're going to install to
+RUN install --directory --mode 777 /srv/phan
 
 ENV PHAN /srv/phan/vendor/bin/phan
 
 USER nobody
 
-COPY php /usr/local/bin/php
-# Need to override php7.0 for MediaWiki core's phan wrapper
-# Yes. php7.0 is going to point to php7.2.
-COPY php /usr/local/bin/php7.0
 COPY run.sh /run.sh
 COPY run-core.sh /run-core.sh
 COPY run-libraries.sh /run-libraries.sh
