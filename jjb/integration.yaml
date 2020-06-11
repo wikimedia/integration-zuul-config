@@ -120,6 +120,31 @@
          docsrc: 'src/build/docs/groovydoc'
          docdest: 'pipelinelib'
 
+- job:
+    name: integration-quibble-fullrun
+    node: Docker
+    triggers:
+      - zuul
+    builders:
+      - docker-castor-load
+      - docker-log-dir
+      - docker-src-dir
+      - docker-ci-src-setup-simple
+      - docker-run-with-log-cache-src:
+          image: 'docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.44'
+          options: >-
+              -v /srv/git:/srv/git:ro
+              -v "$(pwd)"/src:/src
+              --workdir=/src
+              --entrypoint=/src/utils/ci-fullrun.sh
+          args: --color
+          logdir: '/workspace/log'
+    publishers:
+      - archive-log-allow-empty
+      - castor-save-workspace-cache
+      - docker-cleanup
+
+
 - project:
     name: 'integration-quibble'
     jobs:

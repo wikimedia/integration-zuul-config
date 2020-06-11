@@ -1916,6 +1916,10 @@ projects:
   - name: integration/quibble
     template:
       - name: tox-docker
+    test:
+      - integration-quibble-fullrun
+    gate-and-submit:
+      - integration-quibble-fullrun
     postmerge:
       - integration-quibble-tox-publish
 
