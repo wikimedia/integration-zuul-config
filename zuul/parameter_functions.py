@@ -312,7 +312,6 @@ dependencies = {
     'Dashiki': ['JsonConfig'],
     'DiscussionTools': ['VisualEditor', 'Linter'],
     'Disambiguator': ['VisualEditor'],
-    'DonationInterface': ['ContributionTracking'],
     'Echo': ['CentralAuth', 'EventLogging'],
     'ElectronPdfService': ['Collection'],
     'EmailAuthorization': ['PluggableAuth'],
