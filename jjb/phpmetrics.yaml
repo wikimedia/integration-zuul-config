@@ -1,0 +1,106 @@
+- job:
+      name: 'mediawiki-core-phpmetrics-docker'
+      description: |
+          <p>Generate <a href="https://doc.wikimedia.org/mediawiki-core/master/phpmetrics/">
+          https://doc.wikimedia.org/mediawiki-core/master/phpmetrics/</a>.</p>
+          <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      node: Docker
+      concurrent: false
+      triggers:
+          - pollscm:
+                cron: '@daily'
+      scm:
+          - git:
+                url: 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git'
+                shallow-clone: true
+                branches:
+                    - master
+                clean:
+                    before: true
+                    after: true
+                basedir: src
+                # Checkout to a local branch with 'origin/' stripped. That also set
+                # GIT_LOCAL_BRANCH which we use later to publish the documentation.
+                local-branch: '**'
+      wrappers:
+          - timeout:
+                timeout: 30
+                fail: true
+          - timestamps
+          - credentials-binding:
+                - text:
+                      credential-id: composer-github-oauthtoken
+                      variable: COMPOSER_GITHUB_OAUTHTOKEN
+      builders:
+          - docker-log-dir
+          - docker-wipe-dir:
+                dir: 'phpmetrics-report'
+          - docker-run:
+                options: '-v "$(pwd)"/phpmetrics-report:/phpmetrics-report -v "$(pwd)"/log:/log -v "$(pwd)"/src:/src'
+                image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.3-s9
+                args: '--report-html=/phpmetrics-report --report-violations=/log/violations-phpmetrics.xml .'
+          - doc-publish:
+                docsrc: phpmetrics-report
+                docdest: mediawiki-core/master/phpmetrics
+      publishers:
+          - archive-log-allow-empty
+          - beta-irc # Spam #wikimedia-releng on failure
+          - email-ext:
+                recipients: releng@lists.wikimedia.org qa-alerts@lists.wikimedia.org
+                content-type: html
+                failure: true
+                unstable: true
+          - docker-cleanup
+
+- job:
+      name: 'wikibase-phpmetrics-docker'
+      description: |
+          <p>Generate <a href="https://doc.wikimedia.org/Wikibase/master/phpmetrics/">
+          https://doc.wikimedia.org/Wikibase/master/phpmetrics/</a>.</p>
+          <p>Job is managed by <a href="https://www.mediawiki.org/wiki/CI/JJB">Jenkins Job Builder</a>.</p>
+      node: Docker
+      concurrent: false
+      triggers:
+          - pollscm:
+                cron: '@daily'
+      scm:
+          - git:
+                url: 'https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git'
+                shallow-clone: true
+                branches:
+                    - master
+                clean:
+                    before: true
+                    after: true
+                basedir: src
+                # Checkout to a local branch with 'origin/' stripped. That also set
+                # GIT_LOCAL_BRANCH which we use later to publish the documentation.
+                local-branch: '**'
+      wrappers:
+          - timeout:
+                timeout: 30
+                fail: true
+          - timestamps
+          - credentials-binding:
+                - text:
+                      credential-id: composer-github-oauthtoken
+                      variable: COMPOSER_GITHUB_OAUTHTOKEN
+      builders:
+          - docker-log-dir
+          - docker-wipe-dir:
+                dir: 'phpmetrics-report'
+          - docker-run:
+                options: '-v "$(pwd)"/phpmetrics-report:/phpmetrics-report -v "$(pwd)"/log:/log -v "$(pwd)"/src:/src'
+                image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.3-s9
+                args: '--report-html=/phpmetrics-report --report-violations=/log/violations-phpmetrics.xml .'
+          - doc-publish:
+                docsrc: phpmetrics-report
+                docdest: Wikibase/master/phpmetrics
+      publishers:
+          - archive-log-allow-empty
+          - email-ext:
+                recipients: wikidata-ci-status@wikimedia.de
+                content-type: html
+                failure: true
+                unstable: true
+          - docker-cleanup
