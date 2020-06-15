@@ -1,0 +1,114 @@
+#!/bin/bash
+set -eu -o pipefail
+
+# Configure your .ssh/config so it can access the following hosts with proper username and key:
+# - contint1001.wikimedia.org
+# - contint2001.wikimedia.org
+# - integration-cumin.integration.eqiad.wmflabs
+
+_ssh_command_sudo() {
+    local host="$1"
+    local sudoer="$2"
+    local cmds
+
+    # strip new lines and leading space
+    cmds=$(echo "$3" | sed 's/^ *//' | sed '/^$/d')
+
+    if [[ "${4:-visible}" == "visible" ]]; then
+        # shellcheck disable=SC2001
+        echo "$cmds" | sed "s/^/\\[$host\\] /"
+    fi
+    ssh "$host" sudo -H -u "$sudoer" "$cmds"
+}
+
+_ssh_command_self() {
+    local host="$1"
+    local cmds
+    local esc_cmds
+
+    # strip new lines and leading space
+    cmds=$(echo "$2" | sed 's/^ *//' | sed '/^$/d')
+    esc_cmds=$(printf '%q' "$cmds")
+
+    # shellcheck disable=SC2001
+    echo "$cmds" | sed "s/^/\\[$host\\] /"
+    ssh "$host" sh -c "$esc_cmds"
+}
+
+_confirm() {
+    read -rp "$1 [Y/n] " response
+    test "$response" == "" || test "$response" == "y" || test "$response" == "Y"
+}
+
+_update_integration_config() {
+    local host="$1"
+    local git_dir="$2"
+    local diff_dir="$3"
+    local log_msg="$4"
+
+    _ssh_command_sudo "$host" zuul "git -C \"$git_dir\" remote update"
+    _ssh_command_sudo "$host" zuul "git -C \"$git_dir\" --no-pager log -p HEAD..origin/master \"$diff_dir\""
+
+    _confirm "Does the diff look good?"
+    _confirm "Did you log a message for the SAL in #wikimedia-releng (e.g. \"$log_msg\")"
+
+    _ssh_command_sudo "$host" zuul "git -C \"$git_dir\" rebase"
+    _ssh_command_sudo "$host" zuul "git -C \"$git_dir\" -c gc.auto=128 gc --auto --quiet" "invisible"
+}
+
+# Deploy a Zuul layout change.
+deploy_zuul() {
+    local host='contint.wikimedia.org'
+    local git_dir='/etc/zuul/wikimedia'
+    local diff_dir='zuul/'
+    local log_msg='Reloading Zuul to deploy [url]'
+
+    _update_integration_config "$host" "$git_dir" "$diff_dir" "$log_msg"
+    _ssh_command_sudo "$host" root "/usr/sbin/service zuul reload"
+}
+
+# Update docker-pkg built images.
+deploy_docker() {
+    local host='contint.wikimedia.org'
+    local git_dir='/etc/zuul/wikimedia'
+    local diff_dir='dockerfiles/'
+    local log_msg='Updating docker-pkg files on contint primary for [url]'
+
+    _update_integration_config "$host" "$git_dir" "$diff_dir" "$log_msg"
+
+    # docker-pkg does not attempt to pull images - T219398
+    _ssh_command_self "$host" '
+    docker pull docker-registry.wikimedia.org/wikimedia-jessie
+    docker pull docker-registry.wikimedia.org/wikimedia-stretch
+    docker pull docker-registry.wikimedia.org/wikimedia-buster
+    '
+
+    local docker_pkg='/srv/deployment/docker-pkg/venv/bin/docker-pkg'
+    local docker_pkg_config='/etc/docker-pkg/integration.yaml'
+    local dockerfiles='/etc/zuul/wikimedia/dockerfiles'
+    _ssh_command_self "$host" "
+    cd /tmp
+    $docker_pkg -c $docker_pkg_config build $dockerfiles
+    cat /tmp/docker-pkg-build.log
+    "
+
+    _confirm "Delete build log?"
+    _ssh_command_self "$host" 'rm /tmp/docker-pkg-build.log'
+}
+
+# Pull a docker image onto the WMCS-hosted CI agents.
+docker_pull_image() {
+    local image_name="$1"
+    local host='integration-cumin.integration.eqiad.wmflabs'
+    _ssh_command_sudo "$host" root "cumin --force 'name:agent-docker' 'docker pull $image_name'"
+}
+
+case "${1:-}" in
+    deploy_zuul) deploy_zuul ;;
+    deploy_docker) deploy_docker ;;
+    docker_pull_image) docker_pull_image "$2" ;;
+    *)
+    echo "usage: ./fab [ deploy_zuul | deploy_docker | docker_pull_image ]"
+    exit 1
+    ;;
+esac

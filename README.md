@@ -37,7 +37,8 @@ See https://www.mediawiki.org/wiki/Continuous_integration/Allow_list
 
 # Deployments
 
-We use Fabric has an helper for deployment. It has to be version 1.x and
-requires Python 2.7. A virtual environment `fabric` is provided through tox:
+Use the `./fab` helper for deployment actions:
 
-    $ tox -e fabric -- <arguments>
+    $ ./fab deploy_zuul
+    $ ./fab deploy_docker
+    $ ./fab docker_pull_image <imagename>
