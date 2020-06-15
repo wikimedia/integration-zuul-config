@@ -31,9 +31,9 @@ Update Jenkins jobs which name starts with "selenium":
 To test the configuration, we use tox and you need at least version 1.9+ ([bug T125705](https://phabricator.wikimedia.org/T125705))
 to run the test suite. Running `tox` in the main dir of your local clone runs the tests.
 
-## Whitelist volunteer users
+## Add volunteer users to the allow list
 
-https://www.mediawiki.org/wiki/Continuous_integration/Whitelist
+See https://www.mediawiki.org/wiki/Continuous_integration/Allow_list
 
 # Deployments
 

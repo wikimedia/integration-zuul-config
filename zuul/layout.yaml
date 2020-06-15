@@ -39,7 +39,7 @@ includes:
 
 pipelines:
 
-  # Elaborate execution run only after CR+2 or when submitted by a whitelisted
+  # Elaborate execution run only after CR+2 or when submitted by an allowed
   # user. Votes V+2.
   - &test_pipeline
     name: test
@@ -57,7 +57,7 @@ pipelines:
           # BEWARE:
           # - Make sure to use non greedy selectors (.*?) and to escape dots: \.
 
-          email: &email_whitelist
+          email: &email_allowlist
            - .*?@wikimedia\.(org|de|se)$
            - .*?@hallowelt\.(biz|com)$
            - .*?@microsoft\.com$
@@ -107,7 +107,7 @@ pipelines:
           # VistaPrint
           # They are heavily using MediaWiki internally and open sourced
           # some of their extensions. Might wildcard them as well, for
-          # now just whitelist Daniel Renfro.
+          # now just allow Daniel Renfro.
            - ^drenfro@vistaprint\.com$ # AlephNull
 
           # Trusted long term users:
@@ -408,15 +408,15 @@ pipelines:
          # Hackathon participants
            - ^edlira\.dushku@gmail\.com$
 
-        # Let whitelisted users the ability to reenqueue a change in the test
+        # Let allowed users the ability to reenqueue a change in the test
         # pipeline by simply commenting 'recheck' on a change.
         - &test-event-comment-recheck
           event: comment-added
           branch: (?!^refs/meta/config|^fundraising/REL|^wmf/\d\.\d{2}\.\d-wmf\.\d{1,2}|^REL)
           comment: (?im)^Patch Set \d+:( -?Code\-Review(\+|-)?(1|2)?)?(\n\n\(\d+ comment(s)?\))?\n\n\s*recheck\b
-          email: *email_whitelist
+          email: *email_allowlist
 
-        # Let whitelisted users CR+1 to trigger tests for an untested patch
+        # Let allowed users CR+1 to trigger tests for an untested patch
         # (Verified 0 or 1)
         - &test-event-plus-one
           event: comment-added
@@ -424,7 +424,7 @@ pipelines:
           reject-approval:
             # hasn't been tested yet
             - verified: [-1, 2]
-          email: *email_whitelist
+          email: *email_allowlist
           approval:
             - code-review: +1
 
@@ -532,10 +532,10 @@ pipelines:
       gerrit:
         - event: patchset-created
           branch: (?!^refs/meta/config)
-          email: *email_whitelist
+          email: *email_allowlist
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check coverage\.?\s*$
-          email: *email_whitelist
+          email: *email_allowlist
 
     success-message: 'PHP test coverage increased (or stayed the same) :-)'
     success:
@@ -556,10 +556,10 @@ pipelines:
       gerrit:
         - event: patchset-created
           branch: (?!^refs/meta/config)
-          email: *email_whitelist
+          email: *email_allowlist
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check perf\.?\s*$
-          email: *email_whitelist
+          email: *email_allowlist
     success-message: 'Performance checks OK! (same or better)'
     success:
       gerrit: {}
@@ -579,10 +579,10 @@ pipelines:
       gerrit:
         - event: patchset-created
           branch: (?!^refs/meta/config)
-          email: *email_whitelist
+          email: *email_allowlist
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check codehealth\.?\s*$
-          email: *email_whitelist
+          email: *email_allowlist
     # Success is reported via Verified +1 by SonarQube Bot
     # https://gerrit.wikimedia.org/r/admin/projects/labs/tools/sonarqubebot
     # depending on whether the quality gates in SonarQube passed/failed.
@@ -601,7 +601,7 @@ pipelines:
       gerrit:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check experimental\.?\s*$
-          email: *email_whitelist
+          email: *email_allowlist
     success-message: 'Experimental build succeeded.'
     success:
       gerrit: {}
@@ -619,7 +619,7 @@ pipelines:
       gerrit:
         - event: comment-added
           comment: (?im)^Patch Set \d+:\n\n\s*check (php5?|zend|sqlite|postgres)\.?\s*$
-          email: *email_whitelist
+          email: *email_allowlist
     success-message: 'PHP build succeeded.'
     success:
       gerrit: {}
