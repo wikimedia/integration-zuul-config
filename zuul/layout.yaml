@@ -1058,6 +1058,10 @@ project-templates:
     gate-and-submit:
       - debian-glue
 
+  - name: debian-glue-non-voting
+    test:
+      - debian-glue-non-voting
+
   # For extensions that have broken tests or magic behaviors that CI does not support.
   # See also https://phabricator.wikimedia.org/T183512
   #
@@ -1997,11 +2001,10 @@ projects:
 
   - name: mediawiki/tools/scap
     template:
-      - name: service-pipeline-test
-    test:
       # XXX probably needs a job per supported distribution like labs/toollabs
       # See also T210780
-      - debian-glue-non-voting
+      - name: debian-glue-non-voting
+      - name: service-pipeline-test
     postmerge:
       - scap-beta-deb
 
@@ -2472,15 +2475,16 @@ projects:
 #### Site Reliability Engineering ("Operations") tools #########
 
   - name: cergen
+    template:
+      - name: debian-glue-non-voting
     test:
-      - debian-glue-non-voting
       - cergen-tox-docker
     gate-and-submit:
       - cergen-tox-docker
 
   - name: operations/calico-cni
-    test:
-      - debian-glue-non-voting
+    template:
+      - name: debian-glue-non-voting
 
   - name: operations/cookbooks
     template:
@@ -2492,9 +2496,8 @@ projects:
   # With vim Tabularize plugin: Tab /test:
   - name: operations/debs/adminbot
     template:
+      - name: debian-glue-non-voting
       - name: tox-docker
-    test:
-      - debian-glue-non-voting
   - { name: operations/debs/archiva,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/avconv10,                         test: ['debian-glue-non-voting'] }
   - { name: operations/debs/bdsync,                           test: ['debian-glue-non-voting'] }
@@ -2631,9 +2634,8 @@ projects:
   - { name: operations/debs/puppetdb,                         test: ['debian-glue-non-voting'] }
   - name: operations/debs/pybal
     template:
+      - name: debian-glue-non-voting
       - name: tox-docker
-    test:
-      - debian-glue-non-voting
   - { name: operations/debs/pykube,                           test: ['debian-glue-non-voting'] }
   - { name: operations/debs/pynetbox,                         test: ['debian-glue-non-voting'] }
   - { name: operations/debs/python-aiokafka,                  test: ['debian-glue-non-voting'] }
@@ -2873,8 +2875,9 @@ projects:
       - name: tox-docker
 
   - name: operations/software/acme-chief
+    template:
+      - name: debian-glue-non-voting
     test:
-      - debian-glue-non-voting
       - acme-chief-tox-docker
     gate-and-submit:
       - acme-chief-tox-docker
@@ -2882,9 +2885,10 @@ projects:
       - acme-chief-tox-docker
 
   - name: operations/software/cassandra-table-properties
+    template:
+      - name: debian-glue-non-voting
     test:
       - cassandra-table-properties-tox-docker
-      - debian-glue-non-voting
     gate-and-submit:
       - cassandra-table-properties-tox-docker
 
@@ -2895,8 +2899,9 @@ projects:
       - censorshipmonitoring-tox-docker
 
   - name: operations/software/conftool
+    template:
+      - name: debian-glue-non-voting
     test:
-      - debian-glue-non-voting
       - conftool-tox-docker
     gate-and-submit:
       # requires etcd to be installed for integration tests
@@ -2914,8 +2919,9 @@ projects:
       - cumin-tox-tag-publish
 
   - name: operations/software/certcentral
+    template:
+      - name: debian-glue-non-voting
     test:
-      - debian-glue-non-voting
       - acme-chief-tox-docker
     gate-and-submit:
       - acme-chief-tox-docker
@@ -2924,9 +2930,8 @@ projects:
 
   - name: operations/software/debmonitor
     template:
+      - name: debian-glue-non-voting
       - name: tox-docker
-    test:
-      - debian-glue-non-voting
 
   - name: operations/software/external-monitoring
     template:
@@ -2947,14 +2952,13 @@ projects:
       - name: tox-docker
 
   - name: operations/software/elasticsearch/plugins
-    test:
-      - debian-glue-non-voting
+    template:
+      - name: debian-glue-non-voting
 
   - name: operations/software/etcd-mirror
     template:
+      - name: debian-glue-non-voting
       - name: tox-docker
-    test:
-      - debian-glue-non-voting
 
   - name: operations/software/gerrit
     test:
@@ -3001,14 +3005,13 @@ projects:
       - netbox-reports-tox-docker
 
   - name: operations/software/nginx
-    test:
-      - debian-glue-non-voting
+    template:
+      - name: debian-glue-non-voting
 
   - name: operations/software/python-poolcounter
     template:
+      - name: debian-glue-non-voting
       - name: tox-docker
-    test:
-      - debian-glue-non-voting
 
   - name: operations/software/puppet-compiler
     template:
@@ -3016,9 +3019,8 @@ projects:
 
   - name: operations/software/service-checker
     template:
+      - name: debian-glue-non-voting
       - name: tox-docker
-    test:
-      - debian-glue-non-voting
 
   - name: operations/software/spicerack
     template:
@@ -3058,22 +3060,27 @@ projects:
 
   # Varnish related - T180329
   - name: operations/software/varnish/libvmod-header
-    test: [ 'debian-glue-non-voting' ]
+    template:
+      - name: debian-glue-non-voting
   - name: operations/software/varnish/libvmod-netmapper
     test: [ 'debian-glue' ]
   - name: operations/software/varnish/libvmod-tbf
-    test: [ 'debian-glue-non-voting' ]
+    template:
+      - name: debian-glue-non-voting
   - name: operations/software/varnish/libvmod-uuid
-    test: [ 'debian-glue-non-voting' ]
+    template:
+      - name: debian-glue-non-voting
   - name: operations/software/varnish/libvmod-vslp
-    test: [ 'debian-glue-non-voting' ]
+    template:
+      - name: debian-glue-non-voting
   - name: operations/software/varnish/libvmod-re2
     test: [ 'debian-glue' ]
 
   - name: operations/software/varnish/varnishkafka
     test: [ 'debian-glue' ]
   - name: operations/software/varnish/varnishkafka/testing
-    test: [ 'debian-glue-non-voting' ]
+    template:
+      - name: debian-glue-non-voting
 
   - name: operations/software/varnish/vhtcpd
     test: [ 'debian-glue' ]
@@ -7398,8 +7405,9 @@ projects:
       - generic-node10-docker
 
   - name: mediawiki/services/poolcounter
+    template:
+      - name: debian-glue-non-voting
     test:
-      - debian-glue-non-voting
       - poolcounter-tox-docker
     gate-and-submit:
       - poolcounter-tox-docker
