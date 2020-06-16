@@ -1052,6 +1052,12 @@ jobs:
 
 project-templates:
 
+  - name: debian-glue
+    test:
+      - debian-glue
+    gate-and-submit:
+      - debian-glue
+
   # For extensions that have broken tests or magic behaviors that CI does not support.
   # See also https://phabricator.wikimedia.org/T183512
   #
@@ -1827,12 +1833,12 @@ projects:
 #### Continuous integration and other developer services #######
 
   - name: blubber
+    template:
+      - name: debian-glue
     test:
       - trigger-blubber-pipeline-test
-      - debian-glue
     gate-and-submit:
       - trigger-blubber-pipeline-rehearse
-      - debian-glue
     postmerge:
       - trigger-blubber-pipeline-publish
 
@@ -1920,10 +1926,8 @@ projects:
       - name: tox-docker
 
   - name: integration/uprightdiff
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
 
   - name: integration/utils
     template:
@@ -2506,10 +2510,8 @@ projects:
   - { name: operations/debs/debdeploy,                        test: ['debian-glue-non-voting'] }
   - { name: operations/debs/docker-distribution,              test: ['debian-glue-non-voting'] }
   - name: operations/debs/doxygen
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/druid,                            test: ['debian-glue-non-voting'] }
   - { name: operations/debs/dynomite,                         test: ['debian-glue-non-voting'] }
   - { name: operations/debs/elastalert,                       test: ['debian-glue-non-voting'] }
@@ -2528,10 +2530,8 @@ projects:
   - { name: operations/debs/golang-github-howeyc-fsnotify,    test: ['debian-glue-non-voting'] }
   - { name: operations/debs/helm,                             test: ['debian-glue-non-voting'] }
   - name: operations/debs/helm-diff
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/helm-secrets,                     test: ['debian-glue-non-voting'] }
   - name: operations/debs/helm3
     test:
@@ -2539,17 +2539,13 @@ projects:
     gate-and-submit:
       - debian-glue-backports
   - name: operations/debs/helmfile
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/ircd-ratbox,                      test: ['debian-glue-non-voting'] }
   - { name: operations/debs/ircecho,                          test: ['debian-glue-non-voting'] }
   - name: operations/debs/jenkins-debian-glue
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/jetty-runner,                     test: ['debian-glue-non-voting'] }
   - { name: operations/debs/jmxtrans,                         test: ['debian-glue-non-voting'] }
   - { name: operations/debs/jvm-tools,                        test: ['debian-glue-non-voting'] }
@@ -2557,10 +2553,8 @@ projects:
   - { name: operations/debs/kafkacat,                         test: ['debian-glue-non-voting'] }
   - { name: operations/debs/kubernetes,                       test: ['debian-glue-non-voting'] }
   - name: operations/debs/kubeyaml
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/latexml,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/libanon,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/libav,                            test: ['debian-glue-non-voting'] }
@@ -2581,10 +2575,8 @@ projects:
   - { name: operations/debs/mysqlatfacebook,                  test: ['debian-glue-non-voting'] }
   - { name: operations/debs/nfsd-ldap,                        test: ['debian-glue-non-voting'] }
   - name: operations/debs/node-tunnel-agent
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/nodejs,                           test: ['debian-glue-non-voting'] }
   - { name: operations/debs/nutcracker,                       test: ['debian-glue-non-voting'] }
   - { name: operations/debs/openssl,                          test: ['debian-glue-non-voting'] }
@@ -2612,10 +2604,8 @@ projects:
   - { name: operations/debs/prometheus-etherpad-exporter,      test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-icinga-exporter,        test: ['debian-glue-non-voting'] }
   - name: operations/debs/prometheus-ipsec-exporter
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/prometheus-ircd-exporter,          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-jmx-exporter,           test: ['debian-glue-non-voting'] }
   - { name: operations/debs/prometheus-logstash-exporter,      test: ['debian-glue-non-voting'] }
@@ -2656,10 +2646,8 @@ projects:
   - { name: operations/debs/python-gear,                      test: ['debian-glue-non-voting'] }
   - { name: operations/debs/python-gevent,                    test: ['debian-glue-non-voting'] }
   - name: operations/debs/python-git-archive-all
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/python-google-api,                test: ['debian-glue-non-voting'] }
   - { name: operations/debs/python-jsonable,                  test: ['debian-glue-non-voting'] }
   - { name: operations/debs/python-jsonschema,                test: ['debian-glue-non-voting'] }
@@ -2697,10 +2685,8 @@ projects:
   - { name: operations/debs/statsd-proxy,                     test: ['debian-glue-non-voting'] }
   - { name: operations/debs/tideways-xhprof,                  test: ['debian-glue-non-voting'] }
   - name: operations/debs/tidy-0.99
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
+    template:
+      - name: debian-glue
   - { name: operations/debs/udp2log-log4j-java,               test: ['debian-glue-non-voting'] }
   - { name: operations/debs/utfnormal,                        test: ['debian-glue-non-voting'] }
   - { name: operations/debs/varnish,                          test: ['debian-glue-non-voting'] }
@@ -2996,11 +2982,8 @@ projects:
 
   - name: operations/software/keyholder
     template:
+      - name: debian-glue
       - name: tox-docker
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
 
   - name: operations/software/labsdb-auditor
     template:
@@ -3053,19 +3036,13 @@ projects:
 
   - name: operations/software/tools-manifest
     template:
+      - name: debian-glue
       - name: tox-docker
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
 
   - name: operations/software/tools-webservice
     template:
+      - name: debian-glue
       - name: tox-docker
-    test:
-      - debian-glue
-    gate-and-submit:
-      - debian-glue
 
   - name: operations/software/hhvm_exporter
     template:
