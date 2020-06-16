@@ -18,10 +18,18 @@ function validate_layout() {
 
     echo "Generating layout for $layout_file"
     echo "Logging to $output_file"
+    set +e
     "$ZUUL_SERVER_BIN" \
         -c "$repodir"/tests/fixtures/zuul-dummy.conf \
         -t -l "$layout_file" \
         2>"$output_file"
+    err=$?
+    if [ $err != 0 ]; then
+        cat "$output_file"
+        echo "INVALID layout in $output_file"
+        exit $err
+    fi
+    set -e
     echo "Done"
 }
 
