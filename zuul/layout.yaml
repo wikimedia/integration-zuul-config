@@ -942,6 +942,11 @@ jobs:
     # Really restrict to master only
     branch: master
 
+  - name: nodejs-codehealth-master-non-voting
+    mutex: nodejs-codehealth-master-non-voting
+    # Really restrict to master only
+    branch: master
+
   - name: mediawiki-core-doxygen-docker-publish
     mutex: mediawiki-core-doxygen-docker-publish
 
@@ -1493,6 +1498,12 @@ project-templates:
   - name: java-codehealth
     codehealth:
       - java-codehealth-patch
+
+  - name: nodejs-codehealth
+    postmerge:
+      - nodejs-codehealth-master-non-voting
+    codehealth:
+      - nodejs-codehealth-patch
 
   # Runs quibble, and includes experimental jobs
   # that are for skins.
@@ -7422,6 +7433,8 @@ projects:
       - poolcounter-tox-docker
 
   - name: mediawiki/services/push-notifications
+    template:
+      - name: nodejs-codehealth
     test:
       - trigger-typescript-service-pipeline-test
     gate-and-submit:

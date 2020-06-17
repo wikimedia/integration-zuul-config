@@ -104,3 +104,70 @@
         channels:
          - name: '#wikimedia-infrastructure'
            notify-only: true
+
+- project:
+    name: nodejs-codehealth
+    jobs:
+      - nodejs-codehealth-{name}:
+         name: 'patch'
+         branch: '$ZUUL_CHANGE-$ZUUL_PATCHSET'
+         # Branch name changes for each revision, e.g. 519448-1, 519448-2
+         sonar_args: |
+             -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT" \
+             -Dsonar.organization=wmftest \
+             -Dsonar.host.url=https://sonarcloud.io \
+             -Dsonar.branch.target="$ZUUL_BRANCH" \
+             -Dsonar.branch.name={branch} \
+         publishers:
+           - docker-cleanup
+      - nodejs-codehealth-{name}:
+         name: 'master-non-voting'
+         branch: '$ZUUL_BRANCH'
+         sonar_args: |
+             -Dsonar.projectKey=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.projectName=${{ZUUL_PROJECT//\//-}} \
+             -Dsonar.organization=wmftest \
+             -Dsonar.host.url=https://sonarcloud.io \
+         publishers:
+             - archive-log-allow-empty
+             - castor-save-workspace-cache
+             - docker-cleanup
+
+- job-template:
+    name: 'nodejs-codehealth-{name}'
+    node: Docker
+    branch: '$ZUUL_BRANCH'
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+
+    wrappers:
+     - timeout:
+         timeout: 30
+         fail: true
+     - timestamps
+     # SONAR_API_KEY is in Jenkins credentials store
+     # https://integration.wikimedia.org/ci/credentials/
+     - credentials-binding:
+          - text:
+              credential-id: SONAR_API_KEY
+              variable: SONAR_API_KEY
+
+    builders:
+    - docker-log-dir
+    - docker-src-dir
+    - docker-castor-load
+    - docker-run-with-log-and-workspace-cache:
+        image: docker-registry.wikimedia.org/releng/node10-test:0.6.0
+        options: '--volume "$(pwd)"/src/_NAME":/src'
+        logdir: '/workspace/log'
+        args: '--if-present coverage'
+    - docker-run-with-log-and-workspace-cache:
+        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.6.1'
+        options: '--volume "$(pwd)"/src:/workspace/src'
+        logdir: '/workspace/log'
+        args: '{sonar_args}'
