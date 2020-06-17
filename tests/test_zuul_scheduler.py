@@ -82,7 +82,8 @@ class TestZuulScheduler(unittest.TestCase):
         # Scheduler class:
         cls.sched = zuul.scheduler.Scheduler(cfg)
         cls.sched.registerConnections({
-            'gerrit': FakeConnection('gerrit', {})
+            'gerrit': FakeConnection('gerrit', {}),
+            'gerrit_test': FakeConnection('gerrit', {}),
         })
         cls.sched._doReconfigureEvent(ReconfigureEvent(cfg))
 

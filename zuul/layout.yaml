@@ -449,6 +449,28 @@ pipelines:
       gerrit:
         verified: -1
 
+  - name: test-gerrit-test
+    description: >
+      Pipeline for jobs on patch submission that will apply the "Verified" score in gerrit-test.
+      To retry these jobs, submit the comment "recheck".
+    manager: IndependentPipelineManager
+    source: gerrit_test
+    trigger:
+      gerrit_test:
+        - *test-event-patchset-created
+        - *test-event-comment-recheck
+        - *test-event-plus-one
+        - *test-event-libup
+    success-message: 'Main test build succeeded.'
+    success:
+      gerrit_test:
+        verified: 2
+    failure-message: 'Main test build failed.'
+    failure:
+      gerrit_test:
+        verified: -1
+
+
   - !!merge : *test_pipeline
     name: test-prio
     description: >
@@ -727,14 +749,16 @@ pipelines:
           approval:
             - code-review: 2
 
-  - name: postmerge
+  - &postmerge_pipeline
+    name: postmerge
     description: Jobs for after a commit is successfully merged.
     precedence: low
     manager: IndependentPipelineManager
     source: gerrit
     trigger:
       gerrit:
-        - event: change-merged
+        - &postmerge_pipeline_event
+          event: change-merged
           branch: (?!^refs/meta/config)
     success-message: 'Post-merge build succeeded.'
     # Zuul needs at least one option beside --message or it will not report
@@ -744,6 +768,23 @@ pipelines:
     failure-message: 'Post-merge build failed.'
     failure:
       gerrit: {}
+
+  - name: postmerge-gerrit-test
+    description: Jobs for after a commit is successfully merged on gerrit-test
+    precedence: low
+    manager: IndependentPipelineManager
+    source: gerrit_test
+    trigger:
+      gerrit_test:
+        - *postmerge_pipeline_event
+    success-message: 'Post-merge build succeeded.'
+    # Zuul needs at least one option beside --message or it will not report
+    # Since Gerrit 2.8, we can vote on closed changes.
+    success:
+      gerrit_test: {}
+    failure-message: 'Post-merge build failed.'
+    failure:
+      gerrit_test: {}
 
   - name: post
     description: Jobs for when a branch is created or updated.
