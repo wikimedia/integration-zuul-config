@@ -1926,12 +1926,12 @@ projects:
       - integration-pipelinelib-docker-doc-publish
 
   - name: integration/quibble
-    template:
-      - name: tox-docker
     test:
-      - integration-quibble-fullrun
+      - integration-quibble-tox-docker:
+        - integration-quibble-fullrun
     gate-and-submit:
-      - integration-quibble-fullrun
+      - integration-quibble-tox-docker:
+        - integration-quibble-fullrun
     postmerge:
       - integration-quibble-tox-publish
 
