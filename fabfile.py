@@ -9,7 +9,7 @@ Usage:
   the proper username and key:
    - contint1001.wikimedia.org
    - contint2001.wikimedia.org
-   - integration-cumin-01.integration.eqiad.wmflabs
+   - integration-cumin.integration.eqiad.wmflabs
 * Run $ fab deploy_zuul
 
 """
@@ -85,7 +85,7 @@ def deploy_zuul():
 def docker_pull_image(imageName):
     """Pull a docker image onto the WMCS-hosted CI agents"""
     with settings(sudo_user='root'):
-        env.host_string = 'integration-cumin-01.integration.eqiad.wmflabs'
+        env.host_string = 'integration-cumin.integration.eqiad.wmflabs'
         sudo("cumin --force 'name:agent-docker' "
              "'docker pull " + imageName + "'")
 
