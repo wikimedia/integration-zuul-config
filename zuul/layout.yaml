@@ -996,11 +996,6 @@ jobs:
   - name: mediawiki-vagrant-puppet-doc-publish
     branch: ^master$
 
-  - name: integration-docroot-deploy
-    branch: ^master$
-    success-message: 'SUCCESS Updated https://integration.wikimedia.org/ . WARN: https://doc.wikimedia.org/ need manual update: <code>ssh doc1001.eqiad.wmnet sudo -u doc-uploader git -C /srv/docroot pull</code>'
-    failure-message: 'FAILURE Failed to deploy. Please contact a continuous integration team member to fixup the docroot on the destination server.'
-
   - name: 'integration-config-jjb-diff-docker'
     success-message: 'SUCCESS Review the XML difference.'
     failure-message: 'FAILURE Failed to compare your patchset with the current configuration.'
@@ -1915,8 +1910,6 @@ projects:
       - composer-php70-docker
     gate-and-submit:
       - composer-php70-docker
-    postmerge:
-      - integration-docroot-deploy
 
   - name: integration/gear
     test:

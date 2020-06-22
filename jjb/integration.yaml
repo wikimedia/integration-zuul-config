@@ -1,20 +1,5 @@
 # Jobs for integration/*
 
-# Job that update the file hierarchy for integration.wikimedia.org
-- job:
-    name: 'integration-docroot-deploy'
-    node: contint2001
-    concurrent: false  # updates website
-    triggers:
-     - zuul
-    builders:
-     - shell: |
-        #!/bin/bash -e
-        cd /srv/
-        git remote update
-        git checkout $ZUUL_COMMIT
-        echo "`date -R`> $ZUUL_COMMIT" >> /srv/jenkins-autodeploy
-
 # Parameter:
 # entrypoint: script to run. Relative to integration/config root dir
 - job-template:
