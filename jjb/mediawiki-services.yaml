@@ -29,7 +29,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-kartotherian:0.1.2'
+        image: 'docker-registry.wikimedia.org/releng/node10-kartotherian:0.1.2-s1'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -83,7 +83,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.0'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.0-s1'
         args: 'periodic'
     publishers:
      - irc-wikimedia-infrastructure
@@ -162,12 +162,12 @@
     - docker-src-dir
     - docker-castor-load
     - docker-run-with-log-and-workspace-cache:
-        image: docker-registry.wikimedia.org/releng/node10-test:0.6.0
+        image: docker-registry.wikimedia.org/releng/node10-test:0.6.0-s1
         options: '--volume "$(pwd)"/src/_NAME":/src'
         logdir: '/workspace/log'
         args: '--if-present coverage'
     - docker-run-with-log-and-workspace-cache:
-        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.6.1'
+        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.6.2'
         options: '--volume "$(pwd)"/src:/workspace/src'
         logdir: '/workspace/log'
         args: '{sonar_args}'
