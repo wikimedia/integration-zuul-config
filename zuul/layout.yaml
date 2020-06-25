@@ -497,19 +497,6 @@ pipelines:
           branch: ^REL1_31$
 
   - !!merge : *test_pipeline
-    name: test-1_33
-    description: >
-      Variation of the "test" pipeline reserved for MediaWiki 1.33
-    trigger:
-      gerrit:
-        - !!merge : *test-event-patchset-created
-          branch: ^REL1_33$
-        - !!merge : *test-event-comment-recheck
-          branch: ^REL1_33$
-        - !!merge : *test-event-plus-one
-          branch: ^REL1_33$
-
-  - !!merge : *test_pipeline
     name: test-1_34
     description: >
       Variation of the "test" pipeline reserved for MediaWiki 1.34
@@ -696,13 +683,6 @@ pipelines:
       gerrit:
         - !!merge : *gate-and-submit-comment-added
           branch: ^REL1_31
-
-  - !!merge : *gate_and_submit_pipeline
-    name: gate-and-submit-1_33
-    trigger:
-      gerrit:
-        - !!merge : *gate-and-submit-comment-added
-          branch: ^REL1_33
 
   - !!merge : *gate_and_submit_pipeline
     name: gate-and-submit-1_34
