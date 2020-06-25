@@ -61,7 +61,7 @@ deploy_zuul() {
     local host='contint.wikimedia.org'
     local git_dir='/etc/zuul/wikimedia'
     local diff_dir='zuul/'
-    local log_msg='Reloading Zuul to deploy [url]'
+    local log_msg='!log Reloading Zuul to deploy [url]'
 
     _update_integration_config "$host" "$git_dir" "$diff_dir" "$log_msg"
     _ssh_command_sudo "$host" root "/usr/sbin/service zuul reload"
