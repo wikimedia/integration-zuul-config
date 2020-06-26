@@ -54,7 +54,7 @@ git checkout --quiet -b %q FETCH_HEAD
 git submodule --quiet update --init --recursive
 
 %q
-' "${ZUUL_URL}/${ZUUL_PROJECT}" "${ZUUL_REF}" "${ZUUL_BRANCH}" "${QEMU_RUN_COMMAND}" > test_command.sh
+' "${ZUUL_URL}/${ZUUL_PROJECT}" "+${ZUUL_REF}:${ZUUL_REF}" "${ZUUL_BRANCH}" "${QEMU_RUN_COMMAND}" > test_command.sh
 scp $SCP_OPTS test_command.sh $VM_TARGET:/tmp/test_command.sh 2>log/scp_err
 
 # Run test command

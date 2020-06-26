@@ -84,8 +84,8 @@
             git clone https://gerrit.wikimedia.org/r/"$ZUUL_PROJECT" source
 
             # Fetch change from the zuul-merger and check it out
-            git -C ./source fetch "$ZUUL_URL"/"$ZUUL_PROJECT" "$ZUUL_REF"
-            git -C ./source checkout FETCH_HEAD
+            git -C ./source fetch "$ZUUL_URL"/"$ZUUL_PROJECT" "+$ZUUL_REF:$ZUUL_REF"
+            git -C ./source checkout -B "$ZUUL_BRANCH" FETCH_HEAD
 
         - shell: |
             # jenkins-debian-glue expects the job to be run with the Jenkins
