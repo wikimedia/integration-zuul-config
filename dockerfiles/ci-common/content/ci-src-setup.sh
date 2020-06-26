@@ -7,8 +7,8 @@ set -euxo pipefail
 cd /src
 
 git init
-git fetch --quiet --depth 2 "${ZUUL_URL}/${ZUUL_PROJECT}" "$ZUUL_REF"
-git checkout FETCH_HEAD
+git fetch --quiet --depth 2 "${ZUUL_URL}/${ZUUL_PROJECT}" "+$ZUUL_REF:$ZUUL_REF"
+git checkout -B "${ZUUL_BRANCH}" FETCH_HEAD
 
 set +x
 if [ -z "${GIT_NO_SUBMODULES:-}" ]; then
