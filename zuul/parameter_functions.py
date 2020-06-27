@@ -319,6 +319,7 @@ dependencies = {
     'EventLogging': ['EventStreamConfig'],
     'ExternalGuidance': ['MobileFrontend', 'UniversalLanguageSelector'],
     'FanBoxes': ['SocialProfile'],
+    'FlexiSkin': ['BlueSpiceFoundation', 'OOJSPlus', 'CodeEditor'],
     'FileAnnotations': ['EventLogging'],
     'FileExporter': ['BetaFeatures'],
     'FileImporter': ['CentralAuth', 'WikiEditor'],
