@@ -543,7 +543,7 @@ phan_dependencies = {
     'SpamBlacklist': ['CheckUser', 'EventLogging'],
     'StopForumSpam': ['AbuseFilter'],
     'TEI': ['Math'],
-    'Thanks': ['Echo', 'Flow', 'MobileFrontend'],
+    'Thanks': ['CheckUser', 'Echo', 'Flow', 'MobileFrontend'],
     'TheWikipediaLibrary': ['Echo', 'CentralAuth', 'GlobalPreferences'],
     'TimedMediaHandler': ['BetaFeatures'],
     'TitleBlacklist': ['AntiSpoof', 'Scribunto'],
