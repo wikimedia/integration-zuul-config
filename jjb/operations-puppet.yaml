@@ -111,7 +111,7 @@
             # An alternative would be to use a symlink, but that requires write
             # access to /etc which is inconvenient.
             options: >-
-                --volume modules/profile/files/logstash/filter_scripts:/etc/logstash/filter_scripts
+                --volume /"$(pwd)"/src/modules/profile/files/logstash/filter_scripts:/etc/logstash/filter_scripts
                 --workdir=/src/modules/profile/files/logstash
                 --entrypoint=make
     publishers:
