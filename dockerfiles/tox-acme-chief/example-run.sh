@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir -m 777 -p cache
+mkdir -m 777 -p log
+
 docker run \
     --rm --tty \
     --env JENKINS_URL=1 \
