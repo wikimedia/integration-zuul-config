@@ -713,10 +713,15 @@ tarballextensions = [
     # 'Renameuser',
     # 'ReplaceText',
 
+    # 'SecureLinkFixer',
+
     'SpamBlacklist',
 
     # Skipped, non-trivial (TODO)
     # 'TitleBlacklist',
+
+    'TemplateData',
+    'VisualEditor',
 
     'WikiEditor',
 ]
