@@ -807,6 +807,10 @@ jobs:
   - name: wikimedia-fundraising-crm-composer-php72-docker
     voting: false
 
+  # New letsencrypt/pebble version T257456
+  - name: acme-chief-new-pebble-tox-docker
+    voting: false
+
   - name: ^wmf-quibble-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
     # run them on REL branches.
@@ -2901,6 +2905,7 @@ projects:
       - name: debian-glue-non-voting
     test:
       - acme-chief-tox-docker
+      - acme-chief-new-pebble-tox-docker
     gate-and-submit:
       - acme-chief-tox-docker
     postmerge:
