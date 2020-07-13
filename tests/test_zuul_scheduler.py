@@ -1082,6 +1082,7 @@ class TestZuulScheduler(unittest.TestCase):
             if (
                 p_name.startswith('mediawiki/extensions/')
                 or p_name.startswith('mediawiki/skins/')
+                or p_name == 'mediawiki/services/parsoid'
                 or p_name == 'mediawiki/vendor'
                 or p_name == 'mediawiki/core'
                 or p_name == 'data-values/value-view'
@@ -1223,6 +1224,7 @@ class TestZuulScheduler(unittest.TestCase):
                  'mediawiki/core',
                  'mediawiki/vendor',
                  'mediawiki/extensions/',
+                 'mediawiki/services/parsoid',  # Parsoid is a special case
                  'mediawiki/skins/',
                  'VisualEditor/VisualEditor',  # T231394
                  ))

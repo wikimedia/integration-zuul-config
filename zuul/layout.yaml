@@ -7428,6 +7428,9 @@ projects:
       - mobileapps-deploy-npm-node-6-docker
 
   - name: mediawiki/services/parsoid
+    template:
+      - name: in-wikimedia-production
+      - name: extension-phan
     test:
       - parsoidsvc-parsertests-docker
       - parsoidsvc-composer-package-php72-docker
@@ -7438,8 +7441,6 @@ projects:
       - parsoidsvc-composer-package-php72-docker
       - parsoidsvc-composer-package-php73-docker
       - parsoidsvc-composer-package-php74-docker
-    experimental:
-      - mwext-php72-phan-docker
     postmerge:
       - parsoidsvc-doxygen-publish
       - phpunit-coverage-docker-publish
