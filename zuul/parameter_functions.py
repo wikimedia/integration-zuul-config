@@ -485,7 +485,7 @@ phan_dependencies = {
                     'MobileFrontend', 'Renameuser', 'TitleBlacklist',
                     'UserMerge', 'Echo'],
     'CentralNotice': ['CentralAuth', 'MobileFrontend', 'Translate', 'cldr'],
-    'CheckUser': ['CentralAuth', 'EventLogging', 'Renameuser'],
+    'CheckUser': ['CentralAuth', 'EventLogging', 'GuidedTour', 'Renameuser'],
     'CirrusSearch': ['BetaFeatures', 'Elastica', 'SiteMatrix'],
     'Citoid': ['Cite', 'VisualEditor'],
     'CleanChanges': ['cldr'],
