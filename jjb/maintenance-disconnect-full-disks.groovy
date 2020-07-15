@@ -5,6 +5,7 @@ import hudson.util.RemotingDiagnostics
 def executionTimeout = params.EXECUTION_TIMEOUT_SECONDS.toInteger()
 def cleanupPercentage = params.CLEANUP_PERCENTAGE.toInteger()
 def offlinePercentage = params.OFFLINE_PERCENTAGE.toInteger()
+def targetNode = params.TARGET_NODE
 
 def computerNamePrefix = 'integration-agent-'
 def masterName = 'contint2001'
@@ -129,6 +130,16 @@ def isFailure = { build ->
     return build.resultIsWorseOrEqualTo('FAILURE')
 }
 
+def shouldOperate = { computerName ->
+    // If we got a specific target node, 
+    if (targetNode) {
+      return computerName == targetNode
+    }
+
+    // Fire for nodes named like integration-agents or master:
+    return computerName.startsWith(computerNamePrefix) || (computerName == masterName)
+}
+
 @NonCPS
 def checkAgents = {
     alerts = []
@@ -137,14 +148,15 @@ def checkAgents = {
         def computerName = computer.getName()
         def isMaster = computerName == masterName
 
-        // Only check nodes that are named like integration-agents
-        if (!computerName.startsWith(computerNamePrefix) && !isMaster) {
+        if (! shouldOperate(computerName)) {
             continue
         }
 
         println "Checking ${computerName}..."
 
-        if (computer.isOffline()) {
+        if (targetNode) {
+            println "Target node specified, so skipping offline check"
+        } else if (computer.isOffline()) {
             if (computer.getOfflineCauseReason().startsWith(env.JOB_NAME)) {
                 println "${computerName} /srv or / FULL! Already offline."
 
@@ -162,33 +174,41 @@ def checkAgents = {
         )
 
         diskObjects.each{ diskObject ->
-            def ircMessage = String.format(
+            def message = String.format(
                 '%s %s (%s)',
                 jobInfo,
                 computerName,
                 diskObject.toString()
             )
 
-            def jenkinsMessage = String.format(
-                '%s (%s)',
-                jobInfo,
-                diskObject.toString()
-            )
+            println message
+            if (diskObject.percent >= cleanupPercentage && diskObject.mount == dockerMount(computerName)) {
+                println "Cleanup threshold for Docker mount has been reached"
+                removeDockerImages(computer)
+
+                // Re-check disk space for docker mount, after cleanup, and update IRC
+                // message:
+                diskObject = newDisksFromDf(checkDiskSpace(computer, [diskObject.mount]))[0]
+                message = String.format(
+                    '%s %s (%s)',
+                    jobInfo,
+                    computerName,
+                    diskObject.toString()
+                )
+                println "Post-Docker-cleanup: ${message}"
+            }
 
             if (diskObject.percent >= offlinePercentage) {
                 // Don't take the master node offline, we need it
                 if (!isMaster) {
-                    println "${jenkinsMessage} offline threshold has been reached"
+                    println "Offline threshold has been reached"
                     computer.setTemporarilyOffline(
                         true,
-                        new OfflineCause.ByCLI(jenkinsMessage)
+                        new OfflineCause.ByCLI(message)
                     )
 
-                    alerts.add(ircMessage)
+                    alerts.add(message)
                 }
-            } else if (diskObject.percent >= cleanupPercentage && diskObject.mount == dockerMount(computerName)) {
-                println "${jenkinsMessage} cleanup threshold for Docker mount has been reached"
-                removeDockerImages(computer)
             }
         }
     }
@@ -200,6 +220,8 @@ timestamps {
     timeout(time: executionTimeout, unit: 'SECONDS') {
         node('contint2001') {
             stage('Check agents') {
+                println "Cleanup percentage: ${cleanupPercentage}"
+                println "Offline percentage: ${offlinePercentage}"
                 ircAlerts = checkAgents()
             }
             stage('Send notifications') {
