@@ -293,7 +293,7 @@ dependencies = {
     'Capiunto': ['Scribunto'],
     'CentralNotice': ['EventLogging'],
     'Challenge': ['SocialProfile'],
-    'CheckUser': ['CentralAuth', 'Renameuser'],
+    'CheckUser': ['CentralAuth', 'GuidedTour', 'Renameuser'],
     'Cite': ['ParserFunctions', 'VisualEditor'],
     'Citoid': ['Cite', 'VisualEditor'],
     'CirrusSearch': ['TimedMediaHandler', 'PdfHandler', 'Cite', 'Elastica',
