@@ -131,7 +131,7 @@ def isFailure = { build ->
 }
 
 def shouldOperate = { computerName ->
-    // If we got a specific target node, 
+    // If we got a specific target node,
     if (targetNode) {
       return computerName == targetNode
     }
@@ -154,34 +154,20 @@ def checkAgents = {
 
         println "Checking ${computerName}..."
 
-        if (targetNode) {
-            println "Target node specified, so skipping offline check"
-        } else if (computer.isOffline()) {
-            if (computer.getOfflineCauseReason().startsWith(env.JOB_NAME)) {
-                println "${computerName} /srv or / FULL! Already offline."
-
-                // Don't alert every 5 minutes, it's spammy, try every 25 minutes
-                if (env.BUILD_NUMBER.toInteger() % 5 == 0) {
-                    alerts.add("${jobInfo} ${computerName}")
-                }
-            }
-            println "${computerName} Offline..."
-            continue
-        }
-
         def diskObjects = newDisksFromDf(
             checkDiskSpace(computer, disks(computerName))
         )
 
+        def complaints = []
         diskObjects.each{ diskObject ->
-            def message = String.format(
+            def debugMessage = String.format(
                 '%s %s (%s)',
                 jobInfo,
                 computerName,
                 diskObject.toString()
             )
 
-            println message
+            println debugMessage
             if (diskObject.percent >= cleanupPercentage && diskObject.mount == dockerMount(computerName)) {
                 println "Cleanup threshold for Docker mount has been reached"
                 removeDockerImages(computer)
@@ -189,26 +175,52 @@ def checkAgents = {
                 // Re-check disk space for docker mount, after cleanup, and update IRC
                 // message:
                 diskObject = newDisksFromDf(checkDiskSpace(computer, [diskObject.mount]))[0]
-                message = String.format(
+                debugMessage = String.format(
                     '%s %s (%s)',
                     jobInfo,
                     computerName,
                     diskObject.toString()
                 )
-                println "Post-Docker-cleanup: ${message}"
+                println "Post-Docker-cleanup: ${debugMessage}"
             }
 
             if (diskObject.percent >= offlinePercentage) {
-                // Don't take the master node offline, we need it
-                if (!isMaster) {
-                    println "Offline threshold has been reached"
-                    computer.setTemporarilyOffline(
-                        true,
-                        new OfflineCause.ByCLI(message)
-                    )
+                complaints.add(diskObject)
+            }
+        }
 
-                    alerts.add(message)
+        def message = String.format(
+            '%s %s (%s)',
+            jobInfo,
+            computerName,
+            diskObjects.collect { it.toString() }.join(', ')
+        )
+
+        // If we have any complaints, take action.
+        if (complaints.size() > 0) {
+            if (computer.isOffline()) {
+                println "${computerName} Already offline - taking no action"
+                // Don't alert every 5 minutes, it's spammy, try every 25 minutes
+                if (env.BUILD_NUMBER.toInteger() % 5 == 0) {
+                    alerts.add(message + ": still OFFLINE due to disk space")
                 }
+            } else if (!isMaster) {
+                message = message + ": OFFLINE due to disk space"
+                // Don't take the master node offline, we need it
+                println "Offline threshold has been reached"
+                computer.setTemporarilyOffline(
+                    true,
+                    new OfflineCause.ByCLI(message)
+                )
+                alerts.add(message)
+            }
+        } else {
+            // Disk space is ok, so we should be online
+            if (computer.getOfflineCauseReason().startsWith(env.JOB_NAME)) {
+                message = message + ": RECOVERY disk space OK"
+                println "Disk space within norms - bringing ${computerName} online"
+                computer.setTemporarilyOffline(false, null)
+                alerts.add(message)
             }
         }
     }
@@ -226,9 +238,9 @@ timestamps {
             }
             stage('Send notifications') {
                 // Alert for computers offline in IRC
-                ircAlerts.each { computer ->
-                    println "${computer}: OFFLINE due to disk space"
-                    sendIRCAlert("${computer}: OFFLINE due to disk space")
+                ircAlerts.each { message ->
+                    println message
+                    sendIRCAlert(message)
                 }
 
                 // Job failed, but no computer is offline *necessarily*
