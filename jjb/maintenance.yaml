@@ -23,3 +23,21 @@
             default: ''
     dsl: !include-raw:
       - maintenance-disconnect-full-disks.groovy
+- job:
+    defaults: pipeline-job
+    name: maintenance-sample-workspace-sizes
+    concurrent: false
+    triggers:
+      - timed: '* * * * *'
+    properties:
+        - build-discarder:
+            days-to-keep: 7
+    parameters:
+        - string:
+            name: 'EXECUTION_TIMEOUT_SECONDS'
+            default: '180'
+        - string:
+            name: 'TARGET_NODE'
+            default: ''
+    dsl: !include-raw:
+      - maintenance-sample-workspace-sizes.groovy
