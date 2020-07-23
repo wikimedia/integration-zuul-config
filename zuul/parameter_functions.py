@@ -645,6 +645,14 @@ def set_mw_dependencies(item, job, params):
     ):
         ext_deps.remove('EventStreamConfig')
 
+    # WikibaseCirrusSearch doesn't exist in MW == REL1_31.
+    # Therefore remove it from REL1_31. T258715
+    if (
+        params['ZUUL_BRANCH'] == 'REL1_31'
+        and 'WikibaseCirrusSearch' in ext_deps
+    ):
+        ext_deps.remove('WikibaseCirrusSearch')
+
     # Export with a literal \n character and have bash expand it later via
     # 'echo -e $XXX_DEPENDENCIES'.
     def glue_deps(prefix, deps):
