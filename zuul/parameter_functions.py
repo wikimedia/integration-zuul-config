@@ -653,6 +653,19 @@ def set_mw_dependencies(item, job, params):
     ):
         ext_deps.remove('WikibaseCirrusSearch')
 
+    # Score in REL1_31 doesn't need Wikibase and stuff. Considering they're
+    # in somewhat of a mess, it's much easier to just remove them
+    if (
+        params['THING_SUBNAME'] == 'extensions/Score'
+        and params['ZUUL_BRANCH'] == 'REL1_31'
+        and 'WikibaseCirrusSearch' in ext_deps
+    ):
+        ext_deps.remove('Wikibase')
+        ext_deps.remove('WikibaseQualityConstraints')
+        ext_deps.remove('WikibaseMediaInfo')
+        ext_deps.remove('WikimediaBadges')
+        ext_deps.remove('WikibaseLexeme')
+
     # Export with a literal \n character and have bash expand it later via
     # 'echo -e $XXX_DEPENDENCIES'.
     def glue_deps(prefix, deps):
