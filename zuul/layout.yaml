@@ -7396,9 +7396,12 @@ projects:
       - trigger-kartotherian-pipeline-tilerator
 
   - name: mediawiki/services/kask
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
+    test:
+      - trigger-kask-pipeline-test
+    gate-and-submit:
+      - trigger-kask-pipeline-rehearse
+    postmerge:
+      - trigger-kask-pipeline-publish
 
   - name: mediawiki/services/mathoid
     template:

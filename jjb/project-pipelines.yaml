@@ -50,6 +50,22 @@
       - '{name}-pipeline-{pipeline}'
 
 - project:
+    name: kask
+    pipeline:
+      - test
+      - rehearse
+      - publish
+    jobs:
+      # trigger-kask-pipeline-test
+      # trigger-kask-pipeline-rehearse
+      # trigger-kask-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # kask-pipeline-test
+      # kask-pipeline-rehearse
+      # kask-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
+
+- project:
     name: kartotherian
     pipeline:
       - kartotherian
