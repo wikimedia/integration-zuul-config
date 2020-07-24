@@ -659,6 +659,7 @@ def set_mw_dependencies(item, job, params):
         params['ZUUL_PROJECT'] == 'mediawiki/extensions/Score'
         and params['ZUUL_BRANCH'] == 'REL1_31'
     ):
+        ext_deps.remove('PropertySuggestor')
         ext_deps.remove('Wikibase')
         ext_deps.remove('WikibaseQualityConstraints')
         ext_deps.remove('WikibaseMediaInfo')
