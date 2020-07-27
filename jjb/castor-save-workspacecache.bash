@@ -1,5 +1,10 @@
 set -eu +x
 
+if [ "$ZUUL_PIPELINE" != 'gate-and-submit' -a "$ZUUL_PIPELINE" != 'postmerge' ]; then
+    echo "Only saving cache for gate-and-submit or postmerge pipelines"
+    exit 0
+fi
+
 ssh_config=($TRIGGERED_SSH_CONNECTION)
 REMOTE_INSTANCE="${ssh_config[2]}"
 
