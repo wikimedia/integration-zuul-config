@@ -102,11 +102,11 @@
 
 # Job triggered on the central repository instance
 #
-# Rsync from an instance using the Nodepool 'jenkins' credential.  The ssh key
+# Rsync from a Jenkins agent using the 'jenkins-deploy' credential.  The ssh key
 # is made available via an ssh-agent and injected by Jenkins credentials store.
 #
-- job: &job_castor_save
-    name: castor-save
+- job:
+    name: castor-save-workspace-cache
     node: integration-castor03
     properties:
      - build-discarder:
@@ -121,33 +121,6 @@
         - string:
             name: ZUUL_PIPELINE
             description: 'Name of Zuul pipeline. Must be gate-and-submit or postmerge to actually save cache.'
-    wrappers:
-      - timeout:
-          timeout: 1 # minutes
-          abort: false
-          fail: false
-      - timestamps
-      - credentials-binding:
-          - text:
-              credential-id: composer-github-oauthtoken
-              variable: COMPOSER_GITHUB_OAUTHTOKEN
-      - ssh-agent-credentials:
-          users:
-            - 'nodepool-dib-jenkins'
-
-    builders:
-        # This is horrible. Will need a better system that just prevent the job
-        # from being triggered by the upstream job.
-        - shell:
-            !include-raw: castor-save-filter.bash
-        - shell:
-            !include-raw:
-                - castor-define-namespace.bash
-                - castor-save-sync.bash
-
-- job:
-    !!merge : *job_castor_save
-    name: castor-save-workspace-cache
     wrappers:
       - timeout:
           timeout: 1 # minutes
