@@ -2544,7 +2544,11 @@ projects:
   - { name: operations/debs/git-fat,                          test: ['debian-glue-non-voting'] }
   - { name: operations/debs/golang-burrow,                    test: ['debian-glue-non-voting'] }
   - { name: operations/debs/golang-github-howeyc-fsnotify,    test: ['debian-glue-non-voting'] }
-  - { name: operations/debs/helm,                             test: ['debian-glue-non-voting'] }
+  - name: operations/debs/helm
+    test:
+      - debian-glue-backports
+    gate-and-submit:
+      - debian-glue-backports
   - name: operations/debs/helm-diff
     template:
       - name: debian-glue
