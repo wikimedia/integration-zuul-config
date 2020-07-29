@@ -8422,6 +8422,19 @@ projects:
     publish:
       - generic-node10-docs-docker-publish
 
+  - name: jquery-client
+    template:
+      - name: node10-rundoc-docker
+    test:
+      - generic-node10-browser-docker
+    gate-and-submit:
+      - generic-node10-browser-docker
+    postmerge:
+      - generic-node10-browser-coverage-docker-publish
+      - generic-node10-docs-docker-publish
+    publish:
+      - generic-node10-docs-docker-publish
+
   - name: VisualEditor/VisualEditor
     template:
       - name: mediawiki-i18n-check
