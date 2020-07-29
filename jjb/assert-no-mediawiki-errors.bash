@@ -1,4 +1,10 @@
 set -eu
+
+if [[ "$ZUUL_BRANCH" == "REL1_34" || "$ZUUL_BRANCH" == "REL1_31" ]]; then
+    echo "New rules are too cool for this branch. SKIPPED"
+    exit 0
+fi
+
 # These log files are enabled by mediawiki:includes/DevelopmentSettings.php,
 # as included by Quibble's local_settings.php file.
 #
