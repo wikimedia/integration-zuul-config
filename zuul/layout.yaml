@@ -887,6 +887,9 @@ jobs:
   - name: spicerack-tox-publish
     branch: ^master$
 
+  - name: pywmflib-tox-publish
+    branch: ^master$
+
   - name: homer-tox-publish
     branch: ^master$
 
@@ -3049,6 +3052,16 @@ projects:
       - spicerack-tox-publish
     publish:
       - spicerack-tox-tag-publish
+
+  - name: operations/software/pywmflib
+    template:
+      - name: tox-docker
+    test:
+      - debian-glue-backports-non-voting
+    postmerge:
+      - pywmflib-tox-publish
+    publish:
+      - pywmflib-tox-tag-publish
 
   - name: operations/software/thumbor-plugins
     template:
