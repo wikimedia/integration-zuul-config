@@ -2,7 +2,8 @@ FROM {{ "ci-stretch" | image_tag }}
 
 USER root
 
-RUN {{ "helm rake kubeyaml" | apt_install }}
+RUN {{ "helm rake kubeyaml envoyproxy" | apt_install }} && \
+    mkdir -p /etc/envoy/ssl && chmod -R 777 /etc/envoy
 
 USER nobody
 
