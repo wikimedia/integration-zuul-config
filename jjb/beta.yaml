@@ -55,7 +55,7 @@
 
           git clone https://gerrit.wikimedia.org/r/"$ZUUL_PROJECT" source
           git -C ./source fetch "$ZUUL_URL"/"$ZUUL_PROJECT" "+$ZUUL_REF:$ZUUL_REF"
-          git -C ./source checkout -B "$ZUUL_BRANCH" FETCH_HEAD
+          git -C ./source -c advice.detachedHead=false checkout FETCH_HEAD
 
           cd source
           NAME="$(dpkg-parsechangelog --show-field source)"
