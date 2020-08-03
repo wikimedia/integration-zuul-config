@@ -9,9 +9,7 @@ USER root
 # grunt-contrib-qunit 2.0) and Chrome dependencies for grunt-contrib-qunit 3.0
 # which relies on Puppeteer.
 # See: gui build broken by grunt-contrib-qunit 3.0: T209776
-RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20181208T014322Z/ stretch/updates main " \
-    > /etc/apt/sources.list.d/snapshot-chromium.list
-RUN {{ "chromium='71*' phantomjs" | apt_install }}
+RUN {{ "chromium phantomjs" | apt_install }}
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1,
 # When set, used by "gui" qunit tests to configure Puppeteer. Should be removed
