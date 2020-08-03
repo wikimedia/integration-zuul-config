@@ -6,9 +6,6 @@ RUN {{ "libav-tools build-essential rubygems-integration ruby ruby-dev bundler" 
 
 COPY mwselenium.sh /usr/local/bin/mwselenium
 
-# Prevent Chromium caches to be in XDG_CACHE_HOME - T220948
-ENV XDG_CONFIG_HOME=/tmp/xdg-config-home
-
 # Unprivileged
 USER nobody
 WORKDIR /workspace
