@@ -2553,8 +2553,10 @@ projects:
     gate-and-submit:
       - debian-glue-backports
   - name: operations/debs/helm-diff
-    template:
-      - name: debian-glue
+    test:
+      - debian-glue-backports
+    gate-and-submit:
+      - debian-glue-backports
   - { name: operations/debs/helm-secrets,                     test: ['debian-glue-non-voting'] }
   - name: operations/debs/helm3
     test:
@@ -2562,8 +2564,10 @@ projects:
     gate-and-submit:
       - debian-glue-backports
   - name: operations/debs/helmfile
-    template:
-      - name: debian-glue
+    test:
+      - debian-glue-backports
+    gate-and-submit:
+      - debian-glue-backports
   - { name: operations/debs/ircd-ratbox,                      test: ['debian-glue-non-voting'] }
   - { name: operations/debs/ircecho,                          test: ['debian-glue-non-voting'] }
   - name: operations/debs/jenkins-debian-glue
