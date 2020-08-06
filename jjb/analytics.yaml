@@ -210,5 +210,14 @@
 # for working with event streams in WMF production.
 - project:
     name: 'wikimedia-event-utilities'
+    git-user: maven-release-user
+    git-user-email: maven-release-user@wikimedia.org
+    git-user-id: maven-release-user
+    release-project: wikimedia-event-utilities
+    release-branch: master
+    recipient-emails: analytics-alerts@wikimedia.org
+    replyto-emails: analytics-alerts@wikimedia.org
+
     jobs:
+     - '{name}-maven-release-docker'
      - '{name}-maven-java8-docker'
