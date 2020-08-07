@@ -11,4 +11,4 @@ COPY --from=ast /usr/lib/php/20190902/ast.so /usr/lib/php/20190902/ast.so
 
 USER nobody
 COPY --from=composer-package /run.sh /run.sh
-ENTRYPOINT /bin/bash /run.sh
+ENTRYPOINT ["/run.sh"]

@@ -13,4 +13,4 @@ COPY --from=composer-package /etc/php/7.0/cli/conf.d/20-ast.ini /etc/php/7.2/cli
 
 USER nobody
 COPY --from=composer-package /run.sh /run.sh
-ENTRYPOINT /bin/bash /run.sh
+ENTRYPOINT ["/run.sh"]

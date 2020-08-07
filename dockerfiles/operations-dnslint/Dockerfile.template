@@ -15,6 +15,6 @@ USER nobody
 RUN git clone --depth 1 https://gerrit.wikimedia.org/r/operations/dns "${DNSDIR}"
 
 WORKDIR /srv/workspace
-ENTRYPOINT /run.sh
+ENTRYPOINT ["/run.sh"]
 
 COPY run.sh /run.sh

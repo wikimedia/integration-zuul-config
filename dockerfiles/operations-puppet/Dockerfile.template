@@ -28,7 +28,7 @@ RUN git clone https://gerrit.wikimedia.org/r/operations/puppet "${PUPPET_DIR}" \
 
 WORKDIR /srv/workspace
 
-ENTRYPOINT /bin/bash /run.sh
+ENTRYPOINT ["/run.sh"]
 
 COPY bundle-config "${PUPPET_DIR}/.bundle/bundle-config"
 COPY run.sh /run.sh
