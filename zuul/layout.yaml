@@ -804,10 +804,6 @@ jobs:
     branch: master
     voting: false
 
-  # Pending migration T223348
-  - name: wikimedia-fundraising-crm-composer-php72-docker
-    voting: false
-
   # New letsencrypt/pebble version T257456
   - name: acme-chief-new-pebble-tox-docker
     voting: false
@@ -8748,12 +8744,10 @@ projects:
 
   - name: wikimedia/fundraising/crm
     test:
-      - wikimedia-fundraising-crm-composer-php72-docker
+      - wikimedia-fundraising-crm-composer-php73-docker
       - wikimedia-fundraising-civicrm-docker
     gate-and-submit:
       - wikimedia-fundraising-civicrm-docker
-    experimental:
-      - wikimedia-fundraising-crm-composer-php70-docker
 
   - name: wikimedia/fundraising/crm/civicrm
     test:
