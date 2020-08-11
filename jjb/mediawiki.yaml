@@ -618,14 +618,6 @@
              - archive-log-allow-empty
              - castor-save-workspace-cache
              - postbuildscript:
-                 mark-unstable-if-failed: true
-                 builders:
-                   - build-steps:
-                       -  cover-extensions-publish:
-                               src: 'cover'
-                               # Should be equivalent to $EXT_NAME
-                               dest: '$DOC_BASENAME'
-             - postbuildscript:
                  mark-unstable-if-failed: false
                  builders:
                    - build-on:
