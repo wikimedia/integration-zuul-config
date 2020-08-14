@@ -1,0 +1,30 @@
+# Based off of <https://github.com/rust-lang/docker-rust/blob/d237d8c30f57d55f70bbc019da2f24d371050947/1.45.2/buster/Dockerfile>
+FROM {{ "ci-buster" | image_tag }}
+
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH=/usr/local/cargo/bin:$PATH \
+    RUST_VERSION=1.45.2 \
+    RUSTUP_VERSION=1.22.1 \
+    RUSTUP_SHA256=49c96f3f74be82f4752b8bffcf81961dea5e6e94ce1ccba94435f12e871c3bdb
+
+USER root
+
+RUN {{ "libssl-dev build-essential wget" | apt_install }} && \
+    # Download rustup-init for bootstrapping purposes
+    wget "https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/x86_64-unknown-linux-gnu/rustup-init" && \
+    echo "${RUSTUP_SHA256} *rustup-init" | sha256sum -c -; \
+    chmod +x rustup-init  && \
+    # Use minimal profile, we'll add other components later
+    ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION && \
+    rm rustup-init && \
+    chmod -R a+w $RUSTUP_HOME $CARGO_HOME && \
+    rustup component add rustfmt && \
+    rustup component add clippy && \
+    apt-get purge -y wget
+
+COPY run.sh /run.sh
+
+USER nobody
+
+ENTRYPOINT ["/run.sh"]
