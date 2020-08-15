@@ -1833,6 +1833,12 @@ project-templates:
     gate-and-submit:
       - fail-archived-repositories
 
+  - name: rust-test
+    test:
+      - rust-test
+    gate-and-submit:
+      - rust-test
+
 # Register the Gerrit project name, apply them pipelines that in turn trigger
 # a set of jobs.
 projects:
@@ -8166,9 +8172,7 @@ projects:
 
   - name: labs/tools/shorturls
     template:
-      - name: tox-docker
-    experimental:
-      - rust-test
+      - name: rust-test
 
   - name: labs/tools/stashbot
     template:
