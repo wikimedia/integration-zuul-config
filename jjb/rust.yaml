@@ -1,0 +1,16 @@
+- job:
+    name: 'rust-test'
+    node: Docker
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: docker-registry.discovery.wmnet/releng/rust:1.45.2-1
+    publishers:
+     - castor-save-workspace-cache
+     - docker-cleanup
