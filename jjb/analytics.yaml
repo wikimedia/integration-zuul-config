@@ -62,7 +62,7 @@
               -e GIT_AUTHOR_NAME="{git-user}"
               -e GIT_COMMITTER_NAME="{git-user}"
               -e EMAIL="{git-user-email}"
-          image: docker-registry.wikimedia.org/releng/java8:0.6.3
+          image: docker-registry.wikimedia.org/releng/java8:0.6.4-s1
           args: >-
               -Dresume=false
               -Djdk.net.URLClassPath.disableClassPathURLCheck=true
@@ -200,7 +200,7 @@
                 --volume "$(pwd)"/src:/src
                 --workdir /src/pageviews_reports
                 --entrypoint=/usr/bin/prove
-            image: 'docker-registry.wikimedia.org/releng/perl:5.24.1'
+            image: 'docker-registry.wikimedia.org/releng/perl:5.24.1-s2'
             args: '-v -Ilib/ t/'
     publishers:
         - docker-cleanup

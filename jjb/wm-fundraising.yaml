@@ -4,7 +4,7 @@
       - '{name}-composer-{phpflavor}-docker':
           phpflavor:
               - php73:
-                  image: docker-registry.wikimedia.org/releng/composer-test-php73:0.1.0
+                  image: docker-registry.wikimedia.org/releng/composer-test-php73:0.1.0-s1
 
 - job:
     name: wikimedia-fundraising-civicrm-docker
@@ -21,7 +21,7 @@
                 wikimedia/fundraising/crm/civicrm
                 wikimedia/fundraising/crm/drupal
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/civicrm:0.2.0
+            image: docker-registry.wikimedia.org/releng/civicrm:0.2.0-s1
             # $WORKSPACE is leaked from the host environment
             options: "--env WORKSPACE=''"
     publishers:
@@ -133,4 +133,4 @@
     name: fundraising-tools
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.4.2
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.4.2-s1

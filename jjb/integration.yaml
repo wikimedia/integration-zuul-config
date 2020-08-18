@@ -30,7 +30,7 @@
             projects: >
                 integration/config
         - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/tox:0.4.4'
+            image: 'docker-registry.wikimedia.org/releng/tox:0.4.4-s1'
             options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/{entrypoint}'
     publishers:
         - castor-save-workspace-cache
@@ -55,7 +55,7 @@
      - docker-src-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/php72:0.2.7'
+         image: 'docker-registry.wikimedia.org/releng/php72:0.2.7-s1'
          args: '/src/vendor/bin/composer --version'
     publishers:
      - docker-cleanup
@@ -85,7 +85,7 @@
      - docker-cache-dir
      - docker-log-dir
      - docker-run-with-log-and-workspace-cache:
-         image: 'docker-registry.wikimedia.org/releng/tox:0.4.4'
+         image: 'docker-registry.wikimedia.org/releng/tox:0.4.4-s1'
          args: '-e qa -- --xunit-file=/log/junit-qa.xml'
     publishers:
      - archive-log-dir
@@ -115,7 +115,7 @@
     name: 'integration-pipelinelib'
     jobs:
      - '{name}-docker-doc-publish':
-         image: 'docker-registry.wikimedia.org/releng/gradle:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/gradle:0.3.0-s2'
          args: 'groovydoc'
          docsrc: 'src/build/docs/groovydoc'
          docdest: 'pipelinelib'

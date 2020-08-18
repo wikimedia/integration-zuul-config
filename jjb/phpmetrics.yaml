@@ -81,7 +81,7 @@
                 dir: 'phpmetrics-report'
           - docker-run:
                 options: '-v "$(pwd)"/phpmetrics-report:/phpmetrics-report -v "$(pwd)"/log:/log -v "$(pwd)"/src:/src'
-                image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.3-s9
+                image: docker-registry.wikimedia.org/releng/phpmetrics:2.4.3-s10
                 args: '--report-html=/phpmetrics-report --report-violations=/log/violations-phpmetrics.xml .'
           - doc-publish:
                 docsrc: phpmetrics-report

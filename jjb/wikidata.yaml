@@ -13,7 +13,7 @@
     name: wikidata-query-gui
     jobs:
       - '{name}-npm-browser-node-6-docker':
-          docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.5.1
+          docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.5.1-s1
 
 - project:
     name: wikidata-query-blazegraph
@@ -89,7 +89,7 @@
               -e GIT_AUTHOR_NAME="{git-user}"
               -e GIT_COMMITTER_NAME="{git-user}"
               -e EMAIL="{git-user-email}"
-          image: docker-registry.wikimedia.org/releng/java8:0.6.3
+          image: docker-registry.wikimedia.org/releng/java8:0.6.4-s1
           args: >-
               -Dresume=false
               -Duser.name='{git-user}'
@@ -123,6 +123,6 @@
     jobs:
      - '{name}-maven-release-docker-wdqs'
      - '{name}-maven-java8-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.4.1
+         docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.4.1-s1
      - '{name}-maven-java8-docker-site-publish':
-         docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.4.1
+         docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.4.1-s1
