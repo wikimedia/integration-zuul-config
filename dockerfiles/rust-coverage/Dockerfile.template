@@ -9,6 +9,8 @@ COPY cobertura-clover-transform.xslt /usr/bin/cobertura-clover-transform.xslt
 
 USER nobody
 
-RUN cargo install cargo-tarpaulin
+# Force 0.13.x because of time (see https://github.com/xd009642/tarpaulin/issues/497)
+# Can use latest version once time 0.3 is available
+RUN cargo install cargo-tarpaulin --version 0.13.3
 
 ENTRYPOINT ["/run.sh"]
