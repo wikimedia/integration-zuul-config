@@ -25,10 +25,10 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/rust:1.45.2-5
+         image: docker-registry.wikimedia.org/releng/rust:1.45.2-6
          options: '--entrypoint=/run-doc.sh'
      - doc-publish:
-        docsrc: 'target/doc'
+        docsrc: 'src/target/doc'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
     publishers:
      - castor-save-workspace-cache
