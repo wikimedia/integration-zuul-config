@@ -153,3 +153,9 @@
             docenv: 'sphinx'
             docsrc: 'transferpy/doc/.build/'
             docdest: 'transferpy/$DOC_SUBPATH'
+
+- project:
+    name: 'wmfmariadbpy'
+    jobs:
+        - '{name}-tox-docker':
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.4.2-s1
