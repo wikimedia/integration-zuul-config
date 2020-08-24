@@ -4417,6 +4417,19 @@ projects:
       - name: extension-quibble
       - name: extension-phan
 
+  - name: mediawiki/extensions/WikibaseManifest
+    template:
+      - name: in-wikimedia-production
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-codehealth
+      - name: extension-coverage
+    test:
+      - mediawiki-quibble-apitests-vendor-docker
+    gate-and-submit: &mediawiki-extensions-wikibase-manifest-gate-and-submit
+      - mediawiki-quibble-apitests-vendor-docker
+    gate-and-submit-wmf: *mediawiki-extensions-wikibase-manifest-gate-and-submit
+
   - name: mediawiki/extensions/WikibaseMediaInfo
     template:
       - name: in-wikimedia-production
