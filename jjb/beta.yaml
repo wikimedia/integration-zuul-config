@@ -272,7 +272,8 @@
           # execution by 240 ms. T204762
           ulimit -n 512
 
-          /usr/bin/scap sync "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
+          # Scap 3.15.0 renames "scap sync" to "scap sync-world".
+          /usr/bin/scap sync-world "$JOB_NAME (build $BUILD_DISPLAY_NAME)"
 
     properties:
      - build-discarder:
