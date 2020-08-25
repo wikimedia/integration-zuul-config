@@ -9,8 +9,11 @@ COPY cobertura-clover-transform.xslt /usr/bin/cobertura-clover-transform.xslt
 
 USER nobody
 
-# Force 0.13.x because of time (see https://github.com/xd009642/tarpaulin/issues/497)
-# Can use latest version once time 0.3 is available
-RUN cargo install cargo-tarpaulin --version 0.13.3
+# We're stuck on 0.13.x because of time (see https://github.com/xd009642/tarpaulin/issues/497),
+# we can use latest version once time 0.3 is available.
+# But we want to use the 0.13.5_BACKPORT branch, which bundles all necessary resources
+# for the HTML reports locally (https://github.com/xd009642/tarpaulin/issues/534), so
+# install that version via git.
+RUN cargo install cargo-tarpaulin --git https://github.com/xd009642/tarpaulin --rev 34128a2
 
 ENTRYPOINT ["/run.sh"]
