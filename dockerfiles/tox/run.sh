@@ -14,12 +14,7 @@ capture_tox_logs() {
     cp --recursive /src/.tox/log "${LOG_DIR}" || /bin/true
 }
 
-cd /src
-
-git init
-git fetch --depth 2 --quiet "${ZUUL_URL}/${ZUUL_PROJECT}" "$ZUUL_REF"
-git checkout --quiet FETCH_HEAD
-git submodule --quiet update --init --recursive
+/utils/ci-src-setup.sh
 
 trap capture_tox_logs EXIT
 
