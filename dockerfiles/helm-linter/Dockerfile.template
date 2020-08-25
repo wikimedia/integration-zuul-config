@@ -7,7 +7,8 @@ USER root
 RUN {{ "helm rake kubeyaml envoyproxy helmfile helm-diff" | apt_install }} && \
     mkdir -p /etc/envoy/ssl && chmod -R 777 /etc/envoy && mkdir -p $HELM_HOME && \
     helm init --client-only && \
-    helm repo add wmf-stable https://helm-charts.wikimedia.org/stable/ && \
+    helm repo add wmf-stable https://helm-charts.wikimedia.org/stable && \
+    helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com && \
     chown -R nobody $HELM_HOME
 
 USER nobody
