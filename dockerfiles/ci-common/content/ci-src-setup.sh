@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+# See also coverage tests in dockerfiles/tests/test_ci_common.py
+#
 
 umask 002
 

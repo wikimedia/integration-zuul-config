@@ -10,7 +10,7 @@ DOCKERFILES_DIR = os.path.relpath(os.path.join(
 IMAGES_DIR = sorted([
     os.path.join(DOCKERFILES_DIR, d)
     for d in os.listdir(DOCKERFILES_DIR)
-    if d not in ['__pycache__', '.tox']
+    if d not in ['__pycache__', '.tox', 'tests']
     and os.path.isdir(os.path.join(DOCKERFILES_DIR, d))
 ])
 
