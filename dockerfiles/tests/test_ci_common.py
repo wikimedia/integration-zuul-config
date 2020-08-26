@@ -99,6 +99,20 @@ class Test(unittest.TestCase):
             'refs/heads/master\n',
             ['rev-parse', '--symbolic-full-name', 'HEAD'])
 
+    def test_checkouts_a_ref_update(self):
+        # A ref updated event does not have any branch associated with it,
+        # typically when a tag is created. Hence no ZUUL_BRANCH is passed.
+        self.run_script({
+            'ZUUL_REF': 'refs/tags/v1.0',
+            'GIT_NO_SUBMODULES': '1',
+        })
+        self.assertGitOutput(
+            'HEAD\n',
+            ['rev-parse', '--symbolic-full-name', 'HEAD'])
+        self.assertGitOutput(
+            'v1.0\n',
+            ['describe', '--tags', '--exact-match', 'HEAD'])
+
     def test_can_skip_submodule_processing(self):
         self.run_script({
             'ZUUL_REF': 'master',
