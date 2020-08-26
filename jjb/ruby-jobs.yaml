@@ -1,7 +1,7 @@
 - job-template: &job_rake-docker
     name: 'rake-docker'
     node: Docker
-    docker_image_var: 'docker-registry.wikimedia.org/releng/rake:0.2.1-s2'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/rake:0.2.2'
     triggers:
         - zuul
     builders:
@@ -46,7 +46,7 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/rake:0.2.1-s2'
+         image: 'docker-registry.wikimedia.org/releng/rake:0.2.2'
          args: 'yard'
      - doc-publish:
          docsrc: 'src/doc'
