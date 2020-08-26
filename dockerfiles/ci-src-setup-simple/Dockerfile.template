@@ -1,8 +1,4 @@
-FROM {{ "ci-common" | image_tag }} AS ci-common
-
 FROM {{ "ci-buster" | image_tag }}
 
-COPY --from=ci-common /utils/ci-src-setup.sh /
-
 USER nobody
-ENTRYPOINT ["/ci-src-setup.sh"]
+ENTRYPOINT ["/utils/ci-src-setup.sh"]
