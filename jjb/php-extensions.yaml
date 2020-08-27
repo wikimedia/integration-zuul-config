@@ -8,7 +8,7 @@
      - docker-ci-src-setup-simple
      - docker-run:
         options: '--volume "$(pwd)"/src:/src'
-        image: 'docker-registry.wikimedia.org/releng/{image}'
+        image: '{image}'
     publishers:
       - archive:
           artifacts: 'src/tests/*.log'
@@ -19,31 +19,31 @@
     name: php70
     jobs:
       - 'php-compile-{name}-docker':
-          image: php70-compile:0.1.4-s2
+          image: docker-registry.wikimedia.org/releng/php70-compile:0.1.4-s2
 
 - project:
     name: php71
     jobs:
       - 'php-compile-{name}-docker':
-          image: php71-compile:0.1.3-s6
+          image: docker-registry.wikimedia.org/releng/php71-compile:0.1.3-s6
 
 - project:
     name: php72
     jobs:
       - 'php-compile-{name}-docker':
-          image: php72-compile:0.2.1-s9
+          image: docker-registry.wikimedia.org/releng/php72-compile:0.2.1-s9
 
 - project:
     name: php73
     jobs:
       - 'php-compile-{name}-docker':
-          image: php73-compile:0.2.3-s6
+          image: docker-registry.wikimedia.org/releng/php73-compile:0.2.3-s6
 
 - project:
     name: php74
     jobs:
       - 'php-compile-{name}-docker':
-          image: php74-compile:0.0.4-s3
+          image: docker-registry.wikimedia.org/releng/php74-compile:0.0.4-s3
 
 - job:
     name: 'php74-compile-coverage-publish'
