@@ -288,14 +288,6 @@
 # And the counterpart that only does Selenium T232759
 - job-template:
     !!merge : *job_quibble
-    name: quibble-{packages-source}-selenium-docker
-    quibble_args: '--run selenium'
-    triggers:
-        - zuul
-
-# And the counterpart that only does Selenium T232759
-- job-template:
-    !!merge : *job_quibble
     name: quibble-{packages-source}-{database}-{php}-selenium-docker
     quibble_args: '--run selenium'
     triggers:
@@ -822,9 +814,6 @@
     jobs:
         - quibble-{packages-source}-{database}-{php}-docker
         - quibble-{packages-source}-{database}-{php}-noselenium-docker
-        - quibble-{packages-source}-selenium-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.44-s4
-            database: 'mysql'
         - quibble-{packages-source}-{database}-{php}-selenium-docker
         - quibble-{packages-source}-{database}-{php}-phpunit-standalone-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
