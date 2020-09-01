@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+
+from glob import glob
+import os.path
+import subprocess
+import sys
+
+from debian.changelog import Changelog
+
+# pcre regex passed to `git grep -P' to find images in the jjb directory
+IMAGE_GREP_PATTERN = (
+    'docker-registry\\.wikimedia\\.org'
+    '\\/releng\\/'
+    '[\\w-]+?:[\\w\\.-]+\\b')
+
+DOCKERFILES_DIR = os.path.join(
+    os.path.dirname(__file__),
+    '../dockerfiles')
+
+JJB_DIR = os.path.join(
+    os.path.dirname(__file__),
+    '../jjb')
+
+latest_images = set()
+latest_version = {}
+
+for changelog_file in glob(os.path.join(DOCKERFILES_DIR, '*', 'changelog')):
+    with open(changelog_file, 'r') as f:
+        chglog = Changelog(f, max_blocks=1, strict=True)
+
+        package = chglog.get_package()
+        version = chglog.get_version()
+        image_name = 'docker-registry.wikimedia.org/releng/%s' % package
+        latest_images.add('%s:%s' % (image_name, version))
+        latest_version[image_name] = version
+
+try:
+    grep_cmd = ['git', 'grep', '-n', '-o', '-P', IMAGE_GREP_PATTERN, JJB_DIR]
+    print("Running: '%s'" % "' '".join(grep_cmd))
+    jjb_defs = subprocess.check_output(
+        grep_cmd, stderr=subprocess.STDOUT)
+
+except subprocess.CalledProcessError as e:
+    print('git grep failed: %s' % e.returncode)
+    print(e.output.decode())
+    sys.exit(e.returncode)
+
+errors = []
+for jjb_def in jjb_defs.decode().split('\n'):
+    if jjb_def == '':
+        continue
+    try:
+        (yaml_file, line, image_name, image_version) = jjb_def.split(':')
+    except ValueError:
+        print('Failed to parse: %s' % jjb_def)
+
+    found_image = '%s:%s' % (image_name, image_version)
+
+    if image_name not in latest_version:
+        errors.append("%s:%s ERROR: %s not found!" % (
+            yaml_file, line, image_name))
+    elif found_image not in latest_images:
+        print('%s:%s:%s > %s' % (
+            yaml_file, line, found_image, latest_version[image_name]))
+
+if errors:
+    print('\n'.join(errors), file=sys.stderr)
+    sys.exit(1)
