@@ -34,14 +34,16 @@
 
 
 - project:
-    name: donationinterface-fundraising-branches-php70
+    name: donationinterface-fundraising-branches
     branch:
-     - REL1_31
+     - REL1_31:
+         phpflavor: php70
+         docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.44-s4
     jobs:
-     - quibble-donationinterface-{branch}-php70-docker
+     - quibble-donationinterface-{branch}-{phpflavor}-docker
 
 - job-template:
-    name: quibble-donationinterface-{branch}-php70-docker
+    name: quibble-donationinterface-{branch}-{phpflavor}-docker
     node: Docker
     triggers:
         - zuul
@@ -49,7 +51,7 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.44-s4
+            image: '{docker_image}'
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
             args: >
@@ -80,20 +82,23 @@
               credential-id: composer-github-oauthtoken
               variable: COMPOSER_GITHUB_OAUTHTOKEN
 
-# Special job for Fundraising-specific extensions where master must maintain PHP70/REL1_31 compatibility.
+# Special job for Fundraising-specific extensions where master must maintain
+# compatibility with a release branch and a specific php version.
 - project:
-    name: fundraising-branches-php70
+    name: fundraising-branches
     ext:
      - FundraisingEmailUnsubscribe
      - ParserFunctions
      - cldr
     branch:
-     - REL1_31
+     - REL1_31:
+         phpflavor: php70
+         docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.44-s4
     jobs:
-     - quibble-fundraising-{ext}-{branch}-php70-docker
+     - quibble-fundraising-{ext}-{branch}-{phpflavor}-docker
 
 - job-template:
-    name: quibble-fundraising-{ext}-{branch}-php70-docker
+    name: quibble-fundraising-{ext}-{branch}-{phpflavor}-docker
     node: Docker
     triggers:
         - zuul
@@ -101,7 +106,7 @@
         - docker-castor-load
         - docker-log-dir
         - docker-run-with-log-and-workspace-cache:
-            image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.44-s4
+            image: '{docker_image}'
             options: '--volume /srv/git:/srv/git:ro --tmpfs /workspace/db:size=320M'
             # With composer to get dependencies from DonationInterface. However we also clone mediawiki/vendor
             args: >
