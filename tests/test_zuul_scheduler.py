@@ -31,8 +31,12 @@ MEDIAWIKI_VERSIONS = {
         'branch': 'wmf/1.34.0-wmf.20',
         'pipeline-suffix': 'wmf',
     },
-    'Fundraising': {
+    'Fundraising 1.31': {
         'branch': 'fundraising/REL1_31',
+        'pipeline-suffix': 'fundraising',
+    },
+    'Fundraising 1.35': {
+        'branch': 'fundraising/REL1_35',
         'pipeline-suffix': 'fundraising',
     },
     'Release 1.31': {

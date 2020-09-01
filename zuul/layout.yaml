@@ -904,6 +904,11 @@ jobs:
       - project: ^mediawiki/extensions/DonationInterface$
         branch: ^deployment$
 
+  - name: ^quibble-donationinterface-REL1_35-php73-docker$
+    skip-if:
+      - project: ^mediawiki/extensions/DonationInterface$
+        branch: ^deployment$
+
 
   # Jobs testing multiple extensions together
 
@@ -2233,6 +2238,7 @@ projects:
       - mediawiki-core-doxygen-docker-publish
     experimental:
       - mwgate-composer-php72-docker
+      - quibble-donationinterface-REL1_35-php73-docker
 
   - name: mediawiki/vendor
     template:
@@ -3320,6 +3326,7 @@ projects:
       - name: extension-gate
     experimental:
       - quibble-fundraising-cldr-REL1_31-php70-docker
+      - quibble-fundraising-cldr-REL1_35-php73-docker
 
   - name: mediawiki/extensions/CodeEditor
     template:
@@ -3447,6 +3454,7 @@ projects:
       - quibble-donationinterface-REL1_31-php70-docker
     experimental:
       - mwext-php72-phan-docker
+      - quibble-donationinterface-REL1_35-php73-docker
 
   - name: mediawiki/extensions/DoubleWiki
     template:
@@ -3589,6 +3597,7 @@ projects:
       - quibble-fundraising-FundraisingEmailUnsubscribe-REL1_31-php70-docker
     experimental:
       - mwext-php72-phan-docker
+      - quibble-fundraising-FundraisingEmailUnsubscribe-REL1_35-php73-docker
 
   - name: mediawiki/extensions/FundraisingTranslateWorkflow
     template:
@@ -3989,6 +3998,7 @@ projects:
       - name: extension-gate
     experimental:
       - quibble-fundraising-ParserFunctions-REL1_31-php70-docker
+      - quibble-fundraising-ParserFunctions-REL1_35-php73-docker
 
   # Not currently in production, but will be brought back for the Parsoid migration
   - name: mediawiki/extensions/ParserMigration
