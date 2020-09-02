@@ -29,7 +29,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s1'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s2'
         args: 'doc'
      - doc-publish:
            docsrc: 'src/docs/js'
@@ -53,7 +53,7 @@
         - shell: |
             echo -e '<?php\n$wgServer = "http://127.0.0.1";\n' > src/LocalSettings.php
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/doxygen:0.8.1
+            image: docker-registry.wikimedia.org/releng/doxygen:0.8.1-s1
             options: '--workdir /src --entrypoint=/usr/bin/php'
             args: |
                 maintenance/mwdocgen.php \
@@ -104,7 +104,7 @@
         - shell: |
             echo -e '<?php\n$wgServer = "http://127.0.0.1";\n' > src/LocalSettings.php
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/doxygen:0.8.1
+            image: docker-registry.wikimedia.org/releng/doxygen:0.8.1-s1
             options: '--workdir /src --entrypoint=/usr/bin/php'
             args: |
                 maintenance/mwdocgen.php \
@@ -147,16 +147,16 @@
         - '{name}-composer-{phpflavor}-docker':
             phpflavor:
                 - php70:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php70:0.2.0-s3
+                    image: docker-registry.wikimedia.org/releng/composer-test-php70:0.2.0-s4
                 - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php72:0.3.1-s1
+                    image: docker-registry.wikimedia.org/releng/composer-test-php72:0.3.1-s2
                 - php73:
-                    image: docker-registry.wikimedia.org/releng/composer-test-php73:0.1.0-s1
+                    image: docker-registry.wikimedia.org/releng/composer-test-php73:0.1.0-s2
         - '{name}-rake-docker'
         - '{name}-tox-docker'
         - '{name}-node10-docker'
         - '{name}-npm-browser-node-6-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.5.1-s1
+            docker_image_var: docker-registry.wikimedia.org/releng/npm-browser-test:0.5.1-s2
 
 # Phan! (T132636)
 - job:
@@ -177,12 +177,12 @@
            mediawiki/core
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s3'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s4'
         options: '--volume "$(pwd)"/src:/mediawiki'
         args: '--working-dir=/mediawiki update --ansi --no-progress --prefer-dist --profile'
      - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki --entrypoint=/run-core.sh'
-        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.8.0-s1'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.8.0-s2'
         args: '-m checkstyle'
     publishers:
      - castor-save-workspace-cache
@@ -212,7 +212,7 @@
            mediawiki/core
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/composer-php73:0.2.0-s3'
+        image: 'docker-registry.wikimedia.org/releng/composer-php73:0.2.0-s4'
         options: '--volume "$(pwd)"/src:/mediawiki'
         args: '--working-dir=/mediawiki update --ansi --no-progress --prefer-dist --profile'
      - docker-run-with-log-cache-src:
@@ -578,7 +578,7 @@
         args: '--packages-source "{packages-source}" --git-parallel=8 {quibble_args}'
         logdir: '/workspace/log'
     - docker-run-with-log-and-workspace-cache:
-        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.6.2-s1'
+        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.6.2-s3'
         options: '--volume "$(pwd)"/src:/workspace/src'
         logdir: '/workspace/log'
         args: '{sonar_args}'
@@ -675,7 +675,7 @@
         args: '--packages-source "{packages-source}" --git-parallel=8 --skip-install --commands=mwext-phpunit-coverage'
         logdir: '/workspace/log'
     - docker-run-with-log-and-workspace-cache:
-        image: docker-registry.wikimedia.org/releng/node10-test:0.6.1-s1
+        image: docker-registry.wikimedia.org/releng/node10-test:0.6.1-s2
         options: '--volume "$(pwd)"/src/extensions/"$EXT_NAME":/src'
         logdir: '/workspace/log'
         args: '--if-present test:unit'
@@ -684,7 +684,7 @@
           sed -ie "s#/src/#/workspace/src/extensions/$EXT_NAME/#g" src/extensions/"$EXT_NAME"/coverage/lcov.info
         fi
     - docker-run-with-log-and-workspace-cache:
-        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.6.2-s1'
+        image: 'docker-registry.wikimedia.org/releng/java8-sonar-scanner:0.6.2-s3'
         options: '--volume "$(pwd)"/src:/workspace/src'
         logdir: '/workspace/log'
         args: '{sonar_args}'

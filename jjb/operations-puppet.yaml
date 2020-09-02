@@ -42,7 +42,7 @@
         - docker-src-dir
         - docker-cache-dir
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/rake:0.2.2
+            image: docker-registry.wikimedia.org/releng/rake:0.2.2-s1
             args: 'global:doc'
         - doc-publish:
             docsrc: 'src/doc'
@@ -103,7 +103,7 @@
         - docker-src-dir
         - docker-ci-src-setup-simple
         - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/logstash-filter-verifier:0.0.1'
+            image: 'docker-registry.wikimedia.org/releng/logstash-filter-verifier:0.0.1-s1'
             # Some of our logstash filters use the ruby {} plugin configured to
             # point to a ruby script using an absolute path. That is done to
             # guarantee our configuration point to the file since the current
@@ -149,7 +149,7 @@
         - docker-src-dir
         - docker-cache-dir
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/operations-puppet:0.7.6-s1
+            image: docker-registry.wikimedia.org/releng/operations-puppet:0.7.6-s2
             options: '-e RAKE_TARGET=global:wmf_style'
             # Have host capture the output.
             # To be processed by the Warnings publisher.
@@ -184,7 +184,7 @@
      - operations-puppet-tests-{os}-docker:
          os:
            - buster:
-               image: docker-registry.wikimedia.org/releng/operations-puppet:0.7.6-s1
+               image: docker-registry.wikimedia.org/releng/operations-puppet:0.7.6-s2
 
 - project:
     name: puppet-wmf-styleguide

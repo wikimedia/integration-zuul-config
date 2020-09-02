@@ -21,7 +21,7 @@
       - docker-log-dir
       - docker-ci-src-setup-simple
       - docker-run-with-log-cache-src:
-          image: 'docker-registry.wikimedia.org/releng/gerrit:0.1.0-s9'
+          image: 'docker-registry.wikimedia.org/releng/gerrit:0.1.0-s10'
           options: '--volume /srv/git:/srv/git:ro'
     publishers:
       - archive:
@@ -34,7 +34,7 @@
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
     node: Docker
-    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.6.4-s1
+    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.6.4-s3
     triggers:
         - zuul
     maven_args: 'clean verify'
@@ -97,7 +97,7 @@
     name: '{name}-maven-java8-docker-site-publish'
     node: Docker
     concurrent: false
-    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.6.4-s1
+    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.6.4-s3
     triggers:
         - zuul
     builders:
@@ -163,7 +163,7 @@
 - job-template: &job_npm-node-6-docker
     name: 'npm-node-6-docker'
     node: Docker
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1-s1'
     docker_run_options_var: ''
     triggers:
      - zuul
@@ -195,7 +195,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s1'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s2'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -213,7 +213,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s1'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s2'
         args: '{script}'
     publishers:
      - archive-log-allow-empty
@@ -230,7 +230,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10:0.5.2-s1'
+        image: 'docker-registry.wikimedia.org/releng/node10:0.5.2-s2'
         options: '--workdir="/src"'
         args: 'audit'
     publishers:
@@ -260,7 +260,7 @@
     - docker-log-dir
     - docker-ci-src-setup-simple
     - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10:0.5.2-s1'
+        image: 'docker-registry.wikimedia.org/releng/node10:0.5.2-s2'
         options: '--workdir="/src"'
         args: 'audit'
     publishers:
@@ -298,7 +298,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3-s1'
+        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3-s2'
      - cover-publish:
         src: 'src/coverage'
         dest: '$DOC_PROJECT'
@@ -320,7 +320,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s1'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s2'
         args: 'doc'
      - doc-publish:
         docsrc: 'src/docs'
@@ -342,7 +342,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s1'
+        image: 'docker-registry.wikimedia.org/releng/node10-test:0.6.1-s2'
         args: 'doc'
      - doc-publish:
         docsrc: 'src/docs'
@@ -381,7 +381,7 @@
 - job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-deploy-npm-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1-s1'
     docker_run_options_var: '--entrypoint=/run-oid.sh'
     triggers:
      - zuul
@@ -411,13 +411,13 @@
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1-s1'
     docker_run_options_var: '--entrypoint=/run-oid.sh'
 
 - job-template:
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-browser-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.5.1-s1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-browser-test:0.5.1-s2'
     # Reinject Zuul parameters since JJB strip for some reason
     triggers:
      - zuul
@@ -425,7 +425,7 @@
 - job-template:
     !!merge : *job_npm-run-script-node-6-docker
     name: 'selenium-daily-{sitename}-{project}'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3-s1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3-s2'
     triggers:
      - timed: '@daily'
     parameters:

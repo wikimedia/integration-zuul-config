@@ -193,7 +193,7 @@
      # Install the extension/skin composer dev dependencies to bring in phan config
      - docker-run-with-log-cache-src:
         options: '--volume "$(pwd)"/src:/mediawiki'
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s3'
+        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s4'
         args: '--working-dir=/src/"$THING_SUBNAME" update --ansi --no-progress --prefer-dist --profile'
 
 # Use a docker image to clone the repository into /src with explicit options.
@@ -230,7 +230,7 @@
         options: >-
           --volume "$(pwd)"/src:/src
           --volume /srv/git:/srv/git:ro
-        image: 'docker-registry.wikimedia.org/releng/zuul-cloner:0.2.1-s1'
+        image: 'docker-registry.wikimedia.org/releng/zuul-cloner:0.2.1-s3'
         args: >-
           --color --verbose
           --map /zuul-clonemap.yaml

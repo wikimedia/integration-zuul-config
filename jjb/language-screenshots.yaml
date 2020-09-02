@@ -72,14 +72,14 @@
         - docker-ci-src-setup-simple
         # screenshot all the things
         - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3-s1'
+            image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3-s2'
             # credentials for screenshots
             options: '--env SAUCE_ONDEMAND_USERNAME=wikimedia-jenkins'
             # npm run-script screenshots-all
             args: screenshots-all
         # Upload all the things
         - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/rake:0.2.2'
+            image: 'docker-registry.wikimedia.org/releng/rake:0.2.2-s1'
             # Options for commons_upload gem
             options: '--env MEDIAWIKI_API_UPLOAD_URL=https://commons.wikimedia.org/w/api.php --env MEDIAWIKI_USER=LanguageScreenshotBot --env MEDIAWIKI_PASSWORD="$LanguageScreenshotBot"'
             # bundle exec rake ...

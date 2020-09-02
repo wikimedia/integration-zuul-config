@@ -11,7 +11,7 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/doxygen:0.8.1
+         image: docker-registry.wikimedia.org/releng/doxygen:0.8.1-s1
      - doc-publish:
         docsrc: 'src/doc/html'
         docdest: '$DOC_PROJECT/$DOC_SUBPATH'
@@ -33,13 +33,13 @@
 
      # composer install
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s3
+         image: docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s4
          options: '--workdir /src'
          # prefer-dist to get cacheable content
          args: 'install --no-progress --prefer-dist'
      # phpunit coverage
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/php72:0.2.7-s1
+         image: docker-registry.wikimedia.org/releng/php72:0.2.7-s2
          options: '--workdir /src'
          args: |
              -d zend_extension=xdebug.so \
@@ -57,7 +57,7 @@
     name: eventlogging
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-eventlogging:0.4.0-s2
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-eventlogging:0.4.0-s4
 
 - project:
     name: visualeditor
@@ -86,7 +86,7 @@
         - zuul
     builders:
         - docker-run:
-            image: docker-registry.wikimedia.org/releng/typos:0.0.3-s2
+            image: docker-registry.wikimedia.org/releng/typos:0.0.3-s3
     publishers:
         - docker-cleanup
 
@@ -141,7 +141,7 @@
     builders:
      - docker-log-dir
      - docker-run-with-log:
-         image: docker-registry.wikimedia.org/releng/wikimedia-audit-resources:0.1.2-s2
+         image: docker-registry.wikimedia.org/releng/wikimedia-audit-resources:0.1.2-s3
     publishers:
      - archive:
          artifacts: 'log/*.log'
@@ -154,7 +154,7 @@
     name: 'wikimedia-cz-tracker'
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.4.2-s1
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.5.0-s2
 
 - project:
     name: 'wikimedia-cz-tools'
@@ -172,7 +172,7 @@
      - '{name}-composer-{phpflavor}-docker':
          phpflavor:
              - php70:
-                 image: docker-registry.wikimedia.org/releng/composer-test-php70:0.2.0-s3
+                 image: docker-registry.wikimedia.org/releng/composer-test-php70:0.2.0-s4
 
 - project:
     name: gerrit-plugins

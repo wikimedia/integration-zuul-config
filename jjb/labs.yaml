@@ -4,14 +4,14 @@
     name: 'labs-tools-heritage'
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.4.0-s2
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.4.0-s4
             build_timeout: 6  # T206913
 
 - project:
     name: 'labs-striker'
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-labs-striker:0.4.0-s2
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-labs-striker:0.4.0-s4
 
 - project:
     name: 'labs-tools-wikibugs2'
@@ -27,7 +27,7 @@
          days-to-keep: 15
     builders:
      - docker-run:
-         image: docker-registry.wikimedia.org/releng/curl:0.1.0-s2
+         image: docker-registry.wikimedia.org/releng/curl:0.1.0-s3
          args: '--fail --silent --show-error --max-time 10 https://tools.wmflabs.org/wikibugs/pull.php'
     publishers:
      - docker-cleanup
@@ -42,13 +42,13 @@
     jobs:
         - '{name}-tox-docker':
             # This project also needs the build dependencies for python-ldap
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-labs-striker:0.4.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-labs-striker:0.4.0-s4
 
 - project:
     name: 'labs-tools-map-of-monuments'
     jobs:
        - '{name}-tox-docker':
-           docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.4.2-s1
+           docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.5.0-s2
 
 - project:
     name: 'labs-tools-commons-mass-description'
@@ -79,7 +79,7 @@
     name: 'labs-tools-wikinity'
     jobs:
        - '{name}-tox-docker':
-           docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.4.2-s1
+           docker_image_var: docker-registry.wikimedia.org/releng/tox-mysqld:0.5.0-s2
 
 - project:
     name: 'labs-tools-ipwatcher'

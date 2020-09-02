@@ -62,7 +62,7 @@
               -e GIT_AUTHOR_NAME="{git-user}"
               -e GIT_COMMITTER_NAME="{git-user}"
               -e EMAIL="{git-user-email}"
-          image: docker-registry.wikimedia.org/releng/java8:0.6.4-s1
+          image: docker-registry.wikimedia.org/releng/java8:0.6.4-s3
           args: >-
               -Dresume=false
               -Djdk.net.URLClassPath.disableClassPathURLCheck=true
@@ -128,7 +128,7 @@
       - docker-ci-src-setup-simple
       # Create a git remote since ci-src-setup-simple only fetches
       - docker-run-with-log-cache-src:
-          image: docker-registry.wikimedia.org/releng/jar-updater:0.0.7
+          image: docker-registry.wikimedia.org/releng/jar-updater:0.0.7-s1
           options: --entrypoint=git
           args: remote add origin "https://gerrit.wikimedia.org/r/$ZUUL_PROJECT"
       # The config-file-provider has the file created by the jenkins-slave and
@@ -143,7 +143,7 @@
               -e GIT_AUTHOR_NAME="{git-user}"
               -e GIT_COMMITTER_NAME="{git-user}"
               -e EMAIL="{git-user-email}"
-          image: docker-registry.wikimedia.org/releng/jar-updater:0.0.7
+          image: docker-registry.wikimedia.org/releng/jar-updater:0.0.7-s1
           args: >-
               -v "$RELEASE_VERSION"
               -u '{git-user}'
@@ -200,7 +200,7 @@
                 --volume "$(pwd)"/src:/src
                 --workdir /src/pageviews_reports
                 --entrypoint=/usr/bin/prove
-            image: 'docker-registry.wikimedia.org/releng/perl:5.24.1-s2'
+            image: 'docker-registry.wikimedia.org/releng/perl:5.24.1-s3'
             args: '-v -Ilib/ t/'
     publishers:
         - docker-cleanup
