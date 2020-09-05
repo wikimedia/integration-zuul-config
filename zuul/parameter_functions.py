@@ -473,6 +473,7 @@ dependencies = {
     'WikimediaEvents': ['EventLogging'],
     'Wikisource': ['Wikibase'],
     'wikihiero': ['VisualEditor'],
+    'WSOAuth': ['PluggableAuth'],
 }
 
 # Dependencies used in phan jobs.
