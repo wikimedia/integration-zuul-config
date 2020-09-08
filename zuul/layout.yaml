@@ -1000,6 +1000,11 @@ jobs:
     success-message: 'SUCCESS Change has been deployed on the EQIAD beta cluster'
     failure-message: 'FAILURE Failed deployment on the EQIAD beta cluster :-/ Please contact a member of the beta project to fixup the working directory on the destination server.'
 
+  - name: deployment-charts-tox-update_version-docker
+    files:
+      - '^tox.ini$'
+      - '^update_version/.*'
+
   - name: mediawiki-vagrant-puppet-doc-publish
     branch: ^master$
 
@@ -2098,8 +2103,10 @@ projects:
   - name: operations/deployment-charts
     test-prio:
       - helm-lint
+      - deployment-charts-tox-update_version-docker
     gate-and-submit:
       - helm-lint
+      - deployment-charts-tox-update_version-docker
 
   - name: labs/tools/sonarqubebot
     template:

@@ -95,12 +95,17 @@
             docker_image_var: docker-registry.wikimedia.org/releng/tox:0.4.4-s3
 
 - project:
+    name: deployment-charts
+    jobs:
+        - '{name}-tox-{toxenv}-docker':
+            toxenv: update_version
+
+- project:
     name: docker-pkg
     jobs:
         - '{name}-tox-publish':
             docsrc: 'doc/build'
             docdest: 'docker-pkg'
-
 - project:
     name: 'homer'
     jobs:
