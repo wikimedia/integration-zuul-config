@@ -4,7 +4,7 @@ ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 ENV DNSDIR='/srv/workspace/dnslint'
 
-{% set pkgs_to_install = """gdnsd=3.2.2-1~wmf1 python3 tox""" %}
+{% set pkgs_to_install = """gdnsd=3.3.0-1~wmf1 python3 tox""" %}
 # Install packages
 RUN {{ pkgs_to_install | apt_install }} \
     && install --owner=nobody --group=nogroup --directory /srv/workspace
