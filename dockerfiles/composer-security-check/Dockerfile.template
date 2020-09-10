@@ -1,0 +1,8 @@
+FROM {{ "composer-php72" | image_tag }}
+
+# Script to check with https://php-security-checker.wmcloud.org after
+# `composer install` for issues.
+COPY security-check.sh /srv/composer/security-check
+
+USER nobody
+ENTRYPOINT ["/srv/composer/security-check"]
