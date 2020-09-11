@@ -905,11 +905,6 @@ jobs:
   - name: integration-zuul-tox-docker
     branch: ^patch-queue/debian/
 
-  - name: ^quibble-donationinterface-REL1_31-php70-docker$
-    skip-if:
-      - project: ^mediawiki/extensions/DonationInterface$
-        branch: ^deployment$
-
   - name: ^quibble-donationinterface-REL1_35-php73-docker$
     skip-if:
       - project: ^mediawiki/extensions/DonationInterface$
@@ -2259,12 +2254,10 @@ projects:
     test-fundraising:
       - mwgate-composer-php70-docker
       - mwgate-node10-docker
-      - quibble-donationinterface-REL1_31-php70-docker
       - quibble-donationinterface-REL1_35-php73-docker
     gate-and-submit-fundraising:
       - mwgate-composer-php70-docker
       - mwgate-node10-docker
-      - quibble-donationinterface-REL1_31-php70-docker
       - quibble-donationinterface-REL1_35-php73-docker
 
     coverage:
@@ -3496,12 +3489,10 @@ projects:
     test:
       - mwgate-composer-php70-docker
       - mwgate-node10-docker
-      - quibble-donationinterface-REL1_31-php70-docker
       - quibble-donationinterface-REL1_35-php73-docker
     gate-and-submit:
       - mwgate-composer-php70-docker
       - mwgate-node10-docker
-      - quibble-donationinterface-REL1_31-php70-docker
       - quibble-donationinterface-REL1_35-php73-docker
     experimental:
       - mwext-php72-phan-docker
