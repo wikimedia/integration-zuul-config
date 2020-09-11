@@ -113,6 +113,33 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+- job-template: &job_mwext-php74-phan-docker
+    name: 'mwext-php74-phan-docker'
+    node: Docker
+    properties:
+     - build-discarder:
+         days-to-keep: 15
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-log-dir
+     - docker-src-dir
+     - docker-setup-mwext-for-phan
+     - docker-run-with-log-cache-src:
+        options: '--volume "$(pwd)"/src:/mediawiki'
+        image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-php743:0.1.0'
+        args: '-m checkstyle'
+    publishers:
+     - checkstyle:
+        pattern: 'log/phan-issues'
+        can-run-on-failed: true
+        thresholds:
+          failed:
+            total-all: 1
+     - castor-save-workspace-cache
+     - docker-cleanup
+
 - job-template:
     name: 'mwskin-php72-phan-docker'
     !!merge : *job_mwext-php72-phan-docker
@@ -127,6 +154,13 @@
     triggers:
      - zuul
 
+- job-template:
+    name: 'mwskin-php74-phan-docker'
+    !!merge : *job_mwext-php74-phan-docker
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 - project:
     name: phan-jobs
     jobs:
@@ -134,6 +168,8 @@
         - mwskin-php72-phan-docker
         - mwext-php73-phan-docker
         - mwskin-php73-phan-docker
+        - mwext-php74-phan-docker
+        - mwskin-php74-phan-docker
 
 - project:
     name: wdio-selenium-daily
