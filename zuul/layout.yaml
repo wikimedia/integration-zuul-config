@@ -3370,6 +3370,7 @@ projects:
       - name: extension-phan
       - name: extension-coverage
       - name: extension-gate
+    # Special extra jobs because Fundraising uses this on PHP73/REL1_35
     test:
       - quibble-fundraising-cldr-REL1_35-php73-docker
     gate-and-submit:
@@ -3634,14 +3635,13 @@ projects:
       - name: extension-quibble
       - name: extension-phan
 
-  # Special handling because Fundraising uses this on PHP70/REL1_31
   - name: mediawiki/extensions/FundraisingEmailUnsubscribe
     template:
       - name: in-wikimedia-production
-    # Known broken on master
-    # - name: extension-quibble
+      - name: extension-quibble
       - name: mediawiki-i18n-check
       - name: extension-phan
+    # Special extra jobs because Fundraising uses this on PHP73/REL1_35
     test:
       - quibble-fundraising-FundraisingEmailUnsubscribe-REL1_35-php73-docker
     gate-and-submit:
@@ -4046,6 +4046,7 @@ projects:
       - name: extension-phan
       - name: extension-coverage
       - name: extension-gate
+    # Special extra jobs because Fundraising uses this on PHP73/REL1_35
     test:
       - quibble-fundraising-ParserFunctions-REL1_35-php73-docker
     gate-and-submit:

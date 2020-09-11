@@ -69,8 +69,7 @@ class TestZuulLayout(unittest.TestCase):
             )
         # Special cases for Fundraising reasons
         special_cases = (
-            'mediawiki/extensions/DonationInterface',
-            'mediawiki/extensions/FundraisingEmailUnsubscribe'
+            'mediawiki/extensions/DonationInterface'
             )
 
         errors = []
