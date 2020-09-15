@@ -21,7 +21,7 @@ if [[ ! -f sonar-project.properties ]]; then
     mkdir -p resources includes languages src modules maintenance tests
     touch sonar-project.properties
     echo "sonar.sources=resources,languages,includes,src,modules,maintenance" >> sonar-project.properties
-    echo "sonar.exclusions=extensions/**/*,mw-config/**/*,node_modules/**/*,vendor/**/*,skins/**/*,logs/**/*,cache/**/*,resources/libs/**/*" >> sonar-project.properties
+    echo "sonar.exclusions=extensions/**/*,mw-config/**/*,node_modules/**/*,vendor/**/*,skins/**/*,logs/**/*,cache/**/*,resources/lib/**/*" >> sonar-project.properties
     echo "sonar.tests=tests" >> sonar-project.properties
 fi
 
