@@ -83,6 +83,22 @@
          docker_image_var: docker-registry.wikimedia.org/releng/npm-test-maps-service:0.3.0-s2
 
 - project:
+    name: termbox
+    pipeline:
+      - test
+      - rehearse
+      - publish
+    jobs:
+      # trigger-termbox-pipeline-test
+      # trigger-termbox-pipeline-rehearse
+      # trigger-termbox-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # termbox-pipeline-test
+      # termbox-pipeline-rehearse
+      # termbox-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
+
+- project:
     name: toolforge-ingress-admission-controller
     pipeline:
       - test

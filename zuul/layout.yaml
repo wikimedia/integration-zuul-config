@@ -8700,10 +8700,12 @@ projects:
       - name: node10-browser-docker
 
   - name: wikibase/termbox
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
+    test:
+      - trigger-termbox-pipeline-test
+    gate-and-submit:
+      - trigger-termbox-pipeline-rehearse
     postmerge:
+      - trigger-termbox-pipeline-publish
       - generic-node10-docs-docker-publish
 
   - name: wikibase/vuejs-components
