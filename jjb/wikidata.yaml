@@ -107,6 +107,9 @@
          body: |
            The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
            See $BUILD_URL for details.
+     - junit:
+             results: 'src/**/target/surefire-reports/*.xml'
+             allow-empty-results: true
 
 - project:
     name: wikidata-query-rdf
