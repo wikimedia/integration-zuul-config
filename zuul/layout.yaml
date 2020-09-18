@@ -1059,6 +1059,10 @@ jobs:
     success-message: 'SUCCESS Example result against MediaWiki core'
     failure-message: 'FAILURE Example result against MediaWiki core'
 
+  # Being setup T259586
+  - name: train-dev-tox-docker
+    voting: false
+
   # Job to test phan changes on MW core
   - name: mw-tools-phan-mwcore-testrun
     voting: false
@@ -2036,6 +2040,14 @@ projects:
       - name: service-pipeline-test
     postmerge:
       - scap-beta-deb
+
+  - name: mediawiki/tools/train-dev
+    test:
+      - train-dev-tox-docker
+    gate-and-submit:
+      # Non-voting, repository is being prepared. T259586
+      #- train-dev-tox-docker
+      - noop
 
   - name: mediawiki/tools/phan
     template:
