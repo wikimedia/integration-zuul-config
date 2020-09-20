@@ -19,8 +19,8 @@
      - archive-log-allow-empty
      - docker-cleanup
 
-- job:
-    name: 'phpunit-coverage-php72-docker-publish'
+- job-template:
+    name: 'phpunit-coverage-{php}-docker-publish'
     node: Docker
     concurrent: false
     triggers:
@@ -33,13 +33,13 @@
 
      # composer install
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-php72:0.5.0-s1
+         image: '{docker_image}'
          options: '--workdir /src'
          # prefer-dist to get cacheable content
          args: 'install --no-progress --prefer-dist'
      # phpunit coverage
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-php72:0.5.0-s1
+         image: '{docker_image}'
          options: '--entrypoint php --workdir /src'
          args: |
              -d zend_extension=xdebug.so \
@@ -52,6 +52,20 @@
     publishers:
      - castor-save-workspace-cache
      - docker-cleanup
+
+- project:
+    name: phpunit-coverage-publish
+    php:
+        - php72:
+            docker_image: docker-registry.wikimedia.org/releng/composer-php72:0.5.0-s1
+        - php73:
+            docker_image: docker-registry.wikimedia.org/releng/composer-php73:0.3.0-s1
+        - php74:
+            docker_image: docker-registry.wikimedia.org/releng/composer-php74:0.2.0-s1
+        - php80:
+            docker_image: docker-registry.wikimedia.org/releng/composer-php80:0.0.2-s1
+    jobs:
+        - phpunit-coverage-{php}-docker-publish
 
 - project:
     name: eventlogging
