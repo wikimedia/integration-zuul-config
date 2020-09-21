@@ -114,6 +114,44 @@
     triggers:
      - zuul
 
+- job-template:
+    name: 'phan-{php}-docker'
+    node: Docker
+    triggers:
+     - zuul
+    builders:
+     - docker-log-dir
+     - docker-src-dir
+     - docker-cache-dir
+     - docker-castor-load
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: '{composer_image}'
+         options: '--workdir /src'
+         args: 'update --ansi --no-progress --prefer-dist --profile'
+     - docker-run-with-log-cache-src:
+         image: '{phan_image}'
+         options: '--entrypoint=/run-libraries.sh'
+         args: '-m checkstyle'
+    publishers:
+     - castor-save-workspace-cache
+     - docker-cleanup
+
+- project:
+    name: generic-phan-jobs
+    php:
+     - php72:
+         composer_image: docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s5
+         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan:0.8.0-s2
+     - php73:
+         composer_image: docker-registry.wikimedia.org/releng/composer-php73:0.2.0-s4
+         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan-php73:0.1.1
+     - php74:
+         composer_image: docker-registry.wikimedia.org/releng/composer-php74:0.1.0-s4
+         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan-php74:0.1.0
+    jobs:
+      - 'phan-{php}-docker'
+
 - project:
     name: 'composer-flavored-on-docker'
     jobs:
