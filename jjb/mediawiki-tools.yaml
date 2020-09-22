@@ -107,10 +107,17 @@
              mediawiki/core
              mediawiki/tools/phan
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-testrun:0.1.5-s7'
-         options: '--workdir /src'
+         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-testrun:0.2.0'
+         options: "--workdir /src"
+         args: '-m checkstyle -o /log/checkstyle.xml'
     publishers:
      - castor-save-workspace-cache
+     - checkstyle:
+         pattern: log/checkstyle.xml
+         can-run-on-failed: true
+         thresholds:
+             failed:
+                 total-all: 1
      - archive-log-dir
      - docker-cleanup
 
