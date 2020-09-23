@@ -39,9 +39,14 @@
      - REL1_31:
          phpflavor: php70
          docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php70:0.0.45
+         # DonationInterface does not have a fundraising/REL1_31 branch, thus
+         # when targetting that branch in mediawiki/core we have to hardcode master.
+         donation_interface_branch: master
      - REL1_35:
          phpflavor: php73
          docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.45
+         # DonationInterface does have a fundraising/REL1_35.
+         donation_interface_branch: fundraising/REL1_35
     jobs:
      - quibble-donationinterface-{branch}-{phpflavor}-docker
 
@@ -60,7 +65,7 @@
             args: >
                 --packages-source composer --db mysql --db-dir /workspace/db --run=phpunit
                 --branch "{branch}"
-                --project-branch mediawiki/extensions/DonationInterface=master
+                --project-branch mediawiki/extensions/DonationInterface={donation_interface_branch}
                 --project-branch "mediawiki/core=fundraising/{branch}"
                 --project-branch "mediawiki/vendor=fundraising/{branch}"
                 mediawiki/vendor
