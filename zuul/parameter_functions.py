@@ -496,6 +496,7 @@ phan_dependencies = {
     'CirrusSearch': ['BetaFeatures', 'Elastica', 'SiteMatrix'],
     'Citoid': ['Cite', 'VisualEditor'],
     'CleanChanges': ['cldr'],
+    'CodeReview': ['Renameuser'],
     'CognitiveProcessDesigner': ['PageForms', 'BlueSpiceFoundation',
                                  'BlueSpiceUEModulePDF'],
     'CollaborationKit': ['EventLogging', 'PageImages', 'VisualEditor', 'Flow'],
