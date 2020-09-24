@@ -8,7 +8,7 @@ cd /src
 
 # If there's no lock file, then generate one
 if [ ! -f "composer.lock" ]; then
-    composer install --no-progress --prefer-dist
+    composer install --no-progress --prefer-dist --ignore-platform-reqs
 fi
 
 curl -i -H "Accept: text/plain" https://php-security-checker.wmcloud.org/check_lock -F lock=@composer.lock -o results.check
