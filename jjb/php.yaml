@@ -14,8 +14,8 @@
      - docker-src-dir
      - docker-ci-src-setup-simple
      - docker-run:
-        options: '--volume "$(pwd)"/src:/src --entrypoint=/srv/composer/security-check'
-        image: 'docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s5'
+        options: '--volume "$(pwd)"/src:/src'
+        image: 'docker-registry.wikimedia.org/releng/composer-security-check:1.0'
     publishers:
       - email:
          recipients: security-admin-feed@lists.wikimedia.org
