@@ -14,5 +14,5 @@ docker run --rm \
     -e THING_SUBNAME=extensions/ElectronPdfService
     -v /dev/git/gerrit/mediawiki:/mediawiki \
     docker-registry.wikimedia.org/releng/mediawiki-phan:latest \
-    -m checkstyle
+    --color
 ```

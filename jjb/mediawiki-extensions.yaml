@@ -73,16 +73,10 @@
      - docker-src-dir
      - docker-setup-mwext-for-phan
      - docker-run-with-log-cache-src:
-        options: '--volume "$(pwd)"/src:/mediawiki'
+        options: '-e PHAN_COLOR_SCHEME=light --volume "$(pwd)"/src:/mediawiki'
         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan:0.8.0-s2'
-        args: '-m checkstyle'
+        args: '--color'
     publishers:
-     - checkstyle:
-        pattern: 'log/phan-issues'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
      - castor-save-workspace-cache
      - docker-cleanup
 
@@ -100,16 +94,10 @@
      - docker-src-dir
      - docker-setup-mwext-for-phan
      - docker-run-with-log-cache-src:
-        options: '--volume "$(pwd)"/src:/mediawiki'
+        options: '-e PHAN_COLOR_SCHEME=light --volume "$(pwd)"/src:/mediawiki'
         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-php73:0.1.1'
-        args: '-m checkstyle'
+        args: '--color'
     publishers:
-     - checkstyle:
-        pattern: 'log/phan-issues'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
      - castor-save-workspace-cache
      - docker-cleanup
 
@@ -127,16 +115,10 @@
      - docker-src-dir
      - docker-setup-mwext-for-phan
      - docker-run-with-log-cache-src:
-        options: '--volume "$(pwd)"/src:/mediawiki'
+        options: '-e PHAN_COLOR_SCHEME=light --volume "$(pwd)"/src:/mediawiki'
         image: 'docker-registry.wikimedia.org/releng/mediawiki-phan-php743:0.1.0'
-        args: '-m checkstyle'
+        args: '--color'
     publishers:
-     - checkstyle:
-        pattern: 'log/phan-issues'
-        can-run-on-failed: true
-        thresholds:
-          failed:
-            total-all: 1
      - castor-save-workspace-cache
      - docker-cleanup
 
