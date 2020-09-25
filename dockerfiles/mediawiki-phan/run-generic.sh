@@ -12,4 +12,4 @@ cd "$SOURCE_ROOT"
 # Bypass expensive Symfony\Component\Console\Terminal::getWidth() (T219114#5084302)
 export COLUMNS=80
 
-exec vendor/bin/phan -d . -p "$@" --require-config-exists
+exec vendor/bin/phan -d . --long-progress-bar "$@" --require-config-exists
