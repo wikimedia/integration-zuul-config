@@ -148,7 +148,7 @@ dependencies = {
     # One can add a skin by using: 'skin/XXXXX'
     '3D': ['MultimediaViewer'],
     'AbuseFilter': ['AntiSpoof', 'CentralAuth', 'CodeEditor',
-                    'CheckUser', 'Echo', 'Renameuser', 'Thanks'],
+                    'CheckUser', 'Renameuser'],
     'AdvancedSearch': ['Translate'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
