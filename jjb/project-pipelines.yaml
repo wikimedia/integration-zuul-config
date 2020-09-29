@@ -29,6 +29,22 @@
       - '{name}-pipeline-{pipeline}'
 
 - project:
+    name: citoid
+    pipeline:
+      - test
+      - rehearse
+      - publish
+    jobs:
+      # trigger-citoid-pipeline-test
+      # trigger-citoid-pipeline-rehearse
+      # trigger-citoid-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # citoid-pipeline-test
+      # citoid-pipeline-rehearse
+      # citoid-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
+
+- project:
     name: mathoid
     pipeline:
       - test

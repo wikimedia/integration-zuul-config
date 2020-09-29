@@ -7517,9 +7517,12 @@ projects:
       - name: service-pipeline-test-and-publish
 
   - name: mediawiki/services/citoid
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
+    test:
+      - trigger-citoid-pipeline-test
+    gate-and-submit:
+      - trigger-citoid-pipeline-rehearse
+    postmerge:
+      - trigger-citoid-pipeline-publish
 
   - name: mediawiki/services/cxserver
     template:
