@@ -29,6 +29,22 @@
       - '{name}-pipeline-{pipeline}'
 
 - project:
+    name: mathoid
+    pipeline:
+      - test
+      - rehearse
+      - publish
+    jobs:
+      # trigger-mathoid-pipeline-test
+      # trigger-mathoid-pipeline-rehearse
+      # trigger-mathoid-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # mathoid-pipeline-test
+      # mathoid-pipeline-rehearse
+      # mathoid-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
+
+- project:
     name: mediawiki
     pipeline:
       - publish

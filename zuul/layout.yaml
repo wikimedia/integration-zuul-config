@@ -7573,9 +7573,12 @@ projects:
       - trigger-kask-pipeline-publish
 
   - name: mediawiki/services/mathoid
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
+    test:
+      - trigger-mathoid-pipeline-test
+    gate-and-submit:
+      - trigger-mathoid-pipeline-rehearse
+    postmerge:
+      - trigger-mathoid-pipeline-publish
 
   - name: mediawiki/services/texvcinfo
     template:
