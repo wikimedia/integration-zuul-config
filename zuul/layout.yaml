@@ -9007,9 +9007,12 @@ projects:
       - name: composer-test-package-php72-or-later
 
   - name: wvui
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
+    test:
+      - trigger-wvui-pipeline-test
+    gate-and-submit:
+      - trigger-wvui-pipeline-test
+    postmerge:
+      - trigger-wvui-pipeline-release
 
 #### Archive repositories ######################################
 
