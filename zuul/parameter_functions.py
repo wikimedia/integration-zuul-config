@@ -575,7 +575,7 @@ phan_dependencies = {
     'WikibaseLexeme': ['Wikibase'],
     'WikibaseLexemeCirrusSearch': ['CirrusSearch', 'Wikibase',
                                    'WikibaseCirrusSearch', 'WikibaseLexeme'],
-    'WikibaseManifest': ['Wikibase'],
+    'WikibaseManifest': ['Wikibase', 'OAuth'],
     'WikibaseMediaInfo': ['Wikibase', 'CirrusSearch', 'Elastica',
                           'WikibaseCirrusSearch'],
     'WikibaseQualityConstraints': ['Wikibase'],
