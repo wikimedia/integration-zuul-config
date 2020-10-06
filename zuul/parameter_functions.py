@@ -462,7 +462,7 @@ dependencies = {
     'WikibaseLexemeCirrusSearch': ['Wikibase', 'WikibaseLexeme',
                                    'CirrusSearch',
                                    'WikibaseCirrusSearch'],
-    'WikibaseManifest': ['Wikibase'],
+    'WikibaseManifest': ['Wikibase', 'OAuth'],
     'WikibaseMediaInfo': ['Wikibase', 'UniversalLanguageSelector',
                           'WikibaseCirrusSearch'],
     'WikibaseQualityConstraints': ['Wikibase'],
