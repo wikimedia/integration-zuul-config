@@ -1,0 +1,39 @@
+#!/bin/bash
+set -eu
+
+args=("$@")
+for ((i=0; i < ${#@}; i++))
+do
+    if [ "${args[i]}" == "-f" ] || [ "${args[i]}" == "--file" ]
+    then
+        fname=.
+        candidate="${args[i+1]}"
+        if [ -f "$candidate" ]
+        then
+            fname=$(basename "$candidate")
+            candidate=$(dirname "$candidate")
+        fi
+        if [ -d "$candidate" ]
+        then
+            printf "mvn wrapper: cd %s\n" "$candidate"
+            cd "$candidate" || exit 1
+            args[i+1]=$fname
+            printf "mvn wrapper: rewrote -f/--file to use %s\n" "$fname"
+            break
+        fi
+    fi
+done
+
+mvn_opts=()
+if [[ $- != *i* ]]; then
+    # bash is not interactive
+    mvn_opts+=('--batch-mode')
+fi
+
+if [[ -x ./mvnw ]] ; then
+    MAVEN_BIN=./mvnw
+    printf "mvn wrapper: mvnw detected in this project, using it instead of local Maven install.\n"
+fi
+
+set -x
+"$MAVEN_BIN" "${mvn_opts[@]}" -gs /settings.xml "${args[@]}"
