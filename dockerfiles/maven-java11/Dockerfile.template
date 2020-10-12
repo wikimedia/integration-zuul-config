@@ -1,16 +1,10 @@
 FROM {{ "maven" | image_tag }} AS maven
 
-FROM {{ "java8" | image_tag }}
+FROM {{ "java11" | image_tag }}
 USER root
 
 # Import Maven material
 COPY --from=maven /opt/apache-maven /opt/apache-maven
-
-USER root
-
-RUN {{ "openssh-client" | apt_install }}
-
-COPY gerrit_ssh_host_key /etc/ssh/ssh_known_hosts
 
 # sonar:sonar does not support XDG_CACHE_HOME - T207046
 ENV SONAR_USER_HOME=$XDG_CACHE_HOME/sonar
