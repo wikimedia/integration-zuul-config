@@ -1,6 +1,6 @@
 # Docker image with bazel
 
-FROM {{ "ci-stretch" | image_tag }}
+FROM {{ "java8" | image_tag }}
 
 USER root
 
@@ -9,7 +9,7 @@ COPY bazel.gpg /etc/apt/trusted.gpg.d/bazel-release.gpg
 RUN echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" \
     | tee /etc/apt/sources.list.d/bazel.list
 
-RUN {{ "bazel default-jdk" | apt_install }}
+RUN {{ "bazel" | apt_install }}
 
 # For outputUserRoot / outputBase
 RUN install --owner=nobody --group=nogroup --directory /var/local/bazel
