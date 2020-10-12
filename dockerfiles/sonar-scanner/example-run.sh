@@ -8,5 +8,5 @@ docker run \
     --env ZUUL_REF=master \
     --env SONAR_API_KEY=yourkey \
     --volume /"$(pwd)"://src \
-    docker-registry.wikimedia.org/releng/java8-sonar-scanner \
+    docker-registry.wikimedia.org/releng/sonar-scanner \
         -Dsonar.host.url=https://sonarcloud.io
