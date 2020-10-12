@@ -34,7 +34,7 @@
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
     node: Docker
-    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.6.4-s3
+    docker_image_var: docker-registry.wikimedia.org/releng/maven-java8:1.0.0
     triggers:
         - zuul
     maven_args: 'clean verify'
@@ -97,7 +97,7 @@
     name: '{name}-maven-java8-docker-site-publish'
     node: Docker
     concurrent: false
-    docker_image_var: docker-registry.wikimedia.org/releng/java8:0.6.4-s3
+    docker_image_var: docker-registry.wikimedia.org/releng/maven-java8:1.0.0
     triggers:
         - zuul
     builders:
