@@ -2,15 +2,8 @@ FROM {{ "quibble-buster" | image_tag }}
 
 USER root
 
-# Use Sury builds of PHP in advance of a Wikimedia build ###
-
-COPY sury-php.gpg /etc/apt/trusted.gpg.d/php.gpg
-# Sury uses https and requires lsb per https://packages.sury.org/php/README.txt
-RUN {{ "apt-transport-https" | apt_install }} && \
- echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/php.list
-
 # Align with SRE provided packages
-# COPY wikimedia-php72.list /etc/apt/sources.list.d/wikimedia-php72.list
+COPY wikimedia-php72.list /etc/apt/sources.list.d/wikimedia-php72.list
 
 #############################
 #  Debian packages we need  #
