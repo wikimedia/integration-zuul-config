@@ -39,8 +39,11 @@
      - REL1_35:
          phpflavor: php73
          docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.45
-         # DonationInterface does have a fundraising/REL1_35.
-         donation_interface_branch: fundraising/REL1_35
+         # fundraising/REL_35 branch of core is used to test the master branch of
+         # DonationInterface. When the next core LTS version comes out, a new
+         # branch section can modify this line to point to the transitional
+         # DonationInterface branch until it is merged to master
+         donation_interface_branch: master
     jobs:
      - quibble-donationinterface-{branch}-{phpflavor}-docker
 
