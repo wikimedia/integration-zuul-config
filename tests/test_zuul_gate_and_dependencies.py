@@ -12,15 +12,17 @@ execfile(os.path.join(
     param_func_env)
 
 
-class GatedExtensions(set):
+class GatedRepos(set):
     def __repr__(self):
-        return "<gated extensions>"
+        return "<gated repos>"
 
     def __str__(self):
-        return "<gated extensions>"
+        return "<gated repos>"
 
 
-gatedextensions = GatedExtensions(param_func_env['gatedextensions'])
+gatedrepos = GatedRepos(
+    param_func_env['gatedextensions']
+    + ['skins/%s' % s for s in param_func_env['gatedskins']])
 get_dependencies = param_func_env['get_dependencies']
 all_dependencies = param_func_env['dependencies']
 
@@ -29,7 +31,7 @@ test = unittest.TestCase('__init__')
 # Retrieve dependencies of each projects and keep track of the gated project
 # that depends on it.
 gated_deps = {}
-for gated_project in gatedextensions:
+for gated_project in gatedrepos:
     deps = get_dependencies(gated_project, all_dependencies)
     for dep in deps:
         if dep not in gated_deps:
@@ -45,7 +47,7 @@ def test_deps_of_gated_are_in_gate():
             'Dependency of gated project is in gate: %s' % (gated_dep))
         yield (
             test.assertIn,
-            gated_dep, gatedextensions,
+            gated_dep, gatedrepos,
             '%s must be in gate since it is a dependency of: %s' % (
                 gated_dep, ', '.join(sorted(origin))))
     del(test.assertIn.__func__.description)
