@@ -140,10 +140,12 @@ def set_parameters(item, job, params):
 # Note! This list is not used by Phan. Scroll down farther for that list.
 dependencies = {
     # Skins are listed first to highlight the skin dependencies
-    'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
     'skins/BlueSpiceCalumma': ['BlueSpiceFoundation'],
-    'skins/MinervaNeue': ['MobileFrontend'],
+    'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
+    'skins/Cosmos': ['AdminLinks', 'CreateRedirect', 'DismissableSiteNotice',
+                     'Echo', 'SocialProfile', 'VisualEditor'],
     'skins/Empty': ['PhpTags'],
+    'skins/MinervaNeue': ['MobileFrontend'],
     'skins/Refreshed': ['SocialProfile'],
 
     # Extensions
