@@ -1693,7 +1693,10 @@ project-templates:
 
   - name: php-compile-php72-or-later
     test:
+      # NOTE: Unlike other templates, we test everything in gate-and-submit, not just the main one.
       - php-compile-php72-docker
+      - php-compile-php73-docker
+      - php-compile-php74-docker
     gate-and-submit:
       - php-compile-php72-docker
       - php-compile-php73-docker
