@@ -1910,6 +1910,12 @@ projects:
     postmerge:
       - trigger-helloworldoid-pipeline-publish
 
+  - name: cloud/toolforge/buildpacks
+    test:
+      - shellcheck
+    gate-and-submit:
+      - shellcheck
+
   - name: cloud/toolforge/ingress-admission-controller
     test:
       - trigger-toolforge-ingress-admission-controller-pipeline-test
