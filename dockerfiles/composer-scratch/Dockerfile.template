@@ -1,0 +1,27 @@
+FROM {{ "ci-stretch" | image_tag }}
+
+USER root
+
+RUN mkdir /srv/composer
+
+COPY composer.phar.sha256sum /srv/composer/composer.phar.sha256sum
+
+RUN {{ "curl" | apt_install }}
+
+RUN cd /srv/composer \
+    && curl --silent --fail --output composer.phar https://getcomposer.org/download/1.10.5/composer.phar \
+    && sha256sum -c composer.phar.sha256sum
+
+RUN chmod +x /srv/composer/composer.phar \
+    && mv /srv/composer/composer.phar /usr/bin/composer
+
+# Various helpful scripts, copied to /srv/composer; child containers are expected to copy them if needed.
+
+# Wrapper script for composer that uses `COMPOSER_GITHUB_OAUTHTOKEN` if set.
+COPY run-composer.sh /srv/composer/run-composer.sh
+
+
+FROM scratch
+
+COPY --from=build /srv/composer /srv/composer
+COPY --from=build /usr/bin/composer /usr/bin/composer
