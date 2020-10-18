@@ -1,14 +1,26 @@
 FROM {{ "php-ast" | image_tag }} as ast
 
-FROM {{ "composer-package-php70" | image_tag }} as composer-package
+FROM {{ "composer-scratch" | image_tag }} as composer
 
-FROM {{ "composer-php74" | image_tag }}
+FROM {{ "php73" | image_tag }}
+
+# Install composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+# Grab our composer helper scripts
+COPY --from=composer /srv/composer /srv/composer
 
 USER root
 
+# FIXME: Don't hardcode the phpapi version (but php-config is in php-dev pkg)
 # This will override the already-existing ast
 COPY --from=ast /usr/lib/php/20190902/ast.so /usr/lib/php/20190902/ast.so
+# … and this will make the ast extension actually be loaded
+COPY --from=composer /etc/php/7.2/cli/conf.d/20-ast.ini /etc/php/7.4/cli/conf.d/
+
+# Enable xdebug for PHPUnit coverage reports
+RUN phpenmod xdebug
 
 USER nobody
-COPY --from=composer-package /run.sh /run.sh
+COPY run.sh /run.sh
 ENTRYPOINT ["/run.sh"]
