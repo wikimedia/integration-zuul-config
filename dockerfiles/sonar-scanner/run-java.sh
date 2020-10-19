@@ -8,10 +8,10 @@ umask 002
 set +x
 
 # run clean and install to compile
-./mvnw -gs /settings.xml clean install
+mvn clean install
 
 # run sonar analysis using maven and send extra args for sonar bot
-./mvnw -gs /settings.xml sonar:sonar -Dsonar.analysis.allowCommentOnMaster="1" -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT" -Dsonar.branch.target="$ZUUL_BRANCH" -Dsonar.branch.name="$ZUUL_CHANGE-$ZUUL_PATCHSET"
+mvn sonar:sonar -Dsonar.analysis.allowCommentOnMaster="1" -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT" -Dsonar.branch.target="$ZUUL_BRANCH" -Dsonar.branch.name="$ZUUL_CHANGE-$ZUUL_PATCHSET"
 
 # Analysis is sent via a webhook from SonarQube to a web application (SonarQube Bot)
 # and the bot will comment in gerrit with Verified +1 for success or comment only
