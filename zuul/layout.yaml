@@ -8791,9 +8791,11 @@ projects:
 
   - name: research/mwaddlink
     test:
-      - noop
+      - trigger-research-mwaddlink-pipeline-test
     gate-and-submit:
-      - noop
+      - trigger-research-mwaddlink-pipeline-test
+    postmerge:
+      - trigger-research-mwaddlink-pipeline-publish
 
   - name: scoring/ores/assets
     test:
