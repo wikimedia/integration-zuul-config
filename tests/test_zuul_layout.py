@@ -222,11 +222,13 @@ class TestZuulLayout(unittest.TestCase):
                 # Extract singular 'extension' or 'skin'
                 kind = project['name'].split('/')[1][:-1]
 
-                if project['name'] not in [
-                        # Fix tracked in T250421
-                        'mediawiki/extensions/CodeReview',
-                        # Fix tracked in T202384 + T224763
-                        'mediawiki/extensions/DonationInterface']:
+                noPhan = [
+                    # Fix tracked in T250421
+                    'mediawiki/extensions/CodeReview',
+                    # Fix tracked in T202384 + T224763
+                    'mediawiki/extensions/DonationInterface']
+
+                if project['name'] not in noPhan:
                     self.assertIn(
                         '%s-phan' % kind,
                         templates,
@@ -248,13 +250,17 @@ class TestZuulLayout(unittest.TestCase):
                         % (kind, name, kind)
                     )
                 else:
-                    if project['name'] not in [
-                            # Fix tracked in T249576
-                            'mediawiki/extensions/DonationInterface',
-                            # Fix tracked in T250420
-                            'mediawiki/extensions/OpenStackManager',
-                            # Fix tracked in T250418
-                            'mediawiki/extensions/WikimediaIncubator']:
+                    noQuibble = [
+                        # Fix tracked in T249576
+                        'mediawiki/extensions/DonationInterface',
+                        # Fix tracked in T250420
+                        'mediawiki/extensions/OpenStackManager',
+                        # Fix tracked in T250418
+                        'mediawiki/extensions/WikimediaIncubator',
+                        # Uses special composer libraries; being replaced
+                        'mediawiki/extensions/FundraisingEmailUnsubscribe']
+
+                    if project['name'] not in noQuibble:
                         self.assertIn(
                             '%s-quibble' % kind,
                             templates,
