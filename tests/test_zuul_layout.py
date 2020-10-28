@@ -226,7 +226,10 @@ class TestZuulLayout(unittest.TestCase):
                     # Fix tracked in T250421
                     'mediawiki/extensions/CodeReview',
                     # Fix tracked in T202384 + T224763
-                    'mediawiki/extensions/DonationInterface']
+                    'mediawiki/extensions/DonationInterface',
+                    # Unconfigured.
+                    'mediawiki/extensions/FundraisingEmailUnsubscribe'
+                    ]
 
                 if project['name'] not in noPhan:
                     self.assertIn(
@@ -258,7 +261,8 @@ class TestZuulLayout(unittest.TestCase):
                         # Fix tracked in T250418
                         'mediawiki/extensions/WikimediaIncubator',
                         # Uses special composer libraries; being replaced
-                        'mediawiki/extensions/FundraisingEmailUnsubscribe']
+                        'mediawiki/extensions/FundraisingEmailUnsubscribe'
+                        ]
 
                     if project['name'] not in noQuibble:
                         self.assertIn(
