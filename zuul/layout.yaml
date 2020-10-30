@@ -894,6 +894,9 @@ jobs:
   - name: docker-pkg-tox-publish
     branch: ^master$
 
+  - name: ecs-publish
+    branch: ^master$
+
   - name: spicerack-tox-publish
     branch: ^master$
 
@@ -2995,6 +2998,14 @@ projects:
     template:
       - name: debian-glue-non-voting
       - name: tox-docker
+
+  - name: operations/software/ecs
+    test:
+      - ecs
+    gate-and-submit:
+      - ecs
+    postmerge:
+      - ecs-publish
 
   - name: operations/software/external-monitoring
     template:
