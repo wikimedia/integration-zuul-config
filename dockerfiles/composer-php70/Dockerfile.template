@@ -9,7 +9,7 @@ COPY composer.phar.sha256sum /srv/composer/composer.phar.sha256sum
 RUN {{ "jq curl" | apt_install }}
 
 RUN cd /srv/composer \
-    && curl --silent --fail --output composer.phar https://getcomposer.org/download/1.10.5/composer.phar \
+    && curl --silent --fail --output composer.phar https://getcomposer.org/download/1.10.17/composer.phar \
     && sha256sum -c composer.phar.sha256sum
 
 RUN chmod +x /srv/composer/composer.phar \
