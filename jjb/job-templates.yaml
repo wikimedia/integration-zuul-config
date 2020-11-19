@@ -19,7 +19,16 @@
       - docker-castor-load
       - docker-src-dir
       - docker-log-dir
-      - docker-ci-src-setup-simple
+      # .gitsubmodules uses relative url, we need to point to upstream gerrit
+      # repository to fetch them.
+      - docker-ci-src-setup:
+          submodules: false
+      - docker-run-with-log-cache-src:
+          image: docker-registry.wikimedia.org/releng/ci-src-setup-simple:0.4.2-s1
+          options: --entrypoint=git
+          args: >
+              -c remote.origin.url=https://gerrit.googlesource.com/gerrit
+              submodule update --init --recursive
       - docker-run-with-log-cache-src:
           image: 'docker-registry.wikimedia.org/releng/gerrit:0.1.0-s10'
           options: '--volume /srv/git:/srv/git:ro'
