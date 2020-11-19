@@ -12,4 +12,4 @@ bazel version
 # downloaded artifacts
 export HOME="$XDG_CACHE_HOME"/gerrithome
 
-bazel build release
+bazel build "${@:-release}"
