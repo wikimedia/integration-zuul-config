@@ -7563,15 +7563,6 @@ projects:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
 
-  - name: mediawiki/services/graphoid/deploy
-    # Though the main repo is tested via the pipeline, it's still manually deployed with old CI.
-    # template:
-    #   - name: archived
-    test:
-      - graphoid-deploy-npm-node-6-docker
-    gate-and-submit:
-      - graphoid-deploy-npm-node-6-docker
-
   - name: mediawiki/services/jobrunner
     template:
       - name: composer-test-package-php72-or-later
@@ -9912,6 +9903,10 @@ projects:
       - name: archived
 
   - name: mediawiki/services/cxserver/deploy
+    template:
+      - name: archived
+
+  - name: mediawiki/services/graphoid/deploy
     template:
       - name: archived
 
