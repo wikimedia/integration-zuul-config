@@ -594,6 +594,7 @@ phan_dependencies = {
     'WikimediaMaintenance': ['CentralAuth', 'CirrusSearch', 'cldr', 'Cognate',
                              'MassMessage', 'Wikibase'],
     'WikimediaMessages': ['GuidedTour', 'ORES', 'skins/MinervaNeue'],
+    'WikiSEO': ['Scribunto'],
     'Wikisource': ['Wikibase']
 }
 
