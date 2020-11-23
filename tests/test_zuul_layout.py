@@ -132,9 +132,13 @@ class TestZuulLayout(unittest.TestCase):
         errors = []
         bsrepos = [r for r in self.getExtSkinRepos()
                    if '/BlueSpice' in r['name']]
+        archivedRepos = [
+            'mediawiki/extensions/BlueSpiceEditNotifyConnector',
+            'mediawiki/extensions/BlueSpiceMenues'
+        ]
         for project in bsrepos:
-            if project['name'] in ['mediawiki/extensions/BlueSpiceMenues']:
-                # Ignore archived project
+            if project['name'] in archivedRepos:
+                # Ignore archived projects
                 continue
             try:
                 if 'template' not in project:

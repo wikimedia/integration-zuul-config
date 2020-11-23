@@ -175,11 +175,6 @@ dependencies = {
     'BlueSpiceDashboards': ['BlueSpiceFoundation'],
     'BlueSpiceDistributionConnector': ['BlueSpiceFoundation'],
     'BlueSpiceEchoConnector': ['BlueSpiceFoundation', 'Echo'],
-    'BlueSpiceEditNotifyConnector': [
-        'BlueSpiceFoundation',
-        'BlueSpiceEchoConnector',
-        'EditNotify',
-    ],
     'BlueSpiceEmoticons': ['BlueSpiceFoundation'],
     'BlueSpiceExpiry': ['BlueSpiceFoundation', 'BlueSpiceReminder'],
     'BlueSpiceExportTables': ['BlueSpiceFoundation',
