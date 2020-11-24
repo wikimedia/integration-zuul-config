@@ -129,3 +129,21 @@
          docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.5.0
      - '{name}-maven-java8-docker-site-publish':
          docker_image_var: docker-registry.wikimedia.org/releng/java8-wikidata-query-rdf:0.5.0
+
+- project:
+      name: wikidata-query-flink-swift-plugin
+      git-user: maven-release-user
+      git-user-email: maven-release-user@wikimedia.org
+      git-user-id: maven-release-user
+      release-project: wikidata/query/flink-swift-plugin
+      release-branch: master
+      recipient-emails: discovery-alerts@lists.wikimedia.org
+      replyto-emails: discovery-alerts@lists.wikimedia.org
+      jar-update-project: wikidata/query/flink-swift-plugin
+      jar-update-branch: master
+
+      jobs:
+          - '{name}-maven-release-docker-wdqs'
+          - '{name}-maven-java8-docker'
+          - '{name}-maven-java8-docker-site-publish'
+

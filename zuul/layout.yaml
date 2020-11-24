@@ -8638,6 +8638,16 @@ projects:
     postmerge:
       - trigger-rdf-streaming-updater-pipeline-publish
 
+  - name: wikidata/query/flink-swift-plugin
+    template:
+      - name: java-codehealth
+    test:
+      - wikidata-query-flink-swift-plugin-maven-java8-docker
+    gate-and-submit:
+      - wikidata-query-flink-swift-plugin-maven-java8-docker
+    postmerge:
+      - wikidata-query-flink-swift-plugin-maven-java8-docker-site-publish
+
   - name: wikidata/query/rdf
     template:
       - name: java-codehealth
