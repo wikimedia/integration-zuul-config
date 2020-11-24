@@ -8716,6 +8716,14 @@ projects:
     postmerge:
       - generic-node10-browser-coverage-docker-publish
 
+  - name: wikidata/query/rdf-streaming-updater
+    test:
+      - trigger-rdf-streaming-updater-pipeline-test
+    gate-and-submit:
+      - trigger-rdf-streaming-updater-pipeline-rehearse
+    postmerge:
+      - trigger-rdf-streaming-updater-pipeline-publish
+
   - name: wikidata/query/rdf
     template:
       - name: java-codehealth
