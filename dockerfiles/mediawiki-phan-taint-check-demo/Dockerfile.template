@@ -1,0 +1,16 @@
+FROM {{ "ci-buster" | image_tag }}
+
+USER root
+
+RUN {{ "build-essential pkg-config autoconf python3 php-cli wget" | apt_install }} \
+    && install --directory --mode 777 /srv/demo /srv/emsdk
+
+USER nobody
+
+ENV NPM_CONFIG_cache=/tmp/cache
+RUN git clone --depth=1 https://github.com/emscripten-core/emsdk.git /srv/emsdk \
+    && /srv/emsdk/emsdk install latest \
+    && /srv/emsdk/emsdk activate latest
+
+COPY run.sh /run.sh
+ENTRYPOINT ["/run.sh"]
