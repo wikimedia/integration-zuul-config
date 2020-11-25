@@ -120,6 +120,24 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+- job:
+    name: 'mw-tools-phan-demos-publish'
+    node: Docker
+    concurrent: false
+    triggers:
+     - zuul
+    builders:
+     - docker-log-dir
+     - docker-src-dir
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/mediawiki-phan-taint-check-demo:0.1.0
+     - doc-publish:
+        docsrc: 'src/html'
+        docdest: '$DOC_PROJECT/$DOC_SUBPATH/demos'
+    publishers:
+     - archive-log-allow-empty
+     - docker-cleanup
+
 - project:
     name: mwdumper
     jobs:
