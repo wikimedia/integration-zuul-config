@@ -131,6 +131,22 @@
       - '{name}-pipeline-{pipeline}'
 
 - project:
+    name: wikibase-release-prototype
+    pipeline:
+      - test
+      - rehearse
+      - publish
+    jobs:
+      # trigger-wikibase-release-prototype-pipeline-test
+      # trigger-wikibase-release-prototype-pipeline-rehearse
+      # trigger-wikibase-release-prototype-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # wikibase-release-prototype-pipeline-test
+      # wikibase-release-prototype-pipeline-rehearse
+      # wikibase-release-prototype-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
+
+- project:
     name: toolforge-ingress-admission-controller
     pipeline:
       - test

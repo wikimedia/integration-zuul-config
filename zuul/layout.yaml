@@ -8769,6 +8769,14 @@ projects:
     template:
       - name: tox-docker
 
+  - name: wikibase/release-prototype
+    test:
+      - trigger-wikibase-release-prototype-pipeline-test
+    gate-and-submit:
+      - trigger-wikibase-release-prototype-pipeline-rehearse
+    postmerge:
+      - trigger-wikibase-release-prototype-pipeline-publish
+
   - name: wikimedia/bots/jouncebot
     template:
       - name: tox-docker
