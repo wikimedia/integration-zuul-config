@@ -1,0 +1,23 @@
+FROM {{ "php80" | image_tag }}
+
+USER root
+
+# libthai is for wikidiff2, and
+# liblua5.1 is for luasandbox
+# lcov is coverage generation
+{% set packages|replace('\n', ' ') -%}
+php8.0-dev
+build-essential
+pkg-config
+libthai-dev
+liblua5.1-dev
+lcov
+{%- endset -%}
+
+RUN {{ packages | apt_install }}
+
+USER nobody
+
+COPY run.sh /run.sh
+COPY run-coverage.sh /run-coverage.sh
+ENTRYPOINT ["/run.sh"]

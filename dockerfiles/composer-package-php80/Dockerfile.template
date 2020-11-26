@@ -1,0 +1,15 @@
+FROM {{ "php-ast" | image_tag }} as ast
+
+FROM {{ "composer-package-php70" | image_tag }} as composer-package
+
+FROM {{ "composer-php80" | image_tag }}
+
+USER root
+
+# This will override the already-existing ast
+# FIXME: This is wrong for PHP8.0?
+COPY --from=ast /usr/lib/php/20190902/ast.so /usr/lib/php/20190902/ast.so
+
+USER nobody
+COPY --from=composer-package /run.sh /run.sh
+ENTRYPOINT ["/run.sh"]
