@@ -7566,6 +7566,10 @@ projects:
     template:
       - name: composer-test-package-php72-or-later
 
+  - name: mediawiki/services/kafka-watcher
+    template:
+      - name: tox-docker
+
   - name: mediawiki/services/kartotherian
     template:
       - name: service-pipeline-test
@@ -7658,14 +7662,22 @@ projects:
     template:
       - name: tox-docker
 
-  - name : mediawiki/services/recommendation-api
+    # Primarily developed on GitHub.
+    # The changes are manually pushed to gerrit.
+  - name: mediawiki/services/restbase
     template:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
 
-  - name: mediawiki/services/kafka-watcher
+  - name: mediawiki/services/recommendation-api
     template:
-      - name: tox-docker
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
+
+  - name: mediawiki/services/similar-users
+    template:
+      - name: service-pipeline-test
+      - name: service-pipeline-test-and-publish
 
   - name: mediawiki/services/wikifeeds
     template:
@@ -7673,13 +7685,6 @@ projects:
       - name: service-pipeline-test-and-publish
 
   - name: mediawiki/services/zotero
-    template:
-      - name: service-pipeline-test
-      - name: service-pipeline-test-and-publish
-
-    # Primarily developed on github.
-    # The changes are manually pushed to gerrit.
-  - name: mediawiki/services/restbase
     template:
       - name: service-pipeline-test
       - name: service-pipeline-test-and-publish
