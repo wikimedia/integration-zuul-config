@@ -3,7 +3,9 @@ FROM {{ "ci-buster" | image_tag }}
 ENV HELM_HOME=/tmp/helm \
     HELM_CONFIG_HOME=/tmp/helm3/config \
     HELM_DATA_HOME=/tmp/helm3/data \
-    HELM_CACHE_HOME=/tmp/helm3/cache
+    HELM_CACHE_HOME=/tmp/helm3/cache \
+    HELM_REPO_INCUBATOR=https://charts.helm.sh/incubator \
+    HELM_REPO_WMFSTABLE=https://helm-charts.wikimedia.org/stable
 
 USER root
 
@@ -11,10 +13,10 @@ RUN {{ "helm helm3 rake kubeyaml envoyproxy helmfile helm-diff" | apt_install }}
     mkdir -p /etc/envoy/ssl $HELM_HOME $HELM_CONFIG_HOME $HELM_DATA_HOME $HELM_CACHE_HOME && \
     chmod -R 777 /etc/envoy && \
     helm init --client-only && \
-    helm repo add wmf-stable https://helm-charts.wikimedia.org/stable && \
-    helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com && \
-    helm3 repo add wmf-stable https://helm-charts.wikimedia.org/stable && \
-    helm3 repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com && \
+    helm repo add wmf-stable $HELM_REPO_WMFSTABLE && \
+    helm repo add incubator $HELM_REPO_INCUBATOR && \
+    helm3 repo add wmf-stable $HELM_REPO_WMFSTABLE && \
+    helm3 repo add incubator $HELM_REPO_INCUBATOR && \
     chown -R nobody $HELM_HOME
 
 USER nobody
