@@ -28,7 +28,7 @@ execfile(os.path.join(
 
 MEDIAWIKI_VERSIONS = {
     'WMF': {
-        'branch': 'wmf/1.34.0-wmf.20',
+        'branch': 'wmf/1.35.0-wmf.20',
         'pipeline-suffix': 'wmf',
     },
     'Fundraising 1.35': {
@@ -38,10 +38,6 @@ MEDIAWIKI_VERSIONS = {
     'Release 1.31': {
         'branch': 'REL1_31',
         'pipeline-suffix': '1_31',
-    },
-    'Release 1.34': {
-        'branch': 'REL1_34',
-        'pipeline-suffix': '1_34',
     },
     'Release 1.35': {
         'branch': 'REL1_35',

@@ -651,9 +651,9 @@ def set_mw_dependencies(item, job, params):
     ext_deps = deps - skin_deps
 
     # EventStreamConfig only requires MW >= REL1_35.
-    # Therefore remove it from REL1_31 and REL1_34. T249514
+    # Therefore remove it from REL1_31. T249514
     if (
-        params['ZUUL_BRANCH'] in ['REL1_31', 'REL1_34']
+        params['ZUUL_BRANCH'] == 'REL1_31'
         and 'EventStreamConfig' in ext_deps
     ):
         ext_deps.remove('EventStreamConfig')

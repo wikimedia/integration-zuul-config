@@ -1,6 +1,6 @@
 set -eu
 
-if [[ "$ZUUL_BRANCH" == "REL1_34" || "$ZUUL_BRANCH" == "REL1_31" ]]; then
+if [[ "$ZUUL_BRANCH" == "REL1_31" ]]; then
     echo "New rules are too cool for this branch. SKIPPED"
     exit 0
 fi
