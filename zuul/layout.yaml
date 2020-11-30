@@ -3712,6 +3712,17 @@ projects:
       - name: extension-quibble
       - name: extension-phan
 
+  - name: mediawiki/extensions/GlobalWatchlist
+    template:
+      - name: in-wikimedia-production
+      - name: extension-quibble
+      - name: extension-phan
+      - name: extension-coverage
+      - name: extension-codehealth
+      - name: extension-javascript-documentation
+    postmerge:
+      - mwext-doxygen-publish
+
   - name: mediawiki/extensions/GoogleNewsSitemap
     template:
       - name: in-wikimedia-production
@@ -5674,16 +5685,6 @@ projects:
   - name: mediawiki/extensions/GlobalUserrights
     template:
       - name: extension-quibble
-
-  - name: mediawiki/extensions/GlobalWatchlist
-    template:
-      - name: extension-quibble
-      - name: extension-phan
-      - name: extension-coverage
-      - name: extension-codehealth
-      - name: extension-javascript-documentation
-    postmerge:
-      - mwext-doxygen-publish
 
   - name: mediawiki/extensions/GoogleAdSense
     template:
