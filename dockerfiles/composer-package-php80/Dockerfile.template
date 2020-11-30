@@ -7,8 +7,8 @@ FROM {{ "composer-php80" | image_tag }}
 USER root
 
 # This will override the already-existing ast
-# FIXME: This is wrong for PHP8.0?
-COPY --from=ast /usr/lib/php/20190902/ast.so /usr/lib/php/20190902/ast.so
+COPY --from=ast /usr/lib/php/20200930/ast.so /usr/lib/php/20200930/ast.so
+COPY --from=ast /srv/20-ast.ini /etc/php/8.0/cli/conf.d/20-ast.ini
 
 USER nobody
 COPY --from=composer-package /run.sh /run.sh

@@ -1,7 +1,7 @@
 FROM {{ "sury-php" | image_tag }}
 
 USER root
-RUN {{ "build-essential php7.0-dev php7.1-dev php7.2-dev php7.3-dev php7.4-dev" | apt_install }}
+RUN {{ "build-essential php7.0-dev php7.1-dev php7.2-dev php7.3-dev php7.4-dev php8.0-dev" | apt_install }}
 RUN install --owner=nobody --group=nogroup --directory /srv/php-ast
 RUN install --owner=nobody --group=nogroup --directory /srv/modules
 
@@ -23,11 +23,18 @@ RUN git clone https://github.com/nikic/php-ast /srv/php-ast && \
     cp modules/ast.so /srv/modules/ast_73.so && \
     git clean -fdx && \
     phpize7.4 && ./configure --with-php-config=php-config7.4 && make && \
-    cp modules/ast.so /srv/modules/ast_74.so
+    cp modules/ast.so /srv/modules/ast_74.so && \
+    git clean -fdx && \
+    # v1.0.10, use sha1 for immutability
+    git checkout 4c0c70ff7463438e0f092f85fe6fb1f39189b8b3 && \
+    phpize8.0 && ./configure --with-php-config=php-config8.0 && make && \
+    cp modules/ast.so /srv/modules/ast_80.so
 
 USER root
 RUN cp /srv/modules/ast_70.so /usr/lib/php/20151012/ast.so && \
     cp /srv/modules/ast_71.so /usr/lib/php/20160303/ast.so && \
     cp /srv/modules/ast_72.so /usr/lib/php/20170718/ast.so && \
     cp /srv/modules/ast_73.so /usr/lib/php/20180731/ast.so && \
-    cp /srv/modules/ast_74.so /usr/lib/php/20190902/ast.so
+    cp /srv/modules/ast_74.so /usr/lib/php/20190902/ast.so && \
+    cp /srv/modules/ast_80.so /usr/lib/php/20200930/ast.so && \
+    echo "extension=ast.so" > /srv/20-ast.ini
