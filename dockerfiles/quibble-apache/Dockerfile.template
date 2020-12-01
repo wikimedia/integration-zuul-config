@@ -1,0 +1,40 @@
+FROM {{ "quibble-stretch-php72" | image_tag }}
+
+USER root
+
+#############################
+#  Debian packages we need  #
+#############################
+{% set deps|replace('\n', ' ') -%}
+apache2
+build-essential
+ffmpeg
+php-fpm
+supervisor
+{%- endset -%}
+
+RUN {{ deps | apt_install }}
+
+# Tell Apache how to process PHP files.
+RUN a2enmod proxy_fcgi \
+  && a2enmod mpm_event \
+  && a2enmod rewrite \
+  && a2enmod http2 \
+  && a2enmod cache
+COPY ./php-fpm/php-fpm.conf /etc/php/7.2/fpm/php-fpm.conf
+COPY ./php-fpm/www.conf /etc/php/7.2/fpm/pool.d/www.conf
+RUN mkdir /tmp/php && chown -R nobody:nogroup /tmp/php
+RUN touch /tmp/php7.2-fpm.log /tmp/php/php7.2-fpm.pid \
+  && chown nobody:nogroup /tmp/php7.2-fpm.log /tmp/php/php7.2-fpm.pid
+
+COPY ./php-fpm/php.ini /etc/php/7.2/fpm/php.ini
+COPY ./apache/ports.conf /etc/apache2/ports.conf
+COPY ./apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./apache/apache2.conf /etc/apache2/apache2.conf
+COPY ./apache/envvars /etc/apache2/envvars
+COPY ./entrypoint.sh /entrypoint.sh
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Unprivileged
+USER nobody
+ENTRYPOINT ["/entrypoint.sh"]
