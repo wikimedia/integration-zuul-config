@@ -28,8 +28,8 @@ for changelog_file in glob(os.path.join(DOCKERFILES_DIR, '*', 'changelog')):
     with open(changelog_file, 'r') as f:
         chglog = Changelog(f, max_blocks=1, strict=True)
 
-        package = chglog.get_package()
-        version = chglog.get_version()
+        package = chglog.package
+        version = chglog.version
         image_name = 'docker-registry.wikimedia.org/releng/%s' % package
         latest_images.add('%s:%s' % (image_name, version))
         latest_version[image_name] = version
