@@ -3,10 +3,12 @@ FROM {{ "composer-package-php80" | image_tag }}
 USER root
 
 # TODO: Should these be installed in a more base dockerfile?
-{% set mediawiki_deps|replace('\n', ' ') -%}
+######################
 # Not yet available
-# php8.0-apcu
-#php8.0-imagick
+# - php8.0-apcu
+# - php8.0-imagick
+######################
+{% set mediawiki_deps|replace('\n', ' ') -%}
 php8.0-ldap
 php8.0-mysql
 php8.0-pgsql
