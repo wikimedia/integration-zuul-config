@@ -16,7 +16,7 @@ USER root
 # This will override the already-existing ast
 COPY --from=ast /usr/lib/php/20180731/ast.so /usr/lib/php/20180731/ast.so
 # … and this will make the ast extension actually be loaded
-COPY --from=composer /etc/php/7.2/cli/conf.d/20-ast.ini /etc/php/7.3/cli/conf.d/
+COPY --from=ast /srv/20-ast.ini /etc/php/7.3/cli/conf.d/
 
 # Enable xdebug for PHPUnit coverage reports
 RUN phpenmod xdebug
