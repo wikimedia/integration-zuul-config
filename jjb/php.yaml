@@ -158,16 +158,6 @@
 - project:
     name: 'composer-flavored-on-docker'
     jobs:
-        - 'composer-package-{phpflavor}-docker':
-            phpflavor:
-                - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.3.1-s2
-                - php73:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php73:0.2.1-s2
-                - php74:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php74:0.1.1-s2
-                - php80:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php80:0.0.2-s2
         - 'composer-{phpflavor}-docker':
             phpflavor:
                 - php72:
@@ -178,6 +168,16 @@
                     image: docker-registry.wikimedia.org/releng/composer-test-php74:0.1.0
                 - php80:
                     image: docker-registry.wikimedia.org/releng/composer-test-php80:0.1.0-s2
+        - 'composer-package-{phpflavor}-docker':
+            phpflavor:
+                - php72:
+                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.4.0
+                - php73:
+                    image: docker-registry.wikimedia.org/releng/composer-package-php73:0.3.0
+                - php74:
+                    image: docker-registry.wikimedia.org/releng/composer-package-php74:0.2.0
+                - php80:
+                    image: docker-registry.wikimedia.org/releng/composer-package-php80:0.0.3
 
 - project:
     name: 'wikimedia-apps-php-security'
