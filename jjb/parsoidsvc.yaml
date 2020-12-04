@@ -28,7 +28,7 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s4
+         image: docker-registry.wikimedia.org/releng/composer-php72:0.5.0-s1
          options: '--workdir /src'
          args: 'install'
      - docker-run-with-log-cache-src:
@@ -72,7 +72,7 @@
         - '{name}-deploy-composer-testonly-{phpflavor}-docker':
             phpflavor:
               - php72:
-                  image: docker-registry.wikimedia.org/releng/composer-php72:0.3.0-s4
+                  image: docker-registry.wikimedia.org/releng/composer-php72:0.5.0-s1
 
         # For the source repo
         - '{name}-composer-package-{phpflavor}-docker':
