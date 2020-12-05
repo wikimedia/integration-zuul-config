@@ -87,7 +87,7 @@ deploy_docker() {
     local dockerfiles='/etc/zuul/wikimedia/dockerfiles'
     _ssh_command_self "$host" "
     cd /tmp
-    $docker_pkg -c $docker_pkg_config build $dockerfiles
+    $docker_pkg -c $docker_pkg_config --info build $dockerfiles
     cat /tmp/docker-pkg-build.log
     "
 
