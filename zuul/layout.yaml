@@ -1617,6 +1617,20 @@ project-templates:
       - composer-package-php74-docker
       - composer-package-php80-docker
 
+  # TODO: remove once everything supports PHP 8.0
+  - name: composer-test-package-php72-or-later-no-php80
+    test:
+      # NOTE: Unlike other templates, we test everything in gate-and-submit, not just the main one.
+      - composer-package-php72-docker
+      - composer-package-php73-docker
+      - composer-package-php74-docker
+    gate-and-submit:
+      - composer-package-php72-docker
+      - composer-package-php73-docker
+      - composer-package-php74-docker
+    experimental:
+      - composer-package-php80-docker
+
   # TODO: Remove once both luasandbox & wikidiff2 support PHP 8.0
   - name: php-compile-php72-or-later-no-php80
     test:
@@ -7827,7 +7841,7 @@ projects:
 
   - name: css-sanitizer
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
@@ -7855,7 +7869,7 @@ projects:
 
   - name: IPSet
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
@@ -7896,7 +7910,7 @@ projects:
 
   - name: mediawiki/libs/alea
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
@@ -7917,7 +7931,7 @@ projects:
 
   - name: mediawiki/libs/Equivset
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
@@ -7931,14 +7945,14 @@ projects:
 
   - name: mediawiki/libs/IPUtils
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
 
   - name: mediawiki/libs/LangConv
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
@@ -7952,7 +7966,7 @@ projects:
 
   - name: mediawiki/libs/RemexHtml
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
@@ -7966,7 +7980,7 @@ projects:
 
   - name: mediawiki/libs/Shellbox
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
@@ -8001,7 +8015,7 @@ projects:
 
   - name: mediawiki/libs/Zest
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
     postmerge:
       - doxygen-publish
       - phpunit-coverage-php72-docker-publish
@@ -8576,7 +8590,7 @@ projects:
   - name: oojs/ui
     # composer is run by npm-run-jenkins T155483
     template:
-      - name: composer-test-package-php72-or-later
+      - name: composer-test-package-php72-or-later-no-php80
       - name: mediawiki-i18n-check
     test:
       - ooui-npm-special-node10-plus-composer-docker
