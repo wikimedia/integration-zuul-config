@@ -4,7 +4,7 @@
       - '{name}-composer-{phpflavor}-docker':
           phpflavor:
               - php73:
-                  image: docker-registry.wikimedia.org/releng/composer-test-php73:0.2.0
+                  image: docker-registry.wikimedia.org/releng/composer-test-php73:0.2.0-s2
 
 - job:
     name: wikimedia-fundraising-civicrm-docker
@@ -38,7 +38,7 @@
     branch:
      - REL1_35:
          phpflavor: php73
-         docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.45
+         docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.45-s2
          # fundraising/REL_35 branch of core is used to test the master branch of
          # DonationInterface. When the next core LTS version comes out, a new
          # branch section can modify this line to point to the transitional
@@ -98,7 +98,7 @@
     branch:
      - REL1_35:
          phpflavor: php73
-         docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.45
+         docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php73:0.0.45-s2
     jobs:
      - quibble-fundraising-{ext}-{branch}-{phpflavor}-docker
 
