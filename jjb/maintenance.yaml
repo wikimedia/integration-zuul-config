@@ -23,9 +23,20 @@
             default: ''
     dsl: !include-raw:
       - maintenance-disconnect-full-disks.groovy
+
 - job:
     defaults: pipeline-job
     name: maintenance-sample-workspace-sizes
+
+    description: |
+        <p>
+        Collect jobs disk usage on all agents
+        </p>
+        <p>
+        Disabled via <a href="https://phabricator.wikimedia.org/T646683>T647683</a>
+        </p>
+    disabled: true
+
     concurrent: false
     triggers:
       - timed: '* * * * *'
