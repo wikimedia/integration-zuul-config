@@ -1,0 +1,26 @@
+FROM {{ "bazel" | image_tag }} AS bazel
+FROM {{ "ci-buster" | image_tag }} AS build
+
+USER root
+RUN {{ "golang-go gcc libc6-dev" | apt_install }} \
+    && install --owner=nobody --group=nogroup --directory /build /build/gopath
+
+USER nobody
+ENV GOPATH=/build/gopath
+RUN cd /build \
+    && go mod init . \
+    && go get github.com/bazelbuild/bazelisk@v1.6.1
+
+
+FROM {{ "ci-buster" | image_tag }}
+USER root
+RUN install --owner=nobody --group=nogroup --directory /var/local/bazel
+COPY --from=bazel /var/local/bazel/bazelrc /var/local/bazel/bazelrc
+COPY --from=build /build/gopath/bin/bazelisk /usr/local/bin/bazelisk-real
+COPY bazelisk /usr/local/bin/bazelisk
+
+USER nobody
+# Get it to download Bazel and bootstrap it
+RUN /usr/local/bin/bazelisk version
+WORKDIR /src
+ENTRYPOINT ["/usr/local/bin/bazelisk"]
