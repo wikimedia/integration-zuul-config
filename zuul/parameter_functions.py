@@ -152,7 +152,7 @@ dependencies = {
     # One can add a skin by using: 'skin/XXXXX'
     '3D': ['MultimediaViewer'],
     'AbuseFilter': ['AntiSpoof', 'CentralAuth', 'CodeEditor',
-                    'CheckUser', 'Echo', 'Renameuser'],
+                    'CheckUser', 'Renameuser'],
     'AdvancedSearch': ['Translate'],
     'ApiFeatureUsage': ['Elastica'],
     'Arrays': ['Loops', 'ParserFunctions', 'Variables'],
@@ -481,7 +481,7 @@ dependencies = {
 phan_dependencies = {
     'skins/MinervaNeue': ['Echo', 'MobileFrontend'],
     'skins/Refreshed': ['SocialProfile'],
-    'AbuseFilter': ['CheckUser', 'CentralAuth', 'Renameuser'],
+    'AbuseFilter': ['CheckUser', 'CentralAuth', 'Echo', 'Renameuser'],
     'AdvancedSearch': ['BetaFeatures'],
     'ApiFeatureUsage': ['Elastica'],
     'ArticlePlaceholder': ['Scribunto', 'Wikibase'],
