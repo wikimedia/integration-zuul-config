@@ -129,6 +129,35 @@
       - castor-save-workspace-cache
       - docker-cleanup
 
+- job:
+    name: integration-quibble-apache-fullrun
+    node: Docker
+    triggers:
+      - zuul
+    builders:
+      - docker-castor-load
+      - docker-log-dir
+      - docker-src-dir
+      - docker-ci-src-setup-simple
+      - docker-run-with-log-cache-src:
+          image: 'docker-registry.wikimedia.org/releng/quibble-apache:0.0.1'
+          options: >-
+              -v /srv/git:/srv/git:ro
+              -v "$(pwd)"/src:/src
+              --workdir=/src
+              --entrypoint=bash
+          args: >-
+              -c '/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+              && /src/utils/ci-fullrun.sh
+              --color
+              --web-backend=external --web-url=http://127.0.0.1:9413
+              --run=qunit,selenium,api-testing'
+          logdir: '/workspace/log'
+    publishers:
+      - archive-log-allow-empty
+      - castor-save-workspace-cache
+      - docker-cleanup
+
 - project:
     name: 'integration-gear'
     jobs:
