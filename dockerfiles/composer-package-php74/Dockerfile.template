@@ -2,7 +2,7 @@ FROM {{ "php-ast" | image_tag }} as ast
 
 FROM {{ "composer-scratch" | image_tag }} as composer
 
-FROM {{ "php73" | image_tag }}
+FROM {{ "php74" | image_tag }}
 
 # Install composer
 COPY --from=composer /usr/bin/composer /usr/bin/composer
