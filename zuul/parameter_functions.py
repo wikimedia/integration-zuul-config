@@ -319,6 +319,7 @@ dependencies = {
     'Echo': ['CentralAuth', 'EventLogging'],
     'ElectronPdfService': ['Collection'],
     'EmailAuthorization': ['PluggableAuth'],
+    'EncryptedUploads': ['UploadWizard'],
     'EventBus': ['EventStreamConfig'],
     'EventLogging': ['EventStreamConfig'],
     'ExternalGuidance': ['MobileFrontend', 'UniversalLanguageSelector'],
