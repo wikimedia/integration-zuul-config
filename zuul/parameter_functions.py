@@ -143,7 +143,7 @@ dependencies = {
     'skins/BlueSpiceCalumma': ['BlueSpiceFoundation'],
     'skins/BlueSpiceSkin': ['BlueSpiceFoundation'],
     'skins/Cosmos': ['AdminLinks', 'CreateRedirect', 'DismissableSiteNotice',
-                     'Echo', 'SocialProfile', 'VisualEditor'],
+                     'Echo', 'SocialProfile', 'Video', 'VisualEditor'],
     'skins/Empty': ['PhpTags'],
     'skins/MinervaNeue': ['MobileFrontend'],
     'skins/Refreshed': ['SocialProfile'],
