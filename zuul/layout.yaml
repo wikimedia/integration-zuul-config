@@ -797,6 +797,10 @@ jobs:
     branch: master
     voting: false
 
+  - name: trigger-mediawiki-pipeline-wmf-publish
+    branch: ^wmf/.*$
+    voting: false
+
   # New letsencrypt/pebble version T257456
   - name: acme-chief-new-pebble-tox-docker
     voting: false
@@ -2197,6 +2201,7 @@ projects:
     experimental:
       - mediawiki-quibble-vendor-mysql-php80-docker
       - mwgate-composer-php72-docker
+      - trigger-mediawiki-pipeline-wmf-publish
 
   - name: mediawiki/vendor
     template:

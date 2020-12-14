@@ -64,6 +64,8 @@
     name: mediawiki
     pipeline:
       - publish
+      # builds container images for wmf branches
+      - wmf-publish
     jobs:
       # trigger-mediawiki-pipeline-publish
       - 'trigger-{name}-pipeline-{pipeline}'
