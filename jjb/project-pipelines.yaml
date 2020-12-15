@@ -253,3 +253,16 @@
     jobs:
       - 'trigger-{name}-pipeline-{pipeline}'
       - '{name}-pipeline-{pipeline}'
+
+- project:
+    name: shellbox
+    pipeline:
+      - test
+      - publish
+    jobs:
+      # trigger-shellbox-pipeline-test
+      # trigger-shellbox-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # shellbox-pipeline-test
+      # shellbox-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
