@@ -40,6 +40,29 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+- job:
+    name: 'wikipeg-special-node10-plus-php72-composer-docker'
+    node: Docker
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/composer-php72:0.5.0-s1
+         options: '--workdir /src'
+         args: 'install'
+     - docker-run-with-log-cache-src:
+         image: docker-registry.wikimedia.org/releng/node10-test-browser-php72-composer:0.1.4-s5
+         options: '--workdir /src --entrypoint npm'
+         args: 'cit'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
+
 # This is an horrendous hack; delete as soon as Parsoid is a proper composer library!
 - job-template:
     name: '{name}-deploy-composer-testonly-{phpflavor}-docker'
