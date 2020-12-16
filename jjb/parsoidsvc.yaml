@@ -16,8 +16,8 @@
      - archive-log-allow-empty
      - docker-cleanup
 
-- job:
-    name: 'wikipeg-special-node10-plus-php72-composer-docker'
+- job-template:
+    name: 'wikipeg-special-node10-plus-{php}-composer-docker'
     node: Docker
     triggers:
      - zuul
@@ -27,17 +27,25 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/composer-php72:0.5.0-s1
-         options: '--workdir /src'
+         image: '{docker_image}'
+         options: '--workdir /src --entrypoint composer'
          args: 'install'
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/node10-test-browser-php72-composer:0.1.4-s5
+         image: '{docker_image}'
          options: '--workdir /src --entrypoint npm'
          args: 'cit'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
      - docker-cleanup
+
+- project:
+    name: wikipeg
+    jobs:
+        - wikipeg-special-node10-plus-{php}-composer-docker:
+            php:
+                - php72:
+                    docker_image: docker-registry.wikimedia.org/releng/node10-test-browser-php72-composer:0.1.4-s5
 
 - project:
     name: parsoidsvc
