@@ -33,8 +33,8 @@
          args: 'install'
      - docker-run-with-log-cache-src:
          image: docker-registry.wikimedia.org/releng/node10-test-browser-php72-composer:0.1.4-s5
-         options: '--workdir /src'
-         args: 'it'
+         options: '--workdir /src --entrypoint npm'
+         args: 'cit'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
