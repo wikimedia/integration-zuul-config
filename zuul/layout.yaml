@@ -1309,6 +1309,47 @@ project-templates:
       - quibble-composer-postgres-php72-noselenium-docker
       - mwext-php72-phan-docker
 
+  - name: extension-quibble-composer-php73-or-later
+    php:
+      - quibble-composer-mysql-php74-noselenium-docker
+    test:
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-mysql-php73-selenium-docker
+      - mwgate-node10-docker
+    gate-and-submit:
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-mysql-php74-noselenium-docker
+      - quibble-composer-mysql-php73-selenium-docker
+      - mwgate-node10-docker
+
+    test-1_31:
+      - mwgate-node10-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-mysql-php73-selenium-docker
+    gate-and-submit-1_31:
+      - mwgate-node10-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-mysql-php73-selenium-docker
+
+    test-1_35:
+      - mwgate-node10-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-mysql-php73-selenium-docker
+    gate-and-submit-1_35:
+      - mwgate-node10-docker
+      - quibble-composer-mysql-php73-noselenium-docker
+      - quibble-composer-mysql-php74-noselenium-docker
+      - quibble-composer-mysql-php73-selenium-docker
+
+    gate-and-submit-l10n:
+      - mediawiki-i18n-check-docker
+
+    experimental:
+      - quibble-composer-mysql-php80-docker
+      - quibble-composer-sqlite-php73-noselenium-docker
+      - quibble-composer-postgres-php73-noselenium-docker
+      - mwext-php73-phan-docker
+
   # Special job template that runs the quibble jobs but skips the
   # selenium tests - T196960
   #
@@ -7320,7 +7361,7 @@ projects:
 
   - name: mediawiki/extensions/WikibaseStatementUpdater
     template:
-      - name: extension-quibble-php73-or-later
+      - name: extension-quibble-composer-php73-or-later
 
   - name: mediawiki/extensions/WikiCategoryTagCloud
     template:
