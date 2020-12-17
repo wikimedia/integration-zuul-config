@@ -8698,19 +8698,17 @@ projects:
   - name: oojs/ui
     # composer is run by npm-run-jenkins T155483
     template:
-      - name: composer-test-package-php72-or-later-no-php80
+      - name: composer-test-package-php72-or-later
       - name: mediawiki-i18n-check
     test:
-      - ooui-special-node10-plus-php72-composer-docker
+      - ooui-special-node10-plus-php80-composer-docker
       - oojs-ui-rake-docker
     gate-and-submit:
-      - ooui-special-node10-plus-php72-composer-docker
+      - ooui-special-node10-plus-php80-composer-docker
       - oojs-ui-rake-docker
     postmerge:
       - oojs-ui-doxygen-publish
       - oojs-ui-docker-publish
-    experimental:
-      - ooui-special-node10-plus-php80-composer-docker
 
   - name: jsdoc/wmf-theme
     template:
