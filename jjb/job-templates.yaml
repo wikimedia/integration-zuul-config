@@ -128,9 +128,11 @@
             options: '--entrypoint=/usr/local/bin/mvn'
             args: 'site site:stage'
         - docker-run-with-log-cache-src:
-            image: '{obj:docker_image_var}'
-            # Bypass CI fetch/checkout which would discard material from the install stage
-            options: '--entrypoint=/usr/local/bin/mvn'
+            # The template uses maven-java8 but Sonar scanner requires Java 11
+            image: 'docker-registry.wikimedia.org/releng/sonar-scanner:1.0.1'
+            # Bypass the default entry point and invoke sonar directly
+            # Do make sure to not discard the build artifacts from previous step.
+            options: '--entrypoint=/usr/local/bin/mvn --workdir=/src'
             # Sonar analysis requires the sonarcloud API key to be present in the SONAR_API_KEY environment variable
             args: 'sonar:sonar'
     wrappers:
