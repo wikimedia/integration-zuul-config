@@ -34,19 +34,8 @@
         - '{name}-tox-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/tox-pyspark:0.6.0-s3
 
-- project:
-    name: java-codehealth
-    packages-source: composer
-    database: mysql
-    jobs:
-      - java-codehealth-{name}:
-         # Used for analyzing gerrit patch sets.
-         name: 'patch'
-         publishers:
-           - docker-cleanup
-
-- job-template:
-    name: 'java-codehealth-{name}'
+- job:
+    name: 'java-codehealth-patch'
     node: Docker
     concurrent: false
     properties:
