@@ -3,12 +3,12 @@
     build_timeout: 15 # minutes
     jobs:
      - '{name}-tox-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.4.0-s4
+         docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.5.0
      - '{name}-tox-publish':
         docsrc: 'docs/_build/html'
         docdest: 'pywikibot/$DOC_SUBPATH'
      - '{name}-tox-{toxenv}-docker':
-         docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.4.0-s4
+         docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.5.0
          toxenv:
              - doc
              - fasttest-py35
@@ -18,7 +18,7 @@
     name: pywikibot-tox-jobs
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.4.0-s4
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.5.0
 
 # Begin of pywikibot bots
 - project:
