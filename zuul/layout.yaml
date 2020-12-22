@@ -1692,6 +1692,14 @@ project-templates:
     experimental:
       - composer-php80-docker
 
+  - name: composer-test-php73-or-later
+    test:
+      - composer-php73-docker
+    gate-and-submit:
+      - composer-php73-docker
+      - composer-php74-docker
+      - composer-php80-docker
+
   - name: composer-test-package-php72-or-later
     test:
       # NOTE: Unlike other templates, we test everything in gate-and-submit, not just the main one.
@@ -1965,7 +1973,7 @@ projects:
   - name: integration/docroot
     template:
       - name: node10-docker
-      - name: composer-test-php72-or-later
+      - name: composer-test-php73-or-later
 
   - name: integration/gear
     test:
