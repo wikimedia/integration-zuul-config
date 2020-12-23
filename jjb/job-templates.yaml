@@ -177,67 +177,67 @@
         - docker-cleanup
 
 - job-template:
-    name: '{name}-maven-release-docker'
-    node: Docker
+    name:       '{name}-maven-release-docker'
+    node:       Docker
     concurrent: false
     parameters:
-      - string:
-          name: 'ZUUL_URL'
-          default: 'https://{git-user}@gerrit.wikimedia.org/r'
-          description: >
-              Base URL to clone the repository from.
-              HTTPS credentials for Gerrit are injected by Jenkins'
-      - string:
-          name: 'ZUUL_PROJECT'
-          default: '{release-project}'
-          description: 'The Gerrit project to clone'
-      - string:
-          name: 'ZUUL_REF'
-          default: '{release-branch}'
-          description: 'A git reference to fetch. Used by "git fetch"'
-      - string:
-          name: 'ZUUL_BRANCH'
-          default: '{release-branch}'
-          description: 'Name of the local branch to checkout to'
+        - string:
+            name:        'ZUUL_URL'
+            default:     'https://{git-user}@gerrit.wikimedia.org/r'
+            description: >
+                         Base URL to clone the repository from.
+                         HTTPS credentials for Gerrit are injected by Jenkins'
+        - string:
+            name:        'ZUUL_PROJECT'
+            default:     '{release-project}'
+            description: 'The Gerrit project to clone'
+        - string:
+            name:        'ZUUL_REF'
+            default:     '{release-branch}'
+            description: 'A git reference to fetch. Used by "git fetch"'
+        - string:
+            name:        'ZUUL_BRANCH'
+            default:     '{release-branch}'
+            description: 'Name of the local branch to checkout to'
     wrappers:
-      # Credentials for Gerrit
-      - credentials-binding:
-          - file:
-              credential-id: maven-release-user-netrc
-              variable: NETRC_FILE
-      # Credentials for Archiva
-      - config-file-provider:
-          files:
-              - file-id: 'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig.ArchivaCredentialsSettings'
-                target: archiva-credentials.xml
-      - timeout:
-          timeout: 30
-          fail: true
-      - timestamps
+        # Credentials for Gerrit
+        - credentials-binding:
+            - file:
+                credential-id: maven-release-user-netrc
+                variable:      NETRC_FILE
+        # Credentials for Archiva
+        - config-file-provider:
+            files:
+                -   file-id: 'org.jenkinsci.plugins.configfiles.maven.MavenSettingsConfig.ArchivaCredentialsSettings'
+                    target:  archiva-credentials.xml
+        - timeout:
+            timeout: 30
+            fail:    true
+        - timestamps
     builders:
-      - docker-castor-load
-      - docker-log-dir
-      # The config-file-provider has the file created by the jenkins-slave and
-      # respecting umask. It is thus not readable by the nobody user in the
-      # container. setfacl lets us grant an extra permission.
-      # Credentials binding makes it readable solely by the jenkins-slave user.
-      - shell: |
-          setfacl -m user:65534:r archiva-credentials.xml $NETRC_FILE
-      - docker-run-with-log-and-workspace-cache:
-          options: >-
-              -v "$NETRC_FILE":/nonexistent/.netrc:ro
-              -v "$WORKSPACE/archiva-credentials.xml":/archiva-credentials.xml
-              -e GIT_AUTHOR_NAME="{git-user}"
-              -e GIT_COMMITTER_NAME="{git-user}"
-              -e EMAIL="{git-user-email}"
-          image: docker-registry.wikimedia.org/releng/maven-java8:1.0.0
-          args: >-
-              -Dresume=false
-              -Djdk.net.URLClassPath.disableClassPathURLCheck=true
-              -Duser.name='{git-user}'
-              -DdeveloperConnection="scm:git:$ZUUL_URL/$ZUUL_PROJECT"
-              --settings /archiva-credentials.xml
-              release:prepare release:perform -Darguments=-Dgpg.skip=true
+        - docker-castor-load
+        - docker-log-dir
+        # The config-file-provider has the file created by the jenkins-slave and
+        # respecting umask. It is thus not readable by the nobody user in the
+        # container. setfacl lets us grant an extra permission.
+        # Credentials binding makes it readable solely by the jenkins-slave user.
+        - shell: |
+                 setfacl -m user:65534:r archiva-credentials.xml $NETRC_FILE
+        - docker-run-with-log-and-workspace-cache:
+            options: >-
+                     -v "$NETRC_FILE":/nonexistent/.netrc:ro
+                     -v "$WORKSPACE/archiva-credentials.xml":/archiva-credentials.xml
+                     -e GIT_AUTHOR_NAME="{git-user}"
+                     -e GIT_COMMITTER_NAME="{git-user}"
+                     -e EMAIL="{git-user-email}"
+            image:   docker-registry.wikimedia.org/releng/maven-java8:1.0.0
+            args:    >-
+                     -Dresume=false
+                     -Djdk.net.URLClassPath.disableClassPathURLCheck=true
+                     -Duser.name='{git-user}'
+                     -DdeveloperConnection="scm:git:$ZUUL_URL/$ZUUL_PROJECT"
+                     --settings /archiva-credentials.xml
+                     release:prepare release:perform -Darguments=-Dgpg.skip=true
     publishers: '{publishers}'
 
 - job-template: &job_npm-node-6-docker
