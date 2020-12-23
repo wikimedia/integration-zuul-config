@@ -51,14 +51,32 @@
     docker_image_var: docker-registry.wikimedia.org/releng/maven-java8:1.0.0
     triggers:
         - zuul
+    # The project is expected to provide a maven wrapper at the root of the
+    # project. If it cannot be provided by the project, the 'maven_path' can be
+    # overridden to use the maven binaries provided in the docker image:
+    # /opt/apache-maven/bin/mvn
+    maven_path: '/src/mvnw'
     maven_args: 'clean verify'
+    # The pom.xml is expected to be at the root of the project. If it is
+    # somewhere else, the path can be specified here, relative to "workdir"
+    # (see below).
+    pom: 'pom.xml'
+    # The working directory. It should usually be the root of the project.
+    # Maven should be able to run from anywhere, but in some cases a project
+    # configuration might depend on a specific working directory. Ideally the
+    # Maven configuration should be fixed to be workdir independent, but if
+    # that's not practical, the working directory can be overridden. Note that
+    # in that case, it might be necessary to adapt the "pom" argument as well.
+    workdir: '/src'
     builders:
         - docker-castor-load
         - docker-log-dir
+        - docker-ci-src-setup-simple
         - docker-run-with-log-and-workspace-cache:
-            options: '{obj:docker_run_options|}'
+            # run Maven Wrapper directly from the project
+            options: '--entrypoint={maven_path} --workdir={workdir}'
             image: '{obj:docker_image_var}'
-            args: '{obj:maven_args}'
+            args: '-gs /settings.xml --batch-mode --file {pom} {maven_args}'
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache

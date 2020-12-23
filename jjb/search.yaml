@@ -18,7 +18,8 @@
     jobs:
         - '{name}-maven-java8-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/java8-xgboost:0.4.0
-            maven_args: --file jvm-packages/pom.xml clean verify
+            pom: jvm-packages/pom.xml
+            workdir: '/src/jvm-packages'
 
 - project:
     name: search-mjolnir
@@ -30,7 +31,7 @@
         # using the last release of the jvm code, But it's a good start.
         - '{name}-maven-java8-docker':
             docker_image_var: docker-registry.wikimedia.org/releng/java8-mjolnir:0.4.0
-            maven_args: --file jvm/pom.xml clean verify
+            pom: jvm/pom.xml
 
 - project:
     name: wikimedia-discovery-analytics
