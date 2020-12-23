@@ -176,7 +176,7 @@
         - castor-save-workspace-cache
         - docker-cleanup
 
-- job-template:
+- job-template: &job_template_maven-release-docker
     name:       '{name}-maven-release-docker'
     node:       Docker
     concurrent: false
@@ -239,6 +239,10 @@
                      --settings /archiva-credentials.xml
                      release:prepare release:perform -Darguments=-Dgpg.skip=true
     publishers: '{publishers}'
+
+- job-template:
+    name: '{name}-{project}-maven-release-docker'
+    !!merge : *job_template_maven-release-docker
 
 - job-template: &job_npm-node-6-docker
     name: 'npm-node-6-docker'

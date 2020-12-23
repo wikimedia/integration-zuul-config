@@ -1,8 +1,15 @@
 - project:
     name: discovery
     project:
-        - parent-pom
-        - maven-tool-configs
+        - parent-pom:
+            release-project: 'wikimedia/discovery/discovery-parent-pom'
+        - maven-tool-configs:
+            release-project: 'wikimedia/discovery/discovery-maven-tool-configs'
+    release-branch: master
+    publishers:
+        - email-wikimedia-discovery
+        - docker-cleanup
     jobs:
         - '{name}-{project}-maven-java8-docker'
         - '{name}-{project}-maven-java8-docker-site-publish'
+        - '{name}-{project}-maven-release-docker'
