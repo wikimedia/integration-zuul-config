@@ -9,6 +9,19 @@
          failure: false
          fixed: true
 
+- publisher:
+    name: email-wikimedia-discovery
+    publishers:
+        - email-ext:
+            recipients:   'discovery-alerts@lists.wikimedia.org'
+            reply-to:     'discovery-alerts@lists.wikimedia.org'
+            always:       true
+            content-type: text
+            subject:      Update on build $BUILD_TAG
+            body:         |
+                          The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
+                          See $BUILD_URL for details.
+
 - project:
     name: wikidata-query-gui
     jobs:
@@ -97,17 +110,7 @@
               -DdeveloperConnection="scm:git:$ZUUL_URL/$ZUUL_PROJECT"
               --settings /archiva-credentials.xml
               release:prepare release:perform -Darguments=-Dgpg.skip=true
-    publishers:
-     - email-ext:
-         recipients: '{recipient-emails}'
-         reply-to: '{replyto-emails}'
-         always: true
-         content-type: text
-         subject: Update on build $BUILD_TAG
-         body: |
-           The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
-           See $BUILD_URL for details.
-     - docker-cleanup
+    publishers: '{publishers}'
 
 - project:
     name: wikidata-query-rdf
@@ -115,8 +118,9 @@
     git-user-email: maven-release-user@wikimedia.org
     release-project: wikidata/query/rdf
     release-branch: master
-    recipient-emails: discovery-alerts@lists.wikimedia.org
-    replyto-emails: discovery-alerts@lists.wikimedia.org
+    publishers:
+        - email-wikimedia-discovery
+        - docker-cleanup
 
     jobs:
      - '{name}-maven-release-docker-wdqs'
@@ -129,8 +133,9 @@
       git-user-email: maven-release-user@wikimedia.org
       release-project: wikidata/query/flink-swift-plugin
       release-branch: master
-      recipient-emails: discovery-alerts@lists.wikimedia.org
-      replyto-emails: discovery-alerts@lists.wikimedia.org
+      publishers:
+          - email-wikimedia-discovery
+          - docker-cleanup
 
       jobs:
           - '{name}-maven-release-docker-wdqs'

@@ -8,6 +8,20 @@
                 - name: '#wikimedia-analytics'
                   notify-only: true
 
+
+- publisher:
+    name: email-wikimedia-analytics
+    publishers:
+        - email-ext:
+            recipients:   'analytics-alerts@wikimedia.org'
+            reply-to:     'analytics-alerts@wikimedia.org'
+            always:       true
+            content-type: text
+            subject:      Update on build $BUILD_TAG
+            body:         |
+                          The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
+                          See $BUILD_URL for details.
+
 - job-template:
     name: '{name}-maven-release-docker'
     node: Docker
@@ -70,18 +84,7 @@
               -DdeveloperConnection="scm:git:$ZUUL_URL/$ZUUL_PROJECT"
               --settings /archiva-credentials.xml
               release:prepare release:perform -Darguments=-Dgpg.skip=true
-    publishers:
-      - email-ext:
-          recipients: '{recipient-emails}'
-          reply-to: '{replyto-emails}'
-          always: true
-          content-type: text
-          subject: Update on build $BUILD_TAG
-          body: |
-            The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
-            See $BUILD_URL for details.
-      - irc-wikimedia-analytics
-      - docker-cleanup
+    publishers: '{publishers}'
 
 - job-template:
     name: '{name}-update-jars-docker'
@@ -148,16 +151,7 @@
               -b "$ZUUL_BRANCH"
               -m 'review'
     publishers:
-      - email-ext:
-          recipients: '{recipient-emails}'
-          reply-to: '{replyto-emails}'
-          always: true
-          failure: false
-          content-type: text
-          subject: Update on build $BUILD_TAG
-          body: |
-            The build $BUILD_NUMBER for $GIT_PROJECT has finished.
-            See $BUILD_URL for details.
+      - email-wikimedia-analytics
       - irc-wikimedia-analytics
       - archive-log-allow-empty
       - docker-cleanup
@@ -169,10 +163,12 @@
     git-user-id: maven-release-user
     release-project: analytics/refinery/source
     release-branch: master
-    recipient-emails: analytics-alerts@wikimedia.org
-    replyto-emails: analytics-alerts@wikimedia.org
     jar-update-project: analytics/refinery
     jar-update-branch: master
+    publishers:
+        - email-wikimedia-analytics
+        - irc-wikimedia-analytics
+        - docker-cleanup
 
     jobs:
      - '{name}-maven-release-docker'
@@ -213,8 +209,10 @@
     git-user-id: maven-release-user
     release-project: wikimedia-event-utilities
     release-branch: master
-    recipient-emails: analytics-alerts@wikimedia.org
-    replyto-emails: analytics-alerts@wikimedia.org
+    publishers:
+        - email-wikimedia-analytics
+        - irc-wikimedia-analytics
+        - docker-cleanup
 
     jobs:
      - '{name}-maven-release-docker'
