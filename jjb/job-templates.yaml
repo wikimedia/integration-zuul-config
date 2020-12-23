@@ -183,7 +183,7 @@
     parameters:
         - string:
             name:        'ZUUL_URL'
-            default:     'https://{git-user}@gerrit.wikimedia.org/r'
+            default:     'https://maven-release-user@gerrit.wikimedia.org/r'
             description: >
                          Base URL to clone the repository from.
                          HTTPS credentials for Gerrit are injected by Jenkins'
@@ -227,14 +227,14 @@
             options: >-
                      -v "$NETRC_FILE":/nonexistent/.netrc:ro
                      -v "$WORKSPACE/archiva-credentials.xml":/archiva-credentials.xml
-                     -e GIT_AUTHOR_NAME="{git-user}"
-                     -e GIT_COMMITTER_NAME="{git-user}"
-                     -e EMAIL="{git-user-email}"
+                     -e GIT_AUTHOR_NAME="maven-release-user"
+                     -e GIT_COMMITTER_NAME="maven-release-user"
+                     -e EMAIL="maven-release-user@wikimedia.org"
             image:   docker-registry.wikimedia.org/releng/maven-java8:1.0.0
             args:    >-
                      -Dresume=false
                      -Djdk.net.URLClassPath.disableClassPathURLCheck=true
-                     -Duser.name='{git-user}'
+                     -Duser.name='maven-release-user'
                      -DdeveloperConnection="scm:git:$ZUUL_URL/$ZUUL_PROJECT"
                      --settings /archiva-credentials.xml
                      release:prepare release:perform -Darguments=-Dgpg.skip=true

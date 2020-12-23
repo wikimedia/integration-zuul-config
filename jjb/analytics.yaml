@@ -29,7 +29,7 @@
     parameters:
       - string:
           name: 'ZUUL_URL'
-          default: 'https://{git-user}@gerrit.wikimedia.org/r'
+          default: 'https://maven-release-user@gerrit.wikimedia.org/r'
           description: >
               Base URL to clone the repository from.
               HTTPS credentials for Gerrit are injected by Jenkins'
@@ -77,13 +77,13 @@
       - docker-run-with-log-cache-src:
           options: >-
               -v "$NETRC_FILE":/nonexistent/.netrc:ro
-              -e GIT_AUTHOR_NAME="{git-user}"
-              -e GIT_COMMITTER_NAME="{git-user}"
-              -e EMAIL="{git-user-email}"
+              -e GIT_AUTHOR_NAME="maven-release-user"
+              -e GIT_COMMITTER_NAME="maven-release-user"
+              -e EMAIL="maven-release-user@wikimedia.org"
           image: docker-registry.wikimedia.org/releng/jar-updater:0.0.7-s1
           args: >-
               -v "$RELEASE_VERSION"
-              -u '{git-user}'
+              -u 'maven-release-user'
               -b "$ZUUL_BRANCH"
               -m 'review'
     publishers:
@@ -94,9 +94,6 @@
 
 - project:
     name: 'analytics-refinery'
-    git-user: maven-release-user
-    git-user-email: maven-release-user@wikimedia.org
-    git-user-id: maven-release-user
     release-project: analytics/refinery/source
     release-branch: master
     jar-update-project: analytics/refinery
@@ -140,9 +137,6 @@
 # for working with event streams in WMF production.
 - project:
     name: 'wikimedia-event-utilities'
-    git-user: maven-release-user
-    git-user-email: maven-release-user@wikimedia.org
-    git-user-id: maven-release-user
     release-project: wikimedia-event-utilities
     release-branch: master
     publishers:
