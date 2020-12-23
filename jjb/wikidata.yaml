@@ -92,10 +92,10 @@
           image: docker-registry.wikimedia.org/releng/maven-java8:1.0.0
           args: >-
               -Dresume=false
+              -Djdk.net.URLClassPath.disableClassPathURLCheck=true
               -Duser.name='{git-user}'
               -DdeveloperConnection="scm:git:$ZUUL_URL/$ZUUL_PROJECT"
               --settings /archiva-credentials.xml
-              -B
               release:prepare release:perform -Darguments=-Dgpg.skip=true
     publishers:
      - email-ext:
@@ -107,9 +107,7 @@
          body: |
            The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
            See $BUILD_URL for details.
-     - junit:
-             results: 'src/**/target/surefire-reports/*.xml'
-             allow-empty-results: true
+     - docker-cleanup
 
 - project:
     name: wikidata-query-rdf

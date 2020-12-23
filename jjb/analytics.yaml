@@ -69,7 +69,7 @@
               -Duser.name='{git-user}'
               -DdeveloperConnection="scm:git:$ZUUL_URL/$ZUUL_PROJECT"
               --settings /archiva-credentials.xml
-              release:prepare release:perform
+              release:prepare release:perform -Darguments=-Dgpg.skip=true
     publishers:
       - email-ext:
           recipients: '{recipient-emails}'
@@ -81,8 +81,6 @@
             The build $BUILD_NUMBER for $ZUUL_PROJECT has finished.
             See $BUILD_URL for details.
       - irc-wikimedia-analytics
-      - archive-log-allow-empty
-      - castor-save-workspace-cache
       - docker-cleanup
 
 - job-template:
