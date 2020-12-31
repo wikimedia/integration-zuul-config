@@ -1,6 +1,6 @@
-FROM {{ "tox" | image_tag }}
+FROM {{ "tox-buster" | image_tag }}
 
 USER root
-RUN {{ "python3-dev libpq-dev gcc" | apt_install }}
+RUN {{ "libpq-dev" | apt_install }}
 
 USER nobody
