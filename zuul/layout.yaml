@@ -941,13 +941,16 @@ jobs:
     success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}-{build.parameters[ZUUL_PATCHSET]}&resolved=false'
     failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}-{build.parameters[ZUUL_PATCHSET]}&resolved=false'
 
+  # Only generate coverage information for master
+  - name: ^.*-coverage-(docker-)?publish$
+    branch: master
+
   # For coverage report jobs, we only want one build at a time.
   #
   # That is the equivalent of concurrent: false in Jenkins but handled by Zuul
   # instead.
   - name: mwext-phpunit-coverage-docker-publish
     mutex: mwext-phpunit-coverage-docker-publish
-    branch: master
 
   # Zuul does not know whether a Jenkins job is marked as non concurrent and
   # would thus trigger the associated Gearman function multiple times.
@@ -970,10 +973,6 @@ jobs:
 
   - name: mediawiki-core-doxygen-docker-publish
     mutex: mediawiki-core-doxygen-docker-publish
-
-  # Only generate coverage information for master
-  - name: ^.*-coverage-(docker-)?publish$
-    branch: master
 
   - name: wikimedia-fundraising-civicrm-docker
     branch: (?!.*deployment.*|^contrib$)
