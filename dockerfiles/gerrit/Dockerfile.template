@@ -1,19 +1,34 @@
 # Docker image with gerrit
 
-FROM {{ "bazel" | image_tag }}
+FROM {{ "bazelisk" | image_tag }}
 
 USER root
 
-# Use Node 10 instead of Node 6
-RUN echo "deb http://apt.wikimedia.org/wikimedia stretch-wikimedia component/node10" > /etc/apt/sources.list.d/stretch-node10.list \
-    && {{ "nodejs" | apt_install }} \
+# We need both Java 8 and 11
+RUN echo "deb http://apt.wikimedia.org/wikimedia buster-wikimedia component/jdk8" \
+        > /etc/apt/sources.list.d/buster-jdk8.list \
+    && {{ "openjdk-8-jdk-headless openjdk-11-jdk-headless" | apt_install }}
+
+RUN {{ "nodejs" | apt_install }} \
     && git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/npm.git /srv/npm \
     && rm -rf /srv/npm/.git \
     && ln -s /srv/npm/bin/npm-cli.js /usr/bin/npm
 
+# gcc for asciidoctor
 # curl is required by Gerrit tools/download_file.py
-# zip by src/tools/js/download_bower.py
-RUN {{ "curl zip python-minimal python python3-minimal python3" | apt_install }}
+# zip and unzip by src/tools/js/download_bower.py
+{% set gerrit_deps -%}
+gcc
+g++
+curl
+zip
+unzip
+python-minimal
+python
+python3-minimal
+python3
+{%- endset -%}
+RUN {{ gerrit_deps | apt_install }}
 
 USER nobody
 
