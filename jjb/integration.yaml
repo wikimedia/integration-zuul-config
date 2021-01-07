@@ -121,6 +121,7 @@
               -v /srv/git:/srv/git:ro
               -v "$(pwd)"/src:/src
               --workdir=/src
+              --tmpfs /workspace/db:size=320M
               --entrypoint=/src/utils/ci-fullrun.sh
           args: --color
           logdir: '/workspace/log'
@@ -145,6 +146,7 @@
               -v /srv/git:/srv/git:ro
               -v "$(pwd)"/src:/src
               --workdir=/src
+              --tmpfs /workspace/db:size=320M
               --entrypoint=bash
           args: >-
               -c '/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
