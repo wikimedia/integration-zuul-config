@@ -1736,22 +1736,6 @@ project-templates:
     experimental:
       - composer-package-php80-docker
 
-  # TODO: Remove once both luasandbox & wikidiff2 support PHP 8.0
-  - name: php-compile-php72-or-later-no-php80
-    test:
-      # NOTE: Unlike other templates, we test everything in gate-and-submit, not just the main one.
-      - php-compile-php72-docker
-      - php-compile-php73-docker
-      - php-compile-php74-docker
-    gate-and-submit:
-      - php-compile-php72-docker
-      - php-compile-php73-docker
-      - php-compile-php74-docker
-    postmerge:
-      - php74-compile-coverage-publish
-    experimental:
-      - php-compile-php80-docker
-
   - name: php-compile-php72-or-later
     test:
       # NOTE: Unlike other templates, we test everything in gate-and-submit, not just the main one.
@@ -7931,8 +7915,7 @@ projects:
 
   - name: mediawiki/php/luasandbox
     template:
-      # See T268925 for PHP 8.0 support
-      - name: php-compile-php72-or-later-no-php80
+      - name: php-compile-php72-or-later
     postmerge:
       - doxygen-publish
     publish:
