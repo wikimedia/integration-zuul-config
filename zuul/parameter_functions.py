@@ -52,6 +52,7 @@ def set_parameters(item, job, params):
     if job.name == 'parsoidsvc-parsertests-docker':
         params['EXT_DEPENDENCIES'] = '\\n'.join([
             'mediawiki/extensions/Cite',
+            'mediawiki/extensions/Disambiguator',
             'mediawiki/extensions/Poem',
             'mediawiki/extensions/TimedMediaHandler',
         ])
@@ -471,6 +472,9 @@ dependencies = {
     'Wikisource': ['Wikibase'],
     'wikihiero': ['VisualEditor'],
     'WSOAuth': ['PluggableAuth'],
+
+    # Services (Parsoid is a weird case!)
+    'services/parsoid': ['Cite', 'Disambiguator', 'Poem', 'TimedMediaHandler'],
 }
 
 # Dependencies used in phan jobs.
