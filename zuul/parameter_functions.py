@@ -383,7 +383,7 @@ dependencies = {
     'PageTriage': ['WikiLove', 'ORES', 'Echo'],
     'PageViewInfo': ['Graph'],
     'ParserFunctions': ['Scribunto'],
-    'parsoid': ['Cite', 'Disambiguator', 'Poem', 'TimedMediaHandler'],
+    'parsoid': ['Cite', 'Poem', 'TimedMediaHandler'],
     'PhpTagsFunctions': ['PhpTags'],
     'PhpTagsSPARQL': ['PhpTags'],
     'PhpTagsSMW': ['PhpTags'],
