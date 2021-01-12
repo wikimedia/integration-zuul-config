@@ -1722,20 +1722,6 @@ project-templates:
       - composer-package-php74-docker
       - composer-package-php80-docker
 
-  # TODO: remove once everything supports PHP 8.0
-  - name: composer-test-package-php72-or-later-no-php80
-    test:
-      # NOTE: Unlike other templates, we test everything in gate-and-submit, not just the main one.
-      - composer-package-php72-docker
-      - composer-package-php73-docker
-      - composer-package-php74-docker
-    gate-and-submit:
-      - composer-package-php72-docker
-      - composer-package-php73-docker
-      - composer-package-php74-docker
-    experimental:
-      - composer-package-php80-docker
-
   - name: php-compile-php72-or-later
     test:
       # NOTE: Unlike other templates, we test everything in gate-and-submit, not just the main one.
@@ -8430,7 +8416,7 @@ projects:
 
   - name: labs/tools/stewardbots
     template:
-      - name: composer-test-package-php72-or-later-no-php80
+      - name: composer-test-package-php72-or-later
       - name: tox-docker
 
   - name: labs/tools/qrcode-generator
