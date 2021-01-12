@@ -6,6 +6,7 @@ from fakes import FakeJob
 dependencies = {}  # defined for flake8
 get_dependencies = None  # defined for flake8
 set_parameters = None  # defined for flake8
+remap_parsoid = None  # defined for flake8
 # Import function
 execfile(os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -77,7 +78,7 @@ class TestMwDependencies(unittest.TestCase):
             if base_name.startswith('skins/'):
                 project = 'mediawiki/' + base_name
             else:
-                project = 'mediawiki/extensions/' + base_name
+                project = remap_parsoid('mediawiki/extensions/' + base_name)
 
             self.assertHasDependencies(self.fetch_dependencies(
                 project=project))

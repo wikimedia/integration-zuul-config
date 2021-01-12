@@ -7,6 +7,16 @@ Combined into one Python function due to T125498
 import re
 
 
+# For historical reasons, Parsoid is a 'service' not an 'extension'.
+# But practically speaking, Parsoid is (for the moment) an extension.
+def remap_parsoid(list_or_string):
+    if isinstance(list_or_string, str):
+        return 'mediawiki/services/parsoid' \
+            if list_or_string == 'mediawiki/extensions/parsoid' \
+            else list_or_string
+    return [remap_parsoid(item) for item in list_or_string]
+
+
 def set_parameters(item, job, params):
     """
     :type item: zuul.model.QueueItem
@@ -373,6 +383,7 @@ dependencies = {
     'PageTriage': ['WikiLove', 'ORES', 'Echo'],
     'PageViewInfo': ['Graph'],
     'ParserFunctions': ['Scribunto'],
+    'parsoid': ['Cite', 'Disambiguator', 'Poem', 'TimedMediaHandler'],
     'PhpTagsFunctions': ['PhpTags'],
     'PhpTagsSPARQL': ['PhpTags'],
     'PhpTagsSMW': ['PhpTags'],
@@ -591,6 +602,14 @@ phan_dependencies = {
 }
 
 
+# Export with a literal \n character and have bash expand it later via
+# 'echo -e $XXX_DEPENDENCIES'.
+def glue_deps(prefix, deps):
+    return '\\n'.join(remap_parsoid(
+        prefix + d for d in sorted(list(set(deps)))
+    ))
+
+
 def set_mw_dependencies(item, job, params):
     """
     Inject MediaWiki dependencies based on a built-in hash.
@@ -626,8 +645,8 @@ def set_mw_dependencies(item, job, params):
         # 'Vector'
         params['SKIN_NAME'] = split[-1]
     elif split[1] == 'services':
-        # Lookup key in 'dependencies. Example: 'services/parsoid'
-        dep_key = 'services' + '/' + split[-1]
+        # Lookup key in 'dependencies'. Example: 'parsoid'
+        dep_key = split[-1]
         params['SERVICE_NAME'] = split[-1]
     else:
         # Lookup key in 'dependencies. Example: 'Foobar'
@@ -676,13 +695,6 @@ def set_mw_dependencies(item, job, params):
         ext_deps.remove('WikibaseMediaInfo')
         ext_deps.remove('WikimediaBadges')
         ext_deps.remove('WikibaseLexeme')
-
-    # Export with a literal \n character and have bash expand it later via
-    # 'echo -e $XXX_DEPENDENCIES'.
-    def glue_deps(prefix, deps):
-        return '\\n'.join(
-            prefix + d for d in sorted(deps)
-        )
 
     params['SKIN_DEPENDENCIES'] = glue_deps('mediawiki/', skin_deps)
     params['EXT_DEPENDENCIES'] = glue_deps('mediawiki/extensions/', ext_deps)
@@ -812,6 +824,8 @@ def set_gated_extensions(item, job, params):
     if(params['ZUUL_PIPELINE'] == 'experimental'):
         if params['ZUUL_PROJECT'].startswith('mediawiki/extensions/'):
             deps.append(params['ZUUL_PROJECT'].split('/')[-1])
+        if params['ZUUL_PROJECT'] == 'mediawiki/services/parsoid':
+            deps.append(params['ZUUL_PROJECT'].split('/')[-1])
         if params['ZUUL_PROJECT'].startswith('mediawiki/skins/'):
             skin_deps.append(params['ZUUL_PROJECT'].split('/')[-1])
 
@@ -822,20 +836,15 @@ def set_gated_extensions(item, job, params):
         deps.extend(gatedextensions)
         skin_deps.extend(gatedskins)
 
-    deps = sorted(list(set(deps)))
-    skin_deps = sorted(list(set(skin_deps)))
-
-    params['EXT_DEPENDENCIES'] = '\\n'.join(
-        'mediawiki/extensions/' + dep for dep in deps
-    )
-    params['SKIN_DEPENDENCIES'] = '\\n'.join(
-        'mediawiki/skins/' + skin for skin in skin_deps
-    )
+    params['EXT_DEPENDENCIES'] = glue_deps('mediawiki/extensions/', deps)
+    params['SKIN_DEPENDENCIES'] = glue_deps('mediawiki/skins/', skin_deps)
 
     # So we can cd $EXT_NAME && composer test - T161895
     split = params['ZUUL_PROJECT'].split('/')
     if len(split) == 3 and split[1] == 'extensions':
         params['EXT_NAME'] = split[-1]
+    if len(split) == 3 and split[1] == 'services':
+        params['SERVICE_NAME'] = split[-1]
     if len(split) == 3 and split[1] == 'skins':
         params['SKIN_NAME'] = split[-1]
 

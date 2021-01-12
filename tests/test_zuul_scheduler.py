@@ -971,9 +971,10 @@ class TestZuulScheduler(unittest.TestCase):
 
         # Grab projects having the gate job 'wmf-quibble-*'
         gated_in_zuul = set([
-            ext_name[len('mediawiki/extensions/'):]  # extension basename
+            ext_name.split('/')[-1]  # extension basename
             for (ext_name, pipelines) in self.getProjectsDefs().iteritems()
-            if ext_name.startswith('mediawiki/extensions/')
+            if (ext_name.startswith('mediawiki/extensions/')
+                or ext_name.startswith('mediawiki/services/'))
             and 'wmf-quibble-vendor-mysql-php72-docker'
                 in pipelines.get('test', {})
         ])
