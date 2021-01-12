@@ -76,8 +76,6 @@ class TestMwDependencies(unittest.TestCase):
         for base_name in dependencies:
             if base_name.startswith('skins/'):
                 project = 'mediawiki/' + base_name
-            elif base_name.startswith('services/'):
-                project = 'mediawiki/' + base_name
             else:
                 project = 'mediawiki/extensions/' + base_name
 
