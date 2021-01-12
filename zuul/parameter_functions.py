@@ -62,6 +62,7 @@ def set_parameters(item, job, params):
     if job.name == 'parsoidsvc-parsertests-docker':
         params['EXT_DEPENDENCIES'] = '\\n'.join([
             'mediawiki/extensions/Cite',
+            'mediawiki/extensions/Disambiguator',
             'mediawiki/extensions/Poem',
             'mediawiki/extensions/TimedMediaHandler',
         ])
@@ -383,7 +384,9 @@ dependencies = {
     'PageTriage': ['WikiLove', 'ORES', 'Echo'],
     'PageViewInfo': ['Graph'],
     'ParserFunctions': ['Scribunto'],
-    'parsoid': ['Cite', 'Poem', 'TimedMediaHandler'],
+    # These dependencies can't be added properly until T271863 is resolved
+    # in quibble.
+    # 'parsoid': ['Cite', 'Disambiguator', 'Poem', 'TimedMediaHandler'],
     'PhpTagsFunctions': ['PhpTags'],
     'PhpTagsSPARQL': ['PhpTags'],
     'PhpTagsSMW': ['PhpTags'],
