@@ -40,6 +40,7 @@
         - matrix-combinations:
             name: combo
             description: 'Select matrix combinations'
+            filter: '{obj:filter|}'
     axes:
         - axis:
             type: label-expression
@@ -214,5 +215,30 @@
      - wikimedia/svgtranslate
     branches:
      - master
+    jobs:
+     - '{repogroup}-php-security'
+
+- project:
+    name: 'fundraising-php-security'
+    repogroup: 'fundraising'
+    host: 'https://gerrit.wikimedia.org/r/p'
+    email_recipients: 'fundraising-tech-failmail@wikimedia.org, security-admin-feed@lists.wikimedia.org'
+    projects:
+     - wikimedia/fundraising/crm
+     - wikimedia/fundraising/SmashPig
+     - fundraising/REL1_35
+     - mediawiki/extensions/DonationInterface
+     - wikimedia/fundraising/tools
+    branches:
+     - deploy
+     - deployment
+     - fundraising/REL1_35
+     - master
+    filter: >
+        (ZUUL_PROJECT=="wikimedia/fundraising/crm" && ZUUL_BRANCH=="deployment")
+        || (ZUUL_PROJECT=="wikimedia/fundraising/SmashPig" && ZUUL_BRANCH=="deployment")
+        || (ZUUL_PROJECT=="mediawiki/core" && ZUUL_BRANCH=="fundraising/REL1_35")
+        || (ZUUL_PROJECT=="mediawiki/extensions/DonationInterface" && ZUUL_BRANCH=="master")
+        || (ZUUL_PROJECT=="wikimedia/fundraising/tools" && ZUUL_BRANCH=="deploy")
     jobs:
      - '{repogroup}-php-security'
