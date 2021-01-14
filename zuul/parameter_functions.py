@@ -360,6 +360,7 @@ dependencies = {
     'LDAPAuthentication2': ['LDAPProvider', 'PluggableAuth'],
     'LDAPAuthorization': ['LDAPProvider', 'PluggableAuth'],
     'LDAPGroups': ['LDAPProvider'],
+    'LDAPSyncAll': ['LDAPGroups', 'LDAPProvider', 'LDAPUserInfo'],
     'LDAPUserInfo': ['LDAPProvider'],
     'LifeWeb': ['LifeWebCore', 'Wikibase'],
     'LightweightRDFa': ['WikiEditor'],
