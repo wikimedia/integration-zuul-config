@@ -17,13 +17,21 @@
         options: '--volume "$(pwd)"/src:/src'
         image: 'docker-registry.wikimedia.org/releng/composer-security-check:1.1-s2'
     publishers:
-      - email:
-         recipients: security-admin-feed@lists.wikimedia.org
-         notify-every-unstable-build: false
       - docker-cleanup
 
+# A matrix job to scan a combination of (project, branch)
+#
+# Parameters:
+#
+#  repogroup: a prefix for the matrix job name
+#
+#  email_recipients: where to send failure notifications to, one for each
+#  (project, branch) that failed.
+#  Default: security-admin-feed@lists.wikimedia.org
+#
 - job-template:
     name: '{repogroup}-php-security'
+    email_recipients: 'security-admin-feed@lists.wikimedia.org'
     concurrent: false
     project-type: matrix
     execution-strategy:
@@ -58,6 +66,11 @@
                     ZUUL_REF=$ZUUL_BRANCH
     triggers:
         - timed: "H 20 * * *"
+    publishers:
+        - email:
+            recipients: '{obj:email_recipients}'
+            notify-every-unstable-build: false
+            matrix-trigger: only-configurations
 
 - job-template: &composer-package-phpflavor-docker
     name: 'composer-package-{phpflavor}-docker'
