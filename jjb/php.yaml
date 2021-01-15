@@ -156,16 +156,16 @@
     php:
      - php72:
          composer_image: docker-registry.wikimedia.org/releng/composer-php72:0.5.0-s1
-         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan:0.8.1-s2
+         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan:0.8.1-s3
      - php73:
          composer_image: docker-registry.wikimedia.org/releng/composer-php73:0.3.0-s1
-         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan-php73:0.1.2-s2
+         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan-php73:0.1.2-s3
      - php74:
          composer_image: docker-registry.wikimedia.org/releng/composer-php74:0.2.0-s1
-         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan-php74:0.1.1-s4
+         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan-php74:0.1.1-s5
      - php80:
          composer_image: docker-registry.wikimedia.org/releng/composer-php80:0.0.2-s1
-         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan-php80:0.0.3-s4
+         phan_image: docker-registry.wikimedia.org/releng/mediawiki-phan-php80:0.0.3-s5
     jobs:
       - 'phan-{php}-docker'
 
@@ -185,13 +185,13 @@
         - 'composer-package-{phpflavor}-docker':
             phpflavor:
                 - php72:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.4.0
+                    image: docker-registry.wikimedia.org/releng/composer-package-php72:0.4.0-s1
                 - php73:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php73:0.3.0
+                    image: docker-registry.wikimedia.org/releng/composer-package-php73:0.3.0-s1
                 - php74:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php74:0.3.0
+                    image: docker-registry.wikimedia.org/releng/composer-package-php74:0.3.0-s1
                 - php80:
-                    image: docker-registry.wikimedia.org/releng/composer-package-php80:0.0.4
+                    image: docker-registry.wikimedia.org/releng/composer-package-php80:0.0.4-s1
 
 - project:
     name: 'wikimedia-apps-php-security'
