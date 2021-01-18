@@ -166,6 +166,14 @@
         - '{name}-tox-docker'
 
 - project:
+    name: gearman-java
+    jobs:
+        - '{name}-maven-java8-docker':
+            docker_image_var: docker-registry.wikimedia.org/releng/gearman-java8:1.0.0
+        - '{name}-maven-java11-docker':
+           docker_image_var: docker-registry.wikimedia.org/releng/gearman-java11:1.0.0
+
+- project:
     name: 'integration-quibble'
     jobs:
         - '{name}-tox-docker'

@@ -81,6 +81,14 @@
     triggers:
      - zuul
 
+- job-template:
+    !!merge : *job_template_maven-java8-docker
+    name: '{name}-maven-java11-docker'
+    docker_image_var: docker-registry.wikimedia.org/releng/maven-java11:1.0.0
+    # Reinject Zuul parameters since JJB strip for some reason
+    triggers:
+     - zuul
+
 # Generate project documentation using docker and publish it
 - job-template:
     name: '{name}-docker-doc-publish'
