@@ -513,6 +513,7 @@ phan_dependencies = {
     'CognitiveProcessDesigner': ['PageForms', 'BlueSpiceFoundation',
                                  'BlueSpiceUEModulePDF'],
     'CollaborationKit': ['EventLogging', 'PageImages', 'VisualEditor', 'Flow'],
+    'CommentStreams': ['Echo', 'SocialProfile'],
     'ConfirmEdit': ['Math'],
     'ContactPage': ['ConfirmEdit'],
     'ContentTranslation': ['AbuseFilter', 'BetaFeatures', 'CentralAuth',
