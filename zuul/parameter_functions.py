@@ -328,7 +328,7 @@ dependencies = {
     'EmailAuthorization': ['PluggableAuth'],
     'EncryptedUploads': ['UploadWizard'],
     'EventBus': ['EventStreamConfig'],
-    'EventLogging': ['EventStreamConfig'],
+    'EventLogging': ['EventStreamConfig', 'EventBus'],
     'ExternalGuidance': ['MobileFrontend', 'UniversalLanguageSelector'],
     'FanBoxes': ['SocialProfile'],
     'FlexiSkin': ['BlueSpiceFoundation', 'OOJSPlus', 'CodeEditor'],
