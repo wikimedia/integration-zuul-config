@@ -785,6 +785,7 @@ gatedextensions = [
     'ContentTranslation',
     'Echo',
     'Elastica',
+    'EventBus',
     'EventLogging',
     'EventStreamConfig',
     'FileImporter',
