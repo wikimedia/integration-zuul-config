@@ -13,6 +13,20 @@
       - '{name}-pipeline-{pipeline}'
 
 - project:
+    # blubber-doc/examples/calculator-service
+    name: calculator-service
+    pipeline:
+      - test_pl
+      - publish_pl
+    jobs:
+      # trigger-calculator-service-pipeline-test_pl
+      # trigger-calculator-service-pipeline-publish_pl
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # calculator-service-pipeline-test_pl
+      # calculator-service-pipeline-publish_pl
+      - '{name}-pipeline-{pipeline}'
+
+- project:
     name: blubber
     pipeline:
       - test

@@ -1902,6 +1902,15 @@ projects:
     postmerge:
       - trigger-helloworldoid-pipeline-publish
 
+  - name: blubber-doc/example/calculator-service
+    test:
+      - trigger-calculator-service-pipeline-test_pl
+    gate-and-submit:
+    # all test jobs must have a gate and submit pipeline defined
+      - noop
+    postmerge:
+      - trigger-calculator-service-pipeline-publish_pl
+
   - name: cloud/toolforge/buildpacks
     test:
       - shellcheck
