@@ -788,23 +788,32 @@ jobs:
   #
   # See: http://docs.python.org/2/library/re.html#search-vs-match
 
+  # Meta jobs come first
+  #
+  # A job whose name starts with '^' is a meta job, is rules are applied on any
+  # matching job UNLESS a job already had a definition.  We thus want to list
+  # meta jobs first.
   - name: ^.*$
     parameter-function: set_parameters
 
   - name: ^.*-non-voting$
     voting: false
 
-  - name: trigger-mediawiki-pipeline-publish
-    branch: master
-    voting: false
+  - name: ^.*rake-docker$
+    files:
+      # Uses python re.match() which checks at BEGINNING of the string
+      - '.*\.pp$'
+      - '.*\.rb'
+      - '.*/Vagrantfile'
+      - '(\.rubocop|.*\.gemspec$|Gemfile)'
+      - '.*([Rr]akefile|/spec/)'
 
-  - name: trigger-mediawiki-pipeline-wmf-publish
-    branch: ^wmf/.*$
-    voting: false
-
-  # New letsencrypt/pebble version T257456
-  - name: acme-chief-new-pebble-tox-docker
-    voting: false
+  # Experimental building of Debian packages
+  # based on jenkins-debian-glue
+  - name: ^debian-glue.*
+    # Point directly to artifacts
+    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
+    files: 'debian/.*'
 
   - name: ^wmf-quibble-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
@@ -826,6 +835,34 @@ jobs:
     # run them on REL branches.
     branch: (?!^REL)
 
+  - name: ^quibble-donationinterface-REL1_35-php73-docker$
+    skip-if:
+      - project: ^mediawiki/extensions/DonationInterface$
+        branch: ^deployment$
+
+  # Only run patch coverage if a PHP file was
+  # changed on master.
+  - name: ^.*-phpunit-coverage-patch
+    branch: master
+    files:
+      - '^.*\.php$'
+
+  # Only generate coverage information for master
+  - name: ^.*-coverage-(docker-)?publish$
+    branch: master
+
+  - name: trigger-mediawiki-pipeline-publish
+    branch: master
+    voting: false
+
+  - name: trigger-mediawiki-pipeline-wmf-publish
+    branch: ^wmf/.*$
+    voting: false
+
+  # New letsencrypt/pebble version T257456
+  - name: acme-chief-new-pebble-tox-docker
+    voting: false
+
   # Ensure MediaWiki repositories in a dependent pipeline have a queue name.
   # queue-name can not be applied based on a regex, apply the name on most used
   # jobs.
@@ -840,38 +877,22 @@ jobs:
     files:
       - '^.*\.R$'
 
-  - name: ^.*rake-docker$
-    files:
-      # Uses python re.match() which checks at BEGINNING of the string
-      - '.*\.pp$'
-      - '.*\.rb'
-      - '.*/Vagrantfile'
-      - '(\.rubocop|.*\.gemspec$|Gemfile)'
-      - '.*([Rr]akefile|/spec/)'
-
-  # Same for mediawiki/vagrant
-  - name: ^mediawiki-vagrant-rake-docker$
+  # Some rake jobs should trigger regardless of affected files:
+  - name: mediawiki-vagrant-rake-docker
     files:
       - '.*'
-  - name: ^puppet-wmf-styleguide-rake-docker$
+  - name: puppet-wmf-styleguide-rake-docker
     files:
       - '.*'
 
   # Ditto for translatewiki which has puppet modules under /puppet
-  - name: ^translatewiki-rake-docker$
+  - name: translatewiki-rake-docker
     files:
       - '^\.puppet-lint\.rc$'
       - '^puppet/.*'
       - '(^Rakefile$|^Gemfile$)'
 
-  # Experimental building of Debian packages
-  # based on jenkins-debian-glue
-  - name: ^debian-glue.*
-    # Point directly to artifacts
-    success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
-    files: 'debian/.*'
-
-  - name: ^gerrit-docker$
+  - name: gerrit-docker
     # Point directly to artifacts
     success-pattern: 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/'
     branch: ^wmf/.*$
@@ -899,21 +920,6 @@ jobs:
   - name: integration-zuul-tox-docker
     branch: ^patch-queue/debian/
 
-  - name: ^quibble-donationinterface-REL1_35-php73-docker$
-    skip-if:
-      - project: ^mediawiki/extensions/DonationInterface$
-        branch: ^deployment$
-
-
-  # Jobs testing multiple extensions together
-
-  # Only run patch coverage if a PHP file was
-  # changed on master.
-  - name: ^.*-phpunit-coverage-patch
-    branch: master
-    files:
-      - '^.*\.php$'
-
   - name: mediawiki-fresnel-patch-docker
     # Equivalent to concurrent: false in Jenkins but handled by Zuul instead.
     mutex: mediawiki-fresnel-patch-docker
@@ -940,10 +946,6 @@ jobs:
   - name: mwcore-codehealth-patch
     success-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}-{build.parameters[ZUUL_PATCHSET]}&resolved=false'
     failure-pattern: 'https://sonarcloud.io/dashboard?id=mediawiki-core&branch={build.parameters[ZUUL_CHANGE]}-{build.parameters[ZUUL_PATCHSET]}&resolved=false'
-
-  # Only generate coverage information for master
-  - name: ^.*-coverage-(docker-)?publish$
-    branch: master
 
   # For coverage report jobs, we only want one build at a time.
   #
