@@ -362,7 +362,6 @@ dependencies = {
     'LDAPGroups': ['LDAPProvider'],
     'LDAPSyncAll': ['LDAPGroups', 'LDAPProvider', 'LDAPUserInfo'],
     'LDAPUserInfo': ['LDAPProvider'],
-    'LifeWeb': ['LifeWebCore', 'Wikibase'],
     'LightweightRDFa': ['WikiEditor'],
     'LoginNotify': ['CentralAuth', 'CheckUser', 'Echo'],
     'MachineVision': ['Wikibase', 'WikibaseMediaInfo', 'Echo'],
