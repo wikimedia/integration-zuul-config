@@ -259,26 +259,6 @@
     name: '{name}-{project}-maven-release-docker'
     !!merge : *job_template_maven-release-docker
 
-- job-template: &job_npm-node-6-docker
-    name: 'npm-node-6-docker'
-    node: Docker
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1-s1'
-    docker_run_options_var: ''
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-src-dir
-     - docker-log-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-        options: '{obj:docker_run_options_var}'
-        image: '{obj:docker_image_var}'
-    publishers:
-     - archive-log-allow-empty
-     - castor-save-workspace-cache
-     - docker-cleanup
-
 # Node.js 10 job for 'npm install-test'
 - job-template:
     name: '{name}-node10-docker'
@@ -468,43 +448,8 @@
            script: 'doc'
 
 - job-template:
-    !!merge : *job_npm-node-6-docker
-    name: '{name}-npm-node-6-docker'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-
-- job-template: &job_npm-run-script-node-6-docker
-    !!merge : *job_npm-node-6-docker
-    name: '{name}-npm-run-{script}-node-6-docker'
-    docker_run_options_var: ''
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-src-dir
-     - docker-log-dir
-     - docker-ci-src-setup-simple
-     - docker-run-with-log-cache-src:
-        options: '{obj:docker_run_options_var}'
-        image: '{obj:docker_image_var}'
-        args: '{script}'
-
-
-# Variant for MediaWiki services /deploy repos
-- job-template:
-    !!merge : *job_npm-run-script-node-6-docker
-    name: '{name}-deploy-npm-run-{script}-node-6-docker'
-    # Reinject Zuul parameters since JJB strip for some reason
-    triggers:
-     - zuul
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1-s1'
-    docker_run_options_var: '--entrypoint=/run-oid.sh'
-
-- job-template:
-    !!merge : *job_npm-run-script-node-6-docker
     name: 'selenium-daily-{sitename}-{project}'
+    node: Docker
     docker_image_var: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3-s2'
     triggers:
      - timed: '@daily'
