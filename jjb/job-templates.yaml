@@ -474,16 +474,6 @@
     triggers:
      - zuul
 
-# Variant for MediaWiki services /deploy repos
-# We only need to install devDependencies, and use a different entry point
-- job-template:
-    !!merge : *job_npm-node-6-docker
-    name: '{name}-deploy-npm-node-6-docker'
-    docker_image_var: 'docker-registry.wikimedia.org/releng/npm-test:0.7.1-s1'
-    docker_run_options_var: '--entrypoint=/run-oid.sh'
-    triggers:
-     - zuul
-
 - job-template: &job_npm-run-script-node-6-docker
     !!merge : *job_npm-node-6-docker
     name: '{name}-npm-run-{script}-node-6-docker'
