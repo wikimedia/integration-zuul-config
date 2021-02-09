@@ -21,13 +21,13 @@
     name: censorshipmonitoring
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-censorshipmonitoring:0.1.1
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-censorshipmonitoring:0.1.2
 
 - project:
     name: conftool
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-conftool:0.4.1
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-conftool:0.4.2
 
 - job:
     name: 'operations-dns-lint-docker'
@@ -79,7 +79,7 @@
     name: 'cassandra-table-properties'
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.5.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.5.1
             build_timeout: 20 # minutes
 
 - project:
@@ -87,12 +87,12 @@
     jobs:
         - '{name}-tox-docker':
             build_timeout: 20 # minutes
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.1.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.1.1
         - tox-publish-jobs:
             docenv: 'py37-sphinx'
             docsrc: 'doc/build/html'
             docdest: 'cumin/$DOC_SUBPATH'
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.1.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.1.1
 
 - project:
     name: deployment-charts
@@ -110,12 +110,12 @@
     name: 'homer'
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.1.1
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.1.2
         - tox-publish-jobs:
             docenv: 'py37-sphinx'
             docsrc: 'doc/build/html'
             docdest: 'homer/$DOC_SUBPATH'
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.1.1
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.1.2
 
 - project:
     name: netbox-reports
