@@ -33,7 +33,7 @@ RUN {{ packages | apt_install }} \
     && {{ "python-pip python3-pip" | apt_remove }} \
     && ln -s /usr/local/bin/pip /usr/bin/pip \
     && pip install setuptools \
-    && pip install tox==3.10.0 \
+    && pip install tox==3.21.4 \
     && rm -fR "$XDG_CACHE_HOME/pip"
 
 USER nobody
