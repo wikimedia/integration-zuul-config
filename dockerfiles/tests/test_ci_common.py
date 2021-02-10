@@ -91,6 +91,7 @@ class Test(unittest.TestCase):
 
     def test_checkouts_to_a_named_local_branch(self):
         self.run_script({
+            'CI': '1',
             'ZUUL_BRANCH': 'master',
             'ZUUL_REF': 'master',
             'GIT_NO_SUBMODULES': '1',
@@ -103,6 +104,7 @@ class Test(unittest.TestCase):
         # A ref updated event does not have any branch associated with it,
         # typically when a tag is created. Hence no ZUUL_BRANCH is passed.
         self.run_script({
+            'CI': '1',
             'ZUUL_REF': 'refs/tags/v1.0',
             'GIT_NO_SUBMODULES': '1',
         })
@@ -115,6 +117,7 @@ class Test(unittest.TestCase):
 
     def test_can_skip_submodule_processing(self):
         self.run_script({
+            'CI': '1',
             'ZUUL_REF': 'master',
             'ZUUL_BRANCH': 'master',
             'GIT_NO_SUBMODULES': '1',
@@ -126,6 +129,7 @@ class Test(unittest.TestCase):
 
     def test_default_to_process_submodules(self):
         self.run_script({
+            'CI': '1',
             'ZUUL_REF': 'master',
             'ZUUL_BRANCH': 'master',
             })
@@ -134,3 +138,51 @@ class Test(unittest.TestCase):
             ['submodule', '--quiet', 'foreach',
                 'git', 'log', '--pretty=format:%s'],
             )
+
+    def test_defaults_to_not_init(self):
+        self.run_script(env={
+            'ZUUL_REF': 'master',
+            'ZUUL_BRANCH': 'master',
+            })
+
+        self.assertFalse(
+            os.path.exists(os.path.join(
+                self.workspace, '.git')),
+            'Command must NOT have cloned the repository in the workspace')
+
+    def test_ci_environment_variable_does_init(self):
+        self.run_script(env={
+            'CI': '1',
+            'ZUUL_REF': 'master',
+            'ZUUL_BRANCH': 'master',
+            })
+
+        self.assertTrue(
+            os.path.exists(os.path.join(
+                self.workspace, '.git')),
+            'Command must clone the repository in the workspace')
+
+    def test_jenkins_url_environment_variable_does_init(self):
+        self.run_script(env={
+            'JENKINS_URL': '1',
+            'ZUUL_REF': 'master',
+            'ZUUL_BRANCH': 'master',
+            })
+
+        self.assertTrue(
+            os.path.exists(os.path.join(
+                self.workspace, '.git')),
+            'Command must clone the repository in the workspace')
+
+    def test_ci_and_jenkins_url_environment_variables_do_init(self):
+        self.run_script(env={
+            'CI': '1',
+            'JENKINS_URL': '1',
+            'ZUUL_REF': 'master',
+            'ZUUL_BRANCH': 'master',
+            })
+
+        self.assertTrue(
+            os.path.exists(os.path.join(
+                self.workspace, '.git')),
+            'Command must clone the repository in the workspace')

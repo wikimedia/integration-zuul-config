@@ -7,10 +7,15 @@ umask 002
 
 set -euxo pipefail
 
-git init
-git fetch --quiet --update-head-ok --depth 2 "${ZUUL_URL}/${ZUUL_PROJECT}" "+$ZUUL_REF:$ZUUL_REF"
+if [[ "${JENKINS_URL:-}" == "" && "${CI:-}" == "" ]]; then
+    echo "Skipping git clone, not running on CI env (JENKINS_URL and CI vars empty/unset)."
+    exit
+fi
 
-if [ -z "${ZUUL_BRANCH:-}" ]; then
+git init
+git fetch --quiet --update-head-ok --depth 2 "${ZUUL_URL}/${ZUUL_PROJECT}" "+${ZUUL_REF}:${ZUUL_REF}"
+
+if [[ "${ZUUL_BRANCH:-}" == "" ]]; then
     # For ref-updated events such as a new tag
     git checkout -q FETCH_HEAD
 else
@@ -18,7 +23,7 @@ else
 fi
 
 set +x
-if [ -z "${GIT_NO_SUBMODULES:-}" ]; then
+if [[ "${GIT_NO_SUBMODULES:-}" == "" ]]; then
     set -x
     git submodule --quiet update --init --recursive
 else
