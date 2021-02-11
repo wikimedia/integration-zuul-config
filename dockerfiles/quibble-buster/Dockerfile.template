@@ -80,7 +80,7 @@ xauth
 {% set alldeps = quibble_deps + " " + zuul_deps + " " + mediawiki_deps + " " + browsers_deps -%}
 RUN {{ alldeps | apt_install }} \
     && pip3 install --upgrade 'setuptools<=41' \
-    && pip3 install git+https://gerrit.wikimedia.org/r/p/integration/quibble.git@"0.0.45"#egg=quibble \
+    && pip3 install git+https://gerrit.wikimedia.org/r/p/integration/quibble.git@"0.0.46"#egg=quibble \
     && rm -fR "$XDG_CACHE_HOME"/pip \
     && apt-get purge -y python3-pip python3-wheel \
     && apt-get autoremove -y --purge \
