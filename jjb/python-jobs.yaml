@@ -7,7 +7,7 @@
 - job-template: &job_tox-docker
     name: 'tox-docker'
     node: Docker
-    docker_image_var: 'docker-registry.wikimedia.org/releng/tox-buster:0.1.1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/tox-buster:0.2.0'
     triggers:
         - zuul
     builders:
@@ -37,7 +37,7 @@
 - job-template:
     !!merge : *job_tox-docker
     name: '{name}-tox-{toxenv}-docker'
-    docker_image_varimage: 'docker-registry.wikimedia.org/releng/tox-buster:0.1.1'
+    docker_image_varimage: 'docker-registry.wikimedia.org/releng/tox-buster:0.2.0'
     triggers:
         - zuul
     builders:
@@ -54,7 +54,7 @@
     name: '{name}-tox-publish'
     node: Docker
     concurrent: false
-    docker_image_var: 'docker-registry.wikimedia.org/releng/tox-buster:0.1.1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/tox-buster:0.2.0'
     triggers:
      - zuul
     builders:
@@ -77,7 +77,7 @@
     name: '{name}-tox-tag-publish'
     node: Docker
     concurrent: false
-    docker_image_var: 'docker-registry.wikimedia.org/releng/tox-buster:0.1.1'
+    docker_image_var: 'docker-registry.wikimedia.org/releng/tox-buster:0.2.0'
     triggers:
      - zuul-post
     builders:
@@ -112,10 +112,10 @@
      - docker-log-dir
      - docker-src-dir
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/tox-buster:0.1.1
+         image: docker-registry.wikimedia.org/releng/tox-buster:0.2.0
          args: '-e py27 -- --cover-html --cover-html-dir=coverage/ --cover-xml --cover-xml-file=/log/coverage.xml'
      - docker-run-with-log-cache-src:
-         image: docker-registry.wikimedia.org/releng/tox-buster:0.1.1
+         image: docker-registry.wikimedia.org/releng/tox-buster:0.2.0
          options: '--entrypoint=/usr/bin/cobertura-clover-transform'
          args: '/log/coverage.xml -o /log/clover.xml'
      - shell: |
