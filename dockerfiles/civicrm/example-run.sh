@@ -8,7 +8,6 @@ repos=(
     wikimedia/fundraising/crm
     wikimedia/fundraising/crm/civicrm-buildkit
     wikimedia/fundraising/crm/civicrm
-    wikimedia/fundraising/crm/drupal
 )
 for repo in "${repos[@]}"; do
     docker run --rm -it \
