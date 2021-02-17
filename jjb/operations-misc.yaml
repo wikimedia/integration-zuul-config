@@ -3,7 +3,7 @@
     jobs:
         - '{name}-tox-docker':
             # FIXME: Can't use 0.2.0 due to T212395
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-cergen:0.5.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-cergen:0.5.0-s1
 
 - project:
     name: acme-chief
@@ -15,19 +15,19 @@
     name: acme-chief-new-pebble
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-acme-chief:0.6.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-acme-chief:0.6.0-s1
 
 - project:
     name: censorshipmonitoring
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-censorshipmonitoring:0.2.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-censorshipmonitoring:0.2.0-s1
 
 - project:
     name: conftool
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-conftool:0.5.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-conftool:0.5.0-s1
 
 - job:
     name: 'operations-dns-lint-docker'
@@ -79,7 +79,7 @@
     name: 'cassandra-table-properties'
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.6.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-pywikibot:0.6.0-s1
             build_timeout: 20 # minutes
 
 - project:
@@ -87,12 +87,12 @@
     jobs:
         - '{name}-tox-docker':
             build_timeout: 20 # minutes
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.2.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.3.0
         - tox-publish-jobs:
             docenv: 'py37-sphinx'
             docsrc: 'doc/build/html'
             docdest: 'cumin/$DOC_SUBPATH'
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.2.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.3.0
 
 - project:
     name: deployment-charts
@@ -110,12 +110,12 @@
     name: 'homer'
     jobs:
         - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.2.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.2.0-s1
         - tox-publish-jobs:
             docenv: 'py37-sphinx'
             docsrc: 'doc/build/html'
             docdest: 'homer/$DOC_SUBPATH'
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.2.0
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.2.0-s1
 
 - project:
     name: netbox-reports
