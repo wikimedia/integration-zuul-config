@@ -68,3 +68,53 @@
           - '{name}-maven-java8-docker-site-publish'
           - '{name}-maven-release-docker'
 
+- job:
+    name: wikidata-query-gui-build
+    node: Docker
+    concurrent: false
+    triggers:
+      - zuul
+    parameters:
+      # Zuul parameters for Castor
+      - string:
+          name: 'ZUUL_BRANCH'
+          default: 'master'
+      - string:
+          name: 'ZUUL_PROJECT'
+          default: 'wikidata/query/gui'
+      - string:
+          name: 'ZUUL_PIPELINE'
+          default: 'postmerge'
+      - string:
+          name: 'ZUUL_URL'
+          default: 'https://gerrit.wikimedia.org/r'
+      - string:
+          name: 'ZUUL_REF'
+          default: 'master'
+    builders:
+        - docker-log-dir
+        - docker-src-dir
+        - docker-cache-dir
+        - docker-ci-src-setup-simple
+        - shell: |
+            export GIT_AUTHOR_NAME=WDQSGuiBuilder
+            export GIT_COMMITTER_NAME=WDQSGuiBuilder
+            export GIT_AUTHOR_EMAIL=wdqs-gui-build@lists.wikimedia.org
+            export GIT_COMMITTER_EMAIL=wdqs-gui-build@lists.wikimedia.org
+
+            # We do not know Gerrit SSH host fingerprint
+            mkdir -p ~/.ssh
+            printf 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\n  User wdqsguibuilder\n' >> ~/.ssh/config
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/node10-test:0.6.1-s2
+            args: 'deploy'
+    wrappers:
+      - timeout:
+          timeout: 15 # minutes
+      - timestamps
+      - ssh-agent-credentials:
+          users:
+            - 'wdqsguibuilder'
+    publishers:
+        - archive-log-allow-empty
+        - docker-cleanup
