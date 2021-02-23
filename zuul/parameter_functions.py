@@ -321,7 +321,7 @@ dependencies = {
     'CreateAPage': ['WikiEditor'],
     'CustomPage': ['skins/CustomPage'],
     'Dashiki': ['JsonConfig'],
-    'DiscussionTools': ['VisualEditor', 'Linter'],
+    'DiscussionTools': ['VisualEditor', 'Linter', 'Echo'],
     'Disambiguator': ['VisualEditor', 'parsoid'],
     'Echo': ['CentralAuth', 'EventLogging'],
     'ElectronPdfService': ['Collection'],
