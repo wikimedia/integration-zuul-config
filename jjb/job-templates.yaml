@@ -48,15 +48,21 @@
 - job-template: &job_template_maven-java8-docker
     name: '{name}-maven-java8-docker'
     node: Docker
+    # Projects are by default built on Java 8. To build on Java 11, use the
+    # {name}-maven-java11-docker job template, which will replace this docker
+    # image with the java 11 version.
     docker_image_var: docker-registry.wikimedia.org/releng/maven-java8:1.0.0
     triggers:
         - zuul
     # The project is expected to provide a maven wrapper at the root of the
-    # project. If it cannot be provided by the project, the 'maven_path' can be
-    # overridden to use the maven binaries provided in the docker image:
-    # /opt/apache-maven/bin/mvn
+    # project. If another entry point is required for a project (for example
+    # to setup some build prerequisites) 'maven_path' variables can be
+    # overridden. Note that the sonar analysis step will always use the
+    # maven wrapper provided by the project.
+    #   maven_path: /some/entry/point
     maven_path: '/src/mvnw'
-    maven_args: 'clean verify'
+
+    maven_args: 'clean install'
     # The pom.xml is expected to be at the root of the project. If it is
     # somewhere else, the path can be specified here, relative to "workdir"
     # (see below).
@@ -78,6 +84,43 @@
             options: '--entrypoint={maven_path} --workdir={workdir}'
             image: '{obj:docker_image_var}'
             args: '-gs /settings.xml --batch-mode --file {pom} {maven_args}'
+        - docker-run-with-log-cache-src:
+            # This runs a sonar analysis after the main build. It relies on
+            # Maven `install` target having been reached in the previous step.
+            # It requires at least the following configurations in the pom.xml
+            # of the project:
+            # * sonar plugin declared and configured
+            # * Sonar API key loaded via the environment variable `SONAR_API_KEY`
+            #
+            # minimal example:
+            #   <properties>
+            #     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+            #     <sonar.login>${env.SONAR_API_KEY}</sonar.login>
+            #     <sonar.organization>wmftest</sonar.organization>
+            #   </properties>
+            #   <build>
+            #     <pluginManagement>
+            #       <plugins>
+            #         <plugin>
+            #           <groupId>org.sonarsource.scanner.maven</groupId>
+            #           <artifactId>sonar-maven-plugin</artifactId>
+            #           <version>3.8.0.2131</version>
+            #         </plugin>
+            #       </plugins>
+            #     </pluginManagement>
+            #   </build>
+            #
+            # Note that Sonar must be running on Java 11, but can analyze code
+            # built on Java 8.
+            options: '--entrypoint=/src/mvnw --workdir={workdir}'
+            image: 'docker-registry.wikimedia.org/releng/maven-java11:1.0.0'
+            args: >
+                -gs /settings.xml --batch-mode --file {pom}
+                sonar:sonar
+                -Dsonar.analysis.allowCommentOnMaster="1"
+                -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT"
+                -Dsonar.branch.target="$ZUUL_BRANCH"
+                -Dsonar.branch.name="$ZUUL_CHANGE-$ZUUL_PATCHSET"
     publishers:
         - archive-log-allow-empty
         - castor-save-workspace-cache
@@ -91,6 +134,11 @@
           - text:
               credential-id: composer-github-oauthtoken
               variable: COMPOSER_GITHUB_OAUTHTOKEN
+          - text:
+                # SONAR_API_KEY is in Jenkins credentials store
+                # https://integration.wikimedia.org/ci/credentials/
+                credential-id: SONAR_API_KEY
+                variable: SONAR_API_KEY
 
 # Convenience alias with name/project variables
 - job-template:
