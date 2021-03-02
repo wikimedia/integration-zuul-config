@@ -7629,12 +7629,9 @@ projects:
 
   # Not in production yet, but headed there
   - name: mediawiki/services/function-schemata
-    test:
-      - trigger-function-schemata-pipeline-test
-    gate-and-submit:
-      - trigger-function-schemata-pipeline-test
-    # postmerge:
-    #  - trigger-function-schemata-pipeline-publish
+    template:
+      - name: service-pipeline-test
+     # - name: service-pipeline-test-and-publish
 
   - name: mediawiki/services/image-suggestion-api
     template:
