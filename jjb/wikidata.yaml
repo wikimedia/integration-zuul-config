@@ -104,7 +104,8 @@
             mkdir -p ~/.ssh
             printf 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\n  User wdqsguibuilder\n' >> ~/.ssh/config
         - docker-run-with-log-cache-src:
-            image: docker-registry.wikimedia.org/releng/node10-test:0.6.1-s2
+            image: docker-registry.wikimedia.org/releng/node10-test-browser:0.6.1-s1
+            options: '--entrypoint=/run-with-xvfb.sh'
             args: 'deploy'
     wrappers:
       - timeout:
