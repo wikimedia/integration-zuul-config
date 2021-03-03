@@ -246,7 +246,9 @@
     name: wvui
     pipeline:
       - test
-      - release
+      - release:
+          allowedCredentials:
+            WVUI_NPM_TOKEN: "StringBinding"
     jobs:
       - 'trigger-{name}-pipeline-{pipeline}'
       - '{name}-pipeline-{pipeline}'

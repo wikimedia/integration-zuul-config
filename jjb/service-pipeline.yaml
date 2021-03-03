@@ -33,7 +33,9 @@
     name: '{name}-pipeline-{pipeline}'
     project-type: pipeline
     parameters: *project-pipeline-parameters
-    dsl: !include-raw:
+    globalAllowedCredentials:
+      SONAR_API_KEY: "StringBinding"
+    dsl: !include-jinja2:
       - service-pipeline-builder.groovy
 
 # Specific service-pipeline jobs (will ultimately be deprecated in favor of
