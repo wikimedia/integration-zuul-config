@@ -430,6 +430,25 @@
      - castor-save-workspace-cache
      - docker-cleanup
 
+# Node.js 10 job for 'npm install-test' (with browsers installed) and webdriver running
+- job-template:
+    name: '{name}-node10-browser-webdriver-docker'
+    node: Docker
+    triggers:
+     - zuul
+    builders:
+     - docker-castor-load
+     - docker-src-dir
+     - docker-log-dir
+     - docker-ci-src-setup-simple
+     - docker-run-with-log-cache-src:
+        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.0-s1' # XXX pin due to T240955
+        options: '--entrypoint=/run-with-xvfb.sh'
+    publishers:
+     - archive-log-allow-empty
+     - castor-save-workspace-cache
+     - docker-cleanup
+
 # Node.js 10 job for 'npm install-test' (with browser installed)
 # and publishing /coverage from workspace
 # to doc.wikimedia.org/cover/:DOC_PROJECT
@@ -502,6 +521,7 @@
     jobs:
         - '{name}-node10-docker'
         - '{name}-node10-browser-docker'
+        - '{name}-node10-browser-webdriver-docker'
         - '{name}-node10-npmaudit-docker'
         - '{name}-node10-run{script}-docker':
            script: 'doc'
