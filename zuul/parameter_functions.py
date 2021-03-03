@@ -521,7 +521,7 @@ phan_dependencies = {
                            'Echo', 'EventLogging', 'GlobalPreferences'],
     'Dashiki': ['JsonConfig'],
     'Disambiguator': ['VisualEditor'],
-    'DiscussionTools': ['VisualEditor', 'Linter'],
+    'DiscussionTools': ['VisualEditor', 'Linter', 'Echo'],
     'Echo': ['CentralAuth', 'EventLogging'],
     'EventBus': ['CentralNotice', 'EventStreamConfig'],
     'FileExporter': ['BetaFeatures'],
