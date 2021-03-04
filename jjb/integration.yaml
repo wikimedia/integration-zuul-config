@@ -123,7 +123,7 @@
               --workdir=/src
               --tmpfs /workspace/db:size=320M
               --entrypoint=/src/utils/ci-fullrun.sh
-          args: --color
+          args: --color --db-dir /workspace/db
           logdir: '/workspace/log'
     publishers:
       - archive-log-allow-empty
@@ -152,6 +152,7 @@
               -c '/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
               && /src/utils/ci-fullrun.sh
               --color
+              --db-dir /workspace/db
               --web-backend=external --web-url=http://127.0.0.1:9413
               --run=qunit,selenium,api-testing'
           logdir: '/workspace/log'
