@@ -29,8 +29,8 @@ ADD cobertura-clover-transform.py /usr/bin/cobertura-clover-transform
 ADD cobertura-clover-transform.xslt /usr/bin/cobertura-clover-transform.xslt
 
 RUN {{ packages | apt_install }} \
-    && pip install setuptools \
-    && pip install tox==3.21.4 \
+    && pip3 install setuptools \
+    && pip3 install tox==3.21.4 \
     && rm -fR "$XDG_CACHE_HOME/pip"
 
 USER nobody
