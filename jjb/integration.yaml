@@ -180,7 +180,8 @@
 - project:
     name: 'integration-quibble'
     jobs:
-        - '{name}-tox-docker'
+        - '{name}-tox-docker':
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.4.0
         - '{name}-tox-publish':
             docsrc: 'doc/build/html'
             docdest: 'quibble'
