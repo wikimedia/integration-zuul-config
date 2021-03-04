@@ -15,7 +15,7 @@
             projects: >
                 integration/config
         - docker-run-with-log-cache-src:
-            image: 'docker-registry.wikimedia.org/releng/tox-buster:0.3.0'
+            image: 'docker-registry.wikimedia.org/releng/tox-buster:0.4.0'
             options: '--workdir=/src/integration/config --entrypoint=/src/integration/config/{entrypoint}'
     publishers:
         - castor-save-workspace-cache
@@ -70,7 +70,7 @@
      - docker-cache-dir
      - docker-log-dir
      - docker-run-with-log-and-workspace-cache:
-         image: 'docker-registry.wikimedia.org/releng/tox-buster:0.3.0'
+         image: 'docker-registry.wikimedia.org/releng/tox-buster:0.4.0'
          args: '-e qa -- --xunit-file=/log/junit-qa.xml'
     publishers:
      - archive-log-dir
@@ -180,8 +180,7 @@
 - project:
     name: 'integration-quibble'
     jobs:
-        - '{name}-tox-docker':
-            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.4.0
+        - '{name}-tox-docker'
         - '{name}-tox-publish':
             docsrc: 'doc/build/html'
             docdest: 'quibble'
