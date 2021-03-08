@@ -188,35 +188,65 @@
      - docker-cleanup
 
 # Same as '{name}-maven-java8-docker' but src is bindmounted so we can later
-# retrieve the site from /src/target/ and push it to doc.wikimedia.org
+# retrieve the site from /src/target/ and push it to doc.wikimedia.org. This
+# job template is meant to be run as a post merge step.
 - job-template: &job_template_maven-java8-docker-site-publish
     name: '{name}-maven-java8-docker-site-publish'
     node: Docker
     concurrent: false
     docker_image_var: docker-registry.wikimedia.org/releng/maven-java8:1.0.0
+    # The project is expected to provide a maven wrapper at the root of the
+    # project. If another entry point is required for a project (for example
+    # to setup some build prerequisites) 'maven_path' variables can be
+    # overridden. Note that the sonar analysis step will always use the
+    # maven wrapper provided by the project.
+    #   maven_path: /some/entry/point
+    maven_path: '/src/mvnw'
+
+    maven_args: 'clean install'
+    # The pom.xml is expected to be at the root of the project. If it is
+    # somewhere else, the path can be specified here, relative to "workdir"
+    # (see below).
+    pom: 'pom.xml'
+    # The working directory. It should usually be the root of the project.
+    # Maven should be able to run from anywhere, but in some cases a project
+    # configuration might depend on a specific working directory. Ideally the
+    # Maven configuration should be fixed to be workdir independent, but if
+    # that's not practical, the working directory can be overridden. Note that
+    # in that case, it might be necessary to adapt the "pom" argument as well.
+    workdir: '/src'
+    # The Maven site is generated in this directory. For projects that don't
+    # follow a standard structure, this can be overridden.
+    site_dir: 'src/target/staging'
     triggers:
         - zuul
     builders:
         - docker-castor-load
         - docker-log-dir
         - docker-src-dir
-        # It is a two steps process. clean install then site site:stage - T208496
+        - docker-ci-src-setup-simple
+        # Build the maven project, runs the validation. The artifacts are
+        # reused for the later steps (site and sonar analysis).
         - docker-run-with-log-cache-src:
             image: '{obj:docker_image_var}'
-            args: 'clean install'
+            options: '--entrypoint={maven_path} --workdir={workdir}'
+            args: '-gs /settings.xml --batch-mode --file {pom} {maven_args}'
+        # Sonar analysis (see '{name}-maven-java8-docker' for details)
+        - docker-run-with-log-cache-src:
+            image: 'docker-registry.wikimedia.org/releng/maven-java11:1.0.0'
+            options: '--entrypoint=/src/mvnw --workdir={workdir}'
+            args: >
+                -gs /settings.xml --batch-mode --file {pom}
+                sonar:sonar
+                -Dsonar.analysis.allowCommentOnMaster="1"
+                -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT"
+                -Dsonar.branch.name="$ZUUL_BRANCH"
+        # Generate Maven site, which will be published by the 'doc-publish'
+        # step below.
         - docker-run-with-log-cache-src:
             image: '{obj:docker_image_var}'
-            # Bypass CI fetch/checkout which would discard material from the install stage
-            options: '--entrypoint=/usr/local/bin/mvn'
-            args: 'site site:stage'
-        - docker-run-with-log-cache-src:
-            # The template uses maven-java8 but Sonar scanner requires Java 11
-            image: 'docker-registry.wikimedia.org/releng/sonar-scanner:1.0.1'
-            # Bypass the default entry point and invoke sonar directly
-            # Do make sure to not discard the build artifacts from previous step.
-            options: '--entrypoint=/usr/local/bin/mvn --workdir=/src'
-            # Sonar analysis requires the sonarcloud API key to be present in the SONAR_API_KEY environment variable
-            args: 'sonar:sonar'
+            options: '--entrypoint={maven_path} --workdir={workdir}'
+            args: '-gs /settings.xml --batch-mode --file {pom} site site:stage'
     wrappers:
       - timeout:
           timeout: '{timeout|30}'
@@ -236,7 +266,7 @@
               builders:
                 - build-steps:
                     - doc-publish:
-                        docsrc: 'src/target/staging'
+                        docsrc: '{site_dir}'
                         docdest: '{name}'
         - archive-log-allow-empty
         - castor-save-workspace-cache
