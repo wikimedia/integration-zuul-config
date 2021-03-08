@@ -9084,10 +9084,11 @@ projects:
 
   - name: wikimedia/discovery/analytics
     test:
-      - wikimedia-discovery-analytics-tox-docker
+      - wikimedia-discovery-analytics-patch-tox-docker-with-sonar
     gate-and-submit:
-      - wikimedia-discovery-analytics-tox-docker
-
+      - wikimedia-discovery-analytics-patch-tox-docker-with-sonar
+    postmerge:
+      - wikimedia-discovery-analytics-master-tox-docker-with-sonar
   - name: wikimedia/fundraising/dash
     template:
       - name: node10-browser-docker

@@ -36,6 +36,33 @@
 
 - job-template:
     !!merge : *job_tox-docker
+    name: '{name}-tox-docker-with-sonar'
+    branch: '$ZUUL_BRANCH'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-src-dir
+        - docker-run-with-log-cache-src:
+              image: '{obj:docker_image_var}'
+        - docker-run-with-log-cache-src:
+              image: 'docker-registry.wikimedia.org/releng/sonar-scanner:1.0.1'
+              options: '--entrypoint /run.sh'
+              args: |
+                  -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT" \
+                  -Dsonar.branch.target="$ZUUL_BRANCH" \
+                  -Dsonar.branch.name={branch} \
+    wrappers:
+    - timeout:
+        timeout: '{obj:build_timeout|20}'  # minutes
+    - credentials-binding:
+        - text:
+            credential-id: SONAR_API_KEY
+            variable: SONAR_API_KEY
+
+- job-template:
+    !!merge : *job_tox-docker
     name: '{name}-tox-{toxenv}-docker'
     docker_image_varimage: 'docker-registry.wikimedia.org/releng/tox-buster:0.4.0'
     triggers:
