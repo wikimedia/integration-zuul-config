@@ -12,6 +12,7 @@
     triggers:
         - zuul
     builders:
+        - docker-castor-load
         - docker-log-dir
         - docker-src-dir
         - docker-zuul-cloner:
@@ -29,6 +30,7 @@
             - phpunit:
                pattern: 'log/junit-phpunit.xml'
         - archive-log-allow-empty
+        - castor-save-workspace-cache
         - docker-cleanup
 
 
