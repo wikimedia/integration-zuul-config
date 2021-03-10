@@ -368,6 +368,7 @@ dependencies = {
     'LoginNotify': ['CentralAuth', 'CheckUser', 'Echo'],
     'MachineVision': ['Wikibase', 'WikibaseMediaInfo', 'Echo'],
     'MassMessage': ['Flow', 'LiquidThreads'],
+    'MassMessageEmail': ['MassMessage'],
     'Math': ['VisualEditor', 'Wikibase'],
     'MathSearch': ['Math'],
     'MediaSearch': ['CirrusSearch', 'WikibaseCirrusSearch'],
