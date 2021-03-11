@@ -825,6 +825,13 @@ jobs:
       - project: ^mediawiki/core$
       - project: ^mediawiki/vendor$
 
+  - name: ^wmf-quibble-apache-vendor-mysql-php72-docker
+    voting: false
+    branch: (?!^REL)
+    skip-if:
+      - project: ^mediawiki/core$
+      - project: ^mediawiki/vendor$
+
   - name: ^wmf-quibble-core-vendor
     # Gated extensions are only for master and Wikimedia deployment. We do not
     # run them on REL branches.
@@ -4540,6 +4547,7 @@ projects:
       - wikibase-client-docker
       - wikibase-repo-docker
       - mediawiki-quibble-apitests-vendor-docker
+      - wmf-quibble-apache-vendor-mysql-php72-docker
     experimental:
       - quibble-vendor-mysql-php74-noselenium-docker
     gate-and-submit: &mediawiki-extensions-wikibase-gate-and-submit
