@@ -129,10 +129,12 @@
             # KEEP_SOURCE_CHANGES to be set which leaves behind a
             # _source.changes file.
             #
+            # DEBEMAIL is to avoid lintian bogus-mail-host errors
             (
                 DIST="$distribution" \
                 distribution=${{distribution//-/+}} \
                 KEEP_SOURCE_CHANGES=1 \
+                DEBEMAIL="jenkins-bot@wikimedia.org" \
                     /usr/bin/generate-git-snapshot
             )
 
@@ -187,7 +189,6 @@
 
             echo "*** Forcing colors in pbuilderrc ***"
             echo "USECOLORS=yes" >> job-pbuilderrc
-
 
             # Regression in Buster. Fixed in jenkins-debian-glue v0.20.1
             echo "ADDITIONAL_BUILDRESULTS+=(../*.lintian.txt)" >> job-pbuilderrc
