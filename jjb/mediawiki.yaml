@@ -348,12 +348,18 @@
         - zuul
 
 # For the master and wmf/* branches
-- job-template:
+- job-template: &job_wmf_quibble
     !!merge : *job_quibble
     name: wmf-quibble-vendor-mysql-{php}-docker
     # We do not run mediawiki/core tests with extensions installed
     # https://phabricator.wikimedia.org/T197469#4293142
     quibble_args: '--phpunit-testsuite=extensions --skip selenium,npm-test,phpunit-standalone,api-testing'
+    triggers:
+        - zuul
+# Same but using Apache!
+- job-template:
+    !!merge : *job_wmf_quibble
+    name: wmf-quibble-apache-vendor-mysql-{php}-docker
     triggers:
         - zuul
 
@@ -904,6 +910,9 @@
         - wmf-quibble-vendor-mysql-{php}-docker
         - wmf-quibble-core-vendor-mysql-{php}-docker
         - wmf-quibble-selenium-{php}-docker
+        - wmf-quibble-apache-vendor-mysql-{php}-docker:
+            php72:
+                - docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72-apache:0.0.46
 
 # General MW-Selenium job used to dogfood the builder against MW core.
 - job-template:
