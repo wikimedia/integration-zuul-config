@@ -381,6 +381,13 @@
     triggers:
         - zuul
 
+- job-template:
+    !!merge : *job_quibble
+    name: wmf-quibble-apache-selenium-{php}-docker
+    quibble_args: '--run selenium'
+    triggers:
+        - zuul
+
 # Main Quibble testing; excludes Selenium and API testing, done in own jobs.
 - job-template:
     !!merge : *job_quibble
@@ -911,6 +918,10 @@
         - wmf-quibble-core-vendor-mysql-{php}-docker
         - wmf-quibble-selenium-{php}-docker
         - wmf-quibble-apache-vendor-mysql-{php}-docker:
+            php:
+                - php72:
+                    docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72-apache:0.0.46
+        - wmf-quibble-apache-selenium-{php}-docker:
             php:
                 - php72:
                     docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72-apache:0.0.46
