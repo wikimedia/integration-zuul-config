@@ -40,8 +40,12 @@
             #branch analysis
             branch: '$ZUUL_CHANGE-$ZUUL_PATCHSET'
             docker_image_var: docker-registry.wikimedia.org/releng/tox-pyspark:0.7.0-s1
+            sonar_args: |
+                -Dsonar.branch.target="$ZUUL_BRANCH" \
+                -Dsonar.branch.name={branch} \
 
         - '{name}-tox-docker-with-sonar':
               # postmerge master analysis
               name: 'wikimedia-discovery-analytics-master'
               docker_image_var: docker-registry.wikimedia.org/releng/tox-pyspark:0.7.0-s1
+              sonar_args: -Dsonar.branch.name="$ZUUL_BRANCH" \
