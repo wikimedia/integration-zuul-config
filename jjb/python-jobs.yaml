@@ -48,7 +48,7 @@
               image: '{obj:docker_image_var}'
         - docker-run-with-log-cache-src:
               image: 'docker-registry.wikimedia.org/releng/sonar-scanner:1.0.1'
-              options: '--entrypoint /run.sh'
+              options: '--workdir="/src" --entrypoint /run.sh'
               args: |
                   -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT" \
                   -Dsonar.branch.target="$ZUUL_BRANCH" \
