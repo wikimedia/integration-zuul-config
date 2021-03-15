@@ -1,3 +1,18 @@
+# The operations/alerts repo uses the pipeline to run its tests.
+- project:
+    name: alerts
+    pipeline:
+      - test
+    jobs:
+      # trigger-alerts-pipeline-test
+      # trigger-alerts-pipeline-rehearse
+      # trigger-alerts-pipeline-publish
+      - 'trigger-{name}-pipeline-{pipeline}'
+      # alerts-pipeline-test
+      # alerts-pipeline-rehearse
+      # alerts-pipeline-publish
+      - '{name}-pipeline-{pipeline}'
+
 - project:
     name: cergen
     jobs:

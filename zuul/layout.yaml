@@ -2608,8 +2608,10 @@ projects:
       - name: tox-docker
 
   - name: operations/alerts
-    template:
-      - name: tox-docker
+    test:
+      - trigger-alerts-pipeline-test
+    gate-and-submit:
+      - trigger-alerts-pipeline-test
 
   # TIP:
   # gerrit ls-projects -p operations/debs/
