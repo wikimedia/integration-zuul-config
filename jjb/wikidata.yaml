@@ -116,8 +116,8 @@
             git -C ./src/build config user.name "WDQSGuiBuilder"
             git -C ./src/build config user.email "wdqs-gui-build@lists.wikimedia.org"
 
-            # Empty the build dir, preparing for the new build
-            rm -rf ./src/build/*
+            # Empty the build dir (excluding config and .git), preparing for the new build
+            rm -rf $(find ./src/build/ -name "*" ! -wholename "./src/build/" ! -wholename "**.git*" ! -name "custom-config.json")
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/node10-test-browser:0.6.1-s1
             args: 'grunt create_build'
