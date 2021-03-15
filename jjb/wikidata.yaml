@@ -94,6 +94,13 @@
         - docker-src-dir
         - docker-cache-dir
         - docker-ci-src-setup-simple
+        - docker-wipe-dir:
+            dir: src/build
+        - docker-run-with-log-cache-src:
+            image: docker-registry.wikimedia.org/releng/node10-test-browser:0.6.1-s1
+            options: >-
+                --entrypoint=/run-with-xvfb.sh
+            args: 'test'
         - shell: |
             export GIT_AUTHOR_NAME=WDQSGuiBuilder
             export GIT_COMMITTER_NAME=WDQSGuiBuilder
@@ -103,10 +110,24 @@
             # We do not know Gerrit SSH host fingerprint
             mkdir -p ~/.ssh
             printf 'Host gerrit.wikimedia.org\n  StrictHostKeyChecking no\n  User wdqsguibuilder\n' >> ~/.ssh/config
+
+            git clone "ssh://wdqsguibuilder@gerrit.wikimedia.org:29418/wikidata/query/gui-deploy" ./src/build
+            scp -p -P 29418 wdqsguibuilder@gerrit.wikimedia.org:hooks/commit-msg "./src/build/.git/hooks/"
+            git -C ./src/build config user.name "WDQSGuiBuilder"
+            git -C ./src/build config user.email "wdqs-gui-build@lists.wikimedia.org"
+
+            # Empty the build dir, preparing for the new build
+            rm -rf ./src/build/*
         - docker-run-with-log-cache-src:
             image: docker-registry.wikimedia.org/releng/node10-test-browser:0.6.1-s1
-            options: '--entrypoint=/run-with-xvfb.sh'
-            args: 'deploy'
+            args: 'grunt create_build'
+        - shell: |
+            # Make and push a commit to the repo on Gerrit
+            lastrev=$(git -C ./src rev-parse HEAD)
+            message=$(git -C ./src log -1 --pretty=%B | grep -v Change-Id)
+            git -C ./src/build add -A
+            git -C ./src/build commit -m "Merging from ${lastrev}" -m "${message}"
+            git -C ./src/build push origin HEAD:refs/for/production%ready
     wrappers:
       - timeout:
           timeout: 15 # minutes
