@@ -3,7 +3,7 @@ FROM {{ "maven-java11" | image_tag }}
 USER root
 COPY KEYS /tmp/KEYS
 
-ENV SONAR_SCANNER_VERSION=4.0.0.1744
+ENV SONAR_SCANNER_VERSION=4.6.0.2311
 
 RUN {{ "nodejs gnupg wget unzip curl jq" | apt_install }} \
     && git clone --depth 1 https://gerrit.wikimedia.org/r/p/integration/npm.git /srv/npm \
