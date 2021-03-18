@@ -454,7 +454,8 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.0-s1' # XXX pin due to T240955
+        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3'
+        options: '--shm-size 1g'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
@@ -472,8 +473,8 @@
      - docker-log-dir
      - docker-ci-src-setup-simple
      - docker-run-with-log-cache-src:
-        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.0-s1' # XXX pin due to T240955
-        options: '--entrypoint=/run-with-xvfb.sh'
+        image: 'docker-registry.wikimedia.org/releng/node10-test-browser:0.6.3'
+        options: '--entrypoint=/run-with-xvfb.sh --shm-size 1g'
     publishers:
      - archive-log-allow-empty
      - castor-save-workspace-cache
