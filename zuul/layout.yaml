@@ -2214,7 +2214,7 @@ projects:
       # FIXME use a normal composer job, rather than a heavy-weight quibble one?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
       - mediawiki-core-php72-phan-docker
     php:
       # This is the diff between the optimised test-pipeline and the gate.
@@ -2238,7 +2238,7 @@ projects:
       # FIXME use a normal composer job, rather than a heavy-weight quibble one?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
       - mediawiki-quibble-vendor-sqlite-php72-docker
       - mediawiki-quibble-vendor-postgres-php72-docker
       - mediawiki-core-php72-phan-docker
@@ -2280,14 +2280,14 @@ projects:
       # FIXME use a normal composer job, rather than a heavy-weight quibble one?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
       - mediawiki-core-php72-phan-docker
     gate-and-submit-wmf:
       - mediawiki-quibble-vendor-mysql-php72-docker
       # FIXME use a normal composer job, rather than a heavy-weight quibble one?
       - mediawiki-quibble-composertest-php72-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
       - mediawiki-core-php72-phan-docker
 
     test-fundraising:
@@ -2330,18 +2330,18 @@ projects:
       - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
     gate-and-submit:
       - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
 
     gate-and-submit-wmf:
       - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
 
     # CI no more supports mediawiki/vendor on release branches, folks should
     # use composer install instead. T189560
@@ -3636,9 +3636,9 @@ projects:
       - name: extension-coverage
       - name: extension-gate
     test:
-    - mediawiki-quibble-apitests-vendor-docker
+    - mediawiki-quibble-apitests-vendor-php72-docker
     gate-and-submit:
-    - mediawiki-quibble-apitests-vendor-docker
+    - mediawiki-quibble-apitests-vendor-php72-docker
 
   - name: mediawiki/extensions/EventLogging
     template:
@@ -4005,9 +4005,9 @@ projects:
       - name: extension-phan
       - name: extension-coverage
     test:
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
     gate-and-submit:
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
 
   - name: mediawiki/extensions/MediaModeration
     template:
@@ -4551,7 +4551,7 @@ projects:
       - mwselenium-quibble-docker
       - wikibase-client-docker
       - wikibase-repo-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
       - wmf-quibble-apache-vendor-mysql-php72-docker
       - wmf-quibble-apache-selenium-php72-docker
     experimental:
@@ -4560,15 +4560,15 @@ projects:
       - mwselenium-quibble-docker
       - wikibase-client-docker
       - wikibase-repo-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
     test-1_35:
       - wikibase-client-docker
       - wikibase-repo-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
     gate-and-submit-1_35:
       - wikibase-client-docker
       - wikibase-repo-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
     gate-and-submit-wmf: *mediawiki-extensions-wikibase-gate-and-submit
     postmerge:
       - mwext-doxygen-publish
@@ -4603,9 +4603,9 @@ projects:
       - name: extension-coverage
       - name: mwgate-npm
     test:
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
     gate-and-submit: &mediawiki-extensions-wikibase-manifest-gate-and-submit
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
     gate-and-submit-wmf: *mediawiki-extensions-wikibase-manifest-gate-and-submit
 
   - name: mediawiki/extensions/WikibaseMediaInfo
@@ -7741,7 +7741,7 @@ projects:
       - phpunit-coverage-php72-docker-publish
     experimental:
       - parsoidsvc-composer-package-php80-docker
-      - mediawiki-quibble-apitests-vendor-docker
+      - mediawiki-quibble-apitests-vendor-php72-docker
 
   - name: mediawiki/services/parsoid/deploy
     test:
