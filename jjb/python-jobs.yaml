@@ -46,6 +46,28 @@
         - docker-src-dir
         - docker-run-with-log-cache-src:
               image: '{obj:docker_image_var}'
+
+        # The branch holding the patch is named $ZUUL_BRANCH
+        #
+        # For patch analysis, we need to match sonar.branch.name parameter
+        # which is set to {branch}which is the change number + the patchset.
+        - docker-run-with-log-cache-src:
+              image: '{obj:docker_image_var}'
+              options: '--entrypoint=git'
+              args: 'branch -m "{branch}"'
+        # The comparison is done against sonar.branch.target which is
+        # $ZUUL_BRANCH, make it point to the previous patchset.
+        - docker-run-with-log-cache-src:
+              image: '{obj:docker_image_var}'
+              options: '--entrypoint=git'
+              args: 'checkout -B $ZUUL_BRANCH FETCH_HEAD^'
+
+        # Set working copy back to branch holding the patch
+        - docker-run-with-log-cache-src:
+              image: '{obj:docker_image_var}'
+              options: '--entrypoint=git'
+              args: 'checkout "{branch}"'
+
         - docker-run-with-log-cache-src:
               image: 'docker-registry.wikimedia.org/releng/sonar-scanner:4.6.0.2311-1'
               options: '--workdir="/src" --entrypoint /run.sh'
