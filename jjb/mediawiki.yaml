@@ -420,14 +420,6 @@
     triggers:
         - zuul
 
-# Temporary to remove
-- job-template:
-    !!merge : *job_quibble
-    name: mediawiki-quibble-apitests-{packages-source}-docker
-    quibble_args: '--run api-testing'
-    triggers:
-        - zuul
-
 # Testing for API testing framework repo.
 - job-template:
     !!merge : *job_quibble
@@ -885,9 +877,6 @@
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.46
             database: 'mysql'
         - mediawiki-quibble-selenium-{packages-source}-{database}-{php}-docker
-        - mediawiki-quibble-apitests-{packages-source}-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-php72:0.0.46
-            database: 'mysql'
         - mediawiki-quibble-apitests-{packages-source}-{php}-docker:
             database: 'mysql'
         - mwcore-phpunit-coverage-patch:
