@@ -1,29 +1,3 @@
-# Assert node version matches a basic regular expressions
-#
-# Parameter:
-# * version: passed to `grep`
-#
-- builder:
-    name: assert-node-version
-    builders:
-     - shell: |
-         #!/bin/bash -e -u
-         NODE_VERSION=`node --version`
-
-         if ( echo "$NODE_VERSION" | grep "{version}" > /dev/null )
-         then
-             echo "Node version $NODE_VERSION matches '{version}'"
-         else
-             echo "Assertion error: node version $NODE_VERSION does not match '{version}'"
-             exit 1
-         fi
-
-- builder:
-    name: assert-node-version-6
-    builders:
-     - assert-node-version:
-         version: ^v6[.]
-
 - publisher:
     name: archive-log-dir
     publishers:
