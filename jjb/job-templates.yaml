@@ -84,6 +84,27 @@
             options: '--entrypoint={maven_path} --workdir={workdir}'
             image: '{obj:docker_image_var}'
             args: '-gs /settings.xml --batch-mode --file {pom} {maven_args}'
+
+        # The branch holding the patch is named $ZUUL_BRANCH
+        #
+        # For patch analysis, we need to match sonar.branch.name parameter
+        # which is set to {branch}which is the change number + the patchset.
+        - docker-run-with-log-cache-src:
+              image: '{obj:docker_image_var}'
+              options: '--entrypoint=git'
+              args: 'branch -m "$ZUUL_BRANCH"'
+        # The comparison is done against sonar.branch.target which is
+        # $ZUUL_BRANCH, make it point to the previous patchset.
+        - docker-run-with-log-cache-src:
+              image: '{obj:docker_image_var}'
+              options: '--entrypoint=git'
+              args: 'checkout -B $ZUUL_BRANCH FETCH_HEAD^'
+        # Set working copy back to branch holding the patch
+        - docker-run-with-log-cache-src:
+              image: '{obj:docker_image_var}'
+              options: '--entrypoint=git'
+              args: 'checkout "$ZUUL_BRANCH"'
+
         - docker-run-with-log-cache-src:
             # This runs a sonar analysis after the main build. It relies on
             # Maven `install` target having been reached in the previous step.
