@@ -92,7 +92,7 @@
         - docker-run-with-log-cache-src:
               image: '{obj:docker_image_var}'
               options: '--entrypoint=git'
-              args: 'branch -m "$ZUUL_BRANCH"'
+              args: 'branch -m "$ZUUL_CHANGE-$ZUUL_PATCHSET"'
         # The comparison is done against sonar.branch.target which is
         # $ZUUL_BRANCH, make it point to the previous patchset.
         - docker-run-with-log-cache-src:
@@ -103,7 +103,7 @@
         - docker-run-with-log-cache-src:
               image: '{obj:docker_image_var}'
               options: '--entrypoint=git'
-              args: 'checkout "$ZUUL_BRANCH"'
+              args: 'checkout "$ZUUL_CHANGE-$ZUUL_PATCHSET"'
 
         - docker-run-with-log-cache-src:
             # This runs a sonar analysis after the main build. It relies on
