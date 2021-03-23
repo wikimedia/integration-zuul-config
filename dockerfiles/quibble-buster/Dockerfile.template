@@ -6,7 +6,16 @@ FROM {{ "ci-buster" | image_tag }}
 #  Install node/npm  #
 ######################
 
-RUN {{ "nodejs npm" | apt_install }}
+USER root
+
+RUN {{ "nodejs" | apt_install }}
+
+# Use Wikimedia's custom npm build instead of Debian's out-dated one (?)
+RUN git clone --depth 1 https://gerrit.wikimedia.org/r/integration/npm.git /srv/npm \
+    && rm -rf /srv/npm/.git \
+    && ln -s /srv/npm/bin/npm-cli.js /usr/bin/npm
+
+USER nobody
 
 # Slight digression compared to node10
 ENV NPM_CONFIG_CACHE=/cache/npm
