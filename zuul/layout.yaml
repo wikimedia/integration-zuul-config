@@ -2222,6 +2222,8 @@ projects:
       # The main quibble job that runs PHPUnit tests is:
       #   mediawiki-quibble-vendor-mysql-php72-docker
       #
+      # Alternate OS (buster instead of stretch)
+      - mediawiki-quibble-vendor-mysql-php72_buster-docker
       # Alternate deps (composer instead of vendor)
       - mediawiki-quibble-composer-mysql-php72-docker
       # Alternate db backends
@@ -2233,6 +2235,7 @@ projects:
     gate-and-submit:
       - mediawiki-quibble-composer-mysql-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
+      - mediawiki-quibble-vendor-mysql-php72_buster-docker
       - mediawiki-quibble-vendor-mysql-php73-docker
       - mediawiki-quibble-vendor-mysql-php74-docker
       # FIXME use a normal composer job, rather than a heavy-weight quibble one?
@@ -2316,7 +2319,6 @@ projects:
       - mediawiki-core-javascript-docker-publish
       - mediawiki-core-doxygen-docker-publish
     experimental:
-      - mediawiki-quibble-vendor-mysql-php72_buster-docker
       - mediawiki-quibble-vendor-mysql-php80-docker
       - mediawiki-quibble-composer-mysql-php80-docker
       - mediawiki-quibble-composertest-php80-docker
