@@ -133,6 +133,17 @@
             docker_image_var: docker-registry.wikimedia.org/releng/tox-homer:0.3.0
 
 - project:
+    name: 'homer-public'
+    jobs:
+        - '{name}-tox-docker':
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.4.0
+        - tox-publish-jobs:
+            docenv: 'py37-sphinx'
+            docsrc: 'doc/build'
+            docdest: 'homer-public/$DOC_SUBPATH'
+            docker_image_var: docker-registry.wikimedia.org/releng/tox-buster:0.4.0
+
+- project:
     name: netbox-reports
     jobs:
         - '{name}-tox-docker'
