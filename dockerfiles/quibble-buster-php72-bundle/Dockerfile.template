@@ -1,0 +1,12 @@
+FROM {{ "quibble-buster-php72" | image_tag }}
+
+USER root
+
+RUN {{ "libav-tools build-essential rubygems-integration ruby ruby-dev bundler" | apt_install }}
+
+COPY mwselenium.sh /usr/local/bin/mwselenium
+
+# Unprivileged
+USER nobody
+WORKDIR /workspace
+ENTRYPOINT ["/usr/local/bin/quibble", "--commands", "mwselenium"]
