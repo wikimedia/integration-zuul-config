@@ -1165,7 +1165,6 @@ project-templates:
   # that are for extensions.
   - name: extension-quibble
     php:
-      - quibble-vendor-mysql-php72_buster-noselenium-docker
       - quibble-vendor-mysql-php73-noselenium-docker
       - quibble-vendor-mysql-php74-noselenium-docker
     test:
@@ -1174,7 +1173,6 @@ project-templates:
       - mwgate-node10-docker
     gate-and-submit:
       - quibble-vendor-mysql-php72-noselenium-docker
-      - quibble-vendor-mysql-php72_buster-noselenium-docker
       - quibble-vendor-mysql-php73-noselenium-docker
       - quibble-vendor-mysql-php74-noselenium-docker
       - quibble-vendor-mysql-php72-selenium-docker
@@ -1315,7 +1313,6 @@ project-templates:
       - mediawiki-i18n-check-docker
 
     experimental:
-      - quibble-vendor-mysql-php72_buster-docker
       - quibble-vendor-mysql-php80-docker
       - quibble-vendor-sqlite-php74-noselenium-docker
       - quibble-vendor-postgres-php74-noselenium-docker
@@ -1385,7 +1382,6 @@ project-templates:
       - mediawiki-i18n-check-docker
 
     experimental:
-      - quibble-composer-mysql-php72_buster-docker
       - quibble-composer-mysql-php80-docker
       - quibble-composer-sqlite-php72-noselenium-docker
       - quibble-composer-postgres-php72-noselenium-docker
@@ -1496,7 +1492,6 @@ project-templates:
       - mediawiki-i18n-check-docker
 
     experimental:
-      - quibble-composer-mysql-php72_buster-noselenium-docker
       - quibble-composer-mysql-php80-noselenium-docker
       - quibble-vendor-sqlite-php72-noselenium-docker
       - quibble-vendor-postgres-php72-noselenium-docker
@@ -1553,7 +1548,6 @@ project-templates:
       - mediawiki-i18n-check-docker
 
     experimental:
-      - quibble-composer-mysql-php72_buster-noselenium-docker
       - quibble-composer-mysql-php80-noselenium-docker
       - quibble-composer-sqlite-php72-noselenium-docker
       - quibble-composer-postgres-php72-noselenium-docker
@@ -1571,7 +1565,6 @@ project-templates:
       - quibble-vendor-mysql-php73-phpunit-standalone-docker
       - quibble-vendor-mysql-php74-phpunit-standalone-docker
     experimental:
-      - quibble-vendor-mysql-php72_buster-phpunit-standalone-docker
       - quibble-vendor-mysql-php80-phpunit-standalone-docker
 
   # Template to run per-patch selenium browser test using mediawiki_selenium ruby gems.
@@ -1695,7 +1688,6 @@ project-templates:
   # that are for skins.
   - name: skin-quibble
     php:
-      - quibble-vendor-mysql-php72_buster-docker
       - quibble-vendor-mysql-php73-docker
       - quibble-vendor-mysql-php74-docker
     test:
@@ -1703,7 +1695,6 @@ project-templates:
       - mwgate-node10-docker
     gate-and-submit:
       - quibble-vendor-mysql-php72-docker
-      - quibble-vendor-mysql-php72_buster-docker
       - quibble-vendor-mysql-php73-docker
       - quibble-vendor-mysql-php74-docker
       - mwgate-node10-docker
@@ -1801,7 +1792,6 @@ project-templates:
       - mediawiki-i18n-check-docker
 
     experimental:
-      - quibble-composer-mysql-php72_buster-docker
       - quibble-composer-mysql-php80-docker
       - quibble-composer-sqlite-php72-docker
       - quibble-composer-postgres-php72-docker
@@ -2359,8 +2349,6 @@ projects:
       # The main quibble job that runs PHPUnit tests is:
       #   mediawiki-quibble-vendor-mysql-php72-docker
       #
-      # Alternate OS (buster instead of stretch)
-      - mediawiki-quibble-vendor-mysql-php72_buster-docker
       # Alternate deps (composer instead of vendor)
       - mediawiki-quibble-composer-mysql-php72-docker
       # Alternate db backends
@@ -2372,7 +2360,6 @@ projects:
     gate-and-submit:
       - mediawiki-quibble-composer-mysql-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
-      - mediawiki-quibble-vendor-mysql-php72_buster-docker
       - mediawiki-quibble-vendor-mysql-php73-docker
       - mediawiki-quibble-vendor-mysql-php74-docker
       # FIXME use a normal composer job, rather than a heavy-weight quibble one?
@@ -2488,13 +2475,11 @@ projects:
     test:
       - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
-      - mediawiki-quibble-vendor-mysql-php72_buster-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
       - mediawiki-quibble-apitests-vendor-php72-docker
     gate-and-submit:
       - mwgate-composer-php72-docker
       - mediawiki-quibble-vendor-mysql-php72-docker
-      - mediawiki-quibble-vendor-mysql-php72_buster-docker
       - mediawiki-quibble-selenium-vendor-mysql-php72-docker
       - mediawiki-quibble-apitests-vendor-php72-docker
 

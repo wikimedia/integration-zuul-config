@@ -1149,7 +1149,6 @@ class TestZuulScheduler(unittest.TestCase):
             'mediawiki-quibble-vendor-mysql-php74-docker': True,
             'mediawiki-quibble-vendor-mysql-php73-docker': True,
             'mediawiki-quibble-vendor-mysql-php72-docker': True,
-            'mediawiki-quibble-vendor-mysql-php72_buster-docker': True,
             'mediawiki-quibble-composertest-php72-docker': True,
             'mediawiki-quibble-apitests-vendor-php72-docker': True,
             'mediawiki-quibble-selenium-vendor-mysql-php72-docker': True,
