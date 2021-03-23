@@ -136,8 +136,9 @@
             options: '--entrypoint=/src/mvnw --workdir={workdir}'
             image: 'docker-registry.wikimedia.org/releng/maven-java11:1.0.0'
             args: >
-                -gs /settings.xml --batch-mode --file {pom}
+                -gs /settings.xml --batch-mode --file {pom} -X
                 sonar:sonar
+                -Dsonar.verbose=true
                 -Dsonar.analysis.allowCommentOnMaster="1"
                 -Dsonar.analysis.gerritProjectName="$ZUUL_PROJECT"
                 -Dsonar.branch.target="$ZUUL_BRANCH"
