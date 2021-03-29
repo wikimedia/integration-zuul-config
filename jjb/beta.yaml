@@ -75,7 +75,7 @@
           cd "$WORKSPACE"
           /usr/bin/generate-git-snapshot
 
-          export distribution=jessie
+          export distribution=stretch
           export REPOSITORY=/srv/packages
           export REPOS=jenkins-debian-glue
           export SKIP_REMOVE=true
@@ -125,12 +125,10 @@
           filter: '*.deb'
           target: /srv/deployment/debs
       - shell: |
-          aptly repo -remove-files=false -force-replace=true add jessie-deployment-prep /srv/deployment/debs/
-          aptly repo -remove-files=false -force-replace=true add trusty-deployment-prep /srv/deployment/debs/
-          aptly repo -remove-files=true -force-replace=true add stretch-deployment-prep /srv/deployment/debs/
-          aptly publish --skip-signing update jessie-deployment-prep
-          aptly publish --skip-signing update trusty-deployment-prep
+          aptly repo -remove-files=false -force-replace=true add stretch-deployment-prep /srv/deployment/debs/
+          aptly repo -remove-files=true -force-replace=true add buster-deployment-prep /srv/deployment/debs/
           aptly publish --skip-signing update stretch-deployment-prep
+          aptly publish --skip-signing update buster-deployment-prep
 
 # Job to run MediaWiki update.php script on all the beta wikis.
 #
