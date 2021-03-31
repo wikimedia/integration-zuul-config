@@ -7667,9 +7667,10 @@ projects:
 
   # Not in production yet, but headed there
   - name: mediawiki/services/function-schemata
-    template:
-      - name: service-pipeline-test
-     # - name: service-pipeline-test-and-publish
+    test:
+      - trigger-wikilambda-function-schemata-pipeline-test
+    gate-and-submit:
+      - trigger-wikilambda-function-schemata-pipeline-test
 
   - name: mediawiki/services/image-suggestion-api
     template:
