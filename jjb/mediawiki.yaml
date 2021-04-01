@@ -297,9 +297,6 @@
         - junit:
             allow-empty-results: true
             results: 'log/junit*.xml'
-        # Then compress the raw Junit files from PHPUnit. The junit plugin
-        # already concatenated them in a junitResult.xml in the build
-        # directory.
         - postbuildscript:
             builders:
                 - build-on:
@@ -308,7 +305,14 @@
                     - FAILURE
                     - ABORTED
                   build-steps:
+                    # Compress the raw Junit files from PHPUnit. The junit plugin
+                    # already concatenated them in a junitResult.xml in the build
+                    # directory.
                     - shell: 'find log/ -name "junit*.xml" -exec gzip {{}} \+'
+                    # wdio-video-reporter 3.1.1 leaves screenshots behind after
+                    # creating the video. Delete them to save space (T249268),
+                    # they are transient files anyway.
+                    - shell: 'rm -fR log/rawSelenumVideoGrabs'
         - compress-mw-debug-logs
         - archive-log-allow-empty
         - castor-save-workspace-cache
