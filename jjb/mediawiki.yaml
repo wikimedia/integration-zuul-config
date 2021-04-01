@@ -515,6 +515,16 @@
             logdir: '/workspace/log'
     publishers:
         - compress-mw-debug-logs
+        - postbuildscript:
+            builders:
+                - build-on:
+                    - SUCCESS
+                    - UNSTABLE
+                    - FAILURE
+                    - ABORTED
+                  build-steps:
+                      # Compress Fresnel performance reports - T249268
+                      - shell: 'find log/ -name "*trace.json" -exec gzip {} \+'
         - archive-log-allow-empty
         - docker-cleanup
     wrappers:
