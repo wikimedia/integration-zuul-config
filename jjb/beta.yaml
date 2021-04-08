@@ -41,6 +41,15 @@
 - job:
     name: scap-beta-deb
     defaults: beta
+    description: |
+      Triggered by merges into the mediawiki/tools/scap repo.
+
+      Clones the mediawiki/tools/scap repo, and checks out to the
+      supplied ZUUL_REF commit.  Then builds a scap deb package.  The
+      package version will be something like 3.17.0-1+0~20210408194148.161~1.gbp00307c.
+      The deb is available as a job artifact.
+
+      Triggers beta-publish-deb if successful.
     properties:
       - copyartifact:
           projects: beta-publish-deb
@@ -117,6 +126,8 @@
 - job:
     name: beta-publish-deb
     defaults: beta
+    description: |
+      Publishes a scap deb (from an upstream build) into the aptly repo(s) on deployment-deploy01.
     node: BetaClusterBastion
     builders:
       - copyartifact:
@@ -187,6 +198,10 @@
 - job-template:
     name: beta-mediawiki-config-update-eqiad
     defaults: beta
+    description: |
+      Updates the operations/mediawiki-config.git checkout in
+      /srv/mediawiki-staging on deployment-deploy01.  This job is triggered
+      after a commit is merged into operations/mediawiki-config.
     node: BetaClusterBastion
 
     # Do not run concurrently with the downstream job
@@ -196,6 +211,7 @@
      - zuul
 
     builders:
+     # xref: operations/puppet/modules/beta/files/wmf-beta-mwconfig-update
      - shell: /usr/local/bin/wmf-beta-mwconfig-update
 
     properties:
@@ -221,6 +237,12 @@
 - job-template:
     name: beta-code-update-eqiad
     defaults: beta
+    description: |
+      This job runs automatically every ten minutes and updates
+      mediawiki core, extensions, skins, etc from master in
+      /srv/mediawiki-staging/php-master on deployment-deploy01.  Then
+      it triggers the beta-scap-eqiad job to cause "scap sync-world" to
+      run.
     node: BetaClusterBastion
 
     # Do not run concurrently with the downstream job
@@ -235,6 +257,7 @@
      - timed: 'H/10 * * * *'
 
     builders:
+      # xref: operations/puppet/modules/beta/templates/wmf-beta-autoupdate.py.erb
       - shell: |
           /usr/local/bin/wmf-beta-autoupdate.py --verbose
 
@@ -253,6 +276,8 @@
 - job-template:
     name: beta-scap-eqiad
     defaults: beta
+    description: |
+      Runs "/usr/bin/scap sync-world" as jenkins-deploy on deployment-deploy01
     node: BetaClusterBastion
 
     # Do not run concurrently with upstream jobs
@@ -323,3 +348,4 @@
      - beta-mediawiki-config-update-eqiad
      - beta-scap-eqiad
      - beta-update-databases-eqiad
+     - scap-beta-deb
