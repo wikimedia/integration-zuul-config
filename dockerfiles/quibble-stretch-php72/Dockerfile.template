@@ -19,7 +19,6 @@ php7.2-intl
 php7.2-ldap
 php7.2-mbstring
 php7.2-mysql
-php7.2-pcov
 php7.2-pgsql
 php7.2-sqlite3
 php7.2-tidy
@@ -35,9 +34,6 @@ RUN {{ mediawiki_deps | apt_install }}
 # Install XDebug but disables it by default due to its performance impact
 RUN {{ "php-xdebug" | apt_install }} \
     && phpdismod xdebug
-# Same for pcov, although the performance overheade should be minimal
-RUN {{ "php7.2-pcov" | apt_install }} \
-    && phpdismod pcov
 
 #
 # CI utilities to generate PHPUnit coverage

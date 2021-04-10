@@ -12,7 +12,7 @@ function relay_signals() {
 # failure. Normal test failures are not fatal and PHPUnit will still
 # generate console output, clover reports and html reports.
 set +e
-php -d zend_extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$PWD -d pcov.exclude='@tests@' \
+php -d zend_extension=xdebug.so \
     tests/phpunit/phpunit.php \
         --exclude-group Dump,Broken,ParserFuzz,Stub \
         --coverage-clover "$LOG_DIR"/clover.xml \

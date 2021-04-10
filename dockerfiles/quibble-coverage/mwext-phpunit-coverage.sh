@@ -35,7 +35,7 @@ function relay_signals() {
 # report for those that passed.
 set +e
 if [[ ! -v CODEHEALTH ]]; then
-    php -d zend_extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH/extensions -d pcov.exclude='@tests@' \
+    php -d zend_extension=xdebug.so \
         "$MW_INSTALL_PATH"/tests/phpunit/phpunit.php \
         --testsuite extensions \
         --coverage-clover "$LOG_DIR"/clover.xml \
@@ -49,7 +49,7 @@ else
     # 3. the unit tests take just a few seconds to run
     # 4. Passing in the tests/phpunit/unit directory when it doesn't exist results in exit
     #    code 1.
-    php -d zend_extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH/extensions -d pcov.exclude='@tests@' \
+    php -d zend_extension=xdebug.so \
         vendor/bin/phpunit \
         --testsuite=extensions:unit \
         --exclude-group Dump,Broken,ParserFuzz,Stub \
