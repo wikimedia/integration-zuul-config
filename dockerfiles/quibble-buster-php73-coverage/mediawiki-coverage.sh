@@ -13,14 +13,14 @@ function relay_signals() {
 # generate console output, clover reports and html reports.
 set +e
 if [[ ! -v CODEHEALTH ]]; then
-  php -d zend_extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH/extensions -d pcov.exclude='@tests@' \
+  php -d extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH/extensions -d pcov.exclude='@tests@' \
       tests/phpunit/phpunit.php \
           --exclude-group Dump,Broken,ParserFuzz,Stub \
           --coverage-clover "$LOG_DIR"/clover.xml \
           --coverage-html "$WORKSPACE/cover" &
 else
   phpunit-suite-edit "$MW_INSTALL_PATH/phpunit.xml.dist"
-  php -d zend_extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH/extensions -d pcov.exclude='@tests@' \
+  php -d extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH/extensions -d pcov.exclude='@tests@' \
     vendor/bin/phpunit \
     --exclude-group Dump,Broken,ParserFuzz,Stub \
     --coverage-clover "$LOG_DIR"/clover.xml \
