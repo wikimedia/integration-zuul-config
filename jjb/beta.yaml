@@ -228,7 +228,7 @@
           failure: false
           fixed: true
       - trigger:
-          project: beta-scap-eqiad
+          project: beta-scap-sync-world
 
 # Job updating MediaWiki core+extensions code and refreshing the message
 #
@@ -241,7 +241,7 @@
       This job runs automatically every ten minutes and updates
       mediawiki core, extensions, skins, etc from master in
       /srv/mediawiki-staging/php-master on deployment-deploy01.  Then
-      it triggers the beta-scap-eqiad job to cause "scap sync-world" to
+      it triggers the beta-scap-sync-world job to cause "scap sync-world" to
       run.
     node: BetaClusterBastion
 
@@ -271,10 +271,10 @@
           failure: false
           fixed: true
       - trigger:
-          project: beta-scap-eqiad
+          project: beta-scap-sync-world
 
 - job-template:
-    name: beta-scap-eqiad
+    name: beta-scap-sync-world
     defaults: beta
     description: |
       Runs "/usr/bin/scap sync-world" as jenkins-deploy on deployment-deploy01
@@ -346,6 +346,6 @@
     jobs:
      - beta-code-update-eqiad
      - beta-mediawiki-config-update-eqiad
-     - beta-scap-eqiad
+     - beta-scap-sync-world
      - beta-update-databases-eqiad
      - scap-beta-deb
