@@ -13,19 +13,23 @@ function relay_signals() {
 # generate console output, clover reports and html reports.
 set +e
 if [[ ! -v CODEHEALTH ]]; then
-  php -d extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH/extensions -d pcov.exclude='@tests@' \
-      tests/phpunit/phpunit.php \
-          --exclude-group Dump,Broken,ParserFuzz,Stub \
-          --coverage-clover "$LOG_DIR"/clover.xml \
-          --coverage-html "$WORKSPACE/cover" &
+    php -d extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH -d pcov.exclude='@(tests|vendor)@' \
+        -d pcov.initial.memory=2147483648 \
+        -d pcov.initial.files=3000 \
+        tests/phpunit/phpunit.php \
+            --exclude-group Dump,Broken,ParserFuzz,Stub \
+            --coverage-clover "$LOG_DIR"/clover.xml \
+            --coverage-html "$WORKSPACE/cover" &
 else
-  phpunit-suite-edit "$MW_INSTALL_PATH/phpunit.xml.dist"
-  php -d extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH/extensions -d pcov.exclude='@tests@' \
-    vendor/bin/phpunit \
-    --exclude-group Dump,Broken,ParserFuzz,Stub \
-    --coverage-clover "$LOG_DIR"/clover.xml \
-    --log-junit "$LOG_DIR"/junit.xml \
-    tests/phpunit/unit &
+    phpunit-suite-edit "$MW_INSTALL_PATH/phpunit.xml.dist"
+    php -d extension=pcov.so -d pcov.enabled=1 -d pcov.directory=$MW_INSTALL_PATH -d pcov.exclude='@(tests|vendor)@' \
+        -d pcov.initial.memory=2147483648 \
+        -d pcov.initial.files=3000 \
+        vendor/bin/phpunit \
+            --exclude-group Dump,Broken,ParserFuzz,Stub \
+            --coverage-clover "$LOG_DIR"/clover.xml \
+            --log-junit "$LOG_DIR"/junit.xml \
+            tests/phpunit/unit &
 fi
 cover_pid=$!
 relay_signals SIGINT SIGTERM
