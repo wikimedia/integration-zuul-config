@@ -42,14 +42,13 @@
     name: beta-build-scap-deb
     defaults: beta
     description: |
-      Triggered by merges into the mediawiki/tools/scap repo.
-
-      Clones the mediawiki/tools/scap repo, and checks out to the
+      <p>Clones the mediawiki/tools/scap repo, and checks out to the
       supplied ZUUL_REF commit.  Then builds a scap deb package.  The
       package version will be something like 3.17.0-1+0~20210408194148.161~1.gbp00307c.
-      The deb is available as a job artifact.
+      The deb is available as a job artifact.</p>
 
-      Triggers beta-publish-deb if successful.
+      <p>Triggered by: merges into the mediawiki/tools/scap repo</p>
+      <p>Triggers: beta-publish-deb</p>
     properties:
       - copyartifact:
           projects: beta-publish-deb
