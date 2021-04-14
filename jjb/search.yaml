@@ -21,6 +21,12 @@
             workdir: '/src/jvm-packages'
 
 - project:
+    name: wmf-jvm-utils
+    jobs:
+        - '{name}-maven-java8-docker'
+        - '{name}-maven-java8-docker-site-publish'
+
+- project:
     name: search-mjolnir
     jobs:
         - '{name}-tox-docker':
