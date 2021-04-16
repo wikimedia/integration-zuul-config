@@ -74,11 +74,11 @@
          options: '--workdir /src/mediawiki/tools/codesniffer'
          args: 'install --ansi --no-progress --prefer-dist --profile --no-dev'
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+         image: 'docker-registry.wikimedia.org/wikimedia-buster:latest'
          options: '--user=nobody --entrypoint=/bin/bash'
          args: '-c "mkdir -p /src/vendor/mediawiki"'
      - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/wikimedia-stretch:latest'
+         image: 'docker-registry.wikimedia.org/wikimedia-buster:latest'
          options: '--user=nobody --entrypoint=/bin/mv'
          args: '/src/mediawiki/tools/codesniffer /src/vendor/mediawiki/mediawiki-codesniffer'
      - docker-run-with-log-cache-src:
