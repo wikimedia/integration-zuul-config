@@ -400,13 +400,6 @@
     triggers:
         - zuul
 
-# Selenium-only Quibble testing.
-- job-template:
-    !!merge : *job_quibble
-    name: mediawiki-quibble-selenium-{packages-source}-docker
-    quibble_args: '--run selenium'
-    triggers:
-        - zuul
 
 # Selenium-only Quibble testing.
 - job-template:
@@ -875,9 +868,6 @@
         - quibble-{packages-source}-{database}-{php}-phpunit-standalone-docker
         - mediawiki-quibble-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-composertest-{php}-docker
-        - mediawiki-quibble-selenium-{packages-source}-docker:
-            docker_image: docker-registry.wikimedia.org/releng/quibble-buster-php72:0.0.46-s1
-            database: 'mysql'
         - mediawiki-quibble-selenium-{packages-source}-{database}-{php}-docker
         - mediawiki-quibble-apitests-{packages-source}-{php}-docker:
             database: 'mysql'
