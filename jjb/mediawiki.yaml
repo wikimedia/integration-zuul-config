@@ -782,6 +782,13 @@
     triggers:
         - zuul
 
+- job-template:
+    !!merge : *job_quibble
+    name: 'legacy-quibble-rubyselenium-docker'
+    quibble_args: '--skip-deps --commands=mwselenium'
+    triggers:
+        - zuul
+
 - job:
     name: 'quibble-integration'
     project-type: matrix
@@ -889,6 +896,11 @@
             database: mysql
         - mwselenium-quibble-docker:
             docker_image: docker-registry.wikimedia.org/releng/quibble-stretch-bundle:0.0.46
+            packages-source: vendor
+            database: mysql
+        # Explicitly flag this ruby selenium job as a legacy one that should not be used
+        - legacy-quibble-rubyselenium-docker:
+            docker_image: docker-registry.wikimedia.org/releng/quibble-buster-php72-bundle:0.0.46
             packages-source: vendor
             database: mysql
 
