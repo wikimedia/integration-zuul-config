@@ -1567,19 +1567,6 @@ project-templates:
     experimental:
       - quibble-vendor-mysql-php80-phpunit-standalone-docker
 
-  # Template to run per-patch selenium browser test using mediawiki_selenium ruby gems.
-  #
-  # Intentionally not in gate because it's super slow
-  #
-  # XXX This job is legacy, repositories must be migrated to the wdio runner
-  # which is triggered by the Quibble jobs.
-  #
-  - name: mwselenium-legacy
-    test:
-      - mwselenium-quibble-docker
-    postmerge:
-      - mwselenium-quibble-docker
-
   # Extensions tested together and intented for deployment to the Wikimedia Cluster
   - name: extension-gate
     test:
@@ -2530,8 +2517,12 @@ projects:
       - name: extension-gate
       - name: extension-javascript-documentation
       - name: mwgate-rake
-      - name: mwselenium-legacy
+    test:
+      # TODO: Legacy ruby-based selenium job. To remove! (T220035)
+      - mwselenium-quibble-docker
     postmerge:
+      # TODO: Legacy ruby-based selenium job. To remove! (T220035)
+      - mwselenium-quibble-docker
       - mwext-doxygen-publish
 
   - name: mediawiki/skins/Mirage
@@ -4195,8 +4186,13 @@ projects:
       - name: extension-quibble
       - name: extension-phan
       - name: mwgate-rake
-      - name: mwselenium-legacy
       - name: extension-javascript-documentation
+    test:
+      # TODO: Legacy ruby-based selenium job. To remove! (T220035)
+      - mwselenium-quibble-docker
+    postmerge:
+      # TODO: Legacy ruby-based selenium job. To remove! (T220035)
+      - mwselenium-quibble-docker
 
   - name: mediawiki/extensions/NavigationTiming
     template:
@@ -4695,6 +4691,7 @@ projects:
       - name: mwgate-npm
       - name: mwgate-rake
     test:
+      # TODO: Legacy ruby-based selenium job. To remove! (T220035)
       - mwselenium-quibble-docker
       - wikibase-client-docker
       - wikibase-repo-docker
@@ -4705,6 +4702,7 @@ projects:
       - quibble-vendor-mysql-php74-noselenium-docker
       - quibble-vendor-postgres-php74-noselenium-docker
     gate-and-submit: &mediawiki-extensions-wikibase-gate-and-submit
+      # TODO: Legacy ruby-based selenium job. To remove! (T220035)
       - mwselenium-quibble-docker
       - wikibase-client-docker
       - wikibase-repo-docker
