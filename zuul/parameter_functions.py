@@ -65,6 +65,7 @@ def set_parameters(item, job, params):
             'mediawiki/extensions/Disambiguator',
             'mediawiki/extensions/Poem',
             'mediawiki/extensions/TimedMediaHandler',
+            'mediawiki/extensions/ImageMap',
         ])
 
     # Enable composer merge plugin in vendor and point it to mediawiki
@@ -390,7 +391,8 @@ dependencies = {
     'ParserFunctions': ['Scribunto'],
     # These dependencies can't be added properly until T271863 is resolved
     # in quibble.
-    # 'parsoid': ['Cite', 'Disambiguator', 'Poem', 'TimedMediaHandler'],
+    # 'parsoid': ['Cite', 'Disambiguator', 'Poem', 'TimedMediaHandler',
+    #             'ImageMap'],
     'PhpTagsFunctions': ['PhpTags'],
     'PhpTagsSPARQL': ['PhpTags'],
     'PhpTagsSMW': ['PhpTags'],
