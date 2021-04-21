@@ -32,6 +32,37 @@
     name: common-rake-job
     jobs:
      - rake-docker
+     - ruby2.5-rake-docker
+
+- job-template: &job_ruby2_5-rake-docker
+    name: 'ruby2.5-rake-docker'
+    node: Docker
+    docker_image_var: 'docker-registry.wikimedia.org/releng/rake-ruby2.5:0.1.0'
+    triggers:
+        - zuul
+    builders:
+        - docker-castor-load
+        - docker-log-dir
+        - docker-run-with-log-and-workspace-cache:
+            image: '{obj:docker_image_var}'
+    wrappers:
+      - timeout:
+          timeout: '{obj:build_timeout|3}'  # minutes
+      - timestamps
+      - credentials-binding:
+          - text:
+              credential-id: composer-github-oauthtoken
+              variable: COMPOSER_GITHUB_OAUTHTOKEN
+    publishers:
+        - archive-log-allow-empty
+        - castor-save-workspace-cache
+        - docker-cleanup
+
+- job-template:
+    !!merge : *job_ruby2_5-rake-docker
+    name: '{name}-ruby2.5-rake-docker'
+    triggers:
+        - zuul
 
 # Call bundle 'yard' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
