@@ -914,9 +914,6 @@ jobs:
   - name: mediawiki-vagrant-rake-docker
     files:
       - '.*'
-  - name: puppet-wmf-styleguide-rake-docker
-    files:
-      - '.*'
   - name: puppet-wmf-styleguide-ruby2.5-rake-docker
     files:
       - '.*'
@@ -3141,10 +3138,8 @@ projects:
 
   - name: operations/puppet-lint/wmf_styleguide-check
     test:
-      - puppet-wmf-styleguide-rake-docker
+      - puppet-wmf-styleguide-ruby2.5-rake-docker
     gate-and-submit:
-      - puppet-wmf-styleguide-rake-docker
-    experimental:
       - puppet-wmf-styleguide-ruby2.5-rake-docker
 
   # Repo of misc softwares
