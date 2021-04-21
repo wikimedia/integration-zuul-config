@@ -917,6 +917,9 @@ jobs:
   - name: puppet-wmf-styleguide-rake-docker
     files:
       - '.*'
+  - name: puppet-wmf-styleguide-ruby2.5-rake-docker
+    files:
+      - '.*'
 
   # Ditto for translatewiki which has puppet modules under /puppet
   - name: translatewiki-rake-docker
@@ -3141,6 +3144,8 @@ projects:
       - puppet-wmf-styleguide-rake-docker
     gate-and-submit:
       - puppet-wmf-styleguide-rake-docker
+    experimental:
+      - puppet-wmf-styleguide-ruby2.5-rake-docker
 
   # Repo of misc softwares
   # Voting V+2 so ops don't idle waiting for CI to report.
@@ -9019,6 +9024,8 @@ projects:
     postmerge:
       - oojs-ui-doxygen-publish
       - oojs-ui-docker-publish
+    experimental:
+      - ooui-ruby2.5-rake-docker
 
   - name: jsdoc/wmf-theme
     template:
@@ -9233,6 +9240,8 @@ projects:
       - translatewiki-rake-docker
     gate-and-submit:
       - translatewiki-rake-docker
+    experimental:
+      - translatewiki-ruby2.5-rake-docker
 
   - name: wikimedia-cz/tracker
     template:
