@@ -67,29 +67,6 @@
 # Call bundle 'yard' to generate documentation in labs and publish to
 # doc.wikimedia.org using an intermediate rsync repository in labs.
 - job-template:
-    name: '{name}-bundle-yard-publish'
-    node: Docker
-    concurrent: false
-    triggers:
-     - zuul
-    builders:
-     - docker-castor-load
-     - docker-log-dir
-     - docker-src-dir
-     - docker-run-with-log-cache-src:
-         image: 'docker-registry.wikimedia.org/releng/rake:0.2.2-s1'
-         args: 'yard'
-     - doc-publish:
-         docsrc: 'src/doc'
-         docdest: 'rubygems/{name}'
-    publishers:
-     - archive-log-allow-empty
-     - castor-save-workspace-cache
-     - docker-cleanup
-
-# Call bundle 'yard' to generate documentation in labs and publish to
-# doc.wikimedia.org using an intermediate rsync repository in labs.
-- job-template:
     name: '{name}-ruby2.5-bundle-yard-publish'
     node: Docker
     concurrent: false
