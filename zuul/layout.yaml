@@ -1068,9 +1068,9 @@ jobs:
   - name: 'mwext-doxygen-publish'
     branch: ^(REL.*|master)$
 
-  - name: 'mediawiki-selenium-bundle-yard-publish'
+  - name: 'mediawiki-selenium-ruby2.5-bundle-yard-publish'
     branch: ^master$
-  - name: 'mediawiki-ruby-api-bundle-yard-publish'
+  - name: 'mediawiki-ruby-api-ruby2.5-bundle-yard-publish'
     branch: ^master$
 
   - name: mediawiki-core-javascript-docker-publish
@@ -8837,7 +8837,7 @@ projects:
     gate-and-submit:
       - ruby2.5-rake-docker
     postmerge:
-      - mediawiki-ruby-api-bundle-yard-publish
+      - mediawiki-ruby-api-ruby2.5-bundle-yard-publish
 
   - name: mediawiki/selenium
     test:
@@ -8847,7 +8847,7 @@ projects:
       - ruby2.5-rake-docker
       - mediawiki-selenium-integration-docker
     postmerge:
-      - mediawiki-selenium-bundle-yard-publish
+      - mediawiki-selenium-ruby2.5-bundle-yard-publish
 
   - name: wikimedia/security/deployer-audit
     template:
