@@ -911,9 +911,6 @@ jobs:
       - '^.*\.R$'
 
   # Some rake jobs should trigger regardless of affected files:
-  - name: mediawiki-vagrant-rake-docker
-    files:
-      - '.*'
   - name: mediawiki-vagrant-ruby2.5-rake-docker
     files:
       - '.*'
@@ -2253,13 +2250,11 @@ projects:
 
   - name: mediawiki/vagrant
     test:
-      - mediawiki-vagrant-rake-docker
+      - mediawiki-vagrant-ruby2.5-rake-docker
     gate-and-submit:
-      - mediawiki-vagrant-rake-docker
+      - mediawiki-vagrant-ruby2.5-rake-docker
     postmerge:
       - mediawiki-vagrant-puppet-doc-publish
-    experimental:
-      - mediawiki-vagrant-ruby2.5-rake-docker
 
   - name: performance/arc-lamp
     template:
